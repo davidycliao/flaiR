@@ -9,17 +9,31 @@
 #'
 #' @examples
 #' \dontrun{
-#' texts <- c("UCD is the best university in Ireland.", "Trinity is good too.")
-#' doc_ids <- c("doc1", "doc2")
-#' results <- get_named_entities_df(texts, doc_ids)
-#' print(results)
-#' }
+#' library(reticulate)
+#' library(data.table)
+#'
+#' # Load POS tagging model
+#' tagger_post_fast = import("flair.nn")$Classifier$load('pos-fast')
+#'
+#' texts <- c("UCD is one of the best university in Ireland.",
+#'            "UCD is good less better than Trinity.",
+#'            "Essex is famous in social science research",
+#'            "Essex is not in Russell Group but it is not bad in politics",
+#'            "TCD is the oldest one in Ireland.",
+#'            "TCD is less better than Oxford")
+#' doc_ids <- c("doc1", "doc2", "doc3", "doc4", "doc5", "doc6")
+#'
+#' # Load NER model
+#' tagger_ner <- import("flair.nn")$Classifier$load('ner')
+#'
+#' results <- get_named_entities_df(texts, doc_ids, tagger_ner)
+#' print(results)}
 #'
 #' @importFrom data.table data.table
 #' @importFrom reticulate import
 #' @importFrom R.utils withTimeout
 #' @export
-get_ner <- function(texts, doc_ids,
+get_entities <- function(texts, doc_ids,
                     tagger = NULL, ..., language = NULL){
 
   # Check if flair is installed
@@ -87,7 +101,7 @@ get_ner <- function(texts, doc_ids,
   for (i in 1:length(texts)) {
 
     if (is.na(texts[[i]]) || is.na(doc_ids[[i]])) {
-      results_list[[i]] <- data.table(Doc_ID = NA, Entity = NA, Label = NA)
+      results_list[[i]] <- data.table(doc_id = NA, entity = NA, tag = NA)
       next
     }
 
@@ -97,12 +111,13 @@ get_ner <- function(texts, doc_ids,
 
     # Check if there are no entities
     if (length(entities) == 0) {
-      df <- data.table(Doc_ID = doc_ids[[i]], Entity = NA, Label = NA)
+      df <- data.table(doc_id = doc_ids[[i]], entity = NA, tag = NA)
     } else {
       df <- data.table(
-        Doc_ID = rep(doc_ids[[i]], length(entities)),
-        Entity = sapply(entities, function(e) e$text),
-        Label = sapply(entities, function(e) e$tag)
+        doc_id = rep(doc_ids[[i]], length(entities)),
+        text_id = texts[[i]],
+        entity = sapply(entities, function(e) e$text),
+        tag = sapply(entities, function(e) e$tag)
       )
     }
     results_list[[i]] <- df

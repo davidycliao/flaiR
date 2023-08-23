@@ -42,8 +42,46 @@ create_flair_env <- function(env_name = "flair_env", python_ver = "3.8") {
   reticulate::py_install("flair", pip = TRUE)
   return(python_path)
 }
+#
+#
+# clear_flair_cache <- function() {
+#   # Define the flair cache directory
+#   flair_cache_dir <- file.path(path.expand("~"), ".flair")
+#
+#   # Check if the directory exists
+#   if (!dir.exists(flair_cache_dir)) {
+#     cat("Flair cache directory does not exist.\n")
+#     return(NULL)
+#   }
+#
+#   # List files in the flair cache directory
+#   cache_files <- list.files(flair_cache_dir)
+#   if(length(cache_files) > 0) {
+#     cat("Files in flair cache directory:\n")
+#     print(cache_files)
+#   } else {
+#     cat("No files in flair cache directory.\n")
+#   }
+#
+#   # Remove the directory and its contents
+#   unlink(flair_cache_dir, recursive = TRUE)
+#   cat("Flair cache directory has been cleared.\n")
+#
+#   return(invisible(NULL))
+# }
 
-
+#' Clear Flair Cache
+#'
+#' This function clears the cache associated with the Flair Python library.
+#' The cache directory is typically located at "~/.flair".
+#'
+#' @return Returns NULL invisibly. Messages are printed indicating whether the cache was found and cleared.
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' clear_flair_cache()
+#' }
 clear_flair_cache <- function() {
   # Define the flair cache directory
   flair_cache_dir <- file.path(path.expand("~"), ".flair")
@@ -69,6 +107,5 @@ clear_flair_cache <- function() {
 
   return(invisible(NULL))
 }
-
 
 

@@ -10,14 +10,42 @@
 #' @param tagger An optional flair sentiment model. If NULL (default),
 #'   the function loads the default model based on the language.
 #'
-#' @return A data.table with columns: Doc_ID, Sentiment, and Score.
+#' @return A \code{data.table} containing three columns:
+#'   \itemize{
+#'     \item \code{doc_iid}: The document ID from the input.
+#'     \item \code{sentiment}: Predicted sentiment for the text.
+#'     \item \code{score}: score for the sentiment prediction.
+#'   }
+#'
+#' @examples
+#' \dontrun{
+#' library(reticulate)
+#' library(data.table)
+#'
+#' # Load POS tagging model
+#' tagger_post_fast = import("flair.nn")$Classifier$load('pos-fast')
+#'
+#' texts <- c("UCD is one of the best university in Ireland.",
+#'            "UCD is good less better than Trinity.",
+#'            "Essex is famous in social science research",
+#'            "Essex is not in Russell Group but it is not bad in politics",
+#'            "TCD is the oldest one in Ireland.",
+#'            "TCD is less better than Oxford")
+#' doc_ids <- c("doc1", "doc2", "doc3", "doc4", "doc5", "doc6")
+#'
+#' # Load NER model
+#' tagger_sent <- import("flair.nn")$Classifier$load('sentiment')
+#'
+#' results <- get_sentiments(texts, doc_ids, tagger_sent)
+#' print(results)
+#' }
 #'
 #' @importFrom data.table data.table
 #' @importFrom reticulate py_available py_module_available import
+#'
 #' @export
-
-get_sentiment_tag <- function(texts, doc_ids,
-                              tagger = NULL, ... , language = "en") {
+get_sentiments <- function(texts, doc_ids,
+                              tagger = NULL, ... , language = NULL) {
 
   # Ensure that lengths of texts and doc_ids are the same
   if (length(texts) != length(doc_ids)) {
@@ -65,7 +93,10 @@ get_sentiment_tag <- function(texts, doc_ids,
   for (i in 1:length(texts)) {
 
     if (is.na(texts[[i]])) {
-      results_list[[i]] <- data.table(doc_id = doc_ids[[i]], sentiment = NA, score = NA)
+      results_list[[i]] <- data.table(doc_id = doc_ids[[i]],
+                                      text_id = NA,
+                                      sentiment = NA,
+                                      score = NA)
       next
     }
 
@@ -85,7 +116,10 @@ get_sentiment_tag <- function(texts, doc_ids,
       sentiment_score <- NA
     }
 
-    df <- data.table(doc_id = doc_ids[[i]], sentiment = sentiment_label, core = sentiment_score)
+    df <- data.table(doc_id = doc_ids[[i]],
+                     text_id = texts[[i]],
+                     sentiment = sentiment_label,
+                     score = sentiment_score)
 
     results_list[[i]] <- df
   }

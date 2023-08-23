@@ -5,19 +5,35 @@
 #' @param doc_ids A character vector containing document ids.
 #' @param tagger A tagger object (default is NULL).
 #' @param language The language of the texts (default is NULL).
-#' @return A data table containing the POS tags and related data.
+#' @return A `data.table` containing the following columns:
+#' \describe{
+#'   \item{\code{doc_id}}{The document identifier corresponding to each text.}
+#'   \item{\code{token_id}}{The token number in the original text, indicating the position of the token.}
+#'   \item{\code{text_id}}{The actual text input passed to the function.}
+#'   \item{\code{token}}{The individual word or token from the text that was POS tagged.}
+#'   \item{\code{tag}}{The part-of-speech tag assigned to the token by the Flair library.}
+#'   \item{\code{precision}}{A confidence score (numeric) for the assigned POS tag.}
+#' }
+#'
 #' @export
 #'
 #' @examples
 #' \dontrun{
-#' # Example usage:
-#' texts <- c("UCD is the best university in Ireland.", "Essex is the worst.")
-#' doc_ids <- c("doc1", "doc2")
-#' result <- get_pos_tags(texts, doc_ids)
-#' print(result)
+#' library(reticulate)
+#' library(data.table)
+#' tagger_pos_fast = import("flair.nn")$Classifier$load('pos-fast')
+#' texts <- c("UCD is one of the best university in Ireland.",
+#'            "UCD is good less better than Trinity.",
+#'            "Essex is famous in social science research",
+#'            "Essex is not in Russell Group but it is not bad in politics",
+#'            "TCD is the oldest one in Ireland.",
+#'            "TCD is less better than Oxford")
+#' doc_ids <- c("doc1", "doc2", "doc3", "doc4", "doc5", "doc6")
+#'
+#' get_pos(texts, doc_ids, tagger_pos_fast)
 #' }
-get_pos_tags <- function(texts, doc_ids,
-                         tagger = NULL, ...,language = NULL) {
+get_pos <- function(texts, doc_ids,
+                    tagger = NULL, ...,language = NULL) {
 
   # Ensure Python and flair library are available
   if (!reticulate::py_available(initialize = TRUE)) {
