@@ -33,8 +33,8 @@ texts <- c("UCD is one of the best university in Ireland.",
            "UCD is good less better than Trinity.",
            "Essex is famous in social science research",
            "Essex is not in Russell Group but it is not bad in politics",
-           "Trinity is the oldest one in Ireland.",
-           "Trinity is less better than Oxford")
+           "TCD is the oldest one in Ireland.",
+           "TCD is less better than Oxford")
 doc_ids <- c("doc1", "doc2", "doc3", "doc4", "doc5", "doc6")
 
 # Load NER model

@@ -7,5 +7,5 @@
 # * https://testthat.r-lib.org/reference/test_package.html#special-files
 
 library(testthat)
-library(legisTaiwan)
-test_check("legisTaiwan")
+library(flaiR)
+test_check("flaiR")

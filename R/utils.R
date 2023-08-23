@@ -37,6 +37,8 @@ create_flair_env <- function(env_name = "flair_env", python_ver = "3.8") {
 
   # Activate the conda environment
   reticulate::use_condaenv(env_name)
+  message("## Using Python:    ", python_version, "                                         ##")
+  message("## Using Flair : ", flair_version, "                                         ##")
 
   # Install Flair using pip
   reticulate::py_install("flair", pip = TRUE)
