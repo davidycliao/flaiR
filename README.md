@@ -5,7 +5,7 @@ This R wrapper, built upon the reticulate architecture, offers streamlined acces
 The utility of flairR is limited to the pre-trained models provided by _Flair NLP_. `flairR` directly returns the tagging information in a data.table format. To utilize flairR, you need to use reticulate to install the Python flair library in your R environment. It is recommended to install __Python version 3.7 or higher__ for efficient operation of Flair NLP.
 
 
-### Installation with `remotes`:
+## Installation with `remotes`:
 ```
 install.packages("remotes")
 remotes::install_github("davidycliao/flair", force = TRUE)
@@ -46,6 +46,13 @@ Load the pretrained model pos-fast. For more pretrained models, see https://flai
 ```
 library(reticulate)
 library(data.table)
+texts <- c("UCD is one of the best university in Ireland. ", 
+           "UCD is good and a bit less better than Trinity.",
+           "Essex is famous in social science research",
+           "Essex is not in Russell Group but it is not bad in politics", 
+           "TCD is the oldest one in Ireland.",
+           "TCD in less better than Oxford")
+doc_ids <- c("doc1", "doc2", "doc3", "doc4", "doc5", "doc6")
 tagger_pos = import("flair.nn")$Classifier$load('pos-fast')
 results <- get_pos(texts, doc_ids, tagger_pos)
 print(results)
@@ -54,6 +61,25 @@ print(results)
 <br />
 <img src="inst/figures/pos.png" width="1000" align="center" />
 &nbsp;
+
+
+
+
+### Tagging Parts-of-Speech
+Load the pretrained model pos-fast. For more pretrained models, see https://flairnlp.github.io/docs/tutorial-basics/part-of-speech-tagging#-in-english.
+
+```
+library(reticulate)
+library(data.table)
+tagger_ner = import("flair.nn")$Classifier$load('ner')
+results <- get_entities(texts, doc_ids, tagger_ner)
+print(results)
+```
+
+<br />
+<img src="inst/figures/ent.png" width="1000" align="center" />
+&nbsp;
+
 
 
 
