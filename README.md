@@ -4,11 +4,11 @@ This R wrapper, built upon the reticulate architecture, offers streamlined acces
 
 The utility of flairR is limited to the pre-trained models provided by _Flair NLP_. `flairR` directly returns the tagging information in a data.table format. To utilize flairR, you need to use reticulate to install the Python flair library in your R environment. It is recommended to install __Python version 3.7 or higher__ for efficient operation of Flair NLP.
 
-### Get Started with Using `remotes`:
 
+### Installation with `remotes`:
 ```
 install.packages("remotes")
-remotes::install_github("davidycliao/legisTaiwan", force = TRUE)
+remotes::install_github("davidycliao/flair", force = TRUE)
 ```
 
 ```
@@ -19,7 +19,7 @@ library(flaiR)
 ```
 
 
-### Lazy Installation 
+### Lazy Installation for the Enviroment
 
 `create_flair_env` automatically creates a new conda environment specifically in
 the R session, and installs `flair`.
@@ -34,8 +34,8 @@ Use the reticulate package in R to create a conda environment named  `flair_env`
 and install Python's `flair`.
 
 ```
-reticulate::conda_create("spacy_condaenv")  
-reticulate::conda_install("spacy_condaenv", packages = "flair")  
+reticulate::conda_create("flair_env")  
+reticulate::conda_install("flair_env", packages = "flair")  
 ```
 
 
