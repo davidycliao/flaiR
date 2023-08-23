@@ -40,8 +40,8 @@ reticulate::conda_install("flair_env", packages = "flair")
 
 ## Quick Use
 
-### Tagging Parts-of-Speech
-Load the pretrained model pos-fast. For more pretrained models, see https://flairnlp.github.io/docs/tutorial-basics/part-of-speech-tagging#-in-english.
+### Tagging Parts-of-Speech with Flair Models
+Load the pretrained model "pos-fast". For more pretrained models, see https://flairnlp.github.io/docs/tutorial-basics/part-of-speech-tagging#-in-english.
 
 ```
 library(reticulate)
@@ -65,8 +65,8 @@ print(results)
 
 
 
-### Tagging Parts-of-Speech
-Load the pretrained model pos-fast. For more pretrained models, see https://flairnlp.github.io/docs/tutorial-basics/part-of-speech-tagging#-in-english.
+### Tagging Entities with Flair Models
+Load the pretrained model "ner". For more pretrained models, see https://flairnlp.github.io/docs/tutorial-basics/tagging-entities.
 
 ```
 library(reticulate)
@@ -84,16 +84,25 @@ print(results)
 
 
 
+### Tagging Sentiment 
+Load the pretrained model "sentiment".  The pre-trained models of "sentiment", "sentiment-fast", and "de-offensive-language" are currently available. For more pretrained models, see https://flairnlp.github.io/docs/tutorial-basics/tagging-sentiment.
+
+```
+library(reticulate)
+library(data.table)
+tagger_ner = import("flair.nn")$Classifier$load('sentiment')
+results <- get_sentiments(texts, doc_ids, tagger_sent)
+print(results)
+```
+
+
+<br />
+<img src="inst/figures/sent.png" width="1000" align="center" />
+&nbsp;
 
 
 
-
-
-
-
-
-
-##  Cite
+##  Cite the Work of `Flair`
 ```
 @inproceedings{akbik2018coling,
   title={Contextual String Embeddings for Sequence Labeling},
