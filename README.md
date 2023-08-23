@@ -5,7 +5,11 @@ This R wrapper, built upon the reticulate architecture, offers streamlined acces
 The utility of flairR is limited to the pre-trained models provided by _Flair NLP_. `flairR` directly returns the tagging information in a data.table format. To utilize flairR, you need to use reticulate to install the Python flair library in your R environment. It is recommended to install __Python version 3.7 or higher__ for efficient operation of Flair NLP.
 
 
-## Installation with `remotes`:
+## Installation
+"The installation consists of two parts: First, install Python and then download the package. Create an environment within the R setting and interface with Flair.
+
+### Get Started with `remotes`:
+
 ```
 install.packages("remotes")
 remotes::install_github("davidycliao/flair", force = TRUE)
