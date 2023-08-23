@@ -2,9 +2,6 @@
 
 This R wrapper, built upon the reticulate architecture, offers streamlined access to the core features of FlairNLP in Python. FlairNLP is an advanced framework incorporating the latest techniques in Natural Language Processing. For a deeper understanding of Flair's training model architecture, please consult the article '[Contextual String Embeddings for Sequence Labeling](https://aclanthology.org/C18-1139.pdf)'. The stable features currently available in `flairR` includes __part-of-speech tagging__, __transformer-based sentiment analysis__, and __named entity recognition__. 
 
-The utility of `flairR` is confined to the pre-trained models provided by _Flair NLP_. flairR directly return the taaging information into a data.table format. 利用`flairR`會需要retuculate 安裝Python `flair` in your R evnviroment. 建議安裝3.7 以上的python 為了有效運作Flair NLP
-
-
 The utility of flairR is limited to the pre-trained models provided by _Flair NLP_. `flairR` directly returns the tagging information in a data.table format. To utilize flairR, you need to use reticulate to install the Python flair library in your R environment. It is recommended to install __Python version 3.7 or higher__ for efficient operation of Flair NLP.
 
 ### Get Started with Using `remotes`:
