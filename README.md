@@ -52,7 +52,7 @@ print(results)
 ```
 
 <br />
-<img src="inst/figures/pos.png" width="500" align="center" />
+<img src="inst/figures/pos.png" width="1000" align="center" />
 &nbsp;
 
 
