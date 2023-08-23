@@ -38,15 +38,27 @@ reticulate::conda_create("flair_env")
 reticulate::conda_install("flair_env", packages = "flair")  
 ```
 
+## Quick Use
+
+### Tagging Parts-of-Speech
+Load the pretrained model pos-fast. For more pretrained models, see https://flairnlp.github.io/docs/tutorial-basics/part-of-speech-tagging#-in-english.
+
+```
+library(reticulate)
+library(data.table)
+tagger_pos = import("flair.nn")$Classifier$load('pos-fast')
+results <- get_pos(texts, doc_ids, tagger_pos)
+print(results)
+```
+
+<br />
+<img src="inst/figures/pos.png" width="200" align="center" />
+&nbsp;
 
 
 
-# 
-# <br />
-# <img src="https://raw.githack.com/yl17124/asmcjr/master/vignettes/book_image.jpg" width="200" align="center" />  
-# &nbsp;
-# 
-# 
+
+
 
 
 
