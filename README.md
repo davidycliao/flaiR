@@ -63,7 +63,7 @@ print(results)
 ```
 
 <br />
-<img src="inst/figures/pos.png" width="1000" align="center" />
+<img src="https://raw.githack.com/davidycliao/flaiR/main/inst/figures/pos.png" width="1000" align="center" />
 &nbsp;
 
 
@@ -81,7 +81,7 @@ print(results)
 ```
 
 <br />
-<img src="inst/figures/ent.png" width="1000" align="center" />
+<img src="https://raw.githack.com/davidycliao/flaiR/main/inst/figures/ent.png" width="1000" align="center" />
 &nbsp;
 
 
@@ -101,7 +101,7 @@ print(results)
 
 
 <br />
-<img src="inst/figures/sent.png" width="1000" align="center" />
+<img src="https://raw.githack.com/davidycliao/flaiR/main/inst/figures/sent.png" width="1000" align="center" />
 &nbsp;
 
 
