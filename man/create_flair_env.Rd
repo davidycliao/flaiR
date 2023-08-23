@@ -2,8 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{create_flair_env}
 \alias{create_flair_env}
-\title{Create and Use a Conda Environment for Flair
-s
+\title{Create an environment to interface with Python for Flair.
 This function creates a new conda environment specifically for Flair, restarts
 the R session, and installs Flair using pip.}
 \usage{
@@ -18,8 +17,7 @@ create_flair_env(env_name = "flair_env", python_ver = "3.8")
 The path to the Python executable in the new environment.
 }
 \description{
-Create and Use a Conda Environment for Flair
-s
+Create an environment to interface with Python for Flair.
 This function creates a new conda environment specifically for Flair, restarts
 the R session, and installs Flair using pip.
 }

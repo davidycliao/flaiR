@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_ner.R
 \name{get_ner}
 \alias{get_ner}
-\title{Tagging entities with flair standard model}
+\title{Tagging Named Entities with Flair Standard Models}
 \usage{
 get_ner(texts, doc_ids, tagger = NULL, ..., language = NULL)
 }

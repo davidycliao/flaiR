@@ -1,5 +1,4 @@
-#' Tagging Sentiment with Flair Standard Models
-#'
+#'@title Tagging Sentiment with Flair Standard Models
 #' This function takes in texts and their associated document IDs to predict sentiments
 #' using the flair Python library.
 #'

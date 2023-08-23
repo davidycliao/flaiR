@@ -2,7 +2,9 @@
 % Please edit documentation in R/utils.R
 \name{has_internet}
 \alias{has_internet}
-\title{Check for Active Internet Connection}
+\title{Check for Active Internet Connection
+This function checks if there's an active internet connection using
+the `curl` package. In case of an error or no connection, it will return `FALSE`.}
 \usage{
 has_internet()
 }
@@ -10,6 +12,7 @@ has_internet()
 Logical. TRUE if there's an active internet connection, otherwise FALSE.
 }
 \description{
+Check for Active Internet Connection
 This function checks if there's an active internet connection using
 the `curl` package. In case of an error or no connection, it will return `FALSE`.
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_pos_tags.R
 \name{get_pos_tags}
 \alias{get_pos_tags}
-\title{Tagging part-of-speech tagging with Flair standard model
+\title{Tagging Part-of-Speech Tagging with Flair Standard Models
 This function returns a data table of POS tags and other related data for the given texts.}
 \usage{
 get_pos_tags(texts, doc_ids, tagger = NULL, ..., language = NULL)
@@ -20,7 +20,7 @@ get_pos_tags(texts, doc_ids, tagger = NULL, ..., language = NULL)
 A data table containing the POS tags and related data.
 }
 \description{
-Tagging part-of-speech tagging with Flair standard model
+Tagging Part-of-Speech Tagging with Flair Standard Models
 This function returns a data table of POS tags and other related data for the given texts.
 }
 \examples{

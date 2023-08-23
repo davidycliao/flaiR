@@ -1,4 +1,4 @@
-#' @title Tagging entities with flair standard model
+#' @title Tagging Named Entities with Flair Standard Models
 #' @description Extract named entities from a given text using the flair package.
 #'
 #' @param texts A character vector of texts from which to extract named entities.

@@ -1,4 +1,4 @@
-#' @title Tagging part-of-speech tagging with Flair standard model
+#' @title Tagging Part-of-Speech Tagging with Flair Standard Models
 #' This function returns a data table of POS tags and other related data for the given texts.
 #'
 #' @param texts A character vector containing texts to be processed.

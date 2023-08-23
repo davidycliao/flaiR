@@ -1,26 +1,4 @@
-#' Check if flair is installed in the Python environment.
-#'
-#' This function checks if the `flair` Python module is available in the
-#' current R session's Python environment. If `flair` is not installed,
-#' or if Python is not available, an error will be raised.
-#'
-#' @return Logical. TRUE if flair is installed, otherwise it will stop with an error message.
-#' @importFrom  reticulate py_available py_module_available
-check_flair_installed <- function() {
-  if (py_available(initialize = TRUE)) {
-    if (py_module_available("flair")) {
-      return(TRUE)
-    } else {
-      stop("flair is not installed in the current Python environment.")
-    }
-  } else {
-    stop("Python is not available in the current R session.")
-  }
-}
-
-
-#' Check for Active Internet Connection
-#'
+#' @title Check for Active Internet Connection
 #' This function checks if there's an active internet connection using
 #' the `curl` package. In case of an error or no connection, it will return `FALSE`.
 #'
@@ -34,7 +12,7 @@ has_internet <- function() {
   })
 }
 
-#' Create and Use a Conda Environment for Flair
+#' Create an environment to interface with Python for Flair.
 #' This function creates a new conda environment specifically for Flair, restarts
 #' the R session, and installs Flair using pip.
 #'
