@@ -1,0 +1,27 @@
+Package: flaiR
+Type: Package
+Title: An R Wrapper for Accessing Flair NLP Tagging Features
+Version: 0.0.1
+Authors@R: person("David", "Liao", email = "davidyclaio@gmail.com", role = c("aut", "cre"))
+Description: This is an R wrapper based on the structure of reticulate, designed 
+             to access the major features of flairNLP in Python. Flair NLP is a 
+             straightforward framework for state-of-the-art Natural Language 
+             Processing. The stable features currently include part-of-speech 
+             tagging, sentiment tagging, and named entity recognition tagging. 
+             This package requires Python 3.8 to operate concurrently.
+Maintainer: David Yen-Chieh Liao <davidycliao@gmail.com>
+Depends: 
+  R (>= 3.6.3)
+License: GPL-3 + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Imports:
+  data.table,
+  reticulate,
+  curl,
+  rstudioapi,
+  R.utils
+Suggests: 
+  quanteda,
+  testthat (>= 3.0.0)  
+RoxygenNote: 7.2.3
