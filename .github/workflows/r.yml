@@ -44,6 +44,9 @@ jobs:
           brew install --cask mactex-no-gui
           brew install pandoc
 
+      - name: Install knitr
+        run: Rscript -e 'install.packages("knitr")'
+
       # Windows might require different setup for LaTeX and Pandoc, adjust accordingly
       - name: Build and Check R Package
         run: |
