@@ -22,7 +22,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, macOS-latest, windows-latest]
+        os: [macOS-latest, windows-latest]
         r-version: ['4.0.5', '4.1.1']
 
     steps:
@@ -37,11 +37,6 @@ jobs:
           install.packages(c("remotes", "rcmdcheck"))
           remotes::install_deps(dependencies = TRUE)
         shell: Rscript {0}
-
-      - name: Install LaTeX and Pandoc (Ubuntu)
-        if: runner.os == 'Linux'
-        run: |
-          sudo apt-get update && sudo apt-get install -y texlive pandoc
 
       - name: Install LaTeX and Pandoc (macOS)
         if: runner.os == 'macOS'
