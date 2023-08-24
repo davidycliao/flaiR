@@ -21,13 +21,14 @@
 #' \dontrun{
 #' library(reticulate)
 #' library(data.table)
+#' # Load Part-of-Speech  ("pos-fast") model
 #' tagger_pos_fast = import("flair.nn")$Classifier$load('pos-fast')
-#' texts <- c("UCD is one of the best university in Ireland.",
-#'            "UCD is good less better than Trinity.",
-#'            "Essex is famous in social science research",
-#'            "Essex is not in Russell Group but it is not bad in politics",
-#'            "TCD is the oldest one in Ireland.",
-#'            "TCD is less better than Oxford")
+#' texts <- c("UCD is one of the best universities in Ireland.",
+#'            "UCD is good but not quite as good as Trinity.",
+#'            "Essex is famous for social science research.",
+#'            "Essex is not in the Russell Group, but it is famous for political science research.",
+#'            "TCD is the oldest university in Ireland.",
+#'            "TCD is similar to Oxford.")
 #' doc_ids <- c("doc1", "doc2", "doc3", "doc4", "doc5", "doc6")
 #'
 #' get_pos(texts, doc_ids, tagger_pos_fast)
