@@ -50,3 +50,8 @@ jobs:
           R CMD build .
           R CMD check *tar.gz
         shell: bash
+        env:
+          R_LIBS_USER: /Users/runner/work/_temp/Library
+          TZ: UTC
+          _R_CHECK_SYSTEM_CLOCK_: FALSE
+          NOT_CRAN: true
