@@ -10,7 +10,7 @@
     flair_version <- get_flair_version()
     message("## Using Flair : ", flair_version, "                                           ##")
   } else {
-    message("## Using Flair : ", "not installed in the current Python environment.        ##")
+    message("## Using Flair : ", "not installed in the current Python environment.    ##")
   }
 }
 
