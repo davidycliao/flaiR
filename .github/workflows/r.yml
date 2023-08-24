@@ -30,36 +30,29 @@ jobs:
         uses: r-lib/actions/setup-r@f57f1301a053485946083d7a45022b278929a78a
         with:
           r-version: ${{ matrix.r-version }}
+
       - name: Install dependencies
         run: |
           install.packages(c("remotes", "rcmdcheck"))
           remotes::install_deps(dependencies = TRUE)
         shell: Rscript {0}
+
       - name: Check
         run: rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "error")
         shell: Rscript {0}
 
-  build-package:
-    runs-on: ubuntu-latest
-    steps:
-    - name: Checkout repo
-      uses: actions/checkout@v2
+      - name: Install LaTeX and Pandoc
+        run: |
+          sudo apt-get install -y texlive pandoc
 
-    - name: Setup R
-      uses: r-lib/actions/setup-r@v1
+      - name: Install R dependencies
+        run: |
+          install.packages("remotes")
+          remotes::install_deps(dependencies = TRUE)
+        shell: Rscript {0}
 
-    - name: Install LaTeX and Pandoc
-      run: |
-        sudo apt-get install -y texlive pandoc
-
-    - name: Install R dependencies
-      run: |
-        install.packages("remotes")
-        remotes::install_deps(dependencies = TRUE)
-      shell: Rscript {0}
-
-    - name: Build Package
-      run: |
-        R CMD build .
-        R CMD check *tar.gz
+      - name: Build Package
+        run: |
+          R CMD build .
+          R CMD check *tar.gz
 
