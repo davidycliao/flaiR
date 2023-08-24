@@ -1,3 +1,7 @@
+library(reticulate)
+use_python(".venv/bin/python", required = TRUE)
+
+
 test_that("get_pos throws an error for unsupported languages", {
   expect_error(get_pos(
     texts = c("UCD is one of the best university in Ireland. ",
