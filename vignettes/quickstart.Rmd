@@ -19,7 +19,7 @@ knitr::opts_chunk$set(
 <div style="text-align: justify">
 
 To utilize flairR, you need to use reticulate to install the Python flair library in your R environment. It is recommended to install Python version 3.7 or higher for the efficient operation of Flair NLP.
-The utility of flairR is limited to the pre-trained models provided by Flair NLP. flairR directly returns the tagging information in a data.table format.  Additionally, using the transformed base NLP toolkit requires more computational power; thus, it's recommended to implement parallel computing to enhance NLP tasks."
+The utility of flairR is limited to the pre-trained models provided by Flair NLP. flairR directly returns the tagging information in a data.table format.  Additionally, using the transformed base NLP toolkit requires more computational power; thus, it's recommended to implement parallel computing to enhance NLP tasks.
 
 </div>
 
@@ -43,12 +43,10 @@ texts <- c("UCD is one of the best university in Ireland. ",
 doc_ids <- c("doc1", "doc2", "doc3", "doc4", "doc5", "doc6")
 tagger_pos = import("flair.nn")$Classifier$load('pos-fast')
 results <- get_pos(texts, doc_ids, tagger_pos)
-print(results)
+head(results, n = 10)
 ```
 
-<br />
-<img src="https://raw.githack.com/davidycliao/flaiR/main/inst/figures/pos.png" width="1000" align="center" />
-&nbsp;
+
 
 
 ### Tagging Entities with Flair Models
@@ -59,7 +57,7 @@ library(reticulate)
 library(data.table)
 tagger_ner = import("flair.nn")$Classifier$load('ner')
 results <- get_entities(texts, doc_ids, tagger_ner)
-print(results)
+head(results, n = 10)
 ```
 
 <br />
@@ -78,7 +76,7 @@ library(reticulate)
 library(data.table)
 tagger_sent = import("flair.nn")$Classifier$load('sentiment')
 results <- get_sentiments(texts, doc_ids, tagger_sent)
-print(results)
+head(results, n = 10)
 ```
 
 

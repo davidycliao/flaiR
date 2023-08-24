@@ -41,7 +41,6 @@ authors:
     href: https://davidycliao.github.io
 
 
-
 template:
   package: tidytemplate
   bootstrap: 5
@@ -50,6 +49,7 @@ template:
       <script defer data-domain="{YOUR DOMAIN},all.tidyverse.org" src="https://plausible.io/js/plausible.js"></script>
   params:
     ganalytics:
+    css: [pkgdown/extra.css]
 
 development:
   mode: auto
@@ -79,6 +79,13 @@ navbar:
       href: articles/get_sentitments.html
     - text: "Tagging Part-of-Speech Tagging with Flair Standard Models"
       href: articles/get_pos.html
+
+  - icon: fa-newspaper-o
+    text: News
+    menu:
+    - text: "0.0.1"
+      href: news/index.html
+
 
   - icon: fa-file-code-o
     text: Reference
