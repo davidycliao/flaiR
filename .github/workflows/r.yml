@@ -39,19 +39,17 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y texlive-full pandoc
 
-      - name: Install LaTeX (macOS)
+      - name: Install system dependencies (macOS)
         if: runner.os == 'macOS'
         run: |
-          # This is a placeholder. Adjust as needed for macOS.
-          # You might need to use a package manager like Homebrew.
-          echo "Install LaTeX and Pandoc on macOS here"
+          brew install --cask mactex-no-gui
+          brew install pandoc
 
       - name: Install LaTeX (Windows)
         if: runner.os == 'Windows'
         run: |
-          # This is a placeholder. Adjust as needed for Windows.
-          # You can use tools like Chocolatey or other installers.
-          echo "Install LaTeX and Pandoc on Windows here"
+          choco install -y tinytex
+          choco install -y pandoc
 
       - name: Install R dependencies
         run: |
