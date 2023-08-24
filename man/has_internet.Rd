@@ -16,3 +16,4 @@ Check for Active Internet Connection
 This function checks if there's an active internet connection using
 the `curl` package. In case of an error or no connection, it will return `FALSE`.
 }
+\keyword{internal}

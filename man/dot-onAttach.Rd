@@ -2,10 +2,12 @@
 % Please edit documentation in R/zzz.R
 \name{.onAttach}
 \alias{.onAttach}
-\title{}
+\title{.onAttach Function for the flaiR Package}
 \usage{
 .onAttach(...)
 }
 \description{
-
+This function is called when the flaiR package is loaded. It provides messages
+detailing the versions of Python and Flair being used, as well as other package details.
 }
+\keyword{internal}
