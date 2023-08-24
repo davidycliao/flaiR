@@ -19,40 +19,49 @@ permissions:
 
 jobs:
   build:
-    runs-on: macos-latest
+    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
+        os: [ubuntu-latest, macOS-latest, windows-latest]
         r-version: ['4.0.5', '4.1.1']
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v2
+
       - name: Set up R ${{ matrix.r-version }}
         uses: r-lib/actions/setup-r@f57f1301a053485946083d7a45022b278929a78a
         with:
           r-version: ${{ matrix.r-version }}
 
-      - name: Install dependencies
+      - name: Install LaTeX and Pandoc (Ubuntu)
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y texlive-full pandoc
+
+      - name: Install LaTeX (macOS)
+        if: runner.os == 'macOS'
+        run: |
+          # This is a placeholder. Adjust as needed for macOS.
+          # You might need to use a package manager like Homebrew.
+          echo "Install LaTeX and Pandoc on macOS here"
+
+      - name: Install LaTeX (Windows)
+        if: runner.os == 'Windows'
+        run: |
+          # This is a placeholder. Adjust as needed for Windows.
+          # You can use tools like Chocolatey or other installers.
+          echo "Install LaTeX and Pandoc on Windows here"
+
+      - name: Install R dependencies
         run: |
           install.packages(c("remotes", "rcmdcheck"))
           remotes::install_deps(dependencies = TRUE)
         shell: Rscript {0}
 
-      - name: Check
-        run: rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "error")
-        shell: Rscript {0}
-
-      - name: Install LaTeX and Pandoc
-        run: |
-          sudo apt-get install -y texlive pandoc
-
-      - name: Install R dependencies
-        run: |
-          install.packages("remotes")
-          remotes::install_deps(dependencies = TRUE)
-        shell: Rscript {0}
-
-      - name: Build Package
+      - name: Build and Check Package
         run: |
           R CMD build .
-          R CMD check *tar.gz
+          R CMD check *tar.gz --no-manual
+        shell: bash
 
