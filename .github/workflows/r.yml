@@ -26,40 +26,35 @@ jobs:
         r-version: ['4.0.5', '4.1.1']
 
     steps:
-      - uses: actions/checkout@v2
-
+      - uses: actions/checkout@v3
       - name: Set up R ${{ matrix.r-version }}
         uses: r-lib/actions/setup-r@f57f1301a053485946083d7a45022b278929a78a
         with:
           r-version: ${{ matrix.r-version }}
 
-      - name: Install LaTeX and Pandoc (Ubuntu)
-        if: runner.os == 'Linux'
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y texlive-full pandoc
-
-      - name: Install system dependencies (macOS)
-        if: runner.os == 'macOS'
-        run: |
-          brew install --cask mactex-no-gui
-          brew install pandoc
-
-      - name: Install LaTeX (Windows)
-        if: runner.os == 'Windows'
-        run: |
-          choco install -y tinytex
-          choco install -y pandoc
-
-      - name: Install R dependencies
+      - name: Install dependencies
         run: |
           install.packages(c("remotes", "rcmdcheck"))
           remotes::install_deps(dependencies = TRUE)
         shell: Rscript {0}
 
-      - name: Build and Check Package
+      - name: Install LaTeX and Pandoc (Ubuntu)
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update && sudo apt-get install -y texlive pandoc
+
+      - name: Install LaTeX and Pandoc (macOS)
+        if: runner.os == 'macOS'
+        run: |
+          brew install --cask mactex-no-gui
+          brew install pandoc
+
+      # Windows might require different setup for LaTeX and Pandoc, adjust accordingly
+
+      - name: Build Package
         run: |
           R CMD build .
-          R CMD check *tar.gz --no-manual
-        shell: bash
+          R CMD check *tar.gz
+        shell: Rscript {0}
+
 
