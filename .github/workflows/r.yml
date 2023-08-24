@@ -44,17 +44,29 @@ jobs:
           brew install --cask mactex-no-gui
           brew install pandoc
 
+      - name: Install LaTeX and Pandoc (Windows)
+        if: runner.os == 'Windows'
+        run: |
+          choco install miktex
+          choco install pandoc
+
       - name: Install knitr
         run: Rscript -e 'install.packages("knitr")'
 
-      # Windows might require different setup for LaTeX and Pandoc, adjust accordingly
+      # Inserting the step to install Python flair library
+      - name: Install Python and flair library
+        run: |
+          python -m pip install --upgrade pip
+          pip install flair
+        shell: bash
+
       - name: Build and Check R Package
         run: |
           R CMD build .
           R CMD check *tar.gz
         shell: bash
         env:
-          R_LIBS_USER: /Users/runner/work/_temp/Library
+          R_LIBS_USER: ${{ runner.temp }}/Library
           TZ: UTC
           _R_CHECK_SYSTEM_CLOCK_: FALSE
           NOT_CRAN: true
