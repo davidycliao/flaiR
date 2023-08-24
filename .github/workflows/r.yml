@@ -34,7 +34,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          install.packages(c("remotes", "rcmdcheck", "knitr"))
+          install.packages(c("remotes", "rcmdcheck", ""))
           remotes::install_deps(dependencies = TRUE)
         shell: Rscript {0}
 
@@ -52,6 +52,15 @@ jobs:
 
       - name: Install knitr
         run: Rscript -e 'install.packages("knitr")'
+
+
+
+      - name: Cache R packages
+        uses: actions/cache@v2
+        with:
+          path: ${{ env.R_LIBS_USER }}
+          key: ${{ runner.os }}-r-${{ matrix.r-version }}-1
+          restore-keys: ${{ runner.os }}-r-${{ matrix.r-version }}-
 
       - name: Build, Check R Package and Install Python flair library
         run: |
