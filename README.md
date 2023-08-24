@@ -4,12 +4,12 @@
 <div style="text-align: justify">
 
 
-flairR is R wrapper, built upon the reticulate architecture, offers streamlined access to the core features of FlairNLP in Python. FlairNLP is an advanced framework incorporating the latest techniques in natural language processing developed by [Humboldt University of Berlin](https://github.com/flairNLP/flair). For a deeper understanding of Flair's framwork, please fid the research article '[Contextual String Embeddings for Sequence Labeling](https://aclanthology.org/C18-1139.pdf)' and the official [mannual](https://flairnlp.github.io). The  features currently available in `flairR` includes __part-of-speech tagging__, __transformer-based sentiment analysis__, and __named entity recognition__. 
+flairR is R wrapper, built upon the reticulate architecture, offers streamlined access to the core features of FlairNLP in Python. FlairNLP is an advanced framework of NLP incorporating the latest techniques developed by [Humboldt University of Berlin](https://github.com/flairNLP/flair). For a deeper understanding of Flair's framwork, please find the research article '[Contextual String Embeddings for Sequence Labeling](https://aclanthology.org/C18-1139.pdf)' and the official [mannual](https://flairnlp.github.io). The  features currently available in `flairR` includes __part-of-speech tagging__, __transformer-based sentiment analysis__, and __named entity recognition__. 
 
 </div>
 
 ## Installation
-"The installation consists of two parts: First, install Python and then download the package. Create an environment within the R setting and interface with Flair.
+The installation consists of two parts: First, install Python and then download the package. Then, create an environment within the R setting and interface with Flair.
 
 ### Get Started with `remotes`:
 

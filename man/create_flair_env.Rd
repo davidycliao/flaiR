@@ -6,7 +6,7 @@
 This function creates a new conda environment specifically for Flair, restarts
 the R session, and installs Flair using pip.}
 \usage{
-create_flair_env(env_name = "flair_env", python_ver = "3.8")
+create_flair_env(env_name = "flair_env", python_ver = "3.7")
 }
 \arguments{
 \item{env_name}{Name of the conda environment. Defaults to "flair_env".}

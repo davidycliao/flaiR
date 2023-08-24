@@ -26,18 +26,6 @@
   message(header_footer)
 }
 
-
-#' Check If Flair is Installed
-#'
-#' Determines if the Flair Python module is available in the current Python environment.
-#'
-#' @keywords internal
-#' @export check_flair_installed
-#' @return Logical. `TRUE` if Flair is installed, otherwise `FALSE`.
-check_flair_installed <- function(...) {
-  return(reticulate::py_module_available("flair"))
-}
-
 #' Retrieve Flair Version
 #'
 #' Gets the version of the installed Flair module in the current Python environment.

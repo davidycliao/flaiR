@@ -4,7 +4,7 @@
 \alias{clear_flair_cache}
 \title{Clear Flair Cache}
 \usage{
-clear_flair_cache()
+clear_flair_cache(...)
 }
 \value{
 Returns NULL invisibly. Messages are printed indicating whether the cache was found and cleared.

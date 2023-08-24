@@ -45,9 +45,8 @@ jobs:
           brew install pandoc
 
       # Windows might require different setup for LaTeX and Pandoc, adjust accordingly
-
-      - name: Build Package
+      - name: Build and Check R Package
         run: |
           R CMD build .
           R CMD check *tar.gz
-        shell: Rscript {0}
+        shell: bash

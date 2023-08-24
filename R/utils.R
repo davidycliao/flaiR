@@ -13,6 +13,19 @@ has_internet <- function() {
   })
 }
 
+
+#' Check If Flair is Installed
+#'
+#' Determines if the Flair Python module is available in the current Python environment.
+#'
+#' @keywords internal
+#' @export check_flair_installed
+#' @return Logical. `TRUE` if Flair is installed, otherwise `FALSE`.
+check_flair_installed <- function(...) {
+  return(reticulate::py_module_available("flair"))
+}
+
+
 #' Create an environment to interface with Python for Flair.
 #' This function creates a new conda environment specifically for Flair, restarts
 #' the R session, and installs Flair using pip.
@@ -24,28 +37,105 @@ has_internet <- function() {
 #' @importFrom reticulate conda_create use_condaenv py_install
 #' @importFrom rstudioapi restartSession
 #' @export
-create_flair_env <- function(env_name = "flair_env", python_ver = "3.8") {
+# create_flair_env <- function(env_name = "flair_env", python_ver = "3.8") {
+#   # Create the conda environment
+#   python_path <- reticulate::conda_create(env_name, python_version = python_ver)
+#   cat(paste("Python path for the new environment:", python_path), sep="\n")
+#
+#   # Restart the R session
+#   if (interactive()) {
+#     message("Restarting R session...")
+#     rstudioapi::restartSession()
+#   } else {
+#     warning("Not in an interactive session. R session was not restarted.")
+#   }
+#
+#   # Activate the conda environment
+#   reticulate::use_condaenv(env_name)
+#   message(sprintf("## Using Python: %-48s ##", python_version))
+#   message(sprintf("## Using Flair:  %-48s ##", flair_version))
+#   # Install Flair using pip
+#   reticulate::py_install("flair", pip = TRUE)
+#   return(python_path)
+# }
+
+# create_flair_env <- function(env_name = "flair_env", python_ver = "3.7") {
+#   # Create the conda environment
+#   python_path <- reticulate::conda_create(env_name, python_version = python_ver)
+#   cat(paste("Python path for the new environment:", python_path), sep="\n")
+#   # Restart the R session
+#   if (interactive()) {
+#     message("Restarting R session...")
+#     rstudioapi::restartSession()
+#   } else {
+#     warning("Not in an interactive session. R session was not restarted.")
+#   }
+#
+#   # Activate the conda environment
+#   reticulate::use_condaenv(env_name, required = TRUE)
+#
+#   # Install Flair using pip
+#   reticulate::conda_install("flair_env", packages = "flair")
+#
+#   # Report Python version
+#   python_version <- reticulate::py_config()$version
+#   message(sprintf("## Using Python: %-48s ##", python_version))
+#
+#   # Check if flair is installed
+#   if (reticulate::py_module_available("flair")) {
+#     # Get Flair version
+#     flair_version <- reticulate::import("flair")$`__version__`
+#     message(sprintf("## Using Flair:  %-48s ##", flair_version))
+#   } else {
+#     message(sprintf("## Using Flair:  %-47s ##", "not installed in the current Python environment."))
+#   }
+#
+#   return(python_path)
+# }
+#
+
+create_flair_env <- function(env_name = "flair_env", python_ver = "3.7") {
   # Create the conda environment
   python_path <- reticulate::conda_create(env_name, python_version = python_ver)
-  cat(paste("Python path for the new environment:", python_path), sep="\n")
+  cat(paste("Created new Conda environment at:", python_path), sep="\n")
 
   # Restart the R session
+
   if (interactive()) {
     message("Restarting R session...")
     rstudioapi::restartSession()
   } else {
-    warning("Not in an interactive session. R session was not restarted.")
+    warning("This is not an interactive session. R session was not restarted.")
   }
 
   # Activate the conda environment
-  reticulate::use_condaenv(env_name)
-  message("## Using Python:    ", python_version, "                                         ##")
-  message("## Using Flair : ", flair_version, "                                         ##")
+  reticulate::use_condaenv(env_name, required = TRUE)
 
   # Install Flair using pip
-  reticulate::py_install("flair", pip = TRUE)
+  reticulate::conda_install("flair_env", packages = "flair")
+
+  # Print a separator for clarity
+  message(rep("-", 60))
+
+  # Report Python version
+  python_version <- reticulate::py_config()$version
+  message(sprintf("Python Version: %s", python_version))
+
+  # Check if flair is installed
+  if (reticulate::py_module_available("flair")) {
+    # Get Flair version
+    flair_version <- reticulate::import("flair")$`__version__`
+    message(sprintf("Flair Version:  %s", flair_version))
+  } else {
+    message("Flair not installed in the current Python environment.")
+  }
+
+  # Print a separator for clarity
+  message(rep("-", 60))
+
   return(python_path)
 }
+
 
 #' Clear Flair Cache
 #'
@@ -59,7 +149,7 @@ create_flair_env <- function(env_name = "flair_env", python_ver = "3.8") {
 #' \dontrun{
 #' clear_flair_cache()
 #' }
-clear_flair_cache <- function() {
+clear_flair_cache <- function(...) {
   # Define the flair cache directory
   flair_cache_dir <- file.path(path.expand("~"), ".flair")
 

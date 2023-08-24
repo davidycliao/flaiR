@@ -34,12 +34,13 @@ Load the pretrained model "pos-fast". For more pretrained models, see https://fl
 library(reticulate)
 library(data.table)
 library(flaiR)
-texts <- c("UCD is one of the best university in Ireland. ", 
-           "UCD is good and a bit less better than Trinity.",
-           "Essex is famous in social science research",
-           "Essex is not in Russell Group but it is not bad in politics", 
-           "TCD is the oldest one in Ireland.",
-           "TCD in less better than Oxford")
+texts <- c("UCD is one of the best universities in Ireland.",
+           "UCD has a good campus but is very far from my apartment in Dublin.",
+           "Essex is famous for social science research.",
+           "Essex is not in the Russell Group, but it is famous for political science research and in 1994 Group.",
+           "TCD is the oldest university in Ireland.",
+           "TCD is similar to Oxford.")
+
 doc_ids <- c("doc1", "doc2", "doc3", "doc4", "doc5", "doc6")
 tagger_pos = import("flair.nn")$Classifier$load('pos-fast')
 results <- get_pos(texts, doc_ids, tagger_pos)
@@ -62,8 +63,8 @@ head(results, n = 10)
 
 
 
-### Tagging Sentiment 
-Load the pretrained model "sentiment".  The pre-trained models of "sentiment", "sentiment-fast", and "de-offensive-language" are currently available. For more pretrained models, see https://flairnlp.github.io/docs/tutorial-basics/tagging-sentiment.
+### __Tagging Sentiment__ 
+Load the pretrained model "`sentiment`".  The pre-trained models of "`sentiment`", "`sentiment-fast`", and "`de-offensive-language`" are currently available. For more pretrained models, see https://flairnlp.github.io/docs/tutorial-basics/tagging-sentiment.
 
 ```{r}
 library(reticulate)
@@ -75,7 +76,7 @@ head(results, n = 10)
 
 -----
 
-## How to Contribute
+## __How to Contribute__
 
 <div style="text-align: justify">
 Contributions in the form of comments, code suggestions, and tutorial examples are very welcome. Please note that the `flaiR` is released with the [Contributor Code of Conduct](https://github.com/davidycliao/flaiR/blob/master/CONDUCT.md). By contributing to this project, you agree to abide by its terms. 
