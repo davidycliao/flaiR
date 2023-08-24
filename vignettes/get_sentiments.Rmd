@@ -1,0 +1,34 @@
+---
+title: "Tagging Sentiment with Flair Standard Models"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Tagging Sentiment with Flair Standard Models}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r create-dataset}
+texts <- c("UCD is one of the best university in Ireland. ", 
+           "UCD is good and a bit less better than Trinity.",
+           "Essex is famous in social science research",
+           "Essex is not in Russell Group but it is not bad in politics", 
+           "TCD is the oldest one in Ireland.",
+           "TCD in less better than Oxford")
+doc_ids <- c("doc1", "doc2", "doc3", "doc4", "doc5", "doc6")
+```
+
+```{r setup}
+library(flaiR)
+library(reticulate)
+library(data.table)
+tagger_sent = import("flair.nn")$Classifier$load('sentiment')
+results <- get_sentiments(texts, doc_ids, tagger_sent)
+print(results)
+```

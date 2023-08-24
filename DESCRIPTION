@@ -3,10 +3,10 @@ Type: Package
 Title: An R Wrapper for Accessing Flair NLP Tagging Features
 Version: 0.0.1
 Authors@R: c(
+    person("David", "Liao", email = "davidyclaio@gmail.com", role = c("cre","aut")),
     person("Akbik", "Alan", email = "john.doe@email.com", role = c("aut", "ctb")),
     person("Blythe", "Duncan", email = "john.doe@email.com", role = c("aut", "ctb")),
-    person("Vollgraf", "Roland", email = "john.doe@email.com", role = c("aut", "ctb")),
-    person("David", "Liao", email = "davidyclaio@gmail.com", role = c("cre","aut"))
+    person("Vollgraf", "Roland", email = "john.doe@email.com", role = c("aut", "ctb"))
     )
 Description: This is an R wrapper based on the structure of reticulate, designed 
              to access the major features of flairNLP in Python. Flair NLP is a 
@@ -27,6 +27,9 @@ Imports:
   rstudioapi,
   R.utils
 Suggests: 
-  quanteda,
-  testthat (>= 3.0.0)  
+    knitr,
+    quanteda,
+    rmarkdown,
+    testthat (>= 3.0.0)
 RoxygenNote: 7.2.3
+VignetteBuilder: knitr

@@ -1,0 +1,99 @@
+---
+title: "Quick Start"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Quick Start}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Get Started with Using [`remotes`](https://github.com/r-lib/remotes):
+
+<div style="text-align: justify">
+
+To utilize flairR, you need to use reticulate to install the Python flair library in your R environment. It is recommended to install Python version 3.7 or higher for the efficient operation of Flair NLP.
+The utility of flairR is limited to the pre-trained models provided by Flair NLP. flairR directly returns the tagging information in a data.table format.  Additionally, using the transformed base NLP toolkit requires more computational power; thus, it's recommended to implement parallel computing to enhance NLP tasks."
+
+</div>
+
+-----
+
+## Quick Use
+
+### Tagging Parts-of-Speech with Flair Models
+Load the pretrained model "pos-fast". For more pretrained models, see https://flairnlp.github.io/docs/tutorial-basics/part-of-speech-tagging#-in-english.
+
+```{r}
+library(reticulate)
+library(data.table)
+library(flaiR)
+texts <- c("UCD is one of the best university in Ireland. ", 
+           "UCD is good and a bit less better than Trinity.",
+           "Essex is famous in social science research",
+           "Essex is not in Russell Group but it is not bad in politics", 
+           "TCD is the oldest one in Ireland.",
+           "TCD in less better than Oxford")
+doc_ids <- c("doc1", "doc2", "doc3", "doc4", "doc5", "doc6")
+tagger_pos = import("flair.nn")$Classifier$load('pos-fast')
+results <- get_pos(texts, doc_ids, tagger_pos)
+print(results)
+```
+
+<br />
+<img src="https://raw.githack.com/davidycliao/flaiR/main/inst/figures/pos.png" width="1000" align="center" />
+&nbsp;
+
+
+### Tagging Entities with Flair Models
+Load the pretrained model "ner". For more pretrained models, see https://flairnlp.github.io/docs/tutorial-basics/tagging-entities.
+
+```{r}
+library(reticulate)
+library(data.table)
+tagger_ner = import("flair.nn")$Classifier$load('ner')
+results <- get_entities(texts, doc_ids, tagger_ner)
+print(results)
+```
+
+<br />
+<img src="https://raw.githack.com/davidycliao/flaiR/main/inst/figures/ent.png" width="1000" align="center" />
+&nbsp;
+
+
+
+
+
+### Tagging Sentiment 
+Load the pretrained model "sentiment".  The pre-trained models of "sentiment", "sentiment-fast", and "de-offensive-language" are currently available. For more pretrained models, see https://flairnlp.github.io/docs/tutorial-basics/tagging-sentiment.
+
+```{r}
+library(reticulate)
+library(data.table)
+tagger_sent = import("flair.nn")$Classifier$load('sentiment')
+results <- get_sentiments(texts, doc_ids, tagger_sent)
+print(results)
+```
+
+
+<br />
+<img src="https://raw.githack.com/davidycliao/flaiR/main/inst/figures/sent.png" width="1000" align="center" />
+&nbsp;
+<br> 
+
+-----
+
+## How to Contribute
+
+<div style="text-align: justify">
+Contributions in the form of comments, code suggestions, and tutorial examples are very welcome. Please note that the `LeigsTaiwan` is released with the [Contributor Code of Conduct](https://github.com/davidycliao/legisTaiwan/blob/master/CONDUCT.md). By contributing to this project, you agree to abide by its terms. 
+
+</div>
+
+<br> 
