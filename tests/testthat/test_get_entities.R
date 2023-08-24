@@ -1,18 +1,16 @@
-test_that("get_entities", {
-  expect_equal(
-    typeof(
-      get_pos(
-      texts = c("UCD is one of the best university in Ireland. ",
-                "UCD is good and a bit less better than Trinity.",
-                "Essex is famous in social science research",
-                "Essex is not in Russell Group but it is not bad in politics",
-                "TCD is the oldest one in Ireland.",
-                "TCD in less better than Oxford"),
-      doc_ids= c("doc1", "doc2", "doc3", "doc4", "doc5", "doc6"),
-      tagger = import("flair.nn")$Classifier$load('pos-fast'))
-      )
-    , "list")
+test_that("get_pos throws an error for unsupported languages", {
+  expect_error(get_pos(
+    texts = c("UCD is one of the best university in Ireland. ",
+              "UCD is good and a bit less better than Trinity.",
+              "Essex is famous in social science research",
+              "Essex is not in Russell Group but it is not bad in politics",
+              "TCD is the oldest one in Ireland.",
+              "TCD in less better than Oxford"),
+    doc_ids= c("doc1", "doc2", "doc3", "doc4", "doc5", "doc6"),
+    language  = "chinese"),
+    regexp = "Unsupported language.")
 })
+
 #
 # test_that("get_caucus_meetings", {
 #   expect_equal(get_caucus_meetings(start_date = "106/10/20", end_date = "107/03/10")$retrieved_number, 30)
