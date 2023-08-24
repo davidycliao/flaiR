@@ -1,10 +1,10 @@
-#' @export .onLoad
-.onLoad <- function(...) {
-  python_version <- reticulate::py_config()$version
-  if (python_version < "3.7") {
-    stop("flaiR requires Python 3.7 or higher.")
-  }
-}
+#' #' @export .onLoad
+#' .onLoad <- function(...) {
+#'   python_version <- reticulate::py_config()$version
+#'   if (python_version < "3.7") {
+#'     stop("flaiR requires Python 3.7 or higher.")
+#'   }
+#' }
 
 #' @export .onAttach
 .onAttach <- function(...) {
