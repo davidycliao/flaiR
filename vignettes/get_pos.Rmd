@@ -23,3 +23,13 @@ texts <- c("UCD is one of the best university in Ireland. ",
            "TCD in less better than Oxford")
 doc_ids <- c("doc1", "doc2", "doc3", "doc4", "doc5", "doc6")
 ```
+
+
+```{r}
+library(reticulate)
+library(flaiR)
+tagger_pos = import("flair.nn")$Classifier$load('pos-fast')
+results <- get_pos(texts, doc_ids, tagger_pos)
+head(results, n = 10)
+```
+
