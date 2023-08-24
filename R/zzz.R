@@ -1,22 +1,14 @@
-#' #' @export .onLoad
-#' .onLoad <- function(...) {
-#'   python_version <- reticulate::py_config()$version
-#'   if (python_version < "3.7") {
-#'     stop("flaiR requires Python 3.7 or higher.")
-#'   }
-#' }
-
 #' @export .onAttach
 .onAttach <- function(...) {
-  message("## flaiR: An R Wrapper for Accessing Flair NLP Tagging Features ##")
+  message("## flaiR: An R Wrapper for Accessing Flair NLP Tagging Features   ##")
   # Report Python version
   python_version <- reticulate::py_config()$version
-  message("## Using Python:    ", python_version, "                                         ##")
+  message("## Using Python:    ", python_version, "                                           ##")
 
   # Check if flair is installed
   if (check_flair_installed()) {
     flair_version <- get_flair_version()
-    message("## Using Flair : ", flair_version, "                                         ##")
+    message("## Using Flair : ", flair_version, "                                           ##")
   } else {
     message("## Using Flair : ", "not installed in the current Python environment.        ##")
   }
