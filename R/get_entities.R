@@ -56,7 +56,7 @@ get_entities <- function(texts, doc_ids,
     # Check if 'language' is null and assign default value
     if (is.null(language)) {
       language <- "en"
-      cat("language is not specified", language, "is laoding.")
+      cat("\n language is not specified.", language, "in Flair is force-loaded. Please ensure that the internet connectivity is stable.")
     }
     # Define supported languages
     supported_languages <- c("en", "de", "nl", "ar", "fr", "da")
