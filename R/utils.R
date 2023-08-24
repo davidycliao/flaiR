@@ -22,6 +22,7 @@ has_internet <- function() {
 #' @return The path to the Python executable in the new environment.
 #' @importFrom reticulate conda_create use_condaenv py_install
 #' @importFrom rstudioapi restartSession
+#' @export
 create_flair_env <- function(env_name = "flair_env", python_ver = "3.8") {
   # Create the conda environment
   python_path <- reticulate::conda_create(env_name, python_version = python_ver)
