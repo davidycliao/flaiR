@@ -50,11 +50,6 @@ jobs:
           choco install miktex
           choco install pandoc
 
-      - name: Install knitr
-        run: Rscript -e 'install.packages("knitr")'
-
-
-
       - name: Cache R packages
         uses: actions/cache@v2
         with:
