@@ -10,30 +10,34 @@ flairR is R wrapper, built upon the reticulate architecture, offers streamlined 
 
 ## Installation
 
-The installation consists of two parts: First, install Python and `reticulate` in R. Then, use `reticulate` to install `flair` and install `flaiR in R` 
+The installation consists of two parts: First, install [Python 3.7](https://www.python.org/downloads/) or higher, and the reticulate package in R.
 
-
-### STEP 1: Install Python `flair` Uisng `reticulate` in R
-
-Use the reticulate package in R to install `flair` in R
-
-```
-install.packages("reticulate")
-reticulate::use_condaenv("r-reticulate")
-reticulate::py_install("flair")
-```
-
-### STEP 2: Install `flaiR` from GitHub
+### Install `flaiR` from GitHub
 
 ```
 install.packages("remotes")
 remotes::install_github("davidycliao/flaiR", force = TRUE)
-```
-```
 library(flaiR)
+```
+```
 ## flaiR: An R Wrapper for Accessing Flair NLP Tagging Features ##
 ## Using Python:    3.8                                         ##
 ## Using Flair : 0.12.2                                         ##
+```
+
+
+### Lazy Installation from Using `create_flair_env()` from __flaiR__ 
+
+```
+create_flair_env()
+```
+
+### Or,  Install Python flair Uisng reticulate in R
+
+```
+library(reticulate)
+reticulate::use_condaenv("r-reticulate")
+reticulate::py_install("flair")
 ```
 
 ---

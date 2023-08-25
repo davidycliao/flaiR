@@ -23,47 +23,44 @@ check_flair_installed <- function(...) {
   return(reticulate::py_module_available("flair"))
 }
 
-#' Create and setup the `r-reticulate` environment for Flair using reticulate.
+#' Create or use Python environment for Flair
 #'
-#' This function ensures that the `flair` Python module is installed in the
-#' `r-reticulate` conda environment created by the `reticulate` R package.
-#' If the `flair` module is already installed, the function prints its version
-#' and exits without making any changes.
+#' This function checks whether the Flair Python library is installed in the current Python environment.
+#' If it is not, it attempts to install it either in the current conda environment or creates a new one.
 #'
-#' @return NULL. The function is used for its side effects of setting up the conda environment.
-#' @importFrom reticulate py_module_available py_config use_condaenv
+#' @param env The name of the conda environment to be used or created (default is "r-reticulate").
+#'
+#' @return Nothing is returned. The function primarily ensures that the Python library Flair is installed and available.
 #' @export
-create_flair_env <- function(...) {
+#'
+#' @examples
+#' \dontrun{
+#'   create_flair_env()
+#' }
+create_flair_env <- function(env = "r-reticulate") {
   # check if flair is already installed in the current Python environment
   if (reticulate::py_module_available("flair")) {
-    message("Flair is already installed in the current Python environment. Environment creation stopped.")
-
-    # Get Flair version
-    flair_version <- reticulate::import("flair")$`__version__`
-    message(sprintf("## Using Flair:  %-48s ##", flair_version))
-    python_version <- reticulate::py_config()$version
-    message(sprintf("## Using Python: %-48s ##", python_version))
-
-    return()  # This will end the function without creating a new environment
-  }
-  # Check if reticulate R package is installed
-  if (!"reticulate" %in% rownames(installed.packages())) {
-    # If not installed, install the reticulate R package
-    install.packages("reticulate")
+    message("Environment creation stopped.", "\n", "Flair is already installed in ", reticulate::py_config()$python)
+    message(sprintf("Using Flair:  %-48s", reticulate::import("flair")$`__version__`))
+    return(invisible(NULL))
   }
 
-  # Load the reticulate library
-  library(reticulate)
-
-  # Switch to the desired conda environment
-  use_condaenv("r-reticulate", required = TRUE)
-
-  # Construct the pip command
-  pip_command <- paste(py_config()$python, "-m pip install flair")
-
-  # Execute the pip command
-  system(pip_command)
+  if (grepl("env", reticulate::py_config()$python)) {
+    # assuming it's a conda environment
+    reticulate::use_condaenv(env, required = TRUE)
+    # Execute the pip command
+    system(paste(reticulate::py_config()$python, "-m pip install flair"))
+  } else {
+    # No conda environment found or active, so create one
+    message("No conda environment found. Creating a new environment named '", env, "'.")
+    reticulate::conda_create(env)
+    reticulate::use_condaenv(env, required = TRUE)
+    # Once the environment is active, install flair
+    system(paste(reticulate::py_config()$python, "-m pip install flair"))
+  }
 }
+
+
 
 #' Clear Flair Cache
 #'

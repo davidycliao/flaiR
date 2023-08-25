@@ -16,14 +16,16 @@ knitr::opts_chunk$set(
 
 ```{r include=FALSE}
 flaiR::clear_flair_cache()
-reticulate::use_condaenv("r-reticulate")
+reticulate::use_condaenv(reticulate::py_config()[[1]])
 ```
 
 ```{r}
 library(flaiR)
 library(reticulate)
-create_flair_env()
 ```
+
+
+
 
 ```{r create-dataset}
 texts <- c("UCD is one of the best universities in Ireland.",

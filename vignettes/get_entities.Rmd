@@ -16,15 +16,8 @@ knitr::opts_chunk$set(
 
 ```{r include=FALSE}
 flaiR::clear_flair_cache()
-reticulate::use_condaenv("r-reticulate")
+reticulate::use_condaenv(reticulate::py_config()[[1]])
 ```
-
-```{r}
-library(flaiR)
-library(reticulate)
-create_flair_env()
-```
-
 
 ```{r}
 texts <- c("UCD is one of the best universities in Ireland.",
@@ -38,6 +31,8 @@ doc_ids <- c("doc1", "doc2", "doc3", "doc4", "doc5", "doc6")
 ```
 
 ```{r setup}
+library(flaiR)
+library(reticulate)
 tagger_ner = import("flair.nn")$Classifier$load('ner')
 results <- get_entities(texts, doc_ids, tagger_ner)
 head(results, n = 10)
