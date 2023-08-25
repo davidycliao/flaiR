@@ -5,7 +5,7 @@
 #' @param doc_ids A character vector containing document ids.
 #' @param tagger A tagger object (default is NULL).
 #' @param language The language of the texts (default is NULL).
-#' @return A `data.table` containing the following columns:
+#' @return A data.table containing the following columns:
 #' \describe{
 #'   \item{\code{doc_id}}{The document identifier corresponding to each text.}
 #'   \item{\code{token_id}}{The token number in the original text, indicating the position of the token.}
@@ -21,7 +21,7 @@
 #' \dontrun{
 #' library(reticulate)
 #' library(data.table)
-#' # Load Part-of-Speech  ("pos-fast") model
+#' # Load Part-of-Speech ("pos-fast") model
 #' tagger_pos_fast = import("flair.nn")$Classifier$load('pos-fast')
 #' texts <- c("UCD is one of the best universities in Ireland.",
 #'            "UCD has a good campus but is very far from my apartment in Dublin.",

@@ -9,15 +9,26 @@ flairR is R wrapper, built upon the reticulate architecture, offers streamlined 
 </div>
 
 ## Installation
-The installation consists of two parts: First, install Python and then download the package. Then, create an environment within the R setting and interface with Flair.
 
-### Get Started with `remotes`:
+The installation consists of two parts: First, install Python and `reticulate` in R. Then, use `reticulate` to install `flair` and install `flaiR in R` 
+
+
+### STEP 1: Install Python `flair` Uisng `reticulate` in R
+
+Use the reticulate package in R to install `flair` in R
+
+```
+install.packages("reticulate")
+reticulate::use_condaenv("r-reticulate")
+reticulate::py_install("flair")
+```
+
+### STEP 2: Install `flaiR` from GitHub
 
 ```
 install.packages("remotes")
-remotes::install_github("davidycliao/flair", force = TRUE)
+remotes::install_github("davidycliao/flaiR", force = TRUE)
 ```
-
 ```
 library(flaiR)
 ## flaiR: An R Wrapper for Accessing Flair NLP Tagging Features ##
@@ -25,26 +36,7 @@ library(flaiR)
 ## Using Flair : 0.12.2                                         ##
 ```
 
-
-### Lazy Installation for the Enviroment
-
-`create_flair_env` automatically creates a new conda environment specifically in
-the R session, and installs `flair`.
-
-```
-create_flair_env()
-```
-
-### Or, Install Python `flair` Uisng `reticulate` in R
-
-Use the reticulate package in R to create a conda environment named  `flair_env` 
-and install Python's `flair`.
-
-```
-reticulate::conda_create("flair_env")  
-reticulate::conda_install("flair_env", packages = "flair")  
-```
-
+---
 
 
 ##  Cite the Work of `Flair`

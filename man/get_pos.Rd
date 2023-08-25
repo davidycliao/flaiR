@@ -17,7 +17,7 @@ get_pos(texts, doc_ids, tagger = NULL, ..., language = NULL)
 \item{language}{The language of the texts (default is NULL).}
 }
 \value{
-A `data.table` containing the following columns:
+A data.table containing the following columns:
 \describe{
   \item{\code{doc_id}}{The document identifier corresponding to each text.}
   \item{\code{token_id}}{The token number in the original text, indicating the position of the token.}
@@ -35,7 +35,7 @@ This function returns a data table of POS tags and other related data for the gi
 \dontrun{
 library(reticulate)
 library(data.table)
-# Load Part-of-Speech  ("pos-fast") model
+# Load Part-of-Speech ("pos-fast") model
 tagger_pos_fast = import("flair.nn")$Classifier$load('pos-fast')
 texts <- c("UCD is one of the best universities in Ireland.",
            "UCD has a good campus but is very far from my apartment in Dublin.",

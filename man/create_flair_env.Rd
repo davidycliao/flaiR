@@ -2,22 +2,16 @@
 % Please edit documentation in R/utils.R
 \name{create_flair_env}
 \alias{create_flair_env}
-\title{Create an environment to interface with Python for Flair.
-This function creates a new conda environment specifically for Flair, restarts
-the R session, and installs Flair using pip.}
+\title{Create and setup the `r-reticulate` environment for Flair using reticulate.}
 \usage{
-create_flair_env(env_name = "flair_env", python_ver = "3.7")
-}
-\arguments{
-\item{env_name}{Name of the conda environment. Defaults to "flair_env".}
-
-\item{python_ver}{Python version to be used in the conda environment. Defaults to "3.8".}
+create_flair_env(...)
 }
 \value{
-The path to the Python executable in the new environment.
+NULL. The function is used for its side effects of setting up the conda environment.
 }
 \description{
-Create an environment to interface with Python for Flair.
-This function creates a new conda environment specifically for Flair, restarts
-the R session, and installs Flair using pip.
+This function ensures that the `flair` Python module is installed in the
+`r-reticulate` conda environment created by the `reticulate` R package.
+If the `flair` module is already installed, the function prints its version
+and exits without making any changes.
 }
