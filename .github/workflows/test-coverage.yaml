@@ -34,7 +34,7 @@ jobs:
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          extra-packages: c("covr", "reticulate")
+          extra-packages: covr reticulate
 
       - name: Test coverage
         run: |
