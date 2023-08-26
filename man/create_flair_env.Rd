@@ -16,8 +16,3 @@ Nothing is returned. The function primarily ensures that the Python library Flai
 This function checks whether the Flair Python library is installed in the current Python environment.
 If it is not, it attempts to install it either in the current conda environment or creates a new one.
 }
-\examples{
-\dontrun{
-  create_flair_env()
-}
-}

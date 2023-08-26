@@ -9,6 +9,7 @@
 #'   Default is "en".
 #' @param tagger An optional flair sentiment model. If NULL (default),
 #'   the function loads the default model based on the language.
+#' @param ... Additional arguments passed to next.
 #'
 #' @return A \code{data.table} containing three columns:
 #'   \itemize{

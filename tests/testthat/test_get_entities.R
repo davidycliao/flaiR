@@ -1,6 +1,6 @@
 
 test_that("get_pos throws an error for unsupported languages", {
-  expect_error(get_pos(
+  expect_message(get_pos(
     texts = c("UCD is one of the best university in Ireland. ",
               "UCD is good and a bit less better than Trinity.",
               "Essex is famous in social science research",
@@ -9,7 +9,7 @@ test_that("get_pos throws an error for unsupported languages", {
               "TCD in less better than Oxford"),
     doc_ids= c("doc1", "doc2", "doc3", "doc4", "doc5", "doc6"),
     language  = "chinese"),
-    regexp = "flair is not installed in the current Python environment.")
+    regexp = "Unsupported language")
 })
 
 

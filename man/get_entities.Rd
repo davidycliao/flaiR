@@ -13,6 +13,8 @@ get_entities(texts, doc_ids, tagger = NULL, ..., language = NULL)
 
 \item{tagger}{An optional tagger object. If NULL, the function will attempt to load the appropriate tagger based on the provided language.}
 
+\item{...}{Additional arguments passed to next.}
+
 \item{language}{A character string indicating the language of the texts. Default is "en" (English).}
 }
 \value{

@@ -5,6 +5,7 @@
 #' @param doc_ids A character vector containing document ids.
 #' @param tagger A tagger object (default is NULL).
 #' @param language The language of the texts (default is NULL).
+#' @param ... Additional arguments passed to next.
 #' @return A data.table containing the following columns:
 #' \describe{
 #'   \item{\code{doc_id}}{The document identifier corresponding to each text.}
@@ -34,7 +35,7 @@
 #' get_pos(texts, doc_ids, tagger_pos_fast)
 #' }
 get_pos <- function(texts, doc_ids,
-                    tagger = NULL, ...,language = NULL) {
+                    tagger = NULL, language = NULL, ...) {
 
   # Ensure Python and flair library are available
   if (!reticulate::py_available(initialize = TRUE)) {
@@ -57,10 +58,10 @@ get_pos <- function(texts, doc_ids,
   # Only load Flair and the POS model if tagger is NULL
   if (is.null(tagger)) {
 
-    # Check if 'language' is null and assign default value
+    # Check if language is null and assign default value
     if (is.null(language)) {
       language <- "pos"
-      cat("\n language is not specified.", language, "in Flair is force-loaded. Please ensure that the internet connectivity is stable.")
+      cat("Language is not specified.", language, "in Flair is forceloaded. Please ensure that the internet connectivity is stable.")
     }
 
     # Define supported languages
@@ -70,9 +71,11 @@ get_pos <- function(texts, doc_ids,
                               "ml-upos", "pt-pos-clinical", "pos-ukrainian")
 
     if (!language %in% supported_lan_models) {
-      stop(paste("Unsupported language. Supported languages are:", paste(supported_lan_models, collapse = ", ")))
-    }
-
+      return(message("Unsupported language `\n`",
+                     "Supported languages are: \n", paste(supported_lan_models, collapse = "|")
+                     )
+             )
+      }
     tagger <- Classifier$load(language)
   }
 
