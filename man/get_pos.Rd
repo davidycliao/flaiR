@@ -34,7 +34,7 @@ This function returns a data table of POS tags and other related data for the gi
 \examples{
 \dontrun{
 library(reticulate)
-library(data.table)
+library(fliaR)
 # Load Part-of-Speech ("pos-fast") model
 tagger_pos_fast = import("flair.nn")$Classifier$load('pos-fast')
 texts <- c("UCD is one of the best universities in Ireland.",

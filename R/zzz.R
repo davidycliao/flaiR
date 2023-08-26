@@ -22,7 +22,13 @@
   } else {
     message(sprintf("## Using Flair:  %-47s ##", "not installed in the current Python environment."))
   }
-
+  # Check the reticulate eviroment
+  if (check_flair_installed()) {
+    flair_version <- get_flair_version()
+    message(sprintf("## Using Flair:  %-48s ##", flair_version))
+  } else {
+    message(sprintf("## Using Flair:  %-47s ##", "not installed in the current Python environment."))
+  }
   message(header_footer)
 }
 

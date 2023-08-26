@@ -24,7 +24,7 @@ Extract named entities from a given text using the flair package.
 \examples{
 \dontrun{
 library(reticulate)
-library(data.table)
+library(fliaR)
 
 texts <- c("UCD is one of the best universities in Ireland.",
            "UCD has a good campus but is very far from my apartment in Dublin.",

@@ -20,7 +20,7 @@
 #' @examples
 #' \dontrun{
 #' library(reticulate)
-#' library(data.table)
+#' library(fliaR)
 #'
 #'
 #' texts <- c("UCD is one of the best universities in Ireland.",

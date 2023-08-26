@@ -38,29 +38,36 @@ check_flair_installed <- function(...) {
 #'   create_flair_env()
 #' }
 create_flair_env <- function(env = "r-reticulate") {
+
   # check if flair is already installed in the current Python environment
   if (reticulate::py_module_available("flair")) {
     message("Environment creation stopped.", "\n", "Flair is already installed in ", reticulate::py_config()$python)
     message(sprintf("Using Flair:  %-48s", reticulate::import("flair")$`__version__`))
     return(invisible(NULL))
   }
+  # paths <- reticulate::conda_list()$python
+  # env_path <- paths[grepl("envs/", paths)][1]
+  # check conda environment in R
+  paths <- reticulate::conda_list()
+  env_path <- paths[grep("envs/", paths$python), "python"][1]
+  if (grepl("envs/", env_path)) {
+    message("you already created:", length(paths[grep("envs/", paths$python), "python"]))
+    message("you can run use_condaenv(",as.character(env_path),") to activate the enviroment in your R" )
+    reticulate::use_condaenv(env)
+    # if (grepl("env",  paths[grepl(env, paths)][1])) {
+    #   reticulate::use_condaenv(paths[grepl(env, paths)][1], required = TRUE)
+    # system(paste(reticulate::py_config()$python, "-m pip install flair"))
+    # message("Flair is installed in the eviroment of ", paths )
 
-  if (grepl("env", reticulate::py_config()$python)) {
-    # assuming it's a conda environment
-    reticulate::use_condaenv(env, required = TRUE)
-    # Execute the pip command
-    system(paste(reticulate::py_config()$python, "-m pip install flair"))
   } else {
     # No conda environment found or active, so create one
-    message("No conda environment found. Creating a new environment named '", env, "'.")
     reticulate::conda_create(env)
-    reticulate::use_condaenv(env, required = TRUE)
-    # Once the environment is active, install flair
-    system(paste(reticulate::py_config()$python, "-m pip install flair"))
+    message("No conda environment found. Creating a new environment named '", env, "'.")
+    message("After restarting the R session, please run create_flair_env() again.")
+    .rs.restartR()
+    # reticulate::use_condaenv(env, required = TRUE)
   }
 }
-
-
 
 #' Clear Flair Cache
 #'
