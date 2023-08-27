@@ -4,45 +4,38 @@
 #' detailing the versions of Python and Flair being used, as well as other package details.
 #'
 #' @keywords internal
+#' @importFrom reticulate py_config
 #' @export
 .onAttach <- function(...) {
-  header_footer <- "## ============================================================== ##"
-  message(header_footer)
+  # header_footer <- "## ============================================================== ##"
+  # message(header_footer)
 
-  message(sprintf("## flaiR: An R Wrapper for Accessing Flair NLP Tagging Features   ##"))
+  packageStartupMessage(sprintf(" \033[1;91mflaiR\033[22;39m: An R Wrapper for Accessing Flair NLP Tagging Features %-5s", ""))
 
-  # Report Python version
-  python_version <- reticulate::py_config()$version
-  message(sprintf("## Using Python: %-48s ##", python_version))
+  # Check and report Python is installed
+  if (check_python_installed()) {
+    flair_version <- get_flair_version()
+    packageStartupMessage(sprintf(" Python : %-47s", reticulate::py_config()$version))
+  } else {
+    packageStartupMessage(sprintf(" Python : %-50s", paste0("\033[31m", "\u2717", "\033[39m")))
+  }
 
-  # Check if flair is installed
+  # Check and report  flair is installed
   if (check_flair_installed()) {
     flair_version <- get_flair_version()
-    message(sprintf("## Using Flair:  %-48s ##", flair_version))
+    packageStartupMessage(sprintf(" Flair: %-47s", flair_version))
   } else {
-    message(sprintf("## Using Flair:  %-47s ##", "not installed in the current Python environment."))
+    packageStartupMessage(sprintf(" Flair: %-50s", paste0("\033[31m", "\u2717", "\033[39m")))
   }
-  # Check the reticulate eviroment
-  if (check_flair_installed()) {
-    flair_version <- get_flair_version()
-    message(sprintf("## Using Flair:  %-48s ##", flair_version))
+
+  # Check for Available Python Environment
+  if (reticulate::py_available(initialize = TRUE)) {
+    packageStartupMessage(sprintf(" py_config: %-47s", reticulate::py_config()$python))
   } else {
-    message(sprintf("## Using Flair:  %-47s ##", "not installed in the current Python environment."))
+    packageStartupMessage(sprintf(" py_config: %-46s", paste0("\033[31m", "\u2717", "\033[39m")))
   }
-  message(header_footer)
+  # message(header_footer)
 }
 
-#' Retrieve Flair Version
-#'
-#' Gets the version of the installed Flair module in the current Python environment.
-#'
-#' @keywords internal
-#' @export get_flair_version
-#' @return Character string representing the version of Flair.
-#' If Flair is not installed, this may return `NULL` or cause an error (based on `reticulate` behavior).
-get_flair_version <- function(...) {
-  flair <- reticulate::import("flair")
-  # Assuming flair has an attribute `__version__` (this might not be true)
-  return(flair$`__version__`)
-}
+
 
