@@ -37,7 +37,6 @@ create_flair_env()
 
 ```
 library(reticulate)
-reticulate::use_condaenv("r-reticulate")
 reticulate::py_install("flair")
 ```
 
