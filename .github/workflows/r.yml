@@ -6,73 +6,116 @@
 # See https://github.com/r-lib/actions/tree/master/examples#readme for
 # additional example workflows available for the R community.
 
+# name: R
+#
+# on:
+#   push:
+#     branches: [ "main" ]
+#   pull_request:
+#     branches: [ "main" ]
+#
+# permissions:
+#   contents: read
+#
+# jobs:
+#   build:
+#     runs-on: ${{ matrix.os }}
+#     strategy:
+#       matrix:
+#         # os: [macOS-latest, windows-latest]
+#         os: [macOS-latest, windows-latest]
+#         # r-version: ['4.0.5', '4.1.1']
+#         r-version: ['4.0.5']
+#
+#     steps:
+#       - uses: actions/checkout@v3
+#       - name: Set up R ${{ matrix.r-version }}
+#         uses: r-lib/actions/setup-r@f57f1301a053485946083d7a45022b278929a78a
+#         with:
+#           r-version: ${{ matrix.r-version }}
+#
+#       - name: Install dependencies
+#         run: |
+#           install.packages(c("remotes", "rcmdcheck", "reticulate"))
+#           remotes::install_deps(dependencies = TRUE)
+#         shell: Rscript {0}
+#
+#       - name: Install LaTeX and Pandoc (macOS)
+#         if: runner.os == 'macOS'
+#         run: |
+#           brew install --cask mactex-no-gui
+#           brew install pandoc
+#
+#       - name: Install LaTeX and Pandoc (Windows)
+#         if: runner.os == 'Windows'
+#         run: |
+#           choco install miktex
+#           choco install pandoc
+#
+#       - name: Cache R packages
+#         uses: actions/cache@v2
+#         with:
+#           path: ${{ env.R_LIBS_USER }}
+#           key: ${{ runner.os }}-r-${{ hashFiles('DESCRIPTION') }}
+#           restore-keys: ${{ runner.os }}-r-
+#
+#       - name: Cache R packages
+#         uses: actions/cache@v2
+#         with:
+#           path: ${{ env.R_LIBS_USER }}
+#           key: ${{ runner.os }}-r-${{ matrix.r-version }}-1
+#           restore-keys: ${{ runner.os }}-r-${{ matrix.r-version }}-
+#
+#       - name: Build, Check R Package and Install Python flair library
+#         run: |
+#           R CMD build .
+#           R CMD check *tar.gz
+#           python -m pip install --upgrade pip
+#           pip install flair
+#         shell: bash
+#         env:
+#           R_LIBS_USER: ${{ runner.temp }}/Library
+#           TZ: UTC
+#           _R_CHECK_SYSTEM_CLOCK_: FALSE
+#           NOT_CRAN: true
+#
+#       - name: Upload R check logs
+#         if: failure()  # Only run this step if a previous step failed
+#         uses: actions/upload-artifact@v2
+#         with:
+#           name: rcheck-logs
+#           path: flaiR.Rcheck/
+
 name: R
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "master" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "master" ]
 
 permissions:
   contents: read
 
 jobs:
   build:
-    runs-on: ${{ matrix.os }}
+    runs-on: macos-latest
     strategy:
       matrix:
-        os: [macOS-latest, windows-latest]
-        r-version: ['4.0.5', '4.1.1']
+        r-version: ['3.6.3', '4.1.1']
 
     steps:
       - uses: actions/checkout@v3
+      - uses: r-lib/actions/setup-pandoc@v2
       - name: Set up R ${{ matrix.r-version }}
         uses: r-lib/actions/setup-r@f57f1301a053485946083d7a45022b278929a78a
         with:
           r-version: ${{ matrix.r-version }}
-
       - name: Install dependencies
         run: |
-          install.packages(c("remotes", "rcmdcheck", "reticulate"))
+          install.packages(c("remotes", "rcmdcheck"))
           remotes::install_deps(dependencies = TRUE)
         shell: Rscript {0}
-
-      - name: Install LaTeX and Pandoc (macOS)
-        if: runner.os == 'macOS'
-        run: |
-          brew install --cask mactex-no-gui
-          brew install pandoc
-
-      - name: Install LaTeX and Pandoc (Windows)
-        if: runner.os == 'Windows'
-        run: |
-          choco install miktex
-          choco install pandoc
-
-      - name: Cache R packages
-        uses: actions/cache@v2
-        with:
-          path: ${{ env.R_LIBS_USER }}
-          key: ${{ runner.os }}-r-${{ hashFiles('DESCRIPTION') }}
-          restore-keys: ${{ runner.os }}-r-
-
-      - name: Cache R packages
-        uses: actions/cache@v2
-        with:
-          path: ${{ env.R_LIBS_USER }}
-          key: ${{ runner.os }}-r-${{ matrix.r-version }}-1
-          restore-keys: ${{ runner.os }}-r-${{ matrix.r-version }}-
-
-      - name: Build, Check R Package and Install Python flair library
-        run: |
-          R CMD build .
-          R CMD check *tar.gz
-          python -m pip install --upgrade pip
-          pip install flair
-        shell: bash
-        env:
-          R_LIBS_USER: ${{ runner.temp }}/Library
-          TZ: UTC
-          _R_CHECK_SYSTEM_CLOCK_: FALSE
-          NOT_CRAN: true
+      - name: Check
+        run: rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "error")
+        shell: Rscript {0}

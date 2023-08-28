@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{check_flair_installed}
 \alias{check_flair_installed}
-\title{Check If Flair is Installed}
+\title{Check Flair}
 \usage{
 check_flair_installed(...)
 }

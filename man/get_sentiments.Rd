@@ -16,6 +16,8 @@ get_sentiments(texts, doc_ids, tagger = NULL, ..., language = NULL)
 \item{tagger}{An optional flair sentiment model. If NULL (default),
 the function loads the default model based on the language.}
 
+\item{...}{Additional arguments passed to next.}
+
 \item{language}{A character string indicating the language of the texts.
 Currently supports "en" (English), "en-fast" (Fast English), and "de" (German).
 Default is "en".}
@@ -36,7 +38,7 @@ using the flair Python library.
 \examples{
 \dontrun{
 library(reticulate)
-library(data.table)
+library(fliaR)
 
 
 texts <- c("UCD is one of the best universities in Ireland.",

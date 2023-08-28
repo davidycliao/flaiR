@@ -15,13 +15,13 @@
 #'   \item{\code{precision}}{A confidence score (numeric) for the assigned POS tag.}
 #' }
 #'
+#' @import reticulate
 #' @export
 #'
 #' @examples
 #' \dontrun{
 #' library(reticulate)
-#' library(data.table)
-#' # Load Part-of-Speech ("pos-fast") model
+#' library(fliaR)
 #' tagger_pos_fast = import("flair.nn")$Classifier$load('pos-fast')
 #' texts <- c("UCD is one of the best universities in Ireland.",
 #'            "UCD has a good campus but is very far from my apartment in Dublin.",
@@ -34,57 +34,36 @@
 #' get_pos(texts, doc_ids, tagger_pos_fast)
 #' }
 get_pos <- function(texts, doc_ids,
-                    tagger = NULL, ...,language = NULL) {
+                    tagger = NULL,  language = NULL) {
 
-  # Ensure Python and flair library are available
-  if (!reticulate::py_available(initialize = TRUE)) {
-    stop("Python is not available in the current R session.")
-  }
-
-  if (!reticulate::py_module_available("flair")) {
-    stop("flair is not installed in the current Python environment.")
-  }
+  # Check Environment Pre-requisites
+  check_prerequisites()
 
   # Ensure the length of texts and doc_ids are the same
   if (length(texts) != length(doc_ids)) {
     stop("The lengths of texts and doc_ids do not match.")
   }
 
+  # Load the Sentence tokenizer from the Flair library in Python.
+  # TODO: Double-check if it's necessary to keep, given that load_tagger_pos()'s
+  # global environment imports "reticulate::import('flair')" and "Classifier <- flair$nn$Classifier".
+
   flair <- reticulate::import("flair")
   Classifier <- flair$nn$Classifier
   Sentence <- flair$data$Sentence
 
-  # Only load Flair and the POS model if tagger is NULL
+  # Load tagger if null
   if (is.null(tagger)) {
-
-    # Check if 'language' is null and assign default value
-    if (is.null(language)) {
-      language <- "pos"
-      cat("\n language is not specified.", language, "in Flair is force-loaded. Please ensure that the internet connectivity is stable.")
-    }
-
-    # Define supported languages
-    supported_lan_models <- c("pos", "pos-fast", "upos", "upos-fast",
-                              "pos-multi", "pos-multi-fast", "ar-pos", "de-pos",
-                              "de-pos-tweets", "da-pos", "ml-pos",
-                              "ml-upos", "pt-pos-clinical", "pos-ukrainian")
-
-    if (!language %in% supported_lan_models) {
-      stop(paste("Unsupported language. Supported languages are:", paste(supported_lan_models, collapse = ", ")))
-    }
-
-    tagger <- Classifier$load(language)
+    tagger <- load_tagger_pos(language)
   }
 
-  # Process each text
+  # Tokenize each input with Flair models and format a dataframe in R.
   results_list <- list()
   for (i in 1:length(texts)) {
-
     if (is.na(texts[[i]]) || is.na(doc_ids[[i]])) {
       results_list[[i]] <- data.table(doc_id = NA, Entity = NA, Label = NA)
       next
     }
-
     sentence <- Sentence(texts[[i]])
     tagger$predict(sentence)
     text <- sentence$text
@@ -105,6 +84,6 @@ get_pos <- function(texts, doc_ids,
     }
     results_list[[i]] <- df
   }
-  results_list <- do.call(rbind, results_list)
-  return(results_list)
+  results_dt <- rbindlist(results_list)
+  return(results_dt)
 }
