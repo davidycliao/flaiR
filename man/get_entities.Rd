@@ -4,24 +4,29 @@
 \alias{get_entities}
 \title{Tagging Named Entities with Flair Standard Models}
 \usage{
-get_entities(texts, doc_ids, tagger = NULL, ..., language = NULL)
+get_entities(texts, doc_ids, tagger = NULL, language = NULL)
 }
 \arguments{
-\item{texts}{A character vector of texts from which to extract named entities.}
+\item{texts}{A character vector containing the texts to process.}
 
-\item{doc_ids}{A character vector of document IDs corresponding to the texts.}
+\item{doc_ids}{A character or numeric vector containing the document IDs corresponding to each text.}
 
-\item{tagger}{An optional tagger object. If NULL, the function will attempt to load the appropriate tagger based on the provided language.}
+\item{tagger}{An optional tagger object. If NULL (default), the function will load a Flair tagger based on the specified language.}
 
-\item{...}{Additional arguments passed to next.}
-
-\item{language}{A character string indicating the language of the texts. Default is "en" (English).}
+\item{language}{A character string indicating the language model to load. Default is "en".}
 }
 \value{
-A data table containing the document ID, entity, and entity label for each named entity extracted from the texts.
+A data table with columns:
+\describe{
+  \item{doc_id}{The ID of the document from which the entity was extracted.}
+  \item{text_id}{The actual text from which the entity was extracted.}
+  \item{entity}{The named entity that was extracted from the text.}
+  \item{tag}{The tag or category of the named entity (e.g., PERSON, ORGANIZATION).}
+}
 }
 \description{
-Extract named entities from a given text using the flair package.
+This function takes texts and their corresponding document IDs as inputs, uses the Flair NLP library to extract named entities,
+and returns a dataframe of the identified entities along with their tags.
 }
 \examples{
 \dontrun{
@@ -34,10 +39,9 @@ texts <- c("UCD is one of the best universities in Ireland.",
            "Essex is not in the Russell Group, but it is famous for political science research.",
            "TCD is the oldest university in Ireland.",
            "TCD is similar to Oxford.")
-
+doc_ids <- c("doc1", "doc2", "doc3", "doc4", "doc5", "doc6")
 # Load NER ("ner") model
 tagger_ner <- import("flair.nn")$Classifier$load('ner')
-
 results <- get_entities(texts, doc_ids, tagger_ner)
 print(results)}
 

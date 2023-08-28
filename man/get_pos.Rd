@@ -5,7 +5,7 @@
 \title{Tagging Part-of-Speech Tagging with Flair Standard Models
 This function returns a data table of POS tags and other related data for the given texts.}
 \usage{
-get_pos(texts, doc_ids, tagger = NULL, language = NULL, ...)
+get_pos(texts, doc_ids, tagger = NULL, language = NULL)
 }
 \arguments{
 \item{texts}{A character vector containing texts to be processed.}
@@ -15,8 +15,6 @@ get_pos(texts, doc_ids, tagger = NULL, language = NULL, ...)
 \item{tagger}{A tagger object (default is NULL).}
 
 \item{language}{The language of the texts (default is NULL).}
-
-\item{...}{Additional arguments passed to next.}
 }
 \value{
 A data.table containing the following columns:
@@ -37,7 +35,6 @@ This function returns a data table of POS tags and other related data for the gi
 \dontrun{
 library(reticulate)
 library(fliaR)
-# Load Part-of-Speech ("pos-fast") model
 tagger_pos_fast = import("flair.nn")$Classifier$load('pos-fast')
 texts <- c("UCD is one of the best universities in Ireland.",
            "UCD has a good campus but is very far from my apartment in Dublin.",

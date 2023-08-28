@@ -1,3 +1,144 @@
+#' @title Check the given language against supported languages
+#'
+#' @description This function checks whether a provided language is supported. If it's not,
+#' it stops the execution and returns a message indicating the supported languages.
+#'
+#' @param language The language to check.
+#' @param supported_lan_models A vector of supported languages.
+#'
+#' @return This function does not return anything, but stops execution if the check fails.
+#' @examples
+#' # Assuming 'en' is a supported language and 'abc' is not:
+#' check_language_supported("en", c("en", "de", "fr"))
+#' # check_language_supported("abc", c("en", "de", "fr")) # will stop execution
+#'
+#' @export
+check_language_supported <- function(language, supported_lan_models) {
+  attempt::stop_if_not(
+    !language %in% supported_lan_models,
+    isFALSE,
+    msg =cat(paste("Unsupported language. Supported languages are:",
+                   paste(supported_lan_models, collapse = ", ")), ".", sep = "")
+  )
+}
+
+#' Load the Named Entity Recognition (NER) Tagger
+#'
+#' A helper function to load the appropriate tagger based on the provided language.
+#' This function supports a variety of languages/models.
+#'
+#' @param language Character string indicating the desired language for the NER tagger.
+#' Supported languages include "en", "de", "fr", "nl", "da", and "ar".
+#'
+#' @return An instance of the Flair SequenceTagger for the specified language.
+#'
+#' @import reticulate
+#' @importFrom stats setNames
+#'
+#' @examples
+#' # Load the English NER tagger
+#' tagger_en <- load_tagger_ner("en")
+#'
+#' @export
+load_tagger_ner <- function(language) {
+  supported_lan_models <- c("ner", "de-ner", "fr-ner", "nl-ner", "da-ner", "ar-ner")
+  language_model_map <- setNames(supported_lan_models, c("en", "de", "fr", "nl", "da", "ar"))
+
+  if (is.null(language)) {
+    language <- "en"
+    message("Language is not specified.", language, "in Flair is forceloaded. Please ensure that the internet connectivity is stable.")
+  }
+
+  # Translate language to model name if necessary
+  if (language %in% names(language_model_map)) {
+    language <- language_model_map[[language]]
+  }
+
+  # Ensure the model is supported
+  check_language_supported(language = language, supported_lan_models = supported_lan_models)
+
+  # Load the model
+  SequenceTagger <- reticulate::import("flair.models")$SequenceTagger
+  SequenceTagger$load(language)
+}
+
+#' Load Flair POS Tagger
+#'
+#' This function loads the POS (part-of-speech) tagger model for a specified language
+#' using the Flair library. If no language is specified, it defaults to 'pos-fast'.
+#'
+#' @param language A character string indicating the desired language model. If `NULL`,
+#' the function will default to the 'pos-fast' model. Supported language models include:
+#' "pos", "pos-fast", "upos", "upos-fast", "pos-multi", "pos-multi-fast", "ar-pos",
+#' "de-pos", "de-pos-tweets", "da-pos", "ml-pos", "ml-upos", "pt-pos-clinical", "pos-ukrainian".
+#'
+#' @return A Flair POS tagger model corresponding to the specified (or default) language.
+#'
+#' @importFrom reticulate import
+#'
+#' @examples
+#' \dontrun{
+#' tagger <- load_tagger_pos("pos-fast")
+#' }
+load_tagger_pos <- function(language) {
+  supported_lan_models <- c("pos", "pos-fast", "upos", "upos-fast",
+                            "pos-multi", "pos-multi-fast", "ar-pos", "de-pos",
+                            "de-pos-tweets", "da-pos", "ml-pos",
+                            "ml-upos", "pt-pos-clinical", "pos-ukrainian")
+
+  if (is.null(language)) {
+    language <- "pos-fast"
+    message("Language is not specified.", language, "in Flair is forceloaded. Please ensure that the internet connectivity is stable.")
+  }
+
+  # Ensure the model is supported
+  check_language_supported(language = language, supported_lan_models = supported_lan_models)
+
+  # Load the model
+  tagger <- Classifier$load(language)
+}
+
+
+
+#' @title Check Environment Pre-requisites
+#' @description This function checks if Python is installed, if the flair module is available in Python,
+#' and if there's an active internet connection.
+#' @param ... passing additional arguments.
+#' @return A message detailing any missing pre-requisites.
+#'
+#' @importFrom attempt stop_if_all
+#' @export
+check_prerequisites <- function(...) {
+
+  # Check if Python is installed
+  attempt::stop_if_all(
+    check_python_installed(),
+    isFALSE,
+    msg = "Python is not installed in your R environment."
+  )
+
+  # Check if flair module is available in Python
+  attempt::stop_if_all(
+    reticulate::py_module_available("flair"),
+    isFALSE,
+    msg = paste(
+      "flair is not installed at",
+      reticulate::py_config()[[1]]
+    )
+  )
+
+  # Check for an active internet connection
+  attempt::stop_if_all(
+    curl::has_internet(),
+    isFALSE,
+    msg = "Internet connection issue. Please check your network settings."
+  )
+
+  return("All pre-requisites met.")
+}
+
+
+
 #' @title Check for Active Internet Connection
 #'
 #' @description
@@ -120,7 +261,7 @@ clear_flair_cache <- function(...) {
 check_python_environment <- function(...) {
   if (reticulate::py_available(initialize = TRUE)) {
     config <- reticulate::py_config()
-    # cat(config$python, "\n")
+    cat(config$python, "\n")
     return(TRUE)
   } else {
     # cat("No Python environment available.\n")
