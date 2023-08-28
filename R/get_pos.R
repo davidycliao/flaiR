@@ -44,7 +44,10 @@ get_pos <- function(texts, doc_ids,
     stop("The lengths of texts and doc_ids do not match.")
   }
 
-  # Load the Classifier object and the Sentence tokenizer from the Flair library in Python.
+  # Load the Sentence tokenizer from the Flair library in Python.
+  # TODO: Double-check if it's necessary to keep, given that load_tagger_pos()'s
+  # global environment imports "reticulate::import('flair')" and "Classifier <- flair$nn$Classifier".
+
   flair <- reticulate::import("flair")
   Classifier <- flair$nn$Classifier
   Sentence <- flair$data$Sentence

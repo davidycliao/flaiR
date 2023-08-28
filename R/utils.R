@@ -95,10 +95,10 @@ load_tagger_pos <- function(language) {
   check_language_supported(language = language, supported_lan_models = supported_lan_models)
 
   # Load the model
+  flair <- reticulate::import("flair")
+  Classifier <- flair$nn$Classifier
   tagger <- Classifier$load(language)
 }
-
-
 
 #' @title Check Environment Pre-requisites
 #' @description This function checks if Python is installed, if the flair module is available in Python,
