@@ -20,9 +20,10 @@ remotes::install_github("davidycliao/flaiR", force = TRUE)
 library(flaiR)
 ```
 ```
-## flaiR: An R Wrapper for Accessing Flair NLP Tagging Features ##
-## Using Python:    3.8                                         ##
-## Using Flair : 0.12.2                                         ##
+ flaiR: An R Wrapper for Accessing Flair NLP Tagging Features      
+ Python : 3.11                                           
+ Flair: 0.12.2                                         
+ py_config: /xxxx/xxxxxx/.virtualenvs/r-reticulate/bin/python
 ```
 
 
@@ -40,10 +41,11 @@ reticulate::use_condaenv("r-reticulate")
 reticulate::py_install("flair")
 ```
 
----
 
+### Citing the Contributions of `Flair`
 
-##  Cite the Work of `Flair`
+This R wrapper is built upon the work of the `Flair` research team at Humboldt University of Berlin. If you use this tool in academic endeavors, I recommend citing their research article, [Contextual String Embeddings for Sequence Labeling](https://aclanthology.org/C18-1139.pdf).
+
 ```
 @inproceedings{akbik2018coling,
   title={Contextual String Embeddings for Sequence Labeling},
