@@ -1,4 +1,4 @@
-## <u>`<span style="color:orangered;">flair</span><span style="color:darkblue;">R</span>`</u>: An R Wrapper for Accessing Flair NLP Tagging Features <img src="man/figures/logo.png" align="right" width="180"/>
+## <u>`<span style="color:orangered;">flair</span>`</u>: An R Wrapper for Accessing Flair NLP Tagging Features <img src="man/figures/logo.png" align="right" width="180"/>
 
 
 <div style="text-align: justify">
