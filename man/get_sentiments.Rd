@@ -2,9 +2,7 @@
 % Please edit documentation in R/get_sentiments.R
 \name{get_sentiments}
 \alias{get_sentiments}
-\title{Tagging Sentiment with Flair Standard Models
-This function takes in texts and their associated document IDs to predict sentiments
-using the flair Python library.}
+\title{Tagging Sentiment with Flair Standard Models}
 \usage{
 get_sentiments(texts, doc_ids, tagger = NULL, ..., language = NULL)
 }
@@ -31,7 +29,6 @@ A \code{data.table} containing three columns:
   }
 }
 \description{
-Tagging Sentiment with Flair Standard Models
 This function takes in texts and their associated document IDs to predict sentiments
 using the flair Python library.
 }

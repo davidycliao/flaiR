@@ -2,8 +2,7 @@
 % Please edit documentation in R/get_pos.R
 \name{get_pos}
 \alias{get_pos}
-\title{Tagging Part-of-Speech Tagging with Flair Standard Models
-This function returns a data table of POS tags and other related data for the given texts.}
+\title{Tagging Part-of-Speech Tagging with Flair Standard Models}
 \usage{
 get_pos(texts, doc_ids, tagger = NULL, language = NULL)
 }
@@ -28,7 +27,6 @@ A data.table containing the following columns:
 }
 }
 \description{
-Tagging Part-of-Speech Tagging with Flair Standard Models
 This function returns a data table of POS tags and other related data for the given texts.
 }
 \examples{

@@ -1,0 +1,59 @@
+---
+title: "Tagging Sentiment with Flair Standard Models"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Tagging Sentiment with Flair Standard Models}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r include=FALSE}
+# reticulate::use_condaenv("r-reticulate")
+reticulate::py_install("flair")
+```
+
+## List of Sentiment Models
+| ID                      | Language | Task                                                      | Training Dataset           | Accuracy           |
+|-------------------------|----------|-----------------------------------------------------------|----------------------------|--------------------|
+| 'sentiment'             | English  | detecting positive and negative sentiment (transformer-based) | movie and product reviews | 98.87              |
+| 'sentiment-fast'        | English  | detecting positive and negative sentiment (RNN-based)     | movie and product reviews | 96.83              |
+| 'de-offensive-language' | German   | detecting offensive language                              | GermEval 2018 Task 1       | 75.71 (Macro F1)   |
+
+__Source__: https://flairnlp.github.io/docs/tutorial-basics/tagging-sentiment
+
+
+## An Example Using `sentiment` Model (Pre-trained English Model)
+
+
+```{r}
+library(flaiR)
+library(reticulate)
+```
+
+
+```{r create-dataset}
+texts <- c("UCD is one of the best universities in Ireland.",
+           "UCD has a good campus but is very far from my apartment in Dublin.",
+           "Essex is famous for social science research.",
+           "Essex is not in the Russell Group, but it is famous for political science research and in 1994 Group.",
+           "TCD is the oldest university in Ireland.",
+           "TCD is similar to Oxford.")
+doc_ids <- c("doc1", "doc2", "doc3", "doc4", "doc5", "doc6")
+```
+
+Currently, there is no support for loading the model using flaiR. We are temporarily using `reticulate::import`.
+```{r setup}
+library(flaiR)
+library(reticulate)
+tagger_sent <- reticulate::import("flair.nn")$Classifier$load('sentiment')
+results <- get_sentiments(texts, doc_ids, tagger_sent)
+head(results, n = 10)
+```
+

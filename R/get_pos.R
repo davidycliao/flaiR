@@ -1,5 +1,6 @@
 #' @title Tagging Part-of-Speech Tagging with Flair Standard Models
-#' This function returns a data table of POS tags and other related data for the given texts.
+#'
+#' @description This function returns a data table of POS tags and other related data for the given texts.
 #'
 #' @param texts A character vector containing texts to be processed.
 #' @param doc_ids A character vector containing document ids.

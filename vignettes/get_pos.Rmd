@@ -1,0 +1,62 @@
+---
+title: "Tagging Part-of-Speech Tagging with Flair Standard Models"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Tagging Part-of-Speech Tagging with Flair Standard Models}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r include=FALSE}
+reticulate::py_install("flair")
+```
+
+## List of Part-of-Speech Tagging Models
+
+| ID              | Task                     | Language            | Training Dataset                  | Accuracy             | Contributor / Notes                 |
+|-----------------|--------------------------|---------------------|-----------------------------------|----------------------|-------------------------------------|
+| 'pos'           | POS-tagging              | English             | Ontonotes                         | 98.19 (Accuracy)     |                                     |
+| 'pos-fast'      | POS-tagging              | English             | Ontonotes                         | 98.1 (Accuracy)      | (fast model)                        |
+| 'upos'          | POS-tagging (universal)  | English             | Ontonotes                         | 98.6 (Accuracy)      |                                     |
+| 'upos-fast'     | POS-tagging (universal)  | English             | Ontonotes                         | 98.47 (Accuracy)     | (fast model)                        |
+| 'pos-multi'     | POS-tagging              | Multilingual        | UD Treebanks                      | 96.41 (average acc.) | (12 languages)                      |
+| 'pos-multi-fast'| POS-tagging              | Multilingual        | UD Treebanks                      | 92.88 (average acc.) | (12 languages)                      |
+| 'ar-pos'        | POS-tagging              | Arabic (+dialects)  | combination of corpora            |                      |                                     |
+| 'de-pos'        | POS-tagging              | German              | UD German - HDT                   | 98.50 (Accuracy)     |                                     |
+| 'de-pos-tweets' | POS-tagging              | German              | German Tweets                     | 93.06 (Accuracy)     | stefan-it                           |
+| 'da-pos'        | POS-tagging              | Danish              | Danish Dependency Treebank        |                      | AmaliePauli                         |
+| 'ml-pos'        | POS-tagging              | Malayalam           | 30000 Malayalam sentences        | 83                   | sabiqueqb                           |
+| 'ml-upos'       | POS-tagging              | Malayalam           | 30000 Malayalam sentences        | 87                   | sabiqueqb                           |
+| 'pt-pos-clinical'|POS-tagging              | Portuguese          | PUCPR                             | 92.39                | LucasFerroHAILab for clinical texts|
+| 'pos-ukrainian' | POS-tagging              | Ukrainian           | Ukrainian UD                      | 97.93 (F1)           | dchaplinsky                         |
+
+__Source__: https://flairnlp.github.io/docs/tutorial-basics/part-of-speech-tagging
+
+
+## An Example Using `pos-fast` Part-of-Speech Tagging
+
+```{r create-dataset}
+texts <- c("UCD is one of the best universities in Ireland.",
+           "UCD has a good campus but is very far from my apartment in Dublin.",
+           "Essex is famous for social science research.",
+           "Essex is not in the Russell Group, but it is famous for political science research and in 1994 Group.",
+           "TCD is the oldest university in Ireland.",
+           "TCD is similar to Oxford.")
+doc_ids <- c("doc1", "doc2", "doc3", "doc4", "doc5", "doc6")
+```
+
+
+```{r}
+library(flaiR)
+tagger_pos <- flaiR::load_tagger_pos("pos-fast")
+results <- get_pos(texts, doc_ids, tagger_pos)
+head(results, n = 10)
+```
+
