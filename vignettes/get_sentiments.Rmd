@@ -48,11 +48,10 @@ texts <- c("UCD is one of the best universities in Ireland.",
 doc_ids <- c("doc1", "doc2", "doc3", "doc4", "doc5", "doc6")
 ```
 
-Currently, there is no support for loading the model using flaiR. We are temporarily using `reticulate::import`.
+
 ```{r setup}
 library(flaiR)
-library(reticulate)
-tagger_sent <- reticulate::import("flair.nn")$Classifier$load('sentiment')
+tagger_sent <- load_tagger_sentiments("sentiment")
 results <- get_sentiments(texts, doc_ids, tagger_sent)
 head(results, n = 10)
 ```

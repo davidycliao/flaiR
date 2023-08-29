@@ -51,20 +51,6 @@ get_sentiments <- function(texts, doc_ids,
   # Check Environment Pre-requisites
   check_prerequisites()
 
-  # Ensure that lengths of texts and doc_ids are the same
-  if (length(texts) != length(doc_ids)) {
-    stop("The lengths of texts and doc_ids do not match.")
-  }
-
-  # # Ensure Python and flair library are available
-  # if (!py_available(initialize = TRUE)) {
-  #   stop("Python is not available in the current R session.")
-  # }
-  #
-  # if (!py_module_available("flair")) {
-  #   stop("flair is not installed in the current Python environment.")
-  # }
-
   Classifier <- import("flair")$nn$Classifier
   Sentence <- import("flair")$data$Sentence
 

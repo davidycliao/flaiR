@@ -100,6 +100,44 @@ load_tagger_pos <- function(language) {
   tagger <- Classifier$load(language)
 }
 
+#' @title Load a Sentiment or Language Tagger Model from Flair
+#'
+#' @description This function loads a pre-trained sentiment or language tagger
+#' from the Flair library.  It allows you to specify the model language you wish to load.
+#'
+#' @param language Character string specifying the language model to load.
+#'   Can be one of "sentiment", "sentiment-fast", or "de-offensive-language".
+#'   Defaults to "sentiment" if not provided.
+#'
+#' @return An object of the loaded Flair model.
+#'
+#' @import reticulate
+#' @examples
+#' \dontrun{
+#'   tagger <- load_tagger_sentiments("sentiment")
+#' }
+#'
+#' @export
+load_tagger_sentiments <- function(language) {
+  supported_lan_models <- c("sentiment", "sentiment-fast", "de-offensive-language")
+
+  if (is.null(language)) {
+    language <- "sentiment"
+    message("Language is not specified. ", language, " in Flair is forceloaded. Please ensure that the internet connectivity is stable.")
+  }
+
+  # Ensure the model is supported
+  check_language_supported(language = language, supported_lan_models = supported_lan_models)
+
+  # Load the model
+  flair <- reticulate::import("flair")
+  Classifier <- flair$nn$Classifier
+  tagger <- Classifier$load(language)
+  return(tagger)
+}
+
+
+
 #' @title Check Environment Pre-requisites
 #' @description This function checks if Python is installed, if the flair module is available in Python,
 #' and if there's an active internet connection.
