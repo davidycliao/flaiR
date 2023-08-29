@@ -1,5 +1,59 @@
 # Workflow derived from https://github.com/r-lib/actions/tree/v2/examples
 # Need help debugging build failures? Start at https://github.com/r-lib/actions#where-to-find-help
+# on:
+#   push:
+#     branches: [main, master]
+#   pull_request:
+#     branches: [main, master]
+#
+# name: test-coverage
+#
+# jobs:
+#   test-coverage:
+#     runs-on: ubuntu-latest
+#     env:
+#       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+#
+#     steps:
+#       - uses: actions/checkout@v3
+#
+#       - uses: r-lib/actions/setup-r@v2
+#         with:
+#           use-public-rspm: true
+#
+#       - uses: r-lib/actions/setup-r-dependencies@v2
+#         with:
+#           extra-packages: any::covr
+#           needs: coverage
+#
+#       - name: Test coverage
+#         run: |
+#           covr::codecov(
+#             quiet = FALSE,
+#             clean = FALSE,
+#             install_path = file.path(Sys.getenv("RUNNER_TEMP"), "package")
+#           )
+#         shell: Rscript {0}
+#
+#       - name: Show testthat output
+#         if: always()
+#         run: |
+#           ## --------------------------------------------------------------------
+#           find ${{ runner.temp }}/package -name 'testthat.Rout*' -exec cat '{}' \; || true
+#         shell: bash
+#
+#       - name: Upload test results
+#         if: failure()
+#         uses: actions/upload-artifact@v3
+#         with:
+#           name: coverage-test-failures
+#           path: ${{ runner.temp }}/package
+#
+#       - name: Install Python dependencies
+#         run: pip install flair
+#
+
+
 on:
   push:
     branches: [main, master]
@@ -21,6 +75,7 @@ jobs:
         with:
           use-public-rspm: true
 
+<<<<<<< Updated upstream
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
@@ -35,6 +90,22 @@ jobs:
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
           extra-packages: covr reticulate
+=======
+      # Add Python setup here
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      # Add Python dependency installation here
+      - name: Install Python dependencies
+        run: pip install flair
+
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          extra-packages: covr
+          needs: coverage
+>>>>>>> Stashed changes
 
       - name: Test coverage
         run: |
@@ -44,6 +115,11 @@ jobs:
             install_path = file.path(Sys.getenv("RUNNER_TEMP"), "package")
           )
         shell: Rscript {0}
+
+      # Add Python debug step here, if needed
+      - name: Debug Python error
+        run: Rscript -e 'reticulate::py_last_error()'
+        if: failure()
 
       - name: Show testthat output
         if: always()
