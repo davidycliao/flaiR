@@ -75,7 +75,7 @@ load_tagger_ner <- function(language) {
 #' @return A Flair POS tagger model corresponding to the specified (or default) language.
 #'
 #' @importFrom reticulate import
-#'
+#' @export
 #' @examples
 #' \dontrun{
 #' tagger <- load_tagger_pos("pos-fast")

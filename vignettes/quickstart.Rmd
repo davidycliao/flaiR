@@ -1,0 +1,90 @@
+---
+title: "Quick Start"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Quick Start}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r include=FALSE}
+#reticulate::use_condaenv(reticulate::py_config()[[1]])
+reticulate::py_install("flair")
+```
+
+## Get Started with Using [`remotes`](https://github.com/r-lib/remotes):
+
+<div style="text-align: justify">
+
+
+To utilize flairR in R, you need to first install the Python-based Flair NLP library. This can be done using reticulate. It's recommended to have Python version 3.7 or higher installed to ensure smooth operation of [`fliar`](https://flairnlp.github.io) in Python. The functionality of flairR is primarily limited to the pre-trained models provided by [`fliar`](https://flairnlp.github.io). The `flairR` returns the tagging information directly in a data.table format. Note that using the transformed base NLP toolkit can be computationally intensive. Therefore, implementing parallel computing is advised to enhance the performance of NLP tasks.
+
+</div>
+
+-----
+
+## Quick Use
+
+### Tagging Parts-of-Speech with Flair Models
+Load the pretrained model "pos-fast". For more pretrained models, see https://flairnlp.github.io/docs/tutorial-basics/part-of-speech-tagging#-in-english.
+
+```{r}
+library(reticulate)
+library(flaiR)
+texts <- c("UCD is one of the best universities in Ireland.",
+           "UCD has a good campus but is very far from my apartment in Dublin.",
+           "Essex is famous for social science research.",
+           "Essex is not in the Russell Group, but it is famous for political science research and in 1994 Group.",
+           "TCD is the oldest university in Ireland.",
+           "TCD is similar to Oxford.")
+
+doc_ids <- c("doc1", "doc2", "doc3", "doc4", "doc5", "doc6")
+tagger_pos = import("flair.nn")$Classifier$load('pos-fast')
+results <- get_pos(texts, doc_ids, tagger_pos)
+head(results, n = 10)
+```
+
+
+### Tagging Entities with Flair Models
+
+Load the pretrained model "ner". For more pretrained models, see https://flairnlp.github.io/docs/tutorial-basics/tagging-entities.
+
+```{r}
+library(reticulate)
+library(data.table)
+tagger_ner = import("flair.nn")$Classifier$load('ner')
+results <- get_entities(texts, doc_ids, tagger_ner)
+head(results, n = 10)
+```
+
+
+
+### __Tagging Sentiment__ 
+
+Load the pretrained model "`sentiment`".  The pre-trained models of "`sentiment`", "`sentiment-fast`", and "`de-offensive-language`" are currently available. For more pretrained models, see https://flairnlp.github.io/docs/tutorial-basics/tagging-sentiment.
+
+```{r}
+library(reticulate)
+library(data.table)
+tagger_sent = import("flair.nn")$Classifier$load('sentiment')
+results <- get_sentiments(texts, doc_ids, tagger_sent)
+head(results, n = 10)
+```
+
+-----
+
+## __How to Contribute__
+
+<div style="text-align: justify">
+
+Contributions in the form of comments, code suggestions, and tutorial examples are very welcome. Please note that the `flaiR` is released with the [Contributor Code of Conduct](https://github.com/davidycliao/flaiR/blob/master/CONDUCT.md). By contributing to this project, you agree to abide by its terms.
+
+</div>
+

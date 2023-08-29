@@ -15,9 +15,7 @@ knitr::opts_chunk$set(
 ```
 
 ```{r include=FALSE}
-# reticulate::use_condaenv("r-reticulate")
 reticulate::py_install("flair")
-
 ```
 
 ## List of Part-of-Speech Tagging Models
@@ -42,12 +40,7 @@ reticulate::py_install("flair")
 __Source__: https://flairnlp.github.io/docs/tutorial-basics/part-of-speech-tagging
 
 
-## An Example Using `pos-fast` 
-
-```{r}
-library(flaiR)
-library(reticulate)
-```
+## An Example Using `pos-fast` Part-of-Speech Tagging
 
 ```{r create-dataset}
 texts <- c("UCD is one of the best universities in Ireland.",
@@ -61,7 +54,8 @@ doc_ids <- c("doc1", "doc2", "doc3", "doc4", "doc5", "doc6")
 
 
 ```{r}
-tagger_pos = import("flair.nn")$Classifier$load('pos-fast')
+library(flaiR)
+tagger_pos <- flaiR::load_tagger_pos("pos-fast")
 results <- get_pos(texts, doc_ids, tagger_pos)
 head(results, n = 10)
 ```
