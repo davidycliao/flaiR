@@ -6,23 +6,8 @@
 
 `flairR` is R wrapper, built upon the reticulate architecture, offers streamlined access to the core features of FlairNLP in Python. FlairNLP is an advanced framework of NLP incorporating the latest techniques developed by [Humboldt University of Berlin](https://github.com/flairNLP/flair). For a deeper understanding of Flair's framwork, please find the research article '[Contextual String Embeddings for Sequence Labeling](https://aclanthology.org/C18-1139.pdf)' and the official [mannual](https://flairnlp.github.io). The  features currently available in `flairR` includes __part-of-speech tagging__, __transformer-based sentiment analysis__, and __named entity recognition__. The `flairR` returns the tagging information directly in a data.table format. Note that using the transformed base NLP toolkit can be computationally intensive. Therefore, implementing parallel computing is advised to enhance the performance of NLP tasks.
 
-
-### __Data Structure of Parts-of-Speech with Flair Models__
-
-<br />
-<img src="https://raw.githack.com/davidycliao/flaiR/main/man/figures/pos.png" width="1000" align="center" />
-
-### __Data Structure of Named Entities with Flair Models__
-
 <br />
 <img src="https://raw.githack.com/davidycliao/flaiR/main/man/figures/ent.png" width="1000" align="center" />
-
-
-### __Data Structure of Sentiments Taggings with Flair Models__
-
-<br />
-<img src="https://raw.githack.com/davidycliao/flaiR/main/man/figures/sent.png" width="1000" align="center" />
-
 
 
 
