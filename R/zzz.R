@@ -10,15 +10,15 @@
   # header_footer <- "## ============================================================== ##"
   # message(header_footer)
 
-  packageStartupMessage(sprintf(" \033[1;91mflaiR\033[22;39m: An R Wrapper for Accessing Flair NLP Tagging Features %-5s", ""))
+  packageStartupMessage(sprintf(" flai\033[34mR\033[39m: An R Wrapper for Accessing Flair NLP Tagging Features %-5s", ""))
 
-  # # Check and report Python is installed
-  # if (check_python_installed()) {
-  #   packageStartupMessage(sprintf(" Python : %-47s", reticulate::py_config()$version))
-  # } else {
-  #   packageStartupMessage(sprintf(" Python : %-50s", paste0("\033[31m", "\u2717", "\033[39m")))
-  # }
-  #
+  # Check and report Python is installed
+  if (check_python_installed()) {
+    packageStartupMessage(sprintf(" Python : %-47s", reticulate::py_config()$version))
+  } else {
+    packageStartupMessage(sprintf(" Python : %-50s", paste0("\033[31m", "\u2717", "\033[39m")))
+  }
+
   # # Check and report  flair is installed
   # if (reticulate::py_module_available("flair")) {
   #   packageStartupMessage(sprintf(" Flair: %-47s",  get_flair_version()))
