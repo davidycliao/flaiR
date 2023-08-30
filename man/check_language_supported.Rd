@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{check_language_supported}
 \alias{check_language_supported}
-\title{Check the given language against supported languages}
+\title{Check the Given Language Models against Supported Languages Models}
 \usage{
 check_language_supported(language, supported_lan_models)
 }

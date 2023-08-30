@@ -8,5 +8,5 @@ test_that("get_pos throws an error for unsupported languages", {
               "TCD in less better than Oxford"),
     doc_ids= c("doc1", "doc2", "doc3", "doc4", "doc5", "doc6"),
     language  = "chinese"),
-    "Test `isFALSE` on `!language %in% supported_lan_models` returned an error.")
+    "Unsupported language. Supported languages are: pos, pos-fast, upos, upos-fast, pos-multi, pos-multi-fast, ar-pos, de-pos, de-pos-tweets, da-pos, ml-pos, ml-upos, pt-pos-clinical, pos-ukrainian.")
 })

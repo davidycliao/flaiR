@@ -34,7 +34,6 @@ using the flair Python library.
 }
 \examples{
 \dontrun{
-library(reticulate)
 library(fliaR)
 
 

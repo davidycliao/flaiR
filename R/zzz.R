@@ -14,16 +14,14 @@
 
   # Check and report Python is installed
   if (check_python_installed()) {
-    flair_version <- get_flair_version()
     packageStartupMessage(sprintf(" Python : %-47s", reticulate::py_config()$version))
   } else {
     packageStartupMessage(sprintf(" Python : %-50s", paste0("\033[31m", "\u2717", "\033[39m")))
   }
 
   # Check and report  flair is installed
-  if (check_flair_installed()) {
-    flair_version <- get_flair_version()
-    packageStartupMessage(sprintf(" Flair: %-47s", flair_version))
+  if (reticulate::py_module_available("flair")) {
+    packageStartupMessage(sprintf(" Flair: %-47s",  get_flair_version()))
   } else {
     packageStartupMessage(sprintf(" Flair: %-50s", paste0("\033[31m", "\u2717", "\033[39m")))
   }

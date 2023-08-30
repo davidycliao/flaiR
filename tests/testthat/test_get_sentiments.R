@@ -4,5 +4,5 @@ test_that("get_sentiments throws an error for unsupported languages", {
               "TCD in less better than Oxford"),
     doc_ids= c("doc1", "doc2"),
     language  = "chinese"),
-    "Unsupported language. Supported languages are: en, en-fast, de")
+    "Unsupported language. Supported languages are: sentiment, sentiment-fast, de-offensive-language.")
 })

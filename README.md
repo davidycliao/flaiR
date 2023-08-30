@@ -8,9 +8,9 @@ flairR is R wrapper, built upon the reticulate architecture, offers streamlined 
 
 </div>
 
-## Installation
+## Installation  
 
-The installation consists of two parts: First, install [Python 3.7](https://www.python.org/downloads/) or higher, and the reticulate package in R.
+The installation consists of two parts: First, install [Python 3.7](https://www.python.org/downloads/) or higher, and the `reticulate` package in R.
 
 ### Install `flaiR` from GitHub
 

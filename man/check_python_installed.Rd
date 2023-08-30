@@ -4,7 +4,10 @@
 \alias{check_python_installed}
 \title{Check for Available Python Installation}
 \usage{
-check_python_installed()
+check_python_installed(...)
+}
+\arguments{
+\item{...}{any param to run.}
 }
 \value{
 Logical. `TRUE` if Python is installed, `FALSE` otherwise. Additionally, if installed, the path to the Python installation is printed.

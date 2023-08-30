@@ -24,6 +24,3 @@ from the Flair library.  It allows you to specify the model language you wish to
 }
 
 }
-\seealso{
-Other functions for flair interaction: [another_function()]
-}

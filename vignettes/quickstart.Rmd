@@ -19,6 +19,7 @@ knitr::opts_chunk$set(
 reticulate::py_install("flair")
 ```
 
+
 ## Get Started with Using [`remotes`](https://github.com/r-lib/remotes):
 
 <div style="text-align: justify">
@@ -33,7 +34,12 @@ To utilize flairR in R, you need to first install the Python-based Flair NLP lib
 ## Quick Use
 
 ### Tagging Parts-of-Speech with Flair Models
-Load the pretrained model "pos-fast". For more pretrained models, see https://flairnlp.github.io/docs/tutorial-basics/part-of-speech-tagging#-in-english.
+
+<div style="text-align: justify">
+
+Load the pretrained model "pos-fast". For more pretrained models, see https://flairnlp.github.io/docs/tutorial-basics/part-of-speech-tagging#-in-english. 
+
+</div>
 
 ```{r}
 library(reticulate)
@@ -53,8 +59,11 @@ head(results, n = 10)
 
 
 ### Tagging Entities with Flair Models
+<div style="text-align: justify">
 
 Load the pretrained model "ner". For more pretrained models, see https://flairnlp.github.io/docs/tutorial-basics/tagging-entities.
+
+</div>
 
 ```{r}
 library(reticulate)
@@ -68,7 +77,10 @@ head(results, n = 10)
 
 ### __Tagging Sentiment__ 
 
+<div style="text-align: justify">
 Load the pretrained model "`sentiment`".  The pre-trained models of "`sentiment`", "`sentiment-fast`", and "`de-offensive-language`" are currently available. For more pretrained models, see https://flairnlp.github.io/docs/tutorial-basics/tagging-sentiment.
+
+</div>
 
 ```{r}
 library(reticulate)
@@ -80,6 +92,48 @@ head(results, n = 10)
 
 -----
 
+
+
+## Some Issue May Occure When Using `flaiR`
+
+<div style="text-align: justify">
+
+`flaiR` is built on top of the `[reticulate](https://rstudio.github.io/reticulate/)` package and incorporates key features of the Flair library, returning data in a tidy and efficient [`data.table`](https://cran.r-project.org/web/packages/data.table/index.html) format.
+
+If you're using reticulate with R for the first time, you may encounter some issues. For instance, if your R environment cannot locate your Python configuration, I recommend that you create a new Python environment using `use_condaenv()`. After that, you can install the Python Flair library by using py_install("flair"). 
+
+</div>
+
+```
+ flaiR: An R Wrapper for Accessing Flair NLP Tagging Features      
+ Python : 3.11                                           
+ Flair: 0.12.2                                         
+ py_config: ✗ 
+```
+
+```{r eval=FALSE, include=TRUE}
+conda_create("re-reticulate")
+py_install("flair")
+```
+
+Another scenario is when your R session is already linked to a Python environment. If you don't have a specific preference for the name of the Python environment, you can directly install the Python Flair library using `py_install()` from within R.
+
+Please note, frequently switching Python environments in RStudio may lead to issues or errors. It's recommended to restart RStudio after changing environments.
+
+```
+ flaiR: An R Wrapper for Accessing Flair NLP Tagging Features      
+ Python : 3.11                                           
+ Flair: ✗                                  
+ py_config: /xxxx/xxxxxx/.virtualenvs/r-reticulate/bin/python
+```
+
+```{r eval=FALSE, include=TRUE}
+py_install("flair")
+```
+
+
+-----
+
 ## __How to Contribute__
 
 <div style="text-align: justify">
@@ -87,4 +141,7 @@ head(results, n = 10)
 Contributions in the form of comments, code suggestions, and tutorial examples are very welcome. Please note that the `flaiR` is released with the [Contributor Code of Conduct](https://github.com/davidycliao/flaiR/blob/master/CONDUCT.md). By contributing to this project, you agree to abide by its terms.
 
 </div>
+
+
+
 

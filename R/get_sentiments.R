@@ -21,7 +21,6 @@
 #'
 #' @examples
 #' \dontrun{
-#' library(reticulate)
 #' library(fliaR)
 #'
 #'
@@ -46,37 +45,26 @@
 #'
 #' @export
 get_sentiments <- function(texts, doc_ids,
-                              tagger = NULL, ... , language = NULL) {
+                           tagger = NULL, ... , language = NULL) {
 
   # Check Environment Pre-requisites
-  check_prerequisites()
+  flaiR::check_prerequisites()
 
-  Classifier <- import("flair")$nn$Classifier
-  Sentence <- import("flair")$data$Sentence
-
-  # Only load Flair and the sentiment model if tagger is NULL
-  if (is.null(tagger)) {
-    # Check if 'language' is null and assign default value
-    if (is.null(language)) {
-      language <- "en"
-      cat("\n language is not specified.", language, "in Flair is force-loaded. Please ensure that the internet connectivity is stable.")
-    }
-    # Define supported languages
-    supported_languages <- c("en", "en-fast", "de")
-    if (!language %in% supported_languages) {
-      stop(paste("Unsupported language. Supported languages are:", paste(supported_languages, collapse = ", ")))
-    }
-    # Select the appropriate model based on available language models
-    model_name <- switch(language,
-                         "en" = "sentiment",
-                         "en-fast" = "sentiment-fast",
-                         "de" = "de-offensive-language",
-                         stop(paste("Unsupported language:", language))
-    )
-
-    # Load the sentiment model
-    tagger <- Classifier$load(model_name)
+  # Ensure the length of texts and doc_ids are the same
+  if (length(texts) != length(doc_ids)) {
+    stop("The lengths of texts and doc_ids do not match.")
   }
+
+  # Load the Sentence tokenizer from the Flair library in Python.
+  flair <- reticulate::import("flair")
+  Classifier <- flair$nn$Classifier
+  Sentence <- flair$data$Sentence
+
+  # Load tagger if null
+  if (is.null(tagger)) {
+    tagger <- load_tagger_sentiments(language)
+  }
+
 
   # Process each text
   results_list <- list()
@@ -114,6 +102,6 @@ get_sentiments <- function(texts, doc_ids,
     results_list[[i]] <- df
   }
 
-  results_list <- do.call(rbind, results_list)
-  return(results_list)
+  results_dt <- rbindlist(results_list)
+  return(results_dt)
 }

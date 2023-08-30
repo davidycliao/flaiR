@@ -7,7 +7,7 @@
 clear_flair_cache(...)
 }
 \arguments{
-\item{...}{Additional arguments passed to next.}
+\item{...}{The argument passed to next.}
 }
 \value{
 Returns NULL invisibly. Messages are printed indicating whether the cache was found and cleared.

@@ -38,7 +38,7 @@ get_pos <- function(texts, doc_ids,
                     tagger = NULL,  language = NULL) {
 
   # Check Environment Pre-requisites
-  check_prerequisites()
+  flaiR::check_prerequisites()
 
   # Ensure the length of texts and doc_ids are the same
   if (length(texts) != length(doc_ids)) {

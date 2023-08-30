@@ -1,4 +1,4 @@
-#' @title Check the given language against supported languages
+#' @title Check the Given Language Models against Supported Languages Models
 #'
 #' @description This function checks whether a provided language is supported. If it's not,
 #' it stops the execution and returns a message indicating the supported languages.
@@ -14,17 +14,18 @@
 #'
 #' @export
 check_language_supported <- function(language, supported_lan_models) {
-  attempt::stop_if_not(
+  attempt::stop_if_all(
     !language %in% supported_lan_models,
-    isFALSE,
-    msg =cat(paste("Unsupported language. Supported languages are:",
-                   paste(supported_lan_models, collapse = ", ")), ".", sep = "")
+    isTRUE,
+    msg = paste0("Unsupported language. Supported languages are: ",
+                 paste(supported_lan_models, collapse = ", "),
+                 ".")
   )
 }
 
-#' Load the Named Entity Recognition (NER) Tagger
+#' @title Load the Named Entity Recognition (NER) Tagger
 #'
-#' A helper function to load the appropriate tagger based on the provided language.
+#' @description A helper function to load the appropriate tagger based on the provided language.
 #' This function supports a variety of languages/models.
 #'
 #' @param language Character string indicating the desired language for the NER tagger.
@@ -137,7 +138,6 @@ load_tagger_sentiments <- function(language) {
 }
 
 
-
 #' @title Check Environment Pre-requisites
 #' @description This function checks if Python is installed, if the flair module is available in Python,
 #' and if there's an active internet connection.
@@ -174,8 +174,6 @@ check_prerequisites <- function(...) {
 
   return("All pre-requisites met.")
 }
-
-
 
 #' @title Check for Active Internet Connection
 #'
@@ -225,9 +223,10 @@ check_flair_installed <- function(...) {
 #' @description
 #' This function checks if any environment is installed on the R system.
 #'
+#' @param ... any param to run.
 #' @return Logical. `TRUE` if Python is installed, `FALSE` otherwise. Additionally, if installed, the path to the Python installation is printed.
 #' @export
-check_python_installed <- function() {
+check_python_installed <- function(...) {
   # Check if running on Windows
   if (.Platform$OS.type == "windows") {
     command <- "where python"
@@ -253,7 +252,7 @@ check_python_installed <- function() {
 #' @description
 #' This function clears the cache associated with the Flair Python library.
 #' The cache directory is typically located at "~/.flair".
-#' @param ... Additional arguments passed to next.
+#' @param ... The argument passed to next.
 #' @return Returns NULL invisibly. Messages are printed indicating whether the cache was found and cleared.
 #' @export
 #'
@@ -286,27 +285,6 @@ clear_flair_cache <- function(...) {
 
   return(invisible(NULL))
 }
-
-#' @title Check for Available Python Environment
-#'
-#' @description
-#' This function checks if a Python environment is available
-#' and prints the path to the Python executable if it is.
-#' @param ... Additional arguments passed to next.
-#' @return Logical indicating if a Python environment is available.
-#' @importFrom reticulate py_available
-#' @export
-check_python_environment <- function(...) {
-  if (reticulate::py_available(initialize = TRUE)) {
-    config <- reticulate::py_config()
-    cat(config$python, "\n")
-    return(TRUE)
-  } else {
-    # cat("No Python environment available.\n")
-    return(FALSE)
-  }
-}
-
 
 #' @title Create or use Python environment for Flair
 #'

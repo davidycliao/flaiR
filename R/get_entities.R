@@ -38,7 +38,7 @@
 get_entities <- function(texts, doc_ids, tagger = NULL, language = NULL) {
 
   # Check Environment Pre-requisites
-  check_prerequisites()
+  flaiR::check_prerequisites()
 
   # Ensure matching lengths for texts and doc_ids
   if (length(texts) != length(doc_ids)) {
