@@ -119,3 +119,11 @@ jobs:
       - name: Check
         run: rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "error")
         shell: Rscript {0}
+
+      - name: Display installation failure details
+        if: failure()
+        run: |
+          cat /Users/runner/work/flaiR/flaiR/flaiR.Rcheck/00install.out
+          cat /Users/runner/work/flaiR/flaiR/flaiR.Rcheck/00check.log
+        shell: bash
+
