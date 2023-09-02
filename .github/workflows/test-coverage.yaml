@@ -26,7 +26,8 @@ jobs:
 
       - name: Install dependencies
         run: |
-          install.packages('remotes')
+          install.packages('remotes', 'covr')
+          install.packages("sessioninfo")
           remotes::install_deps(dependencies = TRUE)
 
       # Add this step to install Python and Flair
