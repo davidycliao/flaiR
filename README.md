@@ -1,5 +1,6 @@
 ##  <u>`flairR`</u>: An R Wrapper for Accessing Flair NLP Tagging Features <img src="man/figures/logo.png" align="right" width="180"/>
 
+___The improved version will be updated in the beta 0.0.2.___
 
 <div style="text-align: justify">
 

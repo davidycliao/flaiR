@@ -19,7 +19,7 @@ knitr::opts_chunk$set(
 reticulate::py_install("flair")
 ```
 
-## Install `flaiR` with Using [`remotes`](https://github.com/r-lib/remotes):
+## Install `flaiR` with Using [`remotes`](https://github.com/r-lib/remotes)
 
 <div style="text-align: justify">
 
@@ -82,7 +82,7 @@ Using Flair:  0.12.2
 ````
 <div style="text-align: justify">
 
-If you don't have a specific preference for renaming Python environment, you can directly install the Python Flair library using `reticulate::py_install("flair")` from within R. Please note, frequently switching Python environments in RStudio may lead to issues or errors. It's recommended to restart RStudio after changing environments.
+If you don't have a specific preference for renaming Python environment, you can directly install the Python Flair library using `reticulate::py_install("flair")`in R. Please note, frequently switching Python environments in RStudio may lead to issues or errors. It's recommended to restart RStudio after changing the environment.
 
 </div>
 
@@ -128,7 +128,7 @@ Load the pretrained model "ner". For more pretrained models, see https://flairnl
 ```{r}
 library(reticulate)
 library(data.table)
-tagger_ner = import("flair.nn")$Classifier$load('ner')
+tagger_ner <- import("flair.nn")$Classifier$load('ner')
 results <- get_entities(texts, doc_ids, tagger_ner)
 head(results, n = 10)
 ```
