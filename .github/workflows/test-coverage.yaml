@@ -24,11 +24,27 @@ jobs:
           extra-packages: covr
           needs: coverage
 
-      - name: Install dependencies
+     # Debug: Install dependencies individually
+      - name: Debug Install dependencies
         run: |
-          install.packages('remotes', 'covr')
-          install.packages("sessioninfo")
-          remotes::install_deps(dependencies = TRUE)
+          Rscript -e 'install.packages("covr", dependencies = TRUE)'
+          Rscript -e 'install.packages("sessioninfo", dependencies = TRUE)'
+
+      # Debug: Print session info
+      - name: Print Session Info
+        run: Rscript -e 'sessionInfo()'
+
+      # Install pak and other dependencies
+      - name: Install pak
+        run: |
+          install.packages("pak", repos = "https://r-lib.github.io/p/pak/stable/")
+
+      # Debug: Explicitly set dependencies
+      - name: Set Dependencies
+        run: |
+          Rscript -e 'pak::local_system_requirements(execute = TRUE)'
+          Rscript -e 'pak::pkg_install("covr")'
+          Rscript -e 'pak::pkg_install("sessioninfo")'
 
       # Add this step to install Python and Flair
       - name: Install Python and Flair
