@@ -24,6 +24,11 @@ jobs:
           extra-packages: covr
           needs: coverage
 
+      - name: Install dependencies
+        run: |
+          install.packages('remotes')
+          remotes::install_deps(dependencies = TRUE)
+
       # Add this step to install Python and Flair
       - name: Install Python and Flair
         run: |

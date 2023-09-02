@@ -79,7 +79,7 @@ get_pos <- function(texts, doc_ids,
         token_id = as.numeric(sapply(tag_list, function(x) gsub("^Token\\[([0-9]+)\\].*$", "\\1", x))),
         text_id = text,
         token = sapply(tag_list, function(x) gsub('^Token\\[\\d+\\]: "(.*)" .*', '\\1', x)),
-        tag = sapply(tag_list, function(x) gsub('^Token\\[\\d+\\]: ".*" → (.*) \\(.*\\)', '\\1', x)),
+        tag = sapply(tag_list, function(x) gsub('^Token\\[\\d+\\]: ".*" \u2192 (.*) \\(.*\\)', '\\1', x)),
         precision = as.numeric(sapply(tag_list, function(x) gsub(".*\\((.*)\\)", "\\1", x)))
       )
     }
