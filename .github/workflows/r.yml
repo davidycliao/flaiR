@@ -116,6 +116,18 @@ jobs:
           install.packages(c("remotes", "rcmdcheck"))
           remotes::install_deps(dependencies = TRUE)
         shell: Rscript {0}
+      - name: Build, Check R Package and Install Python flair library
+        run: |
+          R CMD build .
+          R CMD check *tar.gz
+          python -m pip install --upgrade pip
+          pip install flair
+        shell: bash
+        env:
+          R_LIBS_USER: ${{ runner.temp }}/Library
+          TZ: UTC
+          _R_CHECK_SYSTEM_CLOCK_: FALSE
+          NOT_CRAN: true
       - name: Check
         run: rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "error")
         shell: Rscript {0}
