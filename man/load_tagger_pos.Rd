@@ -4,7 +4,7 @@
 \alias{load_tagger_pos}
 \title{Load Flair POS Tagger}
 \usage{
-load_tagger_pos(language)
+load_tagger_pos(language = NULL)
 }
 \arguments{
 \item{language}{A character string indicating the desired language model. If `NULL`,

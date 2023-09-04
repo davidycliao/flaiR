@@ -4,7 +4,7 @@
 \alias{load_tagger_sentiments}
 \title{Load a Sentiment or Language Tagger Model from Flair}
 \usage{
-load_tagger_sentiments(language)
+load_tagger_sentiments(language = NULL)
 }
 \arguments{
 \item{language}{Character string specifying the language model to load.

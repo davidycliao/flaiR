@@ -4,7 +4,7 @@
 \alias{load_tagger_ner}
 \title{Load the Named Entity Recognition (NER) Tagger}
 \usage{
-load_tagger_ner(language)
+load_tagger_ner(language = NULL)
 }
 \arguments{
 \item{language}{Character string indicating the desired language for the NER tagger.

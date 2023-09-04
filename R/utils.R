@@ -41,7 +41,7 @@ check_language_supported <- function(language, supported_lan_models) {
 #' tagger_en <- load_tagger_ner("en")
 #'
 #' @export
-load_tagger_ner <- function(language) {
+load_tagger_ner <- function(language = NULL) {
   supported_lan_models <- c("ner", "de-ner", "fr-ner", "nl-ner", "da-ner", "ar-ner")
   language_model_map <- setNames(supported_lan_models, c("en", "de", "fr", "nl", "da", "ar"))
 
@@ -81,7 +81,7 @@ load_tagger_ner <- function(language) {
 #' \dontrun{
 #' tagger <- load_tagger_pos("pos-fast")
 #' }
-load_tagger_pos <- function(language) {
+load_tagger_pos <- function(language = NULL) {
   supported_lan_models <- c("pos", "pos-fast", "upos", "upos-fast",
                             "pos-multi", "pos-multi-fast", "ar-pos", "de-pos",
                             "de-pos-tweets", "da-pos", "ml-pos",
@@ -119,7 +119,7 @@ load_tagger_pos <- function(language) {
 #' }
 #'
 #' @export
-load_tagger_sentiments <- function(language) {
+load_tagger_sentiments <- function(language = NULL) {
   supported_lan_models <- c("sentiment", "sentiment-fast", "de-offensive-language")
 
   if (is.null(language)) {
@@ -171,26 +171,8 @@ check_prerequisites <- function(...) {
     isFALSE,
     msg = "Internet connection issue. Please check your network settings."
   )
-
   return("All pre-requisites met.")
 }
-
-#' @title Check for Active Internet Connection
-#'
-#' @description
-#' This function checks if there's an active internet connection using
-#' the `curl` package. In case of an error or no connection, it will return `FALSE`.
-#' @return Logical. TRUE if there's an active internet connection, otherwise FALSE.
-#' @importFrom curl has_internet
-#' @keywords internal
-has_internet <- function() {
-  tryCatch({
-    curl::has_internet()
-  }, error = function(e) {
-    FALSE
-  })
-}
-
 
 #' @title Retrieve Flair Version
 #'
