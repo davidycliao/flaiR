@@ -42,8 +42,15 @@ check_language_supported <- function(language, supported_lan_models) {
 #'
 #' @export
 load_tagger_ner <- function(language = NULL) {
-  supported_lan_models <- c("ner", "de-ner", "fr-ner", "nl-ner", "da-ner", "ar-ner")
-  language_model_map <- setNames(supported_lan_models, c("en", "de", "fr", "nl", "da", "ar"))
+  supported_lan_models <- c("ner", "de-ner", "fr-ner", "nl-ner", "da-ner", "ar-ner",
+                            "ner-fast", "ner-large", "ner-pooled", "ner-ontonotes", "ner-ontonotes-fast",
+                            "ner-ontonotes-large", "de-ner-large", "de-ner-germeval", "de-ner-legal", "es-ner", "nl-ner",
+                            "nl-ner-large", "nl-ner-rnn", "ner-ukrainian")
+  language_model_map <- setNames(supported_lan_models, c("en", "de", "fr", "nl", "da", "ar",
+                                                         "ner-fast", "ner-large", "ner-pooled", "ner-ontonotes", "ner-ontonotes-fast",
+                                                         "ner-ontonotes-large", "de-ner-large", "de-ner-germeval", "de-ner-legal", "es-ner-large", "nl-ner",
+                                                         "nl-ner-large", "nl-ner-rnn", "ner-ukrainian")
+                                 )
 
   if (is.null(language)) {
     language <- "en"

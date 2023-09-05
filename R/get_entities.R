@@ -77,5 +77,5 @@ get_entities <- function(texts, doc_ids, tagger = NULL, language = NULL) {
     process_text(texts[[i]], doc_ids[[i]])
   })
 
-  rbindlist(results_list)
+  rbindlist(results_list, fill=TRUE)
 }

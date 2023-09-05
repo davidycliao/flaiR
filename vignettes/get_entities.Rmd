@@ -51,14 +51,13 @@ __Source__: https://flairnlp.github.io/docs/tutorial-basics/tagging-entities
 
 ```{r}
 library(flaiR)
-library(reticulate)
-data("de_immigration")
+data("uk_immigration")
 ```
 
 
 ```{r setup}
-library(flaiR)
-tagger_ner <- flaiR::load_tagger_ner("en")
-results <- get_entities(de_immigration$text, de_immigration$speaker, tagger_pos)
+tagger_pos <- flaiR::load_tagger_ner("ner-fast")
+uk_immigration <- head(uk_immigration, 10)
+results <- get_entities(uk_immigration$text, uk_immigration$speaker, tagger_pos)
 head(results, n = 10)
 ```
