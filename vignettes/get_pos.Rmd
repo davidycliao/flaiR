@@ -51,6 +51,6 @@ data("de_immigration")
 tagger_pos <- load_tagger_pos("pos")
 de_immigration <- head(de_immigration, 4)
 results <- get_pos(de_immigration$text, de_immigration$speaker, tagger_pos)
-head(results, n = 10)
+print(results)
 ```
 

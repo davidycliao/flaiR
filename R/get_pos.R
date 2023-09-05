@@ -85,6 +85,6 @@ get_pos <- function(texts, doc_ids,
     }
     results_list[[i]] <- df
   }
-  results_dt <- rbindlist(results_list)
+  results_dt <- rbindlist(results_list, fill=TRUE)
   return(results_dt)
 }

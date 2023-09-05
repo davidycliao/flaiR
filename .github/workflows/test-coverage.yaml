@@ -9,10 +9,14 @@ on:
 name: test-coverage
 
 jobs:
-  test-coverage:
+  build:
     runs-on: ubuntu-latest
-    env:
-      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+    - uses: actions/checkout@v2
+    - uses: r-lib/actions/setup-r@v1
+      with:
+        r-version: '4.1.0'  # Replace with your desired version
+
 
     steps:
       - uses: actions/checkout@v3
@@ -73,3 +77,12 @@ jobs:
         with:
           name: coverage-test-failures
           path: ${{ runner.temp }}/package
+
+      - name: Cache R packages
+        uses: actions/cache@v2
+        with:
+          path: ${{ env.R_LIBS_USER }}
+          key: ${{ runner.os }}-${{ hashFiles('.github/R-dependencies') }}
+          restore-keys: ${{ runner.os }}-
+
+

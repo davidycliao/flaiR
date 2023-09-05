@@ -42,7 +42,7 @@ tagger_sent <- load_tagger_sentiments("sentiment")
 uk_immigration <- head(uk_immigration, 4)
 results <- get_sentiments(uk_immigration$text , 
                           1:nrow(uk_immigration) , tagger_sent)
-head(results, n = 10)
+print(results)
 ```
 
 

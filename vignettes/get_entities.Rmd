@@ -56,8 +56,8 @@ data("uk_immigration")
 
 
 ```{r setup}
-tagger_pos <- flaiR::load_tagger_ner("ner-fast")
-uk_immigration <- head(uk_immigration, 10)
+tagger_pos <- flaiR::load_tagger_ner("ner")
+uk_immigration <- head(uk_immigration, 4)
 results <- get_entities(uk_immigration$text, uk_immigration$speaker, tagger_pos)
-head(results, n = 10)
+print(results)
 ```
