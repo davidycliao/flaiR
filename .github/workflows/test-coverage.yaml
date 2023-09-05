@@ -1,5 +1,6 @@
 # Workflow derived from https://github.com/r-lib/actions/tree/v2/examples
 # Need help debugging build failures? Start at https://github.com/r-lib/actions#where-to-find-help
+
 on:
   push:
     branches: [main, master]
@@ -11,78 +12,73 @@ name: test-coverage
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
+
     steps:
     - uses: actions/checkout@v2
-    - uses: r-lib/actions/setup-r@v1
+    - uses: r-lib/actions/setup-r@v2
       with:
-        r-version: '4.1.0'  # Replace with your desired version
+        use-public-rspm: true
+    - uses: r-lib/actions/setup-r-dependencies@v2
+      with:
+        extra-packages: covr
 
+    # Debug: Install dependencies individually
+    - name: Debug Install dependencies
+      run: |
+        Rscript -e 'install.packages("covr", dependencies = TRUE)'
+        Rscript -e 'install.packages("sessioninfo", dependencies = TRUE)'
 
-    steps:
-      - uses: actions/checkout@v3
-      - uses: r-lib/actions/setup-r@v2
-        with:
-          use-public-rspm: true
-      - uses: r-lib/actions/setup-r-dependencies@v2
-        with:
-          extra-packages: covr
-          needs: coverage
+    # Debug: Print session info
+    - name: Print Session Info
+      run: Rscript -e 'sessionInfo()'
 
-     # Debug: Install dependencies individually
-      - name: Debug Install dependencies
-        run: |
-          Rscript -e 'install.packages("covr", dependencies = TRUE)'
-          Rscript -e 'install.packages("sessioninfo", dependencies = TRUE)'
+    # Install pak and other dependencies
+    - name: Install pak
+      run: |
+        install.packages("pak", repos = "https://r-lib.github.io/p/pak/stable/")
 
-      # Debug: Print session info
-      - name: Print Session Info
-        run: Rscript -e 'sessionInfo()'
+    # Debug: Explicitly set dependencies
+    - name: Set Dependencies
+      run: |
+        Rscript -e 'pak::local_system_requirements(execute = TRUE)'
+        Rscript -e 'pak::pkg_install("covr")'
+        Rscript -e 'pak::pkg_install("sessioninfo")'
 
-      # Install pak and other dependencies
-      - name: Install pak
-        run: |
-          install.packages("pak", repos = "https://r-lib.github.io/p/pak/stable/")
+    # Add this step to install Python and Flair
+    - name: Install Python and Flair
+      run: |
+        sudo apt-get update
+        sudo apt-get install python3-pip
+        pip3 install flair
 
-      # Debug: Explicitly set dependencies
-      - name: Set Dependencies
-        run: |
-          Rscript -e 'pak::local_system_requirements(execute = TRUE)'
-          Rscript -e 'pak::pkg_install("covr")'
-          Rscript -e 'pak::pkg_install("sessioninfo")'
+    - name: Test coverage
+      run: |
+        covr::codecov(
+          quiet = FALSE,
+          clean = FALSE,
+          install_path = file.path(Sys.getenv("RUNNER_TEMP"), "package")
+        )
+      shell: Rscript {0}
 
-      # Add this step to install Python and Flair
-      - name: Install Python and Flair
-        run: |
-          sudo apt-get update
-          sudo apt-get install python3-pip
-          pip3 install flair
-        shell: bash
+    - name: Show testthat output
+      if: always()
+      run: |
+        find ${{ runner.temp }}/package -name 'testthat.Rout*' -exec cat '{}' \; || true
+      shell: bash
 
-      - name: Test coverage
-        run: |
-          covr::codecov(
-            quiet = FALSE,
-            clean = FALSE,
-            install_path = file.path(Sys.getenv("RUNNER_TEMP"), "package")
-          )
-        shell: Rscript {0}
-      - name: Show testthat output
-        if: always()
-        run: |
-          find ${{ runner.temp }}/package -name 'testthat.Rout*' -exec cat '{}' \; || true
-        shell: bash
-      - name: Upload test results
-        if: failure()
-        uses: actions/upload-artifact@v3
-        with:
-          name: coverage-test-failures
-          path: ${{ runner.temp }}/package
+    - name: Upload test results
+      if: failure()
+      uses: actions/upload-artifact@v2
+      with:
+        name: coverage-test-failures
+        path: ${{ runner.temp }}/package
 
-      - name: Cache R packages
-        uses: actions/cache@v2
-        with:
-          path: ${{ env.R_LIBS_USER }}
-          key: ${{ runner.os }}-${{ hashFiles('.github/R-dependencies') }}
-          restore-keys: ${{ runner.os }}-
-
+    - name: Cache R packages
+      uses: actions/cache@v2
+      with:
+        path: ${{ env.R_LIBS_USER }}
+        key: ${{ runner.os }}-${{ hashFiles('.github/R-dependencies') }}
+        restore-keys: ${{ runner.os }}-
 
