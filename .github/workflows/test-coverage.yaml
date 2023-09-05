@@ -36,8 +36,8 @@ jobs:
 
     # Install pak and other dependencies
     - name: Install pak
-      run: |
-        install.packages("pak", repos = "https://r-lib.github.io/p/pak/stable/")
+      run: Rscript -e 'install.packages("pak", repos = "https://r-lib.github.io/p/pak/stable/")'
+
 
     # Debug: Explicitly set dependencies
     - name: Set Dependencies
