@@ -50,20 +50,15 @@ __Source__: https://flairnlp.github.io/docs/tutorial-basics/tagging-entities
 
 
 ```{r}
-texts <- c("UCD is one of the best universities in Ireland.",
-           "UCD has a good campus but is very far from my apartment in Dublin.",
-           "Essex is famous for social science research.",
-           "Essex is not in the Russell Group, but it is famous for political science research and in 1994 Group.",
-           "TCD is the oldest university in Ireland.",
-           "TCD is similar to Oxford.")
-
-doc_ids <- c("doc1", "doc2", "doc3", "doc4", "doc5", "doc6")
+library(flaiR)
+library(reticulate)
+data("de_immigration")
 ```
 
 
 ```{r setup}
 library(flaiR)
 tagger_ner <- flaiR::load_tagger_ner("en")
-results <- get_entities(texts, doc_ids, tagger_ner)
+results <- get_entities(de_immigration$text, de_immigration$speaker, tagger_pos)
 head(results, n = 10)
 ```

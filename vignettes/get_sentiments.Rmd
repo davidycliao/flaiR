@@ -35,24 +35,15 @@ __Source__: https://flairnlp.github.io/docs/tutorial-basics/tagging-sentiment
 ```{r}
 library(flaiR)
 library(reticulate)
+data("uk_immigration")
 ```
-
-
-```{r create-dataset}
-texts <- c("UCD is one of the best universities in Ireland.",
-           "UCD has a good campus but is very far from my apartment in Dublin.",
-           "Essex is famous for social science research.",
-           "Essex is not in the Russell Group, but it is famous for political science research and in 1994 Group.",
-           "TCD is the oldest university in Ireland.",
-           "TCD is similar to Oxford.")
-doc_ids <- c("doc1", "doc2", "doc3", "doc4", "doc5", "doc6")
-```
-
 
 ```{r setup}
-library(flaiR)
 tagger_sent <- load_tagger_sentiments("sentiment")
-results <- get_sentiments(texts, doc_ids, tagger_sent)
+results <- get_sentiments(uk_immigration$text , 
+                          1:nrow(uk_immigration) , tagger_sent)
 head(results, n = 10)
 ```
+
+
 

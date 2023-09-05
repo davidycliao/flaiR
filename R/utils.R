@@ -156,7 +156,7 @@ check_prerequisites <- function(...) {
   )
 
   # Check if flair module is available in Python
-  attempt::stop_if_all(
+  attempt::warn_if_all(
     reticulate::py_module_available("flair"),
     isFALSE,
     msg = paste(
@@ -166,7 +166,7 @@ check_prerequisites <- function(...) {
   )
 
   # Check for an active internet connection
-  attempt::stop_if_all(
+  attempt::warn_if_all(
     curl::has_internet(),
     isFALSE,
     msg = "Internet connection issue. Please check your network settings."
