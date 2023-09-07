@@ -21,9 +21,14 @@
   }
 
   # Check and report  flair is installed
+<<<<<<< Updated upstream
   if (check_flair_installed()) {
     flair_version <- get_flair_version()
     packageStartupMessage(sprintf(" Flair: %-47s", flair_version))
+=======
+  if (reticulate::py_module_available("flair")) {
+    packageStartupMessage(sprintf(" Flair: %-47s",  get_flair_version()))
+>>>>>>> Stashed changes
   } else {
     packageStartupMessage(sprintf(" Flair: %-50s", paste0("\033[31m", "\u2717", "\033[39m")))
   }
