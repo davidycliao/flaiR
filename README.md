@@ -6,8 +6,6 @@
 [![CodeFactor](https://www.codefactor.io/repository/github/davidycliao/flair/badge)](https://www.codefactor.io/repository/github/davidycliao/flair)
 
 
-___The improved version will be updated in the beta 0.0.2.___
-
 <div style="text-align: justify">
 
 
