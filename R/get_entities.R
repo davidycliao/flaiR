@@ -1,20 +1,38 @@
 #' @title Tagging Named Entities with Flair Standard Models
 #'
 #' @description This function takes texts and their corresponding document IDs as inputs, uses the Flair NLP library to extract named entities,
-#' and returns a dataframe of the identified entities along with their tags.
+#' and returns a dataframe of the identified entities along with their tags. When no entities are detected in a text, the function returns a data table with NA values. This might clutter the results. Depending on your use case, you might decide to either keep this behavior or skip rows with no detected entities.
 #'
 #' @param texts A character vector containing the texts to process.
-#' @param doc_ids A character or numeric vector containing the document IDs corresponding to each text.
-#' @param tagger An optional tagger object. If NULL (default), the function will load a Flair tagger based on the specified language.
+#' @param doc_ids A character or numeric vector containing the document IDs
+#' corresponding to each text.
+#' @param tagger An optional tagger object. If NULL (default), the function will
+#'  load a Flair tagger based on the specified language.
 #' @param language A character string indicating the language model to load. Default is "en".
-#'
+#' @param show.text_id A logical value. If TRUE, includes the actual text from
+#' which the entity was extracted in the resulting data table. Useful for
+#' verification and traceability purposes but might increase the size of
+#' the output. Default is FALSE.
+#' @param gc.active A logical value. If TRUE, runs the garbage collector after
+#' processing all texts. This can help in freeing up memory by releasing unused
+#' memory space, especially when processing a large number of texts. Default is FALSE.
 #' @return A data table with columns:
 #' \describe{
 #'   \item{doc_id}{The ID of the document from which the entity was extracted.}
 #'   \item{text_id}{The actual text from which the entity was extracted.}
 #'   \item{entity}{The named entity that was extracted from the text.}
-#'   \item{tag}{The tag or category of the named entity (e.g., PERSON, ORGANIZATION).}
-#' }
+#'   \item{tag}{The tag or category of the named entity. Common tags include PERSON (names of individuals),
+#'   ORG (organizations, institutions),
+#'   GPE (countries, cities, states),
+#'   LOCATION (mountain ranges, bodies of water),
+#'   DATE (dates or periods),
+#'   TIME (times of day),
+#'   MONEY (monetary values),
+#'   PERCENT (percentage values),
+#'   FACILITY (buildings, airports),
+#'   PRODUCT (objects, vehicles),
+#'   EVENT (named events like wars or sports events),
+#'   ART (titles of books)}}
 #' @examples
 #' \dontrun{
 #' library(reticulate)
@@ -35,11 +53,12 @@
 #' @importFrom data.table data.table rbindlist
 #' @importFrom reticulate import
 #' @export
-get_entities <- function(texts, doc_ids, tagger = NULL, language = NULL) {
+get_entities <- function(texts, doc_ids, tagger = NULL, language = NULL ,
+                         show.text_id = FALSE, gc.active = FALSE ) {
 
   # Check Environment Pre-requisites
   flaiR::check_prerequisites()
-
+  text_id <- NULL
   # Ensure matching lengths for texts and doc_ids
   if (length(texts) != length(doc_ids)) {
     stop("The lengths of texts and doc_ids do not match.")
@@ -53,6 +72,7 @@ get_entities <- function(texts, doc_ids, tagger = NULL, language = NULL) {
 
   # Process each text and extract entities
   process_text <- function(text, doc_id) {
+    text_id <- NULL
     if (is.na(text) || is.na(doc_id)) {
       return(data.table(doc_id = NA, entity = NA, tag = NA))
     }
@@ -65,17 +85,23 @@ get_entities <- function(texts, doc_ids, tagger = NULL, language = NULL) {
       return(data.table(doc_id = doc_id, entity = NA, tag = NA))
     }
 
-    data.table(
+    # Unified data table creation process
+    dt <- data.table(
       doc_id = rep(doc_id, length(entities)),
-      text_id = text,
       entity = vapply(entities, function(e) e$text, character(1)),
       tag = vapply(entities, function(e) e$tag, character(1))
     )
+
+    if (isTRUE(show.text_id)) {
+      dt[, text_id := text]
+    }
+
+    return(dt)
   }
-
-  results_list <- lapply(seq_along(texts), function(i) {
-    process_text(texts[[i]], doc_ids[[i]])
-  })
-
-  rbindlist(results_list, fill=TRUE)
+  if (isTRUE(gc.active)) {
+    gc()
+    message("Garbage collection after processing all texts")}
+  results_list <- lapply(seq_along(texts),
+                         function(i) {process_text(texts[[i]], doc_ids[[i]])})
+  rbindlist(results_list, fill = TRUE)
 }

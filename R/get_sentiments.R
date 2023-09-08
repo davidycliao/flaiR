@@ -7,11 +7,14 @@
 #' @param doc_ids A list or vector of document IDs corresponding to the texts.
 #' @param language A character string indicating the language of the texts.
 #'   Currently supports "en" (English), "en-fast" (Fast English), and "de" (German).
-#'   Default is "en".
+#'   Default is "sentiment".
 #' @param tagger An optional flair sentiment model. If NULL (default),
 #'   the function loads the default model based on the language.
 #' @param ... Additional arguments passed to next.
-#'
+#' @param show.text_id A logical value. If TRUE, includes the actual text from which the sentiment was predicted. Default is FALSE.
+#' @param gc.active A logical value. If TRUE, runs the garbage collector after
+#' processing all texts. This can help in freeing up memory by releasing unused
+#' memory space, especially when processing a large number of texts. Default is FALSE.
 #' @return A \code{data.table} containing three columns:
 #'   \itemize{
 #'     \item \code{doc_iid}: The document ID from the input.
@@ -45,63 +48,66 @@
 #'
 #' @export
 get_sentiments <- function(texts, doc_ids,
-                           tagger = NULL, ... , language = NULL) {
+                           tagger = NULL,
+                           ...,
+                           language = NULL,
+                           show.text_id = FALSE, gc.active = FALSE ) {
+    # Check Environment Pre-requisites
+    flaiR::check_prerequisites()
 
-  # Check Environment Pre-requisites
-  flaiR::check_prerequisites()
-
-  # Ensure the length of texts and doc_ids are the same
-  if (length(texts) != length(doc_ids)) {
-    stop("The lengths of texts and doc_ids do not match.")
-  }
-
-  # Load the Sentence tokenizer from the Flair library in Python.
-  flair <- reticulate::import("flair")
-  Classifier <- flair$nn$Classifier
-  Sentence <- flair$data$Sentence
-
-  # Load tagger if null
-  if (is.null(tagger)) {
-    tagger <- load_tagger_sentiments(language)
-  }
-
-
-  # Process each text
-  results_list <- list()
-  for (i in 1:length(texts)) {
-
-    if (is.na(texts[[i]])) {
-      results_list[[i]] <- data.table(doc_id = doc_ids[[i]],
-                                      text_id = NA,
-                                      sentiment = NA,
-                                      score = NA)
-      next
+    # Ensure the length of texts and doc_ids are the same
+    if (length(texts) != length(doc_ids)) {
+      stop("The lengths of texts and doc_ids do not match.")
     }
 
-    # Create a sentence using provided text
-    sentence <- Sentence(texts[[i]])
+    # Load the Sentence tokenizer from the Flair library in Python.
+    flair <- reticulate::import("flair")
+    Classifier <- flair$nn$Classifier
+    Sentence <- flair$data$Sentence
 
-    # Predict sentiment
-    tagger$predict(sentence)
-
-    # Check if there's a predicted label
-    if (length(sentence$get_labels()) > 0) {
-      # Extract predicted sentiment and score
-      sentiment_label <- sentence$get_labels()[[1]]$value
-      sentiment_score <- sentence$get_labels()[[1]]$score
-    } else {
-      sentiment_label <- NA
-      sentiment_score <- NA
+    # Load tagger if null
+    if (is.null(tagger)) {
+      tagger <- load_tagger_sentiments(language)
     }
 
-    df <- data.table(doc_id = doc_ids[[i]],
-                     text_id = texts[[i]],
-                     sentiment = sentiment_label,
-                     score = sentiment_score)
+    # Function to process each text
+    process_text <- function(text, doc_id) {
 
-    results_list[[i]] <- df
+      if (is.na(text)) {
+        return(data.table(doc_id = doc_id, text_id = NA, sentiment = NA, score = NA))
+      }
+
+      # Create a sentence using provided text
+      sentence <- Sentence(text)
+
+      # Predict sentiment
+      tagger$predict(sentence)
+
+      # Check if there's a predicted label
+      if (length(sentence$get_labels()) > 0) {
+        sentiment_label <- sentence$get_labels()[[1]]$value
+        sentiment_score <- sentence$get_labels()[[1]]$score
+      } else {
+        sentiment_label <- NA
+        sentiment_score <- NA
+      }
+
+      dt <- data.table(doc_id = doc_id,
+                       sentiment = sentiment_label,
+                       score = sentiment_score)
+
+      if (isTRUE(show.text_id)) {
+        dt[, text_id := text]
+      }
+
+      return(dt)
+    }
+
+    results_list <- lapply(1:length(texts), function(i) process_text(texts[i], doc_ids[i]))
+    results_dt <- rbindlist(results_list, fill=TRUE)
+    # activate garbage collection
+    if (isTRUE(gc.active)) {
+      gc()
+      message("Garbage collection after processing all texts")}
+    return(results_dt)
   }
-
-  results_dt <- rbindlist(results_list, fill=TRUE)
-  return(results_dt)
-}

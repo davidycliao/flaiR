@@ -45,12 +45,22 @@ __Source__: https://flairnlp.github.io/docs/tutorial-basics/part-of-speech-taggi
 ```{r}
 library(flaiR)
 data("de_immigration")
+de_immigration <- head(de_immigration, 2)
+
+```
+
+Download the de-pos part-of-speech tagging model from FlairNLP on Hugging Face.
+```{r}
+tagger_pos <- load_tagger_pos("de-pos")
 ```
 
 ```{r}
-tagger_pos <- load_tagger_pos("pos")
-de_immigration <- head(de_immigration, 4)
-results <- get_pos(de_immigration$text, de_immigration$speaker, tagger_pos)
+results <- get_pos(de_immigration$text, 
+                   de_immigration$speaker, tagger_pos, 
+                   show.text_id = FALSE,
+                   gc.active = TRUE)
 print(results)
 ```
+
+
 

@@ -4,7 +4,14 @@
 \alias{get_pos}
 \title{Tagging Part-of-Speech Tagging with Flair Standard Models}
 \usage{
-get_pos(texts, doc_ids, tagger = NULL, language = NULL)
+get_pos(
+  texts,
+  doc_ids,
+  tagger = NULL,
+  language = NULL,
+  show.text_id = FALSE,
+  gc.active = FALSE
+)
 }
 \arguments{
 \item{texts}{A character vector containing texts to be processed.}
@@ -14,6 +21,15 @@ get_pos(texts, doc_ids, tagger = NULL, language = NULL)
 \item{tagger}{A tagger object (default is NULL).}
 
 \item{language}{The language of the texts (default is NULL).}
+
+\item{show.text_id}{A logical value. If TRUE, includes the actual text from
+which the entity was extracted in the resulting data table. Useful for
+verification and traceability purposes but might increase the size of the output.
+Default is FALSE.}
+
+\item{gc.active}{A logical value. If TRUE, runs the garbage collector after
+processing all texts. This can help in freeing up memory by releasing unused
+memory space, especially when processing a large number of texts. Default is FALSE.}
 }
 \value{
 A data.table containing the following columns:
