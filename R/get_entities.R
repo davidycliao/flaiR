@@ -52,8 +52,9 @@
 #'
 #' @importFrom data.table data.table rbindlist
 #' @importFrom reticulate import
+#' @importFrom data.table :=
 #' @export
-get_entities <- function(texts, doc_ids, tagger = NULL, language = NULL ,
+get_entities <- function(texts, doc_ids, tagger = NULL, language = NULL,
                          show.text_id = FALSE, gc.active = FALSE ) {
 
   # Check Environment Pre-requisites
