@@ -9,7 +9,8 @@
 #'     activate garbage collection.
 #'
 #' @return A message indicating that garbage collection was performed
-#'     if `gc.active` was `TRUE`. Otherwise, no action is taken or message is displayed.
+#' if `gc.active` was `TRUE`. Otherwise, no action is taken or message is
+#' displayed.
 #'
 #' @examples
 #' check_and_gc(TRUE)  # Performs garbage collection and displays a message
@@ -23,7 +24,6 @@ check_and_gc <- function(gc.active) {
     message("Garbage collection after processing all texts")
   }
 }
-
 
 #' @title Check the Given Language Models against Supported Languages Models
 #'

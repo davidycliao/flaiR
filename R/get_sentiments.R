@@ -7,8 +7,8 @@
 #' to be made.
 #' @param doc_ids A list or vector of document IDs corresponding to the texts.
 #' @param language A character string indicating the language of the texts.
-#'   Currently supports "en" (English), "en-fast" (Fast English), and
-#'   "de" (German). Default is "sentiment".
+#'   Currently supports "sentiment" (English), "sentiment-fast" (English), and
+#'  "de-offensive-language" (German)
 #' @param tagger An optional flair sentiment model. If NULL (default),
 #'   the function loads the default model based on the language.
 #' @param ... Additional arguments passed to next.
@@ -28,7 +28,7 @@
 #'
 #' @examples
 #' \dontrun{
-#' library(fliaR)
+#' library(flaiR)
 #'
 #'
 #' texts <- c("UCD is one of the best universities in Ireland.",
@@ -58,7 +58,6 @@ get_sentiments <- function(texts, doc_ids,
                            show.text_id = FALSE, gc.active = FALSE ) {
     # Check Environment Pre-requisites
     flaiR::check_prerequisites()
-    text_id <- NULL
 
     # Ensure the length of texts and doc_ids are the same
     if (length(texts) != length(doc_ids)) {
@@ -77,7 +76,7 @@ get_sentiments <- function(texts, doc_ids,
 
     # Function to process each text
     process_text <- function(text, doc_id) {
-
+      text_id <- NULL
       if (is.na(text)) {
         return(data.table(doc_id = doc_id, text_id = NA, sentiment = NA, score = NA))
       }
@@ -113,6 +112,5 @@ get_sentiments <- function(texts, doc_ids,
 
     # Activate garbage collection
     check_and_gc(gc.active)
-
     return(results_dt)
   }

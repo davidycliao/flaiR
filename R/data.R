@@ -19,7 +19,7 @@
 #'   parliament is located, character}
 #'   \item{year}{Year when the speech was made, numeric}
 #' }
-#' @source Data collected from ParSpeechV2 the House of Commons for the
+#' @source Data collected from `ParSpeechV2` the House of Commons for the
 #' year 2010. The dataset is publicly available at
 #' \url{https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/L4OAKN}.
 #' @examples
