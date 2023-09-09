@@ -4,7 +4,14 @@
 \alias{get_pos}
 \title{Tagging Part-of-Speech Tagging with Flair Standard Models}
 \usage{
-get_pos(texts, doc_ids, tagger = NULL, language = NULL)
+get_pos(
+  texts,
+  doc_ids,
+  tagger = NULL,
+  language = NULL,
+  show.text_id = FALSE,
+  gc.active = FALSE
+)
 }
 \arguments{
 \item{texts}{A character vector containing texts to be processed.}
@@ -14,6 +21,15 @@ get_pos(texts, doc_ids, tagger = NULL, language = NULL)
 \item{tagger}{A tagger object (default is NULL).}
 
 \item{language}{The language of the texts (default is NULL).}
+
+\item{show.text_id}{A logical value. If TRUE, includes the actual text from
+which the entity was extracted in the resulting data table. Useful for
+verification and traceability purposes but might increase the size of the output.
+Default is FALSE.}
+
+\item{gc.active}{A logical value. If TRUE, runs the garbage collector after
+processing all texts. This can help in freeing up memory by releasing unused
+memory space, especially when processing a large number of texts. Default is FALSE.}
 }
 \value{
 A data.table containing the following columns:
@@ -35,12 +51,9 @@ library(reticulate)
 library(fliaR)
 tagger_pos_fast = import("flair.nn")$Classifier$load('pos-fast')
 texts <- c("UCD is one of the best universities in Ireland.",
-           "UCD has a good campus but is very far from my apartment in Dublin.",
-           "Essex is famous for social science research.",
            "Essex is not in the Russell Group, but it is famous for political science research.",
-           "TCD is the oldest university in Ireland.",
-           "TCD is similar to Oxford.")
-doc_ids <- c("doc1", "doc2", "doc3", "doc4", "doc5", "doc6")
+           "TCD is the oldest university in Ireland.")
+doc_ids <- c("doc1", "doc2", "doc3")
 
 get_pos(texts, doc_ids, tagger_pos_fast)
 }

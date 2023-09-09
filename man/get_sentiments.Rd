@@ -4,7 +4,15 @@
 \alias{get_sentiments}
 \title{Tagging Sentiment with Flair Standard Models}
 \usage{
-get_sentiments(texts, doc_ids, tagger = NULL, ..., language = NULL)
+get_sentiments(
+  texts,
+  doc_ids,
+  tagger = NULL,
+  ...,
+  language = NULL,
+  show.text_id = FALSE,
+  gc.active = FALSE
+)
 }
 \arguments{
 \item{texts}{A list or vector of texts for which sentiment prediction is to be made.}
@@ -18,7 +26,13 @@ the function loads the default model based on the language.}
 
 \item{language}{A character string indicating the language of the texts.
 Currently supports "en" (English), "en-fast" (Fast English), and "de" (German).
-Default is "en".}
+Default is "sentiment".}
+
+\item{show.text_id}{A logical value. If TRUE, includes the actual text from which the sentiment was predicted. Default is FALSE.}
+
+\item{gc.active}{A logical value. If TRUE, runs the garbage collector after
+processing all texts. This can help in freeing up memory by releasing unused
+memory space, especially when processing a large number of texts. Default is FALSE.}
 }
 \value{
 A \code{data.table} containing three columns:

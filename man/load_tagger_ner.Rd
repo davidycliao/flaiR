@@ -17,6 +17,15 @@ An instance of the Flair SequenceTagger for the specified language.
 A helper function to load the appropriate tagger based on the provided language.
 This function supports a variety of languages/models.
 }
+\details{
+Supported languages and their corresponding codes are:
+* "en" - English: `ner`
+* "de" - German: `de-ner`
+* "fr" - French: `fr-ner`
+* "nl" - Dutch: `nl-ner`
+* "da" - Danish: `da-ner`
+* "ar" - Arabic: `ar-ner`
+}
 \examples{
 # Load the English NER tagger
 tagger_en <- load_tagger_ner("en")
