@@ -8,9 +8,11 @@ get_flair_version(...)
 }
 \value{
 Character string representing the version of Flair.
-If Flair is not installed, this may return `NULL` or cause an error (based on `reticulate` behavior).
+If Flair is not installed, this may return `NULL` or cause an error
+(based on `reticulate` behavior).
 }
 \description{
-Gets the version of the installed Flair module in the current Python environment.
+Gets the version of the installed Flair module in the current Python
+environment.
 }
 \keyword{internal}

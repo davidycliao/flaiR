@@ -10,6 +10,7 @@ check_flair_installed(...)
 Logical. `TRUE` if Flair is installed, otherwise `FALSE`.
 }
 \description{
-Determines if the Flair Python module is available in the current Python environment.
+Determines if the Flair Python module is available in the current Python
+environment.
 }
 \keyword{internal}

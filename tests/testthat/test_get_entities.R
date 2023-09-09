@@ -124,8 +124,9 @@ test_that("get_entities returns NA for the 'tag' field when there are mismatched
   expect_true(is.na(result[3, "tag"]$tag))
 })
 
-# Test 4: get_entities returns NA for the "tag" field when the input text does not contain entities
-test_that("get_entities returns NA for the 'tag' field when the input text does not contain entities", {
+# Test 4: get_entities returns NA for the "tag" field when the input text
+#         does not contain entities
+test_that("get_entities returns NA for the 'tag' field", {
   result <- get_entities(
     texts = "xxxxxxxxx",
     doc_ids = "doc1",
@@ -136,7 +137,7 @@ test_that("get_entities returns NA for the 'tag' field when the input text does 
 })
 
 # Test 5: get_entities returns NA for the "tag" field when the input text is NA
-test_that("get_entities returns NA for the 'tag' field when the input text is NA", {
+test_that("get_entities returns NA for the 'tag' field.", {
   result <- get_entities(
     texts = NA,
     doc_ids = NA,
@@ -146,8 +147,9 @@ test_that("get_entities returns NA for the 'tag' field when the input text is NA
   expect_true(is.na(result[1, "tag"]$tag))
 })
 
-# Test 6: get_entities returns NA for the "tag" field when the input text is NA and show.text_id is TRUE
-test_that("get_entities returns NA for the 'tag' field when the input text is NA and show.text_id is TRUE", {
+# Test 6: get_entities returns NA for the "tag" field when the input text is
+# NA and show.text_id is TRUE
+test_that("get_entities returns NA for the 'tag' field", {
   result <- get_entities(
     texts = NA,
     doc_ids = NA,
@@ -171,9 +173,3 @@ test_that("get_entities returns the correct entity tag 'ORG' for an input text",
   # Check that the entity tag is "ORG"
   expect_equal(result[1, "tag"]$tag, "ORG")
 })
-
-
-
-
-
-

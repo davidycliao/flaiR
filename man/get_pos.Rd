@@ -24,32 +24,38 @@ get_pos(
 
 \item{show.text_id}{A logical value. If TRUE, includes the actual text from
 which the entity was extracted in the resulting data table. Useful for
-verification and traceability purposes but might increase the size of the output.
-Default is FALSE.}
+verification and traceability purposes but might increase the size of
+the output. Default is FALSE.}
 
 \item{gc.active}{A logical value. If TRUE, runs the garbage collector after
 processing all texts. This can help in freeing up memory by releasing unused
-memory space, especially when processing a large number of texts. Default is FALSE.}
+memory space, especially when processing a large number of texts.
+Default is FALSE.}
 }
 \value{
 A data.table containing the following columns:
 \describe{
   \item{\code{doc_id}}{The document identifier corresponding to each text.}
-  \item{\code{token_id}}{The token number in the original text, indicating the position of the token.}
+  \item{\code{token_id}}{The token number in the original text,
+  indicating the position of the token.}
   \item{\code{text_id}}{The actual text input passed to the function.}
-  \item{\code{token}}{The individual word or token from the text that was POS tagged.}
-  \item{\code{tag}}{The part-of-speech tag assigned to the token by the Flair library.}
-  \item{\code{precision}}{A confidence score (numeric) for the assigned POS tag.}
+  \item{\code{token}}{The individual word or token from the text that was
+  POS tagged.}
+  \item{\code{tag}}{The part-of-speech tag assigned to the token by
+  the Flair library.}
+  \item{\code{precision}}{A confidence score (numeric) for the
+  assigned POS tag.}
 }
 }
 \description{
-This function returns a data table of POS tags and other related data for the given texts.
+This function returns a data table of POS tags and other related
+ data for the given texts.
 }
 \examples{
 \dontrun{
 library(reticulate)
 library(fliaR)
-tagger_pos_fast = import("flair.nn")$Classifier$load('pos-fast')
+tagger_pos_fast <- load_tagger_pos('pos-fast')
 texts <- c("UCD is one of the best universities in Ireland.",
            "Essex is not in the Russell Group, but it is famous for political science research.",
            "TCD is the oldest university in Ireland.")

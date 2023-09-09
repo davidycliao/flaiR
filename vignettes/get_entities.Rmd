@@ -65,10 +65,7 @@ If you want the computation to run faster, it is recommended to keep the show.te
 
 ```{r setup}
 show.text_id_isFALE <- system.time({
-    results <- get_entities(uk_immigration$text, uk_immigration$speaker, 
-                            tagger_pos,
-                            show.text_id = FALSE,
-                            gc.active = TRUE)
+    results <- get_entities(uk_immigration$text, uk_immigration$speaker, tagger_pos, show.text_id = FALSE, gc.active = TRUE)
     gc()
 })
 ```

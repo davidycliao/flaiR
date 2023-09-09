@@ -24,3 +24,4 @@ check_language_supported("en", c("en", "de", "fr"))
 # check_language_supported("abc", c("en", "de", "fr")) # will stop execution
 
 }
+\keyword{internal}

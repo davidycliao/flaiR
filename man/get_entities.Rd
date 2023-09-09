@@ -22,7 +22,8 @@ corresponding to each text.}
 \item{tagger}{An optional tagger object. If NULL (default), the function will
 load a Flair tagger based on the specified language.}
 
-\item{language}{A character string indicating the language model to load. Default is "en".}
+\item{language}{A character string indicating the language model to load.
+Default is "en".}
 
 \item{show.text_id}{A logical value. If TRUE, includes the actual text from
 which the entity was extracted in the resulting data table. Useful for
@@ -31,15 +32,18 @@ the output. Default is FALSE.}
 
 \item{gc.active}{A logical value. If TRUE, runs the garbage collector after
 processing all texts. This can help in freeing up memory by releasing unused
-memory space, especially when processing a large number of texts. Default is FALSE.}
+memory space, especially when processing a large number of texts.
+Default is FALSE.}
 }
 \value{
 A data table with columns:
 \describe{
   \item{doc_id}{The ID of the document from which the entity was extracted.}
-  \item{text_id}{If TRUE, the actual text from which the entity was extracted.}
+  \item{text_id}{If TRUE, the actual text from which the entity
+  was extracted.}
   \item{entity}{The named entity that was extracted from the text.}
-  \item{tag}{The tag or category of the named entity. Common tags include PERSON (names of individuals),
+  \item{tag}{The tag or category of the named entity. Common tags include:
+  PERSON (names of individuals),
   ORG (organizations, institutions),
   GPE (countries, cities, states),
   LOCATION (mountain ranges, bodies of water),
@@ -53,8 +57,13 @@ A data table with columns:
   ART (titles of books)}}
 }
 \description{
-This function takes texts and their corresponding document IDs as inputs, uses the Flair NLP library to extract named entities,
-and returns a dataframe of the identified entities along with their tags. When no entities are detected in a text, the function returns a data table with NA values. This might clutter the results. Depending on your use case, you might decide to either keep this behavior or skip rows with no detected entities.
+This function takes texts and their corresponding document IDs
+as inputs, uses the Flair NLP library to extract named entities,
+and returns a dataframe of the identified entities along with their tags.
+When no entities are detected in a text, the function returns a data table
+with NA values. This might clutter the results. Depending on your use case,
+you might decide to either keep this behavior or skip rows with no detected
+entities.
 }
 \examples{
 \dontrun{
@@ -62,14 +71,16 @@ library(reticulate)
 library(fliaR)
 
 texts <- c("UCD is one of the best universities in Ireland.",
-           "UCD has a good campus but is very far from my apartment in Dublin.",
+           "UCD has a good campus but is very far from
+           my apartment in Dublin.",
            "Essex is famous for social science research.",
-           "Essex is not in the Russell Group, but it is famous for political science research.",
+           "Essex is not in the Russell Group, but it is
+           famous for political science research.",
            "TCD is the oldest university in Ireland.",
            "TCD is similar to Oxford.")
 doc_ids <- c("doc1", "doc2", "doc3", "doc4", "doc5", "doc6")
 # Load NER ("ner") model
-tagger_ner <- import("flair.nn")$Classifier$load('ner')
+tagger_ner <- load_tagger_ner('ner')
 results <- get_entities(texts, doc_ids, tagger_ner)
 print(results)}
 

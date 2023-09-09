@@ -15,7 +15,8 @@ get_sentiments(
 )
 }
 \arguments{
-\item{texts}{A list or vector of texts for which sentiment prediction is to be made.}
+\item{texts}{A list or vector of texts for which sentiment prediction is
+to be made.}
 
 \item{doc_ids}{A list or vector of document IDs corresponding to the texts.}
 
@@ -25,26 +26,28 @@ the function loads the default model based on the language.}
 \item{...}{Additional arguments passed to next.}
 
 \item{language}{A character string indicating the language of the texts.
-Currently supports "en" (English), "en-fast" (Fast English), and "de" (German).
-Default is "sentiment".}
+Currently supports "en" (English), "en-fast" (Fast English), and
+"de" (German). Default is "sentiment".}
 
-\item{show.text_id}{A logical value. If TRUE, includes the actual text from which the sentiment was predicted. Default is FALSE.}
+\item{show.text_id}{A logical value. If TRUE, includes the actual text from
+which the sentiment was predicted. Default is FALSE.}
 
 \item{gc.active}{A logical value. If TRUE, runs the garbage collector after
 processing all texts. This can help in freeing up memory by releasing unused
-memory space, especially when processing a large number of texts. Default is FALSE.}
+memory space, especially when processing a large number of texts.
+Default is FALSE.}
 }
 \value{
 A \code{data.table} containing three columns:
   \itemize{
-    \item \code{doc_iid}: The document ID from the input.
+    \item \code{doc_id}: The document ID from the input.
     \item \code{sentiment}: Predicted sentiment for the text.
-    \item \code{score}: score for the sentiment prediction.
+    \item \code{score}: Score for the sentiment prediction.
   }
 }
 \description{
-This function takes in texts and their associated document IDs to predict sentiments
-using the flair Python library.
+This function takes in texts and their associated document IDs
+to predict sentiments using the flair Python library.
 }
 \examples{
 \dontrun{
@@ -61,7 +64,7 @@ texts <- c("UCD is one of the best universities in Ireland.",
 doc_ids <- c("doc1", "doc2", "doc3", "doc4", "doc5", "doc6")
 
 # Load re-trained sentiment ("sentiment") model
-tagger_sent <- import("flair.nn")$Classifier$load('sentiment')
+tagger_sent <- load_tagger_sentiments('sentiment')
 
 results <- get_sentiments(texts, doc_ids, tagger_sent)
 print(results)

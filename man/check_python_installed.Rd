@@ -10,7 +10,8 @@ check_python_installed(...)
 \item{...}{any param to run.}
 }
 \value{
-Logical. `TRUE` if Python is installed, `FALSE` otherwise. Additionally, if installed, the path to the Python installation is printed.
+Logical. `TRUE` if Python is installed, `FALSE` otherwise.
+Additionally, if installed, the path to the Python installation is printed.
 }
 \description{
 This function checks if any environment is installed on the R system.
