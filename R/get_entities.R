@@ -112,10 +112,7 @@ get_entities <- function(texts, doc_ids, tagger = NULL, language = NULL,
   }
   # Activate garbage collection
   check_and_gc(gc.active)
-  # if (isTRUE(gc.active)) {
-  #   gc()
-  #   message("Garbage collection after processing all texts")
-  # }
+
   results_list <- lapply(seq_along(texts),
                          function(i) {process_text(texts[[i]], doc_ids[[i]])})
   rbindlist(results_list, fill = TRUE)

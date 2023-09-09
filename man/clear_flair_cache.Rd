@@ -10,7 +10,8 @@ clear_flair_cache(...)
 \item{...}{The argument passed to next.}
 }
 \value{
-Returns NULL invisibly. Messages are printed indicating whether the cache was found and cleared.
+Returns NULL invisibly. Messages are printed indicating whether
+the cache was found and cleared.
 }
 \description{
 This function clears the cache associated with the Flair Python library.

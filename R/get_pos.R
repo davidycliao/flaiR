@@ -98,12 +98,12 @@ get_pos <- function(texts, doc_ids, tagger = NULL, language = NULL,
       ))
     }
   }
+
+  # Activate garbage collection
+  check_and_gc(gc.active)
+
   results_list <- lapply(seq_along(texts), process_text)
   results_dt <- rbindlist(results_list, fill=TRUE)
-  # activate garbage collection
-  if (isTRUE(gc.active)) {
-    gc()
-    message("Garbage collection after processing all texts")}
   return(results_dt)
 }
 

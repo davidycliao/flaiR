@@ -77,14 +77,26 @@ check_language_supported <- function(language, supported_lan_models) {
 #'
 #' @export
 load_tagger_ner <- function(language = NULL) {
-  supported_lan_models <- c("ner", "de-ner", "fr-ner", "nl-ner", "da-ner", "ar-ner",
-                            "ner-fast", "ner-large", "ner-pooled", "ner-ontonotes", "ner-ontonotes-fast",
-                            "ner-ontonotes-large", "de-ner-large", "de-ner-germeval", "de-ner-legal", "es-ner", "nl-ner",
-                            "nl-ner-large", "nl-ner-rnn", "ner-ukrainian")
-  language_model_map <- setNames(supported_lan_models, c("en", "de", "fr", "nl", "da", "ar",
-                                                         "ner-fast", "ner-large", "ner-pooled", "ner-ontonotes", "ner-ontonotes-fast",
-                                                         "ner-ontonotes-large", "de-ner-large", "de-ner-germeval", "de-ner-legal", "es-ner-large", "nl-ner",
-                                                         "nl-ner-large", "nl-ner-rnn", "ner-ukrainian")
+  supported_lan_models <- c("ner", "de-ner",
+                            "fr-ner", "nl-ner",
+                            "da-ner", "ar-ner",
+                            "ner-fast", "ner-large",
+                            "ner-pooled",  "ner-ontonotes",
+                            "ner-ontonotes-fast", "ner-ontonotes-large",
+                            "de-ner-large", "de-ner-germeval",
+                            "de-ner-legal", "es-ner",
+                            "nl-ner", "nl-ner-large",
+                            "nl-ner-rnn", "ner-ukrainian")
+  language_model_map <- setNames(supported_lan_models, c("en", "de",
+                                                         "fr", "nl",
+                                                         "da", "ar",
+                                                         "ner-fast", "ner-large",
+                                                         "ner-pooled", "ner-ontonotes",
+                                                         "ner-ontonotes-fast", "ner-ontonotes-large",
+                                                         "de-ner-large", "de-ner-germeval",
+                                                         "de-ner-legal", "es-ner-large",
+                                                         "nl-ner", "nl-ner-large",
+                                                         "nl-ner-rnn", "ner-ukrainian")
                                  )
 
   if (is.null(language)) {
@@ -199,11 +211,10 @@ load_tagger_sentiments <- function(language = NULL) {
 #' and if there's an active internet connection.
 #' @param ... passing additional arguments.
 #' @return A message detailing any missing pre-requisites.
-#'
+#' @keywords internal
 #' @importFrom attempt stop_if_all
 #' @export
 check_prerequisites <- function(...) {
-
   # Check if Python is installed
   attempt::stop_if_all(
     check_python_installed(),
@@ -295,7 +306,8 @@ check_python_installed <- function(...) {
 #' This function clears the cache associated with the Flair Python library.
 #' The cache directory is typically located at "~/.flair".
 #' @param ... The argument passed to next.
-#' @return Returns NULL invisibly. Messages are printed indicating whether the cache was found and cleared.
+#' @return Returns NULL invisibly. Messages are printed indicating whether
+#' the cache was found and cleared.
 #' @export
 #'
 #' @examples

@@ -110,9 +110,9 @@ get_sentiments <- function(texts, doc_ids,
 
     results_list <- lapply(seq_along(texts), function(i) process_text(texts[i], doc_ids[i]))
     results_dt <- rbindlist(results_list, fill=TRUE)
+
     # Activate garbage collection
-    if (isTRUE(gc.active)) {
-      gc()
-      message("Garbage collection after processing all texts")}
+    check_and_gc(gc.active)
+
     return(results_dt)
   }
