@@ -49,19 +49,17 @@ test_that("get_sentiments handles NA values and returns NA for sentiment scores"
 })
 
 
-# Test 5: get_sentiments returns 'NEGATIVE' sentiment for specific input
-test_that("get_sentiments returns 'NEGATIVE' sentiment for specific input", {
-  # Call get_sentiments with specific input
-  result <- get_sentiments(
+# Test 5: get_sentiments returns "The lengths of texts and doc_ids do not match.
+test_that("get_sentiments returns The lengths of texts and doc_ids do not match.", {
+
+  expect_error(get_sentiments(
     texts = "TCD in less better than Oxford", "Essex is in Colchester",
     doc_ids = c("doc1", "doc2"),
     show.text_id = TRUE,
     gc.active = TRUE,
     language = "sentiment"
   )
-
-  # Check that the sentiment for the first row is "NEGATIVE"
-  expect_equal(result[1, "sentiment"]$sentiment, "NEGATIVE")
+  , "The lengths of texts and doc_ids do not match.")
 })
 
 # Test 6: get_sentiments with empty input returns NA for score
