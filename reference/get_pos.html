@@ -61,7 +61,8 @@
     News
   </a>
   <div class="dropdown-menu" aria-labelledby="dropdown--news">
-    <a class="dropdown-item" href="../news/index.html">0.0.1</a>
+    <a class="dropdown-item" href="../news/index.html#flair-003-development-version">0.0.3</a>
+    <a class="dropdown-item" href="../news/index.html#flair-001-development-version">0.0.1</a>
   </div>
 </li>
 <li class="nav-item dropdown">
@@ -187,12 +188,9 @@ memory space, especially when processing a large number of texts. Default is FAL
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">fliaR</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">tagger_pos_fast</span> <span class="op">=</span> <span class="fu"><a href="https://rstudio.github.io/reticulate/reference/import.html" class="external-link">import</a></span><span class="op">(</span><span class="st">"flair.nn"</span><span class="op">)</span><span class="op">$</span><span class="va">Classifier</span><span class="op">$</span><span class="fu">load</span><span class="op">(</span><span class="st">'pos-fast'</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">texts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"UCD is one of the best universities in Ireland."</span>,</span></span>
-<span class="r-in"><span>           <span class="st">"UCD has a good campus but is very far from my apartment in Dublin."</span>,</span></span>
-<span class="r-in"><span>           <span class="st">"Essex is famous for social science research."</span>,</span></span>
 <span class="r-in"><span>           <span class="st">"Essex is not in the Russell Group, but it is famous for political science research."</span>,</span></span>
-<span class="r-in"><span>           <span class="st">"TCD is the oldest university in Ireland."</span>,</span></span>
-<span class="r-in"><span>           <span class="st">"TCD is similar to Oxford."</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">doc_ids</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"doc1"</span>, <span class="st">"doc2"</span>, <span class="st">"doc3"</span>, <span class="st">"doc4"</span>, <span class="st">"doc5"</span>, <span class="st">"doc6"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>           <span class="st">"TCD is the oldest university in Ireland."</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">doc_ids</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"doc1"</span>, <span class="st">"doc2"</span>, <span class="st">"doc3"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">get_pos</span><span class="op">(</span><span class="va">texts</span>, <span class="va">doc_ids</span>, <span class="va">tagger_pos_fast</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
