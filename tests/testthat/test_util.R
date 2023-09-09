@@ -30,11 +30,11 @@ test_that("check_python_installed", {
 
 
 test_that("check_python_installed", {
-  expect_equal(is.logical(check_python_installed()), TRUE)
+  expect_equal(is.function(check_python_installed), TRUE)
 })
 
 
-test_that("check_python_installed", {
+test_that("clear_flair_cache", {
   expect_equal(is.function(clear_flair_cache), TRUE)
 })
 

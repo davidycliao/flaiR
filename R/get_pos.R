@@ -60,7 +60,13 @@ get_pos <- function(texts, doc_ids, tagger = NULL, language = NULL,
 
   process_text <- function(i) {
     if (is.na(texts[[i]]) || is.na(doc_ids[[i]])) {
-      return(data.table(doc_id = NA, Entity = NA, Label = NA))
+      return(data.table(doc_id = NA,
+                        token_id = NA,
+                        text_id = ifelse(show.text_id, text, NA),
+                        token = NA,
+                        tag = NA,
+                        precision = NA
+                        ))
     }
     sentence <- Sentence(texts[[i]])
     tagger$predict(sentence)

@@ -9,8 +9,22 @@ load_tagger_pos(language = NULL)
 \arguments{
 \item{language}{A character string indicating the desired language model. If `NULL`,
 the function will default to the 'pos-fast' model. Supported language models include:
-"pos", "pos-fast", "upos", "upos-fast", "pos-multi", "pos-multi-fast", "ar-pos",
-"de-pos", "de-pos-tweets", "da-pos", "ml-pos", "ml-upos", "pt-pos-clinical", "pos-ukrainian".}
+\itemize{
+  \item "pos" - General POS tagging
+  \item "pos-fast" - Faster POS tagging
+  \item "upos" - Universal POS tagging
+  \item "upos-fast" - Faster Universal POS tagging
+  \item "pos-multi" - Multi-language POS tagging
+  \item "pos-multi-fast" - Faster Multi-language POS tagging
+  \item "ar-pos" - Arabic POS tagging
+  \item "de-pos" - German POS tagging
+  \item "de-pos-tweets" - German POS tagging for tweets
+  \item "da-pos" - Danish POS tagging
+  \item "ml-pos" - Malayalam POS tagging
+  \item "ml-upos" - Malayalam Universal POS tagging
+  \item "pt-pos-clinical" - Clinical Portuguese POS tagging
+  \item "pos-ukrainian" - Ukrainian POS tagging
+}}
 }
 \value{
 A Flair POS tagger model corresponding to the specified (or default) language.
