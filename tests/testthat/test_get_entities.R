@@ -89,8 +89,6 @@
 #
 
 
-
-
 # Test 1: get_entities returns four entities for two input texts using "ner"
 test_that("get_entities returns four entities for two input texts using 'ner'", {
   result <- get_entities(
@@ -107,7 +105,7 @@ test_that("get_entities returns four entities for two input texts using 'ner'", 
 test_that("get_entities throws an error for mismatched lengths of texts and doc_ids", {
   expect_error(
     get_entities(
-      texts = c("TCD in less better than Oxford"),
+      texts = "TCD in less better than Oxford",
       doc_ids = c("doc1", "doc2"),
       language = "ner"
     ),
@@ -118,8 +116,8 @@ test_that("get_entities throws an error for mismatched lengths of texts and doc_
 # Test 3: get_entities returns NA for the "tag" field when there are mismatched lengths of texts and doc_ids
 test_that("get_entities returns NA for the 'tag' field when there are mismatched lengths of texts and doc_ids", {
   result <- get_entities(
-    texts = c("TCD in less better than Oxford"),
-    doc_ids = c("doc1"),
+    texts = "TCD in less better than Oxford",
+    doc_ids = "doc1",
     language = "ner"
   )
   # Check that the "tag" field is NA
@@ -129,8 +127,8 @@ test_that("get_entities returns NA for the 'tag' field when there are mismatched
 # Test 4: get_entities returns NA for the "tag" field when the input text does not contain entities
 test_that("get_entities returns NA for the 'tag' field when the input text does not contain entities", {
   result <- get_entities(
-    texts = c("xxxxxxxxx"),
-    doc_ids = c("doc1"),
+    texts = "xxxxxxxxx",
+    doc_ids = "doc1",
     language = "ner"
   )
   # Check that the "tag" field is NA
@@ -140,8 +138,8 @@ test_that("get_entities returns NA for the 'tag' field when the input text does 
 # Test 5: get_entities returns NA for the "tag" field when the input text is NA
 test_that("get_entities returns NA for the 'tag' field when the input text is NA", {
   result <- get_entities(
-    texts = c(NA),
-    doc_ids = c(NA),
+    texts = NA,
+    doc_ids = NA,
     language = "ner"
   )
   # Check that the "tag" field is NA
@@ -151,8 +149,8 @@ test_that("get_entities returns NA for the 'tag' field when the input text is NA
 # Test 6: get_entities returns NA for the "tag" field when the input text is NA and show.text_id is TRUE
 test_that("get_entities returns NA for the 'tag' field when the input text is NA and show.text_id is TRUE", {
   result <- get_entities(
-    texts = c(NA),
-    doc_ids = c(NA),
+    texts = NA,
+    doc_ids = NA,
     show.text_id = TRUE,
     gc.active = TRUE,
     language = "ner"
@@ -164,8 +162,8 @@ test_that("get_entities returns NA for the 'tag' field when the input text is NA
 # Test 7: get_entities returns the correct entity tag "ORG" for an input text
 test_that("get_entities returns the correct entity tag 'ORG' for an input text", {
   result <- get_entities(
-    texts = c("TCD in less better than Oxford"),
-    doc_ids = c("doc1"),
+    texts = "TCD in less better than Oxford",
+    doc_ids = "doc1",
     show.text_id = TRUE,
     gc.active = TRUE,
     language = "ner"

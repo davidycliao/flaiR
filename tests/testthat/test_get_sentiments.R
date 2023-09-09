@@ -27,7 +27,7 @@ test_that("get_sentiments returns sentiment scores using a custom tagger", {
 test_that("get_sentiments throws an error for mismatched lengths of texts and doc_ids", {
   expect_error(
     get_sentiments(
-      texts = c("TCD in less better than Oxford"),
+      texts = "TCD in less better than Oxford",
       doc_ids = c("doc1", "doc2"),
       language = "sentiment"
     ),
@@ -38,8 +38,8 @@ test_that("get_sentiments throws an error for mismatched lengths of texts and do
 # Test 4: get_sentiments handles NA values and returns NA for sentiment scores
 test_that("get_sentiments handles NA values and returns NA for sentiment scores", {
   result <- get_sentiments(
-    texts = c(NA),
-    doc_ids = c(NA),
+    texts = NA,
+    doc_ids = NA,
     show.text_id = TRUE,
     gc.active = TRUE,
     language = "sentiment"
@@ -53,7 +53,7 @@ test_that("get_sentiments handles NA values and returns NA for sentiment scores"
 test_that("get_sentiments returns 'NEGATIVE' sentiment for specific input", {
   # Call get_sentiments with specific input
   result <- get_sentiments(
-    texts = c("TCD in less better than Oxford", "Essex is in Colchester"),
+    texts = "TCD in less better than Oxford", "Essex is in Colchester",
     doc_ids = c("doc1", "doc2"),
     show.text_id = TRUE,
     gc.active = TRUE,
@@ -68,8 +68,8 @@ test_that("get_sentiments returns 'NEGATIVE' sentiment for specific input", {
 test_that("get_sentiments with empty input returns NA for score", {
   # Call get_sentiments with empty input
   result <- get_sentiments(
-    texts = c(""),
-    doc_ids = c(""),
+    texts = "",
+    doc_ids = "",
     show.text_id = TRUE,
     gc.active = TRUE,
     language = "sentiment"

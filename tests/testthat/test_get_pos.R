@@ -104,8 +104,8 @@ test_that("get_pos returns part-of-speech tags for three input texts using a cus
 # Test 3: get_pos handles NA values and returns NA for part-of-speech tags
 test_that("get_pos handles NA values and returns NA for part-of-speech tags", {
   result <- get_pos(
-    texts = c(NA),
-    doc_ids = c(NA),
+    texts = NA,
+    doc_ids = NA,
     show.text_id = TRUE,
     gc.active = TRUE,
     language = "pos"
@@ -117,8 +117,8 @@ test_that("get_pos handles NA values and returns NA for part-of-speech tags", {
 # Test 4: get_pos handles empty texts and returns NA for part-of-speech tags
 test_that("get_pos handles empty texts and returns NA for part-of-speech tags", {
   result <- get_pos(
-    texts = c(""),
-    doc_ids = c("  "),
+    texts = "",
+    doc_ids = "  ",
     show.text_id = TRUE,
     gc.active = TRUE,
     language = "pos"
@@ -131,7 +131,7 @@ test_that("get_pos handles empty texts and returns NA for part-of-speech tags", 
 test_that("get_pos throws an error for mismatched lengths of texts and doc_ids", {
   expect_error(
     get_pos(
-      texts = c("TCD in less better than Oxford"),
+      texts = "TCD in less better than Oxford",
       doc_ids = c("doc1", "doc2"),
       language = "pos"
     ),
@@ -142,8 +142,8 @@ test_that("get_pos throws an error for mismatched lengths of texts and doc_ids",
 # Test 6: get_pos handles NA values and returns NA for part-of-speech tags
 test_that("get_pos handles NA values and returns NA for part-of-speech tags", {
   result <- get_pos(
-    texts = c(NA),
-    doc_ids = c(NA),
+    texts = NA,
+    doc_ids = NA,
     show.text_id = TRUE,
     gc.active = TRUE,
     language = "pos"
