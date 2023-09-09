@@ -71,7 +71,6 @@ show.text_id_isFALE <- system.time({
                             gc.active = TRUE)
     gc()
 })
-
 ```
 
 
@@ -83,7 +82,7 @@ print(show.text_id_isFALE)
 print(results)
 ```
 
-If `show.text_id` is set to TRUE, the original text will be displayed, but it will occupy a significant amount of computer memory space.
+If `show.text_id` is set to TRUE, the original text will be displayed, but it will occupy a significant amount of computer memory space when processing a large amount of text.
 ```{r }
 show.text_id_isTRUE <- system.time({
     results <- get_entities(uk_immigration$text, uk_immigration$speaker, 

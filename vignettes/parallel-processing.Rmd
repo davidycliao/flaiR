@@ -1,0 +1,68 @@
+---
+title: "Parallel Processing"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Parallel Processing}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r include=FALSE}
+reticulate::py_install("flair")
+```
+
+- Operation system:
+
+```
+R version 4.3.1 (2023-06-16)
+Platform: aarch64-apple-darwin20 (64-bit)
+Running under: macOS Ventura 13.5.1
+```
+
+- Set up the necessary libraries:
+```{r setup}
+library(flaiR)
+library(parallel)
+library(data.table)
+data(uk_immigration)
+```
+
+- Define the number of cores you wish to use:
+
+```{r}
+num_cores <- detectCores() - 1  
+#by using detectCores() - 1, we do this to make a balance between maximizing the computation speed and ensuring that the machine remains responsive and efficient.
+```
+
+- Then, we can split `uk_immigration` into chunks (based on cores) and then use `mclapply` to process each chunk in parallel:
+```{r}
+num_cores <- detectCores()-1  # 获取可用的核心数
+cl <- makeCluster(num_cores)
+
+
+clusterExport(cl, c("uk_immigration", "tagger_pos", "get_entities"))
+
+# Split data into 7 chunks based on 7 cores 
+split_indices <- split(1:nrow(uk_immigration),
+                       rep(1:num_cores, each = ceiling(nrow(uk_immigration) / num_cores)))
+
+tagger_pos <- load_tagger_ner("ner-fast")
+
+results_list <- parLapply(cl, split_indices, function(indices) {
+  get_entities(uk_immigration$text[indices], 
+               uk_immigration$speaker[indices], 
+               tagger_pos,
+               show.text_id = FALSE,
+               gc.active = FALSE)
+})
+stopCluster(cl)
+
+```
+

@@ -15,6 +15,7 @@
 #' @param gc.active A logical value. If TRUE, runs the garbage collector after
 #' processing all texts. This can help in freeing up memory by releasing unused
 #' memory space, especially when processing a large number of texts. Default is FALSE.
+#'
 #' @return A \code{data.table} containing three columns:
 #'   \itemize{
 #'     \item \code{doc_iid}: The document ID from the input.
@@ -45,7 +46,7 @@
 #'
 #' @importFrom data.table data.table
 #' @importFrom reticulate py_available py_module_available import
-#'
+#' @importFrom data.table :=
 #' @export
 get_sentiments <- function(texts, doc_ids,
                            tagger = NULL,
@@ -54,6 +55,7 @@ get_sentiments <- function(texts, doc_ids,
                            show.text_id = FALSE, gc.active = FALSE ) {
     # Check Environment Pre-requisites
     flaiR::check_prerequisites()
+    text_id <- NULL
 
     # Ensure the length of texts and doc_ids are the same
     if (length(texts) != length(doc_ids)) {

@@ -19,7 +19,7 @@
 #' @return A data table with columns:
 #' \describe{
 #'   \item{doc_id}{The ID of the document from which the entity was extracted.}
-#'   \item{text_id}{The actual text from which the entity was extracted.}
+#'   \item{text_id}{If TRUE, the actual text from which the entity was extracted.}
 #'   \item{entity}{The named entity that was extracted from the text.}
 #'   \item{tag}{The tag or category of the named entity. Common tags include PERSON (names of individuals),
 #'   ORG (organizations, institutions),
