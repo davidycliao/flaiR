@@ -24,8 +24,18 @@ test_that("get_flair_version", {
   expect_equal(is.character(get_flair_version()), TRUE)
 })
 
-test_that("check_flair_installed", {
+test_that("check_python_installed", {
   expect_equal(is.character(check_python_installed()), FALSE)
+})
+
+
+test_that("check_python_installed", {
+  expect_equal(is.logical(check_python_installed()), TRUE)
+})
+
+
+test_that("check_python_installed", {
+  expect_equal(is.function(clear_flair_cache), TRUE)
 })
 
 
