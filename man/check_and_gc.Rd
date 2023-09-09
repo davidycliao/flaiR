@@ -12,7 +12,8 @@ activate garbage collection.}
 }
 \value{
 A message indicating that garbage collection was performed
-    if `gc.active` was `TRUE`. Otherwise, no action is taken or message is displayed.
+if `gc.active` was `TRUE`. Otherwise, no action is taken or message is
+displayed.
 }
 \description{
 This function checks the value of `gc.active` to determine whether

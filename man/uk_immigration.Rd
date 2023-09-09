@@ -23,7 +23,7 @@ A data frame with 12 variables:
 }
 }
 \source{
-Data collected from ParSpeechV2 the House of Commons for the
+Data collected from `ParSpeechV2` the House of Commons for the
 year 2010. The dataset is publicly available at
 \url{https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/L4OAKN}.
 }

@@ -16,11 +16,11 @@
 
 目前主要的function
 
-| Core Functions       | Loader                    | Notes                  |
-|----------------------|---------------------------|------------------------|
-| `get_entities()`     | `load_tagger_ner`         | E.g., en, fr, da, nl, etc.   |
+| Core Functions       | Loader                    | Notes                            |
+|----------------------|---------------------------|----------------------------------|
+| `get_entities()`     | `load_tagger_ner`         | E.g., en, fr, da, nl, etc.       |
 | `get_pos()`          | `load_tagger_pos`         | E.g., pos, fr, de-pos, nl, etc   |
-| `get_sentiments()`   | `load_tagger_sentiments`  | E.g., sentiment (english),                     |
+| `get_sentiments()`   | `load_tagger_sentiments`  | E.g., sentiment (english)        |
 
 
 

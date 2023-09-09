@@ -11,6 +11,20 @@ test_that("get_pos returns pos tags for three input texts using 'upos-fast'", {
   expect_equal(nrow(result), 25)
 })
 
+# Test 1: get_pos returns pos tags for three input texts using "upos-fast"
+test_that("get_pos returns pos tags for three input texts using 'upos-fast'", {
+  result <- get_pos_batch(
+    texts = c("UCD is one of the best universities in Ireland.",
+              "Essex is famous in social science research",
+              "TCD is the oldest one in Ireland."),
+    doc_ids = c("doc1", "doc2", "doc3"),
+    language = "upos-fast",
+    batch_size = 1)
+  # Check that the number of rows in the result matches the number of tokens
+  expect_equal(nrow(result), 25)
+})
+
+
 # Test 2: get_pos returns pos tags for three input texts using a custom tagger
 test_that("get_pos returns pos tags for three input texts using a custom tagger", {
   result <- get_pos(
