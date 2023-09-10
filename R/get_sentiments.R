@@ -54,8 +54,10 @@ get_sentiments <- function(texts, doc_ids,
                            ...,
                            language = NULL,
                            show.text_id = FALSE, gc.active = FALSE ) {
-    # Check Environment Pre-requisites
-    flaiR::check_prerequisites()
+    # Check environment pre-requisites
+    flaiR:::check_prerequisites()
+    flaiR:::check_texts_and_ids(texts, doc_ids)
+    flaiR:::check_show.text_id(show.text_id)
 
     # Ensure the length of texts and doc_ids are the same
     if (length(texts) != length(doc_ids)) {
@@ -136,6 +138,19 @@ get_sentiments <- function(texts, doc_ids,
 #' @param batch_size An integer specifying the number of texts to be processed
 #' at once. It can help optimize performance by leveraging parallel processing.
 #' Default is 5.
+#' @param device A character string specifying the computation device.
+#' It can be either "cpu" or a string representation of a GPU device number.
+#' For instance, "0" corresponds to the first GPU. If a GPU device number
+#' is provided, it will attempt to use that GPU. The default is "cpu".
+#' \itemize{
+#'  \item{"cuda" or "cuda:0"}{Refers to the first GPU in the system. If
+#'       there's only one GPU, specifying "cuda" or "cuda:0" will allocate
+#'       computations to this GPU.}
+#'  \item{"cuda:1"}{Refers to the second GPU in the system, allowing allocation
+#'       of specific computations to this GPU.}
+#'  \item{"cuda:2"}{Refers to the third GPU in the system, and so on for systems
+#'       with more GPUs.}
+#' }
 #'
 #' @return A \code{data.table} containing three columns:
 #'   \itemize{
@@ -170,14 +185,16 @@ get_sentiments <- function(texts, doc_ids,
 #' @importFrom data.table :=
 #' @export
 get_sentiments_batch <- function(texts, doc_ids,
-                           tagger = NULL,
-                           ...,
-                           language = NULL,
-                           batch_size = 5,
-                           show.text_id = FALSE, gc.active = FALSE ) {
+                                 tagger = NULL, ..., language = NULL,
+                                 show.text_id = FALSE, gc.active = FALSE,
+                                 batch_size = 5, device = "cpu") {
 
-  # Check Environment Pre-requisites
-  flaiR::check_prerequisites()
+  # Check environment pre-requisites and parameters
+  flaiR:::check_prerequisites()
+  flaiR:::check_device(device)
+  flaiR:::check_batch_size(batch_size)
+  flaiR:::check_texts_and_ids(texts, doc_ids)
+  flaiR:::check_show.text_id(show.text_id)
 
   # Ensure the length of texts and doc_ids are the same
   if (length(texts) != length(doc_ids)) {
@@ -193,8 +210,9 @@ get_sentiments_batch <- function(texts, doc_ids,
   if (is.null(tagger)) {
     tagger <- load_tagger_sentiments(language)
   }
-  # Batch processing function
+  # `process_batch` to batch process
   process_batch <- function(texts_batch, doc_ids_batch) {
+    text_id <- NULL
     sentences <- lapply(texts_batch, flair$data$Sentence)
 
     # Predict sentiments for the entire batch
@@ -236,7 +254,7 @@ get_sentiments_batch <- function(texts, doc_ids,
   results_dt <- rbindlist(results_list, fill = TRUE)
 
   # Activate garbage collection
-  check_and_gc(gc.active)
+  flaiR:::check_and_gc(gc.active)
 
   return(results_dt)
 }

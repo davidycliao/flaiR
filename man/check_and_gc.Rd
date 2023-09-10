@@ -21,9 +21,4 @@ or not to perform garbage collection. If `gc.active` is `TRUE`,
 the function will perform garbage collection and then send a
 message indicating the completion of this process.
 }
-\examples{
-check_and_gc(TRUE)  # Performs garbage collection and displays a message
-check_and_gc(FALSE) # No action or message
-
-}
 \keyword{internal}

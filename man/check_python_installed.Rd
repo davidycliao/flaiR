@@ -16,3 +16,4 @@ Additionally, if installed, the path to the Python installation is printed.
 \description{
 This function checks if any environment is installed on the R system.
 }
+\keyword{internal}

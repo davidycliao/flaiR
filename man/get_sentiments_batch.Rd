@@ -10,9 +10,10 @@ get_sentiments_batch(
   tagger = NULL,
   ...,
   language = NULL,
-  batch_size = 5,
   show.text_id = FALSE,
-  gc.active = FALSE
+  gc.active = FALSE,
+  batch_size = 5,
+  device = "cpu"
 )
 }
 \arguments{
@@ -30,10 +31,6 @@ the function loads the default model based on the language.}
  Currently supports "sentiment" (English), "sentiment-fast" (English), and
 "de-offensive-language" (German)}
 
-\item{batch_size}{An integer specifying the number of texts to be processed
-at once. It can help optimize performance by leveraging parallel processing.
-Default is 5.}
-
 \item{show.text_id}{A logical value. If TRUE, includes the actual text from
 which the sentiment was predicted. Default is FALSE.}
 
@@ -41,6 +38,24 @@ which the sentiment was predicted. Default is FALSE.}
 processing all texts. This can help in freeing up memory by releasing unused
 memory space, especially when processing a large number of texts.
 Default is FALSE.}
+
+\item{batch_size}{An integer specifying the number of texts to be processed
+at once. It can help optimize performance by leveraging parallel processing.
+Default is 5.}
+
+\item{device}{A character string specifying the computation device.
+It can be either "cpu" or a string representation of a GPU device number.
+For instance, "0" corresponds to the first GPU. If a GPU device number
+is provided, it will attempt to use that GPU. The default is "cpu".
+\itemize{
+ \item{"cuda" or "cuda:0"}{Refers to the first GPU in the system. If
+      there's only one GPU, specifying "cuda" or "cuda:0" will allocate
+      computations to this GPU.}
+ \item{"cuda:1"}{Refers to the second GPU in the system, allowing allocation
+      of specific computations to this GPU.}
+ \item{"cuda:2"}{Refers to the third GPU in the system, and so on for systems
+      with more GPUs.}
+}}
 }
 \value{
 A \code{data.table} containing three columns:

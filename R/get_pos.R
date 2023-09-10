@@ -47,7 +47,9 @@
 get_pos <- function(texts, doc_ids, tagger = NULL, language = NULL,
                     show.text_id = FALSE, gc.active = FALSE ) {
   # Check environment pre-requisites
-  flaiR::check_prerequisites()
+  flaiR:::check_prerequisites()
+  flaiR:::check_texts_and_ids(texts, doc_ids)
+  flaiR:::check_show.text_id(show.text_id)
 
   # Ensure the length of texts and doc_ids are the same
   if (length(texts) != length(doc_ids)) {
@@ -128,6 +130,20 @@ get_pos <- function(texts, doc_ids, tagger = NULL, language = NULL,
 #' processing all texts. This can help in freeing up memory by releasing unused
 #' memory space, especially when processing a large number of texts.
 #' Default is FALSE.
+##'@param batch_size An integer specifying the size of each batch. Default is 5.
+#' @param device A character string specifying the computation device.
+#' It can be either "cpu" or a string representation of a GPU device number.
+#' For instance, "0" corresponds to the first GPU. If a GPU device number
+#' is provided, it will attempt to use that GPU. The default is "cpu".
+#' \itemize{
+#'  \item{"cuda" or "cuda:0"}{Refers to the first GPU in the system. If
+#'       there's only one GPU, specifying "cuda" or "cuda:0" will allocate
+#'       computations to this GPU.}
+#'  \item{"cuda:1"}{Refers to the second GPU in the system, allowing allocation
+#'       of specific computations to this GPU.}
+#'  \item{"cuda:2"}{Refers to the third GPU in the system, and so on for systems
+#'       with more GPUs.}
+#' }
 #' @return A data.table containing the following columns:
 #' \describe{
 #'   \item{\code{doc_id}}{The document identifier corresponding to each text.}
@@ -160,10 +176,15 @@ get_pos <- function(texts, doc_ids, tagger = NULL, language = NULL,
 #' }
 
 get_pos_batch <- function(texts, doc_ids, tagger = NULL, language = NULL,
-                    show.text_id = FALSE, gc.active = FALSE, batch_size = 32) {
+                          show.text_id = FALSE, gc.active = FALSE,
+                          batch_size = 5, device = "cpu") {
 
-  # Check environment pre-requisites
-  flaiR::check_prerequisites()
+  # Check environment pre-requisites and parameters
+  flaiR:::check_prerequisites()
+  flaiR:::check_device(device)
+  flaiR:::check_batch_size(batch_size)
+  flaiR:::check_texts_and_ids(texts, doc_ids)
+  flaiR:::check_show.text_id(show.text_id)
 
   # Remove NA or empty texts and their corresponding doc_ids
   valid_texts <- !is.na(texts) & nchar(texts) > 0
@@ -229,7 +250,7 @@ get_pos_batch <- function(texts, doc_ids, tagger = NULL, language = NULL,
   results_dt <- rbindlist(results_list, fill = TRUE)
 
   # Activate garbage collection
-  check_and_gc(gc.active)
+  flaiR:::check_and_gc(gc.active)
 
   return(results_dt)
 }

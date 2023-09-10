@@ -68,8 +68,10 @@
 get_entities <- function(texts, doc_ids, tagger = NULL, language = NULL,
                          show.text_id = FALSE, gc.active = FALSE) {
 
-  # Check Environment Pre-requisites
-  flaiR::check_prerequisites()
+  # Check environment pre-requisites
+  flaiR:::check_prerequisites()
+  flaiR:::check_texts_and_ids(texts, doc_ids)
+  flaiR:::check_show.text_id(show.text_id)
 
   # Ensure matching lengths for texts and doc_ids
   if (length(texts) != length(doc_ids)) {
@@ -111,88 +113,55 @@ get_entities <- function(texts, doc_ids, tagger = NULL, language = NULL,
     return(dt)
   }
   # Activate garbage collection
-  check_and_gc(gc.active)
+  flaiR:::check_and_gc(gc.active)
 
   results_list <- lapply(seq_along(texts),
                          function(i) {process_text(texts[[i]], doc_ids[[i]])})
   rbindlist(results_list, fill = TRUE)
 }
 
-#' @title Batch Process ofTagging Named Entities with Flair Models
+#' Extract Named Entities from a Batch of Texts
 #'
-#' @description This function takes texts and their corresponding document IDs
-#' as inputs, uses the Flair NLP library to extract named entities,
-#' and returns a dataframe of the identified entities along with their tags.
-#' When no entities are detected in a text, the function returns a data table
-#' with NA values. This might clutter the results. Depending on your use case,
-#' you might decide to either keep this behavior or skip rows with no detected
-#' entities.
+#' This function processes batches of texts and extracts named entities.
 #'
-#' @param texts A character vector containing the texts to process.
-#' @param doc_ids A character or numeric vector containing the document IDs
-#' corresponding to each text.
-#' @param tagger An optional tagger object. If NULL (default), the function will
-#'  load a Flair tagger based on the specified language.
-#' @param language A character string indicating the language model to load.
-#' Default is "en".
-#' @param show.text_id A logical value. If TRUE, includes the actual text from
-#' which the entity was extracted in the resulting data table. Useful for
-#' verification and traceability purposes but might increase the size of
-#' the output. Default is FALSE.
-#' @param gc.active A logical value. If TRUE, runs the garbage collector after
-#' processing all texts. This can help in freeing up memory by releasing unused
-#' memory space, especially when processing a large number of texts.
-#' Default is FALSE.
-#' @param batch_size An integer specifying the number of texts to be processed
-#' at once. It can help optimize performance by leveraging parallel processing.
-#' Default is 5.
-#' @return A data table with columns:
-#' \describe{
-#'   \item{doc_id}{The ID of the document from which the entity was extracted.}
-#'   \item{text_id}{If TRUE, the actual text from which the entity
-#'   was extracted.}
-#'   \item{entity}{The named entity that was extracted from the text.}
-#'   \item{tag}{The tag or category of the named entity. Common tags include:
-#'   PERSON (names of individuals),
-#'   ORG (organizations, institutions),
-#'   GPE (countries, cities, states),
-#'   LOCATION (mountain ranges, bodies of water),
-#'   DATE (dates or periods),
-#'   TIME (times of day),
-#'   MONEY (monetary values),
-#'   PERCENT (percentage values),
-#'   FACILITY (buildings, airports),
-#'   PRODUCT (objects, vehicles),
-#'   EVENT (named events like wars or sports events),
-#'   ART (titles of books)}}
+#' @param texts A character vector of texts to process.
+#' @param doc_ids A vector of document IDs corresponding to each text.
+#' @param tagger A pre-loaded Flair NER tagger. Default is NULL, and the tagger is loaded based on the provided language.
+#' @param language A character string specifying the language of the texts. Default is "en" (English).
+#' @param show.text_id Logical, whether to include the text ID in the output. Default is FALSE.
+#' @param gc.active Logical, whether to activate garbage collection after processing each batch. Default is FALSE.
+#' @param batch_size An integer specifying the size of each batch. Default is 5.
+#' @param device A character string specifying the computation device.
+#' It can be either "cpu" or a string representation of a GPU device number.
+#' For instance, "0" corresponds to the first GPU. If a GPU device number
+#' is provided, it will attempt to use that GPU. The default is "cpu".
+#' \itemize{
+#'  \item{"cuda" or "cuda:0"}{Refers to the first GPU in the system. If
+#'       there's only one GPU, specifying "cuda" or "cuda:0" will allocate
+#'       computations to this GPU.}
+#'  \item{"cuda:1"}{Refers to the second GPU in the system, allowing allocation
+#'       of specific computations to this GPU.}
+#'  \item{"cuda:2"}{Refers to the third GPU in the system, and so on for systems
+#'       with more GPUs.}
+#' }
+#'
+#' @return A data.table containing the extracted entities, their corresponding tags, and document IDs.
+#'
 #' @examples
-#' \dontrun{
-#' library(reticulate)
-#' library(fliaR)
+#' # Example usage (assuming you have necessary dependencies and some sample data):
+#' # result <- get_entities_batch(c("Hello world", "I love AI"), c(1, 2))
 #'
-#' texts <- c("UCD is one of the best universities in Ireland.",
-#'            "UCD has a good campus but is very far from
-#'            my apartment in Dublin.",
-#'            "Essex is famous for social science research.",
-#'            "Essex is not in the Russell Group, but it is
-#'            famous for political science research.",
-#'            "TCD is the oldest university in Ireland.",
-#'            "TCD is similar to Oxford.")
-#' doc_ids <- c("doc1", "doc2", "doc3", "doc4", "doc5", "doc6")
-#' # Load NER ("ner") model
-#' tagger_ner <- load_tagger_ner('ner')
-#' results <- get_entities(texts, doc_ids, tagger_ner, batch_size = 3)
-#' print(results)}
-#'
-#' @importFrom data.table data.table rbindlist
-#' @importFrom reticulate import
-#' @importFrom data.table :=
 #' @export
 get_entities_batch <- function(texts, doc_ids, tagger = NULL, language = "en",
-                         show.text_id = FALSE, gc.active = FALSE, batch_size = 5) {
+                               show.text_id = FALSE, gc.active = FALSE,
+                               batch_size = 5, device = "cpu") {
 
-  # Check Environment Pre-requisites
-  flaiR::check_prerequisites()
+  # Check environment pre-requisites and parameters
+  flaiR:::check_prerequisites()
+  flaiR:::check_device(device)
+  flaiR:::check_batch_size(batch_size)
+  flaiR:::check_texts_and_ids(texts, doc_ids)
+  flaiR:::check_show.text_id(show.text_id)
 
   # Ensure matching lengths for texts and doc_ids
   if (length(texts) != length(doc_ids)) {
@@ -234,6 +203,7 @@ get_entities_batch <- function(texts, doc_ids, tagger = NULL, language = "en",
     return(dt)
   }
   # Activate garbage collection
+  flaiR:::check_and_gc(gc.active)
 
   # Process each text and extract entities
   process_batch <- function(batch_texts, batch_doc_ids) {
@@ -254,6 +224,5 @@ get_entities_batch <- function(texts, doc_ids, tagger = NULL, language = "en",
   if (gc.active) {
     gc()
   }
-
   rbindlist(batched_results, fill = TRUE)
 }
