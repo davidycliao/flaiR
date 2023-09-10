@@ -167,6 +167,7 @@ get_entities_batch <- function(texts, doc_ids, tagger = NULL, language = "en",
   if (length(texts) != length(doc_ids)) {
     stop("The lengths of texts and doc_ids do not match.")
   }
+
   # Load tagger if null
   if (is.null(tagger)) {
     tagger <- load_tagger_ner(language)
@@ -174,55 +175,56 @@ get_entities_batch <- function(texts, doc_ids, tagger = NULL, language = "en",
 
   Sentence <- reticulate::import("flair")$data$Sentence
 
-  # Process each text and extract entities
-  process_text <- function(text, doc_id) {
+  # Entity Extraction function to process multiple texts in one call
+  process_texts_batch <- function(batch_texts, batch_doc_ids) {
     text_id <- NULL
-    if (is.na(text) || is.na(doc_id)) {
-      return(data.table(doc_id = NA, entity = NA, tag = NA))
+    if (length(batch_texts) != length(batch_doc_ids)) {
+      stop("The lengths of batch_texts and batch_doc_ids do not match.")
     }
 
-    sentence <- Sentence(text)
-    tagger$predict(sentence)
-    entities <- sentence$get_spans("ner")
+    results_list <- lapply(seq_along(batch_texts), function(i) {
+      text <- batch_texts[[i]]
+      doc_id <- batch_doc_ids[[i]]
 
-    if (length(entities) == 0) {
-      return(data.table(doc_id = doc_id, entity = NA, tag = NA))
-    }
+      if (is.na(text) || is.na(doc_id)) {
+        return(data.table(doc_id = NA, entity = NA, tag = NA))
+      }
 
-    # Unified data table creation process
-    dt <- data.table(
-      doc_id = rep(doc_id, length(entities)),
-      entity = vapply(entities, function(e) e$text, character(1)),
-      tag = vapply(entities, function(e) e$tag, character(1))
-    )
+      sentence <- Sentence(text)
+      tagger$predict(sentence)
+      entities <- sentence$get_spans("ner")
 
-    if (isTRUE(show.text_id)) {
-      dt[, text_id := text]
-    }
+      if (length(entities) == 0) {
+        return(data.table(doc_id = doc_id, entity = NA, tag = NA))
+      }
 
-    return(dt)
-  }
-  # Activate garbage collection
-  check_and_gc(gc.active)
+      # Unified data table creation process
+      dt <- data.table(
+        doc_id = rep(doc_id, length(entities)),
+        entity = vapply(entities, function(e) e$text, character(1)),
+        tag = vapply(entities, function(e) e$tag, character(1))
+      )
 
-  # Process each text and extract entities
-  process_batch <- function(batch_texts, batch_doc_ids) {
-    results_list <- lapply(seq_along(batch_texts),
-                           function(i) {process_text(batch_texts[[i]], batch_doc_ids[[i]])})
+      if (isTRUE(show.text_id)) {
+        dt[, text_id := text]
+      }
+
+      return(dt)
+    })
+
     rbindlist(results_list, fill = TRUE)
   }
 
-  # Split the texts and doc_ids into batches
+  # call the above function
   num_batches <- ceiling(length(texts) / batch_size)
   batched_results <- lapply(1:num_batches, function(b) {
     start_idx <- (b - 1) * batch_size + 1
     end_idx <- min(b * batch_size, length(texts))
-    process_batch(texts[start_idx:end_idx], doc_ids[start_idx:end_idx])
+    process_texts_batch(texts[start_idx:end_idx], doc_ids[start_idx:end_idx])
   })
 
-  # Activate garbage collection for batches
-  if (gc.active) {
-    gc()
-  }
-  rbindlist(batched_results, fill = TRUE)
+  # Activate garbage collection
+  check_and_gc(gc.active)
+
+  return(rbindlist(batched_results, fill = TRUE))
 }

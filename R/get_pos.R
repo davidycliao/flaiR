@@ -250,7 +250,7 @@ get_pos_batch <- function(texts, doc_ids, tagger = NULL, language = NULL,
   results_dt <- rbindlist(results_list, fill = TRUE)
 
   # Activate garbage collection
-  flaiR:::check_and_gc(gc.active)
+  check_and_gc(gc.active)
 
   return(results_dt)
 }
