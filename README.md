@@ -14,9 +14,9 @@
 
 
 
-__The Current Main Functions:__
+__The Main Features:__
 
-| Core                                             | Loader                    | Notes                               |
+| Features                                             | Loader                    | Notes                               |
 |--------------------------------------------------|---------------------------|-------------------------------------|
 | `get_entities()`, `get_entities_batch()`         | `load_tagger_ner`         | E.g., en, fr, da, nl, etc.          |
 | `get_pos()`, `get_pos_batch()`                   | `load_tagger_pos`         | E.g., pos, fr-pos, de-pos, nl-pos, etc. |
