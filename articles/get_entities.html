@@ -329,7 +329,7 @@
 Model)<a class="anchor" aria-label="anchor" href="#an-example-using-ner-model-pre-trained-ner-english-model"></a>
 </h2>
 <div class="section level3">
-<h3 id="generic-approach-using-get_entities">Generic Approach using <code>get_entities()</code><a class="anchor" aria-label="anchor" href="#generic-approach-using-get_entities"></a>
+<h3 id="generic-approach-using-get_entities">Generic Approach Using <code>get_entities()</code><a class="anchor" aria-label="anchor" href="#generic-approach-using-get_entities"></a>
 </h3>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">flaiR</span><span class="op">)</span></span>
@@ -337,7 +337,7 @@ Model)<a class="anchor" aria-label="anchor" href="#an-example-using-ner-model-pr
 <span><span class="co">#&gt;  Python: 3.11</span></span>
 <span><span class="co">#&gt;  Flair: 0.12.2</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"uk_immigration"</span><span class="op">)</span></span>
-<span><span class="va">uk_immigration</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">uk_immigration</span>, <span class="fl">5</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">uk_immigration</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">uk_immigration</span>, <span class="fl">20</span><span class="op">)</span></span></code></pre></div>
 <p>Use <code>load_tagger_ner</code> to call the NER pretrained model.
 The model will be downloaded from Flair’s Hugging Face repo. Thus,
 ensure you have an internet connection. Once downloaded, the model will
@@ -346,21 +346,21 @@ once you’ve downloaded it and it hasn’t been manually removed, executing
 the command again will not trigger a download.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tagger_pos</span> <span class="op">&lt;-</span> <span class="fu">flaiR</span><span class="fu">::</span><span class="fu"><a href="../reference/load_tagger_ner.html">load_tagger_ner</a></span><span class="op">(</span><span class="st">"ner"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2023-09-10 01:48:08,518 SequenceTagger predicts: Dictionary with 20 tags: &lt;unk&gt;, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, &lt;START&gt;, &lt;STOP&gt;</span></span></code></pre></div>
+<span><span class="co">#&gt; 2023-09-10 05:19:07,800 SequenceTagger predicts: Dictionary with 20 tags: &lt;unk&gt;, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, &lt;START&gt;, &lt;STOP&gt;</span></span></code></pre></div>
 <p>If you want the computation to run faster, it is recommended to keep
 the show.text_id set to FALSE by default.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">time</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span><span class="op">{</span></span>
 <span>    <span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_entities.html">get_entities</a></span><span class="op">(</span><span class="va">uk_immigration</span><span class="op">$</span><span class="va">text</span>,</span>
 <span>                            <span class="va">uk_immigration</span><span class="op">$</span><span class="va">speaker</span>, </span>
-<span>                            <span class="va">tagger_pos</span>,</span>
-<span>                            show.text_id <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span>                            <span class="va">tagger_pos</span><span class="op">)</span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/base/gc.html" class="external-link">gc</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="op">}</span><span class="op">)</span></span>
 <span></span>
+<span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">time</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;  16.933   0.209  17.038</span></span></code></pre></div>
+<span><span class="co">#&gt;  43.718   0.740  44.317</span></span></code></pre></div>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">results</span><span class="op">)</span></span>
 <span><span class="co">#&gt;               doc_id                          entity  tag</span></span>
@@ -399,22 +399,71 @@ the show.text_id set to FALSE by default.</p>
 <span><span class="co">#&gt; 33: Philip Hollobone                    Peterborough  LOC</span></span>
 <span><span class="co">#&gt; 34: Philip Hollobone                         Jackson  PER</span></span>
 <span><span class="co">#&gt; 35: Philip Hollobone                          Friend  PER</span></span>
+<span><span class="co">#&gt; 36:    Philip Davies                          Friend  PER</span></span>
+<span><span class="co">#&gt; 37:    Philip Davies                      Government  ORG</span></span>
+<span><span class="co">#&gt; 38: Philip Hollobone                       Kettering  LOC</span></span>
+<span><span class="co">#&gt; 39: Philip Hollobone                      Government  ORG</span></span>
+<span><span class="co">#&gt; 40: Philip Hollobone                       Kettering  LOC</span></span>
+<span><span class="co">#&gt; 41: Philip Hollobone                       Kettering  LOC</span></span>
+<span><span class="co">#&gt; 42: Philip Hollobone               Migrationwatch UK  ORG</span></span>
+<span><span class="co">#&gt; 43: Philip Hollobone                      Carshalton  LOC</span></span>
+<span><span class="co">#&gt; 44: Philip Hollobone                      Wallington  LOC</span></span>
+<span><span class="co">#&gt; 45: Philip Hollobone                       Tom Brake  PER</span></span>
+<span><span class="co">#&gt; 46: Philip Hollobone                            &lt;NA&gt; &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 47:      Phil Woolas                       Gentleman  PER</span></span>
+<span><span class="co">#&gt; 48:      Phil Woolas                      Carshalton  LOC</span></span>
+<span><span class="co">#&gt; 49:      Phil Woolas                      Wallington  LOC</span></span>
+<span><span class="co">#&gt; 50:      Phil Woolas                       Tom Brake  PER</span></span>
+<span><span class="co">#&gt; 51: Philip Hollobone                            &lt;NA&gt; &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 52: Philip Hollobone                              UK  LOC</span></span>
+<span><span class="co">#&gt; 53:    Philip Davies                          Friend  PER</span></span>
+<span><span class="co">#&gt; 54:    Philip Davies                     Home Office  ORG</span></span>
+<span><span class="co">#&gt; 55:  Stewart Jackson                          Friend  PER</span></span>
+<span><span class="co">#&gt; 56:  Stewart Jackson                    Conservative  ORG</span></span>
+<span><span class="co">#&gt; 57:  Stewart Jackson                Australian-style MISC</span></span>
+<span><span class="co">#&gt; 58:  Stewart Jackson                              EU  ORG</span></span>
+<span><span class="co">#&gt; 59:  Stewart Jackson                          Friend  PER</span></span>
+<span><span class="co">#&gt; 60: Philip Hollobone                           Italy  LOC</span></span>
+<span><span class="co">#&gt; 61: Philip Hollobone                           Spain  LOC</span></span>
+<span><span class="co">#&gt; 62: Philip Hollobone                         Belgium  LOC</span></span>
+<span><span class="co">#&gt; 63: Philip Hollobone                           Italy  LOC</span></span>
+<span><span class="co">#&gt; 64: Philip Hollobone                          London  LOC</span></span>
+<span><span class="co">#&gt; 65: Philip Hollobone                              UK  LOC</span></span>
+<span><span class="co">#&gt; 66: Philip Hollobone                         Shipley  PER</span></span>
+<span><span class="co">#&gt; 67: Philip Hollobone                              UK  LOC</span></span>
+<span><span class="co">#&gt; 68: Philip Hollobone                              UK  LOC</span></span>
+<span><span class="co">#&gt; 69: Philip Hollobone                          Harrow  LOC</span></span>
+<span><span class="co">#&gt; 70: Philip Hollobone                         McNulty  PER</span></span>
+<span><span class="co">#&gt; 71: Philip Hollobone                           BBC 2  ORG</span></span>
+<span><span class="co">#&gt; 72: Philip Hollobone                       Kettering  LOC</span></span>
+<span><span class="co">#&gt; 73: Philip Hollobone                            &lt;NA&gt; &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 74:  Stewart Jackson                          Friend  PER</span></span>
+<span><span class="co">#&gt; 75:  Stewart Jackson                       Red Cross  ORG</span></span>
+<span><span class="co">#&gt; 76:  Stewart Jackson                         Darfuri MISC</span></span>
+<span><span class="co">#&gt; 77:  Stewart Jackson                     Zimbabweans MISC</span></span>
+<span><span class="co">#&gt; 78:  Stewart Jackson                       Red Cross  ORG</span></span>
+<span><span class="co">#&gt; 79: Philip Hollobone                          Friend  PER</span></span>
+<span><span class="co">#&gt; 80: Philip Hollobone                              UK  LOC</span></span>
+<span><span class="co">#&gt; 81:      Phil Woolas                          Geneva  LOC</span></span>
+<span><span class="co">#&gt; 82:      Phil Woolas                      Zimbabwean MISC</span></span>
+<span><span class="co">#&gt; 83:      Phil Woolas                      Zimbabwean MISC</span></span>
 <span><span class="co">#&gt;               doc_id                          entity  tag</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="batch-processing-with-using-get_entities_batch">Batch Processing with using <code>get_entities_batch()</code><a class="anchor" aria-label="anchor" href="#batch-processing-with-using-get_entities_batch"></a>
+<h3 id="batch-processing-using-get_entities_batch">Batch Processing Using <code>get_entities_batch()</code><a class="anchor" aria-label="anchor" href="#batch-processing-using-get_entities_batch"></a>
 </h3>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">batch_process_time</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span><span class="op">{</span></span>
 <span>    <span class="va">batch_process_results</span>  <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_entities_batch.html">get_entities_batch</a></span><span class="op">(</span><span class="va">uk_immigration</span><span class="op">$</span><span class="va">text</span>,</span>
 <span>                                                 <span class="va">uk_immigration</span><span class="op">$</span><span class="va">speaker</span>, </span>
 <span>                                                 <span class="va">tagger_pos</span>,</span>
-<span>                                                 batch_size <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span>                                                 batch_size <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/base/gc.html" class="external-link">gc</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="op">}</span><span class="op">)</span></span>
+<span><span class="co">#&gt; CPU is used.</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">batch_process_time</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;  17.656   0.240  17.822</span></span></code></pre></div>
+<span><span class="co">#&gt;  43.394   0.631  43.750</span></span></code></pre></div>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">batch_process_results</span><span class="op">)</span></span>
 <span><span class="co">#&gt;               doc_id                          entity  tag</span></span>
@@ -453,14 +502,62 @@ the show.text_id set to FALSE by default.</p>
 <span><span class="co">#&gt; 33: Philip Hollobone                    Peterborough  LOC</span></span>
 <span><span class="co">#&gt; 34: Philip Hollobone                         Jackson  PER</span></span>
 <span><span class="co">#&gt; 35: Philip Hollobone                          Friend  PER</span></span>
+<span><span class="co">#&gt; 36:    Philip Davies                          Friend  PER</span></span>
+<span><span class="co">#&gt; 37:    Philip Davies                      Government  ORG</span></span>
+<span><span class="co">#&gt; 38: Philip Hollobone                       Kettering  LOC</span></span>
+<span><span class="co">#&gt; 39: Philip Hollobone                      Government  ORG</span></span>
+<span><span class="co">#&gt; 40: Philip Hollobone                       Kettering  LOC</span></span>
+<span><span class="co">#&gt; 41: Philip Hollobone                       Kettering  LOC</span></span>
+<span><span class="co">#&gt; 42: Philip Hollobone               Migrationwatch UK  ORG</span></span>
+<span><span class="co">#&gt; 43: Philip Hollobone                      Carshalton  LOC</span></span>
+<span><span class="co">#&gt; 44: Philip Hollobone                      Wallington  LOC</span></span>
+<span><span class="co">#&gt; 45: Philip Hollobone                       Tom Brake  PER</span></span>
+<span><span class="co">#&gt; 46: Philip Hollobone                            &lt;NA&gt; &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 47:      Phil Woolas                       Gentleman  PER</span></span>
+<span><span class="co">#&gt; 48:      Phil Woolas                      Carshalton  LOC</span></span>
+<span><span class="co">#&gt; 49:      Phil Woolas                      Wallington  LOC</span></span>
+<span><span class="co">#&gt; 50:      Phil Woolas                       Tom Brake  PER</span></span>
+<span><span class="co">#&gt; 51: Philip Hollobone                            &lt;NA&gt; &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 52: Philip Hollobone                              UK  LOC</span></span>
+<span><span class="co">#&gt; 53:    Philip Davies                          Friend  PER</span></span>
+<span><span class="co">#&gt; 54:    Philip Davies                     Home Office  ORG</span></span>
+<span><span class="co">#&gt; 55:  Stewart Jackson                          Friend  PER</span></span>
+<span><span class="co">#&gt; 56:  Stewart Jackson                    Conservative  ORG</span></span>
+<span><span class="co">#&gt; 57:  Stewart Jackson                Australian-style MISC</span></span>
+<span><span class="co">#&gt; 58:  Stewart Jackson                              EU  ORG</span></span>
+<span><span class="co">#&gt; 59:  Stewart Jackson                          Friend  PER</span></span>
+<span><span class="co">#&gt; 60: Philip Hollobone                           Italy  LOC</span></span>
+<span><span class="co">#&gt; 61: Philip Hollobone                           Spain  LOC</span></span>
+<span><span class="co">#&gt; 62: Philip Hollobone                         Belgium  LOC</span></span>
+<span><span class="co">#&gt; 63: Philip Hollobone                           Italy  LOC</span></span>
+<span><span class="co">#&gt; 64: Philip Hollobone                          London  LOC</span></span>
+<span><span class="co">#&gt; 65: Philip Hollobone                              UK  LOC</span></span>
+<span><span class="co">#&gt; 66: Philip Hollobone                         Shipley  PER</span></span>
+<span><span class="co">#&gt; 67: Philip Hollobone                              UK  LOC</span></span>
+<span><span class="co">#&gt; 68: Philip Hollobone                              UK  LOC</span></span>
+<span><span class="co">#&gt; 69: Philip Hollobone                          Harrow  LOC</span></span>
+<span><span class="co">#&gt; 70: Philip Hollobone                         McNulty  PER</span></span>
+<span><span class="co">#&gt; 71: Philip Hollobone                           BBC 2  ORG</span></span>
+<span><span class="co">#&gt; 72: Philip Hollobone                       Kettering  LOC</span></span>
+<span><span class="co">#&gt; 73: Philip Hollobone                            &lt;NA&gt; &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 74:  Stewart Jackson                          Friend  PER</span></span>
+<span><span class="co">#&gt; 75:  Stewart Jackson                       Red Cross  ORG</span></span>
+<span><span class="co">#&gt; 76:  Stewart Jackson                         Darfuri MISC</span></span>
+<span><span class="co">#&gt; 77:  Stewart Jackson                     Zimbabweans MISC</span></span>
+<span><span class="co">#&gt; 78:  Stewart Jackson                       Red Cross  ORG</span></span>
+<span><span class="co">#&gt; 79: Philip Hollobone                          Friend  PER</span></span>
+<span><span class="co">#&gt; 80: Philip Hollobone                              UK  LOC</span></span>
+<span><span class="co">#&gt; 81:      Phil Woolas                          Geneva  LOC</span></span>
+<span><span class="co">#&gt; 82:      Phil Woolas                      Zimbabwean MISC</span></span>
+<span><span class="co">#&gt; 83:      Phil Woolas                      Zimbabwean MISC</span></span>
 <span><span class="co">#&gt;               doc_id                          entity  tag</span></span></code></pre></div>
-<p>Comparing the two sets of timings, the batch process is 15 seconds
-faster than the process without batching.</p>
+<p>Comparing the two sets of timings, the batch process faster than the
+process without batching when processing larger amount of data.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">time_difference</span> <span class="op">&lt;-</span> <span class="va">time</span><span class="op">[</span><span class="st">"elapsed"</span><span class="op">]</span> <span class="op">-</span> <span class="va">batch_process_time</span><span class="op">[</span><span class="st">"elapsed"</span><span class="op">]</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">time_difference</span><span class="op">)</span></span>
 <span><span class="co">#&gt; elapsed </span></span>
-<span><span class="co">#&gt;  -0.784</span></span></code></pre></div>
+<span><span class="co">#&gt;   0.567</span></span></code></pre></div>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
