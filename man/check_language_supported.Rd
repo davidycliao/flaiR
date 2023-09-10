@@ -22,5 +22,5 @@ it stops the execution and returns a message indicating the supported languages.
 # Assuming 'en' is a supported language and 'abc' is not:
 check_language_supported("en", c("en", "de", "fr"))
 # check_language_supported("abc", c("en", "de", "fr")) # will stop execution
-
 }
+\keyword{internal}

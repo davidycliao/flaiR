@@ -48,55 +48,61 @@ __Source__: https://flairnlp.github.io/docs/tutorial-basics/tagging-entities
 
 ## An Example Using `ner` Model (Pre-trained NER English Model)
 
+### Generic Approach Using `get_entities()`
 
 ```{r}
 library(flaiR)
 data("uk_immigration")
-uk_immigration <- head(uk_immigration, 5)
+uk_immigration <- head(uk_immigration, 20)
 ```
 
-
 Use `load_tagger_ner` to call the NER pretrained model. The model will be downloaded from Flair's Hugging Face repo. Thus, ensure you have an internet connection. Once downloaded, the model will be stored in __.flair__ as the cache in your device. So, once you've downloaded it and it hasn't been manually removed, executing the command again will not trigger a download.
+
 ```{r}
 tagger_pos <- flaiR::load_tagger_ner("ner")
 ```
 
-If you want the computation to run faster, it is recommended to keep the show.text_id set to FALSE by default. Additionally, when processing large texts, it can cause R's memory to expand, so it's suggested to set `gc.active` to TRUE. This doesn't necessarily improve computational efficiency but can prevent RStudio from failing.
+If you want the computation to run faster, it is recommended to keep the show.text_id set to FALSE by default. 
 
 ```{r setup}
-show.text_id_isFALE <- system.time({
-    results <- get_entities(uk_immigration$text, uk_immigration$speaker, 
-                            tagger_pos,
-                            show.text_id = FALSE,
-                            gc.active = TRUE)
+time <- system.time({
+    results <- get_entities(uk_immigration$text,
+                            uk_immigration$speaker, 
+                            tagger_pos)
     gc()
 })
-```
 
 
-```{r}
-print(show.text_id_isFALE)
+print(time)
 ```
+
 
 ```{r}
 print(results)
 ```
 
-If `show.text_id` is set to TRUE, the original text will be displayed, but it will occupy a significant amount of computer memory space when processing a large amount of text.
-```{r }
-show.text_id_isTRUE <- system.time({
-    results <- get_entities(uk_immigration$text, uk_immigration$speaker, 
-                            tagger_pos,
-                            show.text_id = TRUE,
-                            gc.active = TRUE)
+### Batch Processing  Using `get_entities_batch()`
+
+```{r}
+batch_process_time <- system.time({
+    batch_process_results  <- get_entities_batch(uk_immigration$text,
+                                                 uk_immigration$speaker, 
+                                                 tagger_pos,
+                                                 batch_size = 100)
     gc()
 })
+print(batch_process_time)
+
+
 ```
 
 ```{r}
-print(show.text_id_isTRUE)
+print(batch_process_results)
 ```
 
+Comparing the two sets of timings, the batch process faster than the process without batching when processing larger amount of data.
 ```{r}
-print(results)
+time_difference <- time["elapsed"] - batch_process_time["elapsed"]
+print(time_difference)
 ```
+

@@ -17,18 +17,22 @@ A data frame with 12 variables:
   \item{terms}{Terms or tags associated with the speech, character or list}
   \item{text}{Actual text of the speech, character}
   \item{parliament}{Which parliament session, character or numeric}
-  \item{iso3country}{ISO3 country code where the parliament is located, character}
+  \item{iso3country}{ISO3 country code where the
+  parliament is located, character}
   \item{year}{Year when the speech was made, numeric}
 }
 }
 \source{
-Data collected from the House of Commons for the year 2010. The dataset is publicly available at \url{https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/L4OAKN}.
+Data collected from `ParSpeechV2` the House of Commons for the
+year 2010. The dataset is publicly available at
+\url{https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/L4OAKN}.
 }
 \usage{
 data("uk_immigration")
 }
 \description{
-A dataset containing speeches and debates from the UK House of Commons on the topic of immigration in 2010.
+A dataset containing speeches and debates from the UK House of Commons on the
+topic of immigration in 2010.
 }
 \examples{
 \dontrun{

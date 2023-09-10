@@ -19,8 +19,10 @@ A data frame with 16 variables:
   \item{parliament}{Which Bundestag session, character or numeric}
   \item{iso3country}{ISO3 country code for Germany, character}
   \item{year}{Year when the speech was made, numeric}
-  \item{agenda_ID}{Unique identifier for the agenda, usually numeric or character}
-  \item{migration_dummy}{Dummy variable related to migration topic, usually numeric (0 or 1)}
+  \item{agenda_ID}{Unique identifier for the agenda, usually numeric
+   or character}
+  \item{migration_dummy}{Dummy variable related to migration topic,
+  usually numeric (0 or 1)}
   \item{comment_agenda}{Additional comments on the agenda, character}
 }
 }
@@ -31,7 +33,8 @@ Describe the source of your data here.
 data("de_immigration")
 }
 \description{
-A dataset containing speeches and debates from the German Bundestag on the topic of immigration.
+A dataset containing speeches and debates from the German Bundestag on the
+topic of immigration.
 }
 \examples{
 \dontrun{

@@ -7,12 +7,15 @@
 create_flair_env(env = "r-reticulate")
 }
 \arguments{
-\item{env}{The name of the conda environment to be used or created (default is "r-reticulate").}
+\item{env}{The name of the conda environment to be used or
+created (default is "r-reticulate").}
 }
 \value{
-Nothing is returned. The function primarily ensures that the Python library Flair is installed and available.
+Nothing is returned. The function primarily ensures that the Python
+library Flair is installed and available.
 }
 \description{
-This function checks whether the Flair Python library is installed in the current Python environment.
-If it is not, it attempts to install it either in the current conda environment or creates a new one.
+This function checks whether the Flair Python library is installed in the
+current Python environment. If it is not, it attempts to install it either
+in the current conda environment or creates a new one.
 }
