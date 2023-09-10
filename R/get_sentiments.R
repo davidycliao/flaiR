@@ -218,7 +218,7 @@ get_sentiments_batch <- function(texts, doc_ids,
     # Predict sentiments for the entire batch
     tagger$predict(sentences)
 
-    results <- lapply(1:length(sentences), function(i) {
+    results <- lapply(seq_along(sentences), function(i) {
       sentence <- sentences[[i]]
       doc_id <- doc_ids_batch[i]
 
