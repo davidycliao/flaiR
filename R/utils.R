@@ -355,7 +355,7 @@ check_language_supported <- function(language, supported_lan_models) {
 check_prerequisites <- function(...) {
   # Check if Python is installed
   attempt::stop_if_all(
-    flaiR:::check_python_installed(),
+    check_python_installed(),
     isFALSE,
     msg = "Python is not installed in your R environment."
   )
