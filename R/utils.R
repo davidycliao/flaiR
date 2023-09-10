@@ -332,7 +332,7 @@ check_and_gc <- function(gc.active) {
 #' # Assuming 'en' is a supported language and 'abc' is not:
 #' check_language_supported("en", c("en", "de", "fr"))
 #' # check_language_supported("abc", c("en", "de", "fr")) # will stop execution
-#'
+#' @export
 #' @keywords internal
 check_language_supported <- function(language, supported_lan_models) {
   attempt::stop_if_all(
