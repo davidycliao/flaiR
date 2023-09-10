@@ -45,13 +45,28 @@ is provided, it will attempt to use that GPU. The default is "cpu".
 }}
 }
 \value{
-A data.table containing the extracted entities, their corresponding tags, and document IDs.
+A data.table containing the extracted entities, their corresponding
+tags, and document IDs.
 }
 \description{
 This function processes batches of texts and extracts named entities.
 }
 \examples{
-# Example usage (assuming you have necessary dependencies and some sample data):
-# result <- get_entities_batch(c("Hello world", "I love AI"), c(1, 2))
+\dontrun{
+library(reticulate)
+library(fliaR)
 
+texts <- c("UCD is one of the best universities in Ireland.",
+           "UCD has a good campus but is very far from
+           my apartment in Dublin.",
+           "Essex is famous for social science research.",
+           "Essex is not in the Russell Group, but it is
+           famous for political science research.",
+           "TCD is the oldest university in Ireland.",
+           "TCD is similar to Oxford.")
+doc_ids <- c("doc1", "doc2", "doc3", "doc4", "doc5", "doc6")
+# Load NER ("ner") model
+tagger_ner <- load_tagger_ner('ner')
+results <- get_entities_batch(texts, doc_ids, tagger_ner)
+print(results)}
 }

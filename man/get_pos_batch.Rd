@@ -80,6 +80,6 @@ texts <- c("UCD is one of the best universities in Ireland.",
 doc_ids <- c("doc1", "doc2", "doc3")
 
 # Using the batch_size parameter
-get_pos(texts, doc_ids, tagger_pos_fast, batch_size = 2)
+get_pos_batch(texts, doc_ids, tagger_pos_fast, batch_size = 2)
 }
 }

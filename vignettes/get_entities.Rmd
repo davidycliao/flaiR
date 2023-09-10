@@ -88,7 +88,7 @@ batch_process_time <- system.time({
     batch_process_results  <- get_entities_batch(uk_immigration$text,
                                                  uk_immigration$speaker, 
                                                  tagger_pos,
-                                                 batch_size = 100)
+                                                 batch_size = 5)
     gc()
 })
 print(batch_process_time)
@@ -100,7 +100,7 @@ print(batch_process_time)
 print(batch_process_results)
 ```
 
-Comparing the two sets of timings, the batch process faster than the process without batching when processing larger amount of data.
+Comparing the two sets of timings, the batch process slightly faster than the process without batching when processing larger amount of data.
 ```{r}
 time_difference <- time["elapsed"] - batch_process_time["elapsed"]
 print(time_difference)
