@@ -69,9 +69,9 @@ get_entities <- function(texts, doc_ids, tagger = NULL, language = NULL,
                          show.text_id = FALSE, gc.active = FALSE) {
 
   # Check environment pre-requisites
-  flaiR:::check_prerequisites()
-  flaiR:::check_texts_and_ids(texts, doc_ids)
-  flaiR:::check_show.text_id(show.text_id)
+  check_prerequisites()
+  check_texts_and_ids(texts, doc_ids)
+  check_show.text_id(show.text_id)
 
   # Ensure matching lengths for texts and doc_ids
   if (length(texts) != length(doc_ids)) {
@@ -113,7 +113,7 @@ get_entities <- function(texts, doc_ids, tagger = NULL, language = NULL,
     return(dt)
   }
   # Activate garbage collection
-  flaiR:::check_and_gc(gc.active)
+  check_and_gc(gc.active)
 
   results_list <- lapply(seq_along(texts),
                          function(i) {process_text(texts[[i]], doc_ids[[i]])})
@@ -157,11 +157,11 @@ get_entities_batch <- function(texts, doc_ids, tagger = NULL, language = "en",
                                batch_size = 5, device = "cpu") {
 
   # Check environment pre-requisites and parameters
-  flaiR:::check_prerequisites()
-  flaiR:::check_device(device)
-  flaiR:::check_batch_size(batch_size)
-  flaiR:::check_texts_and_ids(texts, doc_ids)
-  flaiR:::check_show.text_id(show.text_id)
+  check_prerequisites()
+  check_device(device)
+  check_batch_size(batch_size)
+  check_texts_and_ids(texts, doc_ids)
+  check_show.text_id(show.text_id)
 
   # Ensure matching lengths for texts and doc_ids
   if (length(texts) != length(doc_ids)) {
@@ -203,7 +203,7 @@ get_entities_batch <- function(texts, doc_ids, tagger = NULL, language = "en",
     return(dt)
   }
   # Activate garbage collection
-  flaiR:::check_and_gc(gc.active)
+  check_and_gc(gc.active)
 
   # Process each text and extract entities
   process_batch <- function(batch_texts, batch_doc_ids) {

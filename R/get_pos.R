@@ -47,9 +47,9 @@
 get_pos <- function(texts, doc_ids, tagger = NULL, language = NULL,
                     show.text_id = FALSE, gc.active = FALSE ) {
   # Check environment pre-requisites
-  flaiR:::check_prerequisites()
-  flaiR:::check_texts_and_ids(texts, doc_ids)
-  flaiR:::check_show.text_id(show.text_id)
+  check_prerequisites()
+  check_texts_and_ids(texts, doc_ids)
+  check_show.text_id(show.text_id)
 
   # Ensure the length of texts and doc_ids are the same
   if (length(texts) != length(doc_ids)) {
@@ -180,11 +180,11 @@ get_pos_batch <- function(texts, doc_ids, tagger = NULL, language = NULL,
                           batch_size = 5, device = "cpu") {
 
   # Check environment pre-requisites and parameters
-  flaiR:::check_prerequisites()
-  flaiR:::check_device(device)
-  flaiR:::check_batch_size(batch_size)
-  flaiR:::check_texts_and_ids(texts, doc_ids)
-  flaiR:::check_show.text_id(show.text_id)
+  check_prerequisites()
+  check_device(device)
+  check_batch_size(batch_size)
+  check_texts_and_ids(texts, doc_ids)
+  check_show.text_id(show.text_id)
 
   # Remove NA or empty texts and their corresponding doc_ids
   valid_texts <- !is.na(texts) & nchar(texts) > 0
@@ -235,7 +235,7 @@ get_pos_batch <- function(texts, doc_ids, tagger = NULL, language = NULL,
     batch_sentences <- lapply(batch_texts, Sentence)
     lapply(batch_sentences, tagger$predict)
 
-    dt_list <- lapply(1:length(batch_sentences), function(i) {
+    dt_list <- lapply(seq_along(batch_sentences), function(i) {
       process_single_sentence(batch_sentences[[i]], batch_ids[[i]])
     })
     return(rbindlist(dt_list, fill = TRUE))
