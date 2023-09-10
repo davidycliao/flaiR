@@ -149,7 +149,43 @@
 </h2>
 <p><a href="https://github.com/davidycliao/flaiR/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/davidycliao/flaiR/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a> <a href="https://github.com/davidycliao/flaiR/actions/workflows/test-coverage.yaml" class="external-link"><img src="https://github.com/davidycliao/flaiR/actions/workflows/test-coverage.yaml/badge.svg" alt="coverage"></a> <a href="https://codecov.io/gh/davidycliao/flaiR" class="external-link"><img src="https://codecov.io/gh/davidycliao/flaiR/graph/badge.svg?token=CPIBIB6L78" alt="codecov"></a> <a href="https://www.codefactor.io/repository/github/davidycliao/flair" class="external-link"><img src="https://www.codefactor.io/repository/github/davidycliao/flair/badge" alt="CodeFactor"></a></p>
 <div style="text-align: justify">
-<p><code>flairR</code> is R wrapper, built upon the reticulate, offers streamlined access to the core features of FlairNLP in Python. FlairNLP is an advanced framework of NLP incorporating the latest techniques developed by <a href="https://github.com/flairNLP/flair" class="external-link">Humboldt University of Berlin</a>. For a deeper understanding of Flair’s architecture, please find the research article ‘<a href="https://aclanthology.org/C18-1139.pdf" class="external-link">Contextual String Embeddings for Sequence Labeling</a>’ and the official <a href="https://flairnlp.github.io" class="external-link">mannual</a> in Python. The features currently available in <code>flairR</code> includes <strong>part-of-speech tagging</strong>, <strong>transformer-based sentiment analysis</strong>, and <strong>named entity recognition</strong>. The <code>flairR</code> returns the tagging information directly in a data.table format. Note that using the transformed base NLP toolkit can be computationally intensive. Therefore, implementing parallel computing is advised to enhance the performance of NLP tasks.</p>
+<p><code>flaiR</code> is the FlairNLP tool for R users, particularly for those in the social sciences. It offers streamlined access to the core features of <code>FlairNLP</code> from Python. FlairNLP is an advanced NLP framework that incorporates the latest techniques developed by the Humboldt University of Berlin. For a deeper understanding of Flair’s architecture, refer to the research article ‘<a href="https://aclanthology.org/C18-1139.pdf" class="external-link">Contextual String Embeddings for Sequence Labeling</a>’ and the official <a href="https://flairnlp.github.io" class="external-link">mannual</a> in Python. The features currently available in <code>flairR</code> include <strong>part-of-speech tagging</strong>, <strong>transformer-based sentiment analysis</strong>, and <strong>named entity recognition</strong>. <code>flairR</code> returns tagging information directly in a data.table format. It’s worth noting that using the transformer-based pre-trained model from FlairNLP can be computationally intensive. Therefore, implementing parallel computing in R is recommended to enhance the performance of the tasks.</p>
+<p><strong>The Current Main Functions:</strong></p>
+<table class="table">
+<colgroup>
+<col width="43%">
+<col width="23%">
+<col width="32%">
+</colgroup>
+<thead><tr class="header">
+<th>Core</th>
+<th>Loader</th>
+<th>Notes</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>
+<code><a href="reference/get_entities.html">get_entities()</a></code>, <code><a href="reference/get_entities_batch.html">get_entities_batch()</a></code>
+</td>
+<td><code>load_tagger_ner</code></td>
+<td>E.g., en, fr, da, nl, etc.</td>
+</tr>
+<tr class="even">
+<td>
+<code><a href="reference/get_pos.html">get_pos()</a></code>, <code><a href="reference/get_pos_batch.html">get_pos_batch()</a></code>
+</td>
+<td><code>load_tagger_pos</code></td>
+<td>E.g., pos, fr-pos, de-pos, nl-pos, etc.</td>
+</tr>
+<tr class="odd">
+<td>
+<code><a href="reference/get_sentiments.html">get_sentiments()</a></code>, <code><a href="reference/get_sentiments_batch.html">get_sentiments_batch()</a></code>
+</td>
+<td><code>load_tagger_sentiments</code></td>
+<td>E.g., sentiment (English)</td>
+</tr>
+</tbody>
+</table>
 <div class="section level3">
 <h3 id="installation-via-github">Installation via <code>GitHub</code>
 <a class="anchor" aria-label="anchor" href="#installation-via-github"></a>
