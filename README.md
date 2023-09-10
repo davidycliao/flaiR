@@ -16,11 +16,13 @@
 
 __The Main Features:__
 
-| Features                                             | Loader                    | Notes                               |
-|--------------------------------------------------|---------------------------|-------------------------------------|
-| `get_entities()`, `get_entities_batch()`         | `load_tagger_ner`         | E.g., en, fr, da, nl, etc.          |
-| `get_pos()`, `get_pos_batch()`                   | `load_tagger_pos`         | E.g., pos, fr-pos, de-pos, nl-pos, etc. |
-| `get_sentiments()`, `get_sentiments_batch()`     | `load_tagger_sentiments`  | E.g., sentiment (English)           |
+| Features                                         | Loader                    | Supported Models                    |
+|--------------------------------------------------|---------------------------|------------------------------------------------------------------------|
+| `get_entities()`, `get_entities_batch()`         | `load_tagger_ner`         | E.g., en(English), fr (French), da (Danish), nl (Dutch), etc.          |
+| `get_pos()`, `get_pos_batch()`                   | `load_tagger_pos`         | E.g., pos (English POS), fr-pos (French POS), de-pos(German POS), nl-pos (Dutch POS), etc. |
+| `get_sentiments()`, `get_sentiments_batch()`     | `load_tagger_sentiments`  | E.g., sentiment (English) |
+
+
 
 
 

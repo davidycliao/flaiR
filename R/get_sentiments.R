@@ -176,7 +176,7 @@ get_sentiments <- function(texts, doc_ids,
 #' # Load re-trained sentiment ("sentiment") model
 #' tagger_sent <- load_tagger_sentiments('sentiment')
 #'
-#' results <- get_sentiments(texts, doc_ids, tagger_sent, batch_size = 3)
+#' results <- get_sentiments_batch(texts, doc_ids, tagger_sent, batch_size = 3)
 #' print(results)
 #' }
 #'
