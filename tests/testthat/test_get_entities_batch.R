@@ -1,7 +1,7 @@
 
 test_that("batch_texts and batch_doc_ids lengths mismatch", {
   expect_error(get_entities_batch(texts = c("text1", "text2"),
-                                  doc_ids = c("id1"),
+                                  doc_ids = "id1",
                                   show.text_id = FALSE),
                "The lengths of texts and doc_ids do not match.")
 })
