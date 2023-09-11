@@ -17,7 +17,7 @@ test_that("NA values for text or doc_id", {
 
 test_that("No entities detected", {
   # Assuming that the tagger returns no entities for "text_without_entity"
-  result <- get_entities_batch(texts = c("text_without_entity"),
+  result <- get_entities_batch(texts = "text_without_entity",
                                doc_ids = "id1",
                                show.text_id = FALSE)
   expect_equal(result$doc_id[1], "id1")
@@ -35,7 +35,7 @@ test_that("Inclusion of doc_id when show.text_id is TRUE", {
 
 
 test_that("Mismatched lengths of batch_texts and batch_doc_ids raise an error", {
-  expect_error(get_entities_batch(c("Hello", "World"), c("doc1"), show.text_id = TRUE),
+  expect_error(get_entities_batch(c("Hello", "World"), "doc1", show.text_id = TRUE),
                "The lengths of texts and doc_ids do not match.")
 })
 
