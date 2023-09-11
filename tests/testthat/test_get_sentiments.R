@@ -89,3 +89,4 @@ test_that("get_sentiments with empty input returns NA for score", {
   expect_equal(nrow(result), 1)
   expect_true(is.na(result$score))
 })
+

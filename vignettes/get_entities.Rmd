@@ -53,7 +53,7 @@ __Source__: https://flairnlp.github.io/docs/tutorial-basics/tagging-entities
 ```{r}
 library(flaiR)
 data("uk_immigration")
-uk_immigration <- head(uk_immigration, 20)
+uk_immigration <- head(uk_immigration, 5)
 ```
 
 Use `load_tagger_ner` to call the NER pretrained model. The model will be downloaded from Flair's Hugging Face repo. Thus, ensure you have an internet connection. Once downloaded, the model will be stored in __.flair__ as the cache in your device. So, once you've downloaded it and it hasn't been manually removed, executing the command again will not trigger a download.
@@ -68,7 +68,9 @@ If you want the computation to run faster, it is recommended to keep the show.te
 time <- system.time({
     results <- get_entities(uk_immigration$text,
                             uk_immigration$speaker, 
-                            tagger_pos)
+                            tagger_pos,
+                            show.text_id = TRUE
+                            )
     gc()
 })
 

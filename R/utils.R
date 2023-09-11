@@ -1,4 +1,3 @@
-
 #' @title Clear Flair Cache
 #'
 #' @description
@@ -65,13 +64,12 @@ create_flair_env <- function(env = "r-reticulate") {
   env_path <- paths[grep("envs/", paths$python), "python"][1]
   if (grepl("envs/", env_path)) {
     message("you already created:", length(paths[grep("envs/", paths$python), "python"]))
-    message("you can run use_condaenv(",as.character(env_path),") to activate the enviroment in your R" )
+    message("you can run use_condaenv(",as.character(env_path),") to activate the enviroment in your R." )
     reticulate::use_condaenv(env)
   } else {
     # No conda environment found or active, so create one
     reticulate::conda_create(env)
-    message("No conda environment found. Creating a new environment named '", env, "'.")
-    message("After restarting the R session, please run create_flair_env() again.")
+    message("No conda environment found. Creating a new environment named '", env, "'. ", "After restarting the R session, please run create_flair_env() again.")
     rstudioapi::restartSession()
   }
 }
@@ -126,7 +124,7 @@ load_tagger_ner <- function(language = NULL) {
 
   if (is.null(language)) {
     language <- "en"
-    message("Language is not specified.", language, "in Flair is forceloaded. Please ensure that the internet connectivity is stable.")
+    message("Language is not specified. ", language, " in Flair is forceloaded. Please ensure that the internet connectivity is stable.")
   }
 
   # Translate language to model name if necessary
@@ -181,7 +179,7 @@ load_tagger_pos <- function(language = NULL) {
 
   if (is.null(language)) {
     language <- "pos-fast"
-    message("Language is not specified.", language, "in Flair is forceloaded. Please ensure that the internet connectivity is stable.")
+    message("Language is not specified. ", language, "in Flair is forceloaded. Please ensure that the internet connectivity is stable. \n")
   }
 
   # Ensure the model is supported
@@ -274,12 +272,16 @@ check_batch_size <- function(batch_size) {
 
 check_texts_and_ids <- function(texts, doc_ids) {
   if (is.null(texts) || length(texts) == 0) {
-    stop("texts cannot be NULL or empty.")
+    stop("The texts cannot be NULL or empty.")
   }
   if (is.null(doc_ids) || length(doc_ids) == 0) {
-    stop("doc_ids cannot be NULL or empty.")
+    stop("The doc_ids cannot be NULL or empty.")
+  }
+  if (length(texts) != length(doc_ids)) {
+    stop("The lengths of texts and doc_ids do not match.")
   }
 }
+
 
 #' Check the `show.text_id` parameter
 #'
@@ -436,3 +438,32 @@ check_python_installed <- function(...) {
     return(FALSE)
   }
 }
+
+#' Ensure Either a Tagger Object or a Language is Specified
+#'
+#' This function checks if either a tagger object or a language is specified and throws an error if neither is provided.
+#'
+#' @param tagger A tagger object (default is NULL).
+#' @param language The language of the texts (default is NULL).
+#'
+#' @return None. The function will throw a message if neither tagger nor language is specified.
+#'
+#' @keywords internal
+# ensure_tagger_or_language <- function(tagger = NULL, language = NULL) {
+#   if (is.null(tagger) && is.null(language)) {
+#     message("Either a tagger object or a language did not specify.")
+#   }
+# }
+ensure_tagger_or_language <- function(tagger = NULL, language = NULL, alternative = NULL) {
+  if (is.null(tagger) && is.null(language)) {
+    language <- alternative
+    message("Language is not specified. A default language in Flair is force-loaded. Please ensure that the internet connectivity is stable.\n")
+  } else if (is.null(tagger)) {
+    message("Language is specified as '", language, "'. Flair is force-loading this language. Please ensure that the internet connectivity is stable. \n")
+  }
+  return(language)
+}
+
+
+
+
