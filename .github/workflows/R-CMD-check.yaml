@@ -41,8 +41,9 @@ jobs:
       - name: Install Python venv (Ubuntu only)
         if: runner.os == 'Linux'
         run: |
-          sudo apt-get update
-          sudo apt-get install python3-venv
+          sudo apt-get update && sudo apt-get install -y python3-venv
+
+
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
