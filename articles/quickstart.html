@@ -151,14 +151,22 @@
 <h2 id="install-flair-with-using-remotes">Install <code>flaiR</code> with Using <a href="https://github.com/r-lib/remotes" class="external-link"><code>remotes</code></a><a class="anchor" aria-label="anchor" href="#install-flair-with-using-remotes"></a>
 </h2>
 <div style="text-align: justify">
-<p><code>flaiR</code> is built on top of the <a href="https://rstudio.github.io/reticulate/" class="external-link"><code>reticulate</code></a>
-package and incorporates key features of the Flair library, returning
-data in a tidy and efficient<a href="https://cran.r-project.org/web/packages/data.table/index.html" class="external-link"><code>data.table</code></a>
+<p><strong>Requirement</strong>_:</p>
+<ul>
+<li><p>R (&gt;= 3.5)</p></li>
+<li><p>Python (&gt;= 3.7.0)</p></li>
+<li><p>Anaconda</p></li>
+</ul>
+<p><code>flaiR</code> is built on top of the reticulate package and
+incorporates key functions to access the core features of FlairNLP,
+returning data in a tidy and efficient<a href="https://cran.r-project.org/web/packages/data.table/index.html" class="external-link"><code>data.table</code></a>
 format. The installation consists of two parts: First, install <a href="https://www.python.org/downloads/" class="external-link">Python 3.7</a> or higher, and
-the<a href="https://rstudio.github.io/reticulate/" class="external-link"><code>reticulate</code></a>
+the <a href="https://rstudio.github.io/reticulate/" class="external-link"><code>reticulate</code></a>
 package in R. Additionally, you’ll also need <a href="Anaconda"><code>Anaconda</code></a> to assist
 <code>reticulate</code> in setting up your Python environment, as well
-as enabling your RStudio to identify the environment.</p>
+as enabling your RStudio to identify the environment. If there are any
+installation issues, feel free to ask in <a href="https://github.com/davidycliao/flaiR/discussions" class="external-link">the
+Discussion</a>.</p>
 <pre><code><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span></span>
 <span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"davidycliao/flaiR"</span>, force <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">flaiR</span><span class="op">)</span></span></code></pre>
@@ -179,10 +187,10 @@ prompted to confirm whether or not you want to use r-reticulate. Enter
 <pre><code> Python : 3.11                                           
  Flair: ✗                                     
  Flair is installing from Python</code></pre>
-<!-- To utilize flairR in R, you need to first install the Python-based Flair NLP library. This can be done using `reticulate.` It's recommended to have Python version 3.7 or higher installed to ensure smooth operation of [`fliar`](https://flairnlp.github.io) in Python. -->
-<!-- <div style="text-align: center; border: 1px solid;"> -->
-<!--   <img src="https://raw.githack.com/davidycliao/flaiR/main/man/figures/ent.png" width="800" /> -->
-<!-- </div> -->
+<p><strong><em>Note</em></strong>: It’s worth noting that using the
+transformer-based pre-trained model from FlairNLP can be computationally
+intensive. Therefore, implementing parallel computing in R is
+recommended to enhance the performance of the tasks.</p>
 <p> </p>
 </div>
 <hr>
@@ -214,7 +222,7 @@ prompted to confirm whether or not you want to use r-reticulate. Enter
 <span><span class="co">#&gt;  Flair: 0.12.2</span></span></code></pre></div>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tagger_pos</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_tagger_pos.html">load_tagger_pos</a></span><span class="op">(</span><span class="st">"pos-fast"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2023-09-10 06:07:28,584 SequenceTagger predicts: Dictionary with 53 tags: &lt;unk&gt;, O, UH, ,, VBD, PRP, VB, PRP$, NN, RB, ., DT, JJ, VBP, VBG, IN, CD, NNS, NNP, WRB, VBZ, WDT, CC, TO, MD, VBN, WP, :, RP, EX, JJR, FW, XX, HYPH, POS, RBR, JJS, PDT, NNPS, RBS, AFX, WP$, -LRB-, -RRB-, ``, '', LS, $, SYM, ADD</span></span></code></pre></div>
+<span><span class="co">#&gt; 2023-09-11 04:03:54,586 SequenceTagger predicts: Dictionary with 53 tags: &lt;unk&gt;, O, UH, ,, VBD, PRP, VB, PRP$, NN, RB, ., DT, JJ, VBP, VBG, IN, CD, NNS, NNP, WRB, VBZ, WDT, CC, TO, MD, VBN, WP, :, RP, EX, JJR, FW, XX, HYPH, POS, RBR, JJS, PDT, NNPS, RBS, AFX, WP$, -LRB-, -RRB-, ``, '', LS, $, SYM, ADD</span></span></code></pre></div>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_pos.html">get_pos</a></span><span class="op">(</span><span class="va">texts</span>, <span class="va">doc_ids</span>, <span class="va">tagger_pos</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">results</span>, n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
@@ -241,7 +249,7 @@ prompted to confirm whether or not you want to use r-reticulate. Enter
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">flaiR</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tagger_ner</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_tagger_ner.html">load_tagger_ner</a></span><span class="op">(</span><span class="st">"ner"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2023-09-10 06:07:29,815 SequenceTagger predicts: Dictionary with 20 tags: &lt;unk&gt;, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, &lt;START&gt;, &lt;STOP&gt;</span></span></code></pre></div>
+<span><span class="co">#&gt; 2023-09-11 04:03:56,179 SequenceTagger predicts: Dictionary with 20 tags: &lt;unk&gt;, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, &lt;START&gt;, &lt;STOP&gt;</span></span></code></pre></div>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_entities.html">get_entities</a></span><span class="op">(</span><span class="va">texts</span>, <span class="va">doc_ids</span>, <span class="va">tagger_ner</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">results</span>, n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
