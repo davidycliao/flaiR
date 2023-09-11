@@ -22,7 +22,15 @@ reticulate::py_install("flair")
 
 <div style="text-align: justify">
 
-`flaiR` is built on top of the reticulate package and incorporates key functions to access the core features of FlairNLP, returning data in a tidy and efficient[`data.table`](https://cran.r-project.org/web/packages/data.table/index.html) format. The installation consists of two parts: First, install [Python 3.7](https://www.python.org/downloads/) or higher, and the[`reticulate`](https://rstudio.github.io/reticulate/) package in R. Additionally, you'll also need [`Anaconda`](Anaconda) to assist `reticulate` in setting up your Python environment, as well as enabling your RStudio to identify the environment.
+__System Requirement__
+
+- Python (>= 3.7.0)
+
+- R (>= 3.7.0)
+
+- Anaconda
+
+`flaiR` is built on top of the reticulate package and incorporates key functions to access the core features of FlairNLP, returning data in a tidy and efficient [`data.table`](https://cran.r-project.org/web/packages/data.table/index.html). The installation consists of two parts: First, install [Python 3.7](https://www.python.org/downloads/) or higher, and the[`reticulate`](https://rstudio.github.io/reticulate/) package in R. Additionally, you'll also need [`Anaconda`](Anaconda) to assist `reticulate` in setting up your Python environment, as well as enabling your RStudio to identify the environment.
 
 ```
 install.packages("remotes")
@@ -34,19 +42,11 @@ library(flaiR)
  Python : 3.11  
 ```
 
-If this is your first time using Python-related packages in like flair with R (`flaiR`), __it's highly likely that you haven't yet installed a Conda environment.__ When you are loading `flaiR` in R, it automatically goes through two steps. First, it creates a conda environment called ___r-reticulate___, during which you'll see a lot of messages related to the installation of the Python environment. Afterward, you will see the message __"Virtual environment 'r-reticulate' successfully created."__ Next, you will be prompted to confirm whether or not you want to use r-reticulate. Enter __"Yes,"__ and it will automatically install Python `flaiR`.
+If this is your first time using Python-related packages in like flair with R (`flaiR`), __it's highly likely that you haven't yet installed a Conda environment.__ When you are loading `flaiR` in R, it automatically goes through two steps. First, it creates a conda environment called ___r-reticulate___, during which you'll see a lot of messages related to the installation of the Python environment. Afterward, you will see the message __"Virtual environment 'r-reticulate' successfully created."__ Next, you will be prompted to confirm whether or not you want to use r-reticulate. Enter __"Yes,"__ and it will automatically install `flair` via your conda enviroment in Python.
 
-```
- Python : 3.11                                           
- Flair: ✗                                     
- Flair is installing from Python
-```
 
-<!-- To utilize flairR in R, you need to first install the Python-based Flair NLP library. This can be done using `reticulate.` It's recommended to have Python version 3.7 or higher installed to ensure smooth operation of [`fliar`](https://flairnlp.github.io) in Python. -->
+###### ___Note___: It's worth noting that using the transformer-based pre-trained model from FlairNLP can be computationally intensive. Therefore, implementing parallel computing in R is recommended to enhance the performance of the tasks.
 
-<!-- <div style="text-align: center; border: 1px solid;"> -->
-<!--   <img src="https://raw.githack.com/davidycliao/flaiR/main/man/figures/ent.png" width="800" /> -->
-<!-- </div> -->
 
 
 &nbsp;
