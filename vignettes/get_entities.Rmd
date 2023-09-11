@@ -15,6 +15,7 @@ knitr::opts_chunk$set(
 ```
 
 ```{r include=FALSE}
+library(reticulate)
 reticulate::py_install("flair")
 ```
 
@@ -69,7 +70,7 @@ time <- system.time({
     results <- get_entities(uk_immigration$text,
                             uk_immigration$speaker, 
                             tagger_pos,
-                            show.text_id = TRUE
+                            show.text_id = FALSE
                             )
     gc()
 })
@@ -90,8 +91,8 @@ batch_process_time <- system.time({
     batch_process_results  <- get_entities_batch(uk_immigration$text,
                                                  uk_immigration$speaker, 
                                                  tagger_pos, 
-                                                 show.text_id = TRUE,
-                                                 batch_size = 5)
+                                                 show.text_id = FALSE,
+                                                 batch_size = 2)
     gc()
 })
 print(batch_process_time)
