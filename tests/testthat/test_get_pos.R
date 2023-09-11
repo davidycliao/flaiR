@@ -11,6 +11,8 @@ test_that("get_pos returns pos tags for three input texts using 'upos-fast'", {
   expect_equal(nrow(result), 25)
 })
 
+
+
 # Test 2: get_pos returns pos tags for three input texts using a custom tagger
 test_that("get_pos returns pos tags for three input texts using a custom tagger", {
   result <- get_pos(
