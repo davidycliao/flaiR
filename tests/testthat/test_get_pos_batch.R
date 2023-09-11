@@ -16,8 +16,8 @@ test_that("get_pos_batch returns pos tags for three input texts using a custom t
 # Test 2: get_pos_batch returns pos tags for three input texts using a custom tagger
 test_that("texts and doc_ids are 0 and get_pos_batch returns NA", {
   result <- get_pos_batch(
-    texts = c(""),
-    doc_ids = c(""),
+    texts = "",
+    doc_ids = "",
     tagger = load_tagger_pos(),
     language = "upos-fast" ,
     batch_size = 1)
@@ -33,11 +33,11 @@ test_that("loading tagger works as expected", {
   valid_tagger <- load_tagger_pos("pos-fast")
 
   # Test 1: tagger is NULL and no language is specified
-  expect_message(get_pos_batch("Hello World", "doc1"), "Language is not specified. pos-fastin Flair is forceloaded. Please ensure that the internet connectivity is stable.", fixed = FALSE)
+  expect_message(get_pos_batch("Hello Dublin", "doc1"), "Language is not specified. pos-fastin Flair is forceloaded. Please ensure that the internet connectivity is stable.", fixed = FALSE)
 
   # Test 2: tagger is NULL but a language is specified
-  expect_equal(get_pos_batch(texts = "Hello World", doc_ids = "doc1", language = "pos-fast")[1, "tag"]$tag, "UH")
+  expect_equal(get_pos_batch(texts = "Hello Ireland", doc_ids = "doc1", language = "pos-fast")[1, "tag"]$tag, "UH")
   #
   # Test 3: a valid tagger object is passed
-  expect_message(get_pos_batch("Hello World", "doc1", tagger = valid_tagger), "CPU is used.")
+  expect_message(get_pos_batch("Hello Colchester", "doc1", tagger = valid_tagger), "CPU is used.")
 })

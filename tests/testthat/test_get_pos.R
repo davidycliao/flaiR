@@ -95,14 +95,13 @@ test_that("loading tagger works as expected", {
   # Assuming you have a valid tagger object for English
   valid_tagger <- load_tagger_pos("pos-fast")
 
-  # Test 1: tagger is NULL and no language is specified
+  # tagger is NULL and no language is specified
   expect_message(get_pos("Hello World", "doc1"), "Language is not specified. pos-fastin Flair is forceloaded. Please ensure that the internet connectivity is stable.")
 
-# Test 2: tagger is NULL but a language is specified
-expect_silent(get_pos("Hello World", "doc1", language = "pos"))
-#
-# Test 3: a valid tagger object is passed
-expect_silent(get_pos("Hello World", "doc1", tagger = valid_tagger))
+  # tagger is NULL but a language is specified
+  expect_silent(get_pos("Hello World", "doc1", language = "pos"))
+  #
+  # a valid tagger object is passed
+  expect_silent(get_pos("Hello World", "doc1", tagger = valid_tagger))
 })
 
-# Test 9:
