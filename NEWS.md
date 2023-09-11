@@ -1,3 +1,6 @@
+# flaiR 0.0.5 (2020-09-11)
+
+* Added more tests to monitor function performance. However, zzz.R and utils.R still fall below 80%.
 
 # flaiR 0.0.3 (2020-09-10)
 
