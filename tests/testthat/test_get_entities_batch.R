@@ -32,3 +32,20 @@ test_that("Inclusion of doc_id when show.text_id is TRUE", {
   expect_true("text_id" %in% colnames(result))
   expect_equal(result$text_id[1], "text1")
 })
+
+
+test_that("Mismatched lengths of batch_texts and batch_doc_ids raise an error", {
+  expect_error(get_entities_batch(c("Hello", "World"), c("doc1"), show.text_id = TRUE),
+               "The lengths of texts and doc_ids do not match.")
+})
+
+test_that("show.text_id = TRUE adds a text_id column", {
+  result <- get_entities_batch(c("Hello", "World"), c("doc1", "doc2"), show.text_id = TRUE)
+  expect_true("text_id" %in% names(result))
+})
+
+test_that("show.text_id = FALSE does not add a text_id column", {
+  result <- get_entities_batch(c("Hello", "World"), c("doc1", "doc2"), show.text_id = TRUE)
+  expect_true("text_id" %in% colnames(result))
+})
+
