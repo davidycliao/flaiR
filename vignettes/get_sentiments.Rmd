@@ -18,6 +18,7 @@ knitr::opts_chunk$set(
 library(reticulate)
 library(flaiR)
 reticulate::py_install("flair")
+system(paste(reticulate::py_config()$python, "-m pip install flair"))
 ```
 
 ## List of Sentiment Models
@@ -46,7 +47,7 @@ tagger_sent <- load_tagger_sentiments("sentiment")
 
 
 
-```{r setup}
+```{r }
 results <- get_sentiments(uk_immigration$text, seq_len(nrow(uk_immigration)), tagger_sent)
 
 print(results)
