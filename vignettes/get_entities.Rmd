@@ -17,7 +17,7 @@ knitr::opts_chunk$set(
 ```{r include=FALSE}
 library(reticulate)
 library(flaiR)
-
+use_virtualenv("r-reticulate", required = TRUE)
 reticulate::py_install("flair")
 ```
 
