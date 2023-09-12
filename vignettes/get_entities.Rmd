@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup, echo=FALSE}
+```{r, echo=FALSE}
 library(reticulate)
 library(flaiR)
 reticulate::py_install("flair")
@@ -67,7 +67,7 @@ tagger_pos <- flaiR::load_tagger_ner("ner")
 
 If you want the computation to run faster, it is recommended to keep the show.text_id set to FALSE by default. 
 
-```{r setup}
+```{r}
 time <- system.time({
     results <- get_entities(uk_immigration$text,
                             uk_immigration$speaker, 
