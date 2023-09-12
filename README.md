@@ -13,7 +13,7 @@
 
 
 
-| __The Main Features:__                 | Loader                    | Supported Models                    |
+| __The Main Features in R__                 | Loader                    | Supported Models                    |
 |--------------------------------------------------|---------------------------|------------------------------------------------------------------------|
 | `get_entities()`, `get_entities_batch()`         | `load_tagger_ner`         | en(English), fr (French), da (Danish), nl (Dutch), etc.          |
 | `get_pos()`, `get_pos_batch()`                   | `load_tagger_pos`         | pos (English POS), fr-pos (French POS), de-pos(German POS), nl-pos (Dutch POS), etc. |
