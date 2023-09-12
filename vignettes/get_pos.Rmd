@@ -16,8 +16,9 @@ knitr::opts_chunk$set(
 
 ```{r include=FALSE}
 library(reticulate)
-use_virtualenv("/home/runner/.virtualenvs/r-reticulate", required = TRUE)
+library(flaiR)
 reticulate::py_install("flair")
+system(paste(reticulate::py_config()$python, "-m pip install flair"))
 ```
 
 ## List of Part-of-Speech Tagging Models
