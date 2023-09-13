@@ -439,6 +439,31 @@ check_python_installed <- function(...) {
   }
 }
 
+
+check_python_installed <- function(...) {
+  # Check if running on Windows
+  if (.Platform$OS.type == "windows") {
+    command <- "where python"
+  } else {
+    command <- "which python3"
+  }
+
+  # Locate python path
+  result <- system(command, intern = TRUE, ignore.stderr = TRUE)
+
+  # Check if the result is a valid path
+  if (length(result) > 0 && file.exists(result[1])) {
+    # cat("Python is installed at:", result[1], "\n")
+    return(TRUE)
+  } else {
+    # cat("Python is not installed on this system.\n")
+    return(FALSE)
+  }
+}
+
+
+
+
 #' Ensure Either a Tagger Object or a Language is Specified
 #'
 #' This function checks if either a tagger object or a language is specified and throws an error if neither is provided.
