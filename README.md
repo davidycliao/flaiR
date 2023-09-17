@@ -25,6 +25,8 @@ architecture, refer to the research article ‘[Contextual String Embeddings for
 | `get_pos()`, `get_pos_batch()`               | `load_tagger_pos`        | pos (English POS), fr-pos (French POS), de-pos(German POS), nl-pos (Dutch POS), etc. |
 | `get_sentiments()`, `get_sentiments_batch()` | `load_tagger_sentiments` | sentiment (English)                                                                  |
 
+<br>
+
 ### Installation via `GitHub`
 
 The installation consists of two parts: First, install [Python3.7](https://www.python.org/downloads/) or higher, and the
