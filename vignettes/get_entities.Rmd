@@ -15,8 +15,8 @@ knitr::opts_chunk$set(
 ```
 
 ```{r, echo=FALSE}
-library(reticulate)
 library(flaiR)
+library(reticulate)
 reticulate::py_install("flair")
 system(paste(reticulate::py_config()$python, "-m pip install flair"))
 ```
@@ -77,12 +77,11 @@ time <- system.time({
     gc()
 })
 
-
 print(time)
 ```
 
-
 ```{r}
+
 print(results)
 ```
 
@@ -98,17 +97,9 @@ batch_process_time <- system.time({
     gc()
 })
 print(batch_process_time)
-
-
 ```
 
 ```{r}
 print(batch_process_results)
-```
-
-Comparing the two sets of timings, the batch process slightly faster than the process without batching when processing slightly larger amount of data.
-```{r}
-time_difference <- time["elapsed"] - batch_process_time["elapsed"]
-print(time_difference)
 ```
 
