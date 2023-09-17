@@ -17,7 +17,9 @@ knitr::opts_chunk$set(
 ```{r, echo=FALSE}
 library(flaiR)
 library(reticulate)
-system(paste(reticulate::py_config()$python, "-m pip install flair"))
+# system(paste(reticulate::py_config()$python, "-m pip install flair"))
+reticulate::py_install("flair")
+
 ```
 
 ## List of NER Models

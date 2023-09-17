@@ -148,8 +148,7 @@
 get_sentiments_batch <- function(texts, doc_ids,
                                  tagger = NULL, ..., language = NULL,
                                  show.text_id = FALSE, gc.active = FALSE,
-                                 batch_size = 5, device = "cpu", verbose = FALSE) {  # 新增 verbose 參數
-
+                                 batch_size = 5, device = "cpu", verbose = FALSE) {
   # Check environment pre-requisites and parameters
   check_prerequisites()
   check_device(device)
@@ -206,7 +205,7 @@ get_sentiments_batch <- function(texts, doc_ids,
     end_idx <- min(i*batch_size, length(texts))
 
     if (isTRUE(verbose)) {
-      cat(sprintf("Processing batch %d out of %d...\n", b, num_batches))
+      cat(sprintf("Processing batch %d out of %d...\n", i, num_batches))
     }
 
     process_batch(texts[start_idx:end_idx], doc_ids[start_idx:end_idx])
