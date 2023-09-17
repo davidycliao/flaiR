@@ -9,19 +9,9 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 <div style="text-align: justify">
 &#10;
-`flaiR` is a R wrapper of the FlairNLP for R users, particularly for
-social science researchers. It offers streamlined access to the core
-features of `FlairNLP` from Python. FlairNLP is an advanced NLP
-framework that incorporates the latest techniques developed by the
-Humboldt University of Berlin. For a deeper understanding of Flair’s
-architecture, refer to the research article ‘[Contextual String
-Embeddings for Sequence
-Labeling](https://aclanthology.org/C18-1139.pdf)’ and the official
-[mannual](https://flairnlp.github.io) in Python. The features currently
-available in `flairR` include **part-of-speech tagging**,
-**transformer-based sentiment analysis**, and **named entity
-recognition**. `flairR` returns tagging information directly in a
-data.table format.
+`flaiR` is a R wrapper of the FlairNLP for R users, particularly for social science researchers. It offers streamlined access to the core features of `FlairNLP` from Python. FlairNLP is an advanced NLP framework that incorporates the latest techniques developed by the Humboldt University of Berlin. For a deeper understanding of Flair’s
+architecture, refer to the research article ‘[Contextual String Embeddings for Sequence Labeling](https://aclanthology.org/C18-1139.pdf)’ and the official [mannual](https://flairnlp.github.io) in Python. The features currently available in `flairR` include **part-of-speech tagging**, **transformer-based sentiment analysis**, and **named entity recognition**. `flairR` returns tagging information directly in a data.table format.
+
 
 | **The Main Features in R**                   | Loader                   | Supported Models                                                                     |
 |----------------------------------------------|--------------------------|--------------------------------------------------------------------------------------|
