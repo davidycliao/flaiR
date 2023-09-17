@@ -143,13 +143,13 @@ jobs:
       - uses: actions/checkout@v2
 
       - uses: r-lib/actions/setup-pandoc@v2
-
-      - name: Set up Miniconda (Only on ubuntu-latest)
-        if: matrix.config.os == 'ubuntu-latest'
-        uses: conda-incubator/setup-miniconda@v2
-        with:
-          auto-update-conda: true
-          python-version: 3.8
+#
+#       - name: Set up Miniconda (Only on ubuntu-latest)
+#         if: matrix.config.os == 'ubuntu-latest'
+#         uses: conda-incubator/setup-miniconda@v2
+#         with:
+#           auto-update-conda: true
+#           python-version: 3.8
 
       - name: Create and activate Conda environment (Only on ubuntu-latest)
         if: matrix.config.os == 'ubuntu-latest'
