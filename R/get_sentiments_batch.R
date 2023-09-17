@@ -1,4 +1,3 @@
-
 #' @title Batch Process of Tagging Sentiment with Flair Models
 #'
 #' @description This function takes in texts and their associated document IDs
@@ -36,6 +35,9 @@
 #'       with more GPUs.}
 #' }
 #'
+#' #' @param verbose A logical value. If TRUE, the function prints batch processing
+#' progress updates. Default is TRUE.
+#'
 #' @return A \code{data.table} containing three columns:
 #'   \itemize{
 #'     \item \code{doc_id}: The document ID from the input.
@@ -68,10 +70,85 @@
 #' @importFrom reticulate py_available py_module_available import
 #' @importFrom data.table :=
 #' @export
+# get_sentiments_batch <- function(texts, doc_ids,
+#                                  tagger = NULL, ..., language = NULL,
+#                                  show.text_id = FALSE, gc.active = FALSE,
+#                                  batch_size = 5, device = "cpu") {
+#
+#   # Check environment pre-requisites and parameters
+#   check_prerequisites()
+#   check_device(device)
+#   check_batch_size(batch_size)
+#   check_texts_and_ids(texts, doc_ids)
+#   check_show.text_id(show.text_id)
+#
+#   # Remove NA or empty texts and their corresponding doc_ids
+#   valid_texts <- !is.na(texts) & nchar(texts) > 0
+#   texts <- texts[valid_texts]
+#   doc_ids <- doc_ids[valid_texts]
+#
+#   # Load the Sentence tokenizer from the Flair library in Python.
+#   flair <- reticulate::import("flair")
+#   Classifier <- flair$nn$Classifier
+#   Sentence <- flair$data$Sentence
+#
+#   # Load tagger if null
+#   if (is.null(tagger)) {
+#     tagger <- load_tagger_sentiments(language)
+#   }
+#   # `process_batch` to batch process
+#   process_batch <- function(texts_batch, doc_ids_batch) {
+#     text_id <- NULL
+#     sentences <- lapply(texts_batch, flair$data$Sentence)
+#
+#     # Predict sentiments for the entire batch
+#     tagger$predict(sentences)
+#
+#     results <- lapply(seq_along(sentences), function(i) {
+#       sentence <- sentences[[i]]
+#       doc_id <- doc_ids_batch[i]
+#
+#       if (length(sentence$get_labels()) > 0) {
+#         sentiment_label <- sentence$get_labels()[[1]]$value
+#         sentiment_score <- sentence$get_labels()[[1]]$score
+#       } else {
+#         sentiment_label <- NA
+#         sentiment_score <- NA
+#       }
+#
+#       dt <- data.table(doc_id = doc_id,
+#                        sentiment = sentiment_label,
+#                        score = sentiment_score)
+#       if (isTRUE(show.text_id)) {
+#         dt[, text_id := texts_batch[i]]
+#       }
+#       dt
+#     })
+#
+#     return(rbindlist(results, fill = TRUE))
+#   }
+#
+#   # Split texts into batches and process
+#   num_batches <- ceiling(length(texts) / batch_size)
+#   results_list <- lapply(1:num_batches, function(i) {
+#     start_idx <- (i-1)*batch_size + 1
+#     end_idx <- min(i*batch_size, length(texts))
+#
+#     process_batch(texts[start_idx:end_idx], doc_ids[start_idx:end_idx])
+#   })
+#
+#   results_dt <- rbindlist(results_list, fill = TRUE)
+#
+#   # Activate garbage collection
+#   check_and_gc(gc.active)
+#
+#   return(results_dt)
+# }
+
 get_sentiments_batch <- function(texts, doc_ids,
                                  tagger = NULL, ..., language = NULL,
                                  show.text_id = FALSE, gc.active = FALSE,
-                                 batch_size = 5, device = "cpu") {
+                                 batch_size = 5, device = "cpu", verbose = FALSE) {  # 新增 verbose 參數
 
   # Check environment pre-requisites and parameters
   check_prerequisites()
@@ -79,11 +156,6 @@ get_sentiments_batch <- function(texts, doc_ids,
   check_batch_size(batch_size)
   check_texts_and_ids(texts, doc_ids)
   check_show.text_id(show.text_id)
-
-  # Remove NA or empty texts and their corresponding doc_ids
-  valid_texts <- !is.na(texts) & nchar(texts) > 0
-  texts <- texts[valid_texts]
-  doc_ids <- doc_ids[valid_texts]
 
   # Load the Sentence tokenizer from the Flair library in Python.
   flair <- reticulate::import("flair")
@@ -94,6 +166,7 @@ get_sentiments_batch <- function(texts, doc_ids,
   if (is.null(tagger)) {
     tagger <- load_tagger_sentiments(language)
   }
+
   # `process_batch` to batch process
   process_batch <- function(texts_batch, doc_ids_batch) {
     text_id <- NULL
@@ -132,6 +205,11 @@ get_sentiments_batch <- function(texts, doc_ids,
     start_idx <- (i-1)*batch_size + 1
     end_idx <- min(i*batch_size, length(texts))
 
+    # 如果 verbose 為 TRUE，則印出批次進度
+    if (isTRUE(verbose)) {
+      cat(sprintf("處理批次 %d，共有 %d 批次...\n", i, num_batches))
+    }
+
     process_batch(texts[start_idx:end_idx], doc_ids[start_idx:end_idx])
   })
 
@@ -142,3 +220,4 @@ get_sentiments_batch <- function(texts, doc_ids,
 
   return(results_dt)
 }
+
