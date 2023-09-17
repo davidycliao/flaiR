@@ -48,9 +48,7 @@ system(paste(reticulate::py_config()$python, "-m pip install flair"))
 __Source__: https://flairnlp.github.io/docs/tutorial-basics/tagging-entities
 
 
-## An Example Using `ner` Model (Pre-trained NER English Model)
-
-### Generic Approach Using `get_entities()`
+## Generic Approach Using Pre-trained NER English Model
 
 ```{r}
 library(flaiR)
@@ -83,7 +81,7 @@ print(time)
 print(results)
 ```
 
-### Batch Processing  Using `get_entities_batch()`
+## Batch Processing
 
 ```{r}
 batch_process_time <- system.time({

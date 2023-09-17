@@ -205,9 +205,8 @@ get_sentiments_batch <- function(texts, doc_ids,
     start_idx <- (i-1)*batch_size + 1
     end_idx <- min(i*batch_size, length(texts))
 
-    # 如果 verbose 為 TRUE，則印出批次進度
     if (isTRUE(verbose)) {
-      cat(sprintf("處理批次 %d，共有 %d 批次...\n", i, num_batches))
+      cat(sprintf("Processing batch %d out of %d...\n", b, num_batches))
     }
 
     process_batch(texts[start_idx:end_idx], doc_ids[start_idx:end_idx])

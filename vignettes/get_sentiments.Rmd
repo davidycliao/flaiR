@@ -46,12 +46,19 @@ tagger_sent <- load_tagger_sentiments("sentiment")
 ```
 
 
-
 ```{r }
 results <- get_sentiments(uk_immigration$text, seq_len(nrow(uk_immigration)), tagger_sent)
-
 print(results)
 ```
 
 
-
+## Batch Processing in English Sentiment Model
+```{r}
+batch_process_results  <- get_sentiments_batch(uk_immigration$text,
+                                               uk_immigration$speaker, 
+                                               tagger_sent, 
+                                               show.text_id = FALSE,
+                                               batch_size = 2,
+                                               verbose = TRUE)
+print(batch_process_results)
+```
