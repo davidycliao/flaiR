@@ -6,7 +6,7 @@
 # See https://github.com/r-lib/actions/tree/master/examples#readme for
 # additional example workflows available for the R community.
 
-name: R
+name: R CI
 
 on:
   push:
@@ -23,10 +23,18 @@ jobs:
     strategy:
       matrix:
         r-version: ['3.6.3', '4.1.1']
+        python-version: ['3.8']  # 你可以根據需要調整 Python 版本
 
     steps:
       - uses: actions/checkout@v3
+
       - uses: r-lib/actions/setup-pandoc@v2
+
+      - name: Setup Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
       - name: Set up R ${{ matrix.r-version }}
         uses: r-lib/actions/setup-r@v1
         with:
@@ -61,5 +69,3 @@ jobs:
           cat /Users/runner/work/flaiR/flaiR/flaiR.Rcheck/00install.out
           cat /Users/runner/work/flaiR/flaiR/flaiR.Rcheck/00check.log
         shell: bash
-
-
