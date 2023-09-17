@@ -37,7 +37,7 @@ The installation consists of two parts: First, install [Python
 
 ``` r
 library(flaiR)
-#>  flai[34mR[39m: An R Wrapper for Accessing Flair NLP Tagging Features
+#>  flaiR: An R Wrapper for Accessing Flair NLP Tagging Features 
 #>  Python: 3.11
 #>  Flair: 0.12.2
 ```
