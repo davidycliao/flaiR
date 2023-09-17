@@ -152,7 +152,7 @@ jobs:
 #           python-version: 3.8
 
       - name: Create and activate Conda environment (Only on ubuntu-latest)
-        if: matrix.config.os == 'ubuntu-latest'
+        # if: matrix.config.os == 'ubuntu-latest'
         shell: bash -l {0}
         run: |
           conda create --name myenv python=3.8
