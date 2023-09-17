@@ -41,7 +41,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">flaiR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.0.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.0.5</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -87,6 +87,7 @@
     News
   </a>
   <div class="dropdown-menu" aria-labelledby="dropdown--news">
+    <a class="dropdown-item" href="../news/index.html#flair-005-development-version">0.0.5</a>
     <a class="dropdown-item" href="../news/index.html#flair-004-development-version">0.0.4</a>
     <a class="dropdown-item" href="../news/index.html#flair-003-development-version">0.0.3</a>
     <a class="dropdown-item" href="../news/index.html#flair-001-development-version">0.0.1</a>
@@ -290,16 +291,13 @@
 </h2>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">flaiR</span><span class="op">)</span></span>
-<span><span class="co">#&gt;  flai<span style="color: #0000BB;">R</span>: An R Wrapper for Accessing Flair NLP Tagging Features</span></span>
-<span><span class="co">#&gt;  Python: 3.11</span></span>
-<span><span class="co">#&gt;  Flair: 0.12.2</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"de_immigration"</span><span class="op">)</span></span>
 <span><span class="va">de_immigration</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">de_immigration</span>, <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 <p>Download the de-pos part-of-speech tagging model from FlairNLP on
 Hugging Face.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tagger_pos</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_tagger_pos.html">load_tagger_pos</a></span><span class="op">(</span><span class="st">"de-pos"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2023-09-11 20:34:50,131 SequenceTagger predicts: Dictionary with 58 tags: &lt;unk&gt;, O, APPR, ART, ADJA, NN, VVFIN, PIS, NE, FM, $,, KON, $., CARD, APPRART, $(, PROAV, KOUS, PPER, ADV, VVINF, VAFIN, VMFIN, ADJD, PTKVZ, PTKNEG, KOKOM, PIDAT, PIAT, VVPP, PRF, PTKA, TRUNC, PPOSAT, VVIZU, PTKZU, VAINF, VMINF, PWAV, PDAT, PRELS, KOUI, APPO, VAPP, PWAT, PWS, VVIMP, APZR, PDS, PRELAT</span></span></code></pre></div>
+<span><span class="co">#&gt; 2023-09-17 19:33:09,798 SequenceTagger predicts: Dictionary with 58 tags: &lt;unk&gt;, O, APPR, ART, ADJA, NN, VVFIN, PIS, NE, FM, $,, KON, $., CARD, APPRART, $(, PROAV, KOUS, PPER, ADV, VVINF, VAFIN, VMFIN, ADJD, PTKVZ, PTKNEG, KOKOM, PIDAT, PIAT, VVPP, PRF, PTKA, TRUNC, PPOSAT, VVIZU, PTKZU, VAINF, VMINF, PWAV, PDAT, PRELS, KOUI, APPO, VAPP, PWAT, PWS, VVIMP, APZR, PDS, PRELAT</span></span></code></pre></div>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_pos.html">get_pos</a></span><span class="op">(</span><span class="va">de_immigration</span><span class="op">$</span><span class="va">text</span>, </span>
 <span>                   <span class="va">de_immigration</span><span class="op">$</span><span class="va">speaker</span>, <span class="va">tagger_pos</span>, </span>

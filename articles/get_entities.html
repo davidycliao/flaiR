@@ -41,7 +41,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">flaiR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.0.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.0.5</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -87,6 +87,7 @@
     News
   </a>
   <div class="dropdown-menu" aria-labelledby="dropdown--news">
+    <a class="dropdown-item" href="../news/index.html#flair-005-development-version">0.0.5</a>
     <a class="dropdown-item" href="../news/index.html#flair-004-development-version">0.0.4</a>
     <a class="dropdown-item" href="../news/index.html#flair-003-development-version">0.0.3</a>
     <a class="dropdown-item" href="../news/index.html#flair-001-development-version">0.0.1</a>
@@ -148,6 +149,11 @@
 
     
     
+<pre><code><span><span class="co">#&gt;  flai<span style="color: #0000BB;">R</span>: An R Wrapper for Accessing Flair NLP Tagging Features</span></span>
+<span><span class="co">#&gt;  Python: 3.11</span></span>
+<span><span class="co">#&gt;  Flair: 0.12.2</span></span>
+<span><span class="co">#&gt; Using virtual environment '~/.virtualenvs/r-reticulate' ...</span></span>
+<span><span class="co">#&gt; + /Users/yenchiehliao/.virtualenvs/r-reticulate/bin/python -m pip install --upgrade --no-user flair</span></span></code></pre>
 <div class="section level2">
 <h2 id="list-of-ner-models">List of NER Models<a class="anchor" aria-label="anchor" href="#list-of-ner-models"></a>
 </h2>
@@ -332,11 +338,8 @@ Model)<a class="anchor" aria-label="anchor" href="#an-example-using-ner-model-pr
 <div class="section level3">
 <h3 id="generic-approach-using-get_entities">Generic Approach Using <code>get_entities()</code><a class="anchor" aria-label="anchor" href="#generic-approach-using-get_entities"></a>
 </h3>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">flaiR</span><span class="op">)</span></span>
-<span><span class="co">#&gt;  flai<span style="color: #0000BB;">R</span>: An R Wrapper for Accessing Flair NLP Tagging Features</span></span>
-<span><span class="co">#&gt;  Python: 3.11</span></span>
-<span><span class="co">#&gt;  Flair: 0.12.2</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"uk_immigration"</span><span class="op">)</span></span>
 <span><span class="va">uk_immigration</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">uk_immigration</span>, <span class="fl">10</span><span class="op">)</span></span></code></pre></div>
 <p>Use <code>load_tagger_ner</code> to call the NER pretrained model.
@@ -345,12 +348,12 @@ ensure you have an internet connection. Once downloaded, the model will
 be stored in <strong>.flair</strong> as the cache in your device. So,
 once you’ve downloaded it and it hasn’t been manually removed, executing
 the command again will not trigger a download.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tagger_pos</span> <span class="op">&lt;-</span> <span class="fu">flaiR</span><span class="fu">::</span><span class="fu"><a href="../reference/load_tagger_ner.html">load_tagger_ner</a></span><span class="op">(</span><span class="st">"ner"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2023-09-11 20:33:51,089 SequenceTagger predicts: Dictionary with 20 tags: &lt;unk&gt;, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, &lt;START&gt;, &lt;STOP&gt;</span></span></code></pre></div>
+<span><span class="co">#&gt; 2023-09-17 19:32:05,551 SequenceTagger predicts: Dictionary with 20 tags: &lt;unk&gt;, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, &lt;START&gt;, &lt;STOP&gt;</span></span></code></pre></div>
 <p>If you want the computation to run faster, it is recommended to keep
 the show.text_id set to FALSE by default.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">time</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span><span class="op">{</span></span>
 <span>    <span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_entities.html">get_entities</a></span><span class="op">(</span><span class="va">uk_immigration</span><span class="op">$</span><span class="va">text</span>,</span>
 <span>                            <span class="va">uk_immigration</span><span class="op">$</span><span class="va">speaker</span>, </span>
@@ -360,12 +363,12 @@ the show.text_id set to FALSE by default.</p>
 <span>    <span class="fu"><a href="https://rdrr.io/r/base/gc.html" class="external-link">gc</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="op">}</span><span class="op">)</span></span>
 <span></span>
-<span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">time</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;  24.782   0.337  25.089</span></span></code></pre></div>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">results</span><span class="op">)</span></span>
+<span><span class="co">#&gt;  25.171   0.409  25.412</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">results</span><span class="op">)</span></span>
 <span><span class="co">#&gt;               doc_id                          entity  tag</span></span>
 <span><span class="co">#&gt;  1: Philip Hollobone                    Conservative  ORG</span></span>
 <span><span class="co">#&gt;  2: Philip Hollobone Liberal Democrat Front Benchers  ORG</span></span>
@@ -422,7 +425,7 @@ the show.text_id set to FALSE by default.</p>
 <div class="section level3">
 <h3 id="batch-processing-using-get_entities_batch">Batch Processing Using <code>get_entities_batch()</code><a class="anchor" aria-label="anchor" href="#batch-processing-using-get_entities_batch"></a>
 </h3>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">batch_process_time</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span><span class="op">{</span></span>
 <span>    <span class="va">batch_process_results</span>  <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_entities_batch.html">get_entities_batch</a></span><span class="op">(</span><span class="va">uk_immigration</span><span class="op">$</span><span class="va">text</span>,</span>
 <span>                                                 <span class="va">uk_immigration</span><span class="op">$</span><span class="va">speaker</span>, </span>
@@ -434,8 +437,8 @@ the show.text_id set to FALSE by default.</p>
 <span><span class="co">#&gt; CPU is used.</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">batch_process_time</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;  24.246   0.291  24.360</span></span></code></pre></div>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<span><span class="co">#&gt;  24.769   0.365  25.015</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">batch_process_results</span><span class="op">)</span></span>
 <span><span class="co">#&gt;               doc_id                          entity  tag text_id</span></span>
 <span><span class="co">#&gt;  1: Philip Hollobone                    Conservative  ORG      NA</span></span>
@@ -489,14 +492,6 @@ the show.text_id set to FALSE by default.</p>
 <span><span class="co">#&gt; 49:      Phil Woolas                      Wallington  LOC      NA</span></span>
 <span><span class="co">#&gt; 50:      Phil Woolas                       Tom Brake  PER      NA</span></span>
 <span><span class="co">#&gt;               doc_id                          entity  tag text_id</span></span></code></pre></div>
-<p>Comparing the two sets of timings, the batch process slightly faster
-than the process without batching when processing slightly larger amount
-of data.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">time_difference</span> <span class="op">&lt;-</span> <span class="va">time</span><span class="op">[</span><span class="st">"elapsed"</span><span class="op">]</span> <span class="op">-</span> <span class="va">batch_process_time</span><span class="op">[</span><span class="st">"elapsed"</span><span class="op">]</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">time_difference</span><span class="op">)</span></span>
-<span><span class="co">#&gt; elapsed </span></span>
-<span><span class="co">#&gt;   0.729</span></span></code></pre></div>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
