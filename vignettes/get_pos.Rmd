@@ -15,8 +15,9 @@ knitr::opts_chunk$set(
 ```
 
 ```{r include=FALSE}
-library(reticulate)
 library(flaiR)
+library(reticulate)
+use_python("/Library/Frameworks/Python.framework/Versions/3.11/bin/python3")
 reticulate::py_install("flair")
 system(paste(reticulate::py_config()$python, "-m pip install flair"))
 ```
