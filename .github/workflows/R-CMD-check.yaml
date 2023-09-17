@@ -45,9 +45,73 @@
 #       - uses: r-lib/actions/check-r-package@v2
 #         with:
 #           upload-snapshots: true
+#
+#
+# name: R-CMD-check
+#
+# on:
+#   push:
+#     branches: [main, master]
+#   pull_request:
+#     branches: [main, master]
+#
+# jobs:
+#   R-CMD-check:
+#     runs-on: ${{ matrix.config.os }}
+#     name: ${{ matrix.config.os }} (${{ matrix.config.r }})
+#
+#     strategy:
+#       fail-fast: false
+#       matrix:
+#         config:
+#           - {os: macos-latest,   r: 'release'}
+#           - {os: windows-latest, r: 'release'}
+#           - {os: ubuntu-latest,   r: 'devel', http-user-agent: 'release'}
+#           - {os: ubuntu-latest,   r: 'release'}
+#
+#     env:
+#       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+#       R_KEEP_PKG_SOURCE: yes
+#       R_LIBS_USER: /home/runner/work/_temp/Library
+#       TZ: UTC
+#       _R_CHECK_SYSTEM_CLOCK_: FALSE
+#       NOT_CRAN: true
+#       RSPM: https://packagemanager.posit.co/cran/__linux__/jammy/latest
+#       RENV_CONFIG_REPOS_OVERRIDE: https://packagemanager.posit.co/cran/__linux__/jammy/latest
+#       R_LIB_FOR_PAK: /opt/R/devel/lib/R/site-library
+#
+#     steps:
+#       - uses: actions/checkout@v2
+#
+#       - uses: r-lib/actions/setup-pandoc@v2
+#
+#       - uses: r-lib/actions/setup-r@v2
+#         with:
+#           r-version: ${{ matrix.config.r }}
+#           http-user-agent: ${{ matrix.config.http-user-agent }}
+#           use-public-rspm: true
+#
+#       - name: Set up Python and venv
+#         if: matrix.config.os == 'ubuntu-latest'
+#         run: |
+#           sudo apt-get update
+#           sudo apt-get install python3 python3-venv
+#
+#       - uses: r-lib/actions/setup-r-dependencies@v2
+#         with:
+#           extra-packages: any::rcmdcheck
+#           needs: check
+#
+#       - uses: r-lib/actions/check-r-package@v2
+#         with:
+#           upload-snapshots: true
+#           args: c("--no-manual", "--as-cran")
+#           build_args: "--no-manual"
+#           error-on: "warning"
+#           check-dir: "check"
+#           working-directory: .
+#           upload-results: false
 
-
-name: R-CMD-check
 
 on:
   push:
@@ -55,9 +119,12 @@ on:
   pull_request:
     branches: [main, master]
 
+name: R-CMD-check
+
 jobs:
   R-CMD-check:
     runs-on: ${{ matrix.config.os }}
+
     name: ${{ matrix.config.os }} (${{ matrix.config.r }})
 
     strategy:
@@ -68,34 +135,34 @@ jobs:
           - {os: windows-latest, r: 'release'}
           - {os: ubuntu-latest,   r: 'devel', http-user-agent: 'release'}
           - {os: ubuntu-latest,   r: 'release'}
-
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       R_KEEP_PKG_SOURCE: yes
-      R_LIBS_USER: /home/runner/work/_temp/Library
-      TZ: UTC
-      _R_CHECK_SYSTEM_CLOCK_: FALSE
-      NOT_CRAN: true
-      RSPM: https://packagemanager.posit.co/cran/__linux__/jammy/latest
-      RENV_CONFIG_REPOS_OVERRIDE: https://packagemanager.posit.co/cran/__linux__/jammy/latest
-      R_LIB_FOR_PAK: /opt/R/devel/lib/R/site-library
 
     steps:
       - uses: actions/checkout@v2
 
       - uses: r-lib/actions/setup-pandoc@v2
 
+      - name: Set up Miniconda (Only on ubuntu-latest)
+        if: matrix.config.os == 'ubuntu-latest'
+        uses: conda-incubator/setup-miniconda@v2
+        with:
+          auto-update-conda: true
+          python-version: 3.8
+
+      - name: Create and activate Conda environment (Only on ubuntu-latest)
+        if: matrix.config.os == 'ubuntu-latest'
+        shell: bash -l {0}
+        run: |
+          conda create --name myenv python=3.8
+          conda activate myenv
+
       - uses: r-lib/actions/setup-r@v2
         with:
           r-version: ${{ matrix.config.r }}
           http-user-agent: ${{ matrix.config.http-user-agent }}
           use-public-rspm: true
-
-      - name: Set up Python and venv
-        if: matrix.config.os == 'ubuntu-latest'
-        run: |
-          sudo apt-get update
-          sudo apt-get install python3 python3-venv
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
@@ -105,9 +172,3 @@ jobs:
       - uses: r-lib/actions/check-r-package@v2
         with:
           upload-snapshots: true
-          args: c("--no-manual", "--as-cran")
-          build_args: "--no-manual"
-          error-on: "warning"
-          check-dir: "check"
-          working-directory: .
-          upload-results: false
