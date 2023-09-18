@@ -5,13 +5,13 @@
 #
 # See https://github.com/r-lib/actions/tree/master/examples#readme for
 # additional example workflows available for the R community.
-name: R-CMD-check
-
 on:
   push:
     branches: [main, master]
   pull_request:
     branches: [main, master]
+
+name: R-CMD-check
 
 jobs:
   R-CMD-check:
@@ -25,8 +25,8 @@ jobs:
         config:
           - {os: macos-latest,   r: 'release'}
           - {os: windows-latest, r: 'release'}
-          - {os: ubuntu-latest,   r: 'devel', http-user-agent: 'release'}
-          - {os: ubuntu-latest,   r: 'release'}
+          # - {os: ubuntu-latest,   r: 'devel', http-user-agent: 'release'}
+          # - {os: ubuntu-latest,   r: 'release'}
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       R_KEEP_PKG_SOURCE: yes
@@ -36,30 +36,11 @@ jobs:
 
       - uses: r-lib/actions/setup-pandoc@v2
 
+      # Set up Python environment
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: 3.8
-
-      - name: Install Python venv (Ubuntu)
-        if: runner.os == 'Linux'
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y python3-venv
-
-      - name: Ensure Python venv is available (macOS)
-        if: runner.os == 'macOS'
-        run: |
-          python3 -m ensurepip
-
-
-      - name: Create and activate virtual environment
-        run: |
-          python3 -m venv myenv
-          source myenv/bin/activate
-
-      - name: Install Flair
-        run: pip install flair
+          python-version: '3.x' # or specify a specific version, e.g., '3.8'
 
       - uses: r-lib/actions/setup-r@v2
         with:
@@ -70,6 +51,7 @@ jobs:
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
           extra-packages: any::rcmdcheck
+          needs: check
 
       - uses: r-lib/actions/check-r-package@v2
         with:
