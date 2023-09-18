@@ -1,0 +1,54 @@
+name: R-CMD-check
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  R-CMD-check:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      # Install Python
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+      
+      # Create a Python virtual environment
+      - name: Set up Python venv
+        run: |
+          python -m venv env
+          source env/bin/activate
+          which python
+
+      # Install R and dependencies
+      - name: Setup R
+        uses: r-lib/actions/setup-r@v1
+        with:
+          r-version: release
+
+      # Install necessary Python packages (if any)
+      - name: Install Python dependencies
+        run: |
+          source env/bin/activate
+          pip install your-python-package # Replace with your Python package
+
+      # Install R dependencies
+      - name: Install R dependencies
+        run: |
+          install.packages(c('devtools', 'remotes'))
+          remotes::install_deps(dependencies = TRUE)
+
+      # Check the R package
+      - name: Check R package
+        run: |
+          source env/bin/activate
+          R CMD build . --no-build-vignettes
+          R CMD check *tar.gz --as-cran
