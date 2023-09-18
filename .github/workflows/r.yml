@@ -17,12 +17,23 @@ on:
 permissions:
   contents: read
 
+# jobs:
+#   build:
+#     runs-on: macos-latest
+#     strategy:
+#       matrix:
+#         r-version: ['3.6.3', '4.1.1']
+
 jobs:
   build:
     runs-on: macos-latest
     strategy:
       matrix:
-        r-version: ['3.6.3', '4.1.1']
+        include:
+          - r-version: '3.6.3'
+            cran-url: 'https://cran-archive.r-project.org'
+          - r-version: '4.1.1'
+            cran-url: 'https://cloud.r-project.org/'
 
     steps:
       - uses: actions/checkout@v3
