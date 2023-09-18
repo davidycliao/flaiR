@@ -118,7 +118,7 @@ test_that("create_flair_env works correctly", {
 
     {
       expected_pattern <- "No conda environment found\\. Creating a new environment named '.*'\\. After restarting the R session, please run create_flair_env\\(\\) again\\."
-      expect_message(flaiR::create_flair_env(), expected_pattern, fixed = FALSE)
+      expect_message(create_flair_env(), expected_pattern, fixed = FALSE)
     }
   )
 })
