@@ -56,9 +56,9 @@ is provided, it will attempt to use that GPU. The default is "cpu".
       of specific computations to this GPU.}
  \item{"cuda:2"}{Refers to the third GPU in the system, and so on for systems
       with more GPUs.}
-}
+}}
 
-#' @param verbose A logical value. If TRUE, the function prints batch processing
+\item{verbose}{A logical value. If TRUE, the function prints batch processing
 progress updates. Default is TRUE.}
 }
 \value{
