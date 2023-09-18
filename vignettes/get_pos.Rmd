@@ -14,12 +14,13 @@ knitr::opts_chunk$set(
 )
 ```
 
+
 ```{r include=FALSE}
 library(flaiR)
 library(reticulate)
 # system(paste(reticulate::py_config()$python, "-m pip install flair"))
-reticulate::py_install("flair")
-
+# reticulate::py_install("flair")
+system(paste(reticulate::py_config()$python, "-m pip install flair"))
 ```
 
 ## List of Part-of-Speech Tagging Models
@@ -36,8 +37,8 @@ reticulate::py_install("flair")
 | 'de-pos'        | POS-tagging              | German              | UD German - HDT                   | 98.50 (Accuracy)     |                                     |
 | 'de-pos-tweets' | POS-tagging              | German              | German Tweets                     | 93.06 (Accuracy)     | stefan-it                           |
 | 'da-pos'        | POS-tagging              | Danish              | Danish Dependency Treebank        |                      | AmaliePauli                         |
-| 'ml-pos'        | POS-tagging              | Malayalam           | 30000 Malayalam sentences        | 83                   | sabiqueqb                           |
-| 'ml-upos'       | POS-tagging              | Malayalam           | 30000 Malayalam sentences        | 87                   | sabiqueqb                           |
+| 'ml-pos'        | POS-tagging              | Malayalam           | 30000 Malayalam sentences         | 83                   | sabiqueqb                           |
+| 'ml-upos'       | POS-tagging              | Malayalam           | 30000 Malayalam sentences         | 87                   | sabiqueqb                           |
 | 'pt-pos-clinical'|POS-tagging              | Portuguese          | PUCPR                             | 92.39                | LucasFerroHAILab for clinical texts|
 | 'pos-ukrainian' | POS-tagging              | Ukrainian           | Ukrainian UD                      | 97.93 (F1)           | dchaplinsky                         |
 
