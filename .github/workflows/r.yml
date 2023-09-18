@@ -6,6 +6,51 @@
 # See https://github.com/r-lib/actions/tree/master/examples#readme for
 # additional example workflows available for the R community.
 
+# name: R
+#
+# on:
+#   push:
+#     branches: [ "main" ]
+#   pull_request:
+#     branches: [ "main" ]
+#
+# permissions:
+#   contents: read
+#
+# # jobs:
+# #   build:
+# #     runs-on: macos-latest
+# #     strategy:
+# #       matrix:
+# #         r-version: ['3.6.3', '4.1.1']
+#
+# jobs:
+#   build:
+#     runs-on: macos-latest
+#     strategy:
+#       matrix:
+#         include:
+#           - r-version: '3.6.3'
+#             cran-url: 'https://cran-archive.r-project.org'
+#           - r-version: '4.1.1'
+#             cran-url: 'https://cloud.r-project.org/'
+#
+#     steps:
+#       - uses: actions/checkout@v3
+#       - name: Set up R ${{ matrix.r-version }}
+#         uses: r-lib/actions/setup-r@f57f1301a053485946083d7a45022b278929a78a
+#         with:
+#           r-version: ${{ matrix.r-version }}
+#       - name: Install dependencies
+#         run: |
+#           install.packages(c("remotes", "rcmdcheck"))
+#           remotes::install_deps(dependencies = TRUE)
+#         shell: Rscript {0}
+#       - name: Check
+#         run: rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "error")
+#         shell: Rscript {0}
+
+
 name: R
 
 on:
@@ -17,23 +62,12 @@ on:
 permissions:
   contents: read
 
-# jobs:
-#   build:
-#     runs-on: macos-latest
-#     strategy:
-#       matrix:
-#         r-version: ['3.6.3', '4.1.1']
-
 jobs:
   build:
     runs-on: macos-latest
     strategy:
       matrix:
-        include:
-          - r-version: '3.6.3'
-            cran-url: 'https://cran-archive.r-project.org'
-          - r-version: '4.1.1'
-            cran-url: 'https://cloud.r-project.org/'
+        r-version: ['3.6.3', '4.1.1']
 
     steps:
       - uses: actions/checkout@v3
@@ -43,9 +77,10 @@ jobs:
           r-version: ${{ matrix.r-version }}
       - name: Install dependencies
         run: |
-          install.packages(c("remotes", "rcmdcheck"))
-          remotes::install_deps(dependencies = TRUE)
+          install.packages(c("remotes", "rcmdcheck"), repos="https://cran-archive.r-project.org")
+          remotes::install_deps(dependencies = TRUE, repos="https://cran-archive.r-project.org")
         shell: Rscript {0}
       - name: Check
-        run: rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "error")
+        run: rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "error", repos="https://cran-archive.r-project.org")
         shell: Rscript {0}
+
