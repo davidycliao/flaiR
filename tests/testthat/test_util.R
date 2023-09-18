@@ -124,9 +124,6 @@ test_that("create_flair_env works correctly", {
 })
 
 
-
-library(testthat)
-
 # Assuming you have your clear_flair_cache function loaded in the environment
 
 test_that("Test clear_flair_cache function", {
