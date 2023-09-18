@@ -41,7 +41,8 @@ jobs:
         with:
           python-version: 3.8
 
-      - name: Install Python venv
+      - name: Install Python venv (Ubuntu only)
+        if: runner.os == 'Linux'
         run: sudo apt-get install python3-venv
 
       - name: Create and activate virtual environment

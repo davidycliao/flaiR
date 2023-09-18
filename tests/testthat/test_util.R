@@ -122,3 +122,44 @@ test_that("create_flair_env works correctly", {
     }
   )
 })
+
+
+
+library(testthat)
+
+# Assuming you have your clear_flair_cache function loaded in the environment
+
+test_that("Test clear_flair_cache function", {
+
+  # Test when directory does not exist
+  mock_dir <- file.path(tempdir(), ".flair")
+
+  # Ensure directory does not exist to start with
+  if (dir.exists(mock_dir)) {
+    unlink(mock_dir, recursive = TRUE)
+  }
+
+  result <- capture.output(clear_flair_cache(dir = mock_dir))
+  cat("Output when directory does not exist:", result, "\n")
+  expect_message(clear_flair_cache(dir = mock_dir), "Flair cache directory does not exist.")
+
+  # Create mock cache directory
+  dir.create(mock_dir)
+  on.exit(unlink(mock_dir, recursive = TRUE), add = TRUE)  # ensure cleanup after tests
+
+  # Test when directory is empty
+  result <- capture.output(clear_flair_cache(dir = mock_dir))
+  cat("Output when directory is empty:", result, "\n")
+  expect_message(clear_flair_cache(dir = mock_dir), "No files in flair cache directory.")
+
+  # Add mock files to directory
+  file.create(file.path(mock_dir, "mock_file_1.txt"))
+  file.create(file.path(mock_dir, "mock_file_2.txt"))
+
+  # Test when directory contains files
+  result <- capture.output(clear_flair_cache(dir = mock_dir))
+  cat("Output when directory has files:", result, "\n")
+  expect_true(any(grepl("mock_file_1.txt", result)))
+  expect_true(any(grepl("mock_file_2.txt", result)))
+
+})
