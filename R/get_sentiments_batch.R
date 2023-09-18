@@ -1,4 +1,3 @@
-
 #' @title Batch Process of Tagging Sentiment with Flair Models
 #'
 #' @description This function takes in texts and their associated document IDs
@@ -36,6 +35,9 @@
 #'       with more GPUs.}
 #' }
 #'
+#' @param verbose A logical value. If TRUE, the function prints batch processing
+#' progress updates. Default is TRUE.
+#'
 #' @return A \code{data.table} containing three columns:
 #'   \itemize{
 #'     \item \code{doc_id}: The document ID from the input.
@@ -71,19 +73,13 @@
 get_sentiments_batch <- function(texts, doc_ids,
                                  tagger = NULL, ..., language = NULL,
                                  show.text_id = FALSE, gc.active = FALSE,
-                                 batch_size = 5, device = "cpu") {
-
+                                 batch_size = 5, device = "cpu", verbose = FALSE) {
   # Check environment pre-requisites and parameters
   check_prerequisites()
   check_device(device)
   check_batch_size(batch_size)
   check_texts_and_ids(texts, doc_ids)
   check_show.text_id(show.text_id)
-
-  # Remove NA or empty texts and their corresponding doc_ids
-  valid_texts <- !is.na(texts) & nchar(texts) > 0
-  texts <- texts[valid_texts]
-  doc_ids <- doc_ids[valid_texts]
 
   # Load the Sentence tokenizer from the Flair library in Python.
   flair <- reticulate::import("flair")
@@ -94,6 +90,7 @@ get_sentiments_batch <- function(texts, doc_ids,
   if (is.null(tagger)) {
     tagger <- load_tagger_sentiments(language)
   }
+
   # `process_batch` to batch process
   process_batch <- function(texts_batch, doc_ids_batch) {
     text_id <- NULL
@@ -132,6 +129,10 @@ get_sentiments_batch <- function(texts, doc_ids,
     start_idx <- (i-1)*batch_size + 1
     end_idx <- min(i*batch_size, length(texts))
 
+    if (isTRUE(verbose)) {
+      cat(sprintf("Processing batch %d out of %d...\n", i, num_batches))
+    }
+
     process_batch(texts[start_idx:end_idx], doc_ids[start_idx:end_idx])
   })
 
@@ -142,3 +143,4 @@ get_sentiments_batch <- function(texts, doc_ids,
 
   return(results_dt)
 }
+

@@ -15,10 +15,12 @@ knitr::opts_chunk$set(
 ```
 
 ```{r include=FALSE}
-library(reticulate)
 library(flaiR)
+library(reticulate)
+
+# system(paste(reticulate::py_config()$python, "-m pip install flair"))
 reticulate::py_install("flair")
-system(paste(reticulate::py_config()$python, "-m pip install flair"))
+
 ```
 
 ## List of Sentiment Models
@@ -46,12 +48,28 @@ tagger_sent <- load_tagger_sentiments("sentiment")
 ```
 
 
-
 ```{r }
-results <- get_sentiments(uk_immigration$text, seq_len(nrow(uk_immigration)), tagger_sent)
+results <- get_sentiments(uk_immigration$text, seq_len(nrow(uk_immigration)),
+                          tagger_sent)
+```
 
+```{r}
 print(results)
 ```
 
 
+## Batch Processing in English Sentiment Model
+```{r}
+batch_process_results  <- get_sentiments_batch(uk_immigration$text,
+                                               uk_immigration$speaker, 
+                                               tagger_sent, 
+                                               show.text_id = FALSE,
+                                               batch_size = 2,
+                                               verbose = TRUE)
+```
+
+
+```{r}
+print(batch_process_results)
+```
 

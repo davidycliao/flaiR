@@ -12,7 +12,8 @@ get_entities_batch(
   show.text_id = FALSE,
   gc.active = FALSE,
   batch_size = 5,
-  device = "cpu"
+  device = "cpu",
+  verbose = TRUE
 )
 }
 \arguments{
@@ -43,6 +44,9 @@ is provided, it will attempt to use that GPU. The default is "cpu".
  \item{"cuda:2"}{Refers to the third GPU in the system, and so on for systems
       with more GPUs.}
 }}
+
+\item{verbose}{A logical value. If TRUE, the function prints batch processing
+progress updates. Default is TRUE.}
 }
 \value{
 A data.table containing the extracted entities, their corresponding
