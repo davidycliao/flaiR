@@ -32,11 +32,9 @@ reference:
   - get_sentiments
   - get_sentiments_batch
 
-- title: Classifier
-  desc: Classifier to Flair NLP Tagging Features
+- title: Classifier Functions
+  desc: classifiers to load
 - contents:
-  - clear_flair_cache
-  - create_flair_env
   - load_tagger_ner
   - load_tagger_pos
   - load_tagger_sentiments
@@ -46,7 +44,8 @@ reference:
 - contents:
   - clear_flair_cache
   - create_flair_env
-
+  - clear_flair_cache
+  - create_flair_env
 
 - title: Sampled Dataset
   desc:  A Sampled  ParSpeech Dataset
@@ -113,6 +112,8 @@ navbar:
     menu:
     - text: "flaiR"
       href: reference/index.html#flair-functions
+    - text: "Taggers (Classifiers)"
+      href: reference/index.html#classifier-functions
     - text: "Utility"
       href: reference/index.html#utility-functions
     - text: "Dataset"
