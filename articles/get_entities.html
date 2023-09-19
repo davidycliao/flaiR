@@ -15,9 +15,7 @@
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><link href="../deps/Source_Sans_Pro-0.4.7/font.css" rel="stylesheet">
-<link href="../deps/Source_Code_Pro-0.4.7/font.css" rel="stylesheet">
-<!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<script src="../deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Tagging Named Entities with Flair Standard Models">
 <meta property="og:description" content="flaiR">
@@ -34,10 +32,10 @@
 </script><script defer data-domain="{YOUR DOMAIN},all.tidyverse.org" src="https://plausible.io/js/plausible.js"></script>
 </head>
 <body>
-    <a href="#container" class="visually-hidden-focusable">Skip to content</a>
+    <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
     
 
-    <nav class="navbar fixed-top navbar-inverse navbar-expand-lg bg-none"><div class="container">
+    <nav class="navbar fixed-top navbar-inverse navbar-expand-lg bg-light"><div class="container">
     
     <a class="navbar-brand me-2" href="../index.html">flaiR</a>
 
@@ -63,7 +61,7 @@
     Quick Start
   </a>
   <div class="dropdown-menu" aria-labelledby="dropdown--quick-start">
-    <a class="dropdown-item" href="../articles/quickstart.html#install-flair-with-using-remotes">Install flaiR with Using `remotes`</a>
+    <a class="dropdown-item" href="../articles/quickstart.html#install-flair-with-using-remotes">Install flaiR via GitHub</a>
     <a class="dropdown-item" href="../articles/quickstart.html#get-started-with-using-remotes">Quick Start Guide</a>
     <a class="dropdown-item" href="../articles/quickstart.html#quickstart.html#how-to-contribute">How to Contribute</a>
   </div>
@@ -101,6 +99,7 @@
   </a>
   <div class="dropdown-menu" aria-labelledby="dropdown--reference">
     <a class="dropdown-item" href="../reference/index.html#flair-functions">flaiR</a>
+    <a class="dropdown-item" href="../reference/index.html#classifier-functions">Taggers (Classifiers)</a>
     <a class="dropdown-item" href="../reference/index.html#utility-functions">Utility</a>
     <a class="dropdown-item" href="../reference/index.html#example-dataset">Dataset</a>
   </div>
@@ -133,7 +132,7 @@
 
     
   </div>
-</nav><div class="container template-article" id="container">
+</nav><div class="container template-article">
 
 
 
@@ -149,11 +148,6 @@
 
     
     
-<pre><code><span><span class="co">#&gt;  flai<span style="color: #0000BB;">R</span>: An R Wrapper for Accessing Flair NLP Tagging Features</span></span>
-<span><span class="co">#&gt;  Python: 3.11</span></span>
-<span><span class="co">#&gt;  Flair: 0.12.2</span></span>
-<span><span class="co">#&gt; Using virtual environment '~/.virtualenvs/r-reticulate' ...</span></span>
-<span><span class="co">#&gt; + /Users/yenchiehliao/.virtualenvs/r-reticulate/bin/python -m pip install --upgrade --no-user flair</span></span></code></pre>
 <div class="section level2">
 <h2 id="list-of-ner-models">List of NER Models<a class="anchor" aria-label="anchor" href="#list-of-ner-models"></a>
 </h2>
@@ -332,13 +326,9 @@
 <p><strong>Source</strong>: <a href="https://flairnlp.github.io/docs/tutorial-basics/tagging-entities" class="external-link uri">https://flairnlp.github.io/docs/tutorial-basics/tagging-entities</a></p>
 </div>
 <div class="section level2">
-<h2 id="an-example-using-ner-model-pre-trained-ner-english-model">An Example Using <code>ner</code> Model (Pre-trained NER English
-Model)<a class="anchor" aria-label="anchor" href="#an-example-using-ner-model-pre-trained-ner-english-model"></a>
+<h2 id="generic-approach-using-pre-trained-ner-english-model">Generic Approach Using Pre-trained NER English Model<a class="anchor" aria-label="anchor" href="#generic-approach-using-pre-trained-ner-english-model"></a>
 </h2>
-<div class="section level3">
-<h3 id="generic-approach-using-get_entities">Generic Approach Using <code>get_entities()</code><a class="anchor" aria-label="anchor" href="#generic-approach-using-get_entities"></a>
-</h3>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">flaiR</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"uk_immigration"</span><span class="op">)</span></span>
 <span><span class="va">uk_immigration</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">uk_immigration</span>, <span class="fl">10</span><span class="op">)</span></span></code></pre></div>
@@ -348,12 +338,12 @@ ensure you have an internet connection. Once downloaded, the model will
 be stored in <strong>.flair</strong> as the cache in your device. So,
 once you’ve downloaded it and it hasn’t been manually removed, executing
 the command again will not trigger a download.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tagger_pos</span> <span class="op">&lt;-</span> <span class="fu">flaiR</span><span class="fu">::</span><span class="fu"><a href="../reference/load_tagger_ner.html">load_tagger_ner</a></span><span class="op">(</span><span class="st">"ner"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2023-09-17 19:32:05,551 SequenceTagger predicts: Dictionary with 20 tags: &lt;unk&gt;, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, &lt;START&gt;, &lt;STOP&gt;</span></span></code></pre></div>
+<span><span class="co">#&gt; 2023-09-19 02:02:09,438 SequenceTagger predicts: Dictionary with 20 tags: &lt;unk&gt;, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, &lt;START&gt;, &lt;STOP&gt;</span></span></code></pre></div>
 <p>If you want the computation to run faster, it is recommended to keep
 the show.text_id set to FALSE by default.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">time</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span><span class="op">{</span></span>
 <span>    <span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_entities.html">get_entities</a></span><span class="op">(</span><span class="va">uk_immigration</span><span class="op">$</span><span class="va">text</span>,</span>
 <span>                            <span class="va">uk_immigration</span><span class="op">$</span><span class="va">speaker</span>, </span>
@@ -365,10 +355,9 @@ the show.text_id set to FALSE by default.</p>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">time</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;  25.171   0.409  25.412</span></span></code></pre></div>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">results</span><span class="op">)</span></span>
+<span><span class="co">#&gt;  71.780   1.235  72.957</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">results</span><span class="op">)</span></span>
 <span><span class="co">#&gt;               doc_id                          entity  tag</span></span>
 <span><span class="co">#&gt;  1: Philip Hollobone                    Conservative  ORG</span></span>
 <span><span class="co">#&gt;  2: Philip Hollobone Liberal Democrat Front Benchers  ORG</span></span>
@@ -422,10 +411,10 @@ the show.text_id set to FALSE by default.</p>
 <span><span class="co">#&gt; 50:      Phil Woolas                       Tom Brake  PER</span></span>
 <span><span class="co">#&gt;               doc_id                          entity  tag</span></span></code></pre></div>
 </div>
-<div class="section level3">
-<h3 id="batch-processing-using-get_entities_batch">Batch Processing Using <code>get_entities_batch()</code><a class="anchor" aria-label="anchor" href="#batch-processing-using-get_entities_batch"></a>
-</h3>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="section level2">
+<h2 id="batch-processing">Batch Processing<a class="anchor" aria-label="anchor" href="#batch-processing"></a>
+</h2>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">batch_process_time</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span><span class="op">{</span></span>
 <span>    <span class="va">batch_process_results</span>  <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_entities_batch.html">get_entities_batch</a></span><span class="op">(</span><span class="va">uk_immigration</span><span class="op">$</span><span class="va">text</span>,</span>
 <span>                                                 <span class="va">uk_immigration</span><span class="op">$</span><span class="va">speaker</span>, </span>
@@ -435,10 +424,15 @@ the show.text_id set to FALSE by default.</p>
 <span>    <span class="fu"><a href="https://rdrr.io/r/base/gc.html" class="external-link">gc</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="op">}</span><span class="op">)</span></span>
 <span><span class="co">#&gt; CPU is used.</span></span>
+<span><span class="co">#&gt; Processing batch 1 out of 5...</span></span>
+<span><span class="co">#&gt; Processing batch 2 out of 5...</span></span>
+<span><span class="co">#&gt; Processing batch 3 out of 5...</span></span>
+<span><span class="co">#&gt; Processing batch 4 out of 5...</span></span>
+<span><span class="co">#&gt; Processing batch 5 out of 5...</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">batch_process_time</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;  24.769   0.365  25.015</span></span></code></pre></div>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<span><span class="co">#&gt;  71.643   1.159  72.722</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">batch_process_results</span><span class="op">)</span></span>
 <span><span class="co">#&gt;               doc_id                          entity  tag text_id</span></span>
 <span><span class="co">#&gt;  1: Philip Hollobone                    Conservative  ORG      NA</span></span>
@@ -493,16 +487,13 @@ the show.text_id set to FALSE by default.</p>
 <span><span class="co">#&gt; 50:      Phil Woolas                       Tom Brake  PER      NA</span></span>
 <span><span class="co">#&gt;               doc_id                          entity  tag text_id</span></span></code></pre></div>
 </div>
-</div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>
 </div>
 
 
 
-   </div>
-  <footer><div class="container">
-  <div class="pkgdown-footer-left">
+    <footer><div class="pkgdown-footer-left">
   <p></p>
 <p>Developed by David Liao, Akbik Alan, Blythe Duncan, Vollgraf Roland.</p>
 </div>
@@ -512,6 +503,12 @@ the show.text_id set to FALSE by default.</p>
 <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
-  </div></footer>
-</body>
+    </footer>
+</div>
+
+  
+
+  
+
+  </body>
 </html>

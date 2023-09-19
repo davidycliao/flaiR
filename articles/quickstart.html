@@ -15,9 +15,7 @@
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><link href="../deps/Source_Sans_Pro-0.4.7/font.css" rel="stylesheet">
-<link href="../deps/Source_Code_Pro-0.4.7/font.css" rel="stylesheet">
-<!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<script src="../deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Quick Start">
 <meta property="og:description" content="flaiR">
@@ -34,10 +32,10 @@
 </script><script defer data-domain="{YOUR DOMAIN},all.tidyverse.org" src="https://plausible.io/js/plausible.js"></script>
 </head>
 <body>
-    <a href="#container" class="visually-hidden-focusable">Skip to content</a>
+    <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
     
 
-    <nav class="navbar fixed-top navbar-inverse navbar-expand-lg bg-none"><div class="container">
+    <nav class="navbar fixed-top navbar-inverse navbar-expand-lg bg-light"><div class="container">
     
     <a class="navbar-brand me-2" href="../index.html">flaiR</a>
 
@@ -63,7 +61,7 @@
     Quick Start
   </a>
   <div class="dropdown-menu" aria-labelledby="dropdown--quick-start">
-    <a class="dropdown-item" href="../articles/quickstart.html#install-flair-with-using-remotes">Install flaiR with Using `remotes`</a>
+    <a class="dropdown-item" href="../articles/quickstart.html#install-flair-with-using-remotes">Install flaiR via GitHub</a>
     <a class="dropdown-item" href="../articles/quickstart.html#get-started-with-using-remotes">Quick Start Guide</a>
     <a class="dropdown-item" href="../articles/quickstart.html#quickstart.html#how-to-contribute">How to Contribute</a>
   </div>
@@ -101,6 +99,7 @@
   </a>
   <div class="dropdown-menu" aria-labelledby="dropdown--reference">
     <a class="dropdown-item" href="../reference/index.html#flair-functions">flaiR</a>
+    <a class="dropdown-item" href="../reference/index.html#classifier-functions">Taggers (Classifiers)</a>
     <a class="dropdown-item" href="../reference/index.html#utility-functions">Utility</a>
     <a class="dropdown-item" href="../reference/index.html#example-dataset">Dataset</a>
   </div>
@@ -133,7 +132,7 @@
 
     
   </div>
-</nav><div class="container template-article" id="container">
+</nav><div class="container template-article">
 
 
 
@@ -158,9 +157,9 @@ incorporates key functions to access the core features of FlairNLP,
 returning data in a tidy and efficient <a href="https://cran.r-project.org/web/packages/data.table/index.html" class="external-link"><code>data.table</code></a>.
 The installation consists of two parts: First, install <a href="https://www.python.org/downloads/" class="external-link">Python 3.7</a> or higher, and
 the<a href="https://rstudio.github.io/reticulate/" class="external-link"><code>reticulate</code></a>
-package in R. Additionally, you’ll also need <a href="Anaconda"><code>Anaconda</code></a> to assist
+package in R. <del>Additionally, you’ll also need <a href="Anaconda"><code>Anaconda</code></a> to assist
 <code>reticulate</code> in setting up your Python environment, as well
-as enabling your RStudio to identify the environment.</p>
+as enabling your RStudio to identify the environment.</del></p>
 <p><strong>System Requirement:</strong></p>
 <ul>
 <li><p>Python (&gt;= 3.7.0)</p></li>
@@ -220,7 +219,7 @@ recommended to enhance the performance of the tasks.<a class="anchor" aria-label
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">flaiR</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tagger_pos</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_tagger_pos.html">load_tagger_pos</a></span><span class="op">(</span><span class="st">"pos-fast"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2023-09-17 19:34:26,515 SequenceTagger predicts: Dictionary with 53 tags: &lt;unk&gt;, O, UH, ,, VBD, PRP, VB, PRP$, NN, RB, ., DT, JJ, VBP, VBG, IN, CD, NNS, NNP, WRB, VBZ, WDT, CC, TO, MD, VBN, WP, :, RP, EX, JJR, FW, XX, HYPH, POS, RBR, JJS, PDT, NNPS, RBS, AFX, WP$, -LRB-, -RRB-, ``, '', LS, $, SYM, ADD</span></span></code></pre></div>
+<span><span class="co">#&gt; 2023-09-19 02:06:11,341 SequenceTagger predicts: Dictionary with 53 tags: &lt;unk&gt;, O, UH, ,, VBD, PRP, VB, PRP$, NN, RB, ., DT, JJ, VBP, VBG, IN, CD, NNS, NNP, WRB, VBZ, WDT, CC, TO, MD, VBN, WP, :, RP, EX, JJR, FW, XX, HYPH, POS, RBR, JJS, PDT, NNPS, RBS, AFX, WP$, -LRB-, -RRB-, ``, '', LS, $, SYM, ADD</span></span></code></pre></div>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_pos.html">get_pos</a></span><span class="op">(</span><span class="va">texts</span>, <span class="va">doc_ids</span>, <span class="va">tagger_pos</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">results</span>, n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
@@ -247,7 +246,7 @@ recommended to enhance the performance of the tasks.<a class="anchor" aria-label
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">flaiR</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tagger_ner</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_tagger_ner.html">load_tagger_ner</a></span><span class="op">(</span><span class="st">"ner"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2023-09-17 19:34:28,458 SequenceTagger predicts: Dictionary with 20 tags: &lt;unk&gt;, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, &lt;START&gt;, &lt;STOP&gt;</span></span></code></pre></div>
+<span><span class="co">#&gt; 2023-09-19 02:06:17,381 SequenceTagger predicts: Dictionary with 20 tags: &lt;unk&gt;, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, &lt;START&gt;, &lt;STOP&gt;</span></span></code></pre></div>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_entities.html">get_entities</a></span><span class="op">(</span><span class="va">texts</span>, <span class="va">doc_ids</span>, <span class="va">tagger_ner</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">results</span>, n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
@@ -282,11 +281,11 @@ pretrained models, see <a href="https://flairnlp.github.io/docs/tutorial-basics/
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">results</span>, n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    doc_id sentiment     score</span></span>
 <span><span class="co">#&gt; 1:   doc1  POSITIVE 0.9970598</span></span>
-<span><span class="co">#&gt; 2:   doc2  NEGATIVE 0.8472336</span></span>
+<span><span class="co">#&gt; 2:   doc2  NEGATIVE 0.8472332</span></span>
 <span><span class="co">#&gt; 3:   doc3  POSITIVE 0.9928006</span></span>
-<span><span class="co">#&gt; 4:   doc4  POSITIVE 0.9901405</span></span>
+<span><span class="co">#&gt; 4:   doc4  POSITIVE 0.9901404</span></span>
 <span><span class="co">#&gt; 5:   doc5  POSITIVE 0.9952670</span></span>
-<span><span class="co">#&gt; 6:   doc6  POSITIVE 0.9291794</span></span></code></pre></div>
+<span><span class="co">#&gt; 6:   doc6  POSITIVE 0.9291795</span></span></code></pre></div>
 <p> </p>
 <hr>
 </div>
@@ -308,9 +307,7 @@ by its terms.</p>
 
 
 
-   </div>
-  <footer><div class="container">
-  <div class="pkgdown-footer-left">
+    <footer><div class="pkgdown-footer-left">
   <p></p>
 <p>Developed by David Liao, Akbik Alan, Blythe Duncan, Vollgraf Roland.</p>
 </div>
@@ -320,6 +317,12 @@ by its terms.</p>
 <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
-  </div></footer>
-</body>
+    </footer>
+</div>
+
+  
+
+  
+
+  </body>
 </html>
