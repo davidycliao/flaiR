@@ -74,8 +74,8 @@
   </a>
   <div class="dropdown-menu" aria-labelledby="dropdown--manual">
     <a class="dropdown-item" href="../articles/get_entities.html">Tagging Named Entities</a>
-    <a class="dropdown-item" href="../articles/get_pos.html">Part-of-Speech Tagging with Flair Standard Models</a>
-    <a class="dropdown-item" href="../articles/get_sentiments.html">Tagging Sentiment with Flair Models</a>
+    <a class="dropdown-item" href="../articles/get_pos.html">Part-of-Speech Tagging</a>
+    <a class="dropdown-item" href="../articles/get_sentiments.html">Tagging Sentiment</a>
   </div>
 </li>
 <li class="nav-item dropdown">
@@ -332,17 +332,21 @@
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">flaiR</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"uk_immigration"</span><span class="op">)</span></span>
 <span><span class="va">uk_immigration</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">uk_immigration</span>, <span class="fl">10</span><span class="op">)</span></span></code></pre></div>
+<div style="text-align: justify">
 <p>Use <code>load_tagger_ner</code> to call the NER pretrained model.
 The model will be downloaded from Flair’s Hugging Face repo. Thus,
 ensure you have an internet connection. Once downloaded, the model will
 be stored in <strong>.flair</strong> as the cache in your device. So,
 once you’ve downloaded it and it hasn’t been manually removed, executing
 the command again will not trigger a download.</p>
+</div>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tagger_pos</span> <span class="op">&lt;-</span> <span class="fu">flaiR</span><span class="fu">::</span><span class="fu"><a href="../reference/load_tagger_ner.html">load_tagger_ner</a></span><span class="op">(</span><span class="st">"ner"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2023-09-19 15:52:25,189 SequenceTagger predicts: Dictionary with 20 tags: &lt;unk&gt;, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, &lt;START&gt;, &lt;STOP&gt;</span></span></code></pre></div>
+<span><span class="co">#&gt; 2023-09-20 05:38:47,560 SequenceTagger predicts: Dictionary with 20 tags: &lt;unk&gt;, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, &lt;START&gt;, &lt;STOP&gt;</span></span></code></pre></div>
+<div style="text-align: justify">
 <p>If you want the computation to run faster, it is recommended to keep
 the show.text_id set to FALSE by default.</p>
+</div>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">time</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span><span class="op">{</span></span>
 <span>    <span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_entities.html">get_entities</a></span><span class="op">(</span><span class="va">uk_immigration</span><span class="op">$</span><span class="va">text</span>,</span>
@@ -355,7 +359,7 @@ the show.text_id set to FALSE by default.</p>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">time</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;  54.219   0.933  54.861</span></span></code></pre></div>
+<span><span class="co">#&gt;  64.234   1.228  65.311</span></span></code></pre></div>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">results</span><span class="op">)</span></span>
 <span><span class="co">#&gt;               doc_id                          entity  tag</span></span>
@@ -414,24 +418,30 @@ the show.text_id set to FALSE by default.</p>
 <div class="section level2">
 <h2 id="batch-processing">Batch Processing<a class="anchor" aria-label="anchor" href="#batch-processing"></a>
 </h2>
+<div style="text-align: justify">
+<p>Processing texts individually can be both inefficient and
+memory-intensive. On the other hand, processing all the texts
+simultaneously could surpass memory constraints, especially if each
+document in the dataset is sizable. Parsing the documents in smaller
+batches may provide an optimal compromise between these two scenarios.
+Batch processing can enhance efficiency and aid in memory
+management.</p>
+</div>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">batch_process_time</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span><span class="op">{</span></span>
 <span>    <span class="va">batch_process_results</span>  <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_entities_batch.html">get_entities_batch</a></span><span class="op">(</span><span class="va">uk_immigration</span><span class="op">$</span><span class="va">text</span>,</span>
 <span>                                                 <span class="va">uk_immigration</span><span class="op">$</span><span class="va">speaker</span>, </span>
 <span>                                                 <span class="va">tagger_pos</span>, </span>
 <span>                                                 show.text_id <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>                                                 batch_size <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span>                                                 batch_size <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/base/gc.html" class="external-link">gc</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="op">}</span><span class="op">)</span></span>
 <span><span class="co">#&gt; CPU is used.</span></span>
-<span><span class="co">#&gt; Processing batch 1 out of 5...</span></span>
-<span><span class="co">#&gt; Processing batch 2 out of 5...</span></span>
-<span><span class="co">#&gt; Processing batch 3 out of 5...</span></span>
-<span><span class="co">#&gt; Processing batch 4 out of 5...</span></span>
-<span><span class="co">#&gt; Processing batch 5 out of 5...</span></span>
+<span><span class="co">#&gt; Processing batch 1 out of 2...</span></span>
+<span><span class="co">#&gt; Processing batch 2 out of 2...</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">batch_process_time</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;  55.473   0.907  56.128</span></span></code></pre></div>
+<span><span class="co">#&gt;  65.190   1.105  66.082</span></span></code></pre></div>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">batch_process_results</span><span class="op">)</span></span>
 <span><span class="co">#&gt;               doc_id                          entity  tag text_id</span></span>

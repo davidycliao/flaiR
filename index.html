@@ -86,8 +86,8 @@
   </a>
   <div class="dropdown-menu" aria-labelledby="dropdown--manual">
     <a class="dropdown-item" href="articles/get_entities.html">Tagging Named Entities</a>
-    <a class="dropdown-item" href="articles/get_pos.html">Part-of-Speech Tagging with Flair Standard Models</a>
-    <a class="dropdown-item" href="articles/get_sentiments.html">Tagging Sentiment with Flair Models</a>
+    <a class="dropdown-item" href="articles/get_pos.html">Part-of-Speech Tagging</a>
+    <a class="dropdown-item" href="articles/get_sentiments.html">Tagging Sentiment</a>
   </div>
 </li>
 <li class="nav-item dropdown">
@@ -158,8 +158,8 @@
 <p><br></p>
 <table class="table">
 <colgroup>
-<col width="29%">
-<col width="16%">
+<col width="28%">
+<col width="17%">
 <col width="54%">
 </colgroup>
 <thead><tr class="header">
@@ -172,22 +172,22 @@
 <td>
 <code><a href="reference/get_entities.html">get_entities()</a></code>, <code><a href="reference/get_entities_batch.html">get_entities_batch()</a></code>
 </td>
-<td><code>load_tagger_ner</code></td>
-<td>en(English), fr (French), da (Danish), nl (Dutch), etc.</td>
+<td><code><a href="reference/load_tagger_ner.html">load_tagger_ner()</a></code></td>
+<td>en (English), fr (French), da (Danish), nl (Dutch), etc.</td>
 </tr>
 <tr class="even">
 <td>
 <code><a href="reference/get_pos.html">get_pos()</a></code>, <code><a href="reference/get_pos_batch.html">get_pos_batch()</a></code>
 </td>
-<td><code>load_tagger_pos</code></td>
+<td><code><a href="reference/load_tagger_pos.html">load_tagger_pos()</a></code></td>
 <td>pos (English POS), fr-pos (French POS), de-pos(German POS), nl-pos (Dutch POS), etc.</td>
 </tr>
 <tr class="odd">
 <td>
 <code><a href="reference/get_sentiments.html">get_sentiments()</a></code>, <code><a href="reference/get_sentiments_batch.html">get_sentiments_batch()</a></code>
 </td>
-<td><code>load_tagger_sentiments</code></td>
-<td>sentiment (English)</td>
+<td><code><a href="reference/load_tagger_sentiments.html">load_tagger_sentiments()</a></code></td>
+<td>sentiment (English) and</td>
 </tr>
 </tbody>
 </table>
@@ -196,7 +196,9 @@
 <h3 id="installation-via-github">Installation via <code>GitHub</code>
 <a class="anchor" aria-label="anchor" href="#installation-via-github"></a>
 </h3>
-<p>The installation consists of two parts: First, install <a href="https://www.python.org/downloads/" class="external-link">Python3.7</a> or higher, and the <a href="https://rstudio.github.io/reticulate/" class="external-link"><code>reticulate</code></a> package in R.</p>
+<div style="text-align: justify">
+<p>The installation process is two-fold: Firstly, you’ll need to install <a href="https://www.python.org/downloads/" class="external-link">Python3.7</a> or a higher version, as well as R. <code>flaiR</code> is built upon the <a href="https://rstudio.github.io/reticulate/" class="external-link"><code>reticulate</code></a> to interact with FlairNLP in Python. When installing <code>flaiR</code>, it automatically sets up a Python conda environment and installs Flair in Python. If you encounter any installation issues, please feel free to raise them in the <a href="https://github.com/davidycliao/flaiR/discussions" class="external-link">discussion</a>.</p>
+</div>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">flaiR</span><span class="op">)</span></span>
 <span><span class="co">#&gt;  flaiR: An R Wrapper for Accessing Flair NLP Tagging Features </span></span>
