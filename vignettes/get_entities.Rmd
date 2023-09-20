@@ -28,15 +28,15 @@ reticulate::py_install("flair")
 |---------------------|-------------------|------------------|-----------------------------|--------------|------------------------|
 | 'ner'               | NER (4-class)     | English          | Conll-03                    | 93.03 (F1)   |                        |
 | 'ner-fast'          | NER (4-class)     | English          | Conll-03                    | 92.75 (F1)   | (fast model)           |
-| 'ner-large'         | NER (4-class)     | English / Multilingual | Conll-03               | 94.09 (F1)   | (large model)          |
+| 'ner-large'         | NER (4-class)     | English / Multilingual | Conll-03               | 94.09 (F1)   | (large model)         |
 | 'ner-pooled'        | NER (4-class)     | English          | Conll-03                    | 93.24 (F1)   | (memory inefficient)   |
 | 'ner-ontonotes'     | NER (18-class)    | English          | Ontonotes                   | 89.06 (F1)   |                        |
 | 'ner-ontonotes-fast'| NER (18-class)    | English          | Ontonotes                   | 89.27 (F1)   | (fast model)           |
-| 'ner-ontonotes-large'| NER (18-class)   | English / Multilingual | Ontonotes               | 90.93 (F1)   | (large model)          |
+| 'ner-ontonotes-large'| NER (18-class)   | English / Multilingual | Ontonotes             | 90.93 (F1)   | (large model)          |
 | 'ar-ner'            | NER (4-class)     | Arabic           | AQMAR & ANERcorp (curated)  | 86.66 (F1)   |                        |
 | 'da-ner'            | NER (4-class)     | Danish           | Danish NER dataset          |              | AmaliePauli            |
 | 'de-ner'            | NER (4-class)     | German           | Conll-03                    | 87.94 (F1)   |                        |
-| 'de-ner-large'      | NER (4-class)     | German / Multilingual | Conll-03                 | 92.31 (F1)   |                        |
+| 'de-ner-large'      | NER (4-class)     | German / Multilingual | Conll-03               | 92.31 (F1)   |                        |
 | 'de-ner-germeval'   | NER (4-class)     | German           | Germeval                    | 84.90 (F1)   |                        |
 | 'de-ner-legal'      | NER (legal text)  | German           | LER dataset                 | 96.35 (F1)   |                        |
 | 'fr-ner'            | NER (4-class)     | French           | WikiNER (aij-wikiner-fr-wp3)| 95.57 (F1)   | mhham                  |
@@ -49,7 +49,6 @@ reticulate::py_install("flair")
 
 __Source__: https://flairnlp.github.io/docs/tutorial-basics/tagging-entities
 
-
 ## Generic Approach Using Pre-trained NER English Model
 
 ```{r}
@@ -58,14 +57,18 @@ data("uk_immigration")
 uk_immigration <- head(uk_immigration, 10)
 ```
 
+<div style="text-align: justify">
+
 Use `load_tagger_ner` to call the NER pretrained model. The model will be downloaded from Flair's Hugging Face repo. Thus, ensure you have an internet connection. Once downloaded, the model will be stored in __.flair__ as the cache in your device. So, once you've downloaded it and it hasn't been manually removed, executing the command again will not trigger a download.
+</div>
 
 ```{r}
 tagger_pos <- flaiR::load_tagger_ner("ner")
 ```
+<div style="text-align: justify">
 
 If you want the computation to run faster, it is recommended to keep the show.text_id set to FALSE by default. 
-
+</div>
 ```{r}
 time <- system.time({
     results <- get_entities(uk_immigration$text,
@@ -85,13 +88,19 @@ print(results)
 
 ## Batch Processing
 
+<div style="text-align: justify">
+Processing texts individually can be both inefficient and memory-intensive. On the other hand, processing all the texts simultaneously could surpass memory constraints, especially if each document in the dataset is sizable. Parsing the documents in smaller batches may provide an optimal compromise between these two scenarios. Batch processing can enhance efficiency and aid in memory management.
+
+</div>
+
+
 ```{r}
 batch_process_time <- system.time({
     batch_process_results  <- get_entities_batch(uk_immigration$text,
                                                  uk_immigration$speaker, 
                                                  tagger_pos, 
                                                  show.text_id = FALSE,
-                                                 batch_size = 2)
+                                                 batch_size = 5)
     gc()
 })
 print(batch_process_time)
@@ -100,4 +109,3 @@ print(batch_process_time)
 ```{r}
 print(batch_process_results)
 ```
-
