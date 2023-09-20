@@ -209,8 +209,7 @@ pre-trained model.</p>
 <code class="sourceCode R"><span><span class="va">tagger_sent</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_tagger_sentiments.html">load_tagger_sentiments</a></span><span class="op">(</span><span class="st">"sentiment"</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_sentiments.html">get_sentiments</a></span><span class="op">(</span><span class="va">uk_immigration</span><span class="op">$</span><span class="va">text</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">uk_immigration</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>                          <span class="va">tagger_sent</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: Internet connection issue. Please check your network settings.</span></span></code></pre></div>
+<span>                          <span class="va">tagger_sent</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">results</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    doc_id sentiment     score</span></span>
@@ -230,7 +229,6 @@ pre-trained model.</p>
 <span>                                               show.text_id <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>                                               batch_size <span class="op">=</span> <span class="fl">2</span>,</span>
 <span>                                               verbose <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: Internet connection issue. Please check your network settings.</span></span>
 <span><span class="co">#&gt; CPU is used.</span></span>
 <span><span class="co">#&gt; Processing batch 1 out of 3...</span></span>
 <span><span class="co">#&gt; Processing batch 2 out of 3...</span></span>
