@@ -70,7 +70,6 @@ data for the given texts using batch processing.
 }
 \examples{
 \dontrun{
-library(reticulate)
 library(fliaR)
 tagger_pos_fast <- load_tagger_pos('pos-fast')
 texts <- c("UCD is one of the best universities in Ireland.",

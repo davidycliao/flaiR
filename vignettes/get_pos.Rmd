@@ -50,12 +50,11 @@ __Source__: https://flairnlp.github.io/docs/tutorial-basics/part-of-speech-taggi
 library(flaiR)
 data("de_immigration")
 uk_immigration <- head(uk_immigration, 2)
-
 ```
 
 Download the de-pos part-of-speech tagging model from FlairNLP on Hugging Face.
 ```{r}
-tagger_pos <- load_tagger_pos("de-pos")
+tagger_pos <- load_tagger_pos("pos")
 ```
 
 ```{r}
