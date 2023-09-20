@@ -61,13 +61,7 @@ If this is your first time using Python-related packages in like flair with R (`
 
 ## Quick Use
 
-### __Tagging Parts-of-Speech with Flair Models__
-
-<div style="text-align: justify">
-
-Load the pretrained model "pos-fast". For more pretrained models, see https://flairnlp.github.io/docs/tutorial-basics/part-of-speech-tagging#-in-english. 
-
-</div>
+### __Grammatical Parsing with Flair Parts-of-Speech Model__
 
 ```{r}
 texts <- c("UCD is one of the best universities in Ireland.",
@@ -79,6 +73,13 @@ texts <- c("UCD is one of the best universities in Ireland.",
 
 doc_ids <- c("doc1", "doc2", "doc3", "doc4", "doc5", "doc6")
 ```
+
+<div style="text-align: justify">
+
+Part-of-Speech tagging is a natural language processing technique that assign specific grammatical categories or labels (such as nouns, verbs, adjectives, adverbs, pronouns, etc.) to individual words within a sentence. The [`pos-fast`](https://huggingface.co/flair/pos-english-fast) is a relatively lightweight language model provided by Flair NLP. With an accuracy of 98.1%, it boasts a notably high prediction rate. This model is based on the [Penn Treebank framework](https://www.ling.upenn.edu/courses/Fall_2003/ling001/penn_treebank_pos.html). For more pretrained models, see https://flairnlp.github.io/docs/tutorial-basics/part-of-speech-tagging#-in-english. 
+
+</div>
+
 
 ```{r}
 library(flaiR)
@@ -94,7 +95,7 @@ head(results, n = 10)
 ```
 
 
-### __Tagging Entities with Flair Models__
+### __Tagging Entities with Flair NER Model__
 
 <div style="text-align: justify">
 

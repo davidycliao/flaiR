@@ -1,6 +1,6 @@
 #' UK House of Commons Immigration Debate Data
 #'
-#' A dataset containing speeches and debates from the UK House of Commons on the
+#' @description A dataset containing speeches and debates from the UK House of Commons on the
 #' topic of immigration in 2010.
 #'
 #' @format A data frame with 12 variables:
@@ -34,8 +34,8 @@ NULL
 
 #' German Bundestag Immigration Debate Data
 #'
-#' A dataset containing speeches and debates from the German Bundestag on the
-#' topic of immigration.
+#' @description A dataset containing speeches and debates from the German
+#' Bundestag on the topic of immigration.
 #'
 #' @format A data frame with 16 variables:
 #' \describe{

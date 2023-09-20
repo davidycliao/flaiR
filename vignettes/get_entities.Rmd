@@ -58,14 +58,18 @@ data("uk_immigration")
 uk_immigration <- head(uk_immigration, 10)
 ```
 
+<div style="text-align: justify">
+
 Use `load_tagger_ner` to call the NER pretrained model. The model will be downloaded from Flair's Hugging Face repo. Thus, ensure you have an internet connection. Once downloaded, the model will be stored in __.flair__ as the cache in your device. So, once you've downloaded it and it hasn't been manually removed, executing the command again will not trigger a download.
+</div>
 
 ```{r}
 tagger_pos <- flaiR::load_tagger_ner("ner")
 ```
+<div style="text-align: justify">
 
 If you want the computation to run faster, it is recommended to keep the show.text_id set to FALSE by default. 
-
+</div>
 ```{r}
 time <- system.time({
     results <- get_entities(uk_immigration$text,
@@ -84,6 +88,11 @@ print(results)
 ```
 
 ## Batch Processing
+<div style="text-align: justify">
+Processing texts individually can be both inefficient and memory-intensive. On the other hand, processing all the texts simultaneously could surpass memory constraints, especially if each document in the dataset is sizable. Parsing the documents in smaller batches may provide an optimal compromise between these two scenarios. Batch processing can enhance efficiency and aid in memory management.
+
+</div>
+
 
 ```{r}
 batch_process_time <- system.time({
@@ -91,7 +100,7 @@ batch_process_time <- system.time({
                                                  uk_immigration$speaker, 
                                                  tagger_pos, 
                                                  show.text_id = FALSE,
-                                                 batch_size = 2)
+                                                 batch_size = 5)
     gc()
 })
 print(batch_process_time)

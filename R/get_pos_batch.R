@@ -47,7 +47,6 @@
 #'
 #' @examples
 #' \dontrun{
-#' library(reticulate)
 #' library(fliaR)
 #' tagger_pos_fast <- load_tagger_pos('pos-fast')
 #' texts <- c("UCD is one of the best universities in Ireland.",
@@ -58,80 +57,6 @@
 #' # Using the batch_size parameter
 #' get_pos_batch(texts, doc_ids, tagger_pos_fast, batch_size = 2)
 #' }
-
-# get_pos_batch <- function(texts, doc_ids, tagger = NULL, language = NULL,
-#                           show.text_id = FALSE, gc.active = FALSE,
-#                           batch_size = 5, device = "cpu") {
-#
-#   # Check environment pre-requisites and parameters
-#   check_prerequisites()
-#   check_texts_and_ids(texts, doc_ids)
-#   check_show.text_id(show.text_id)
-#   check_device(device)
-#   check_batch_size(batch_size)
-#
-#   # Import the `Sentence` tokenizer and `Classifier` from Python's Flair
-#   flair <- reticulate::import("flair")
-#   Sentence <- flair$data$Sentence
-#
-#   # Load tagger if null
-#   if (is.null(tagger)) {
-#     tagger <- load_tagger_pos(language)
-#   }
-#
-#   # Function to process a single sentence
-#   process_single_sentence <- function(sentence, doc_id) {
-#     text <- sentence$text
-#     tag_list <- sentence$labels
-#
-#     # Check if there are no pos tag in tag_list if tag_list empty returns NAs
-#     if (length(tag_list) == 0) {
-#       return(data.table(doc_id = doc_id,
-#                         token_id = NA,
-#                         text_id = ifelse(show.text_id, text, NA),
-#                         token = NA,
-#                         tag = NA,
-#                         precision = NA))
-#     } else {
-#       return(data.table(
-#         doc_id = rep(doc_id, length(tag_list)),
-#         token_id = as.numeric(vapply(tag_list, function(x) gsub("^Token\\[([0-9]+)\\].*$", "\\1", x), character(1))),
-#         text_id = ifelse(show.text_id, text, NA),
-#         token = vapply(tag_list, function(x) gsub('^Token\\[\\d+\\]: "(.*)" .*', '\\1', x), character(1)),
-#         tag = vapply(tag_list, function(x) gsub('^Token\\[\\d+\\]: ".*" \u2192 (.*) \\(.*\\)', '\\1', x), character(1)),
-#         precision = as.numeric(vapply(tag_list, function(x) gsub(".*\\((.*)\\)", "\\1", x), character(1)))
-#       ))
-#     }
-#   }
-#
-#   process_batch <- function(start_idx) {
-#     batch_texts <- texts[start_idx:(start_idx+batch_size-1)]
-#     batch_ids <- doc_ids[start_idx:(start_idx+batch_size-1)]
-#     batch_sentences <- lapply(batch_texts, Sentence)
-#     lapply(batch_sentences, tagger$predict)
-#
-#     dt_list <- lapply(seq_along(batch_sentences), function(i) {
-#       process_single_sentence(batch_sentences[[i]], batch_ids[[i]])
-#     })
-#
-#     return(rbindlist(dt_list, fill = TRUE)) # Bind the results within this batch together
-#   }
-#
-#
-#   # Split the data into batches and process each batch
-#   n <- length(texts)
-#   idxs <- seq(1, n, by = batch_size)
-#   results_list <- lapply(idxs, process_batch)
-#
-#   # Combine the results from all batches
-#   results_dt <- rbindlist(results_list, fill = TRUE)
-#
-#   # Activate garbage collection
-#   check_and_gc(gc.active)
-#
-#   return(results_dt)
-# }
-
 get_pos_batch <- function(texts, doc_ids, tagger = NULL, language = NULL,
                           show.text_id = FALSE, gc.active = FALSE,
                           batch_size = 5, device = "cpu", verbose = TRUE) {
