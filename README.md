@@ -31,8 +31,7 @@ architecture, refer to the research article ‘[Contextual String Embeddings for
 
 ### Installation via `GitHub`
 
-The installation consists of two parts: First, install [Python3.7](https://www.python.org/downloads/) or higher, and the
-[`reticulate`](https://rstudio.github.io/reticulate/) package in R.
+The installation consists of two parts: First, install[Python3.7](https://www.python.org/downloads/) or higher, and [R version 3.6.3](https://www.r-project.org) or higher.
 
 ``` r
 install.packages("remotes")
