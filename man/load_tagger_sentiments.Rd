@@ -7,16 +7,20 @@
 load_tagger_sentiments(language = NULL)
 }
 \arguments{
-\item{language}{Character string specifying the language model to load.
-Can be one of "sentiment", "sentiment-fast", or "de-offensive-language".
-Defaults to "sentiment" if not provided.}
+\item{language}{A character string specifying the language model to load.
+Supported models include:
+\itemize{
+  \item "sentiment" - Sentiment analysis model
+  \item "sentiment-fast" - Faster sentiment analysis model
+  \item "de-offensive-language" - German offensive language detection model
+} If not provided, the function will default to the "sentiment" model.}
 }
 \value{
 An object of the loaded Flair model.
 }
 \description{
 This function loads a pre-trained sentiment or language tagger
-from the Flair library.  It allows you to specify the model language you wish to load.
+from the Flair library.
 }
 \examples{
 \dontrun{

@@ -7,8 +7,17 @@
 load_tagger_ner(language = NULL)
 }
 \arguments{
-\item{language}{Character string indicating the desired language for the NER tagger.
-Supported languages include "en", "de", "fr", "nl", "da", and "ar".}
+\item{language}{A character string indicating the desired language for the NER tagger.
+If `NULL`, the function will default to the 'pos-fast' model.
+Supported languages and their models include:
+\itemize{
+  \item "en" - English NER tagging (`ner`)
+  \item "de" - German NER tagging (`de-ner``)
+  \item "fr" - French NER tagging (`fr-ner`)
+  \item "nl" - Dutch NER tagging (`nl-ner`)
+  \item "da" - Danish NER tagging (`da-ner`)
+  \item "ar" - Arabic NER tagging (`ar-ner`)
+}}
 }
 \value{
 An instance of the Flair SequenceTagger for the specified language.
@@ -16,15 +25,6 @@ An instance of the Flair SequenceTagger for the specified language.
 \description{
 A helper function to load the appropriate tagger based on the provided language.
 This function supports a variety of languages/models.
-}
-\details{
-Supported languages and their corresponding codes are:
-* "en" - English: `ner`
-* "de" - German: `de-ner`
-* "fr" - French: `fr-ner`
-* "nl" - Dutch: `nl-ner`
-* "da" - Danish: `da-ner`
-* "ar" - Arabic: `ar-ner`
 }
 \examples{
 # Load the English NER tagger

@@ -25,7 +25,7 @@ architecture, refer to the research article ‘[Contextual String Embeddings for
 |----------------------------------------------|--------------------------|--------------------------------------------------------------------------------------|
 | `get_entities()`, `get_entities_batch()`     | `load_tagger_ner()`        | en(English), fr (French), da (Danish), nl (Dutch), etc.                              |
 | `get_pos()`, `get_pos_batch()`               | `load_tagger_pos()`        | pos (English POS), fr-pos (French POS), de-pos(German POS), nl-pos (Dutch POS), etc. |
-| `get_sentiments()`, `get_sentiments_batch()` | `load_tagger_sentiments()` | sentiment (English)                                                                  |
+| `get_sentiments()`, `get_sentiments_batch()` | `load_tagger_sentiments()` | sentiment (English) , sentiment-fast (English) , de-offensive-language (German offensive language detection model) |
 
 <br>
 
