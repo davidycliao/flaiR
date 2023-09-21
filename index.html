@@ -8,7 +8,7 @@
 <meta name="description" content="This is an R wrapper, based on the structure of R's reticulate, 
              designed to access the major features of flairNLP in Python. 
              FlairNLP is a powerful framework for state-of-the-art natural 
-             language processing and sequence tagging. The features in flaiR 
+             language processing and sequence taggings. The features in flaiR 
              currently include part-of-speech (POS) tagging, transformer-based 
              sentiment tagging, and named entity recognition (NER) tagging. 
              This package requires Python 3.8 or above to operate concurrently.">
@@ -29,7 +29,7 @@
 <meta property="og:description" content="This is an R wrapper, based on the structure of R's reticulate, 
              designed to access the major features of flairNLP in Python. 
              FlairNLP is a powerful framework for state-of-the-art natural 
-             language processing and sequence tagging. The features in flaiR 
+             language processing and sequence taggings. The features in flaiR 
              currently include part-of-speech (POS) tagging, transformer-based 
              sentiment tagging, and named entity recognition (NER) tagging. 
              This package requires Python 3.8 or above to operate concurrently.">
@@ -189,7 +189,7 @@
 <code><a href="reference/get_sentiments.html">get_sentiments()</a></code>, <code><a href="reference/get_sentiments_batch.html">get_sentiments_batch()</a></code>
 </td>
 <td><code><a href="reference/load_tagger_sentiments.html">load_tagger_sentiments()</a></code></td>
-<td>sentiment (English)</td>
+<td>sentiment (English) , sentiment-fast (English) , de-offensive-language (German offensive language detection model)</td>
 </tr>
 </tbody>
 </table>
@@ -198,7 +198,7 @@
 <h3 id="installation-via-github">Installation via <code>GitHub</code>
 <a class="anchor" aria-label="anchor" href="#installation-via-github"></a>
 </h3>
-<p>The installation consists of two parts: First, install <a href="https://www.python.org/downloads/" class="external-link">Python3.7</a> or higher, and the <a href="https://rstudio.github.io/reticulate/" class="external-link"><code>reticulate</code></a> package in R.</p>
+<p>The installation consists of two parts: First, install<a href="https://www.python.org/downloads/" class="external-link">Python3.7</a> or higher, and <a href="https://www.r-project.org" class="external-link">R version 3.6.3</a> or higher.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span></span>
 <span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"davidycliao/flaiR"</span>, force <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
