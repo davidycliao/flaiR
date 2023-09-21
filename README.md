@@ -23,9 +23,9 @@ architecture, refer to the research article ‘[Contextual String Embeddings for
 
 | **The Main Features in R**                   | Loader                   | Supported Models                                                                     |
 |----------------------------------------------|--------------------------|--------------------------------------------------------------------------------------|
-| `get_entities()`, `get_entities_batch()`     | `load_tagger_ner`        | en(English), fr (French), da (Danish), nl (Dutch), etc.                              |
-| `get_pos()`, `get_pos_batch()`               | `load_tagger_pos`        | pos (English POS), fr-pos (French POS), de-pos(German POS), nl-pos (Dutch POS), etc. |
-| `get_sentiments()`, `get_sentiments_batch()` | `load_tagger_sentiments` | sentiment (English)                                                                  |
+| `get_entities()`, `get_entities_batch()`     | `load_tagger_ner()`        | en(English), fr (French), da (Danish), nl (Dutch), etc.                              |
+| `get_pos()`, `get_pos_batch()`               | `load_tagger_pos()`        | pos (English POS), fr-pos (French POS), de-pos(German POS), nl-pos (Dutch POS), etc. |
+| `get_sentiments()`, `get_sentiments_batch()` | `load_tagger_sentiments()` | sentiment (English)                                                                  |
 
 <br>
 
@@ -33,6 +33,12 @@ architecture, refer to the research article ‘[Contextual String Embeddings for
 
 The installation consists of two parts: First, install [Python3.7](https://www.python.org/downloads/) or higher, and the
 [`reticulate`](https://rstudio.github.io/reticulate/) package in R.
+
+``` r
+install.packages("remotes")
+remotes::install_github("davidycliao/flaiR", force = TRUE)
+library(flaiR)
+```
 
 ``` r
 library(flaiR)
