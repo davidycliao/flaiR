@@ -79,18 +79,20 @@ create_flair_env <- function(env = "r-reticulate") {
 #' @description A helper function to load the appropriate tagger based on the provided language.
 #' This function supports a variety of languages/models.
 #'
-#' @param language Character string indicating the desired language for the NER tagger.
-#' Supported languages include "en", "de", "fr", "nl", "da", and "ar".
+#' @param language A character string indicating the desired language for the NER tagger.
+#' If `NULL`, the function will default to the 'pos-fast' model.
+#' Supported languages and their models include:
+#' \itemize{
+#'   \item "en" - English NER tagging (`ner`)
+#'   \item "de" - German NER tagging (`de-ner``)
+#'   \item "fr" - French NER tagging (`fr-ner`)
+#'   \item "nl" - Dutch NER tagging (`nl-ner`)
+#'   \item "da" - Danish NER tagging (`da-ner`)
+#'   \item "ar" - Arabic NER tagging (`ar-ner`)
+#'}
 #'
 #' @return An instance of the Flair SequenceTagger for the specified language.
-#' @details
-#' Supported languages and their corresponding codes are:
-#' * "en" - English: `ner`
-#' * "de" - German: `de-ner`
-#' * "fr" - French: `fr-ner`
-#' * "nl" - Dutch: `nl-ner`
-#' * "da" - Danish: `da-ner`
-#' * "ar" - Arabic: `ar-ner`
+#'
 #' @import reticulate
 #' @importFrom stats setNames
 #'
@@ -194,11 +196,15 @@ load_tagger_pos <- function(language = NULL) {
 #' @title Load a Sentiment or Language Tagger Model from Flair
 #'
 #' @description This function loads a pre-trained sentiment or language tagger
-#' from the Flair library.  It allows you to specify the model language you wish to load.
+#' from the Flair library.
 #'
-#' @param language Character string specifying the language model to load.
-#'   Can be one of "sentiment", "sentiment-fast", or "de-offensive-language".
-#'   Defaults to "sentiment" if not provided.
+#' @param language A character string specifying the language model to load.
+#' Supported models include:
+#' \itemize{
+#'   \item "sentiment" - Sentiment analysis model
+#'   \item "sentiment-fast" - Faster sentiment analysis model
+#'   \item "de-offensive-language" - German offensive language detection model
+#'} If not provided, the function will default to the "sentiment" model.
 #'
 #' @return An object of the loaded Flair model.
 #'
@@ -438,29 +444,6 @@ check_python_installed <- function(...) {
     return(FALSE)
   }
 }
-
-
-check_python_installed <- function(...) {
-  # Check if running on Windows
-  if (.Platform$OS.type == "windows") {
-    command <- "where python"
-  } else {
-    command <- "which python3"
-  }
-
-  # Locate python path
-  result <- system(command, intern = TRUE, ignore.stderr = TRUE)
-
-  # Check if the result is a valid path
-  if (length(result) > 0 && file.exists(result[1])) {
-    # cat("Python is installed at:", result[1], "\n")
-    return(TRUE)
-  } else {
-    # cat("Python is not installed on this system.\n")
-    return(FALSE)
-  }
-}
-
 
 
 
