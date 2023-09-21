@@ -26,6 +26,37 @@
 #   }
 # }
 
+# .onAttach <- function(...) {
+#   packageStartupMessage(sprintf("flai\033[34mR\033[39m: An R Wrapper for Accessing Flair NLP Tagging Features %-5s", ""))
+#
+#   # Check and report if Python is installed
+#   if (check_python_installed()) {
+#     packageStartupMessage(sprintf("Python: %-47s", reticulate::py_config()$version))
+#
+#     # Check if flair is available
+#     if (!reticulate::py_module_available("flair")) {
+#       user_choice <- utils::menu(c("Install Flair", "Do not install"),
+#                                  title = "Flair is not detected in Python. Do you want to install it automatically?",
+#                                  graphics = FALSE)
+#       if (user_choice == 1) {
+#         packageStartupMessage("Attempting to install Flair in Python...")
+#         reticulate::py_install("flair")
+#         if (!reticulate::py_module_available("flair")) {
+#           message("Failed to install Flair. This package requires Flair to function properly. Please ensure Flair is installed in Python manually.")
+#         }
+#       } else {
+#         message("This package requires Flair to function. Please manually install Flair in Python or in R via reticulate.")
+#       }
+#     } else {
+#       packageStartupMessage(sprintf("Flair: %-47s", get_flair_version()))
+#     }
+#
+#   } else {
+#     stop("Python is not installed. This package requires Python to dance")
+#   }
+# }
+
+
 .onAttach <- function(...) {
   packageStartupMessage(sprintf("flai\033[34mR\033[39m: An R Wrapper for Accessing Flair NLP Tagging Features %-5s", ""))
 
@@ -43,13 +74,13 @@
           packageStartupMessage("Attempting to install Flair in Python...")
           reticulate::py_install("flair")
           if (!reticulate::py_module_available("flair")) {
-            stop("Failed to install Flair. This package requires Flair to function properly. Please ensure Flair is installed in Python manually.")
+            message("Failed to install Flair. This package requires Flair to function properly. Please manually install Flair in Python or R via reticulate.")
           }
         } else {
-          stop("This package requires Flair to function. Please manually install Flair in Python.")
+          message("This package requires Flair to function. Please manually install Flair in Python or R via reticulate.")
         }
       } else {
-        stop("Flair is not detected in Python. This package requires Flair to function properly. Please ensure Flair is installed in Python.")
+        stop("Flair is not detected in Python. This package requires Flair. Please ensure Flair is installed in Python.")
       }
     } else {
       packageStartupMessage(sprintf("Flair: %-47s", get_flair_version()))
