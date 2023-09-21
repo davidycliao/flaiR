@@ -20,7 +20,7 @@ An object of the loaded Flair model.
 }
 \description{
 This function loads a pre-trained sentiment or language tagger
-from the Flair library.  It allows you to specify the model language you wish to load.
+from the Flair library.
 }
 \examples{
 \dontrun{
