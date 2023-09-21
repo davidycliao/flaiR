@@ -33,8 +33,8 @@ Describe the source of your data here.
 data("de_immigration")
 }
 \description{
-A dataset containing speeches and debates from the German Bundestag on the
-topic of immigration.
+A dataset containing speeches and debates from the German
+Bundestag on the topic of immigration.
 }
 \examples{
 \dontrun{

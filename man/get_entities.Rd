@@ -61,9 +61,7 @@ This function takes texts and their corresponding document IDs
 as inputs, uses the Flair NLP library to extract named entities,
 and returns a dataframe of the identified entities along with their tags.
 When no entities are detected in a text, the function returns a data table
-with NA values. This might clutter the results. Depending on your use case,
-you might decide to either keep this behavior or skip rows with no detected
-entities.
+with NA values.
 }
 \examples{
 \dontrun{
