@@ -74,10 +74,10 @@
           packageStartupMessage("Attempting to install Flair in Python...")
           reticulate::py_install("flair")
           if (!reticulate::py_module_available("flair")) {
-            message("Failed to install Flair. This package requires Flair to function properly. Please manually install Flair in Python or R via reticulate.")
+            packageStartupMessage("Failed to install Flair. This package requires Flair to function properly. Please manually install Flair in Python or R via reticulate.")
           }
         } else {
-          message("This package requires Flair to function. Please manually install Flair in Python or R via reticulate.")
+          packageStartupMessage("This package requires Flair to function. Please manually install Flair in Python or R via reticulate.")
         }
       } else {
         stop("Flair is not detected in Python. This package requires Flair. Please ensure Flair is installed in Python.")
