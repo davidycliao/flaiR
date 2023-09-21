@@ -75,8 +75,8 @@
     Quick Start
   </a>
   <div class="dropdown-menu" aria-labelledby="dropdown--quick-start">
-    <a class="dropdown-item" href="articles/quickstart.html#install-flair-with-using-remotes">Install flaiR via GitHub</a>
-    <a class="dropdown-item" href="articles/quickstart.html#get-started-with-using-remotes">Quick Start Guide</a>
+    <a class="dropdown-item" href="articles/quickstart.html#install-flair-via-github">Install flaiR via GitHub</a>
+    <a class="dropdown-item" href="articles/quickstart.html#quickstart.html#user-guide">User Guide</a>
     <a class="dropdown-item" href="articles/quickstart.html#quickstart.html#how-to-contribute">How to Contribute</a>
   </div>
 </li>
@@ -160,9 +160,9 @@
 <p><br></p>
 <table class="table">
 <colgroup>
-<col width="29%">
-<col width="16%">
-<col width="54%">
+<col width="25%">
+<col width="15%">
+<col width="58%">
 </colgroup>
 <thead><tr class="header">
 <th><strong>The Main Features in R</strong></th>
@@ -175,30 +175,33 @@
 <code><a href="reference/get_entities.html">get_entities()</a></code>, <code><a href="reference/get_entities_batch.html">get_entities_batch()</a></code>
 </td>
 <td><code><a href="reference/load_tagger_ner.html">load_tagger_ner()</a></code></td>
-<td>en(English), fr (French), da (Danish), nl (Dutch), etc.</td>
+<td>
+<code>en</code> (English), <code>fr</code> (French), <code>da</code> (Danish), <code>nl</code> (Dutch), and more.</td>
 </tr>
 <tr class="even">
 <td>
 <code><a href="reference/get_pos.html">get_pos()</a></code>, <code><a href="reference/get_pos_batch.html">get_pos_batch()</a></code>
 </td>
 <td><code><a href="reference/load_tagger_pos.html">load_tagger_pos()</a></code></td>
-<td>pos (English POS), fr-pos (French POS), de-pos(German POS), nl-pos (Dutch POS), etc.</td>
+<td>
+<code>pos</code> (English POS), <code>fr-pos</code> (French POS), <code>de-pos</code> (German POS), <code>nl-pos</code> (Dutch POS), and more.</td>
 </tr>
 <tr class="odd">
 <td>
 <code><a href="reference/get_sentiments.html">get_sentiments()</a></code>, <code><a href="reference/get_sentiments_batch.html">get_sentiments_batch()</a></code>
 </td>
 <td><code><a href="reference/load_tagger_sentiments.html">load_tagger_sentiments()</a></code></td>
-<td>sentiment (English) , sentiment-fast (English) , de-offensive-language (German offensive language detection model)</td>
+<td>
+<code>sentiment</code> (English) , <code>sentiment-fast</code>(English) , <code>de-offensive-language</code> (German offensive language detection model)</td>
 </tr>
 </tbody>
 </table>
 <p><br></p>
 <div class="section level3">
-<h3 id="installation-via-github">Installation via <code>GitHub</code>
+<h3 id="installation-via-github">Installation via <u><strong><code>GitHub</code></strong></u>
 <a class="anchor" aria-label="anchor" href="#installation-via-github"></a>
 </h3>
-<p>The installation consists of two parts: First, install<a href="https://www.python.org/downloads/" class="external-link">Python3.7</a> or higher, and <a href="https://www.r-project.org" class="external-link">R version 3.6.3</a> or higher.</p>
+<p>The installation consists of two parts: First, install <a href="https://www.python.org/downloads/" class="external-link">Python3.7</a> or higher, and <a href="https://www.r-project.org" class="external-link">R version 3.6.3</a> or higher. If there are any issues with the installation, feel free to ask in the <u><a href="https://github.com/davidycliao/flaiR/discussions" class="external-link">Discussion</a></u>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span></span>
 <span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"davidycliao/flaiR"</span>, force <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
