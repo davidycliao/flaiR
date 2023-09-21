@@ -24,7 +24,8 @@
 
 ### Installation via `GitHub` 
 
-The installation consists of two parts: First, install [Python 3.7](https://www.python.org/downloads/) or higher, and the [`reticulate`](https://rstudio.github.io/reticulate/) package in R. Additionally, you'll also need [`Anaconda`](Anaconda) to assist `reticulate` in setting up your Python environment via Rstudio, as well as enabling your R to identify the conda environment. 
+
+The installation consists of two parts: First, install[Python3.7](https://www.python.org/downloads/) or higher, and [R version 3.6.3](https://www.r-project.org) or higher.
 
 
 ```
