@@ -196,7 +196,7 @@ load_tagger_pos <- function(language = NULL) {
 #' @title Load a Sentiment or Language Tagger Model from Flair
 #'
 #' @description This function loads a pre-trained sentiment or language tagger
-#' from the Flair library.  It allows you to specify the model language you wish to load.
+#' from the Flair library.
 #'
 #' @param language A character string specifying the language model to load.
 #' Supported models include:
@@ -444,6 +444,7 @@ check_python_installed <- function(...) {
     return(FALSE)
   }
 }
+
 
 #' Ensure Either a Tagger Object or a Language is Specified
 #'
