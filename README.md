@@ -15,23 +15,27 @@
 
 
 `flaiR` is a R wrapper of the FlairNLP for R users, particularly for social science researchers. It offers streamlined access to the core features of `FlairNLP` from Python. FlairNLP is an advanced NLP framework that incorporates the latest techniques developed by the Humboldt University of Berlin. For a deeper understanding of Flair’s
-architecture, refer to the research article ‘[Contextual String Embeddings for Sequence Labeling](https://aclanthology.org/C18-1139.pdf)’ and the official [mannual](https://flairnlp.github.io) in Python. The features currently available in `flairR` include **part-of-speech tagging**, **transformer-based sentiment analysis**, and **named entity recognition**. `flairR` returns tagging information directly in a data.table format.
+architecture, refer to the research article ‘[Contextual String Embeddings for Sequence Labeling](https://aclanthology.org/C18-1139.pdf)’ and the official [mannual](https://flairnlp.github.io) in Python. The features currently available in `flairR` include **part-of-speech tagging**, **transformer-based sentiment analysis**, and **named entity recognition**. `flairR` returns extracted features in a tidy and clean [`data.table`](https://cran.r-project.org/web/packages/data.table/index.html).
+ 
 
 </div>
 
 <br>
 
-| **The Main Features in R**                   | Loader                   | Supported Models                                                                     |
-|----------------------------------------------|--------------------------|--------------------------------------------------------------------------------------|
-| `get_entities()`, `get_entities_batch()`     | `load_tagger_ner()`        | en(English), fr (French), da (Danish), nl (Dutch), etc.                              |
-| `get_pos()`, `get_pos_batch()`               | `load_tagger_pos()`        | pos (English POS), fr-pos (French POS), de-pos(German POS), nl-pos (Dutch POS), etc. |
-| `get_sentiments()`, `get_sentiments_batch()` | `load_tagger_sentiments()` | sentiment (English) , sentiment-fast (English) , de-offensive-language (German offensive language detection model) |
+| **The Main Features in R**                   | Loader                     | Supported Models                                                                                         |
+|----------------------------------------------|----------------------------|----------------------------------------------------------------------------------------------------------|
+| `get_entities()`, `get_entities_batch()`     | `load_tagger_ner()`        | `en` (English), `fr` (French), `da` (Danish), `nl` (Dutch), and more.                                    |
+| `get_pos()`, `get_pos_batch()`               | `load_tagger_pos()`        | `pos` (English POS), `fr-pos` (French POS), `de-pos` (German POS), `nl-pos` (Dutch POS), and more.       |
+| `get_sentiments()`, `get_sentiments_batch()` | `load_tagger_sentiments()` | `sentiment` (English) , `sentiment-fast `(English) , `de-offensive-language` (German offensive language detection model) |
 
 <br>
 
-### Installation via `GitHub`
+### Installation via  <u>__`GitHub`__</u>
 
-The installation consists of two parts: First, install[Python3.7](https://www.python.org/downloads/) or higher, and [R version 3.6.3](https://www.r-project.org) or higher.
+The installation consists of two parts: First, install [Python 3.7](https://www.python.org/downloads/) or higher, and [R 3.6.3](https://www.r-project.org) or higher. Although we have tested it on Github Action with R 3.6.2, we strongly recommend installing R 4.2.1 to ensure compatibility between the R environment and {`reticulate`}.
+
+
+If there are any issues with the installation, feel free to ask in the <u>[Discussion](https://github.com/davidycliao/flaiR/discussions)</u>.
 
 ``` r
 install.packages("remotes")
