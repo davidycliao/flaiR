@@ -13,10 +13,10 @@
 #' clear_flair_cache()
 #' }
 clear_flair_cache <- function(...) {
-  # Define the flair cache directory
+  # flair cache directory
   flair_cache_dir <- file.path(path.expand("~"), ".flair")
 
-  # Check if the directory exists
+  # Check if the directory still exists
   if (!dir.exists(flair_cache_dir)) {
     cat("Flair cache directory does not exist.\n")
     return(NULL)
@@ -38,7 +38,59 @@ clear_flair_cache <- function(...) {
   return(invisible(NULL))
 }
 
-#' @title Create or use Python environment for Flair
+
+
+#' Show Flair Cache Preloaed flair's Directory
+#'
+#' @description This function lists the contents of the flair cache directory
+#' and returns them as a data frame.
+#'
+#' @return A data frame containing the file paths of the contents in the flair
+#' cache directory. If the directory does not exist or is empty, NULL is returned.
+#' @export
+#' @examples
+#' \dontrun{
+#' show_flair_cache()
+#' }
+show_flair_cache <- function() {
+  flair_cache_dir <- file.path(path.expand("~"), ".flair")
+
+  # Check if the directory still exists
+  if (!dir.exists(flair_cache_dir)) {
+    cat("Flair cache directory does not exist.\n")
+    return(NULL)
+  }
+
+  # List all files and directories in the flair cache directory
+  cache_contents <- list.files(flair_cache_dir, full.names = TRUE, recursive = TRUE)
+
+  if (length(cache_contents) > 0) {
+    cat("Contents in flair cache directory:\n")
+
+    # Create a data frame with the cache contents
+    cache_df <- data.frame(FilePath = cache_contents, stringsAsFactors = FALSE)
+    print(cache_df)
+
+    # Ask user if they agree to proceed with deletion
+    response <- tolower(readline("Do you agree to proceed? All downloaded models in the cache will be completely deleted. (yes/no): "))
+
+    if (response == "yes") {
+      cat("Deleting cached models...\n")
+      unlink(flair_cache_dir, recursive = TRUE)
+      cat("Cache cleared.\n")
+    } else {
+      cat("Clearance cancelled.\n")
+    }
+
+    return(cache_df)
+  } else {
+    cat("No contents in flair cache directory.\n")
+    return(NULL)
+  }
+}
+
+
+#' @title Create or Use Python environment for Flair
 #'
 #' @description
 #' This function checks whether the Flair Python library is installed in the
@@ -83,12 +135,18 @@ create_flair_env <- function(env = "r-reticulate") {
 #' If `NULL`, the function will default to the 'pos-fast' model.
 #' Supported languages and their models include:
 #' \itemize{
-#'   \item "en" - English NER tagging (`ner`)
-#'   \item "de" - German NER tagging (`de-ner``)
-#'   \item "fr" - French NER tagging (`fr-ner`)
-#'   \item "nl" - Dutch NER tagging (`nl-ner`)
-#'   \item "da" - Danish NER tagging (`da-ner`)
-#'   \item "ar" - Arabic NER tagging (`ar-ner`)
+#'   \item `"en"` - English NER tagging (`ner`)
+#'   \item `"de"` - German NER tagging (`de-ner`)
+#'   \item `"fr"` - French NER tagging (`fr-ner`)
+#'   \item `"nl"` - Dutch NER tagging (`nl-ner`)
+#'   \item `"da"` - Danish NER tagging (`da-ner`)
+#'   \item `"ar"` - Arabic NER tagging (`ar-ner`)
+#'   \item `"ner-fast"` - English NER fast model (`ner-fast`)
+#'   \item `"ner-large"` - English NER large mode (`ner-large`)
+#'   \item `"de-ner-legal"` - NER (legal text) (`de-ner-legal`)
+#'   \item `"nl"` - Dutch NER tagging (`nl-ner`)
+#'   \item `"da"` - Danish NER tagging (`da-ner`)
+#'   \item `"ar"` - Arabic NER tagging (`ar-ner`)
 #'}
 #'
 #' @return An instance of the Flair SequenceTagger for the specified language.

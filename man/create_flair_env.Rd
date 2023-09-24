@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{create_flair_env}
 \alias{create_flair_env}
-\title{Create or use Python environment for Flair}
+\title{Create or Use Python environment for Flair}
 \usage{
 create_flair_env(env = "r-reticulate")
 }

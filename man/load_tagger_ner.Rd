@@ -11,12 +11,18 @@ load_tagger_ner(language = NULL)
 If `NULL`, the function will default to the 'pos-fast' model.
 Supported languages and their models include:
 \itemize{
-  \item "en" - English NER tagging (`ner`)
-  \item "de" - German NER tagging (`de-ner``)
-  \item "fr" - French NER tagging (`fr-ner`)
-  \item "nl" - Dutch NER tagging (`nl-ner`)
-  \item "da" - Danish NER tagging (`da-ner`)
-  \item "ar" - Arabic NER tagging (`ar-ner`)
+  \item `"en"` - English NER tagging (`ner`)
+  \item `"de"` - German NER tagging (`de-ner`)
+  \item `"fr"` - French NER tagging (`fr-ner`)
+  \item `"nl"` - Dutch NER tagging (`nl-ner`)
+  \item `"da"` - Danish NER tagging (`da-ner`)
+  \item `"ar"` - Arabic NER tagging (`ar-ner`)
+  \item `"ner-fast"` - English NER fast model (`ner-fast`)
+  \item `"ner-large"` - English NER large mode (`ner-large`)
+  \item `"de-ner-legal"` - NER (legal text) (`de-ner-legal`)
+  \item `"nl"` - Dutch NER tagging (`nl-ner`)
+  \item `"da"` - Danish NER tagging (`da-ner`)
+  \item `"ar"` - Arabic NER tagging (`ar-ner`)
 }}
 }
 \value{

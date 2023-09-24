@@ -122,3 +122,45 @@ test_that("create_flair_env works correctly", {
     }
   )
 })
+
+
+#
+library(testthat)
+
+test_that("Python installation is checked", {
+
+  local_mock(
+    check_python_installed = function() FALSE
+  )
+
+  expect_error(flaiR:::.onAttach(), "Python is not installed. This package requires Python to run Flair.")
+
+})
+
+test_that("Package's name is displayed", {
+
+  output <- capture.output(flaiR:::.onAttach())
+  expect_true("flai\033[34mR\033[39m: An R Wrapper for Accessing Flair NLP Tagging Features" %in% output)
+
+})
+
+test_that("Flair's availability in Python is checked", {
+
+  # Mock no Flair installation
+  local_mock(
+    `reticulate::py_module_available` = function(module) ifelse(module == "flair", FALSE, TRUE)
+  )
+
+  output <- capture.output(flaiR:::.onAttach())
+  expect_true("Attempting to install Flair in Python..." %in% output)
+
+  # Mock Flair being installed
+  local_mock(
+    `reticulate::py_module_available` = function(module) ifelse(module == "flair", TRUE, FALSE),
+    get_flair_version = function() "1.0" # Assuming a mocked version
+  )
+
+  output <- capture.output(flaiR:::.onAttach())
+  expect_true("Flair: 1.0" %in% output)
+
+})
