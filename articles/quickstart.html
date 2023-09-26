@@ -157,32 +157,38 @@
 <p><code>flaiR</code> is built on top of the reticulate package and
 incorporates key functions to access the core features of
 <strong>FlairNLP</strong>, returning data in a tidy and clean <a href="https://cran.r-project.org/web/packages/data.table/index.html" class="external-link"><code>data.table</code></a>.
-The installation consists of two parts: First, install <a href="https://www.python.org/downloads/" class="external-link">Python 3.7</a> or higher.
-<del>Additionally, you’ll also need <a href="Anaconda"><code>Anaconda</code></a> to assist
+The installation consists of two parts: first, install <a href="https://www.python.org/downloads/" class="external-link">Python 3.7</a> or higher, and
+second, install <a href="https://cran.r-project.org" class="external-link">R</a> (version
+3.6.3 or higher) along with RStudio. <del>Additionally, you’ll also need
+<a href="Anaconda"><code>Anaconda</code></a> to assist
 <code>reticulate</code> in setting up your Python environment, as well
 as enabling your RStudio to identify the environment.</del></p>
 <p><strong>System Requirement:</strong></p>
 <ul>
 <li><p>Python (&gt;= 3.7.0)</p></li>
 <li><p>R (&gt;= 3.6.3)</p></li>
+<li><p>RStudio <strong><em>(recommended)</em></strong></p></li>
 <li><p>Anaconda <strong><em>(optional)</em></strong></p></li>
 </ul>
-<pre><code><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span></span>
-<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"davidycliao/flaiR"</span>, force <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">flaiR</span><span class="op">)</span></span></code></pre>
-<pre><code> flaiR: An R Wrapper for Accessing Flair NLP Tagging Features      
- Python : 3.11  </code></pre>
 <p>If you’re using Python-based packages in R for the first time, such
 as {<code>flaiR</code>} or {<code>reticulate</code>}, you probably
 haven’t installed a Conda environment yet. When loading flaiR in R, two
-main steps occur. First, <strong>a Conda environment is created through
-{<code>reticulate</code>}</strong>. During this process, you will
-observe numerous messages related to the installation of the Python
-environment and the Python flair module. Notably, flair has numerous
-dependencies, including libraries related to transformers (like the
-Hugging Face API). Thus, the installation might take some time to
-complete.</p>
-<p>Afterward, you will see the message <strong>“Virtual environment
+main steps occur. First, <strong>a <a href="https://docs.conda.io/projects/conda/en/4.6.0/_downloads/52a95608c49671267e40c689e0bc00ca/conda-cheatsheet.pdf" class="external-link">conda</a>
+environment is created through {<a href="https://ugoproto.github.io/ugo_r_doc/pdf/reticulate.pdf" class="external-link">reticulate</a>}</strong>.
+During this process, you will observe numerous messages related to the
+installation of the Python environment and the Python flair module.
+Notably, flair has numerous dependencies, including libraries related to
+transformers (like the Hugging Face API). Thus, the installation might
+take some time to complete.</p>
+<p>When you copy the command below, you will generally be asked to
+upgrade the package. This is because this package operates on the
+{<code>reticulate</code>}, and when your packages in R are outdated,
+RStudio would likely display _“These packages have more recent versions
+available.”__ to prompt you to update. We recommend that you update.</p>
+<pre><code><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span></span>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"davidycliao/flaiR"</span>, force <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">flaiR</span><span class="op">)</span></span></code></pre>
+<p>Afterward, you might see the message <strong>“Virtual environment
 ‘r-reticulate’ successfully created.”</strong> Next, you will be
 prompted to confirm whether or not you want to use
 <code>r-reticulate</code>. Enter <strong>“Yes,”</strong> and it will
@@ -213,7 +219,7 @@ tasks.<a class="anchor" aria-label="anchor" href="#note-its-worth-noting-that-us
 <p>You can load the pre-trained model <code>"pos-fast"</code>. For more
 pre-trained models, see <a href="https://flairnlp.github.io/docs/tutorial-basics/part-of-speech-tagging#-in-english" class="external-link uri">https://flairnlp.github.io/docs/tutorial-basics/part-of-speech-tagging#-in-english</a>.</p>
 </div>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">texts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"UCD is one of the best universities in Ireland."</span>,</span>
 <span>           <span class="st">"UCD has a good campus but is very far from my apartment in Dublin."</span>,</span>
 <span>           <span class="st">"Essex is famous for social science research."</span>,</span>
@@ -222,12 +228,12 @@ pre-trained models, see <a href="https://flairnlp.github.io/docs/tutorial-basics
 <span>           <span class="st">"TCD is similar to Oxford."</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">doc_ids</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"doc1"</span>, <span class="st">"doc2"</span>, <span class="st">"doc3"</span>, <span class="st">"doc4"</span>, <span class="st">"doc5"</span>, <span class="st">"doc6"</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">flaiR</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tagger_pos</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_tagger_pos.html">load_tagger_pos</a></span><span class="op">(</span><span class="st">"pos-fast"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2023-09-25 02:28:44,639 SequenceTagger predicts: Dictionary with 53 tags: &lt;unk&gt;, O, UH, ,, VBD, PRP, VB, PRP$, NN, RB, ., DT, JJ, VBP, VBG, IN, CD, NNS, NNP, WRB, VBZ, WDT, CC, TO, MD, VBN, WP, :, RP, EX, JJR, FW, XX, HYPH, POS, RBR, JJS, PDT, NNPS, RBS, AFX, WP$, -LRB-, -RRB-, ``, '', LS, $, SYM, ADD</span></span></code></pre></div>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<span><span class="co">#&gt; 2023-09-26 16:30:11,338 SequenceTagger predicts: Dictionary with 53 tags: &lt;unk&gt;, O, UH, ,, VBD, PRP, VB, PRP$, NN, RB, ., DT, JJ, VBP, VBG, IN, CD, NNS, NNP, WRB, VBZ, WDT, CC, TO, MD, VBN, WP, :, RP, EX, JJR, FW, XX, HYPH, POS, RBR, JJS, PDT, NNPS, RBS, AFX, WP$, -LRB-, -RRB-, ``, '', LS, $, SYM, ADD</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_pos.html">get_pos</a></span><span class="op">(</span><span class="va">texts</span>, <span class="va">doc_ids</span>, <span class="va">tagger_pos</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">results</span>, n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
 <span><span class="co">#&gt;     doc_id token_id text_id        token tag precision</span></span>
@@ -249,12 +255,12 @@ pre-trained models, see <a href="https://flairnlp.github.io/docs/tutorial-basics
 <div style="text-align: justify">
 <p>Load the pretrained model “ner”. For more pretrained models, see <a href="https://flairnlp.github.io/docs/tutorial-basics/tagging-entities" class="external-link uri">https://flairnlp.github.io/docs/tutorial-basics/tagging-entities</a>.</p>
 </div>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">flaiR</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tagger_ner</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_tagger_ner.html">load_tagger_ner</a></span><span class="op">(</span><span class="st">"ner"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2023-09-25 02:28:46,603 SequenceTagger predicts: Dictionary with 20 tags: &lt;unk&gt;, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, &lt;START&gt;, &lt;STOP&gt;</span></span></code></pre></div>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<span><span class="co">#&gt; 2023-09-26 16:30:13,339 SequenceTagger predicts: Dictionary with 20 tags: &lt;unk&gt;, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, &lt;START&gt;, &lt;STOP&gt;</span></span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_entities.html">get_entities</a></span><span class="op">(</span><span class="va">texts</span>, <span class="va">doc_ids</span>, <span class="va">tagger_ner</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">results</span>, n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
 <span><span class="co">#&gt;     doc_id        entity tag</span></span>
@@ -279,11 +285,11 @@ models of “<code>sentiment</code>”, “<code>sentiment-fast</code>”, and
 “<code>de-offensive-language</code>” are currently available. For more
 pretrained models, see <a href="https://flairnlp.github.io/docs/tutorial-basics/tagging-sentiment" class="external-link uri">https://flairnlp.github.io/docs/tutorial-basics/tagging-sentiment</a>.</p>
 </div>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">flaiR</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tagger_sent</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_tagger_sentiments.html">load_tagger_sentiments</a></span><span class="op">(</span><span class="st">"sentiment"</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_sentiments.html">get_sentiments</a></span><span class="op">(</span><span class="va">texts</span>, <span class="va">doc_ids</span>, <span class="va">tagger_sent</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">results</span>, n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    doc_id sentiment     score</span></span>
