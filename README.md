@@ -32,10 +32,7 @@ architecture, refer to the research article ‘[Contextual String Embeddings for
 
 ### Installation via  <u>__`GitHub`__</u>
 
-The installation consists of two parts: First, install [Python 3.7](https://www.python.org/downloads/) or higher, and [R 3.6.3](https://www.r-project.org) or higher. Although we have tested it on Github Action with R 3.6.2, we strongly recommend installing R 4.2.1 to ensure compatibility between the R environment and {`reticulate`}.
-
-
-If there are any issues with the installation, feel free to ask in the <u>[Discussion](https://github.com/davidycliao/flaiR/discussions)</u>.
+The installation consists of two parts: First, install [Python 3.7](https://www.python.org/downloads/) or higher, and [R 3.6.3](https://www.r-project.org) or higher. Although we have tested it on Github Action with R 3.6.2, we strongly recommend installing R 4.2.1 to ensure compatibility between the R environment and {`reticulate`}. If there are any issues with the installation, feel free to ask in the <u>[Discussion](https://github.com/davidycliao/flaiR/discussions)</u>.
 
 ``` r
 install.packages("remotes")

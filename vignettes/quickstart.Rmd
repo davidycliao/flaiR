@@ -25,7 +25,7 @@ system(paste(reticulate::py_config()$python, "-m pip install flair"))
 
 <div style="text-align: justify">
 
-`flaiR` is built on top of the reticulate package and incorporates key functions to access the core features of __FlairNLP__, returning data in a tidy and clean [`data.table`](https://cran.r-project.org/web/packages/data.table/index.html). The installation consists of two parts: First, install [Python 3.7](https://www.python.org/downloads/) or higher. ~~Additionally, you'll also need [`Anaconda`](Anaconda) to assist `reticulate` in setting up your Python environment, as well as enabling your RStudio to identify the environment.~~
+`flaiR` is built on top of the reticulate package and incorporates key functions to access the core features of __FlairNLP__, returning data in a tidy and clean [`data.table`](https://cran.r-project.org/web/packages/data.table/index.html). The installation consists of two parts: first, install [Python 3.7](https://www.python.org/downloads/) or higher, and second, install [R](https://cran.r-project.org) (version 3.6.3 or higher) along with RStudio. ~~Additionally, you'll also need [`Anaconda`](Anaconda) to assist `reticulate` in setting up your Python environment, as well as enabling your RStudio to identify the environment.~~
 
 __System Requirement:__
 
@@ -33,26 +33,29 @@ __System Requirement:__
 
 - R (>= 3.6.3)
 
+- RStudio ___(recommended)___
+
 - Anaconda ___(optional)___
+
+
+
+If you're using Python-based packages in R for the first time, such as {`flaiR`} or {`reticulate`}, you probably haven't installed a Conda environment yet. When loading flaiR in R, two main steps occur. First, __a [conda](https://docs.conda.io/projects/conda/en/4.6.0/_downloads/52a95608c49671267e40c689e0bc00ca/conda-cheatsheet.pdf) environment is created through {[reticulate](https://ugoproto.github.io/ugo_r_doc/pdf/reticulate.pdf)}__. During this process, you will observe numerous messages related to the installation of the Python environment and the Python flair module. Notably, flair has numerous dependencies, including libraries related to transformers (like the Hugging Face API). Thus, the installation might take some time to complete. 
+
+
+When you copy the command below, you will generally be asked to upgrade the package. This is because this package operates on the {`reticulate`}, and when your packages in R are  outdated, RStudio would likely display _“These packages have more recent versions available.”__ to prompt you to update. We recommend that you update.
+
 
 ```
 install.packages("remotes")
 remotes::install_github("davidycliao/flaiR", force = TRUE)
 library(flaiR)
 ```
-```
- flaiR: An R Wrapper for Accessing Flair NLP Tagging Features      
- Python : 3.11  
-```
+
+Afterward, you might see the message __"Virtual environment 'r-reticulate' successfully created."__ Next, you will be prompted to confirm whether or not you want to use `r-reticulate`. Enter __"Yes,"__ and it will automatically install `flair` via your conda environment in Python.  If there are any issues with the installation, feel free to ask in the <u>[Discussion](https://github.com/davidycliao/flaiR/discussions)</u>.
 
 
-If you're using Python-based packages in R for the first time, such as {`flaiR`} or {`reticulate`}, you probably haven't installed a Conda environment yet. When loading flaiR in R, two main steps occur. First, __a Conda environment is created through {`reticulate`}__. During this process, you will observe numerous messages related to the installation of the Python environment and the Python flair module. Notably, flair has numerous dependencies, including libraries related to transformers (like the Hugging Face API). Thus, the installation might take some time to complete.
-
-Afterward, you will see the message __"Virtual environment 'r-reticulate' successfully created."__ Next, you will be prompted to confirm whether or not you want to use `r-reticulate`. Enter __"Yes,"__ and it will automatically install `flair` via your conda environment in Python.  If there are any issues with the installation, feel free to ask in the <u>[Discussion](https://github.com/davidycliao/flaiR/discussions)</u>.
 
 ###### ___Note___: It's worth noting that using transformer-based pre-trained models from FlairNLP can be computationally intensive. Therefore, it's recommended to implement parallel computing to enhance the performance and efficiency of the tasks.
-
-
 
 
 &nbsp;
