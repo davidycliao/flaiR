@@ -2,27 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{map_entities}
 \alias{map_entities}
-\title{#' Ensure Either a Tagger Object or a Language is Specified
-#'
-#' @description This function checks if either a tagger object or a language is
-#' specified and throws an error if neither is provided.
-#'
-#' @param tagger A tagger object (default is NULL).
-#' @param language The language of the texts (default is NULL).
-#'
-#' @return None. The function will throw a message if neither tagger nor language is specified.
-#'
-#' @keywords internal
-ensure_tagger_or_language <- function(tagger = NULL, language = NULL, alternative = NULL) {
-  if (is.null(tagger) && is.null(language)) {
-    language <- alternative
-    message("Language is not specified. A default language in Flair is force-loaded. Please ensure that the internet connectivity is stable.")
-  } else if (is.null(tagger)) {
-    message("Language is specified as '", language, "'. Flair is force-loading this language. Please ensure that the internet connectivity is stable.")
-  }
-  return(language)
-}
-Create Mapping for NER Highlighting}
+\title{Create Mapping for NER Highlighting}
 \usage{
 map_entities(df, entity = "entity", tag = "tag")
 }

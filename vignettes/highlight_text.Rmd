@@ -1,0 +1,46 @@
+---
+title: "Highlight Entities with Colors"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Highlight Entities with Colors}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r, include = FALSE}
+library(flaiR)
+library(reticulate)
+# system(paste(reticulate::py_config()$python, "-m pip install flair"))
+reticulate::py_install("flair")
+```
+
+## Generic Approach Using Pre-trained NER English Model
+
+```{r}
+library(flaiR)
+data("uk_immigration")
+uk_immigration <- head(uk_immigration, 1)
+tagger_ner <- load_tagger_ner("ner")
+result <- get_entities(uk_immigration$text,
+                       uk_immigration$speaker, 
+                       tagger_ner,
+                       show.text_id = FALSE
+                       )
+```
+
+## Highlight Text with Entities
+
+```{r}
+highlighted_text <- highlight_text(text = uk_immigration$text, 
+                                   entities_mapping = map_entities(result))
+highlighted_text
+```
+

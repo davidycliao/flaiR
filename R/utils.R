@@ -535,27 +535,6 @@ check_python_installed <- function(...) {
   }
 }
 
-#' #' Ensure Either a Tagger Object or a Language is Specified
-#' #'
-#' #' @description This function checks if either a tagger object or a language is
-#' #' specified and throws an error if neither is provided.
-#' #'
-#' #' @param tagger A tagger object (default is NULL).
-#' #' @param language The language of the texts (default is NULL).
-#' #'
-#' #' @return None. The function will throw a message if neither tagger nor language is specified.
-#' #'
-#' #' @keywords internal
-#' ensure_tagger_or_language <- function(tagger = NULL, language = NULL, alternative = NULL) {
-#'   if (is.null(tagger) && is.null(language)) {
-#'     language <- alternative
-#'     message("Language is not specified. A default language in Flair is force-loaded. Please ensure that the internet connectivity is stable.")
-#'   } else if (is.null(tagger)) {
-#'     message("Language is specified as '", language, "'. Flair is force-loading this language. Please ensure that the internet connectivity is stable.")
-#'   }
-#'   return(language)
-#' }
-
 #' Create Mapping for NER Highlighting
 #'
 #' @description This function generates a mapping list for Named Entity Recognition (NER)
@@ -655,59 +634,21 @@ map_entities <- function(df, entity = "entity", tag = "tag") {
 #' @return An HTML object containing the text with highlighted entities.
 #'
 #' @examples
-#' \dontrun{
-#'   entities_mapping <- list(
-#'     ORG = list(words = c("ORG1", "ORG2"),
-#'                background_color = "pink", font_color = "black",
-#'                label = "ORG", label_color = "pink")
-#'   )
-#'   highlighted_text <- highlight_text("Example text with ORG1 and ORG2.", entities_mapping)
-#' }
+#' library(flaiR)
+#' data("uk_immigration")
+#' uk_immigration <- head(uk_immigration, 1)
+#' tagger_ner <- load_tagger_ner("ner")
+#' results <- get_entities(uk_immigration$text,
+#'                         uk_immigration$speaker,
+#'                         tagger_ner,
+#'                         show.text_id = FALSE)
+#'
+#' highlighted_text <- highlight_text(uk_immigration$text, map_entities(results))
+#' print(highlighted_text)
 #'
 #' @importFrom htmltools HTML
 #' @importFrom stringr str_replace_all
 #' @export
-
-# highlight_text <- function(text, entities_mapping, font_family = "Arial") {
-#   # Ensure 'entities_mapping' and 'font_family' are not used directly without being checked
-#   if(!is.list(entities_mapping) || !all(c("words", "background_color", "font_color", "label", "label_color") %in% names(entities_mapping[[1]]))) {
-#     stop("'entities_mapping' must be a list with specific structure.")
-#   }
-#
-#   if(!is.character(font_family) || length(font_family) != 1) {
-#     stop("'font_family' must be a single character string.")
-#   }
-#
-#   # Keeping track of replaced words+tags to ensure they are highlighted only once
-#   already_replaced <- c()
-#
-#   for (category in names(entities_mapping)) {
-#     words_to_highlight <- entities_mapping[[category]]$words
-#     background_color <- entities_mapping[[category]]$background_color
-#     font_color <- entities_mapping[[category]]$font_color
-#     label <- entities_mapping[[category]]$label
-#     label_color <- entities_mapping[[category]]$label_color
-#
-#     for (word in words_to_highlight) {
-#       # Create a unique identifier for each word+tag combination
-#       word_tag_identifier <- paste(word, label, sep = "_")
-#
-#       # Check if this word+tag has not been replaced already
-#       if(!(word_tag_identifier %in% already_replaced)) {
-#         replacement <- sprintf('<span style="background-color: %s; color: %s; font-family: %s">%s</span> <span style="color: %s; font-family: %s">(%s)</span>', background_color, font_color, font_family, word, label_color, font_family, label)
-#
-#         # Replace only whole words using word boundaries "\\b"
-#         text <- gsub(paste0("\\b", word, "\\b"), replacement, text)
-#
-#         already_replaced <- c(already_replaced, word_tag_identifier)
-#       }
-#     }
-#   }
-#   return(HTML(text))
-# }
-#
-#
-#
 highlight_text <- function(text, entities_mapping, font_family = "Arial") {
   # Ensure 'entities_mapping' and 'font_family' are not used directly without being checked
   if(!is.list(entities_mapping) || !all(c("words", "background_color", "font_color", "label", "label_color") %in% names(entities_mapping[[1]]))) {

@@ -30,13 +30,16 @@ with specified background colors, font colors, and optional labels.
 Additionally, it allows setting a specific font type for highlighted text.
 }
 \examples{
-\dontrun{
-  entities_mapping <- list(
-    ORG = list(words = c("ORG1", "ORG2"),
-               background_color = "pink", font_color = "black",
-               label = "ORG", label_color = "pink")
-  )
-  highlighted_text <- highlight_text("Example text with ORG1 and ORG2.", entities_mapping)
-}
+library(flaiR)
+data("uk_immigration")
+uk_immigration <- head(uk_immigration, 1)
+tagger_ner <- load_tagger_ner("ner")
+results <- get_entities(uk_immigration$text,
+                        uk_immigration$speaker,
+                        tagger_ner,
+                        show.text_id = FALSE)
+
+highlighted_text <- highlight_text(uk_immigration$text, map_entities(results))
+print(highlighted_text)
 
 }

@@ -38,12 +38,14 @@ Default is FALSE.}
 \item{batch_size}{An integer specifying the size of each batch. Default is 5.}
 
 \item{device}{A character string specifying the computation device.
-Choices include:
 \itemize{
- \item{"cpu"}{Refers to the central processing unit of the computer.}
- \item{"cuda" or "cuda:0"}{Refers to the first GPU in the system.}
- \item{"cuda:1"}{Refers to the second GPU in the system.}
- \item{"cuda:2"}{Refers to the third GPU in the system, and so on.}
+ \item{"cuda" or "cuda:0" ("mps" or "mps:0" in Mac M1/M2 )}{Refers to the first GPU in the system. If
+      there's only one GPU, specifying "cuda" or "cuda:0" will allocate
+      computations to this GPU.}
+ \item{"cuda:1" ("mps:1")}{Refers to the second GPU in the system, allowing allocation
+      of specific computations to this GPU.}
+ \item{"cuda:2" ("mps:2)}{Refers to the third GPU in the system, and so on for systems
+      with more GPUs.}
 }}
 
 \item{verbose}{A logical value. If TRUE, the function prints batch processing
