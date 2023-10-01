@@ -54,6 +54,7 @@ data for the given texts using batch processing."><meta property="og:image" cont
     <a class="dropdown-item" href="../articles/get_entities.html">Tagging Named Entities</a>
     <a class="dropdown-item" href="../articles/get_pos.html">Part-of-Speech Tagging</a>
     <a class="dropdown-item" href="../articles/get_sentiments.html">Tagging Sentiment</a>
+    <a class="dropdown-item" href="../articles/highlight_text.html">Highlight Entities with Colors</a>
   </div>
 </li>
 <li class="nav-item dropdown">
@@ -172,11 +173,13 @@ Default is FALSE.</p></dd>
 
 
 <dt>device</dt>
-<dd><p>A character string specifying the computation device.
-Choices include:</p><ul><li><p>"cpu"Refers to the central processing unit of the computer.</p></li>
-<li><p>"cuda" or "cuda:0"Refers to the first GPU in the system.</p></li>
-<li><p>"cuda:1"Refers to the second GPU in the system.</p></li>
-<li><p>"cuda:2"Refers to the third GPU in the system, and so on.</p></li>
+<dd><p>A character string specifying the computation device.</p><ul><li><p>"cuda" or "cuda:0" ("mps" or "mps:0" in Mac M1/M2 )Refers to the first GPU in the system. If
+      there's only one GPU, specifying "cuda" or "cuda:0" will allocate
+      computations to this GPU.</p></li>
+<li><p>"cuda:1" ("mps:1")Refers to the second GPU in the system, allowing allocation
+      of specific computations to this GPU.</p></li>
+<li><p>"cuda:2" ("mps:2)Refers to the third GPU in the system, and so on for systems
+      with more GPUs.</p></li>
 </ul></dd>
 
 
