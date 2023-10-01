@@ -123,3 +123,75 @@ test_that("create_flair_env works correctly", {
   )
 })
 
+
+# Test 12: Test highlight_text
+
+test_that("highlight_text correctly highlights and justifies text", {
+  # Creating a sample entity mapping
+  entities_mapping <- list(
+    ORG = list(words = c("Apple", "Google"),
+               background_color = "yellow",
+               font_color = "black",
+               label = "ORG",
+               label_color = "blue")
+  )
+
+  # Text to test
+  test_text <- "Apple and Google are tech giants."
+
+  # Running the function to get the output
+  highlighted_text <- highlight_text(test_text, entities_mapping)
+
+  # Convert HTML to character to perform checks
+  highlighted_text_as_char <- as.character(highlighted_text)
+
+  # Check 1: Test if the function adds the correct span tags around the specified words
+  expect_true(grepl('<span style="background-color: yellow; color: black; font-family: Arial">Apple</span>', highlighted_text_as_char))
+  expect_true(grepl('<span style="background-color: yellow; color: black; font-family: Arial">Google</span>', highlighted_text_as_char))
+
+  # Check 2: Test if label and label colors are applied correctly
+  expect_true(grepl('<span style="color: blue; font-family: Arial">\\(ORG\\)</span>', highlighted_text_as_char))
+
+  # Check 3: Ensure that the returned text is justified and uses the correct font family
+  expect_true(grepl('<div style="text-align: justify; font-family: Arial">', highlighted_text_as_char))
+
+  # Check 4: Ensure that the input text and entity mapping do not change
+  expect_equal(test_text, "Apple and Google are tech giants.")
+  expect_equal(entities_mapping$ORG$words, c("Apple", "Google"))
+})
+
+
+# Test 13: Test highlight_text
+
+test_that("map_entities returns correct mapping", {
+  # Creating a sample data frame
+  sample_df <- data.frame(entity = c("Paris", "OpenAI", "John Doe", "Unknown"),
+                          tag = c("LOC", "ORG", "PER", "MISC"),
+                          stringsAsFactors = FALSE)
+
+  # Running map_entities to get the entities mapping
+  entities_mapping <- map_entities(sample_df)
+
+  # Checking that the mapping contains correct words for each tag
+  expect_equal(entities_mapping$ORG$words, "OpenAI")
+  expect_equal(entities_mapping$LOC$words, "Paris")
+  expect_equal(entities_mapping$PER$words, "John Doe")
+  expect_equal(entities_mapping$MISC$words, "Unknown")
+
+  # Checking that the mapping contains correct background color for each tag
+  expect_equal(entities_mapping$ORG$background_color, "pink")
+  expect_equal(entities_mapping$LOC$background_color, "lightblue")
+  expect_equal(entities_mapping$PER$background_color, "lightgreen")
+  expect_equal(entities_mapping$MISC$background_color, "yellow")
+})
+
+test_that("map_entities handles errors correctly", {
+  # Creating a sample data frame without necessary columns
+  incorrect_df <- data.frame(entity = c("Paris", "OpenAI", "John Doe", "Unknown"),
+                             stringsAsFactors = FALSE)
+
+  # Expecting an error when running map_entities with incorrect input
+  expect_error(map_entities(incorrect_df), "The specified entity or tag column names are not found in the data frame.")
+})
+
+

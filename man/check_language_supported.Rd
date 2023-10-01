@@ -15,8 +15,9 @@ check_language_supported(language, supported_lan_models)
 This function does not return anything, but stops execution if the check fails.
 }
 \description{
-This function checks whether a provided language is supported. If it's not,
-it stops the execution and returns a message indicating the supported languages.
+This function checks whether a provided language is supported.
+If it's not, it stops the execution and returns a message indicating the
+supported languages.
 }
 \examples{
 # Assuming 'en' is a supported language and 'abc' is not:

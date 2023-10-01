@@ -73,8 +73,12 @@ batch_process_results  <- get_pos_batch(uk_immigration$text,
                                         tagger_pos, 
                                         show.text_id = FALSE,
                                         batch_size = 10,
+                                        device = "mps",
                                         verbose = TRUE)
 print(batch_process_results)
+
 ```
+
+
 
 

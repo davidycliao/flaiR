@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{check_device}
 \alias{check_device}
-\title{Check the specified device for PyTorch}
+\title{Check the Device for cccelerating PyTorch}
 \usage{
 check_device(device)
 }
@@ -11,6 +11,7 @@ check_device(device)
 }
 \description{
 This function verifies if the specified device is available for PyTorch.
-If CUDA is not available, a message is shown.
+If CUDA is not available, a message is shown. Additionally, if the system
+is running on a Mac M1, MPS will be used instead of CUDA.
 }
 \keyword{internal}

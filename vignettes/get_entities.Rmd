@@ -63,7 +63,7 @@ Use `load_tagger_ner` to call the NER pretrained model. The model will be downlo
 </div>
 
 ```{r}
-tagger_pos <- flaiR::load_tagger_ner("ner")
+tagger_ner <- load_tagger_ner("ner")
 ```
 <div style="text-align: justify">
 
@@ -73,7 +73,7 @@ If you want the computation to run faster, it is recommended to keep the show.te
 time <- system.time({
     results <- get_entities(uk_immigration$text,
                             uk_immigration$speaker, 
-                            tagger_pos,
+                            tagger_ner,
                             show.text_id = FALSE
                             )
     gc()
@@ -98,7 +98,7 @@ Processing texts individually can be both inefficient and memory-intensive. On t
 batch_process_time <- system.time({
     batch_process_results  <- get_entities_batch(uk_immigration$text,
                                                  uk_immigration$speaker, 
-                                                 tagger_pos, 
+                                                 tagger_ner, 
                                                  show.text_id = FALSE,
                                                  batch_size = 5)
     gc()

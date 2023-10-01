@@ -39,7 +39,6 @@ clear_flair_cache <- function(...) {
 }
 
 
-
 #' Show Flair Cache Preloaed flair's Directory
 #'
 #' @description This function lists the contents of the flair cache directory
@@ -291,31 +290,62 @@ load_tagger_sentiments <- function(language = NULL) {
   return(tagger)
 }
 
-#' Check the specified device for PyTorch
+#' Check the Device for cccelerating PyTorch
 #'
-#' This function verifies if the specified device is available for PyTorch.
-#' If CUDA is not available, a message is shown.
+#' @description This function verifies if the specified device is available for PyTorch.
+#' If CUDA is not available, a message is shown. Additionally, if the system
+#' is running on a Mac M1, MPS will be used instead of CUDA.
 #'
 #' @param device Character. The device to be set for PyTorch.
 #' @importFrom reticulate import
 #' @keywords internal
 check_device <- function(device) {
   pytorch <- reticulate::import("torch")
-  if (device != "cpu" && !pytorch$cuda$is_available()) {
-    message("CUDA is not available on this machine.")
+  system_info <- Sys.info()
+
+  if (system_info["sysname"] == "Darwin" &&
+      system_info["machine"] == "arm64" &&
+      device == "mps") {
+
+    os_version <- as.numeric(strsplit(system_info["release"], "\\.")[[1]][1])
+
+    if (os_version >= 12.3) {
+      message("MPS is used on Mac M1/M2.")
+      return(pytorch$device(device))
+    } else {
+      warning("MPS requires macOS 12.3 or higher. Falling back to CPU.",
+              "\nTo use MPS, ensure the following requirements are met:",
+              "\n- Mac computers with Apple silicon or AMD GPUs",
+              "\n- macOS 12.3 or later",
+              "\n- Python 3.7 or later",
+              "\n- Xcode command-line tools installed (xcode-select --install)",
+              "\nMore information: https://developer.apple.com/metal/pytorch/")
+      message("Using CPU.")
+      return(pytorch$device("cpu"))
+    }
   }
-  if (device == "cpu") {
-    pytorch$device(device)
+  else if (device == "cpu" ) {
     message("CPU is used.")
-  } else {
-    pytorch$cuda$set_device(as.integer(device))
-    message("CUDA is used.")
+    return(pytorch$device(device))
+  }
+  else if (device != "mps" && !pytorch$cuda$is_available()) {
+    message("CUDA is not available on this machine. Using CPU.")
+    return(pytorch$device("cpu"))
+  }
+  else if (device == "cuda" && pytorch$cuda$is_available()) {
+    message("CUDA is available and will be used.")
+    return(pytorch$device(device))
+  }
+  else {
+    warning("Unknown device specified. Falling back to use CPU.")
+    return(pytorch$device("cpu"))
   }
 }
 
-#' Check the specified batch size
+
+#' Check the Specified Batch Size
 #'
-#' Validates if the given batch size is a positive integer.
+#' @description Validates if the given batch size is a positive integer.
 #'
 #' @param batch_size Integer. The batch size to be checked.
 #' @keywords internal
@@ -328,7 +358,7 @@ check_batch_size <- function(batch_size) {
 
 #' Check the texts and document IDs
 #'
-#' Validates if the given texts and document IDs are not NULL or empty.
+#' @description Validates if the given texts and document IDs are not NULL or empty.
 #'
 #' @param texts List. A list of texts.
 #' @param doc_ids List. A list of document IDs.
@@ -349,7 +379,7 @@ check_texts_and_ids <- function(texts, doc_ids) {
 
 #' Check the `show.text_id` parameter
 #'
-#' Validates if the given `show.text_id` is a logical value.
+#' @description Validates if the given `show.text_id` is a logical value.
 #'
 #' @param show.text_id Logical. The parameter to be checked.
 #' @keywords internal
@@ -362,7 +392,7 @@ check_show.text_id <- function(show.text_id) {
 
 #' Perform Garbage Collection Based on Condition
 #'
-#' This function checks the value of `gc.active` to determine whether
+#' @description This function checks the value of `gc.active` to determine whether
 #' or not to perform garbage collection. If `gc.active` is `TRUE`,
 #' the function will perform garbage collection and then send a
 #' message indicating the completion of this process.
@@ -387,8 +417,9 @@ check_and_gc <- function(gc.active) {
 
 #' @title Check the Given Language Models against Supported Languages Models
 #'
-#' @description This function checks whether a provided language is supported. If it's not,
-#' it stops the execution and returns a message indicating the supported languages.
+#' @description This function checks whether a provided language is supported.
+#' If it's not, it stops the execution and returns a message indicating the
+#' supported languages.
 #'
 #' @param language The language to check.
 #' @param supported_lan_models A vector of supported languages.
@@ -411,8 +442,10 @@ check_language_supported <- function(language, supported_lan_models) {
 }
 
 #' @title Check Environment Pre-requisites
+#'
 #' @description This function checks if Python is installed, if the flair module
 #' is available in Python,
+#'
 #' and if there's an active internet connection.
 #' @param ... passing additional arguments.
 #' @return A message detailing any missing pre-requisites.
@@ -447,9 +480,8 @@ check_prerequisites <- function(...) {
 
 #' @title Retrieve Flair Version
 #'
-#' @description
-#' Gets the version of the installed Flair module in the current Python
-#' environment.
+#' @description Gets the version of the installed Flair module in the current
+#' Python environment.
 #'
 #' @keywords internal
 #' @return Character string representing the version of Flair.
@@ -503,33 +535,216 @@ check_python_installed <- function(...) {
   }
 }
 
+#' #' Ensure Either a Tagger Object or a Language is Specified
+#' #'
+#' #' @description This function checks if either a tagger object or a language is
+#' #' specified and throws an error if neither is provided.
+#' #'
+#' #' @param tagger A tagger object (default is NULL).
+#' #' @param language The language of the texts (default is NULL).
+#' #'
+#' #' @return None. The function will throw a message if neither tagger nor language is specified.
+#' #'
+#' #' @keywords internal
+#' ensure_tagger_or_language <- function(tagger = NULL, language = NULL, alternative = NULL) {
+#'   if (is.null(tagger) && is.null(language)) {
+#'     language <- alternative
+#'     message("Language is not specified. A default language in Flair is force-loaded. Please ensure that the internet connectivity is stable.")
+#'   } else if (is.null(tagger)) {
+#'     message("Language is specified as '", language, "'. Flair is force-loading this language. Please ensure that the internet connectivity is stable.")
+#'   }
+#'   return(language)
+#' }
 
+#' Create Mapping for NER Highlighting
+#'
+#' @description This function generates a mapping list for Named Entity Recognition (NER)
+#' highlighting. The mapping list defines how different entity types should be
+#' highlighted in text displays, defining the background color, font color, label, and label color
+#' for each entity type.
+#'
+#' @param df A data frame containing at least two columns:
+#'   \itemize{
+#'     \item \code{entity}: A character vector of words/entities to be highlighted.
+#'     \item \code{tag}: A character vector indicating the entity type of each word/entity.
+#'   }
+#' @param entity A character vector of entities annotated by the model.
+#' @param tag A character vector of tags corresponding to the annotated entities.
+#'
+#' @return A list with mapping settings for each entity type, where each entity type
+#' is represented as a list containing:
+#'   \itemize{
+#'     \item \code{words}: A character vector of words to be highlighted.
+#'     \item \code{background_color}: A character string representing the background color for highlighting the words.
+#'     \item \code{font_color}: A character string representing the font color for the words.
+#'     \item \code{label}: A character string to label the entity type.
+#'     \item \code{label_color}: A character string representing the font color for the label.
+#'   }
+#'
+#' @examples
+#'
+#' \dontrun{
+#'   sample_df <- data.frame(
+#'     entity = c("Microsoft", "USA", "dollar", "Bill Gates"),
+#'     tag = c("ORG", "LOC", "MISC", "PER"),
+#'     stringsAsFactors = FALSE
+#'   )
+#'   mapping <- map_entities(sample_df)
+#' }
+#'
+#' @export
+map_entities <- function(df, entity = "entity", tag = "tag") {
 
-#' Ensure Either a Tagger Object or a Language is Specified
-#'
-#' This function checks if either a tagger object or a language is specified and throws an error if neither is provided.
-#'
-#' @param tagger A tagger object (default is NULL).
-#' @param language The language of the texts (default is NULL).
-#'
-#' @return None. The function will throw a message if neither tagger nor language is specified.
-#'
-#' @keywords internal
-# ensure_tagger_or_language <- function(tagger = NULL, language = NULL) {
-#   if (is.null(tagger) && is.null(language)) {
-#     message("Either a tagger object or a language did not specify.")
-#   }
-# }
-ensure_tagger_or_language <- function(tagger = NULL, language = NULL, alternative = NULL) {
-  if (is.null(tagger) && is.null(language)) {
-    language <- alternative
-    message("Language is not specified. A default language in Flair is force-loaded. Please ensure that the internet connectivity is stable.\n")
-  } else if (is.null(tagger)) {
-    message("Language is specified as '", language, "'. Flair is force-loading this language. Please ensure that the internet connectivity is stable. \n")
+  # Ensure 'entity' and 'tag' are valid column names in df
+  if (!(entity %in% names(df)) || !(tag %in% names(df))) {
+    stop("The specified entity or tag column names are not found in the data frame.")
   }
-  return(language)
+
+  entity_col <- df[[entity]]
+  tag_col <- df[[tag]]
+
+  # Ensure 'entity' and 'tag' are character vectors
+  if (!is.character(entity_col) || !is.character(tag_col)) {
+    stop("Entity and tag columns should be of type character.")
+  }
+
+  required_tags <- c("ORG", "LOC", "MISC", "PER")
+
+  # Check if at least one required tag is present
+  if (!any(required_tags %in% unique(tag_col))) {
+    stop("The data frame must contain at least one named entity tag.")
+  }
+
+  coloring_entities <- list(
+    ORG = list(words = unique(entity_col[tag_col == "ORG"]),
+               background_color = "pink", font_color = "black",
+               label = "ORG", label_color = "pink"),
+    LOC = list(words = unique(entity_col[tag_col == "LOC"]),
+               background_color = "lightblue", font_color = "black",
+               label = "LOC", label_color = "blue"),
+    MISC = list(words = unique(entity_col[tag_col == "MISC"]),
+                background_color = "yellow", font_color = "black",
+                label = "MISC", label_color = "orange"),
+    PER = list(words = unique(entity_col[tag_col == "PER"]),
+               background_color = "lightgreen", font_color = "black",
+               label = "PER", label_color = "green")
+  )
+
+  return(coloring_entities)
 }
 
 
+#' Highlight Entities with Specified Colors and Tag
+#'
+#' @description This function highlights specified entities in a text string
+#' with specified background colors, font colors, and optional labels.
+#' Additionally, it allows setting a specific font type for highlighted text.
+#'
+#' @param text A character string containing the text to highlight.
+#' @param entities_mapping A named list of lists, with each sub-list containing:
+#'   \itemize{
+#'     \item \code{words}: A character vector of words to highlight.
+#'     \item \code{background_color}: A character string specifying the CSS color for the highlight background.
+#'     \item \code{font_color}: A character string specifying the CSS color for the highlighted text.
+#'     \item \code{label}: A character string specifying a label to append after each highlighted word.
+#'     \item \code{label_color}: A character string specifying the CSS color for the label text.
+#'   }
+#' @param font_family A character string specifying the CSS font family for
+#' the highlighted text and label. Default is "Arial".
+#'
+#' @return An HTML object containing the text with highlighted entities.
+#'
+#' @examples
+#' \dontrun{
+#'   entities_mapping <- list(
+#'     ORG = list(words = c("ORG1", "ORG2"),
+#'                background_color = "pink", font_color = "black",
+#'                label = "ORG", label_color = "pink")
+#'   )
+#'   highlighted_text <- highlight_text("Example text with ORG1 and ORG2.", entities_mapping)
+#' }
+#'
+#' @importFrom htmltools HTML
+#' @importFrom stringr str_replace_all
+#' @export
 
+# highlight_text <- function(text, entities_mapping, font_family = "Arial") {
+#   # Ensure 'entities_mapping' and 'font_family' are not used directly without being checked
+#   if(!is.list(entities_mapping) || !all(c("words", "background_color", "font_color", "label", "label_color") %in% names(entities_mapping[[1]]))) {
+#     stop("'entities_mapping' must be a list with specific structure.")
+#   }
+#
+#   if(!is.character(font_family) || length(font_family) != 1) {
+#     stop("'font_family' must be a single character string.")
+#   }
+#
+#   # Keeping track of replaced words+tags to ensure they are highlighted only once
+#   already_replaced <- c()
+#
+#   for (category in names(entities_mapping)) {
+#     words_to_highlight <- entities_mapping[[category]]$words
+#     background_color <- entities_mapping[[category]]$background_color
+#     font_color <- entities_mapping[[category]]$font_color
+#     label <- entities_mapping[[category]]$label
+#     label_color <- entities_mapping[[category]]$label_color
+#
+#     for (word in words_to_highlight) {
+#       # Create a unique identifier for each word+tag combination
+#       word_tag_identifier <- paste(word, label, sep = "_")
+#
+#       # Check if this word+tag has not been replaced already
+#       if(!(word_tag_identifier %in% already_replaced)) {
+#         replacement <- sprintf('<span style="background-color: %s; color: %s; font-family: %s">%s</span> <span style="color: %s; font-family: %s">(%s)</span>', background_color, font_color, font_family, word, label_color, font_family, label)
+#
+#         # Replace only whole words using word boundaries "\\b"
+#         text <- gsub(paste0("\\b", word, "\\b"), replacement, text)
+#
+#         already_replaced <- c(already_replaced, word_tag_identifier)
+#       }
+#     }
+#   }
+#   return(HTML(text))
+# }
+#
+#
+#
+highlight_text <- function(text, entities_mapping, font_family = "Arial") {
+  # Ensure 'entities_mapping' and 'font_family' are not used directly without being checked
+  if(!is.list(entities_mapping) || !all(c("words", "background_color", "font_color", "label", "label_color") %in% names(entities_mapping[[1]]))) {
+    stop("'entities_mapping' must be a list with specific structure.")
+  }
+
+  if(!is.character(font_family) || length(font_family) != 1) {
+    stop("'font_family' must be a single character string.")
+  }
+
+  # Keeping track of replaced words+tags to ensure they are highlighted only once
+  already_replaced <- c()
+
+  for (category in names(entities_mapping)) {
+    words_to_highlight <- entities_mapping[[category]]$words
+    background_color <- entities_mapping[[category]]$background_color
+    font_color <- entities_mapping[[category]]$font_color
+    label <- entities_mapping[[category]]$label
+    label_color <- entities_mapping[[category]]$label_color
+
+    for (word in words_to_highlight) {
+      # Create a unique identifier for each word+tag combination
+      word_tag_identifier <- paste(word, label, sep = "_")
+
+      # Check if this word+tag has not been replaced already
+      if(!(word_tag_identifier %in% already_replaced)) {
+        replacement <- sprintf('<span style="background-color: %s; color: %s; font-family: %s">%s</span> <span style="color: %s; font-family: %s">(%s)</span>', background_color, font_color, font_family, word, label_color, font_family, label)
+        text <- gsub(paste0("\\b", word, "\\b"), replacement, text)
+
+        already_replaced <- c(already_replaced, word_tag_identifier)
+      }
+    }
+  }
+
+  # Justify the text
+  justified_text <- sprintf('<div style="text-align: justify; font-family: %s">%s</div>', font_family, text)
+
+  return(HTML(justified_text))
+}
 

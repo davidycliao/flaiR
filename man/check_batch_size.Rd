@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{check_batch_size}
 \alias{check_batch_size}
-\title{Check the specified batch size}
+\title{Check the Specified Batch Size}
 \usage{
 check_batch_size(batch_size)
 }

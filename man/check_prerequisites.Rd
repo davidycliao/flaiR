@@ -15,6 +15,7 @@ A message detailing any missing pre-requisites.
 \description{
 This function checks if Python is installed, if the flair module
 is available in Python,
+
 and if there's an active internet connection.
 }
 \keyword{internal}
