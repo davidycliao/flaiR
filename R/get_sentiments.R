@@ -56,8 +56,12 @@ get_sentiments <- function(texts, doc_ids,
                            show.text_id = FALSE, gc.active = FALSE ) {
     # Check environment pre-requisites
     check_prerequisites()
-    check_texts_and_ids(texts, doc_ids)
     check_show.text_id(show.text_id)
+
+    # Check and prepare texts and doc_ids
+    texts_and_ids <- check_texts_and_ids(texts, doc_ids)
+    texts <- texts_and_ids$texts
+    doc_ids <- texts_and_ids$doc_ids
 
     # Load the Sentence tokenizer from the Flair library in Python.
     flair <- reticulate::import("flair")

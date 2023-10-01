@@ -65,13 +65,68 @@
 #' @importFrom reticulate import
 #' @importFrom data.table :=
 #' @export
-get_entities <- function(texts, doc_ids, tagger = NULL, language = NULL,
+# get_entities <- function(texts, doc_ids, tagger = NULL, language = NULL,
+#                          show.text_id = FALSE, gc.active = FALSE) {
+#
+#   # Check environment pre-requisites
+#   check_prerequisites()
+#   check_texts_and_ids(texts, doc_ids)
+#   check_show.text_id(show.text_id)
+#
+#   # Load tagger if null
+#   if (is.null(tagger)) {
+#     tagger <- load_tagger_ner(language)
+#   }
+#
+#   Sentence <- reticulate::import("flair")$data$Sentence
+#
+#   # Process each text and extract entities
+#   process_text <- function(text, doc_id) {
+#     text_id <- NULL
+#     if (is.na(text) || is.na(doc_id)) {
+#       return(data.table(doc_id = NA, entity = NA, tag = NA))
+#     }
+#
+#     sentence <- Sentence(text)
+#     tagger$predict(sentence)
+#     entities <- sentence$get_spans("ner")
+#
+#     if (length(entities) == 0) {
+#       return(data.table(doc_id = doc_id, entity = NA, tag = NA))
+#     }
+#
+#     # Unified data table creation process
+#     dt <- data.table(
+#       doc_id = rep(doc_id, length(entities)),
+#       entity = vapply(entities, function(e) e$text, character(1)),
+#       tag = vapply(entities, function(e) e$tag, character(1))
+#     )
+#
+#     if (isTRUE(show.text_id)) {
+#       dt[, text_id := text]
+#     }
+#
+#     return(dt)
+#   }
+#   # Activate garbage collection
+#   check_and_gc(gc.active)
+#
+#   results_list <- lapply(seq_along(texts),
+#                          function(i) {process_text(texts[[i]], doc_ids[[i]])})
+#   rbindlist(results_list, fill = TRUE)
+# }
+
+get_entities <- function(texts, doc_ids = NULL, tagger = NULL, language = NULL,
                          show.text_id = FALSE, gc.active = FALSE) {
 
   # Check environment pre-requisites
   check_prerequisites()
-  check_texts_and_ids(texts, doc_ids)
   check_show.text_id(show.text_id)
+
+  # Check and prepare texts and doc_ids
+  texts_and_ids <- check_texts_and_ids(texts, doc_ids)
+  texts <- texts_and_ids$texts
+  doc_ids <- texts_and_ids$doc_ids
 
   # Load tagger if null
   if (is.null(tagger)) {

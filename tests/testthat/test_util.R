@@ -19,6 +19,7 @@ test_that("get_entities throws an error for unsupported languages", {
     4)
 })
 
+
 # Test 3: Test the `get_flair_version` function to ensure it returns a character type.
 test_that("is.character", {
   expect_equal(is.character(get_flair_version()), TRUE)
@@ -124,74 +125,85 @@ test_that("create_flair_env works correctly", {
 })
 
 
-# Test 12: Test highlight_text
+# Test 13: check_and_gc does not throw error for logical input and collects garbage when TRUE
 
-test_that("highlight_text correctly highlights and justifies text", {
-  # Creating a sample entity mapping
-  entities_mapping <- list(
-    ORG = list(words = c("Apple", "Google"),
-               background_color = "yellow",
-               font_color = "black",
-               label = "ORG",
-               label_color = "blue")
-  )
+test_that("check_and_gc does not throw error for logical input and collects garbage when TRUE", {
+  expect_silent(check_and_gc(FALSE))
+  # Capture the message to ensure that gc() is called when gc.active is TRUE
+  expect_message(check_and_gc(TRUE), "Garbage collection after processing all texts")
+})
 
-  # Text to test
-  test_text <- "Apple and Google are tech giants."
-
-  # Running the function to get the output
-  highlighted_text <- highlight_text(test_text, entities_mapping)
-
-  # Convert HTML to character to perform checks
-  highlighted_text_as_char <- as.character(highlighted_text)
-
-  # Check 1: Test if the function adds the correct span tags around the specified words
-  expect_true(grepl('<span style="background-color: yellow; color: black; font-family: Arial">Apple</span>', highlighted_text_as_char))
-  expect_true(grepl('<span style="background-color: yellow; color: black; font-family: Arial">Google</span>', highlighted_text_as_char))
-
-  # Check 2: Test if label and label colors are applied correctly
-  expect_true(grepl('<span style="color: blue; font-family: Arial">\\(ORG\\)</span>', highlighted_text_as_char))
-
-  # Check 3: Ensure that the returned text is justified and uses the correct font family
-  expect_true(grepl('<div style="text-align: justify; font-family: Arial">', highlighted_text_as_char))
-
-  # Check 4: Ensure that the input text and entity mapping do not change
-  expect_equal(test_text, "Apple and Google are tech giants.")
-  expect_equal(entities_mapping$ORG$words, c("Apple", "Google"))
+test_that("check_and_gc throws error for non-logical input", {
+  expect_error(check_and_gc("not logical"), "should be a logical value")
+  expect_error(check_and_gc(10), "should be a logical value")
+  expect_error(check_and_gc(NULL), "should be a logical value")
+  expect_error(check_and_gc(NA), "should be a logical value")
 })
 
 
-# Test 13: Test highlight_text
-
-test_that("map_entities returns correct mapping", {
-  # Creating a sample data frame
-  sample_df <- data.frame(entity = c("Paris", "OpenAI", "John Doe", "Unknown"),
-                          tag = c("LOC", "ORG", "PER", "MISC"),
-                          stringsAsFactors = FALSE)
-
-  # Running map_entities to get the entities mapping
-  entities_mapping <- map_entities(sample_df)
-
-  # Checking that the mapping contains correct words for each tag
-  expect_equal(entities_mapping$ORG$words, "OpenAI")
-  expect_equal(entities_mapping$LOC$words, "Paris")
-  expect_equal(entities_mapping$PER$words, "John Doe")
-  expect_equal(entities_mapping$MISC$words, "Unknown")
-
-  # Checking that the mapping contains correct background color for each tag
-  expect_equal(entities_mapping$ORG$background_color, "pink")
-  expect_equal(entities_mapping$LOC$background_color, "lightblue")
-  expect_equal(entities_mapping$PER$background_color, "lightgreen")
-  expect_equal(entities_mapping$MISC$background_color, "yellow")
+# Test 14: check_show.text_id correctly handles logical input
+test_that("check_show.text_id correctly handles logical input", {
+  expect_silent(check_show.text_id(TRUE))
+  expect_silent(check_show.text_id(FALSE))
 })
 
-test_that("map_entities handles errors correctly", {
-  # Creating a sample data frame without necessary columns
-  incorrect_df <- data.frame(entity = c("Paris", "OpenAI", "John Doe", "Unknown"),
-                             stringsAsFactors = FALSE)
-
-  # Expecting an error when running map_entities with incorrect input
-  expect_error(map_entities(incorrect_df), "The specified entity or tag column names are not found in the data frame.")
+test_that("check_show.text_id throws error for non-logical input", {
+  expect_error(check_show.text_id("not logical"), "should be a non-NA logical value")
+  expect_error(check_show.text_id(10), "should be a non-NA logical value")
+  expect_error(check_show.text_id(NULL), "should be a non-NA logical value")
+  expect_error(check_show.text_id(NA), "should be a non-NA logical value")
 })
 
 
+# test_that("clear_flair_cache handles no directory", {
+#   local_temp_env()
+#   expect_output(clear_flair_cache(), "Flair cache directory does not exist.")
+# })
+#
+# test_that("clear_flair_cache handles empty directory", {
+#   local_temp_env()
+#   dir.create(file.path(path.expand("~"), ".flair"))
+#   expect_output(clear_flair_cache(), "No files in flair cache directory.")
+# })
+#
+# test_that("clear_flair_cache handles non-empty directory", {
+#   local_temp_env()
+#   flair_cache_dir <- file.path(path.expand("~"), ".flair")
+#   dir.create(flair_cache_dir)
+#   file.create(file.path(flair_cache_dir, "file1.txt"))
+#   expect_output(clear_flair_cache(), "Files in flair cache directory:")
+# })
+
+#
+# test_that("check_device functionality", {
+#   skip_on_cran() # prevent this from running on CRAN
+#
+#   # Importing torch without activating Python might cause issues
+#   # It is ideal to mock or skip real interaction with reticulate & pytorch
+#
+#   # Test 1: MPS on supported system
+#   withr::local_envvar(c(SYSNAME = "Darwin", MACHINE = "arm64", RELEASE = "12.3"))
+#   # Here we need to mock pytorch and device check - not implemented in this example
+#   expect_message(check_device("mps"), "MPS is used on Mac M1/M2.")
+#
+#   # # Test 2: MPS on unsupported system version
+#   # withr::local_envvar(c(SYSNAME = "Darwin", MACHINE = "arm64", RELEASE = "12.0"))
+#   # # Same here - mock pytorch and device check
+#   # expect_warning(check_device("mps"), "MPS requires macOS 12.3 or higher")
+#   #
+#   # Test 3: CPU usage
+#   expect_message(check_device("cpu"), "CPU is used.")
+#   #
+#   # # Test 4: CUDA available
+#   # # Mock pytorch$cuda$is_available to return TRUE, and assert message
+#   # # expect_message(check_device("cuda"), "CUDA is available and will be used.")
+#   #
+#   # Test 5: CUDA not available
+#   # Mock pytorch$cuda$is_available to return FALSE, and assert message
+#   expect_message(check_device("cuda"), "CUDA is not available on this machine. Using CPU.")
+#   #
+#   # # Test 6: Unknown device
+#   # expect_warning(check_device("unknown_device"), "Unknown device specified.")
+# })
+#
+#

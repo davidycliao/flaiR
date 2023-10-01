@@ -7,7 +7,6 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -22,25 +21,22 @@ library(reticulate)
 reticulate::py_install("flair")
 ```
 
-## Generic Approach Using Pre-trained NER English Model
+## Create Text with Named Entities
 
 ```{r}
 library(flaiR)
-data("uk_immigration")
-uk_immigration <- head(uk_immigration, 1)
-tagger_ner <- load_tagger_ner("ner")
-result <- get_entities(uk_immigration$text,
-                       uk_immigration$speaker, 
-                       tagger_ner,
+data("de_immigration")
+de_immigration <- de_immigration[5,]
+tagger_ner <- load_tagger_ner("de-ner")
+result <- get_entities(de_immigration$text,
+                       tagger = tagger_ner,
                        show.text_id = FALSE
                        )
 ```
 
 ## Highlight Text with Entities
-
 ```{r}
-highlighted_text <- highlight_text(text = uk_immigration$text, 
+highlighted_text <- highlight_text(text = de_immigration$text, 
                                    entities_mapping = map_entities(result))
 highlighted_text
 ```
-

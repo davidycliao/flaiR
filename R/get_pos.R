@@ -44,12 +44,16 @@
 #'
 #' get_pos(texts, doc_ids, tagger_pos_fast)
 #' }
-get_pos <- function(texts, doc_ids, tagger = NULL, language = NULL,
+get_pos <- function(texts, doc_ids = NULL, tagger = NULL, language = NULL,
                     show.text_id = FALSE, gc.active = FALSE ) {
   # Check environment pre-requisites
   check_prerequisites()
-  check_texts_and_ids(texts, doc_ids)
   check_show.text_id(show.text_id)
+
+  # Check and prepare texts and doc_ids
+  texts_and_ids <- check_texts_and_ids(texts, doc_ids)
+  texts <- texts_and_ids$texts
+  doc_ids <- texts_and_ids$doc_ids
 
   # Import the `Sentence` tokenizer and `Classifier` from Python's Flair
   flair <- reticulate::import("flair")

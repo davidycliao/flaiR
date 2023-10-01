@@ -6,7 +6,7 @@
 \usage{
 get_pos(
   texts,
-  doc_ids,
+  doc_ids = NULL,
   tagger = NULL,
   language = NULL,
   show.text_id = FALSE,
