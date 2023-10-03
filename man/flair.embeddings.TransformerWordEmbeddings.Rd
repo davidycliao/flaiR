@@ -16,7 +16,7 @@ Defaults to 'bert-base-uncased'.}
 A Flair TransformerWordEmbeddings object.
 }
 \description{
-This function interfaces with Python via `reticulate` to create
+This function interfaces with Python via {reticulate} to create
 a `TransformerWordEmbeddings` object using the Flair library.
 }
 \examples{

@@ -13,7 +13,7 @@ flair_data.sentence(sentence_text)
 A Flair Sentence object.
 }
 \description{
-This function uses the `reticulate` package to interface with Python and
+This function uses the {reticulate} package to interface with Python and
 create a Flair Sentence object.
 }
 \examples{

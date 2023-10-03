@@ -14,7 +14,7 @@ Defaults to "`glove`".}
 A Flair WordEmbeddings object.
 }
 \description{
-This function interfaces with Python via `reticulate` to create
+This function interfaces with Python via {reticulate} to create
 a `WordEmbeddings` object using the Flair library.
 }
 \examples{

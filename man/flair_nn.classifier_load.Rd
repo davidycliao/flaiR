@@ -14,7 +14,7 @@ This parameter is defined but not used in the current function context.}
 A Flair Classifier object.
 }
 \description{
-This function utilizes the `reticulate` package to interface with Python
+This function utilizes the {reticulate} package to interface with Python
 and create a Classifier object from the Flair library.
 }
 \examples{

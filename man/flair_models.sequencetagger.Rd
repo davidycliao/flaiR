@@ -10,7 +10,7 @@ flair_models.sequencetagger()
 A Python module (`SequenceTagger`) from Flair, which can be utilized to load and use sequence tagging models.
 }
 \description{
-This function utilizes the `reticulate` package to import the `SequenceTagger` from Flair's models in Python,
+This function utilizes the {reticulate} package to import the `SequenceTagger`s from Flair's models in Python,
 enabling interaction with Flair's sequence tagging models in an R environment.
 }
 \details{

@@ -10,7 +10,7 @@ flair_trainers()
 A Python Module(flair.trainers) object allowing access to Flair's trainers in R.
 }
 \description{
-This function provides R access to Flair's ModelTrainer Python class using the reticulate package.
+This function provides R access to Flair's ModelTrainer Python class using the {reticulate} package.
 }
 \examples{
 \dontrun{
