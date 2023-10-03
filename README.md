@@ -24,6 +24,8 @@ Labeling](https://aclanthology.org/C18-1139.pdf)’ and the official
 
 <br>
 
+**Integrating Modules and Classes from Python’s FlairNLP into R:**
+
 | **Wrapped Functions**                          | **Corresponding Code in Python**                         |
 |------------------------------------------------|----------------------------------------------------------|
 | `flair_datasets()`                             | `from flair.datasets import *`                           |
@@ -50,7 +52,9 @@ recognition**.
 
 <br>
 
-| **The Wrapper Features in R**                | Loader                     | Supported Models                                                                                                        |
+**Effortless Access to Core Tagging Features with flaiR Functions:**
+
+| **The Features**                             | Loader                     | Supported Models                                                                                                        |
 |----------------------------------------------|----------------------------|-------------------------------------------------------------------------------------------------------------------------|
 | `get_entities()`, `get_entities_batch()`     | `load_tagger_ner()`        | `en` (English), `fr` (French), `da` (Danish), `nl` (Dutch), and more.                                                   |
 | `get_pos()`, `get_pos_batch()`               | `load_tagger_pos()`        | `pos` (English POS), `fr-pos` (French POS), `de-pos` (German POS), `nl-pos` (Dutch POS), and more.                      |
