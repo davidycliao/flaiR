@@ -64,21 +64,37 @@
   </a>
   <div class="dropdown-menu" aria-labelledby="dropdown--quick-start">
     <a class="dropdown-item" href="../articles/quickstart.html#install-flair-via-github">Install flaiR via GitHub</a>
-    <a class="dropdown-item" href="../articles/quickstart.html#quickstart.html#user-guide">User Guide</a>
-    <a class="dropdown-item" href="../articles/quickstart.html#quickstart.html#how-to-contribute">How to Contribute</a>
+    <a class="dropdown-item" href="../articles/quickstart.html#user-guaide">User Guide</a>
+    <a class="dropdown-item" href="../articles/quickstart.html#how-to-contribute">How to Contribute</a>
   </div>
 </li>
 <li class="active nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown--manual">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown--tutorial">
     <span class="fa fa-project-diagram"></span>
      
-    Manual
+    Tutorial
   </a>
-  <div class="dropdown-menu" aria-labelledby="dropdown--manual">
+  <div class="dropdown-menu" aria-labelledby="dropdown--tutorial">
+    <a class="dropdown-item" href="../articles/introduction.html">Introduction</a>
+    <a class="dropdown-item" href="../articles/sentence_token.html">Flair Base Types</a>
+    <a class="dropdown-item" href="../articles/flair_embeddings.html">Flair Embeddings</a>
     <a class="dropdown-item" href="../articles/get_entities.html">Tagging Named Entities</a>
     <a class="dropdown-item" href="../articles/get_pos.html">Part-of-Speech Tagging</a>
     <a class="dropdown-item" href="../articles/get_sentiments.html">Tagging Sentiment</a>
-    <a class="dropdown-item" href="../articles/highlight_text.html">Highlight Entities with Colors</a>
+  </div>
+</li>
+<li class="nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown--reference">
+    <span class="fa fa-file-code-o"></span>
+     
+    Reference
+  </a>
+  <div class="dropdown-menu" aria-labelledby="dropdown--reference">
+    <a class="dropdown-item" href="../reference/index.html#wrapper-function-in-r-to-python-flairNLP">Wrapper Function in R to Python Flair NLP</a>
+    <a class="dropdown-item" href="../reference/index.html#designed-flair-functions">Designed flaiR Functions</a>
+    <a class="dropdown-item" href="../reference/index.html#tool-box">ToolBox</a>
+    <a class="dropdown-item" href="../reference/index.html#utility-functions">Utility</a>
+    <a class="dropdown-item" href="../reference/index.html#example-dataset">Dataset</a>
   </div>
 </li>
 <li class="nav-item dropdown">
@@ -92,30 +108,6 @@
     <a class="dropdown-item" href="../news/index.html#flair-004-development-version">0.0.4</a>
     <a class="dropdown-item" href="../news/index.html#flair-003-development-version">0.0.3</a>
     <a class="dropdown-item" href="../news/index.html#flair-001-development-version">0.0.1</a>
-  </div>
-</li>
-<li class="nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown--reference">
-    <span class="fa fa-file-code-o"></span>
-     
-    Reference
-  </a>
-  <div class="dropdown-menu" aria-labelledby="dropdown--reference">
-    <a class="dropdown-item" href="../reference/index.html#flair-functions">flaiR</a>
-    <a class="dropdown-item" href="../reference/index.html#classifier-functions">Taggers (Classifiers)</a>
-    <a class="dropdown-item" href="../reference/index.html#tool-box">Tool Box</a>
-    <a class="dropdown-item" href="../reference/index.html#utility-functions">Utility</a>
-    <a class="dropdown-item" href="../reference/index.html#example-dataset">Dataset</a>
-  </div>
-</li>
-<li class="nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown--tutorial">
-    <span class="fa fa-file-code-o"></span>
-     
-    Tutorial
-  </a>
-  <div class="dropdown-menu" aria-labelledby="dropdown--tutorial">
-    <h6 class="dropdown-header" data-toc-skip>Comming Soon</h6>
   </div>
 </li>
       </ul>
@@ -346,7 +338,7 @@ the command again will not trigger a download.</p>
 </div>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tagger_ner</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_tagger_ner.html">load_tagger_ner</a></span><span class="op">(</span><span class="st">"ner"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2023-10-01 22:35:30,268 SequenceTagger predicts: Dictionary with 20 tags: &lt;unk&gt;, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, &lt;START&gt;, &lt;STOP&gt;</span></span></code></pre></div>
+<span><span class="co">#&gt; 2023-10-03 22:52:55,147 SequenceTagger predicts: Dictionary with 20 tags: &lt;unk&gt;, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, &lt;START&gt;, &lt;STOP&gt;</span></span></code></pre></div>
 <div style="text-align: justify">
 <p>If you want the computation to run faster, it is recommended to keep
 the show.text_id set to FALSE by default.</p>
@@ -363,7 +355,7 @@ the show.text_id set to FALSE by default.</p>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">time</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;  23.811   0.374  23.974</span></span></code></pre></div>
+<span><span class="co">#&gt;  23.874   0.257  24.019</span></span></code></pre></div>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">results</span><span class="op">)</span></span>
 <span><span class="co">#&gt;               doc_id                          entity  tag</span></span>
@@ -445,7 +437,7 @@ management.</p>
 <span><span class="co">#&gt; Processing batch 2 out of 2...</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">batch_process_time</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;  24.108   0.311  24.368</span></span></code></pre></div>
+<span><span class="co">#&gt;  23.878   0.241  23.961</span></span></code></pre></div>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">batch_process_results</span><span class="op">)</span></span>
 <span><span class="co">#&gt;               doc_id                          entity  tag text_id</span></span>

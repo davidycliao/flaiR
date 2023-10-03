@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="description" content="flaiR">
-<title>Tagging Sentiment with Flair Standard Models • flaiR</title>
+<title>Flair Embeddings • flaiR</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
@@ -19,7 +19,7 @@
 <link href="../deps/Source_Code_Pro-0.4.7/font.css" rel="stylesheet">
 <!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Tagging Sentiment with Flair Standard Models">
+<!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Flair Embeddings">
 <meta property="og:description" content="flaiR">
 <meta property="og:image" content="https://davidycliao.github.io/flaiR/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -135,108 +135,75 @@
 
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-      <img src="../logo.png" class="logo" alt=""><h1>Tagging Sentiment with Flair Standard Models</h1>
+      <img src="../logo.png" class="logo" alt=""><h1>Flair Embeddings</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/davidycliao/flaiR/blob/HEAD/vignettes/get_sentiments.Rmd" class="external-link"><code>vignettes/get_sentiments.Rmd</code></a></small>
-      <div class="d-none name"><code>get_sentiments.Rmd</code></div>
+      <small class="dont-index">Source: <a href="https://github.com/davidycliao/flaiR/blob/HEAD/vignettes/flair_embeddings.Rmd" class="external-link"><code>vignettes/flair_embeddings.Rmd</code></a></small>
+      <div class="d-none name"><code>flair_embeddings.Rmd</code></div>
     </div>
 
     
     
 <div class="section level2">
-<h2 id="list-of-sentiment-models">List of Sentiment Models<a class="anchor" aria-label="anchor" href="#list-of-sentiment-models"></a>
+<h2 id="create-sentence-object">Create Sentence Object<a class="anchor" aria-label="anchor" href="#create-sentence-object"></a>
 </h2>
-<table class="table">
-<colgroup>
-<col width="17%">
-<col width="7%">
-<col width="41%">
-<col width="19%">
-<col width="14%">
-</colgroup>
-<thead><tr class="header">
-<th>ID</th>
-<th>Language</th>
-<th>Task</th>
-<th>Training Dataset</th>
-<th>Accuracy</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td>‘sentiment’</td>
-<td>English</td>
-<td>detecting positive and negative sentiment (transformer-based)</td>
-<td>movie and product reviews</td>
-<td>98.87</td>
-</tr>
-<tr class="even">
-<td>‘sentiment-fast’</td>
-<td>English</td>
-<td>detecting positive and negative sentiment (RNN-based)</td>
-<td>movie and product reviews</td>
-<td>96.83</td>
-</tr>
-<tr class="odd">
-<td>‘de-offensive-language’</td>
-<td>German</td>
-<td>detecting offensive language</td>
-<td>GermEval 2018 Task 1</td>
-<td>75.71 (Macro F1)</td>
-</tr>
-</tbody>
-</table>
-<p><strong>Source</strong>: <a href="https://flairnlp.github.io/docs/tutorial-basics/tagging-sentiment" class="external-link uri">https://flairnlp.github.io/docs/tutorial-basics/tagging-sentiment</a></p>
-</div>
-<div class="section level2">
-<h2 id="an-example-using-sentiment-model-pre-trained-english-model">An Example Using <code>sentiment</code> Model (Pre-trained English
-Model)<a class="anchor" aria-label="anchor" href="#an-example-using-sentiment-model-pre-trained-english-model"></a>
-</h2>
+<div style="text-align: justify">
+<p>We will utilize {reticulate} to systematically use the Python flair
+package in our work. Firstly, For example, let’s create a simple
+<code>sentence</code> class and check its string representation”</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">flaiR</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"uk_immigration"</span><span class="op">)</span></span>
-<span><span class="va">uk_immigration</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">uk_immigration</span>, <span class="fl">5</span><span class="op">)</span></span></code></pre></div>
-<div style="text-align: justify">
-<p>Download the English sentiment model from FlairNLP on Hugging Face.
-Currently, it also supports a large English sentiment model and a German
-pre-trained model.</p>
-</div>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rstudio.github.io/reticulate/" class="external-link">reticulate</a></span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">tagger_sent</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_tagger_sentiments.html">load_tagger_sentiments</a></span><span class="op">(</span><span class="st">"sentiment"</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_sentiments.html">get_sentiments</a></span><span class="op">(</span><span class="va">uk_immigration</span><span class="op">$</span><span class="va">text</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">uk_immigration</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>                          <span class="va">tagger_sent</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">results</span><span class="op">)</span></span>
-<span><span class="co">#&gt;    doc_id sentiment     score</span></span>
-<span><span class="co">#&gt; 1:      1  POSITIVE 0.8097585</span></span>
-<span><span class="co">#&gt; 2:      2  POSITIVE 0.9990165</span></span>
-<span><span class="co">#&gt; 3:      3  POSITIVE 0.8827487</span></span>
-<span><span class="co">#&gt; 4:      4  NEGATIVE 0.9997155</span></span>
-<span><span class="co">#&gt; 5:      5  POSITIVE 0.8604354</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">string</span> <span class="op">&lt;-</span> <span class="st">"What I see in UCD today"</span></span>
+<span><span class="va">sentence</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_data.sentence.html">flair_data.sentence</a></span><span class="op">(</span><span class="va">string</span><span class="op">)</span></span></code></pre></div>
+</div>
+<p> </p>
 </div>
 <div class="section level2">
-<h2 id="batch-processing-in-english-sentiment-model">Batch Processing in English Sentiment Model<a class="anchor" aria-label="anchor" href="#batch-processing-in-english-sentiment-model"></a>
+<h2 id="employing-the-bert-model-for-extracting-embeddings">Employing the BERT Model for Extracting Embeddings<a class="anchor" aria-label="anchor" href="#employing-the-bert-model-for-extracting-embeddings"></a>
 </h2>
+<div style="text-align: justify">
+<p>First, we utilize the flair.embeddings.TransformerWordEmbeddings
+function to download BERT, and more transformer models can also be found
+on <a href="https://huggingface.co/flair" class="external-link">Flair NLP’s Hugging
+Face</a>.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">TransformerWordEmbeddings</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair.embeddings.TransformerWordEmbeddings.html">flair.embeddings.TransformerWordEmbeddings</a></span><span class="op">(</span><span class="st">"bert-base-uncased"</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">embedding</span> <span class="op">&lt;-</span> <span class="va">TransformerWordEmbeddings</span><span class="op">$</span><span class="fu">embed</span><span class="op">(</span><span class="va">sentence</span><span class="op">)</span></span></code></pre></div>
+<p>Traverse each token in the sentence and print them. To view each
+token, it’s necessary to use<code>reticulate::py_str(token)</code> since
+the sentence is a Python object.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">batch_process_results</span>  <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_sentiments_batch.html">get_sentiments_batch</a></span><span class="op">(</span><span class="va">uk_immigration</span><span class="op">$</span><span class="va">text</span>,</span>
-<span>                                               <span class="va">uk_immigration</span><span class="op">$</span><span class="va">speaker</span>, </span>
-<span>                                               <span class="va">tagger_sent</span>, </span>
-<span>                                               show.text_id <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>                                               batch_size <span class="op">=</span> <span class="fl">2</span>,</span>
-<span>                                               verbose <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="co">#&gt; CPU is used.</span></span>
-<span><span class="co">#&gt; Processing batch 1 out of 3...</span></span>
-<span><span class="co">#&gt; Processing batch 2 out of 3...</span></span>
-<span><span class="co">#&gt; Processing batch 3 out of 3...</span></span></code></pre></div>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">batch_process_results</span><span class="op">)</span></span>
-<span><span class="co">#&gt;              doc_id sentiment     score</span></span>
-<span><span class="co">#&gt; 1: Philip Hollobone  POSITIVE 0.8097585</span></span>
-<span><span class="co">#&gt; 2:  Stewart Jackson  POSITIVE 0.9990165</span></span>
-<span><span class="co">#&gt; 3: Philip Hollobone  POSITIVE 0.8827488</span></span>
-<span><span class="co">#&gt; 4:  Stewart Jackson  NEGATIVE 0.9997155</span></span>
-<span><span class="co">#&gt; 5: Philip Hollobone  POSITIVE 0.8604354</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># Iterate through each token in the sentence, printing them. </span></span>
+<span><span class="co"># Utilize reticulate::py_str(token) to view each token, given that the sentence is a Python object.</span></span>
+<span><span class="kw">for</span> <span class="op">(</span><span class="va">token</span> <span class="kw">in</span> <span class="va">sentence</span><span class="op">$</span><span class="va">tokens</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"Token: "</span>, <span class="fu">reticulate</span><span class="fu">::</span><span class="fu"><a href="https://rstudio.github.io/reticulate/reference/py_str.html" class="external-link">py_str</a></span><span class="op">(</span><span class="va">token</span><span class="op">)</span>, <span class="st">"\n"</span><span class="op">)</span></span>
+<span>  <span class="co"># Access the embedding of the token, converting it to an R object, </span></span>
+<span>  <span class="co"># and print the first 10 elements of the vector.</span></span>
+<span>  <span class="va">token_embedding</span> <span class="op">&lt;-</span> <span class="va">token</span><span class="op">$</span><span class="va">embedding</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">token_embedding</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="co">#&gt; Token:  Token[0]: "What" </span></span>
+<span><span class="co">#&gt; tensor([-0.2512, -0.4922, -0.4639,  0.2517, -0.3188,  0.0957,  1.6545,  0.3004,</span></span>
+<span><span class="co">#&gt;         -0.8781,  0.1227])</span></span>
+<span><span class="co">#&gt; Token:  Token[1]: "I" </span></span>
+<span><span class="co">#&gt; tensor([-0.3337,  0.4115, -0.4157, -0.9596,  0.0055,  0.3405,  1.3206, -0.3020,</span></span>
+<span><span class="co">#&gt;         -0.2711, -0.1189])</span></span>
+<span><span class="co">#&gt; Token:  Token[2]: "see" </span></span>
+<span><span class="co">#&gt; tensor([ 0.8483,  0.6642, -0.5487,  0.3471,  0.4927,  0.3256,  0.9243, -0.6720,</span></span>
+<span><span class="co">#&gt;         -0.6935,  0.6259])</span></span>
+<span><span class="co">#&gt; Token:  Token[3]: "in" </span></span>
+<span><span class="co">#&gt; tensor([-0.2381,  0.2073, -0.5796,  0.1363, -0.5629, -0.2510,  1.3423, -0.5730,</span></span>
+<span><span class="co">#&gt;         -0.6775,  0.4376])</span></span>
+<span><span class="co">#&gt; Token:  Token[4]: "UCD" </span></span>
+<span><span class="co">#&gt; tensor([-0.5148,  1.4145, -0.8204,  0.3421, -0.5881, -0.2627,  1.3721,  0.0260,</span></span>
+<span><span class="co">#&gt;          0.1095,  0.6303])</span></span>
+<span><span class="co">#&gt; Token:  Token[5]: "today" </span></span>
+<span><span class="co">#&gt; tensor([-0.8136, -0.0583, -0.2771, -0.6339, -0.2820,  0.0869,  0.7950, -0.6545,</span></span>
+<span><span class="co">#&gt;         -0.2286,  0.3327])</span></span></code></pre></div>
+</div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>

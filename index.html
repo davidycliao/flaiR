@@ -76,21 +76,37 @@
   </a>
   <div class="dropdown-menu" aria-labelledby="dropdown--quick-start">
     <a class="dropdown-item" href="articles/quickstart.html#install-flair-via-github">Install flaiR via GitHub</a>
-    <a class="dropdown-item" href="articles/quickstart.html#quickstart.html#user-guide">User Guide</a>
-    <a class="dropdown-item" href="articles/quickstart.html#quickstart.html#how-to-contribute">How to Contribute</a>
+    <a class="dropdown-item" href="articles/quickstart.html#user-guaide">User Guide</a>
+    <a class="dropdown-item" href="articles/quickstart.html#how-to-contribute">How to Contribute</a>
   </div>
 </li>
 <li class="nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown--manual">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown--tutorial">
     <span class="fa fa-project-diagram"></span>
      
-    Manual
+    Tutorial
   </a>
-  <div class="dropdown-menu" aria-labelledby="dropdown--manual">
+  <div class="dropdown-menu" aria-labelledby="dropdown--tutorial">
+    <a class="dropdown-item" href="articles/introduction.html">Introduction</a>
+    <a class="dropdown-item" href="articles/sentence_token.html">Flair Base Types</a>
+    <a class="dropdown-item" href="articles/flair_embeddings.html">Flair Embeddings</a>
     <a class="dropdown-item" href="articles/get_entities.html">Tagging Named Entities</a>
     <a class="dropdown-item" href="articles/get_pos.html">Part-of-Speech Tagging</a>
     <a class="dropdown-item" href="articles/get_sentiments.html">Tagging Sentiment</a>
-    <a class="dropdown-item" href="articles/highlight_text.html">Highlight Entities with Colors</a>
+  </div>
+</li>
+<li class="nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown--reference">
+    <span class="fa fa-file-code-o"></span>
+     
+    Reference
+  </a>
+  <div class="dropdown-menu" aria-labelledby="dropdown--reference">
+    <a class="dropdown-item" href="reference/index.html#wrapper-function-in-r-to-python-flairNLP">Wrapper Function in R to Python Flair NLP</a>
+    <a class="dropdown-item" href="reference/index.html#designed-flair-functions">Designed flaiR Functions</a>
+    <a class="dropdown-item" href="reference/index.html#tool-box">ToolBox</a>
+    <a class="dropdown-item" href="reference/index.html#utility-functions">Utility</a>
+    <a class="dropdown-item" href="reference/index.html#example-dataset">Dataset</a>
   </div>
 </li>
 <li class="nav-item dropdown">
@@ -104,30 +120,6 @@
     <a class="dropdown-item" href="news/index.html#flair-004-development-version">0.0.4</a>
     <a class="dropdown-item" href="news/index.html#flair-003-development-version">0.0.3</a>
     <a class="dropdown-item" href="news/index.html#flair-001-development-version">0.0.1</a>
-  </div>
-</li>
-<li class="nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown--reference">
-    <span class="fa fa-file-code-o"></span>
-     
-    Reference
-  </a>
-  <div class="dropdown-menu" aria-labelledby="dropdown--reference">
-    <a class="dropdown-item" href="reference/index.html#flair-functions">flaiR</a>
-    <a class="dropdown-item" href="reference/index.html#classifier-functions">Taggers (Classifiers)</a>
-    <a class="dropdown-item" href="reference/index.html#tool-box">Tool Box</a>
-    <a class="dropdown-item" href="reference/index.html#utility-functions">Utility</a>
-    <a class="dropdown-item" href="reference/index.html#example-dataset">Dataset</a>
-  </div>
-</li>
-<li class="nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown--tutorial">
-    <span class="fa fa-file-code-o"></span>
-     
-    Tutorial
-  </a>
-  <div class="dropdown-menu" aria-labelledby="dropdown--tutorial">
-    <h6 class="dropdown-header" data-toc-skip>Comming Soon</h6>
   </div>
 </li>
       </ul>
@@ -157,7 +149,50 @@
 <p><a href="https://github.com/davidycliao/flaiR/actions/workflows/r2.yml" class="external-link"><img src="https://github.com/davidycliao/flaiR/actions/workflows/r2.yml/badge.svg" alt="R"></a> <a href="https://github.com/davidycliao/flaiR/actions/workflows/r.yml" class="external-link"><img src="https://github.com/davidycliao/flaiR/actions/workflows/r.yml/badge.svg" alt="R-CMD-check"></a> <a href="https://github.com/davidycliao/flaiR/actions/workflows/R-CMD-check2.yml" class="external-link"><img src="https://github.com/davidycliao/flaiR/actions/workflows/R-CMD-check2.yml/badge.svg" alt="R-CMD-check"></a> <a href="https://github.com/davidycliao/flaiR/actions/workflows/test-coverage.yaml" class="external-link"><img src="https://github.com/davidycliao/flaiR/actions/workflows/test-coverage.yaml/badge.svg" alt="coverage"></a> <a href="https://codecov.io/gh/davidycliao/flaiR" class="external-link"><img src="https://codecov.io/gh/davidycliao/flaiR/graph/badge.svg?token=CPIBIB6L78" alt="codecov"></a> <a href="https://www.codefactor.io/repository/github/davidycliao/flair" class="external-link"><img src="https://www.codefactor.io/repository/github/davidycliao/flair/badge" alt="CodeFactor"></a></p>
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 <div style="text-align: justify">
-<p><code>flaiR</code> is a R wrapper of the FlairNLP for R users, particularly for social science researchers. It offers streamlined access to the core features of <code>FlairNLP</code> from Python. FlairNLP is an advanced NLP framework that incorporates the latest techniques developed by the Humboldt University of Berlin. For a deeper understanding of Flair’s architecture, refer to the research article ‘<a href="https://aclanthology.org/C18-1139.pdf" class="external-link">Contextual String Embeddings for Sequence Labeling</a>’ and the official <a href="https://flairnlp.github.io" class="external-link">mannual</a> in Python. The features currently available in <code>flairR</code> include <strong>part-of-speech tagging</strong>, <strong>transformer-based sentiment analysis</strong>, and <strong>named entity recognition</strong>. <code>flairR</code> returns extracted features in a tidy and clean <a href="https://cran.r-project.org/web/packages/data.table/index.html" class="external-link"><code>data.table</code></a>.</p>
+<p><code>flaiR</code> is a R wrapper of the FlairNLP for R users, particularly for social science researchers. It offers streamlined access to the core features of <code>FlairNLP</code> from Python. FlairNLP is an advanced NLP framework that incorporates the latest techniques developed by the Humboldt University of Berlin. For a deeper understanding of Flair’s architecture, refer to the research article ‘<a href="https://aclanthology.org/C18-1139.pdf" class="external-link">Contextual String Embeddings for Sequence Labeling</a>’ and the official <a href="https://flairnlp.github.io" class="external-link">mannual</a> in Python.</p>
+<p><br></p>
+<table class="table">
+<colgroup>
+<col width="47%">
+<col width="52%">
+</colgroup>
+<thead><tr class="header">
+<th><strong>Wrapped Functions: Integrating Modules into R</strong></th>
+<th><strong>Corresponding Code in Python</strong></th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td><code><a href="reference/flair_datasets.html">flair_datasets()</a></code></td>
+<td>from flair.datasets import *</td>
+</tr>
+<tr class="even">
+<td><code><a href="reference/flair_data.sentence.html">flair_data.sentence()</a></code></td>
+<td>from flair.data import Sentence</td>
+</tr>
+<tr class="odd">
+<td><code><a href="reference/flair_nn.classifier_load.html">flair_nn.classifier_load()</a></code></td>
+<td>from flair.nn import Classifier</td>
+</tr>
+<tr class="even">
+<td><code><a href="reference/flair.embeddings.TransformerWordEmbeddings.html">flair.embeddings.TransformerWordEmbeddings()</a></code></td>
+<td>from flair.embeddings import TransformerWordEmbeddings</td>
+</tr>
+<tr class="odd">
+<td><code><a href="reference/flair_embeddings.WordEmbeddings.html">flair_embeddings.WordEmbeddings()</a></code></td>
+<td>from flair.embeddings import WordEmbeddings</td>
+</tr>
+<tr class="even">
+<td><code>segtok_sentence_splitter()</code></td>
+<td>flair_splitter.SegtokSentenceSplitter</td>
+</tr>
+<tr class="odd">
+<td><code><a href="reference/flair_models.sequencetagger.html">flair_models.sequencetagger()</a></code></td>
+<td>from flair.models import SequenceTagger</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><code>flairR</code> primarily consists of two main components. The first is a wrapper function built on top of {reticulate}, enabling you to interact directly with Python modules in R. Secondly, to facilitate more efficient use for social science research, {flairR} wraps the FlairNLP Python with three major features to extract features in a tidy and clean format using <a href="https://cran.r-project.org/web/packages/data.table/index.html" class="external-link">data.table.</a>. The features currently available in <code>flairR</code> include <strong>part-of-speech tagging</strong>, <strong>transformer-based sentiment analysis</strong>, and <strong>named entity recognition</strong>.</p>
 </div>
 <p><br></p>
 <table class="table">
@@ -167,7 +202,7 @@
 <col width="62%">
 </colgroup>
 <thead><tr class="header">
-<th><strong>The Main Features in R</strong></th>
+<th><strong>The Features</strong></th>
 <th>Loader</th>
 <th>Supported Models</th>
 </tr></thead>
@@ -208,45 +243,27 @@
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span></span>
 <span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"davidycliao/flaiR"</span>, force <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">flaiR</span><span class="op">)</span></span></code></pre></div>
-</div>
-</div>
-<div class="section level2">
-<h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
-</h2>
-<div class="section level3">
-<h3 id="ner-with-the-state-of-the-art-german-pre-trained-model">NER with the State-of-the-Art German Pre-trained Model<a class="anchor" aria-label="anchor" href="#ner-with-the-state-of-the-art-german-pre-trained-model"></a>
-</h3>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">flaiR</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"de_immigration"</span><span class="op">)</span></span>
-<span><span class="va">de_immigration</span> <span class="op">&lt;-</span> <span class="va">de_immigration</span><span class="op">[</span><span class="fl">5</span>,<span class="op">]</span></span>
-<span><span class="va">tagger_ner</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/load_tagger_ner.html">load_tagger_ner</a></span><span class="op">(</span><span class="st">"de-ner"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2023-10-01 22:19:06,451 SequenceTagger predicts: Dictionary with 19 tags: O, S-LOC, B-LOC, E-LOC, I-LOC, S-PER, B-PER, E-PER, I-PER, S-ORG, B-ORG, E-ORG, I-ORG, S-MISC, B-MISC, E-MISC, I-MISC, &lt;START&gt;, &lt;STOP&gt;</span></span>
-<span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_entities.html">get_entities</a></span><span class="op">(</span><span class="va">de_immigration</span><span class="op">$</span><span class="va">text</span>,</span>
-<span>                       tagger <span class="op">=</span> <span class="va">tagger_ner</span>,</span>
-<span>                       show.text_id <span class="op">=</span> <span class="cn">FALSE</span></span>
-<span>                       <span class="op">)</span></span>
-<span><span class="co">#&gt; Warning in check_texts_and_ids(texts, doc_ids): doc_ids is NULL. Auto-assigning</span></span>
-<span><span class="co">#&gt; doc_ids.</span></span></code></pre></div>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">result</span>, <span class="fl">5</span><span class="op">)</span></span>
-<span><span class="co">#&gt;    doc_id                                  entity tag</span></span>
-<span><span class="co">#&gt; 1:      1                            Griechenland LOC</span></span>
-<span><span class="co">#&gt; 2:      1                            Griechenland LOC</span></span>
-<span><span class="co">#&gt; 3:      1 Bundesamt für Migration und Flüchtlinge ORG</span></span>
-<span><span class="co">#&gt; 4:      1                            Griechenland LOC</span></span>
-<span><span class="co">#&gt; 5:      1                            Griechenland LOC</span></span></code></pre></div>
-</div>
-<div class="section level3">
-<h3 id="coloring-entities">Coloring Entities<a class="anchor" aria-label="anchor" href="#coloring-entities"></a>
-</h3>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">highlighted_text</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/highlight_text.html">highlight_text</a></span><span class="op">(</span>text <span class="op">=</span> <span class="va">de_immigration</span><span class="op">$</span><span class="va">text</span>, </span>
-<span>                                   entities_mapping <span class="op">=</span> <span class="fu"><a href="reference/map_entities.html">map_entities</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">highlighted_text</span></span></code></pre></div>
-<div style="text-align: justify; font-family: Arial">
-Das <span style="background-color: pink; color: black; font-family: Arial">Bundesverfassungsgericht</span> <span style="color: pink; font-family: Arial">(ORG)</span> hat unterdessen die Aussetzung der Abschiebung von Asylsuchenden nach <span style="background-color: lightblue; color: black; font-family: Arial">Griechenland</span> <span style="color: blue; font-family: Arial">(LOC)</span> im Rahmen des <span style="background-color: pink; color: black; font-family: Arial">EU</span> <span style="color: pink; font-family: Arial">(ORG)</span>-Verteilungssystems, der Dublin-II-Verordnung, in acht Einzelfällen angeordnet. Das Gericht stützt sich dabei auf „ernst zu nehmende Quellen“, wonach eine ordnungsgemäße Registrierung als Asylsuchender in <span style="background-color: lightblue; color: black; font-family: Arial">Griechenland</span> <span style="color: blue; font-family: Arial">(LOC)</span> unmöglich sein könnte. Trotz der mittlerweile ergangenen acht einstweiligen Anordnungen des BundesverfassungsgeZu Protokoll gegebene Reden richts betreibt das <span style="background-color: pink; color: black; font-family: Arial">Bundesamt für Migration und Flüchtlinge</span> <span style="color: pink; font-family: Arial">(ORG)</span> weiterhin die Rückschiebung von Asylsuchenden nach <span style="background-color: lightblue; color: black; font-family: Arial">Griechenland</span> <span style="color: blue; font-family: Arial">(LOC)</span>. Dies wollen wir mit dem vorliegenden Antrag verhindern. Denn das Asylverfahren in <span style="background-color: lightblue; color: black; font-family: Arial">Griechenland</span> <span style="color: blue; font-family: Arial">(LOC)</span> ist weiterhin eine Frage des Zufallsprinzips. Nicht nur <span style="background-color: pink; color: black; font-family: Arial">Pro Asyl</span> <span style="color: pink; font-family: Arial">(ORG)</span> und <span style="background-color: pink; color: black; font-family: Arial">Human Rights Watch</span> <span style="color: pink; font-family: Arial">(ORG)</span>, sondern auch der <span style="background-color: pink; color: black; font-family: Arial">UNHCR</span> <span style="color: pink; font-family: Arial">(ORG)</span> berichten, dass das Asylverfahren in <span style="background-color: lightblue; color: black; font-family: Arial">Griechenland</span> <span style="color: blue; font-family: Arial">(LOC)</span> in vielerlei Hinsicht an erheblichen Mängeln leidet. Von einem fairen Verfahren, wie es nach dem internationalen Flüchtlingsrecht und den <span style="background-color: pink; color: black; font-family: Arial">EU</span> <span style="color: pink; font-family: Arial">(ORG)</span>-Richtlinien über die Aufnahme von Flüchtlingen, die Durchführung des Asylverfahrens und die Kriterien für die Anerkennung als Flüchtling vorgesehen ist, kann man nicht sprechen. So kommen Inhaftierungen ohne Haftgrund vor, Dolmetscher bei der Befragung über die Fluchtgründe sind nicht garantiert, es gibt keine Unterbringung während des Asylverfahrens, der Zugang zur zentralen Asylbehörde in <span style="background-color: lightblue; color: black; font-family: Arial">Athen</span> <span style="color: blue; font-family: Arial">(LOC)</span> ist nur an einem einzigen Tag möglich. Dies alles räumt das <span style="background-color: pink; color: black; font-family: Arial">BMI</span> <span style="color: pink; font-family: Arial">(ORG)</span> auch in zahlreichen Stellungnahmen an den Petitionsausschuss des <span style="background-color: pink; color: black; font-family: Arial">Bundestages</span> <span style="color: pink; font-family: Arial">(ORG)</span> ein, will die Menschen aber dennoch weiter zurückschicken. Das ist aus grüner Sicht untragbar, denn <span style="background-color: lightblue; color: black; font-family: Arial">Deutschland</span> <span style="color: blue; font-family: Arial">(LOC)</span> trägt angesichts dieser dem Bundesinnenministerium schon länger bekannten Situation in <span style="background-color: lightblue; color: black; font-family: Arial">Griechenland</span> <span style="color: blue; font-family: Arial">(LOC)</span> gerade auch für rücküberstellte Personen aus <span style="background-color: lightblue; color: black; font-family: Arial">Deutschland</span> <span style="color: blue; font-family: Arial">(LOC)</span> eine Mitverantwortung. Aus unserer Sicht sollte <span style="background-color: lightblue; color: black; font-family: Arial">Deutschland</span> <span style="color: blue; font-family: Arial">(LOC)</span> die Asylverfahren hier in <span style="background-color: lightblue; color: black; font-family: Arial">Deutschland</span> <span style="color: blue; font-family: Arial">(LOC)</span> durchführen. Auch bei hohen Zugangszahlen von Asylantragstellern muss ein faires Verfahren unter Einhaltung der Mindeststandards aus der <span style="background-color: pink; color: black; font-family: Arial">EU</span> <span style="color: pink; font-family: Arial">(ORG)</span>-Flüchtlingsaufnahme-Richtlinie, der <span style="background-color: pink; color: black; font-family: Arial">EU</span> <span style="color: pink; font-family: Arial">(ORG)</span>-Asylverfahrens-Richtlinie und der EUQualifikations-Richtlinie erfolgen. Die südlichen Außengrenzländer der <span style="background-color: pink; color: black; font-family: Arial">EU</span> <span style="color: pink; font-family: Arial">(ORG)</span> haben mit einer großen Zahl schutzsuchender Menschen zu tun: <span style="background-color: lightblue; color: black; font-family: Arial">Griechenland</span> <span style="color: blue; font-family: Arial">(LOC)</span> vor allem mit Flüchtlingen aus dem <span style="background-color: lightblue; color: black; font-family: Arial">Irak</span> <span style="color: blue; font-family: Arial">(LOC)</span>, <span style="background-color: lightblue; color: black; font-family: Arial">Afghanistan</span> <span style="color: blue; font-family: Arial">(LOC)</span>, <span style="background-color: lightblue; color: black; font-family: Arial">Iran</span> <span style="color: blue; font-family: Arial">(LOC)</span>. Viele dieser Menschen haben schwerste Menschenrechtsverletzungen durchlitten und suchen nach einem sicheren Platz. <span style="background-color: lightblue; color: black; font-family: Arial">Deutschland</span> <span style="color: blue; font-family: Arial">(LOC)</span> sollte sich intensiv für eine Neuregelung der Verteilungsregelung innerhalb der <span style="background-color: pink; color: black; font-family: Arial">EU</span> <span style="color: pink; font-family: Arial">(ORG)</span> einsetzen. Bis zu einer Neuregelung darf aber das Prinzip der „Verknappung von Zugangsmöglichkeiten zum Asylverfahren“ in <span style="background-color: lightblue; color: black; font-family: Arial">Griechenland</span> <span style="color: blue; font-family: Arial">(LOC)</span> nicht weiterpraktiziert werden. Denn es trifft Opfer von Menschenrechtsverletzungen. Dies ist nicht hinzunehmen. Bestätigt in dieser Haltung fühlen wir uns auch durch das <span style="background-color: pink; color: black; font-family: Arial">Bundesverfassungsgericht</span> <span style="color: pink; font-family: Arial">(ORG)</span>: Dieses hat erneut mit Beschluss vom 8. Dezember 2009 die Aussetzung der Abschiebung eines Asylsuchenden nach <span style="background-color: lightblue; color: black; font-family: Arial">Griechenland</span> <span style="color: blue; font-family: Arial">(LOC)</span> im Rahmen des <span style="background-color: pink; color: black; font-family: Arial">EU</span> <span style="color: pink; font-family: Arial">(ORG)</span>-Verteilungssystems Nr. 343/2003 des Rates vom 18. Februar 2003, Dublin-II-Verordnung) angeordnet. Dafür war wie in dem der einstweiligen Anordnung vom 8. September 2009 – 2 BvQ 56/09 – zugrunde liegenden Fall ausschlaggebend, dass möglicherweise bereits mit der Abschiebung oder in ihrer Folge eintretende Rechtsbeeinträchtigungen nicht mehr verhindert oder rückgängig gemacht werden könnten. Zwar wird die Rückschiebung besonders schutzbedürftiger Flüchtlinge nach <span style="background-color: lightblue; color: black; font-family: Arial">Griechenland</span> <span style="color: blue; font-family: Arial">(LOC)</span> in der Regel nicht vollzogen, die Argumentation des <span style="background-color: pink; color: black; font-family: Arial">Bundesamtes für Migration</span> <span style="color: pink; font-family: Arial">(ORG)</span> und Flüchtlinge, dass man von Asylbewerbern, die nicht besonders schutzbedürftig sind, erwarten könne, dass sie auch unter gegebenenfalls erschwerten Bedingungen das Asylverfahren in <span style="background-color: lightblue; color: black; font-family: Arial">Griechenland</span> <span style="color: blue; font-family: Arial">(LOC)</span> durchführten – Drucksache 16/14149 –, ist aber menschenrechtlich höchst bedenklich. Die Antragsteller der bisherigen positiven Eilverfahren vor dem <span style="background-color: pink; color: black; font-family: Arial">Bundesverfassungsgericht</span> <span style="color: pink; font-family: Arial">(ORG)</span> gehörten gerade nicht dem Kreis besonders schutzbedürftiger Personen an, bei denen die Bundesrepublik <span style="background-color: lightblue; color: black; font-family: Arial">Deutschland</span> <span style="color: blue; font-family: Arial">(LOC)</span> vom Selbsteintrittsrecht gemäß Art. 3 Abs. 2 der Dublin-IIVerordnung Gebrauch macht. Wenn aber das <span style="background-color: pink; color: black; font-family: Arial">Bundesverfassungsgericht</span> <span style="color: pink; font-family: Arial">(ORG)</span> die Verletzung elementarer Rechte in <span style="background-color: lightblue; color: black; font-family: Arial">Griechenland</span> <span style="color: blue; font-family: Arial">(LOC)</span> für möglich hält und deswegen nach einer Abwägung die Rückführung unterbindet, darf sich die Bundesregierung dem nicht verschließen. Dennoch Rückführungen vorzunehmen, ist nicht nur eine Brüskierung des Bundesverfassungsgerichts, sondern heißt auch, die Menschenwürde der Asylsuchenden sehenden Auges zu gefährden. Daher fordern wir, Rückschiebungen nach <span style="background-color: lightblue; color: black; font-family: Arial">Griechenland</span> <span style="color: blue; font-family: Arial">(LOC)</span> im Rahmen des Dublin-II-Verfahrens sofort bis zur Hauptsacheentscheidung des Bundesverfassungsgerichts auszusetzen und die Prüfung der Asylanträge im Rahmen des Selbsteintritts im nationalen Asylverfahren durchzuführen.
-</div>
+<!-- ## Example -->
+<!-- ### NER with the State-of-the-Art German Pre-trained Model -->
+<!-- ```{r} -->
+<!-- library(flaiR) -->
+<!-- data("de_immigration") -->
+<!-- de_immigration <- de_immigration[5,] -->
+<!-- tagger_ner <- load_tagger_ner("de-ner") -->
+<!-- result <- get_entities(de_immigration$text, -->
+<!--                        tagger = tagger_ner, -->
+<!--                        show.text_id = FALSE -->
+<!--                        ) -->
+<!-- ``` -->
+<!-- ```{r} -->
+<!-- head(result, 5) -->
+<!-- ``` -->
+<!-- ### Coloring Entities  -->
+<!-- ```{r} -->
+<!-- highlighted_text <- highlight_text(text = de_immigration$text,  -->
+<!--                                    entities_mapping = map_entities(result)) -->
+<!-- highlighted_text -->
+<!-- ``` -->
 <p><br></p>
 </div>
 <div class="section level3">
@@ -256,16 +273,15 @@ Das <span style="background-color: pink; color: black; font-family: Arial">Bunde
 <div style="text-align: justify">
 <p>If you use this tool in academic research, we recommend citing the research article, <a href="https://aclanthology.org/C18-1139.pdf" class="external-link">Contextual String Embeddings for Sequence Labeling</a> from <code>Flair</code> research team.</p>
 </div>
-<div class="sourceCode" id="cb5"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="sc">@</span>inproceedings{akbik2018coling,</span>
-<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>  title<span class="ot">=</span>{Contextual String Embeddings <span class="cf">for</span> Sequence Labeling},</span>
-<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>  author<span class="ot">=</span>{Akbik, Alan and Blythe, Duncan and Vollgraf, Roland},</span>
-<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>  booktitle <span class="ot">=</span> {{COLING} <span class="dv">2018</span>, 27th International Conference on Computational Linguistics},</span>
-<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>  pages     <span class="ot">=</span> {<span class="dv">1638</span><span class="sc">--</span><span class="dv">1649</span>},</span>
-<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a>  year      <span class="ot">=</span> {<span class="dv">2018</span>}</span>
-<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="sc">@</span>inproceedings{akbik2018coling,</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>  title<span class="ot">=</span>{Contextual String Embeddings <span class="cf">for</span> Sequence Labeling},</span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>  author<span class="ot">=</span>{Akbik, Alan and Blythe, Duncan and Vollgraf, Roland},</span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>  booktitle <span class="ot">=</span> {{COLING} <span class="dv">2018</span>, 27th International Conference on Computational Linguistics},</span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>  pages     <span class="ot">=</span> {<span class="dv">1638</span><span class="sc">--</span><span class="dv">1649</span>},</span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>  year      <span class="ot">=</span> {<span class="dv">2018</span>}</span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a>}</span></code></pre></div>
 </div>
 </div>
-
   </main><aside class="col-md-3"><div class="links">
 <h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">

@@ -38,21 +38,37 @@
   </a>
   <div class="dropdown-menu" aria-labelledby="dropdown--quick-start">
     <a class="dropdown-item" href="../articles/quickstart.html#install-flair-via-github">Install flaiR via GitHub</a>
-    <a class="dropdown-item" href="../articles/quickstart.html#quickstart.html#user-guide">User Guide</a>
-    <a class="dropdown-item" href="../articles/quickstart.html#quickstart.html#how-to-contribute">How to Contribute</a>
+    <a class="dropdown-item" href="../articles/quickstart.html#user-guaide">User Guide</a>
+    <a class="dropdown-item" href="../articles/quickstart.html#how-to-contribute">How to Contribute</a>
   </div>
 </li>
 <li class="nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown--manual">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown--tutorial">
     <span class="fa fa-project-diagram"></span>
      
-    Manual
+    Tutorial
   </a>
-  <div class="dropdown-menu" aria-labelledby="dropdown--manual">
+  <div class="dropdown-menu" aria-labelledby="dropdown--tutorial">
+    <a class="dropdown-item" href="../articles/introduction.html">Introduction</a>
+    <a class="dropdown-item" href="../articles/sentence_token.html">Flair Base Types</a>
+    <a class="dropdown-item" href="../articles/flair_embeddings.html">Flair Embeddings</a>
     <a class="dropdown-item" href="../articles/get_entities.html">Tagging Named Entities</a>
     <a class="dropdown-item" href="../articles/get_pos.html">Part-of-Speech Tagging</a>
     <a class="dropdown-item" href="../articles/get_sentiments.html">Tagging Sentiment</a>
-    <a class="dropdown-item" href="../articles/highlight_text.html">Highlight Entities with Colors</a>
+  </div>
+</li>
+<li class="nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown--reference">
+    <span class="fa fa-file-code-o"></span>
+     
+    Reference
+  </a>
+  <div class="dropdown-menu" aria-labelledby="dropdown--reference">
+    <a class="dropdown-item" href="../reference/index.html#wrapper-function-in-r-to-python-flairNLP">Wrapper Function in R to Python Flair NLP</a>
+    <a class="dropdown-item" href="../reference/index.html#designed-flair-functions">Designed flaiR Functions</a>
+    <a class="dropdown-item" href="../reference/index.html#tool-box">ToolBox</a>
+    <a class="dropdown-item" href="../reference/index.html#utility-functions">Utility</a>
+    <a class="dropdown-item" href="../reference/index.html#example-dataset">Dataset</a>
   </div>
 </li>
 <li class="nav-item dropdown">
@@ -66,30 +82,6 @@
     <a class="dropdown-item" href="../news/index.html#flair-004-development-version">0.0.4</a>
     <a class="dropdown-item" href="../news/index.html#flair-003-development-version">0.0.3</a>
     <a class="dropdown-item" href="../news/index.html#flair-001-development-version">0.0.1</a>
-  </div>
-</li>
-<li class="nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown--reference">
-    <span class="fa fa-file-code-o"></span>
-     
-    Reference
-  </a>
-  <div class="dropdown-menu" aria-labelledby="dropdown--reference">
-    <a class="dropdown-item" href="../reference/index.html#flair-functions">flaiR</a>
-    <a class="dropdown-item" href="../reference/index.html#classifier-functions">Taggers (Classifiers)</a>
-    <a class="dropdown-item" href="../reference/index.html#tool-box">Tool Box</a>
-    <a class="dropdown-item" href="../reference/index.html#utility-functions">Utility</a>
-    <a class="dropdown-item" href="../reference/index.html#example-dataset">Dataset</a>
-  </div>
-</li>
-<li class="nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown--tutorial">
-    <span class="fa fa-file-code-o"></span>
-     
-    Tutorial
-  </a>
-  <div class="dropdown-menu" aria-labelledby="dropdown--tutorial">
-    <h6 class="dropdown-header" data-toc-skip>Comming Soon</h6>
   </div>
 </li>
       </ul><form class="form-inline my-2 my-lg-0" role="search">
@@ -113,9 +105,9 @@
     </div>
 
     <div class="section level2">
-      <h2 id="flair-functions">flaiR Functions<a class="anchor" aria-label="anchor" href="#flair-functions"></a></h2>
+      <h2 id="r-wrapper-functions">R Wrapper Functions<a class="anchor" aria-label="anchor" href="#r-wrapper-functions"></a></h2>
       
-      <p class="section-desc"></p><p>functions accessing to core tagging features in FlairNLP</p>
+      <p class="section-desc"></p><p>Accessing FlairNLP Classes and Objects through Wrapped Python Functions in R</p>
 
       
     </div><div id="" class="section level2">
@@ -125,38 +117,48 @@
 
       <dl><dt>
           
-          <code><a href="get_entities.html">get_entities()</a></code> 
+          <code><a href="flair.embeddings.TransformerWordEmbeddings.html">flair.embeddings.TransformerWordEmbeddings()</a></code> 
         </dt>
-        <dd>Tagging Named Entities with Flair Models</dd>
+        <dd>Create a Flair TransformerWordEmbeddings Object</dd>
       </dl><dl><dt>
           
-          <code><a href="get_entities_batch.html">get_entities_batch()</a></code> 
+          <code><a href="flair_data.sentence.html">flair_data.sentence()</a></code> 
         </dt>
-        <dd>Extract Named Entities from a Batch of Texts</dd>
+        <dd>Create a Flair Sentence Object</dd>
       </dl><dl><dt>
           
-          <code><a href="get_pos.html">get_pos()</a></code> 
+          <code><a href="flair_datasets.html">flair_datasets()</a></code> 
         </dt>
-        <dd>Tagging Part-of-Speech Tagging with Flair Models</dd>
+        <dd>Access the flair_datasets Module from Flair</dd>
       </dl><dl><dt>
           
-          <code><a href="get_pos_batch.html">get_pos_batch()</a></code> 
+          <code><a href="flair_embeddings.WordEmbeddings.html">flair_embeddings.WordEmbeddings()</a></code> 
         </dt>
-        <dd>Batch Process of Part-of-Speech Tagging</dd>
+        <dd>Create a Flair WordEmbeddings Object</dd>
       </dl><dl><dt>
           
-          <code><a href="get_sentiments.html">get_sentiments()</a></code> 
+          <code><a href="flair_models.sequencetagger.html">flair_models.sequencetagger()</a></code> 
         </dt>
-        <dd>Tagging Sentiment with Flair Standard Models</dd>
+        <dd>Access Flair's SequenceTagger</dd>
       </dl><dl><dt>
           
-          <code><a href="get_sentiments_batch.html">get_sentiments_batch()</a></code> 
+          <code><a href="flair_nn.classifier_load.html">flair_nn.classifier_load()</a></code> 
         </dt>
-        <dd>Batch Process of Tagging Sentiment with Flair Models</dd>
+        <dd>Create a Flair Classifier.load Object</dd>
+      </dl><dl><dt>
+          
+          <code><a href="flair_splitter.SegtokSentenceSplitter.html">flair_splitter.SegtokSentenceSplitter()</a></code> 
+        </dt>
+        <dd>Segtok Sentence Splitter</dd>
+      </dl><dl><dt>
+          
+          <code><a href="flair_trainers.html">flair_trainers()</a></code> 
+        </dt>
+        <dd>Import Flair's ModelTrainer in R</dd>
       </dl></div><div class="section level2">
-      <h2 id="classifier-functions">Classifier Functions<a class="anchor" aria-label="anchor" href="#classifier-functions"></a></h2>
+      <h2 id="designed-flair-functions">Designed flaiR Functions<a class="anchor" aria-label="anchor" href="#designed-flair-functions"></a></h2>
       
-      <p class="section-desc"></p><p>classifiers to load</p>
+      <p class="section-desc"></p><p>Effortless Access to Core Tagging Features with flaiR Functions</p>
 
       
     </div><div id="" class="section level2">
@@ -171,18 +173,48 @@
         <dd>Load the Named Entity Recognition (NER) Tagger</dd>
       </dl><dl><dt>
           
+          <code><a href="get_entities.html">get_entities()</a></code> 
+        </dt>
+        <dd>Tagging Named Entities with Flair Models</dd>
+      </dl><dl><dt>
+          
+          <code><a href="get_entities_batch.html">get_entities_batch()</a></code> 
+        </dt>
+        <dd>Extract Named Entities from a Batch of Texts</dd>
+      </dl><dl><dt>
+          
           <code><a href="load_tagger_pos.html">load_tagger_pos()</a></code> 
         </dt>
         <dd>Load Flair POS Tagger</dd>
       </dl><dl><dt>
           
+          <code><a href="get_pos.html">get_pos()</a></code> 
+        </dt>
+        <dd>Tagging Part-of-Speech Tagging with Flair Models</dd>
+      </dl><dl><dt>
+          
+          <code><a href="get_pos_batch.html">get_pos_batch()</a></code> 
+        </dt>
+        <dd>Batch Process of Part-of-Speech Tagging</dd>
+      </dl><dl><dt>
+          
           <code><a href="load_tagger_sentiments.html">load_tagger_sentiments()</a></code> 
         </dt>
         <dd>Load a Sentiment or Language Tagger Model from Flair</dd>
+      </dl><dl><dt>
+          
+          <code><a href="get_sentiments.html">get_sentiments()</a></code> 
+        </dt>
+        <dd>Tagging Sentiment with Flair Standard Models</dd>
+      </dl><dl><dt>
+          
+          <code><a href="get_sentiments_batch.html">get_sentiments_batch()</a></code> 
+        </dt>
+        <dd>Batch Process of Tagging Sentiment with Flair Models</dd>
       </dl></div><div class="section level2">
       <h2 id="tool-box">Tool Box<a class="anchor" aria-label="anchor" href="#tool-box"></a></h2>
       
-      <p class="section-desc"></p><p>functions for assisting Flair NLP</p>
+      
 
       
     </div><div id="" class="section level2">
@@ -203,7 +235,7 @@
       </dl></div><div class="section level2">
       <h2 id="utility">Utility<a class="anchor" aria-label="anchor" href="#utility"></a></h2>
       
-      <p class="section-desc"></p><p>functions accessing to Flair NLP Tagging Features</p>
+      
 
       
     </div><div id="" class="section level2">
