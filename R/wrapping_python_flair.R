@@ -1,10 +1,9 @@
 #' Access the flair_datasets Module from Flair
 #'
-#' @description
-#' Utilizes the `reticulate` package to import the `flair.datasets` dataset from Flair's datasets in Python,
-#' enabling the use of this dataset in an R environment.
+#' @description Utilizes the {reticulate} package to import the `flair.datasets`
+#' dataset from Flair's datasets in Python, enabling the use of this dataset in
+#' an R environment.
 #'
-
 #' @return
 #' A Python Module(flair.datasets) from Flair, which can be utilized for NLP tasks.
 #'
@@ -31,9 +30,10 @@ flair_datasets <- function() {
   return(flair.datasets)
 }
 
+
 #' Create a Flair Sentence Object
 #'
-#' @description  This function uses the `reticulate` package to interface with Python and
+#' @description  This function uses the {reticulate} package to interface with Python and
 #' create a Flair Sentence object.
 #'
 #' @param sentence_text A character string to be converted into a Flair Sentence object.
@@ -58,7 +58,7 @@ flair_data.sentence <- function(sentence_text) {
 
 #' Create a Flair Classifier.load Object
 #'
-#' This function utilizes the `reticulate` package to interface with Python
+#' This function utilizes the {reticulate} package to interface with Python
 #' and create a Classifier object from the Flair library.
 #'
 #' @param pre_trained_model A character string specifying the pre-trained model to use.
@@ -83,7 +83,7 @@ flair_nn.classifier_load <- function(pre_trained_model = 'ner') {
 
 #' Create a Flair TransformerWordEmbeddings Object
 #'
-#' @description This function interfaces with Python via `reticulate` to create
+#' @description This function interfaces with Python via {reticulate} to create
 #' a `TransformerWordEmbeddings` object using the Flair library.
 #'
 #' @param pre_trained_model A character string specifying the pre-trained model to use.
@@ -109,7 +109,7 @@ flair.embeddings.TransformerWordEmbeddings <- function(pre_trained_model = 'bert
 
 #' Create a Flair WordEmbeddings Object
 #'
-#' @description This function interfaces with Python via `reticulate` to create
+#' @description This function interfaces with Python via {reticulate} to create
 #' a `WordEmbeddings` object using the Flair library.
 #'
 #' @param pre_trained A character string specifying the pre-trained model to use.
@@ -163,7 +163,7 @@ flair_splitter.SegtokSentenceSplitter <- function() {
 #' Access Flair's SequenceTagger
 #'
 #' @description
-#' This function utilizes the `reticulate` package to import the `SequenceTagger` from Flair's models in Python,
+#' This function utilizes the {reticulate} package to import the `SequenceTagger`s from Flair's models in Python,
 #' enabling interaction with Flair's sequence tagging models in an R environment.
 #'
 #' @details
@@ -196,7 +196,7 @@ flair_models.sequencetagger <- function() {
 
 #' Import Flair's ModelTrainer in R
 #'
-#' @description This function provides R access to Flair's ModelTrainer Python class using the reticulate package.
+#' @description This function provides R access to Flair's ModelTrainer Python class using the {reticulate} package.
 #'
 #' @return A Python Module(flair.trainers) object allowing access to Flair's trainers in R.
 #'

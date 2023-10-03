@@ -24,25 +24,24 @@ Labeling](https://aclanthology.org/C18-1139.pdf)’ and the official
 
 <br>
 
-**Integrating Modules and Classes from Python’s FlairNLP into R:**
-
-| **Wrapped Functions**                          | **Corresponding Code in Python**                         |
-|------------------------------------------------|----------------------------------------------------------|
-| `flair_datasets()`                             | `from flair.datasets import *`                           |
-| `flair_data.sentence()`                        | `from flair.data import Sentence`                        |
-| `flair_nn.classifier_load()`                   | `from flair.nn import Classifier`                        |
-| `flair.embeddings.TransformerWordEmbeddings()` | `from flair.embeddings import TransformerWordEmbeddings` |
-| `flair_embeddings.WordEmbeddings()`            | `from flair.embeddings import WordEmbeddings`            |
-| `segtok_sentence_splitter()`                   | `flair_splitter.SegtokSentenceSplitter`                  |
-| `flair_models.sequencetagger()`                | `from flair.models import SequenceTagger`                |
+| **Wrapped Functions: Integrating Modules into R** | **Corresponding Code in Python**                       |
+|---------------------------------------------------|--------------------------------------------------------|
+| `flair_datasets()`                                | from flair.datasets import \*                          |
+| `flair_data.sentence()`                           | from flair.data import Sentence                        |
+| `flair_nn.classifier_load()`                      | from flair.nn import Classifier                        |
+| `flair.embeddings.TransformerWordEmbeddings()`    | from flair.embeddings import TransformerWordEmbeddings |
+| `flair_embeddings.WordEmbeddings()`               | from flair.embeddings import WordEmbeddings            |
+| `segtok_sentence_splitter()`                      | flair_splitter.SegtokSentenceSplitter                  |
+| `flair_models.sequencetagger()`                   | from flair.models import SequenceTagger                |
 
 <br>
 
 `flairR` primarily consists of two main components. The first is a
 wrapper function built on top of {reticulate}, enabling you to interact
 directly with Python modules in R. Secondly, to facilitate more
-efficient use for social science research, flairR wraps the Flair NLP
-Python to extract features in a tidy and clean format using
+efficient use for social science research, {flairR} wraps the FlairNLP
+Python with three major features to extract features in a tidy and clean
+format using
 [data.table.](https://cran.r-project.org/web/packages/data.table/index.html).
 The features currently available in `flairR` include **part-of-speech
 tagging**, **transformer-based sentiment analysis**, and **named entity
@@ -51,8 +50,6 @@ recognition**.
 </div>
 
 <br>
-
-**Effortless Access to Core Tagging Features with flaiR Functions:**
 
 | **The Features**                             | Loader                     | Supported Models                                                                                                        |
 |----------------------------------------------|----------------------------|-------------------------------------------------------------------------------------------------------------------------|

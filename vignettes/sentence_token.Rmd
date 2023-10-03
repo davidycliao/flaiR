@@ -23,12 +23,11 @@ system(paste(reticulate::py_config()$python, "-m pip install flair"))
 
 
 
-</div>
+<div style="text-align: justify">
 
 
 # Create Sentence Object
 
-<div style="text-align: justify">
 
 We will utilize {reticulate} to systematically use the Python flair package in our work. Firstly, For example, let's create a simple `sentence` class and check its string representation"
 
@@ -60,7 +59,6 @@ __Retrieve the Token__
 
 The Sentence object encompasses various methods and properties. In this instance, despite the Sentence object being imported into R, it genuinely belongs to a Python class; however, its concept aligns closely with R6. To comprehend the string representation format of the Sentence object, tagging at least one token is adequate. The `get_token(n)` method, a Python method, allows us to retrieve the Token object for a particular token. Additionally, we can use `[]` to index a specific token. It is noteworthy that Python indexes from 0, whereas R starts indexing from 1.
 
-</div>
 
 
 ```{r}
@@ -73,6 +71,7 @@ sentence$get_token(5)
 # indexing in R 
 sentence[4]
 ```
+</div>
 
 
 __Annotate POS tag and NER tag__
