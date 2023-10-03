@@ -20,17 +20,37 @@ Humboldt University of Berlin. For a deeper understanding of Flair’s
 architecture, refer to the research article ‘[Contextual String
 Embeddings for Sequence
 Labeling](https://aclanthology.org/C18-1139.pdf)’ and the official
-[mannual](https://flairnlp.github.io) in Python. The features currently
-available in `flairR` include **part-of-speech tagging**,
-**transformer-based sentiment analysis**, and **named entity
-recognition**. `flairR` returns extracted features in a tidy and clean
-[`data.table`](https://cran.r-project.org/web/packages/data.table/index.html).
+[mannual](https://flairnlp.github.io) in Python.
+
+<br>
+
+| **Wrapped Functions**                          | **Corresponding Code in Python**                         |
+|------------------------------------------------|----------------------------------------------------------|
+| `flair_datasets()`                             | `from flair.datasets import *`                           |
+| `flair_data.sentence()`                        | `from flair.data import Sentence`                        |
+| `flair_nn.classifier_load()`                   | `from flair.nn import Classifier`                        |
+| `flair.embeddings.TransformerWordEmbeddings()` | `from flair.embeddings import TransformerWordEmbeddings` |
+| `flair_embeddings.WordEmbeddings()`            | `from flair.embeddings import WordEmbeddings`            |
+| `segtok_sentence_splitter()`                   | `flair_splitter.SegtokSentenceSplitter`                  |
+| `flair_models.sequencetagger()`                | `from flair.models import SequenceTagger`                |
+
+<br>
+
+`flairR` primarily consists of two main components. The first is a
+wrapper function built on top of {reticulate}, enabling you to interact
+directly with Python modules in R. Secondly, to facilitate more
+efficient use for social science research, flairR wraps the Flair NLP
+Python to extract features in a tidy and clean format using
+[data.table.](https://cran.r-project.org/web/packages/data.table/index.html).
+The features currently available in `flairR` include **part-of-speech
+tagging**, **transformer-based sentiment analysis**, and **named entity
+recognition**.
 
 </div>
 
 <br>
 
-| **The Main Features in R**                   | Loader                     | Supported Models                                                                                                        |
+| **The Wrapper Features in R**                | Loader                     | Supported Models                                                                                                        |
 |----------------------------------------------|----------------------------|-------------------------------------------------------------------------------------------------------------------------|
 | `get_entities()`, `get_entities_batch()`     | `load_tagger_ner()`        | `en` (English), `fr` (French), `da` (Danish), `nl` (Dutch), and more.                                                   |
 | `get_pos()`, `get_pos_batch()`               | `load_tagger_pos()`        | `pos` (English POS), `fr-pos` (French POS), `de-pos` (German POS), `nl-pos` (Dutch POS), and more.                      |
@@ -54,33 +74,27 @@ remotes::install_github("davidycliao/flaiR", force = TRUE)
 library(flaiR)
 ```
 
-## Example
-
-### NER with the State-of-the-Art German Pre-trained Model
-
-``` r
-library(flaiR)
-data("de_immigration")
-de_immigration <- de_immigration[5,]
-tagger_ner <- load_tagger_ner("de-ner")
-#> 2023-10-01 22:43:29,603 SequenceTagger predicts: Dictionary with 19 tags: O, S-LOC, B-LOC, E-LOC, I-LOC, S-PER, B-PER, E-PER, I-PER, S-ORG, B-ORG, E-ORG, I-ORG, S-MISC, B-MISC, E-MISC, I-MISC, <START>, <STOP>
-result <- get_entities(de_immigration$text,
-                       tagger = tagger_ner,
-                       show.text_id = FALSE
-                       )
-#> Warning in check_texts_and_ids(texts, doc_ids): doc_ids is NULL. Auto-assigning
-#> doc_ids.
-```
-
-``` r
-head(result, 5)
-#>    doc_id                                  entity tag
-#> 1:      1                            Griechenland LOC
-#> 2:      1                            Griechenland LOC
-#> 3:      1 Bundesamt für Migration und Flüchtlinge ORG
-#> 4:      1                            Griechenland LOC
-#> 5:      1                            Griechenland LOC
-```
+<!-- ## Example -->
+<!-- ### NER with the State-of-the-Art German Pre-trained Model -->
+<!-- ```{r} -->
+<!-- library(flaiR) -->
+<!-- data("de_immigration") -->
+<!-- de_immigration <- de_immigration[5,] -->
+<!-- tagger_ner <- load_tagger_ner("de-ner") -->
+<!-- result <- get_entities(de_immigration$text, -->
+<!--                        tagger = tagger_ner, -->
+<!--                        show.text_id = FALSE -->
+<!--                        ) -->
+<!-- ``` -->
+<!-- ```{r} -->
+<!-- head(result, 5) -->
+<!-- ``` -->
+<!-- ### Coloring Entities  -->
+<!-- ```{r} -->
+<!-- highlighted_text <- highlight_text(text = de_immigration$text,  -->
+<!--                                    entities_mapping = map_entities(result)) -->
+<!-- highlighted_text -->
+<!-- ``` -->
 
 <br>
 

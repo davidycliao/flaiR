@@ -19,31 +19,41 @@ home:
     href: https://pureportal.strath.ac.uk/en/datasets/parlee-plenary-speeches-v2-data-set-annotated-full-text-of-151-mi
 
 reference:
-- title: flaiR Functions
-  desc: functions accessing to core tagging features in FlairNLP
+- title: R Wrapper Functions
+  desc: Accessing FlairNLP Classes and Objects through Wrapped Python Functions in R
 - contents:
+  - flair.embeddings.TransformerWordEmbeddings
+  - flair_data.sentence
+  - flair_datasets
+  - flair.embeddings.TransformerWordEmbeddings
+  - flair_embeddings.WordEmbeddings
+  - flair_models.sequencetagger
+  - flair_nn.classifier_load
+  - flair_splitter.SegtokSentenceSplitter
+  - flair_trainers
+
+
+- title: Designed flaiR Functions
+  desc: Effortless Access to Core Tagging Features with flaiR Functions
+- contents:
+  - load_tagger_ner
   - get_entities
   - get_entities_batch
+  - load_tagger_pos
   - get_pos
   - get_pos_batch
+  - load_tagger_sentiments
   - get_sentiments
   - get_sentiments_batch
 
-- title: Classifier Functions
-  desc: classifiers to load
-- contents:
-  - load_tagger_ner
-  - load_tagger_pos
-  - load_tagger_sentiments
-
 - title: Tool Box
-  desc: functions for assisting Flair NLP
+  desc:
 - contents:
   - highlight_text
   - map_entities
 
 - title: Utility
-  desc: functions accessing to Flair NLP Tagging Features
+  desc:
 - contents:
   - clear_flair_cache
   - create_flair_env
@@ -88,16 +98,36 @@ navbar:
       href: articles/quickstart.html#quickstart.html#how-to-contribute
 
   - icon: fa-project-diagram
-    text: Manual
+    text: Tutorial
     menu:
+    - text: "Introduction"
+      href: articles/introduction.html
+    - text: "Flair Base Types"
+      href: articles/sentence_token.html
+    - text: "Flair Embeddings"
+      href: articles/flair_embeddings.html
     - text: "Tagging Named Entities"
       href: articles/get_entities.html
     - text: "Part-of-Speech Tagging"
       href: articles/get_pos.html
     - text: "Tagging Sentiment"
       href: articles/get_sentiments.html
-    - text: "Highlight Entities with Colors"
-      href: articles/highlight_text.html
+
+
+  - icon: fa-file-code-o
+    text: Reference
+    menu:
+    - text: "Wrapper Function in R to Python Flair NLP"
+      href: reference/index.html#wrapper-function-in-r-to-python-flairNLP
+    - text: "Designed flaiR Functions"
+      href: reference/index.html#designed-flair-functions
+    - text: "ToolBox"
+      href: reference/index.html#tool-box
+    - text: "Utility"
+      href: reference/index.html#utility-functions
+    - text: "Dataset"
+      href: reference/index.html#example-dataset
+
 
 
   - icon: fa-newspaper-o
@@ -112,25 +142,6 @@ navbar:
     - text: "0.0.1"
       href: news/index.html#flair-001-development-version
 
-  - icon: fa-file-code-o
-    text: Reference
-    menu:
-    - text: "flaiR"
-      href: reference/index.html#flair-functions
-    - text: "Taggers (Classifiers)"
-      href: reference/index.html#classifier-functions
-    - text: "Tool Box"
-      href: reference/index.html#tool-box
-    - text: "Utility"
-      href: reference/index.html#utility-functions
-    - text: "Dataset"
-      href: reference/index.html#example-dataset
-
-  - icon: fa-file-code-o
-    text: Tutorial
-    menu:
-    - text: "Comming Soon"
-      href:
 
   right:
   - icon: fa-github fa-lg

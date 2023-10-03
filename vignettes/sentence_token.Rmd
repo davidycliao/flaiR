@@ -1,0 +1,118 @@
+---
+title: "Flair Base Types"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Flair Base Types}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r include=FALSE}
+library(reticulate)
+library(flaiR)
+reticulate::py_install("flair")
+system(paste(reticulate::py_config()$python, "-m pip install flair"))
+```
+
+
+
+</div>
+
+
+# Create Sentence Object
+
+<div style="text-align: justify">
+
+We will utilize {reticulate} to systematically use the Python flair package in our work. Firstly, For example, let's create a simple `sentence` class and check its string representation"
+
+
+```{r}
+library(flaiR)
+string <- "What I see in UCD today, what I have seen of UCD in its impact on my own life and the life of Ireland, and what I want to see into the future is a university that can and does land real positive change in the world."
+sentence <- flair_data.sentence(string)
+```
+
+```{r}
+print(sentence)
+```
+
+</div>
+
+&nbsp;
+
+# Tokens in `Senetence` Object
+
+```{r}
+head(sentence$tokens)
+```
+
+
+__Retrieve the Token__
+
+<div style="text-align: justify">
+
+The Sentence object encompasses various methods and properties. In this instance, despite the Sentence object being imported into R, it genuinely belongs to a Python class; however, its concept aligns closely with R6. To comprehend the string representation format of the Sentence object, tagging at least one token is adequate. The `get_token(n)` method, a Python method, allows us to retrieve the Token object for a particular token. Additionally, we can use `[]` to index a specific token. It is noteworthy that Python indexes from 0, whereas R starts indexing from 1.
+
+</div>
+
+
+```{r}
+# method in Python
+sentence$get_token(5)
+```
+
+
+```{r}
+# indexing in R 
+sentence[4]
+```
+
+
+__Annotate POS tag and NER tag__
+
+<div style="text-align: justify">
+
+
+The `add_label(label_type, value)` method can be employed to assign a label to the token. We manually add a tag in this preliminary tutorial, so usually, in Universal POS tags, if `sentence[10]` is 'see', 'seen' might be tagged as `VERB`, indicating it is a past participle form of a verb.
+
+
+```{r}
+sentence[10]$add_label('manual-pos', 'VERB')
+```
+
+
+```{r}
+print(sentence[10])
+```
+
+We can also add a NER (Named Entity Recognition) tag to `sentence[4]`, "UCD", identifying it as a university in Dublin.
+
+```{r}
+sentence[4]$add_label('ner', 'ORG')
+```
+
+```{r}
+print(sentence[4])
+```
+
+If we print the sentence object, `Sentence[50]` provides information for 50 tokens → ['in'/ORG, 'seen'/VERB], thus displaying two tagging pieces of information.
+
+```{r}
+print(sentence)
+```
+
+</div>
+
+
+
+
+
+
+

@@ -1,0 +1,80 @@
+---
+title: "Flair Embeddings"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Flair Embeddings}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r include=FALSE}
+library(reticulate)
+library(flaiR)
+reticulate::py_install("flair")
+system(paste(reticulate::py_config()$python, "-m pip install flair"))
+```
+
+
+
+</div>
+
+
+# Create Sentence Object
+
+<div style="text-align: justify">
+
+We will utilize {reticulate} to systematically use the Python flair package in our work. Firstly, For example, let's create a simple `sentence` class and check its string representation"
+
+```{r}
+library(flaiR)
+library(reticulate)
+```
+
+
+```{r}
+string <- "What I see in UCD today"
+sentence <- flair_data.sentence(string)
+```
+
+&nbsp;
+
+
+# Employing the BERT Model for Extracting Embeddings
+
+
+<div style="text-align: justify">
+
+First, we utilize the flair.embeddings.TransformerWordEmbeddings function to download BERT, and more transformer models can also be found on [Flair NLP's Hugging Face](https://huggingface.co/flair).
+
+```{r}
+TransformerWordEmbeddings <- flair.embeddings.TransformerWordEmbeddings("bert-base-uncased")
+```
+
+
+```{r}
+embedding <- TransformerWordEmbeddings$embed(sentence)
+```
+
+Traverse each token in the sentence and print them. To view each token, it's necessary to use` reticulate::py_str(token)` since the sentence is a Python object.
+
+```{r}
+# Iterate through each token in the sentence, printing them. 
+# Utilize reticulate::py_str(token) to view each token, given that the sentence is a Python object.
+for (token in sentence$tokens) {
+  cat("Token: ", reticulate::py_str(token), "\n")
+  # Access the embedding of the token, converting it to an R object, 
+  # and print the first 10 elements of the vector.
+  token_embedding <- token$embedding
+  print(head(token_embedding, 10))
+}
+```
+
+</div>
+
