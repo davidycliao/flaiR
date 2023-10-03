@@ -14,24 +14,26 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r include=FALSE}
-library(reticulate)
+```{r, include = FALSE}
 library(flaiR)
+library(reticulate)
+# system(paste(reticulate::py_config()$python, "-m pip install flair"))
 reticulate::py_install("flair")
-system(paste(reticulate::py_config()$python, "-m pip install flair"))
 ```
 
-
-# OOP in R when Introducing Python
+## OOP in R when Introducing Python
 
 <div style="text-align: justify">
 
 Object-Oriented Programming (OOP) is a programming paradigm that uses objects, which contain both data (attributes) and functions (methods), to design applications and software. The idea is to bind the data and the methods that operate on that data into one single unit, an object. Before the advent of R6, OOP was not very common in the early stages of R. To my knowledge, R6 is relatively rare; aside from '{[mlr3](https://mlr3.mlr-org.com)}', which is written in R6, most packages are accomplished in S4 and S3 (to my personal experience), which, of course, may be greatly related to the habits and tasks of R users. However, the purpose of 'flaiR' is to standardize wrapping the '{flair NLP}' Python functionality in R and to provide more convenient access for R users to utilize flair NLP features. Most usage of Flair NLP within the 'flaiR' framework employs concepts of objects and classes, which are similar to R6. However, these features are packaged in {reticulate} from Python. In other words, some functionalities imported into R essentially belong to Python classes or modules.
 
+</div>
+
 &nbsp;
 
 # The Structure
 
+<div style="text-align: justify">
 
 The following tutorial is mainly based on Tadej Magajna's '[__Natural Language Processing with Flair: A Practical Guide to Understanding and Solving NLP Problems__](https://github.com/PacktPublishing/Natural-Language-Processing-with-Flair)', as well as the official [Flair NLP](https://flairnlp.github.io/docs/intro) Python tutorial and blog. both are written in Python. If you utilize the examples from {flaiR} in R , I welcome you to cite this R repository, but you should also cite their works. Tutorial Key Aspects: Except when necessary, everything will be accomplished within the R environment, utilizing several important R packages, such as {[quanteda](https://quanteda.org)}, {[udpipe](https://bnosac.github.io/udpipe/en/)}, and {[mlr3](https://mlr3.mlr-org.com/index.html)}, to complete the following topics:
 

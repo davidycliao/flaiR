@@ -14,20 +14,17 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r include=FALSE}
-library(reticulate)
+```{r, include = FALSE}
 library(flaiR)
+library(reticulate)
+# system(paste(reticulate::py_config()$python, "-m pip install flair"))
 reticulate::py_install("flair")
-system(paste(reticulate::py_config()$python, "-m pip install flair"))
 ```
 
 
+## Create Sentence Object
 
 <div style="text-align: justify">
-
-
-# Create Sentence Object
-
 
 We will utilize {reticulate} to systematically use the Python flair package in our work. Firstly, For example, let's create a simple `sentence` class and check its string representation"
 
@@ -46,7 +43,8 @@ print(sentence)
 
 &nbsp;
 
-# Tokens in `Senetence` Object
+## Tokens in `Senetence` Object
+
 
 ```{r}
 head(sentence$tokens)

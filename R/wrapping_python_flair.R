@@ -91,7 +91,7 @@ flair_nn.classifier_load <- function(pre_trained_model = 'ner') {
 #' @return A Flair TransformerWordEmbeddings object.
 #' @examples
 #' \dontrun{
-#' embedding <- flair_data_sentence("bert-base-uncased")
+#' embedding <- flair_embeddings.TransformerWordEmbeddings("bert-base-uncased")
 #' }
 #' @references
 #' Python equivalent:
@@ -100,7 +100,7 @@ flair_nn.classifier_load <- function(pre_trained_model = 'ner') {
 #' embedding = TransformerWordEmbeddings('bert-base-uncased')
 #' }
 #' @export
-flair.embeddings.TransformerWordEmbeddings <- function(pre_trained_model = 'bert-base-uncased') {
+flair_embeddings.TransformerWordEmbeddings <- function(pre_trained_model = 'bert-base-uncased') {
   flair_embeddings <- reticulate::import('flair.embeddings')
   TransformerWordEmbeddings <- flair_embeddings$TransformerWordEmbeddings
   embedding <- TransformerWordEmbeddings(pre_trained_model)

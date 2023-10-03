@@ -24,7 +24,7 @@ Labeling](https://aclanthology.org/C18-1139.pdf)’ and the official
 
 <br>
 
-| **Wrapped Functions: Integrating Modules into R** | **Corresponding Code in Python**                       |
+| **Wrapped Functions: Integrating Modules into R** | **Corresponding Practice in Python**                   |
 |---------------------------------------------------|--------------------------------------------------------|
 | `flair_datasets()`                                | from flair.datasets import \*                          |
 | `flair_data.sentence()`                           | from flair.data import Sentence                        |
@@ -33,6 +33,9 @@ Labeling](https://aclanthology.org/C18-1139.pdf)’ and the official
 | `flair_embeddings.WordEmbeddings()`               | from flair.embeddings import WordEmbeddings            |
 | `segtok_sentence_splitter()`                      | flair_splitter.SegtokSentenceSplitter                  |
 | `flair_models.sequencetagger()`                   | from flair.models import SequenceTagger                |
+| `flair_trainers()`                                | from flair.trainers import \*                          |
+
+\#’ from flair.trainers import ModelTrainer
 
 <br>
 

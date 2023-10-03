@@ -31,7 +31,6 @@ reticulate::py_install("flair")
 system(paste(reticulate::py_config()$python, "-m pip install flair"))
 options(repos = c(CRAN = "https://cloud.r-project.org/"))
 install.packages("remotes")
-
 ```
 
 
@@ -46,7 +45,7 @@ architecture, refer to the research article ‘[Contextual String Embeddings for
 <br>
 
 
-| **Wrapped Functions: Integrating Modules into R** | **Corresponding Code in Python**                          | 
+| **Wrapped Functions: Integrating Modules into R** | **Corresponding Practice in Python**                      | 
 |---------------------------------------------------|-----------------------------------------------------------|
 | `flair_datasets()`                                | from flair.datasets import *                              |
 | `flair_data.sentence()`                           | from flair.data import Sentence                           |
@@ -70,10 +69,10 @@ architecture, refer to the research article ‘[Contextual String Embeddings for
 <br>
 
 
-| **The Features**                   | Loader                     | Supported Models                                                                                         |
-|----------------------------------------------|----------------------------|----------------------------------------------------------------------------------------------------------|
-| `get_entities()`, `get_entities_batch()`     | `load_tagger_ner()`        | `en` (English), `fr` (French), `da` (Danish), `nl` (Dutch), and more.                                    |
-| `get_pos()`, `get_pos_batch()`               | `load_tagger_pos()`        | `pos` (English POS), `fr-pos` (French POS), `de-pos` (German POS), `nl-pos` (Dutch POS), and more.       |
+| **The Features**                             | Loader                     | Supported Models                                                                                                         |
+|----------------------------------------------|----------------------------|--------------------------------------------------------------------------------------------------------------------------|
+| `get_entities()`, `get_entities_batch()`     | `load_tagger_ner()`        | `en` (English), `fr` (French), `da` (Danish), `nl` (Dutch), and more.                                                    |
+| `get_pos()`, `get_pos_batch()`               | `load_tagger_pos()`        | `pos` (English POS), `fr-pos` (French POS), `de-pos` (German POS), `nl-pos` (Dutch POS), and more.                       |
 | `get_sentiments()`, `get_sentiments_batch()` | `load_tagger_sentiments()` | `sentiment` (English) , `sentiment-fast `(English) , `de-offensive-language` (German offensive language detection model) |
 
 <br>

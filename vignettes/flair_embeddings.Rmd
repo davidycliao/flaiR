@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r include=FALSE}
+```{r, include = FALSE}
 library(reticulate)
 library(flaiR)
 reticulate::py_install("flair")
@@ -22,7 +22,7 @@ system(paste(reticulate::py_config()$python, "-m pip install flair"))
 ```
 
 
-# Create Sentence Object
+## Create Sentence Object
 
 <div style="text-align: justify">
 
@@ -45,15 +45,14 @@ sentence <- flair_data.sentence(string)
 &nbsp;
 
 
-# Employing the BERT Model for Extracting Embeddings
-
+## Employing the BERT Model for Extracting Embeddings
 
 <div style="text-align: justify">
 
 First, we utilize the flair.embeddings.TransformerWordEmbeddings function to download BERT, and more transformer models can also be found on [Flair NLP's Hugging Face](https://huggingface.co/flair).
 
 ```{r}
-TransformerWordEmbeddings <- flair.embeddings.TransformerWordEmbeddings("bert-base-uncased")
+TransformerWordEmbeddings <- flair_embeddings.TransformerWordEmbeddings("bert-base-uncased")
 ```
 
 
