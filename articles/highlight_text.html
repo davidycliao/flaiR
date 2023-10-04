@@ -64,7 +64,7 @@
   </a>
   <div class="dropdown-menu" aria-labelledby="dropdown--quick-start">
     <a class="dropdown-item" href="../articles/quickstart.html#install-flair-via-github">Install flaiR via GitHub</a>
-    <a class="dropdown-item" href="../articles/quickstart.html#user-guaide">User Guide</a>
+    <a class="dropdown-item" href="../articles/quickstart.html#user-guaide-for-designed-flair-functions">User Guide for Designed flaiR Functions</a>
     <a class="dropdown-item" href="../articles/quickstart.html#how-to-contribute">How to Contribute</a>
   </div>
 </li>
@@ -78,9 +78,24 @@
     <a class="dropdown-item" href="../articles/introduction.html">Introduction</a>
     <a class="dropdown-item" href="../articles/sentence_token.html">Flair Base Types</a>
     <a class="dropdown-item" href="../articles/flair_embeddings.html">Flair Embeddings</a>
-    <a class="dropdown-item" href="../articles/get_entities.html">Tagging Named Entities</a>
-    <a class="dropdown-item" href="../articles/get_pos.html">Part-of-Speech Tagging</a>
-    <a class="dropdown-item" href="../articles/get_sentiments.html">Tagging Sentiment</a>
+    <h6 class="dropdown-header" data-toc-skip>Sequence Taggings (Comming Soon)</h6>
+    <h6 class="dropdown-header" data-toc-skip>Text Classification (Comming Soon)</h6>
+    <h6 class="dropdown-header" data-toc-skip>Training the Model in FlaiR (Comming Soon)</h6>
+    <a class="dropdown-item" href="../articles/get_entities.html">Tagging Named Entities (featured in flaiR)</a>
+    <a class="dropdown-item" href="../articles/get_pos.html">Part-of-Speech Tagging (featured in flaiR)</a>
+    <a class="dropdown-item" href="../articles/get_sentiments.html">Tagging Sentiment (featured in flaiR)</a>
+  </div>
+</li>
+<li class="active nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown--tool-box">
+    <span class="fa fa-newspaper-o"></span>
+     
+    Tool Box
+  </a>
+  <div class="dropdown-menu" aria-labelledby="dropdown--tool-box">
+    <a class="dropdown-item" href="../articles/flair_models.html">Flar Models</a>
+    <a class="dropdown-item" href="../articles/highlight_text.html">Coloring Entities</a>
+    <h6 class="dropdown-header" data-toc-skip>Visualizing the Sentiments (Comming Soon)</h6>
   </div>
 </li>
 <li class="nav-item dropdown">
@@ -90,7 +105,7 @@
     Reference
   </a>
   <div class="dropdown-menu" aria-labelledby="dropdown--reference">
-    <a class="dropdown-item" href="../reference/index.html#wrapper-function-in-r-to-python-flairNLP">Wrapper Function in R to Python Flair NLP</a>
+    <a class="dropdown-item" href="../reference/index.html#wrapper-functions">Wrapper Functions</a>
     <a class="dropdown-item" href="../reference/index.html#designed-flair-functions">Designed flaiR Functions</a>
     <a class="dropdown-item" href="../reference/index.html#tool-box">ToolBox</a>
     <a class="dropdown-item" href="../reference/index.html#utility-functions">Utility</a>
@@ -152,13 +167,15 @@
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"de_immigration"</span><span class="op">)</span></span>
 <span><span class="va">de_immigration</span> <span class="op">&lt;-</span> <span class="va">de_immigration</span><span class="op">[</span><span class="fl">5</span>,<span class="op">]</span></span>
 <span><span class="va">tagger_ner</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_tagger_ner.html">load_tagger_ner</a></span><span class="op">(</span><span class="st">"de-ner"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2023-10-03 22:54:21,193 SequenceTagger predicts: Dictionary with 19 tags: O, S-LOC, B-LOC, E-LOC, I-LOC, S-PER, B-PER, E-PER, I-PER, S-ORG, B-ORG, E-ORG, I-ORG, S-MISC, B-MISC, E-MISC, I-MISC, &lt;START&gt;, &lt;STOP&gt;</span></span>
+<span><span class="co">#&gt; 2023-10-04 02:40:51,170 SequenceTagger predicts: Dictionary with 19 tags: O, S-LOC, B-LOC, E-LOC, I-LOC, S-PER, B-PER, E-PER, I-PER, S-ORG, B-ORG, E-ORG, I-ORG, S-MISC, B-MISC, E-MISC, I-MISC, &lt;START&gt;, &lt;STOP&gt;</span></span>
 <span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_entities.html">get_entities</a></span><span class="op">(</span><span class="va">de_immigration</span><span class="op">$</span><span class="va">text</span>,</span>
 <span>                       tagger <span class="op">=</span> <span class="va">tagger_ner</span>,</span>
 <span>                       show.text_id <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span>                       <span class="op">)</span></span>
 <span><span class="co">#&gt; Warning in check_texts_and_ids(texts, doc_ids): doc_ids is NULL.</span></span>
 <span><span class="co">#&gt; Auto-assigning doc_ids.</span></span></code></pre></div>
+<p> </p>
+<hr>
 </div>
 <div class="section level2">
 <h2 id="highlight-text-with-entities">Highlight Text with Entities<a class="anchor" aria-label="anchor" href="#highlight-text-with-entities"></a>

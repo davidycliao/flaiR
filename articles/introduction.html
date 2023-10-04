@@ -64,7 +64,7 @@
   </a>
   <div class="dropdown-menu" aria-labelledby="dropdown--quick-start">
     <a class="dropdown-item" href="../articles/quickstart.html#install-flair-via-github">Install flaiR via GitHub</a>
-    <a class="dropdown-item" href="../articles/quickstart.html#user-guaide">User Guide</a>
+    <a class="dropdown-item" href="../articles/quickstart.html#user-guaide-for-designed-flair-functions">User Guide for Designed flaiR Functions</a>
     <a class="dropdown-item" href="../articles/quickstart.html#how-to-contribute">How to Contribute</a>
   </div>
 </li>
@@ -78,9 +78,24 @@
     <a class="dropdown-item" href="../articles/introduction.html">Introduction</a>
     <a class="dropdown-item" href="../articles/sentence_token.html">Flair Base Types</a>
     <a class="dropdown-item" href="../articles/flair_embeddings.html">Flair Embeddings</a>
-    <a class="dropdown-item" href="../articles/get_entities.html">Tagging Named Entities</a>
-    <a class="dropdown-item" href="../articles/get_pos.html">Part-of-Speech Tagging</a>
-    <a class="dropdown-item" href="../articles/get_sentiments.html">Tagging Sentiment</a>
+    <h6 class="dropdown-header" data-toc-skip>Sequence Taggings (Comming Soon)</h6>
+    <h6 class="dropdown-header" data-toc-skip>Text Classification (Comming Soon)</h6>
+    <h6 class="dropdown-header" data-toc-skip>Training the Model in FlaiR (Comming Soon)</h6>
+    <a class="dropdown-item" href="../articles/get_entities.html">Tagging Named Entities (featured in flaiR)</a>
+    <a class="dropdown-item" href="../articles/get_pos.html">Part-of-Speech Tagging (featured in flaiR)</a>
+    <a class="dropdown-item" href="../articles/get_sentiments.html">Tagging Sentiment (featured in flaiR)</a>
+  </div>
+</li>
+<li class="nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown--tool-box">
+    <span class="fa fa-newspaper-o"></span>
+     
+    Tool Box
+  </a>
+  <div class="dropdown-menu" aria-labelledby="dropdown--tool-box">
+    <a class="dropdown-item" href="../articles/flair_models.html">Flar Models</a>
+    <a class="dropdown-item" href="../articles/highlight_text.html">Coloring Entities</a>
+    <h6 class="dropdown-header" data-toc-skip>Visualizing the Sentiments (Comming Soon)</h6>
   </div>
 </li>
 <li class="nav-item dropdown">
@@ -90,7 +105,7 @@
     Reference
   </a>
   <div class="dropdown-menu" aria-labelledby="dropdown--reference">
-    <a class="dropdown-item" href="../reference/index.html#wrapper-function-in-r-to-python-flairNLP">Wrapper Function in R to Python Flair NLP</a>
+    <a class="dropdown-item" href="../reference/index.html#wrapper-functions">Wrapper Functions</a>
     <a class="dropdown-item" href="../reference/index.html#designed-flair-functions">Designed flaiR Functions</a>
     <a class="dropdown-item" href="../reference/index.html#tool-box">ToolBox</a>
     <a class="dropdown-item" href="../reference/index.html#utility-functions">Utility</a>
@@ -144,9 +159,9 @@
 
     
     
-<div class="section level2">
-<h2 id="oop-in-r-when-introducing-python">OOP in R when Introducing Python<a class="anchor" aria-label="anchor" href="#oop-in-r-when-introducing-python"></a>
-</h2>
+<div class="section level3">
+<h3 id="oop-in-r-when-introducing-python">OOP in R when Introducing Python<a class="anchor" aria-label="anchor" href="#oop-in-r-when-introducing-python"></a>
+</h3>
 <div style="text-align: justify">
 <p>Object-Oriented Programming (OOP) is a programming paradigm that uses
 objects, which contain both data (attributes) and functions (methods),
@@ -163,10 +178,14 @@ NLP within the ‘flaiR’ framework employs concepts of objects and
 classes, which are similar to R6. However, these features are packaged
 in {reticulate} from Python. In other words, some functionalities
 imported into R essentially belong to Python classes or modules.</p>
+</div>
 <p> </p>
+<hr>
+</div>
 <div class="section level2">
 <h2 id="the-structure">The Structure<a class="anchor" aria-label="anchor" href="#the-structure"></a>
 </h2>
+<div style="text-align: justify">
 <p>The following tutorial is mainly based on Tadej Magajna’s ‘<a href="https://github.com/PacktPublishing/Natural-Language-Processing-with-Flair" class="external-link"><strong>Natural
 Language Processing with Flair: A Practical Guide to Understanding and
 Solving NLP Problems</strong></a>’, as well as the official <a href="https://flairnlp.github.io/docs/intro" class="external-link">Flair NLP</a> Python
@@ -180,12 +199,11 @@ following topics:</p>
 <li><p><strong>Sentence and Token Object</strong></p></li>
 <li><p><strong>Flair Embedding in R</strong></p></li>
 <li><p><strong>Sequence Taggings</strong></p></li>
-<li><p><strong>Crafting flaiR Functions for Seamless Integration with
-Python’s FlairNLP</strong></p></li>
 <li><p><strong>Text Classification</strong></p></li>
 <li><p><strong>Training the Model in FlaiR</strong></p></li>
+<li><p><strong>Crafting flaiR Functions for Seamless Integration with
+Python’s FlairNLP</strong></p></li>
 </ul>
-</div>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

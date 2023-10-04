@@ -64,7 +64,7 @@
   </a>
   <div class="dropdown-menu" aria-labelledby="dropdown--quick-start">
     <a class="dropdown-item" href="../articles/quickstart.html#install-flair-via-github">Install flaiR via GitHub</a>
-    <a class="dropdown-item" href="../articles/quickstart.html#user-guaide">User Guide</a>
+    <a class="dropdown-item" href="../articles/quickstart.html#user-guaide-for-designed-flair-functions">User Guide for Designed flaiR Functions</a>
     <a class="dropdown-item" href="../articles/quickstart.html#how-to-contribute">How to Contribute</a>
   </div>
 </li>
@@ -78,9 +78,24 @@
     <a class="dropdown-item" href="../articles/introduction.html">Introduction</a>
     <a class="dropdown-item" href="../articles/sentence_token.html">Flair Base Types</a>
     <a class="dropdown-item" href="../articles/flair_embeddings.html">Flair Embeddings</a>
-    <a class="dropdown-item" href="../articles/get_entities.html">Tagging Named Entities</a>
-    <a class="dropdown-item" href="../articles/get_pos.html">Part-of-Speech Tagging</a>
-    <a class="dropdown-item" href="../articles/get_sentiments.html">Tagging Sentiment</a>
+    <h6 class="dropdown-header" data-toc-skip>Sequence Taggings (Comming Soon)</h6>
+    <h6 class="dropdown-header" data-toc-skip>Text Classification (Comming Soon)</h6>
+    <h6 class="dropdown-header" data-toc-skip>Training the Model in FlaiR (Comming Soon)</h6>
+    <a class="dropdown-item" href="../articles/get_entities.html">Tagging Named Entities (featured in flaiR)</a>
+    <a class="dropdown-item" href="../articles/get_pos.html">Part-of-Speech Tagging (featured in flaiR)</a>
+    <a class="dropdown-item" href="../articles/get_sentiments.html">Tagging Sentiment (featured in flaiR)</a>
+  </div>
+</li>
+<li class="nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown--tool-box">
+    <span class="fa fa-newspaper-o"></span>
+     
+    Tool Box
+  </a>
+  <div class="dropdown-menu" aria-labelledby="dropdown--tool-box">
+    <a class="dropdown-item" href="../articles/flair_models.html">Flar Models</a>
+    <a class="dropdown-item" href="../articles/highlight_text.html">Coloring Entities</a>
+    <h6 class="dropdown-header" data-toc-skip>Visualizing the Sentiments (Comming Soon)</h6>
   </div>
 </li>
 <li class="nav-item dropdown">
@@ -90,7 +105,7 @@
     Reference
   </a>
   <div class="dropdown-menu" aria-labelledby="dropdown--reference">
-    <a class="dropdown-item" href="../reference/index.html#wrapper-function-in-r-to-python-flairNLP">Wrapper Function in R to Python Flair NLP</a>
+    <a class="dropdown-item" href="../reference/index.html#wrapper-functions">Wrapper Functions</a>
     <a class="dropdown-item" href="../reference/index.html#designed-flair-functions">Designed flaiR Functions</a>
     <a class="dropdown-item" href="../reference/index.html#tool-box">ToolBox</a>
     <a class="dropdown-item" href="../reference/index.html#utility-functions">Utility</a>
@@ -159,6 +174,7 @@ package in our work. Firstly, For example, let’s create a simple
 <span><span class="va">sentence</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_data.sentence.html">flair_data.sentence</a></span><span class="op">(</span><span class="va">string</span><span class="op">)</span></span></code></pre></div>
 </div>
 <p> </p>
+<hr>
 </div>
 <div class="section level2">
 <h2 id="employing-the-bert-model-for-extracting-embeddings">Employing the BERT Model for Extracting Embeddings<a class="anchor" aria-label="anchor" href="#employing-the-bert-model-for-extracting-embeddings"></a>
@@ -169,7 +185,7 @@ function to download BERT, and more transformer models can also be found
 on <a href="https://huggingface.co/flair" class="external-link">Flair NLP’s Hugging
 Face</a>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">TransformerWordEmbeddings</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair.embeddings.TransformerWordEmbeddings.html">flair.embeddings.TransformerWordEmbeddings</a></span><span class="op">(</span><span class="st">"bert-base-uncased"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">TransformerWordEmbeddings</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_embeddings.TransformerWordEmbeddings.html">flair_embeddings.TransformerWordEmbeddings</a></span><span class="op">(</span><span class="st">"bert-base-uncased"</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">embedding</span> <span class="op">&lt;-</span> <span class="va">TransformerWordEmbeddings</span><span class="op">$</span><span class="fu">embed</span><span class="op">(</span><span class="va">sentence</span><span class="op">)</span></span></code></pre></div>
 <p>Traverse each token in the sentence and print them. To view each

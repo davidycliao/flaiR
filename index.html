@@ -76,7 +76,7 @@
   </a>
   <div class="dropdown-menu" aria-labelledby="dropdown--quick-start">
     <a class="dropdown-item" href="articles/quickstart.html#install-flair-via-github">Install flaiR via GitHub</a>
-    <a class="dropdown-item" href="articles/quickstart.html#user-guaide">User Guide</a>
+    <a class="dropdown-item" href="articles/quickstart.html#user-guaide-for-designed-flair-functions">User Guide for Designed flaiR Functions</a>
     <a class="dropdown-item" href="articles/quickstart.html#how-to-contribute">How to Contribute</a>
   </div>
 </li>
@@ -90,9 +90,24 @@
     <a class="dropdown-item" href="articles/introduction.html">Introduction</a>
     <a class="dropdown-item" href="articles/sentence_token.html">Flair Base Types</a>
     <a class="dropdown-item" href="articles/flair_embeddings.html">Flair Embeddings</a>
-    <a class="dropdown-item" href="articles/get_entities.html">Tagging Named Entities</a>
-    <a class="dropdown-item" href="articles/get_pos.html">Part-of-Speech Tagging</a>
-    <a class="dropdown-item" href="articles/get_sentiments.html">Tagging Sentiment</a>
+    <h6 class="dropdown-header" data-toc-skip>Sequence Taggings (Comming Soon)</h6>
+    <h6 class="dropdown-header" data-toc-skip>Text Classification (Comming Soon)</h6>
+    <h6 class="dropdown-header" data-toc-skip>Training the Model in FlaiR (Comming Soon)</h6>
+    <a class="dropdown-item" href="articles/get_entities.html">Tagging Named Entities (featured in flaiR)</a>
+    <a class="dropdown-item" href="articles/get_pos.html">Part-of-Speech Tagging (featured in flaiR)</a>
+    <a class="dropdown-item" href="articles/get_sentiments.html">Tagging Sentiment (featured in flaiR)</a>
+  </div>
+</li>
+<li class="nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown--tool-box">
+    <span class="fa fa-newspaper-o"></span>
+     
+    Tool Box
+  </a>
+  <div class="dropdown-menu" aria-labelledby="dropdown--tool-box">
+    <a class="dropdown-item" href="articles/flair_models.html">Flar Models</a>
+    <a class="dropdown-item" href="articles/highlight_text.html">Coloring Entities</a>
+    <h6 class="dropdown-header" data-toc-skip>Visualizing the Sentiments (Comming Soon)</h6>
   </div>
 </li>
 <li class="nav-item dropdown">
@@ -102,7 +117,7 @@
     Reference
   </a>
   <div class="dropdown-menu" aria-labelledby="dropdown--reference">
-    <a class="dropdown-item" href="reference/index.html#wrapper-function-in-r-to-python-flairNLP">Wrapper Function in R to Python Flair NLP</a>
+    <a class="dropdown-item" href="reference/index.html#wrapper-functions">Wrapper Functions</a>
     <a class="dropdown-item" href="reference/index.html#designed-flair-functions">Designed flaiR Functions</a>
     <a class="dropdown-item" href="reference/index.html#tool-box">ToolBox</a>
     <a class="dropdown-item" href="reference/index.html#utility-functions">Utility</a>
@@ -149,90 +164,9 @@
 <p><a href="https://github.com/davidycliao/flaiR/actions/workflows/r2.yml" class="external-link"><img src="https://github.com/davidycliao/flaiR/actions/workflows/r2.yml/badge.svg" alt="R"></a> <a href="https://github.com/davidycliao/flaiR/actions/workflows/r.yml" class="external-link"><img src="https://github.com/davidycliao/flaiR/actions/workflows/r.yml/badge.svg" alt="R-CMD-check"></a> <a href="https://github.com/davidycliao/flaiR/actions/workflows/R-CMD-check2.yml" class="external-link"><img src="https://github.com/davidycliao/flaiR/actions/workflows/R-CMD-check2.yml/badge.svg" alt="R-CMD-check"></a> <a href="https://github.com/davidycliao/flaiR/actions/workflows/test-coverage.yaml" class="external-link"><img src="https://github.com/davidycliao/flaiR/actions/workflows/test-coverage.yaml/badge.svg" alt="coverage"></a> <a href="https://codecov.io/gh/davidycliao/flaiR" class="external-link"><img src="https://codecov.io/gh/davidycliao/flaiR/graph/badge.svg?token=CPIBIB6L78" alt="codecov"></a> <a href="https://www.codefactor.io/repository/github/davidycliao/flair" class="external-link"><img src="https://www.codefactor.io/repository/github/davidycliao/flair/badge" alt="CodeFactor"></a></p>
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 <div style="text-align: justify">
-<p><code>flaiR</code> is a R wrapper of the FlairNLP for R users, particularly for social science researchers. It offers streamlined access to the core features of <code>FlairNLP</code> from Python. FlairNLP is an advanced NLP framework that incorporates the latest techniques developed by the Humboldt University of Berlin. For a deeper understanding of Flair’s architecture, refer to the research article ‘<a href="https://aclanthology.org/C18-1139.pdf" class="external-link">Contextual String Embeddings for Sequence Labeling</a>’ and the official <a href="https://flairnlp.github.io" class="external-link">mannual</a> in Python.</p>
-<p><br></p>
-<table class="table">
-<colgroup>
-<col width="47%">
-<col width="52%">
-</colgroup>
-<thead><tr class="header">
-<th><strong>Wrapped Functions: Integrating Modules into R</strong></th>
-<th><strong>Corresponding Code in Python</strong></th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td><code><a href="reference/flair_datasets.html">flair_datasets()</a></code></td>
-<td>from flair.datasets import *</td>
-</tr>
-<tr class="even">
-<td><code><a href="reference/flair_data.sentence.html">flair_data.sentence()</a></code></td>
-<td>from flair.data import Sentence</td>
-</tr>
-<tr class="odd">
-<td><code><a href="reference/flair_nn.classifier_load.html">flair_nn.classifier_load()</a></code></td>
-<td>from flair.nn import Classifier</td>
-</tr>
-<tr class="even">
-<td><code><a href="reference/flair.embeddings.TransformerWordEmbeddings.html">flair.embeddings.TransformerWordEmbeddings()</a></code></td>
-<td>from flair.embeddings import TransformerWordEmbeddings</td>
-</tr>
-<tr class="odd">
-<td><code><a href="reference/flair_embeddings.WordEmbeddings.html">flair_embeddings.WordEmbeddings()</a></code></td>
-<td>from flair.embeddings import WordEmbeddings</td>
-</tr>
-<tr class="even">
-<td><code>segtok_sentence_splitter()</code></td>
-<td>flair_splitter.SegtokSentenceSplitter</td>
-</tr>
-<tr class="odd">
-<td><code><a href="reference/flair_models.sequencetagger.html">flair_models.sequencetagger()</a></code></td>
-<td>from flair.models import SequenceTagger</td>
-</tr>
-</tbody>
-</table>
-<p><br></p>
-<p><code>flairR</code> primarily consists of two main components. The first is a wrapper function built on top of {reticulate}, enabling you to interact directly with Python modules in R. Secondly, to facilitate more efficient use for social science research, {flairR} wraps the FlairNLP Python with three major features to extract features in a tidy and clean format using <a href="https://cran.r-project.org/web/packages/data.table/index.html" class="external-link">data.table.</a>. The features currently available in <code>flairR</code> include <strong>part-of-speech tagging</strong>, <strong>transformer-based sentiment analysis</strong>, and <strong>named entity recognition</strong>.</p>
+<p><code>{flaiR}</code> is a R wrapper of the {FlairNLP} for R users, particularly for social science researchers. It offers streamlined access to the core features of <code>FlairNLP</code> from Python. FlairNLP is an advanced NLP framework that incorporates the latest techniques developed by the Humboldt University of Berlin. For a deeper understanding of Flair’s architecture, refer to the research article ‘<a href="https://aclanthology.org/C18-1139.pdf" class="external-link">Contextual String Embeddings for Sequence Labeling</a>’ and the official <a href="https://flairnlp.github.io" class="external-link">mannual</a> in Python.</p>
+<p><code>{flairR}</code> primarily consists of two main components. The first is a wrapper function built on top of {reticulate}, enabling you to interact directly with Python modules in R. Secondly, to facilitate more efficient use for social science research, {flairR} wraps the FlairNLP Python with three major features to extract features in a tidy and clean format using <a href="https://cran.r-project.org/web/packages/data.table/index.html" class="external-link">data.table</a>. The features include <strong>part-of-speech tagging</strong>, <strong>transformer-based sentiment analysis</strong>, and <strong>named entity recognition</strong>.</p>
 </div>
-<p><br></p>
-<table class="table">
-<colgroup>
-<col width="23%">
-<col width="14%">
-<col width="62%">
-</colgroup>
-<thead><tr class="header">
-<th><strong>The Features</strong></th>
-<th>Loader</th>
-<th>Supported Models</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td>
-<code><a href="reference/get_entities.html">get_entities()</a></code>, <code><a href="reference/get_entities_batch.html">get_entities_batch()</a></code>
-</td>
-<td><code><a href="reference/load_tagger_ner.html">load_tagger_ner()</a></code></td>
-<td>
-<code>en</code> (English), <code>fr</code> (French), <code>da</code> (Danish), <code>nl</code> (Dutch), and more.</td>
-</tr>
-<tr class="even">
-<td>
-<code><a href="reference/get_pos.html">get_pos()</a></code>, <code><a href="reference/get_pos_batch.html">get_pos_batch()</a></code>
-</td>
-<td><code><a href="reference/load_tagger_pos.html">load_tagger_pos()</a></code></td>
-<td>
-<code>pos</code> (English POS), <code>fr-pos</code> (French POS), <code>de-pos</code> (German POS), <code>nl-pos</code> (Dutch POS), and more.</td>
-</tr>
-<tr class="odd">
-<td>
-<code><a href="reference/get_sentiments.html">get_sentiments()</a></code>, <code><a href="reference/get_sentiments_batch.html">get_sentiments_batch()</a></code>
-</td>
-<td><code><a href="reference/load_tagger_sentiments.html">load_tagger_sentiments()</a></code></td>
-<td>
-<code>sentiment</code> (English) , <code>sentiment-fast</code>(English) , <code>de-offensive-language</code> (German offensive language detection model)</td>
-</tr>
-</tbody>
-</table>
 <p><br></p>
 <div class="section level3">
 <h3 id="installation-via-github">Installation via <u><strong><code>GitHub</code></strong></u>

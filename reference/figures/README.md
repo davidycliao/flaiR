@@ -12,7 +12,7 @@
 
 <div style="text-align: justify">
 
-`flaiR` is a R wrapper of the FlairNLP for R users, particularly for
+`{flaiR}` is a R wrapper of the {FlairNLP} for R users, particularly for
 social science researchers. It offers streamlined access to the core
 features of `FlairNLP` from Python. FlairNLP is an advanced NLP
 framework that incorporates the latest techniques developed by the
@@ -21,18 +21,6 @@ architecture, refer to the research article ‘[Contextual String
 Embeddings for Sequence
 Labeling](https://aclanthology.org/C18-1139.pdf)’ and the official
 [mannual](https://flairnlp.github.io) in Python.
-
-<br>
-
-| **Wrapped Functions: Integrating Modules into R** | **Corresponding Code in Python**                       |
-|---------------------------------------------------|--------------------------------------------------------|
-| `flair_datasets()`                                | from flair.datasets import \*                          |
-| `flair_data.sentence()`                           | from flair.data import Sentence                        |
-| `flair_nn.classifier_load()`                      | from flair.nn import Classifier                        |
-| `flair.embeddings.TransformerWordEmbeddings()`    | from flair.embeddings import TransformerWordEmbeddings |
-| `flair_embeddings.WordEmbeddings()`               | from flair.embeddings import WordEmbeddings            |
-| `segtok_sentence_splitter()`                      | flair_splitter.SegtokSentenceSplitter                  |
-| `flair_models.sequencetagger()`                   | from flair.models import SequenceTagger                |
 
 <br>
 
@@ -48,14 +36,6 @@ tagging**, **transformer-based sentiment analysis**, and **named entity
 recognition**.
 
 </div>
-
-<br>
-
-| **The Features**                             | Loader                     | Supported Models                                                                                                        |
-|----------------------------------------------|----------------------------|-------------------------------------------------------------------------------------------------------------------------|
-| `get_entities()`, `get_entities_batch()`     | `load_tagger_ner()`        | `en` (English), `fr` (French), `da` (Danish), `nl` (Dutch), and more.                                                   |
-| `get_pos()`, `get_pos_batch()`               | `load_tagger_pos()`        | `pos` (English POS), `fr-pos` (French POS), `de-pos` (German POS), `nl-pos` (Dutch POS), and more.                      |
-| `get_sentiments()`, `get_sentiments_batch()` | `load_tagger_sentiments()` | `sentiment` (English) , `sentiment-fast`(English) , `de-offensive-language` (German offensive language detection model) |
 
 <br>
 

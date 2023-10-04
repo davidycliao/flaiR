@@ -64,7 +64,7 @@
   </a>
   <div class="dropdown-menu" aria-labelledby="dropdown--quick-start">
     <a class="dropdown-item" href="../articles/quickstart.html#install-flair-via-github">Install flaiR via GitHub</a>
-    <a class="dropdown-item" href="../articles/quickstart.html#user-guaide">User Guide</a>
+    <a class="dropdown-item" href="../articles/quickstart.html#user-guaide-for-designed-flair-functions">User Guide for Designed flaiR Functions</a>
     <a class="dropdown-item" href="../articles/quickstart.html#how-to-contribute">How to Contribute</a>
   </div>
 </li>
@@ -78,9 +78,24 @@
     <a class="dropdown-item" href="../articles/introduction.html">Introduction</a>
     <a class="dropdown-item" href="../articles/sentence_token.html">Flair Base Types</a>
     <a class="dropdown-item" href="../articles/flair_embeddings.html">Flair Embeddings</a>
-    <a class="dropdown-item" href="../articles/get_entities.html">Tagging Named Entities</a>
-    <a class="dropdown-item" href="../articles/get_pos.html">Part-of-Speech Tagging</a>
-    <a class="dropdown-item" href="../articles/get_sentiments.html">Tagging Sentiment</a>
+    <h6 class="dropdown-header" data-toc-skip>Sequence Taggings (Comming Soon)</h6>
+    <h6 class="dropdown-header" data-toc-skip>Text Classification (Comming Soon)</h6>
+    <h6 class="dropdown-header" data-toc-skip>Training the Model in FlaiR (Comming Soon)</h6>
+    <a class="dropdown-item" href="../articles/get_entities.html">Tagging Named Entities (featured in flaiR)</a>
+    <a class="dropdown-item" href="../articles/get_pos.html">Part-of-Speech Tagging (featured in flaiR)</a>
+    <a class="dropdown-item" href="../articles/get_sentiments.html">Tagging Sentiment (featured in flaiR)</a>
+  </div>
+</li>
+<li class="nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown--tool-box">
+    <span class="fa fa-newspaper-o"></span>
+     
+    Tool Box
+  </a>
+  <div class="dropdown-menu" aria-labelledby="dropdown--tool-box">
+    <a class="dropdown-item" href="../articles/flair_models.html">Flar Models</a>
+    <a class="dropdown-item" href="../articles/highlight_text.html">Coloring Entities</a>
+    <h6 class="dropdown-header" data-toc-skip>Visualizing the Sentiments (Comming Soon)</h6>
   </div>
 </li>
 <li class="nav-item dropdown">
@@ -90,7 +105,7 @@
     Reference
   </a>
   <div class="dropdown-menu" aria-labelledby="dropdown--reference">
-    <a class="dropdown-item" href="../reference/index.html#wrapper-function-in-r-to-python-flairNLP">Wrapper Function in R to Python Flair NLP</a>
+    <a class="dropdown-item" href="../reference/index.html#wrapper-functions">Wrapper Functions</a>
     <a class="dropdown-item" href="../reference/index.html#designed-flair-functions">Designed flaiR Functions</a>
     <a class="dropdown-item" href="../reference/index.html#tool-box">ToolBox</a>
     <a class="dropdown-item" href="../reference/index.html#utility-functions">Utility</a>
@@ -144,50 +159,6 @@
 
     
     
-<div class="section level2">
-<h2 id="list-of-sentiment-models">List of Sentiment Models<a class="anchor" aria-label="anchor" href="#list-of-sentiment-models"></a>
-</h2>
-<table class="table">
-<colgroup>
-<col width="17%">
-<col width="7%">
-<col width="41%">
-<col width="19%">
-<col width="14%">
-</colgroup>
-<thead><tr class="header">
-<th>ID</th>
-<th>Language</th>
-<th>Task</th>
-<th>Training Dataset</th>
-<th>Accuracy</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td>‘sentiment’</td>
-<td>English</td>
-<td>detecting positive and negative sentiment (transformer-based)</td>
-<td>movie and product reviews</td>
-<td>98.87</td>
-</tr>
-<tr class="even">
-<td>‘sentiment-fast’</td>
-<td>English</td>
-<td>detecting positive and negative sentiment (RNN-based)</td>
-<td>movie and product reviews</td>
-<td>96.83</td>
-</tr>
-<tr class="odd">
-<td>‘de-offensive-language’</td>
-<td>German</td>
-<td>detecting offensive language</td>
-<td>GermEval 2018 Task 1</td>
-<td>75.71 (Macro F1)</td>
-</tr>
-</tbody>
-</table>
-<p><strong>Source</strong>: <a href="https://flairnlp.github.io/docs/tutorial-basics/tagging-sentiment" class="external-link uri">https://flairnlp.github.io/docs/tutorial-basics/tagging-sentiment</a></p>
-</div>
 <div class="section level2">
 <h2 id="an-example-using-sentiment-model-pre-trained-english-model">An Example Using <code>sentiment</code> Model (Pre-trained English
 Model)<a class="anchor" aria-label="anchor" href="#an-example-using-sentiment-model-pre-trained-english-model"></a>
