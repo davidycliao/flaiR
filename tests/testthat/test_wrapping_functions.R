@@ -70,17 +70,7 @@ test_that("flair_nn.classifier_load handles errors and unexpected input correctl
 
 
 
-#
-library(testthat)
-library(reticulate)
-
-# Your function
-flair_embeddings <- function() {
-  flair_embeddings <- import('flair.embeddings')
-  return(flair_embeddings)
-}
-
-# Test
+# flair_embeddings imports the Python module correctly
 test_that("flair_embeddings imports the Python module correctly", {
 
   # Skip test if reticulate or Python is not available
