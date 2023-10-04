@@ -25,10 +25,10 @@ reticulate::py_install("flair")
 
 ```{r}
 library(flaiR)
-data("de_immigration")
-de_immigration <- de_immigration[5,]
+data("uk_immigration")
+uk_immigration <- uk_immigration[30,]
 tagger_ner <- load_tagger_ner("de-ner")
-result <- get_entities(de_immigration$text,
+result <- get_entities(uk_immigration$text,
                        tagger = tagger_ner,
                        show.text_id = FALSE
                        )
@@ -40,7 +40,7 @@ result <- get_entities(de_immigration$text,
 
 ## Highlight Text with Entities
 ```{r}
-highlighted_text <- highlight_text(text = de_immigration$text, 
+highlighted_text <- highlight_text(text = uk_immigration$text, 
                                    entities_mapping = map_entities(result))
 highlighted_text
 ```
