@@ -29,8 +29,12 @@ efficient use for social science research, {flairR} wraps the FlairNLP
 Python with three major functions to extract features in a tidy and
 clean format using
 [data.table](https://cran.r-project.org/web/packages/data.table/index.html).
-The features include **part-of-speech tagging**, **transformer-based
-sentiment analysis**, and **named entity recognition**.
+The features include [**part-of-speech
+tagging**](https://davidycliao.github.io/flaiR/articles/get_pos.html),
+[**transformer-based sentiment
+analysis**](https://davidycliao.github.io/flaiR/articles/get_entities.html),
+and [**named entity
+recognition**](https://davidycliao.github.io/flaiR/articles/get_sentiments.html).
 
 </div>
 
