@@ -53,18 +53,42 @@ library(flaiR)
 
 Afterward, you might see the message __"Virtual environment 'r-reticulate' successfully created."__ Next, you will be prompted to confirm whether or not you want to use `r-reticulate`. Enter __"Yes,"__ and it will automatically install `flair` via your conda environment in Python.  If there are any issues with the installation, feel free to ask in the <u>[Discussion](https://github.com/davidycliao/flaiR/discussions)</u>.
 
-
-
+</div>
 
 &nbsp;
 
 
-
-</div>
-
 -----
 
-## User Guaide 
+## Wrapped Functions Integrating Modules (Classes and Object) into R
+
+
+| **Wrapped Functions: Integrating Modules into R** | Corresponding Practice in Python                          | 
+|---------------------------------------------------|-----------------------------------------------------------|
+| `flair_datasets()`                                | from flair.datasets import *                              |
+| `flair_data.sentence()`                           | from flair.data import Sentence                           |
+| `flair_nn.classifier_load()`                      | from flair.nn import Classifier                           |
+| `flair.embeddings.TransformerWordEmbeddings()`    | from flair.embeddings import TransformerWordEmbeddings    |
+| `flair_embeddings.WordEmbeddings()`               | from flair.embeddings import WordEmbeddings               |
+| `segtok_sentence_splitter()`                      | flair_splitter.SegtokSentenceSplitter                     |
+| `flair_models.sequencetagger()`                   | from flair.models import SequenceTagger                   |
+| `flair_trainers()`                                | from flair.trainers import *                              |
+
+
+
+## Designed Functions for Streamlining NLP Tasks with data.table Output
+
+
+| **Core Tagging Features**                    | Loader                     | Supported Models                                                                                                         |
+|----------------------------------------------|----------------------------|--------------------------------------------------------------------------------------------------------------------------|
+| `get_entities()`, `get_entities_batch()`     | `load_tagger_ner()`        | `en` (English), `fr` (French), `da` (Danish), `nl` (Dutch), and more.                                                    |
+| `get_pos()`, `get_pos_batch()`               | `load_tagger_pos()`        | `pos` (English POS), `fr-pos` (French POS), `de-pos` (German POS), `nl-pos` (Dutch POS), and more.                       |
+| `get_sentiments()`, `get_sentiments_batch()` | `load_tagger_sentiments()` | `sentiment` (English) , `sentiment-fast `(English) , `de-offensive-language` (German offensive language detection model) |
+
+
+
+
+## User Guaide for Designed Functions in flaiR
 
 ### __Tagging Parts-of-Speech with Flair Models__
 

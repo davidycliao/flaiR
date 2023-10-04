@@ -22,8 +22,7 @@ corpus <- UD_ENGLISH()$downsample(0.1)
 
 }
 \references{
-Python equivalent:
-\preformatted{
+Python equivalent: \preformatted{
 from flair.datasets import UD_ENGLISH
 corpus = UD_ENGLISH().downsample(0.1)
 }

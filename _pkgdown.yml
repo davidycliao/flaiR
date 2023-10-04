@@ -22,11 +22,10 @@ reference:
 - title: R Wrapper Functions
   desc: Accessing FlairNLP Classes and Objects through Wrapped Python Functions in R
 - contents:
-  - flair.embeddings.TransformerWordEmbeddings
+  - flair_embeddings.TransformerWordEmbeddings
+  - flair_embeddings.WordEmbeddings
   - flair_data.sentence
   - flair_datasets
-  - flair.embeddings.TransformerWordEmbeddings
-  - flair_embeddings.WordEmbeddings
   - flair_models.sequencetagger
   - flair_nn.classifier_load
   - flair_splitter.SegtokSentenceSplitter
@@ -45,7 +44,7 @@ reference:
   - get_sentiments
   - get_sentiments_batch
 
-- title: Tool Box
+- title: Toolbox
   desc:
 - contents:
   - highlight_text
@@ -91,10 +90,18 @@ navbar:
     menu:
     - text: "Install flaiR via GitHub"
       href: articles/quickstart.html#install-flair-via-github
-    - text: "User Guide"
-      href: articles/quickstart.html#user-guaide
+    - text: "User Guide for Designed flaiR Functions"
+      href: articles/quickstart.html#user-guaide-for-designed-flair-functions
     - text: "How to Contribute"
       href: articles/quickstart.html#how-to-contribute
+
+  - icon: fa-solid
+    text: Tool Box
+    menu:
+    - text: "Coloring Entities"
+      href: articles/highlight_text.html
+    - text: "Visualizing the Sentiments (Comming Soon)"
+      href:
 
   - icon: fa-project-diagram
     text: Tutorial
@@ -118,12 +125,11 @@ navbar:
     - text: "Tagging Sentiment"
       href: articles/get_sentiments.html
 
-
   - icon: fa-file-code-o
     text: Reference
     menu:
-    - text: "Wrapper Function in R to Python Flair NLP"
-      href: reference/index.html#wrapper-function-in-r-to-python-flairNLP
+    - text: "Wrapper Functions"
+      href: reference/index.html#wrapper-functions
     - text: "Designed flaiR Functions"
       href: reference/index.html#designed-flair-functions
     - text: "ToolBox"
@@ -132,8 +138,6 @@ navbar:
       href: reference/index.html#utility-functions
     - text: "Dataset"
       href: reference/index.html#example-dataset
-
-
 
   - icon: fa-newspaper-o
     text: News

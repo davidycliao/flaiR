@@ -23,10 +23,10 @@ a `TransformerWordEmbeddings` object using the Flair library.
 \dontrun{
 embedding <- flair_embeddings.TransformerWordEmbeddings("bert-base-uncased")
 }
+
 }
 \references{
-Python equivalent:
-\preformatted{
+Python equivalent: \preformatted{
 from flair.embeddings import TransformerWordEmbeddings
 embedding = TransformerWordEmbeddings('bert-base-uncased')
 }

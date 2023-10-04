@@ -14,9 +14,7 @@
 #' }
 #'
 #' @references
-#'
-#' Python equivalent:
-#' \preformatted{
+#' Python equivalent: \preformatted{
 #' from flair.datasets import UD_ENGLISH
 #' corpus = UD_ENGLISH().downsample(0.1)
 #' }
@@ -38,13 +36,14 @@ flair_datasets <- function() {
 #'
 #' @param sentence_text A character string to be converted into a Flair Sentence object.
 #' @return A Flair Sentence object.
+#'
 #' @examples
 #' \dontrun{
 #' flair_data_sentence("The quick brown fox jumps over the lazy dog.")
 #' }
+#'
 #' @references
-#' Python equivalent:
-#' \preformatted{
+#' Python equivalent: \preformatted{
 #' from flair.data import Sentence
 #' sentence = Sentence("The quick brown fox jumps over the lazy dog.")
 #' }
@@ -93,12 +92,13 @@ flair_nn.classifier_load <- function(pre_trained_model = 'ner') {
 #' \dontrun{
 #' embedding <- flair_embeddings.TransformerWordEmbeddings("bert-base-uncased")
 #' }
+#'
 #' @references
-#' Python equivalent:
-#' \preformatted{
+#' Python equivalent: \preformatted{
 #' from flair.embeddings import TransformerWordEmbeddings
 #' embedding = TransformerWordEmbeddings('bert-base-uncased')
 #' }
+#'
 #' @export
 flair_embeddings.TransformerWordEmbeddings <- function(pre_trained_model = 'bert-base-uncased') {
   flair_embeddings <- reticulate::import('flair.embeddings')

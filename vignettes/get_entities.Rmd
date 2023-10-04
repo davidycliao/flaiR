@@ -22,33 +22,6 @@ library(reticulate)
 reticulate::py_install("flair")
 ```
 
-## List of NER Models
-
-| ID                  | Task              | Language         | Training Dataset            | Accuracy     | Contributor / Notes    |
-|---------------------|-------------------|------------------|-----------------------------|--------------|------------------------|
-| 'ner'               | NER (4-class)     | English          | Conll-03                    | 93.03 (F1)   |                        |
-| 'ner-fast'          | NER (4-class)     | English          | Conll-03                    | 92.75 (F1)   | (fast model)           |
-| 'ner-large'         | NER (4-class)     | English / Multilingual | Conll-03               | 94.09 (F1)   | (large model)         |
-| 'ner-pooled'        | NER (4-class)     | English          | Conll-03                    | 93.24 (F1)   | (memory inefficient)   |
-| 'ner-ontonotes'     | NER (18-class)    | English          | Ontonotes                   | 89.06 (F1)   |                        |
-| 'ner-ontonotes-fast'| NER (18-class)    | English          | Ontonotes                   | 89.27 (F1)   | (fast model)           |
-| 'ner-ontonotes-large'| NER (18-class)   | English / Multilingual | Ontonotes             | 90.93 (F1)   | (large model)          |
-| 'ar-ner'            | NER (4-class)     | Arabic           | AQMAR & ANERcorp (curated)  | 86.66 (F1)   |                        |
-| 'da-ner'            | NER (4-class)     | Danish           | Danish NER dataset          |              | AmaliePauli            |
-| 'de-ner'            | NER (4-class)     | German           | Conll-03                    | 87.94 (F1)   |                        |
-| 'de-ner-large'      | NER (4-class)     | German / Multilingual | Conll-03               | 92.31 (F1)   |                        |
-| 'de-ner-germeval'   | NER (4-class)     | German           | Germeval                    | 84.90 (F1)   |                        |
-| 'de-ner-legal'      | NER (legal text)  | German           | LER dataset                 | 96.35 (F1)   |                        |
-| 'fr-ner'            | NER (4-class)     | French           | WikiNER (aij-wikiner-fr-wp3)| 95.57 (F1)   | mhham                  |
-| 'es-ner-large'      | NER (4-class)     | Spanish          | CoNLL-03                    | 90.54 (F1)   | mhham                  |
-| 'nl-ner'            | NER (4-class)     | Dutch            | CoNLL 2002                  | 92.58 (F1)   |                        |
-| 'nl-ner-large'      | NER (4-class)     | Dutch            | Conll-03                    | 95.25 (F1)   |                        |
-| 'nl-ner-rnn'        | NER (4-class)     | Dutch            | CoNLL 2002                  | 90.79 (F1)   |                        |
-| 'ner-ukrainian'     | NER (4-class)     | Ukrainian        | NER-UK dataset              | 86.05 (F1)   | dchaplinsky             |
-
-
-__Source__: https://flairnlp.github.io/docs/tutorial-basics/tagging-entities
-
 ## Generic Approach Using Pre-trained NER English Model
 
 ```{r}

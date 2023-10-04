@@ -20,10 +20,10 @@ create a Flair Sentence object.
 \dontrun{
 flair_data_sentence("The quick brown fox jumps over the lazy dog.")
 }
+
 }
 \references{
-Python equivalent:
-\preformatted{
+Python equivalent: \preformatted{
 from flair.data import Sentence
 sentence = Sentence("The quick brown fox jumps over the lazy dog.")
 }
