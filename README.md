@@ -26,8 +26,8 @@ Labeling](https://aclanthology.org/C18-1139.pdf)’ and the official
 wrapper function built on top of {reticulate}, enabling you to interact
 directly with Python modules in R. Secondly, to facilitate more
 efficient use for social science research, {flairR} wraps the FlairNLP
-Python with three major features to extract features in a tidy and clean
-format using
+Python with three major functions to extract features in a tidy and
+clean format using
 [data.table](https://cran.r-project.org/web/packages/data.table/index.html).
 The features include **part-of-speech tagging**, **transformer-based
 sentiment analysis**, and **named entity recognition**.
