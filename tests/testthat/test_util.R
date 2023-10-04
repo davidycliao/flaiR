@@ -155,6 +155,26 @@ test_that("check_show.text_id throws error for non-logical input", {
 })
 
 
+
+test_that("check_texts_and_ids handles input correctly", {
+  # Check that the function stops if texts is NULL or empty
+  expect_error(check_texts_and_ids(NULL, c("id1", "id2")), "The texts cannot be NULL or empty.")
+  expect_error(check_texts_and_ids(character(0), c("id1", "id2")), "The texts cannot be NULL or empty.")
+
+  # Check that the function warns if doc_ids is NULL, and generates a sequence
+  expect_warning(res <- check_texts_and_ids(c("text1", "text2"), NULL), "doc_ids is NULL. Auto-assigning doc_ids.")
+  expect_equal(res$doc_ids, 1:2)
+
+  # Check that the function stops if the lengths of texts and doc_ids do not match
+  expect_error(check_texts_and_ids(c("text1", "text2"), c("id1")), "The lengths of texts and doc_ids do not match.")
+
+  # Check that the function returns correct output if inputs are valid
+  expect_silent(res <- check_texts_and_ids(c("text1", "text2"), c("id1", "id2")))
+  expect_equal(res$texts, c("text1", "text2"))
+  expect_equal(res$doc_ids, c("id1", "id2"))
+})
+
+
 # test_that("clear_flair_cache handles no directory", {
 #   local_temp_env()
 #   expect_output(clear_flair_cache(), "Flair cache directory does not exist.")
@@ -206,4 +226,5 @@ test_that("check_show.text_id throws error for non-logical input", {
 #   # expect_warning(check_device("unknown_device"), "Unknown device specified.")
 # })
 #
+
 #
