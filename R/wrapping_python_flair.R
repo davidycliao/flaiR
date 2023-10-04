@@ -68,7 +68,7 @@ flair_data.sentence <- function(sentence_text) {
 #' This function utilizes the {reticulate} package to interface with Python
 #' and create a Classifier object from the Flair library.
 #'
-#' @param pre_trained_model A character string specifying the pre-trained model to use.
+#' @param pre_trained A character string specifying the pre-trained model to use.
 #' This parameter is defined but not used in the current function context.
 #'
 #' @return A Flair Classifier object.
@@ -87,9 +87,9 @@ flair_data.sentence <- function(sentence_text) {
 #' @importFrom reticulate import
 #'
 #' @export
-flair_nn.classifier_load <- function(pre_trained_model = 'ner') {
+flair_nn.classifier_load <- function(pre_trained) {
   flair_nn <- import('flair.nn')
-  classifier <- flair_nn$Classifier$load(pre_trained_model)
+  classifier <- flair_nn$Classifier$load(pre_trained)
   return(classifier)
 }
 

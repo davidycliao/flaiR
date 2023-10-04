@@ -4,10 +4,10 @@
 \alias{flair_nn.classifier_load}
 \title{Create a Flair Classifier.load Object}
 \usage{
-flair_nn.classifier_load(pre_trained_model = "ner")
+flair_nn.classifier_load(pre_trained)
 }
 \arguments{
-\item{pre_trained_model}{A character string specifying the pre-trained model to use.
+\item{pre_trained}{A character string specifying the pre-trained model to use.
 This parameter is defined but not used in the current function context.}
 }
 \value{
