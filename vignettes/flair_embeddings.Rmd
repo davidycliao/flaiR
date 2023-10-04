@@ -66,11 +66,11 @@ Traverse each token in the sentence and print them. To view each token, it's nec
 ```{r}
 # Iterate through each token in the sentence, printing them. 
 # Utilize reticulate::py_str(token) to view each token, given that the sentence is a Python object.
-for (token in sentence$tokens) {
-  cat("Token: ", reticulate::py_str(token), "\n")
+for (i in seq_along(sentence$tokens)) {
+  cat("Token: ", reticulate::py_str(sentence$tokens[[i]]), "\n")
   # Access the embedding of the token, converting it to an R object, 
   # and print the first 10 elements of the vector.
-  token_embedding <- token$embedding
+  token_embedding <- sentence$tokens[[i]]$embedding
   print(head(token_embedding, 10))
 }
 ```
