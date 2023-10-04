@@ -1,0 +1,225 @@
+# flair_datasets returns the expected output
+test_that("flair_datasets returns the expected output", {
+  # Skip test if the "reticulate" library is not available
+  skip_if_not_installed("reticulate")
+  library(reticulate)
+
+  # Check that flair_datasets() returns the expected type of object
+  result <- flair_datasets()
+  expect_s3_class(result, "python.builtin.module")
+
+  # Optional: Check that the returned module contains an expected attribute
+  # expect_true("an_expected_attribute" %in% py_list_attributes(result))
+})
+
+# flair_data.sentence returns expected output
+test_that("flair_data.sentence returns expected output", {
+  # Skip test if the "reticulate" library is not available
+  skip_if_not_installed("reticulate")
+  library(reticulate)
+
+  # Expected use case
+  result <- flair_data.sentence("This is a sample sentence.")
+  expect_s3_class(result, "python.builtin.object")
+  # Additional checks can be added based on expected attributes of the output
+
+  # Check behavior with empty string
+  result_empty <- flair_data.sentence("")
+  expect_s3_class(result_empty, "python.builtin.object")
+
+})
+
+test_that("flair_data.sentence handles errors and unexpected input correctly", {
+  skip_if_not_installed("reticulate")
+  library(reticulate)
+
+  # Check that non-string input is handled appropriately
+  expect_error(flair_data.sentence(123), "TypeError: 'float' object is not subscriptable")
+  expect_error(flair_data.sentence(NULL), "TypeError: can only join an iterable")
+
+  # Add more test cases for other types of unexpected input
+})
+
+
+#flair_nn.classifier_load returns expected output
+test_that("flair_nn.classifier_load returns expected output", {
+  # Skip test if the "reticulate" library is not available
+  skip_if_not_installed("reticulate")
+  library(reticulate)
+
+  # Expected use case
+  result <- flair_nn.classifier_load("ner")
+  expect_s3_class(result, "python.builtin.object")
+  # Add additional checks based on expected attributes of the output
+
+  # Add more test cases as needed
+})
+
+test_that("flair_nn.classifier_load handles errors and unexpected input correctly", {
+  skip_if_not_installed("reticulate")
+  library(reticulate)
+
+  # Check that non-string input is handled appropriately
+  expect_error(flair_nn.classifier_load(123), "FileNotFoundError.*No such file or directory")
+  expect_error(flair_nn.classifier_load(NULL), "FileNotFoundError.*No such file or directory")
+  # Check behavior with invalid model name
+  expect_error(flair_nn.classifier_load("non_existent_model"), "FileNotFoundError.*No such file or directory")
+
+  # Add more test cases for other types of unexpected input
+})
+
+
+
+#
+library(testthat)
+library(reticulate)
+
+# Your function
+flair_embeddings <- function() {
+  flair_embeddings <- import('flair.embeddings')
+  return(flair_embeddings)
+}
+
+# Test
+test_that("flair_embeddings imports the Python module correctly", {
+
+  # Skip test if reticulate or Python is not available
+  skip_if_not_installed("flaiR")
+
+  # Check that the module import does not throw an error
+  expect_silent(mod <- flair_embeddings())
+
+  # Check that the imported module is not NULL
+  expect_true(!is.null(mod))
+
+  # Optionally, check for a known attribute or function in the imported module
+  # to make sure it is the expected module
+  expect_true("FlairEmbeddings" %in% names(mod))
+})
+
+
+
+# flair_embeddings.FlairEmbeddings initializes embeddings correctly
+
+
+test_that("flair_embeddings.FlairEmbeddings initializes embeddings correctly", {
+  skip_if_not_installed("reticulate")
+
+  # Check no error with valid input and check message
+  expect_message(f_e <- flair_embeddings.FlairEmbeddings("news-forward"), "Initialized Flair forward embeddings")
+
+  # Optionally, check type of returned object
+  # Depending on the object you might expect a list, a reticulate python object, etc.
+  expect_true(inherits(f_e, "python.builtin.object"))
+
+  # Check that an error is thrown with invalid input
+  # Check that an error containing certain text is thrown with invalid input
+  expect_error(
+    flair_embeddings.FlairEmbeddings("invalid_type"),
+    "ValueError.*invalid_type",
+    fixed = FALSE  # because we're using a regular expression
+  )
+
+  })
+
+
+# flair_embeddings.TransformerWordEmbeddings returns an embedding
+
+test_that("flair_embeddings.TransformerWordEmbeddings returns an embedding", {
+  skip_if_not_installed("flaiR")
+
+  embedding <- flair_embeddings.TransformerWordEmbeddings("bert-base-uncased")
+
+  # Testing for expected class hierarchy
+  expect_true("flair.embeddings.token.TransformerWordEmbeddings" %in% class(embedding))
+})
+
+
+
+# flair_embeddings.WordEmbeddings returns an embedding
+
+test_that("flair_embeddings.WordEmbeddings returns an embedding", {
+  skip_if_not_installed("flaiR")
+
+  embedding <- flair_embeddings.WordEmbeddings("glove")
+
+  # Testing for expected class hierarchy
+  expect_true("flair.embeddings.WordEmbeddings" %in% class(embedding) ||
+                "flair.embeddings.token.WordEmbeddings" %in% class(embedding))
+})
+
+
+
+# flair_embeddings.TransformerDocumentEmbeddings returns an embedding
+
+test_that("flair_embeddings.TransformerDocumentEmbeddings returns an embedding", {
+  skip_if_not_installed("flaiR")
+
+  # Check if Python and the necessary Python module are available
+  available <- requireNamespace("reticulate") && reticulate::py_module_available("flair")
+  skip_if_not(available, "Python or the 'flair' module is not available")
+
+  embedding <- flair_embeddings.TransformerDocumentEmbeddings("bert-base-uncased")
+
+  # Testing for expected class hierarchy
+  expect_true("flair.embeddings.TransformerDocumentEmbeddings" %in% class(embedding) ||
+                "flair.embeddings.document.TransformerDocumentEmbeddings" %in% class(embedding))
+})
+
+
+# flair_splitter.SegtokSentenceSplitter returns an object
+
+test_that("flair_splitter.SegtokSentenceSplitter returns an object", {
+  skip_if_not_installed("reticulate")
+  skip_on_cran()  # Optional: skip this test on CRAN to avoid unnecessary failures
+
+  # Check if Python and the necessary Python module are available
+  available <- requireNamespace("reticulate") && reticulate::py_module_available("flair")
+  skip_if_not(available, "Python or the 'flair' module is not available")
+
+  SegtokSentenceSplitter <- flair_splitter.SegtokSentenceSplitter()
+
+  # Testing for expected class
+  expect_true("python.builtin.object" %in% class(SegtokSentenceSplitter))
+})
+
+
+# flair_models.sequencetagger returns an object
+test_that("flair_models.sequencetagger returns an object", {
+  skip_if_not_installed("reticulate")
+  skip_on_cran()  # Optional: skip this test on CRAN
+
+  # Check if Python and the necessary Python module are available
+  available <- requireNamespace("reticulate") && reticulate::py_module_available("flair")
+  skip_if_not(available, "Python or the 'flair' module is not available")
+
+  SequenceTagger <- flair_models.sequencetagger()
+
+  # Testing for expected class
+  expect_true("python.builtin.object" %in% class(SequenceTagger))
+
+  # Optionally: Additional tests to check if the imported object has expected attributes or methods
+  # For example, if we expect SequenceTagger to have a method named "load", we might test:
+  # expect_true("load" %in% names(reticulate::py_list_attributes(SequenceTagger)))
+})
+
+
+# flair_trainers returns an object
+test_that("flair_trainers returns an object", {
+  skip_if_not_installed("reticulate")
+  skip_on_cran()  # Optional: skip this test on CRAN
+
+  # Check if Python and the necessary Python module are available
+  available <- requireNamespace("reticulate") && reticulate::py_module_available("flair")
+  skip_if_not(available, "Python or the 'flair' module is not available")
+
+  trainers <- flair_trainers()
+
+  # Testing for expected class
+  expect_true("python.builtin.object" %in% class(trainers))
+
+  # Optionally: Additional tests to check if the imported object has expected attributes or methods
+  # For example, if we expect trainers to have a method named "ModelTrainer", we might test:
+  # expect_true("ModelTrainer" %in% names(reticulate::py_list_attributes(trainers)))
+})
+
