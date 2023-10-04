@@ -223,3 +223,96 @@ test_that("flair_trainers returns an object", {
   # expect_true("ModelTrainer" %in% names(reticulate::py_list_attributes(trainers)))
 })
 
+
+# flair_embeddings returns an object
+test_that("flair_embeddings returns an object", {
+  skip_if_not_installed("reticulate")
+
+  # Check if Python and the necessary Python module are available
+  available <- requireNamespace("reticulate") && reticulate::py_module_available("flair")
+  skip_if_not(available, "Python or the 'flair' module is not available")
+
+  embeddings_module <- flair_embeddings()
+
+  # Testing for expected class
+  expect_true("python.builtin.object" %in% class(embeddings_module))
+
+  # Optionally: Additional tests to check if the imported object has expected attributes or methods
+  # For example, if we expect embeddings_module to have a method named "FlairEmbeddings", we might test:
+  expect_true("TransformerEmbeddings" %in% reticulate::py_list_attributes(embeddings_module))
+})
+
+
+# flair_embeddings.FlairEmbeddings gives messages and stops as expected
+test_that("flair_embeddings.FlairEmbeddings gives messages and stops as expected", {
+  # Skipping if necessary modules are not available
+  skip_if_not_installed("reticulate")
+  available <- requireNamespace("reticulate") && reticulate::py_module_available("flair")
+  skip_if_not(available, "Python or the 'flair' module is not available")
+
+  # Testing if the function issues the expected message
+  expect_message(flair_embeddings.FlairEmbeddings("news-forward"), "Initialized Flair forward embeddings")
+  expect_message(flair_embeddings.FlairEmbeddings("news-backward"), "Initialized Flair backward embeddings")
+
+  # Testing if the function issues an error with invalid input
+  expect_error(flair_embeddings.FlairEmbeddings("invalid_type"),
+               "ValueError.*invalid_type",
+               fixed = FALSE  # because we're using a regular expression
+  )
+})
+
+
+# flair_splitter.SegtokSentenceSplitter returns expected object
+test_that("flair_splitter.SegtokSentenceSplitter returns expected object", {
+  # Skip the test if the necessary modules are not available
+  skip_if_not_installed("reticulate")
+  available <- requireNamespace("reticulate") && reticulate::py_module_available("flair")
+  skip_if_not(available, "Python or the 'flair' module is not available")
+
+  splitter <- flair_splitter.SegtokSentenceSplitter()
+
+  # Test that the function returns a non-null object
+  expect_true(!is.null(splitter))
+
+  # Test that the returned object is of the expected class
+  expect_true(inherits(splitter, "python.builtin.module"))
+})
+
+
+
+# flair_models.sequencetagger returns expected object
+test_that("flair_models.sequencetagger returns expected object", {
+  # Skip the test if the necessary modules are not available
+  skip_if_not_installed("reticulate")
+  skip_on_cran()
+  available <- requireNamespace("reticulate") && reticulate::py_module_available("flair")
+  skip_if_not(available, "Python or the 'flair' module is not available")
+
+  seq_tagger <- flair_models.sequencetagger()
+
+  # Test that the function returns a non-null object
+  expect_true(!is.null(seq_tagger))
+
+  # Test that the returned object is of the expected class
+  expect_true(inherits(seq_tagger, "python.builtin.type"))
+})
+
+
+# flair_trainers returns expected object
+test_that("flair_trainers returns expected object", {
+  # Skip the test if the necessary modules are not available
+  skip_if_not_installed("reticulate")
+  skip_on_cran()
+  available <- requireNamespace("reticulate") && reticulate::py_module_available("flair")
+  skip_if_not(available, "Python or the 'flair' module is not available")
+
+  trainers <- flair_trainers()
+
+  # Test that the function returns a non-null object
+  expect_true(!is.null(trainers))
+
+  # Test that the returned object is of the expected class
+  expect_true(inherits(trainers, "python.builtin.module"))
+})
+
+
