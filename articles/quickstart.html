@@ -65,6 +65,7 @@
   <div class="dropdown-menu" aria-labelledby="dropdown--quick-start">
     <a class="dropdown-item" href="../articles/quickstart.html#install-flair-with-using-remotes">Install flaiR via GitHub</a>
     <a class="dropdown-item" href="../articles/quickstart.html#wrapped-functions">Wrapped Functions</a>
+    <a class="dropdown-item" href="../articles/quickstart.html#embeddings">FlaiR Embeddings</a>
     <a class="dropdown-item" href="../articles/quickstart.html#featured-functions-for-nlp-tasks-with-data-table-output">Featured Functions in flaiR</a>
     <a class="dropdown-item" href="../articles/quickstart.html#how-to-contribute">How to Contribute</a>
   </div>
@@ -209,10 +210,19 @@ in the <u><a href="https://github.com/davidycliao/flaiR/discussions" class="exte
 </div>
 <p> </p>
 <hr>
+<p> </p>
 </div>
 <div class="section level2">
 <h2 id="wrapped-functions">Wrapped Functions<a class="anchor" aria-label="anchor" href="#wrapped-functions"></a>
 </h2>
+<div style="text-align: justify">
+<p>For R users, {<code>flairR</code>} is built on top of {reticulate},
+enabling you to interact directly with Python modules in R and providing
+seamless support for documents in the R community. <strong>Please note
+that the following basic examples and explanations are derived from the
+official <a href="https://flairnlp.github.io/docs/intro" class="external-link">Flair NLP</a>
+Python documentation and tutorial.</strong></p>
+</div>
 <table class="table">
 <colgroup>
 <col width="46%">
@@ -233,10 +243,18 @@ in the <u><a href="https://github.com/davidycliao/flaiR/discussions" class="exte
 </tr>
 <tr class="odd">
 <td><code><a href="../reference/flair_nn.classifier_load.html">flair_nn.classifier_load()</a></code></td>
-<td>from flair.nn import Classifier</td>
+<td>from flair.embeddings import *</td>
 </tr>
 <tr class="even">
-<td><code>flair.embeddings.TransformerWordEmbeddings()</code></td>
+<td><code><a href="../reference/flair_embeddings.html">flair_embeddings()</a></code></td>
+<td>from flair.nn import Classifier</td>
+</tr>
+<tr class="odd">
+<td><code><a href="../reference/flair_embeddings.FlairEmbeddings.html">flair_embeddings.FlairEmbeddings()</a></code></td>
+<td>from flair.embeddings import FlairEmbeddings</td>
+</tr>
+<tr class="even">
+<td><code><a href="../reference/flair_embeddings.TransformerWordEmbeddings.html">flair_embeddings.TransformerWordEmbeddings()</a></code></td>
 <td>from flair.embeddings import TransformerWordEmbeddings</td>
 </tr>
 <tr class="odd">
@@ -244,19 +262,24 @@ in the <u><a href="https://github.com/davidycliao/flaiR/discussions" class="exte
 <td>from flair.embeddings import WordEmbeddings</td>
 </tr>
 <tr class="even">
-<td><code>segtok_sentence_splitter()</code></td>
-<td>flair_splitter.SegtokSentenceSplitter</td>
+<td><code><a href="../reference/flair_embeddings.TransformerDocumentEmbeddings.html">flair_embeddings.TransformerDocumentEmbeddings()</a></code></td>
+<td>from flair.embeddings import TransformerDocumentEmbeddings</td>
 </tr>
 <tr class="odd">
+<td><code><a href="../reference/flair_splitter.SegtokSentenceSplitter.html">flair_splitter.SegtokSentenceSplitter()</a></code></td>
+<td>flair_splitter.SegtokSentenceSplitter</td>
+</tr>
+<tr class="even">
 <td><code><a href="../reference/flair_models.sequencetagger.html">flair_models.sequencetagger()</a></code></td>
 <td>from flair.models import SequenceTagger</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code><a href="../reference/flair_trainers.html">flair_trainers()</a></code></td>
 <td>from flair.trainers import *</td>
 </tr>
 </tbody>
 </table>
+<p> </p>
 <div class="section level3">
 <h3 id="tag-entities-in-text">
 <strong>Tag Entities in Text</strong><a class="anchor" aria-label="anchor" href="#tag-entities-in-text"></a>
@@ -272,7 +295,7 @@ predict tags for the sentence:</p>
 <span></span>
 <span><span class="co"># load the NER tagger</span></span>
 <span><span class="va">tagger</span> <span class="op">=</span> <span class="fu"><a href="../reference/flair_nn.classifier_load.html">flair_nn.classifier_load</a></span><span class="op">(</span><span class="st">'ner'</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2023-10-04 14:24:48,857 SequenceTagger predicts: Dictionary with 20 tags: &lt;unk&gt;, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, &lt;START&gt;, &lt;STOP&gt;</span></span>
+<span><span class="co">#&gt; 2023-10-04 17:35:26,558 SequenceTagger predicts: Dictionary with 20 tags: &lt;unk&gt;, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, &lt;START&gt;, &lt;STOP&gt;</span></span>
 <span></span>
 <span><span class="co"># run NER over sentence</span></span>
 <span><span class="va">tagger</span><span class="op">$</span><span class="fu">predict</span><span class="op">(</span><span class="va">sentence</span><span class="op">)</span></span></code></pre></div>
@@ -289,6 +312,7 @@ predict tags for the sentence:</p>
 <span><span class="co">#&gt; 'Span[2:3]: "Berlin"'/'LOC' (0.9812)</span></span>
 <span><span class="co">#&gt; 'Span[4:6]: "New York"'/'LOC' (0.9957)</span></span></code></pre></div>
 </div>
+<p> </p>
 </div>
 <div class="section level3">
 <h3 id="tag-part-of-speech-in-text">
@@ -303,7 +327,7 @@ Hugging Face.</p>
 <span></span>
 <span><span class="co"># load the NER tagger</span></span>
 <span><span class="va">tagger</span> <span class="op">=</span> <span class="fu"><a href="../reference/flair_nn.classifier_load.html">flair_nn.classifier_load</a></span><span class="op">(</span><span class="st">'pos'</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2023-10-04 14:24:49,714 SequenceTagger predicts: Dictionary with 53 tags: &lt;unk&gt;, O, UH, ,, VBD, PRP, VB, PRP$, NN, RB, ., DT, JJ, VBP, VBG, IN, CD, NNS, NNP, WRB, VBZ, WDT, CC, TO, MD, VBN, WP, :, RP, EX, JJR, FW, XX, HYPH, POS, RBR, JJS, PDT, NNPS, RBS, AFX, WP$, -LRB-, -RRB-, ``, '', LS, $, SYM, ADD</span></span>
+<span><span class="co">#&gt; 2023-10-04 17:35:27,424 SequenceTagger predicts: Dictionary with 53 tags: &lt;unk&gt;, O, UH, ,, VBD, PRP, VB, PRP$, NN, RB, ., DT, JJ, VBP, VBG, IN, CD, NNS, NNP, WRB, VBZ, WDT, CC, TO, MD, VBN, WP, :, RP, EX, JJR, FW, XX, HYPH, POS, RBR, JJS, PDT, NNPS, RBS, AFX, WP$, -LRB-, -RRB-, ``, '', LS, $, SYM, ADD</span></span>
 <span></span>
 <span><span class="co"># run NER over sentence</span></span>
 <span><span class="va">tagger</span><span class="op">$</span><span class="fu">predict</span><span class="op">(</span><span class="va">sentence</span><span class="op">)</span></span></code></pre></div>
@@ -349,12 +373,150 @@ of loading the ‘ner’ model, you now load the ‘sentiment’ model:</p>
 <code class="sourceCode R"><span><span class="co"># print the sentence with all annotations</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">sentence</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Sentence[7]: "I love Berlin and New York." → POSITIVE (0.9982)</span></span></code></pre></div>
-<p>Use a for loop to print out each pos tag.</p>
+</div>
+<p> </p>
+</div>
+<div class="section level3">
+<h3 id="embeddings">
+<strong>Embeddings</strong><a class="anchor" aria-label="anchor" href="#embeddings"></a>
+</h3>
+<p><strong>Embeddings Words with Transformers</strong></p>
+<div style="text-align: justify">
+<p>Let’s use a standard BERT model (bert-base-uncased) to embed the
+sentence “the grass is green”. Simply instantate
+<code><a href="../reference/flair_embeddings.TransformerWordEmbeddings.html">flair_embeddings.TransformerWordEmbeddings()</a></code> and call
+<code>$embed()</code> over the sentence object:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">sentence</span><span class="op">$</span><span class="fu">get_labels</span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>      <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">sentence</span><span class="op">$</span><span class="fu">get_labels</span><span class="op">(</span><span class="op">)</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
-<span>  <span class="op">}</span></span>
-<span><span class="co">#&gt; 'Sentence[7]: "I love Berlin and New York."'/'POSITIVE' (0.9982)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># initiate TransformerWordEmbeddings</span></span>
+<span><span class="va">embedding</span> <span class="op">=</span> <span class="fu"><a href="../reference/flair_embeddings.TransformerWordEmbeddings.html">flair_embeddings.TransformerWordEmbeddings</a></span><span class="op">(</span><span class="st">'bert-base-uncased'</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># create a sentence</span></span>
+<span><span class="va">sentence</span> <span class="op">=</span> <span class="fu"><a href="../reference/flair_data.sentence.html">flair_data.sentence</a></span><span class="op">(</span><span class="st">'The grass is green .'</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># embed words in sentence</span></span>
+<span><span class="va">embedding</span><span class="op">$</span><span class="fu">embed</span><span class="op">(</span><span class="va">sentence</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [[1]]</span></span>
+<span><span class="co">#&gt; Sentence[5]: "The grass is green ."</span></span></code></pre></div>
+<p>This will cause each word in the sentence to be embedded. You can
+iterate through the words and get each embedding like this:</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">sentence</span><span class="op">$</span><span class="va">tokens</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"Token: "</span>,  <span class="fu">reticulate</span><span class="fu">::</span><span class="fu"><a href="https://rstudio.github.io/reticulate/reference/py_str.html" class="external-link">py_str</a></span><span class="op">(</span><span class="va">sentence</span><span class="op">$</span><span class="va">tokens</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>, <span class="st">"\n"</span><span class="op">)</span></span>
+<span>  <span class="co"># Access the embedding of the token, converting it to an R object, </span></span>
+<span>  <span class="co"># and print the first 15 elements of the vector.</span></span>
+<span>  <span class="va">token_embedding</span> <span class="op">&lt;-</span> <span class="va">sentence</span><span class="op">$</span><span class="va">tokens</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">embedding</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">token_embedding</span>, <span class="fl">15</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="co">#&gt; Token:  Token[0]: "The" </span></span>
+<span><span class="co">#&gt; tensor([-0.3904, -1.1946,  0.1296,  0.5806, -0.0847, -0.4520,  1.3699,  0.3850,</span></span>
+<span><span class="co">#&gt;         -0.6132, -0.3246, -0.9899, -0.6897,  0.2754, -0.5867,  0.2399])</span></span>
+<span><span class="co">#&gt; Token:  Token[1]: "grass" </span></span>
+<span><span class="co">#&gt; tensor([-0.3904, -1.1946,  0.1296,  0.5806, -0.0847, -0.4520,  1.3699,  0.3850,</span></span>
+<span><span class="co">#&gt;         -0.6132, -0.3246, -0.9899, -0.6897,  0.2754, -0.5867,  0.2399])</span></span>
+<span><span class="co">#&gt; Token:  Token[2]: "is" </span></span>
+<span><span class="co">#&gt; tensor([-0.3904, -1.1946,  0.1296,  0.5806, -0.0847, -0.4520,  1.3699,  0.3850,</span></span>
+<span><span class="co">#&gt;         -0.6132, -0.3246, -0.9899, -0.6897,  0.2754, -0.5867,  0.2399])</span></span>
+<span><span class="co">#&gt; Token:  Token[3]: "green" </span></span>
+<span><span class="co">#&gt; tensor([-0.3904, -1.1946,  0.1296,  0.5806, -0.0847, -0.4520,  1.3699,  0.3850,</span></span>
+<span><span class="co">#&gt;         -0.6132, -0.3246, -0.9899, -0.6897,  0.2754, -0.5867,  0.2399])</span></span>
+<span><span class="co">#&gt; Token:  Token[4]: "." </span></span>
+<span><span class="co">#&gt; tensor([-0.3904, -1.1946,  0.1296,  0.5806, -0.0847, -0.4520,  1.3699,  0.3850,</span></span>
+<span><span class="co">#&gt;         -0.6132, -0.3246, -0.9899, -0.6897,  0.2754, -0.5867,  0.2399])</span></span></code></pre></div>
+</div>
+<p> </p>
+<p><strong>Embeddings Documents with Transformers</strong></p>
+<div style="text-align: justify">
+<p>Sometimes you want to have an embedding for a whole document, not
+only individual words. In this case, use one of the DocumentEmbeddings
+classes in Flair. Let’s again use a standard BERT model to get an
+embedding for the entire sentence:</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># initiate TransformerWordEmbeddings</span></span>
+<span><span class="va">embedding</span> <span class="op">=</span> <span class="fu"><a href="../reference/flair_embeddings.TransformerDocumentEmbeddings.html">flair_embeddings.TransformerDocumentEmbeddings</a></span><span class="op">(</span><span class="st">'bert-base-uncased'</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># create a sentence</span></span>
+<span><span class="va">sentence</span> <span class="op">=</span> <span class="fu"><a href="../reference/flair_data.sentence.html">flair_data.sentence</a></span><span class="op">(</span><span class="st">'The grass is green .'</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># embed words in sentence</span></span>
+<span><span class="va">embedding</span><span class="op">$</span><span class="fu">embed</span><span class="op">(</span><span class="va">sentence</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [[1]]</span></span>
+<span><span class="co">#&gt; Sentence[5]: "The grass is green ."</span></span></code></pre></div>
+<p>Use the <code>$embedding</code> method to extract the entire
+embedding from the sentence and print the embedding as follows:</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">sentence</span><span class="op">$</span><span class="va">embedding</span>, n <span class="op">=</span> <span class="fl">20</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; tensor([-0.0717, -0.4132, -0.3651,  0.0199, -0.6143, -0.0525,  1.2074, -0.0852,</span></span>
+<span><span class="co">#&gt;         -0.3331,  0.0753, -0.3081, -0.2436,  0.6264,  0.0861,  0.1762, -0.5427,</span></span>
+<span><span class="co">#&gt;          0.4518,  0.5222, -0.0022,  0.2461])</span></span></code></pre></div>
+</div>
+<p> </p>
+<p><strong>How to Stack Embeddings</strong></p>
+<div style="text-align: justify">
+<p>Flair allows you to combine embeddings into “embedding stacks”. When
+not fine-tuning, using combinations of embeddings often gives best
+results!</p>
+<p>Use the <code>StackedEmbeddings</code> class and instantiate it by
+passing a list of embeddings that you wish to combine. For instance,
+lets combine classic <code>GloVe</code> embeddings with
+<code>forward</code> and <code>backward</code> Flair embeddings.</p>
+<p>First, instantiate the two embeddings you wish to combine:</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># init standard GloVe embedding</span></span>
+<span><span class="va">glove_embedding</span> <span class="op">=</span> <span class="fu"><a href="../reference/flair_embeddings.WordEmbeddings.html">flair_embeddings.WordEmbeddings</a></span><span class="op">(</span><span class="st">'glove'</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># init Flair forward and backwards embeddings</span></span>
+<span><span class="va">flair_embedding_forward</span> <span class="op">=</span> <span class="fu"><a href="../reference/flair_embeddings.FlairEmbeddings.html">flair_embeddings.FlairEmbeddings</a></span><span class="op">(</span><span class="st">'news-forward'</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Initialized Flair forward embeddings</span></span>
+<span><span class="va">flair_embedding_backward</span> <span class="op">=</span> <span class="fu"><a href="../reference/flair_embeddings.FlairEmbeddings.html">flair_embeddings.FlairEmbeddings</a></span><span class="op">(</span><span class="st">'news-backward'</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Initialized Flair backward embeddings</span></span></code></pre></div>
+<p>Now, instantiate the <code>StackedEmbeddings</code> class and pass a
+list containing these two embeddings. Both R and Python have list
+functionality. Let’s create a StackedEmbedding object that combines the
+GloVe and forward/backward Flair embeddings.</p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">stacked_embeddings</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_embeddings.html">flair_embeddings</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">StackedEmbeddings</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">glove_embedding</span>, </span>
+<span>                                                                <span class="va">flair_embedding_forward</span>,</span>
+<span>                                                                <span class="va">flair_embedding_backward</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p>Next, use the <code>$embed()</code> method to transform text into
+vectors for your sentences.</p>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># make a sentence</span></span>
+<span><span class="va">sentence</span> <span class="op">=</span> <span class="fu"><a href="../reference/flair_data.sentence.html">flair_data.sentence</a></span><span class="op">(</span><span class="st">'I love Berlin and New York.'</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># just embed a sentence using the StackedEmbedding as you would with any single embedding.</span></span>
+<span><span class="va">stacked_embeddings</span><span class="op">$</span><span class="fu">embed</span><span class="op">(</span><span class="va">sentence</span><span class="op">)</span></span></code></pre></div>
+<p>Words are now embedded using a concatenation of three different
+embeddings. This means that the resulting embedding vector is still a
+single PyTorch vector.</p>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">sentence</span><span class="op">$</span><span class="va">tokens</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"Token: "</span>,  <span class="fu">reticulate</span><span class="fu">::</span><span class="fu"><a href="https://rstudio.github.io/reticulate/reference/py_str.html" class="external-link">py_str</a></span><span class="op">(</span><span class="va">sentence</span><span class="op">$</span><span class="va">tokens</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>, <span class="st">"\n"</span><span class="op">)</span></span>
+<span>  <span class="co"># Access the embedding of the token, converting it to an R object, </span></span>
+<span>  <span class="co"># and print the first 15 elements of the vector.</span></span>
+<span>  <span class="va">token_embedding</span> <span class="op">&lt;-</span> <span class="va">sentence</span><span class="op">$</span><span class="va">tokens</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">embedding</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">token_embedding</span>, <span class="fl">15</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="co">#&gt; Token:  Token[0]: "I" </span></span>
+<span><span class="co">#&gt; tensor([ 0.6197,  0.5665, -0.4658, -1.1890,  0.4460,  0.0660,  0.3191,  0.1468,</span></span>
+<span><span class="co">#&gt;         -0.2212,  0.7924,  0.2991,  0.1607,  0.0253,  0.1868, -0.3100])</span></span>
+<span><span class="co">#&gt; Token:  Token[1]: "love" </span></span>
+<span><span class="co">#&gt; tensor([ 0.6197,  0.5665, -0.4658, -1.1890,  0.4460,  0.0660,  0.3191,  0.1468,</span></span>
+<span><span class="co">#&gt;         -0.2212,  0.7924,  0.2991,  0.1607,  0.0253,  0.1868, -0.3100])</span></span>
+<span><span class="co">#&gt; Token:  Token[2]: "Berlin" </span></span>
+<span><span class="co">#&gt; tensor([ 0.6197,  0.5665, -0.4658, -1.1890,  0.4460,  0.0660,  0.3191,  0.1468,</span></span>
+<span><span class="co">#&gt;         -0.2212,  0.7924,  0.2991,  0.1607,  0.0253,  0.1868, -0.3100])</span></span>
+<span><span class="co">#&gt; Token:  Token[3]: "and" </span></span>
+<span><span class="co">#&gt; tensor([ 0.6197,  0.5665, -0.4658, -1.1890,  0.4460,  0.0660,  0.3191,  0.1468,</span></span>
+<span><span class="co">#&gt;         -0.2212,  0.7924,  0.2991,  0.1607,  0.0253,  0.1868, -0.3100])</span></span>
+<span><span class="co">#&gt; Token:  Token[4]: "New" </span></span>
+<span><span class="co">#&gt; tensor([ 0.6197,  0.5665, -0.4658, -1.1890,  0.4460,  0.0660,  0.3191,  0.1468,</span></span>
+<span><span class="co">#&gt;         -0.2212,  0.7924,  0.2991,  0.1607,  0.0253,  0.1868, -0.3100])</span></span>
+<span><span class="co">#&gt; Token:  Token[5]: "York" </span></span>
+<span><span class="co">#&gt; tensor([ 0.6197,  0.5665, -0.4658, -1.1890,  0.4460,  0.0660,  0.3191,  0.1468,</span></span>
+<span><span class="co">#&gt;         -0.2212,  0.7924,  0.2991,  0.1607,  0.0253,  0.1868, -0.3100])</span></span>
+<span><span class="co">#&gt; Token:  Token[6]: "." </span></span>
+<span><span class="co">#&gt; tensor([ 0.6197,  0.5665, -0.4658, -1.1890,  0.4460,  0.0660,  0.3191,  0.1468,</span></span>
+<span><span class="co">#&gt;         -0.2212,  0.7924,  0.2991,  0.1607,  0.0253,  0.1868, -0.3100])</span></span></code></pre></div>
 </div>
 <p> </p>
 <hr>
@@ -374,7 +536,6 @@ automatically do it for you in a neat format. The main features include
 tagging</strong></a>, <a href="https://davidycliao.github.io/flaiR/articles/get_entities.html"><strong>transformer-based
 sentiment analysis</strong></a>, and <a href="https://davidycliao.github.io/flaiR/articles/get_sentiments.html"><strong>named
 entity recognition</strong></a>.</p>
-</div>
 <table class="table">
 <colgroup>
 <col width="23%">
@@ -420,6 +581,8 @@ model)</td>
 </tr>
 </tbody>
 </table>
+</div>
+<p> </p>
 <div class="section level3">
 <h3 id="tagging-parts-of-speech-with-flair-models">
 <strong>Tagging Parts-of-Speech with Flair Models</strong><a class="anchor" aria-label="anchor" href="#tagging-parts-of-speech-with-flair-models"></a>
@@ -427,8 +590,7 @@ model)</td>
 <div style="text-align: justify">
 <p>You can load the pre-trained model <code>"pos-fast"</code>. For more
 pre-trained models, see <a href="https://flairnlp.github.io/docs/tutorial-basics/part-of-speech-tagging#-in-english" class="external-link uri">https://flairnlp.github.io/docs/tutorial-basics/part-of-speech-tagging#-in-english</a>.</p>
-</div>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">texts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"UCD is one of the best universities in Ireland."</span>,</span>
 <span>           <span class="st">"UCD has a good campus but is very far from my apartment in Dublin."</span>,</span>
 <span>           <span class="st">"Essex is famous for social science research."</span>,</span>
@@ -437,12 +599,12 @@ pre-trained models, see <a href="https://flairnlp.github.io/docs/tutorial-basics
 <span>           <span class="st">"TCD is similar to Oxford."</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">doc_ids</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"doc1"</span>, <span class="st">"doc2"</span>, <span class="st">"doc3"</span>, <span class="st">"doc4"</span>, <span class="st">"doc5"</span>, <span class="st">"doc6"</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">flaiR</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tagger_pos</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_tagger_pos.html">load_tagger_pos</a></span><span class="op">(</span><span class="st">"pos-fast"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2023-10-04 14:24:52,212 SequenceTagger predicts: Dictionary with 53 tags: &lt;unk&gt;, O, UH, ,, VBD, PRP, VB, PRP$, NN, RB, ., DT, JJ, VBP, VBG, IN, CD, NNS, NNP, WRB, VBZ, WDT, CC, TO, MD, VBN, WP, :, RP, EX, JJR, FW, XX, HYPH, POS, RBR, JJS, PDT, NNPS, RBS, AFX, WP$, -LRB-, -RRB-, ``, '', LS, $, SYM, ADD</span></span></code></pre></div>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<span><span class="co">#&gt; 2023-10-04 17:35:34,955 SequenceTagger predicts: Dictionary with 53 tags: &lt;unk&gt;, O, UH, ,, VBD, PRP, VB, PRP$, NN, RB, ., DT, JJ, VBP, VBG, IN, CD, NNS, NNP, WRB, VBZ, WDT, CC, TO, MD, VBN, WP, :, RP, EX, JJR, FW, XX, HYPH, POS, RBR, JJS, PDT, NNPS, RBS, AFX, WP$, -LRB-, -RRB-, ``, '', LS, $, SYM, ADD</span></span></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_pos.html">get_pos</a></span><span class="op">(</span><span class="va">texts</span>, <span class="va">doc_ids</span>, <span class="va">tagger_pos</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">results</span>, n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
 <span><span class="co">#&gt;     doc_id token_id text_id        token tag precision</span></span>
@@ -457,19 +619,20 @@ pre-trained models, see <a href="https://flairnlp.github.io/docs/tutorial-basics
 <span><span class="co">#&gt;  9:   doc1        8      NA      Ireland NNP    1.0000</span></span>
 <span><span class="co">#&gt; 10:   doc1        9      NA            .   .    0.9998</span></span></code></pre></div>
 </div>
+<p> </p>
+</div>
 <div class="section level3">
 <h3 id="tagging-entities-with-flair-models">
 <strong>Tagging Entities with Flair Models</strong><a class="anchor" aria-label="anchor" href="#tagging-entities-with-flair-models"></a>
 </h3>
 <div style="text-align: justify">
 <p>Load the pretrained model “ner”. For more pretrained models, see <a href="https://flairnlp.github.io/docs/tutorial-basics/tagging-entities" class="external-link uri">https://flairnlp.github.io/docs/tutorial-basics/tagging-entities</a>.</p>
-</div>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">flaiR</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tagger_ner</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_tagger_ner.html">load_tagger_ner</a></span><span class="op">(</span><span class="st">"ner"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2023-10-04 14:24:53,495 SequenceTagger predicts: Dictionary with 20 tags: &lt;unk&gt;, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, &lt;START&gt;, &lt;STOP&gt;</span></span></code></pre></div>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<span><span class="co">#&gt; 2023-10-04 17:35:36,309 SequenceTagger predicts: Dictionary with 20 tags: &lt;unk&gt;, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, &lt;START&gt;, &lt;STOP&gt;</span></span></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_entities.html">get_entities</a></span><span class="op">(</span><span class="va">texts</span>, <span class="va">doc_ids</span>, <span class="va">tagger_ner</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">results</span>, n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
 <span><span class="co">#&gt;     doc_id        entity tag</span></span>
@@ -484,6 +647,8 @@ pre-trained models, see <a href="https://flairnlp.github.io/docs/tutorial-basics
 <span><span class="co">#&gt;  9:   doc5       Ireland LOC</span></span>
 <span><span class="co">#&gt; 10:   doc6           TCD ORG</span></span></code></pre></div>
 </div>
+<p> </p>
+</div>
 <div class="section level3">
 <h3 id="tagging-sentiment">
 <strong>Tagging Sentiment</strong><a class="anchor" aria-label="anchor" href="#tagging-sentiment"></a>
@@ -493,12 +658,11 @@ pre-trained models, see <a href="https://flairnlp.github.io/docs/tutorial-basics
 models of “<code>sentiment</code>”, “<code>sentiment-fast</code>”, and
 “<code>de-offensive-language</code>” are currently available. For more
 pretrained models, see <a href="https://flairnlp.github.io/docs/tutorial-basics/tagging-sentiment" class="external-link uri">https://flairnlp.github.io/docs/tutorial-basics/tagging-sentiment</a>.</p>
-</div>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">flaiR</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tagger_sent</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_tagger_sentiments.html">load_tagger_sentiments</a></span><span class="op">(</span><span class="st">"sentiment"</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_sentiments.html">get_sentiments</a></span><span class="op">(</span><span class="va">texts</span>, <span class="va">doc_ids</span>, <span class="va">tagger_sent</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">results</span>, n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    doc_id sentiment     score</span></span>
@@ -508,6 +672,7 @@ pretrained models, see <a href="https://flairnlp.github.io/docs/tutorial-basics/
 <span><span class="co">#&gt; 4:   doc4  POSITIVE 0.9901405</span></span>
 <span><span class="co">#&gt; 5:   doc5  POSITIVE 0.9952670</span></span>
 <span><span class="co">#&gt; 6:   doc6  POSITIVE 0.9291794</span></span></code></pre></div>
+</div>
 <p> </p>
 <hr>
 </div>
@@ -516,14 +681,14 @@ pretrained models, see <a href="https://flairnlp.github.io/docs/tutorial-basics/
 <h2 id="how-to-contribute">How to Contribute<a class="anchor" aria-label="anchor" href="#how-to-contribute"></a>
 </h2>
 <div style="text-align: justify">
-<p>Currently, I am engaged as a postdoctoral researcher at UCD, immersed
-in numerous ongoing projects and tasks. Consequently, my availability to
-maintain, test, and create examples for R users may be limited. I warmly
-invite R users who share similar interests to join in contributing to
-this package. Contributions – whether they be comments, code
-suggestions, tutorial examples, or forking the repository – are greatly
-appreciated. Please note that the <code>flaiR</code> is released with
-the <a href="https://github.com/davidycliao/flaiR/blob/master/CONDUCT.md" class="external-link">Contributor
+<p>Currently, I am working as a postdoctoral researcher at SPIREs in
+Univerisyt College Dublin, immersed in numerous ongoing projects and
+tasks. Consequently, my availability to maintain, test, and create
+examples for R users may be limited. I warmly invite R users who share
+similar interests to join in contributing to this package. Contributions
+– whether they be comments, code suggestions, tutorial examples, or
+forking the repository – are greatly appreciated. Please note that the
+<code>flaiR</code> is released with the <a href="https://github.com/davidycliao/flaiR/blob/master/CONDUCT.md" class="external-link">Contributor
 Code of Conduct</a>. By contributing to this project, you agree to abide
 by its terms.</p>
 </div>
