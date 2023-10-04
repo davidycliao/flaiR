@@ -18,7 +18,7 @@ create a Flair Sentence object.
 }
 \examples{
 \dontrun{
-flair_data_sentence("The quick brown fox jumps over the lazy dog.")
+flair_data.sentence("The quick brown fox jumps over the lazy dog.")
 }
 
 }

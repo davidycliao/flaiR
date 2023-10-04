@@ -22,12 +22,13 @@ Embeddings for Sequence
 Labeling](https://aclanthology.org/C18-1139.pdf)’ and the official
 [mannual](https://flairnlp.github.io) in Python.
 
-`{flairR}` primarily consists of two main components. The first is a
-wrapper function built on top of {reticulate}, enabling you to interact
-directly with Python modules in R. Secondly, to facilitate more
-efficient use for social science research, {flairR} wraps the FlairNLP
-Python with three major functions to extract features in a tidy and
-clean format using
+For R users, {`flairR`} primarily consists of two main components. The
+first is a wrapper function built on top of {`reticulate`}, which
+enables you to interact directly with Python modules in R and provides
+seamless support for documents in the R community. Secondly, to
+facilitate more efficient use for social science research, {`flairR`}
+wraps the FlairNLP Python with three major functions to extract features
+in a tidy and clean format using
 [data.table](https://cran.r-project.org/web/packages/data.table/index.html).
 The features include [**part-of-speech
 tagging**](https://davidycliao.github.io/flaiR/articles/get_pos.html),

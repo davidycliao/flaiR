@@ -15,7 +15,7 @@ utilizing the `SegtokSentenceSplitter` class/method.
 }
 \examples{
 \dontrun{
-splitter <- segtok_sentence_splitter()
+splitter <- flair_splitter.SegtokSentenceSplitter()
 }
 
 }

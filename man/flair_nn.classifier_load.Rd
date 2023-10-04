@@ -19,7 +19,7 @@ and create a Classifier object from the Flair library.
 }
 \examples{
 \dontrun{
-classifier <- flair_nn_classifier_load("ner")
+classifier <- flair_nn.classifier_load("ner")
 }
 
 }

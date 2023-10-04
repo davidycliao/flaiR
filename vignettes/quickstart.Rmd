@@ -59,19 +59,33 @@ Afterward, you might see the message __"Virtual environment 'r-reticulate' succe
 
 -----
 
+&nbsp;
+
+
 ## Wrapped Functions
 
-| **Wrapped Functions** | Corresponding Practice in Python                          | 
+<div style="text-align: justify">
+
+For R users, {`flairR`} is built on top of {reticulate}, enabling you to interact directly with Python modules in R and providing seamless support for documents in the R community. __Please note that the following basic examples and explanations are derived from the official [Flair NLP](https://flairnlp.github.io/docs/intro) Python documentation and tutorial.__
+
+</div>
+
+
+| **Wrapped Functions**                             | Corresponding Practice in Python                          | 
 |---------------------------------------------------|-----------------------------------------------------------|
 | `flair_datasets()`                                | from flair.datasets import *                              |
 | `flair_data.sentence()`                           | from flair.data import Sentence                           |
-| `flair_nn.classifier_load()`                      | from flair.nn import Classifier                           |
-| `flair.embeddings.TransformerWordEmbeddings()`    | from flair.embeddings import TransformerWordEmbeddings    |
+| `flair_nn.classifier_load()`                      | from flair.embeddings import *                            |
+| `flair_embeddings()`                              | from flair.nn import Classifier                           |
+| `flair_embeddings.FlairEmbeddings()`              | from flair.embeddings import FlairEmbeddings              |
+| `flair_embeddings.TransformerWordEmbeddings()`    | from flair.embeddings import TransformerWordEmbeddings    |
 | `flair_embeddings.WordEmbeddings()`               | from flair.embeddings import WordEmbeddings               |
-| `segtok_sentence_splitter()`                      | flair_splitter.SegtokSentenceSplitter                     |
+| `flair_embeddings.TransformerDocumentEmbeddings()`| from flair.embeddings import TransformerDocumentEmbeddings|
+| `flair_splitter.SegtokSentenceSplitter()`         | flair_splitter.SegtokSentenceSplitter                     |
 | `flair_models.sequencetagger()`                   | from flair.models import SequenceTagger                   |
 | `flair_trainers()`                                | from flair.trainers import *                              |
 
+&nbsp;
 
 ### __Tag Entities in Text__ 
 
@@ -105,6 +119,8 @@ for (i in seq_along(sentence$get_labels())) {
 
 </div>
 
+&nbsp;
+
 
 ### __Tag Part-of-Speech in Text__ 
 
@@ -120,7 +136,6 @@ tagger = flair_nn.classifier_load('pos')
 
 # run NER over sentence
 tagger$predict(sentence)
-
 ```
 
 This should print:
@@ -137,13 +152,9 @@ for (i in seq_along(sentence$get_labels())) {
   }
 ```
 
-
 </div>
 
-
-
 &nbsp;
-
 
 ### __Detect Sentiment__
 
@@ -169,11 +180,123 @@ tagger$predict(sentence)
 print(sentence)
 ```
 
-Use a for loop to print out each pos tag.
+</div>
+
+&nbsp;
+
+
+### __Embeddings__
+
+
+__Embeddings Words with Transformers__
+
+<div style="text-align: justify">
+
+Let's use a standard BERT model (bert-base-uncased) to embed the sentence "the grass is green".
+Simply instantate `flair_embeddings.TransformerWordEmbeddings()`  and call `$embed()` over the sentence object:
+
 ```{r}
-for (i in seq_along(sentence$get_labels())) {
-      print(sentence$get_labels()[[i]])
-  }
+# initiate TransformerWordEmbeddings
+embedding = flair_embeddings.TransformerWordEmbeddings('bert-base-uncased')
+
+# create a sentence
+sentence = flair_data.sentence('The grass is green .')
+
+# embed words in sentence
+embedding$embed(sentence)
+```
+This will cause each word in the sentence to be embedded. You can iterate through the words and get each embedding like this:
+
+```{r}
+for (i in seq_along(sentence$tokens)) {
+  cat("Token: ",  reticulate::py_str(sentence$tokens[[i]]), "\n")
+  # Access the embedding of the token, converting it to an R object, 
+  # and print the first 15 elements of the vector.
+  token_embedding <- sentence$tokens[[1]]$embedding
+  print(head(token_embedding, 15))
+}
+```
+
+</div>
+
+&nbsp;
+
+__Embeddings Documents with Transformers__
+
+<div style="text-align: justify">
+
+Sometimes you want to have an embedding for a whole document, not only individual words. In this case, use one of the DocumentEmbeddings classes in Flair. Let's again use a standard BERT model to get an embedding for the entire sentence:
+
+```{r}
+# initiate TransformerWordEmbeddings
+embedding = flair_embeddings.TransformerDocumentEmbeddings('bert-base-uncased')
+
+# create a sentence
+sentence = flair_data.sentence('The grass is green .')
+
+# embed words in sentence
+embedding$embed(sentence)
+```
+
+Use the `$embedding` method to extract the entire embedding from the sentence and print the embedding as follows:
+
+```{r}
+print(head(sentence$embedding, n = 20))
+```
+
+</div>
+
+&nbsp;
+
+__How to Stack Embeddings__
+
+<div style="text-align: justify">
+
+
+Flair allows you to combine embeddings into "embedding stacks". When not fine-tuning, using combinations of embeddings often gives best results!
+
+Use the `StackedEmbeddings` class and instantiate it by passing a list of embeddings that you wish to combine. For instance, lets combine classic `GloVe` embeddings with `forward` and `backward` Flair embeddings.
+
+First, instantiate the two embeddings you wish to combine:
+
+```{r}
+# init standard GloVe embedding
+glove_embedding = flair_embeddings.WordEmbeddings('glove')
+
+# init Flair forward and backwards embeddings
+flair_embedding_forward = flair_embeddings.FlairEmbeddings('news-forward')
+flair_embedding_backward = flair_embeddings.FlairEmbeddings('news-backward')
+```
+
+Now, instantiate the `StackedEmbeddings` class and pass a list containing these two embeddings. Both R and Python have list functionality. Let's create a StackedEmbedding object that combines the GloVe and forward/backward Flair embeddings.
+```{r}
+stacked_embeddings <- flair_embeddings()$StackedEmbeddings(list(glove_embedding, 
+                                                                flair_embedding_forward,
+                                                                flair_embedding_backward))
+```
+
+
+Next, use the `$embed()` method to transform text into vectors for your sentences.
+```{r}
+# make a sentence
+sentence = flair_data.sentence('I love Berlin and New York.')
+
+# just embed a sentence using the StackedEmbedding as you would with any single embedding.
+stacked_embeddings$embed(sentence)
+```
+
+
+Words are now embedded using a concatenation of three different embeddings. This means that the resulting embedding vector is still a single PyTorch vector.
+
+
+```{r}
+for (i in seq_along(sentence$tokens)) {
+  cat("Token: ",  reticulate::py_str(sentence$tokens[[i]]), "\n")
+  # Access the embedding of the token, converting it to an R object, 
+  # and print the first 15 elements of the vector.
+  token_embedding <- sentence$tokens[[1]]$embedding
+  print(head(token_embedding, 15))
+}
 ```
 
 </div>
@@ -182,15 +305,13 @@ for (i in seq_along(sentence$get_labels())) {
 
 -----
 
-
 ## Featured Functions for NLP Tasks with data.table Output
 
 <div style="text-align: justify">
 
 
-
 To enhance more efficient utilization in social science research, {flairR} encapsulates FlairNLP Python with three principal functions to extract features in a neat and orderly format using [data.table](https://cran.r-project.org/web/packages/data.table/index.html). Through these featured functions, you don't have to write loops to format parsed output on your own; {`flairR`} will automatically do it for you in a neat format. The main features include [**part-of-speech tagging**](https://davidycliao.github.io/flaiR/articles/get_pos.html), [**transformer-based sentiment analysis**](https://davidycliao.github.io/flaiR/articles/get_entities.html), and [**named entity recognition**](https://davidycliao.github.io/flaiR/articles/get_sentiments.html).
-</div>
+
 
 
 | **Core  Featured Function in flaiR**                    | Loader                     | Supported Models                                                                                                         |
@@ -199,13 +320,17 @@ To enhance more efficient utilization in social science research, {flairR} encap
 | `get_pos()`, `get_pos_batch()`               | `load_tagger_pos()`        | `pos` (English POS), `fr-pos` (French POS), `de-pos` (German POS), `nl-pos` (Dutch POS), and more.                       |
 | `get_sentiments()`, `get_sentiments_batch()` | `load_tagger_sentiments()` | `sentiment` (English) , `sentiment-fast `(English) , `de-offensive-language` (German offensive language detection model) |
 
+</div>
+
+&nbsp;
+
+
 ### __Tagging Parts-of-Speech with Flair Models__
 
 <div style="text-align: justify">
 
-You can load the pre-trained model `"pos-fast"`. For more pre-trained models, see https://flairnlp.github.io/docs/tutorial-basics/part-of-speech-tagging#-in-english.
 
-</div>
+You can load the pre-trained model `"pos-fast"`. For more pre-trained models, see https://flairnlp.github.io/docs/tutorial-basics/part-of-speech-tagging#-in-english.
 
 ```{r}
 texts <- c("UCD is one of the best universities in Ireland.",
@@ -231,6 +356,10 @@ results <- get_pos(texts, doc_ids, tagger_pos)
 head(results, n = 10)
 ```
 
+</div>
+
+&nbsp;
+
 
 ### __Tagging Entities with Flair Models__
 
@@ -238,7 +367,7 @@ head(results, n = 10)
 
 Load the pretrained model "ner". For more pretrained models, see https://flairnlp.github.io/docs/tutorial-basics/tagging-entities.
 
-</div>
+
 
 ```{r}
 library(flaiR)
@@ -253,12 +382,18 @@ results <- get_entities(texts, doc_ids, tagger_ner)
 head(results, n = 10)
 ```
 
+</div>
+
+&nbsp;
+
+
 ### __Tagging Sentiment__
 
 <div style="text-align: justify">
+
+
 Load the pretrained model "`sentiment`". The pre-trained models of "`sentiment`", "`sentiment-fast`", and "`de-offensive-language`" are currently available. For more pretrained models, see https://flairnlp.github.io/docs/tutorial-basics/tagging-sentiment.
 
-</div>
 
 ```{r}
 library(flaiR)
@@ -274,6 +409,8 @@ results <- get_sentiments(texts, doc_ids, tagger_sent)
 head(results, n = 10)
 ```
 
+</div>
+
 &nbsp;
 
 -----
@@ -283,8 +420,8 @@ head(results, n = 10)
 
 <div style="text-align: justify">
 
+Currently, I am working as a postdoctoral researcher at SPIREs in Univerisyt College Dublin, immersed in numerous ongoing projects and tasks. Consequently, my availability to maintain, test, and create examples for R users may be limited. I warmly invite R users who share similar interests to join in contributing to this package. Contributions – whether they be comments, code suggestions, tutorial examples, or forking the repository – are greatly appreciated. Please note that the `flaiR` is released with the [Contributor Code of Conduct](https://github.com/davidycliao/flaiR/blob/master/CONDUCT.md). By contributing to this project, you agree to abide by its terms. 
 
-Currently, I am engaged as a postdoctoral researcher at UCD, immersed in numerous ongoing projects and tasks. Consequently, my availability to maintain, test, and create examples for R users may be limited. I warmly invite R users who share similar interests to join in contributing to this package. Contributions – whether they be comments, code suggestions, tutorial examples, or forking the repository – are greatly appreciated. Please note that the `flaiR` is released with the [Contributor Code of Conduct](https://github.com/davidycliao/flaiR/blob/master/CONDUCT.md). By contributing to this project, you agree to abide by its terms. 
 
 </div>
 
