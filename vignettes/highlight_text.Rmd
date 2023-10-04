@@ -27,7 +27,7 @@ reticulate::py_install("flair")
 library(flaiR)
 data("uk_immigration")
 uk_immigration <- uk_immigration[30,]
-tagger_ner <- load_tagger_ner("de-ner")
+tagger_ner <- load_tagger_ner("ner")
 result <- get_entities(uk_immigration$text,
                        tagger = tagger_ner,
                        show.text_id = FALSE
