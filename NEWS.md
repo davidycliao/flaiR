@@ -1,6 +1,12 @@
-# flaiR 0.0.5 (2020-09-11)
+# flaiR 0.0.5 (2020-10-01)
 
 * Added more tests to monitor function performance. However, zzz.R and utils.R still fall below 80%.
+
+* Added wrapped functions integrating Python code.
+
+* Created a function for coloring entities.
+
+* Provided some tutorials for interacting with R and Python using Flair.
 
 # flaiR 0.0.3 (2020-09-10)
 
