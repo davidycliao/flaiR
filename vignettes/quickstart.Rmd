@@ -39,8 +39,7 @@ __System Requirement:__
 
 
 
-If you're using Python-based packages in R for the first time, such as {`flaiR`} or {`reticulate`}, you probably haven't installed a Conda environment yet. When loading flaiR in R, two main steps occur. First, __a [conda](https://docs.conda.io/projects/conda/en/4.6.0/_downloads/52a95608c49671267e40c689e0bc00ca/conda-cheatsheet.pdf) environment is created through {[reticulate](https://ugoproto.github.io/ugo_r_doc/pdf/reticulate.pdf)}__. During this process, you will observe numerous messages related to the installation of the Python environment and the Python flair module. Notably, flair has numerous dependencies, including libraries related to transformers (like the Hugging Face API). Thus, the installation might take some time to complete. 
-
+If you're using Python-based packages in R for the first time, such as {`flaiR`} or {`reticulate`}, you probably haven't installed a Conda environment yet. When loading flaiR in R, two main steps occur. First, __a [conda](https://docs.conda.io/projects/conda/en/4.6.0/_downloads/52a95608c49671267e40c689e0bc00ca/conda-cheatsheet.pdf) environment is created through {[reticulate](https://ugoproto.github.io/ugo_r_doc/pdf/reticulate.pdf)}__. During this process, you will observe numerous messages related to the installation of the Python environment and the Python flair module. Notably, flair has numerous dependencies, including libraries related to transformers (like the HuggingFace). Thus, the installation might take some time to complete. 
 
 When you copy the command below, you will generally be asked to upgrade the package. This is because this package operates on the {`reticulate`}, and when your packages in R are  outdated, RStudio would likely display __“These packages have more recent versions available.”__ to prompt you to update. We recommend that you update.
 
@@ -76,7 +75,7 @@ Afterward, you might see the message __"Virtual environment 'r-reticulate' succe
 
 
 
-## Designed Functions for Streamlining NLP Tasks with data.table Output
+## Featured Functions for Streamlining NLP Tasks with data.table Output
 
 
 | **Core Tagging Features**                    | Loader                     | Supported Models                                                                                                         |
@@ -84,11 +83,6 @@ Afterward, you might see the message __"Virtual environment 'r-reticulate' succe
 | `get_entities()`, `get_entities_batch()`     | `load_tagger_ner()`        | `en` (English), `fr` (French), `da` (Danish), `nl` (Dutch), and more.                                                    |
 | `get_pos()`, `get_pos_batch()`               | `load_tagger_pos()`        | `pos` (English POS), `fr-pos` (French POS), `de-pos` (German POS), `nl-pos` (Dutch POS), and more.                       |
 | `get_sentiments()`, `get_sentiments_batch()` | `load_tagger_sentiments()` | `sentiment` (English) , `sentiment-fast `(English) , `de-offensive-language` (German offensive language detection model) |
-
-
-
-
-## User Guaide for Designed Functions in flaiR
 
 ### __Tagging Parts-of-Speech with Flair Models__
 
@@ -174,7 +168,8 @@ head(results, n = 10)
 
 <div style="text-align: justify">
 
-Contributions in the form of comments, code suggestions, and tutorial examples are very welcome. Please note that the `flaiR` is released with the [Contributor Code of Conduct](https://github.com/davidycliao/flaiR/blob/master/CONDUCT.md). By contributing to this project, you agree to abide by its terms.
+
+Currently, I am engaged as a postdoctoral researcher at UCD, immersed in numerous ongoing projects and tasks. Consequently, my availability to maintain, test, and create examples for R users may be limited. I warmly invite R users who share similar interests to join in contributing to this package. Contributions – whether they be comments, code suggestions, tutorial examples, or forking the repository – are greatly appreciated. Please note that the `flaiR` is released with the [Contributor Code of Conduct](https://github.com/davidycliao/flaiR/blob/master/CONDUCT.md). By contributing to this project, you agree to abide by its terms. 
 
 </div>
 

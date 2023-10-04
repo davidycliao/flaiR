@@ -17,6 +17,7 @@ utilizing the `SegtokSentenceSplitter` class/method.
 \dontrun{
 splitter <- segtok_sentence_splitter()
 }
+
 }
 \references{
 Python reference:

@@ -21,6 +21,7 @@ and create a Classifier object from the Flair library.
 \dontrun{
 classifier <- flair_nn_classifier_load("ner")
 }
+
 }
 \references{
 Python equivalent:

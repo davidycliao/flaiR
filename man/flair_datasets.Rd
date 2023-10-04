@@ -28,5 +28,6 @@ corpus = UD_ENGLISH().downsample(0.1)
 }
 }
 \seealso{
-\url{https://github.com/flairNLP/flair} for additional information on Flair's capabilities and datasets in NLP.
+\url{https://github.com/flairNLP/flair} for additional information on Flair's
+ capabilities and datasets in NLP.
 }

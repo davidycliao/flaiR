@@ -13,6 +13,8 @@
 #' corpus <- UD_ENGLISH()$downsample(0.1)
 #' }
 #'
+#' @importFrom reticulate import
+#'
 #' @references
 #' Python equivalent: \preformatted{
 #' from flair.datasets import UD_ENGLISH
@@ -20,11 +22,14 @@
 #' }
 #'
 #' @seealso
-#' \url{https://github.com/flairNLP/flair} for additional information on Flair's capabilities and datasets in NLP.
+#' \url{https://github.com/flairNLP/flair} for additional information on Flair's
+#'  capabilities and datasets in NLP.
+#'
+#' @importFrom reticulate import
 #'
 #' @export
 flair_datasets <- function() {
-  flair.datasets <- reticulate::import("flair.datasets")
+  flair.datasets <- import("flair.datasets")
   return(flair.datasets)
 }
 
@@ -47,9 +52,12 @@ flair_datasets <- function() {
 #' from flair.data import Sentence
 #' sentence = Sentence("The quick brown fox jumps over the lazy dog.")
 #' }
+#'
+#' @importFrom reticulate import
+#'
 #' @export
 flair_data.sentence <- function(sentence_text) {
-  flair_data <- reticulate::import('flair.data')
+  flair_data <- import('flair.data')
   sentence <- flair_data$Sentence(sentence_text)
   return(sentence)
 }
@@ -62,19 +70,25 @@ flair_data.sentence <- function(sentence_text) {
 #'
 #' @param pre_trained_model A character string specifying the pre-trained model to use.
 #' This parameter is defined but not used in the current function context.
+#'
 #' @return A Flair Classifier object.
+#'
 #' @examples
 #' \dontrun{
 #' classifier <- flair_nn_classifier_load("ner")
 #' }
+#'
 #' @references
 #' Python equivalent:
 #' \preformatted{
 #' from flair.nn import Classifier
 #' }
+#'
+#' @importFrom reticulate import
+#'
 #' @export
 flair_nn.classifier_load <- function(pre_trained_model = 'ner') {
-  flair_nn <- reticulate::import('flair.nn')
+  flair_nn <- import('flair.nn')
   classifier <- flair_nn$Classifier$load(pre_trained_model)
   return(classifier)
 }
@@ -99,9 +113,11 @@ flair_nn.classifier_load <- function(pre_trained_model = 'ner') {
 #' embedding = TransformerWordEmbeddings('bert-base-uncased')
 #' }
 #'
+#' @importFrom reticulate import
+#'
 #' @export
 flair_embeddings.TransformerWordEmbeddings <- function(pre_trained_model = 'bert-base-uncased') {
-  flair_embeddings <- reticulate::import('flair.embeddings')
+  flair_embeddings <- import('flair.embeddings')
   TransformerWordEmbeddings <- flair_embeddings$TransformerWordEmbeddings
   embedding <- TransformerWordEmbeddings(pre_trained_model)
   return(embedding)
@@ -127,9 +143,12 @@ flair_embeddings.TransformerWordEmbeddings <- function(pre_trained_model = 'bert
 #' from flair.embeddings import WordEmbeddings
 #' glove_embedding = WordEmbeddings('glove')
 #' }
+#'
+#' @importFrom reticulate import
+#'
 #' @export
 flair_embeddings.WordEmbeddings <- function(pre_trained = "glove") {
-  flair_embeddings <- reticulate::import("flair.embeddings")
+  flair_embeddings <- import("flair.embeddings")
   WordEmbeddings <- flair_embeddings$WordEmbeddings
   embedding <- WordEmbeddings(pre_trained)
   return(embedding)
@@ -149,6 +168,9 @@ flair_embeddings.WordEmbeddings <- function(pre_trained = "glove") {
 #' \dontrun{
 #' splitter <- segtok_sentence_splitter()
 #' }
+#'
+#' @importFrom reticulate import
+#'
 #' @references
 #' Python reference:
 #' \preformatted{
@@ -178,6 +200,8 @@ flair_splitter.SegtokSentenceSplitter <- function() {
 #' sequence_tagger <- flair_models.sequencetagger()
 #' }
 #'
+#' @importFrom reticulate import
+#'
 #' @references
 #' Python equivalent:
 #' \preformatted{
@@ -189,7 +213,7 @@ flair_splitter.SegtokSentenceSplitter <- function() {
 #'
 #' @export
 flair_models.sequencetagger <- function() {
-  SequenceTagger <- reticulate::import("flair.models")$SequenceTagger
+  SequenceTagger <- import("flair.models")$SequenceTagger
   return(SequenceTagger)
 }
 
@@ -206,11 +230,14 @@ flair_models.sequencetagger <- function() {
 #' \preformatted{
 #' from flair.trainers import ModelTrainer
 #' }
+#'
 #' @examples
 #' \dontrun{
 #' trainers <- flair_trainers()
 #' model_trainer <- trainers$ModelTrainer
 #' }
+#' @importFrom reticulate import
+#'
 #' @export
 flair_trainers <- function() {
   trainers <- reticulate::import('flair.trainers')
