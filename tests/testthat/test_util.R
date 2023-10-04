@@ -155,7 +155,6 @@ test_that("check_show.text_id throws error for non-logical input", {
 })
 
 
-
 test_that("check_texts_and_ids handles input correctly", {
   # Check that the function stops if texts is NULL or empty
   expect_error(check_texts_and_ids(NULL, c("id1", "id2")), "The texts cannot be NULL or empty.")
@@ -172,6 +171,23 @@ test_that("check_texts_and_ids handles input correctly", {
   expect_silent(res <- check_texts_and_ids(c("text1", "text2"), c("id1", "id2")))
   expect_equal(res$texts, c("text1", "text2"))
   expect_equal(res$doc_ids, c("id1", "id2"))
+})
+
+
+# Test 14: check_flair_installed identifies whether flair is available
+
+test_that("check_flair_installed identifies whether flair is available", {
+  # Mocking that the module is available
+  with_mock(
+    `reticulate::py_module_available` = function(...) TRUE,
+    expect_true(check_flair_installed())
+  )
+
+  # Mocking that the module is not available
+  with_mock(
+    `reticulate::py_module_available` = function(...) FALSE,
+    expect_false(check_flair_installed())
+  )
 })
 
 
