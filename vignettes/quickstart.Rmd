@@ -94,6 +94,8 @@ For R users, {`flairR`} is built on top of {reticulate}, enabling you to interac
 Let's run named entity recognition (NER) over the following example sentence: "I love Berlin and New York. To do this, all you need is to make a Sentence for this text, load a pre-trained model and use it to predict tags for the sentence:
 
 ```{r}
+library(flaiR)
+
 # make a sentence
 sentence = flair_data.sentence('I love Berlin and New York.')
 
@@ -128,6 +130,8 @@ for (i in seq_along(sentence$get_labels())) {
 
 We use flair/pos-english for POS tagging in the standard models on Hugging Face.
 ```{r}
+library(flaiR)
+
 # make a sentence
 sentence = flair_data.sentence('I love Berlin and New York.')
 
@@ -165,6 +169,8 @@ Let's run sentiment analysis over the same sentence to determine whether it is P
 You can do this with essentially the same code as above. Just instead of loading the 'ner' model, you now load the 'sentiment' model:
 
 ```{r}
+library(flaiR)
+
 # make a sentence
 sentence = flair_data.sentence('I love Berlin and New York.')
 
@@ -196,6 +202,8 @@ Let's use a standard BERT model (bert-base-uncased) to embed the sentence "the g
 Simply instantate `flair_embeddings.TransformerWordEmbeddings()`  and call `$embed()` over the sentence object:
 
 ```{r}
+library(flaiR)
+
 # initiate TransformerWordEmbeddings
 embedding = flair_embeddings.TransformerWordEmbeddings('bert-base-uncased')
 
