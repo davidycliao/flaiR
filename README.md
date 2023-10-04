@@ -22,8 +22,6 @@ Embeddings for Sequence
 Labeling](https://aclanthology.org/C18-1139.pdf)’ and the official
 [mannual](https://flairnlp.github.io) in Python.
 
-<br>
-
 `{flairR}` primarily consists of two main components. The first is a
 wrapper function built on top of {reticulate}, enabling you to interact
 directly with Python modules in R. Secondly, to facilitate more
