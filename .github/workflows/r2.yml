@@ -6,41 +6,83 @@
 # See https://github.com/r-lib/actions/tree/master/examples#readme for
 # additional example workflows available for the R community.
 
-name: R
+# name: R
+#
+# on:
+#   push:
+#     branches: [ "main" ]
+#   pull_request:
+#     branches: [ "main" ]
+#
+# permissions:
+#   contents: read
+#
+# jobs:
+#   build:
+#     runs-on: macos-latest
+#     strategy:
+#       matrix:
+#         r-version: ['4.0.0', '4.1.0', '4.1.1']
+#     steps:
+#       - uses: actions/checkout@v3
+#
+#       - name: Install pandoc
+#         run: |
+#           brew install pandoc
+#
+#       - name: Set up R ${{ matrix.r-version }}
+#         uses: r-lib/actions/setup-r@v1
+#         with:
+#           r-version: ${{ matrix.r-version }}
+#
+#       - name: Install dependencies
+#         run: |
+#           install.packages(c("remotes", "rcmdcheck"))
+#           remotes::install_deps(dependencies = TRUE)
+#         shell: Rscript {0}
+#
+#       - name: Check
+#         run: rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "error")
+#         shell: Rscript {0}
 
-on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+name: R-CMD-check
 
-permissions:
-  contents: read
+on: [push, pull_request]
 
 jobs:
-  build:
-    runs-on: macos-latest
+  R-CMD-check:
+    runs-on: ${{ matrix.config.os }}
+
+    name: ${{ matrix.config.os }} (${{ matrix.config.r }})
+
     strategy:
+      fail-fast: false
       matrix:
-        r-version: ['4.0.0', '4.1.0', '4.1.1']
+        config:
+          - {os: windows-latest, r: 'release'}
+          # Add additional testing environments as needed
+
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout Repository
+        uses: actions/checkout@v2
 
-      - name: Install pandoc
-        run: |
-          brew install pandoc
-
-      - name: Set up R ${{ matrix.r-version }}
+      - name: Setup R
         uses: r-lib/actions/setup-r@v1
         with:
-          r-version: ${{ matrix.r-version }}
+          r-version: ${{ matrix.config.r }}
 
-      - name: Install dependencies
+      # Additional setup steps like dependency installation
+
+      - name: Check Package
         run: |
-          install.packages(c("remotes", "rcmdcheck"))
           remotes::install_deps(dependencies = TRUE)
+          options(repos = c(CRAN = "https://cloud.r-project.org"))
+          rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "error")
         shell: Rscript {0}
 
-      - name: Check
-        run: rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "error")
-        shell: Rscript {0}
+      - name: Upload Check Results
+        if: failure()
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ runner.os }}-r${{ matrix.config.r }}-results
+          path: check/
