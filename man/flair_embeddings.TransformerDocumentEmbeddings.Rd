@@ -20,19 +20,14 @@ It takes a pre-trained model name as an argument and returns the respective embe
 }
 \examples{
 \dontrun{
-sentence <- flair_data.sentence('Your sentence here.')
 embedding <- flair_embeddings.TransformerDocumentEmbeddings(pre_trained = "bert-base-uncased")
-embedding.embed(sentence)
-print(sentence) }
+}
 
 }
 \references{
 In Python's Flair library:
 \code{
 from flair.embeddings import TransformerDocumentEmbeddings
-from flair.data import Sentence
 embedding = TransformerDocumentEmbeddings('bert-base-uncased')
-sentence = Sentence('flaiR is R wrapper')
-embedding.embed(sentence)
 }
 }

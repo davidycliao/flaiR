@@ -19,19 +19,14 @@ a `WordEmbeddings` object using the Flair library.
 }
 \examples{
 \dontrun{
-sentence = Sentence('flaiR is R wrapper')
-embedding <- word_embeddings("glove")
+embedding <- flair_embeddings.WordEmbeddings("glove")
 }
 
 }
 \references{
 Python equivalent:
 \preformatted{
-from flair.data import Sentence
 from flair.embeddings import WordEmbeddings
 embedding = WordEmbeddings('glove')
-sentence = Sentence('flaiR is R wrapper')
-embedding.embed(sentence)
-print(sentence)
 }
 }

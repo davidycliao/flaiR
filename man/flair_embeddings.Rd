@@ -14,7 +14,9 @@ This function imports and returns the \code{flair.embeddings} module from Flair.
 It provides a convenient R interface to the Flair library's embedding functionalities.
 }
 \examples{
+\dontrun{
 flair_embeddings <- flair_embeddings()$FlairEmbeddings
+}
 
 }
 \references{

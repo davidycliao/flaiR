@@ -102,7 +102,9 @@ flair_nn.classifier_load <- function(pre_trained_model = 'ner') {
 #' @return The \code{flair.embeddings} module from Flair.
 #'
 #' @examples
+#' \dontrun{
 #' flair_embeddings <- flair_embeddings()$FlairEmbeddings
+#' }
 #'
 #' @references
 #' In Python's Flair library:
@@ -197,19 +199,14 @@ flair_embeddings.TransformerWordEmbeddings <- function(pre_trained_model = 'bert
 #'
 #' @examples
 #' \dontrun{
-#' sentence = Sentence('flaiR is R wrapper')
-#' embedding <- word_embeddings("glove")
+#' embedding <- flair_embeddings.WordEmbeddings("glove")
 #' }
 #'
 #' @references
 #' Python equivalent:
 #' \preformatted{
-#' from flair.data import Sentence
 #' from flair.embeddings import WordEmbeddings
 #' embedding = WordEmbeddings('glove')
-#' sentence = Sentence('flaiR is R wrapper')
-#' embedding.embed(sentence)
-#' print(sentence)
 #' }
 #'
 #' @importFrom reticulate import
@@ -232,19 +229,14 @@ flair_embeddings.WordEmbeddings <- function(pre_trained = "glove") {
 #'
 #' @examples
 #' \dontrun{
-#' sentence <- flair_data.sentence('Your sentence here.')
 #' embedding <- flair_embeddings.TransformerDocumentEmbeddings(pre_trained = "bert-base-uncased")
-#' embedding.embed(sentence)
-#' print(sentence) }
+#' }
 #'
 #' @references
 #' In Python's Flair library:
 #' \code{
 #' from flair.embeddings import TransformerDocumentEmbeddings
-#' from flair.data import Sentence
 #' embedding = TransformerDocumentEmbeddings('bert-base-uncased')
-#' sentence = Sentence('flaiR is R wrapper')
-#' embedding.embed(sentence)
 #' }
 #'
 #' @importFrom reticulate import
