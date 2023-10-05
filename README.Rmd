@@ -2,7 +2,7 @@
 output: github_document
 ---
 
-## <u>`flairR`</u>: An R Wrapper for Accessing Flair NLP Tagging Features <img src="man/figures/logo.png" align="right" width="180"/>
+# <u>`flairR`</u>: An R Wrapper for Accessing Flair NLP Tagging Features <img src="man/figures/logo.png" align="right" width="180"/>
 
 
 [![R](https://github.com/davidycliao/flaiR/actions/workflows/r2.yml/badge.svg)](https://github.com/davidycliao/flaiR/actions/workflows/r2.yml)
@@ -46,40 +46,16 @@ For R users, {`flairR`} primarily consists of two main components. The first is 
 
 The installation consists of two parts: First, install [Python 3.7](https://www.python.org/downloads/) or higher, and [R 3.6.3](https://www.r-project.org) or higher. Although we have tested it on Github Action with R 3.6.2, we strongly recommend installing [R 4.0.0 or above](https://github.com/davidycliao/flaiR/actions/runs/6416611291) to ensure compatibility between the R environment and {`reticulate`}. If there are any issues with the installation, feel free to ask in the <u>[Discussion](https://github.com/davidycliao/flaiR/discussions) </u>.
 
+
 ```r
 install.packages("remotes")
 remotes::install_github("davidycliao/flaiR", force = TRUE)
+```
+
+```r
 library(flaiR)
 ```
 
-
-<!-- ## Example -->
-
-<!-- ### NER with the State-of-the-Art German Pre-trained Model -->
-
-<!-- ```{r} -->
-<!-- library(flaiR) -->
-<!-- data("de_immigration") -->
-<!-- de_immigration <- de_immigration[5,] -->
-<!-- tagger_ner <- load_tagger_ner("de-ner") -->
-<!-- result <- get_entities(de_immigration$text, -->
-<!--                        tagger = tagger_ner, -->
-<!--                        show.text_id = FALSE -->
-<!--                        ) -->
-<!-- ``` -->
-
-<!-- ```{r} -->
-<!-- head(result, 5) -->
-<!-- ``` -->
-
-
-<!-- ### Coloring Entities  -->
-
-<!-- ```{r} -->
-<!-- highlighted_text <- highlight_text(text = de_immigration$text,  -->
-<!--                                    entities_mapping = map_entities(result)) -->
-<!-- highlighted_text -->
-<!-- ``` -->
 
 <br>
 
@@ -88,19 +64,13 @@ library(flaiR)
 ## How to Contribute
 
 <div style="text-align: justify">
-
-I currently am working as a postdoctoral researcher at  [Text and Policy Research Group](https://text-and-policy.com) in [SPIRe](https://www.ucd.ie/spire/) of University College Dublin, immersed in numerous ongoing research projects. My availability to maintain, test, and create examples for R users may be limited. I warmly invite R users who share similar interests to join in contributing to this package. Contributions – whether they be comments, code suggestions, tutorial examples, or forking the repository – are greatly appreciated. Please note that the `flaiR` is released with the [Contributor Code of Conduct](https://github.com/davidycliao/flaiR/blob/master/CONDUCT.md). By contributing to this project, you agree to abide by its terms. 
-
-
+I currently am working as a postdoctoral researcher at  [Text and Policy Research Group](https://text-and-policy.com) in [SPIRe](https://www.ucd.ie/spire/) of University College Dublin, immersed in numerous ongoing research projects. My availability to maintain, test, and create examples for R users may be limited. I warmly invite R users who share similar interests to join in contributing to this package. Please feel free to shoot me an email to collaborate on the task. Contributions – whether they be comments, code suggestions, tutorial examples, or forking the repository – are greatly appreciated. Please note that the `flaiR` is released with the [Contributor Code of Conduct](https://github.com/davidycliao/flaiR/blob/master/CONDUCT.md). By contributing to this project, you agree to abide by its terms. 
 </div>
 
+<br>
 
 
-
-
-
-
-### Citing the Contributions of `Flair NLP`
+## Citing the Contributions of `Flair NLP`
 
 <div style="text-align: justify">
 
