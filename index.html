@@ -159,10 +159,12 @@
   </div>
 </nav><div class="container template-home" id="container">
 <div class="row">
-  <main id="main" class="col-md-9"><div class="section level2">
-<h2 id="flairr-an-r-wrapper-for-accessing-flair-nlp-tagging-features-">
-<u><code>flairR</code></u>: An R Wrapper for Accessing Flair NLP Tagging Features <img src="reference/figures/logo.png" align="right" width="180"><a class="anchor" aria-label="anchor" href="#flairr-an-r-wrapper-for-accessing-flair-nlp-tagging-features-"></a>
-</h2>
+  <main id="main" class="col-md-9"><div class="section level1">
+<div class="page-header">
+<img src="logo.png" class="logo" alt=""><h1 id="flairr-an-r-wrapper-for-accessing-flair-nlp-tagging-features-">
+<u><code>flairR</code></u>: An R Wrapper for Accessing Flair NLP Tagging Features <a class="anchor" aria-label="anchor" href="#flairr-an-r-wrapper-for-accessing-flair-nlp-tagging-features-"></a>
+</h1>
+</div>
 <p><a href="https://github.com/davidycliao/flaiR/actions/workflows/r2.yml" class="external-link"><img src="https://github.com/davidycliao/flaiR/actions/workflows/r2.yml/badge.svg" alt="R"></a> <a href="https://github.com/davidycliao/flaiR/actions/workflows/r.yml" class="external-link"><img src="https://github.com/davidycliao/flaiR/actions/workflows/r.yml/badge.svg" alt="R-CMD-check"></a> <a href="https://github.com/davidycliao/flaiR/actions/workflows/test-coverage.yaml" class="external-link"><img src="https://github.com/davidycliao/flaiR/actions/workflows/test-coverage.yaml/badge.svg" alt="coverage"></a> <a href="https://codecov.io/gh/davidycliao/flaiR" class="external-link"><img src="https://codecov.io/gh/davidycliao/flaiR/graph/badge.svg?token=CPIBIB6L78" alt="codecov"></a> <a href="https://www.codefactor.io/repository/github/davidycliao/flair" class="external-link"><img src="https://www.codefactor.io/repository/github/davidycliao/flair/badge" alt="CodeFactor"></a></p>
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 <div style="text-align: justify">
@@ -174,48 +176,36 @@
 <h3 id="installation-via-github">Installation via <u><strong><code>GitHub</code></strong></u>
 <a class="anchor" aria-label="anchor" href="#installation-via-github"></a>
 </h3>
-<p>The installation consists of two parts: First, install <a href="https://www.python.org/downloads/" class="external-link">Python 3.7</a> or higher, and <a href="https://www.r-project.org" class="external-link">R 3.6.3</a> or higher. Although we have tested it on Github Action with R 3.6.2, we strongly recommend installing R 4.2.1 to ensure compatibility between the R environment and {<code>reticulate</code>}. If there are any issues with the installation, feel free to ask in the <u><a href="https://github.com/davidycliao/flaiR/discussions" class="external-link">Discussion</a> </u>.</p>
+<p>The installation consists of two parts: First, install <a href="https://www.python.org/downloads/" class="external-link">Python 3.7</a> or higher, and <a href="https://www.r-project.org" class="external-link">R 3.6.3</a> or higher. Although we have tested it on Github Action with R 3.6.2, we strongly recommend installing <a href="https://github.com/davidycliao/flaiR/actions/runs/6416611291" class="external-link">R 4.0.0 or above</a> to ensure compatibility between the R environment and {<code>reticulate</code>}. If there are any issues with the installation, feel free to ask in the <u><a href="https://github.com/davidycliao/flaiR/discussions" class="external-link">Discussion</a> </u>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span></span>
-<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"davidycliao/flaiR"</span>, force <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">flaiR</span><span class="op">)</span></span></code></pre></div>
-<!-- ## Example -->
-<!-- ### NER with the State-of-the-Art German Pre-trained Model -->
-<!-- ```{r} -->
-<!-- library(flaiR) -->
-<!-- data("de_immigration") -->
-<!-- de_immigration <- de_immigration[5,] -->
-<!-- tagger_ner <- load_tagger_ner("de-ner") -->
-<!-- result <- get_entities(de_immigration$text, -->
-<!--                        tagger = tagger_ner, -->
-<!--                        show.text_id = FALSE -->
-<!--                        ) -->
-<!-- ``` -->
-<!-- ```{r} -->
-<!-- head(result, 5) -->
-<!-- ``` -->
-<!-- ### Coloring Entities  -->
-<!-- ```{r} -->
-<!-- highlighted_text <- highlight_text(text = de_immigration$text,  -->
-<!--                                    entities_mapping = map_entities(result)) -->
-<!-- highlighted_text -->
-<!-- ``` -->
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"davidycliao/flaiR"</span>, force <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">flaiR</span><span class="op">)</span></span></code></pre></div>
 <p><br></p>
 </div>
-<div class="section level3">
-<h3 id="citing-the-contributions-of-flair">Citing the Contributions of <code>Flair</code>
-<a class="anchor" aria-label="anchor" href="#citing-the-contributions-of-flair"></a>
-</h3>
+<div class="section level2">
+<h2 id="how-to-contribute">How to Contribute<a class="anchor" aria-label="anchor" href="#how-to-contribute"></a>
+</h2>
+<div style="text-align: justify">
+<p>I currently am working as a postdoctoral researcher at <a href="https://text-and-policy.com" class="external-link">Text and Policy Research Group</a> in <a href="https://www.ucd.ie/spire/" class="external-link">SPIRe</a> of University College Dublin, immersed in numerous ongoing research projects. My availability to maintain, test, and create examples for R users may be limited. I warmly invite R users who share similar interests to join in contributing to this package. Please feel free to shoot me an email to collaborate on the task. Contributions – whether they be comments, code suggestions, tutorial examples, or forking the repository – are greatly appreciated. Please note that the <code>flaiR</code> is released with the <a href="https://github.com/davidycliao/flaiR/blob/master/CONDUCT.md" class="external-link">Contributor Code of Conduct</a>. By contributing to this project, you agree to abide by its terms.</p>
+</div>
+<p><br></p>
+</div>
+<div class="section level2">
+<h2 id="citing-the-contributions-of-flair-nlp">Citing the Contributions of <code>Flair NLP</code>
+<a class="anchor" aria-label="anchor" href="#citing-the-contributions-of-flair-nlp"></a>
+</h2>
 <div style="text-align: justify">
 <p>If you use this tool in academic research, we recommend citing the research article, <a href="https://aclanthology.org/C18-1139.pdf" class="external-link">Contextual String Embeddings for Sequence Labeling</a> from <code>Flair</code> research team.</p>
 </div>
-<div class="sourceCode" id="cb2"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="sc">@</span>inproceedings{akbik2018coling,</span>
-<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>  title<span class="ot">=</span>{Contextual String Embeddings <span class="cf">for</span> Sequence Labeling},</span>
-<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>  author<span class="ot">=</span>{Akbik, Alan and Blythe, Duncan and Vollgraf, Roland},</span>
-<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>  booktitle <span class="ot">=</span> {{COLING} <span class="dv">2018</span>, 27th International Conference on Computational Linguistics},</span>
-<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>  pages     <span class="ot">=</span> {<span class="dv">1638</span><span class="sc">--</span><span class="dv">1649</span>},</span>
-<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>  year      <span class="ot">=</span> {<span class="dv">2018</span>}</span>
-<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="sc">@</span>inproceedings{akbik2018coling,</span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>  title<span class="ot">=</span>{Contextual String Embeddings <span class="cf">for</span> Sequence Labeling},</span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>  author<span class="ot">=</span>{Akbik, Alan and Blythe, Duncan and Vollgraf, Roland},</span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>  booktitle <span class="ot">=</span> {{COLING} <span class="dv">2018</span>, 27th International Conference on Computational Linguistics},</span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a>  pages     <span class="ot">=</span> {<span class="dv">1638</span><span class="sc">--</span><span class="dv">1649</span>},</span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a>  year      <span class="ot">=</span> {<span class="dv">2018</span>}</span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a>}</span></code></pre></div>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">
