@@ -45,7 +45,8 @@ recognition**](https://davidycliao.github.io/flaiR/articles/get_sentiments.html)
 The installation consists of two parts: First, install [Python
 3.7](https://www.python.org/downloads/) or higher, and [R
 3.6.3](https://www.r-project.org) or higher. Although we have tested it
-on Github Action with R 3.6.2, we strongly recommend installing R 4.2.1
+on Github Action with R 3.6.2, we strongly recommend installing [R 4.0.0
+or above](https://github.com/davidycliao/flaiR/actions/runs/6416611291)
 to ensure compatibility between the R environment and {`reticulate`}. If
 there are any issues with the installation, feel free to ask in the
 <u>[Discussion](https://github.com/davidycliao/flaiR/discussions) </u>.
@@ -80,7 +81,26 @@ library(flaiR)
 
 <br>
 
-### Citing the Contributions of `Flair`
+## How to Contribute
+
+<div style="text-align: justify">
+
+I currently am working as a postdoctoral researcher at [Text and Policy
+Research Group](https://text-and-policy.com) in
+[SPIRe](https://www.ucd.ie/spire/) of University College Dublin,
+immersed in numerous ongoing research projects. My availability to
+maintain, test, and create examples for R users may be limited. I warmly
+invite R users who share similar interests to join in contributing to
+this package. Contributions – whether they be comments, code
+suggestions, tutorial examples, or forking the repository – are greatly
+appreciated. Please note that the `flaiR` is released with the
+[Contributor Code of
+Conduct](https://github.com/davidycliao/flaiR/blob/master/CONDUCT.md).
+By contributing to this project, you agree to abide by its terms.
+
+</div>
+
+### Citing the Contributions of `Flair NLP`
 
 <div style="text-align: justify">
 
