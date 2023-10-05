@@ -3,8 +3,6 @@ output: github_document
 ---
 
 ## <u>`flairR`</u>: An R Wrapper for Accessing Flair NLP Tagging Features <img src="man/figures/logo.png" align="right" width="180"/>
-
-
 [![R](https://github.com/davidycliao/flaiR/actions/workflows/r2.yml/badge.svg)](https://github.com/davidycliao/flaiR/actions/workflows/r2.yml)
 [![R-CMD-check](https://github.com/davidycliao/flaiR/actions/workflows/r.yml/badge.svg)](https://github.com/davidycliao/flaiR/actions/workflows/r.yml)
 [![coverage](https://github.com/davidycliao/flaiR/actions/workflows/test-coverage.yaml/badge.svg)](https://github.com/davidycliao/flaiR/actions/workflows/test-coverage.yaml)
@@ -42,10 +40,14 @@ For R users, {`flairR`} primarily consists of two main components. The first is 
 
 <br>
 
+
 ### Installation via  <u>__`GitHub`__</u>
+
+<div style="text-align: justify">
 
 The installation consists of two parts: First, install [Python 3.7](https://www.python.org/downloads/) or higher, and [R 3.6.3](https://www.r-project.org) or higher. Although we have tested it on Github Action with R 3.6.2, we strongly recommend installing [R 4.0.0 or above](https://github.com/davidycliao/flaiR/actions/runs/6416611291) to ensure compatibility between the R environment and {`reticulate`}. If there are any issues with the installation, feel free to ask in the <u>[Discussion](https://github.com/davidycliao/flaiR/discussions) </u>.
 
+</div>
 
 ```r
 install.packages("remotes")
@@ -54,6 +56,9 @@ remotes::install_github("davidycliao/flaiR", force = TRUE)
 
 ```r
 library(flaiR)
+#> flaiR: An R Wrapper for Accessing Flair NLP Tagging Features      
+#> Python: 3.11                                           
+#> Flair: 0.12.2  
 ```
 
 

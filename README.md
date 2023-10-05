@@ -42,6 +42,8 @@ recognition**](https://davidycliao.github.io/flaiR/articles/get_sentiments.html)
 
 ### Installation via <u>**`GitHub`**</u>
 
+<div style="text-align: justify">
+
 The installation consists of two parts: First, install [Python
 3.7](https://www.python.org/downloads/) or higher, and [R
 3.6.3](https://www.r-project.org) or higher. Although we have tested it
@@ -51,6 +53,8 @@ to ensure compatibility between the R environment and {`reticulate`}. If
 there are any issues with the installation, feel free to ask in the
 <u>[Discussion](https://github.com/davidycliao/flaiR/discussions) </u>.
 
+</div>
+
 ``` r
 install.packages("remotes")
 remotes::install_github("davidycliao/flaiR", force = TRUE)
@@ -58,6 +62,9 @@ remotes::install_github("davidycliao/flaiR", force = TRUE)
 
 ``` r
 library(flaiR)
+#> flaiR: An R Wrapper for Accessing Flair NLP Tagging Features      
+#> Python: 3.11                                           
+#> Flair: 0.12.2  
 ```
 
 <br>
