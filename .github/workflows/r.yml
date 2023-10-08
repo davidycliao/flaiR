@@ -62,6 +62,11 @@ jobs:
         run: |
           Rscript -e "install.packages('reticulate', repos = 'https://cloud.r-project.org/')"
 
+      - name: Install pandoc
+        run: |
+          brew install pandoc
+
+
       - name: Install Python dependencies
         run: |
           python -m pip install --upgrade pip
