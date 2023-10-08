@@ -45,6 +45,50 @@
 #         run: rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "error")
 #         shell: Rscript {0}
 
+#
+# name: R
+#
+# on: [push, pull_request]
+#
+# jobs:
+#   build:
+#     runs-on: windows-latest
+#
+#     steps:
+#     - name: Check out repository
+#       uses: actions/checkout@v2
+#
+#     - name: Install pandoc (Only on Windows)
+#       if: matrix.config.os == 'windows-latest'
+#       run: |
+#         choco install pandoc
+#
+#     - name: Set up Python
+#       uses: actions/setup-python@v2
+#       with:
+#         python-version: '3.8'
+#
+#     - name: Install Python dependencies
+#       run: |
+#         python -m pip install --upgrade pip
+#         pip install flair
+#
+#     - name: Set up R
+#       uses: r-lib/actions/setup-r@v1
+#       with:
+#         r-version: '4.0.5'
+#
+#     - name: Install dependencies
+#       run: |
+#         install.packages(c("remotes", "rcmdcheck"))
+#         remotes::install_deps(dependencies = TRUE)
+#       shell: Rscript {0}
+#
+#     - name: Check
+#       run: rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "error")
+#       shell: Rscript {0}
+#
+
 
 name: R
 
@@ -58,8 +102,7 @@ jobs:
     - name: Check out repository
       uses: actions/checkout@v2
 
-    - name: Install pandoc (Only on Windows)
-      if: matrix.config.os == 'windows-latest'
+    - name: Install pandoc
       run: |
         choco install pandoc
 
@@ -78,10 +121,16 @@ jobs:
       with:
         r-version: '4.0.5'
 
-    - name: Install dependencies
+    - name: Install R dependencies
       run: |
-        install.packages(c("remotes", "rcmdcheck"))
+        install.packages(c("remotes", "rcmdcheck", "reticulate"))
         remotes::install_deps(dependencies = TRUE)
+      shell: Rscript {0}
+
+    - name: Set Python Path for R reticulate
+      run: |
+        library(reticulate)
+        use_python(Sys.which("python"), required = TRUE)
       shell: Rscript {0}
 
     - name: Check
