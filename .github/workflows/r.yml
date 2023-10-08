@@ -131,11 +131,10 @@ jobs:
         run: |
           Rscript -e "install.packages('reticulate', repos = 'https://cloud.r-project.org/')"
 
-      # 使用 Brew 安装 Pandoc 只在 macOS 系统上有意义
-      - name: Install pandoc (Only on macOS)
-        if: matrix.config.os == 'macos-latest'
+      - name: Install Pandoc (Only on Windows)
+        if: matrix.config.os == 'windows-latest'
         run: |
-          brew install pandoc
+          choco install pandoc
 
       - name: Install Python dependencies
         run: |
