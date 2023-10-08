@@ -58,10 +58,10 @@ jobs:
     - name: Check out repository
       uses: actions/checkout@v2
 
-
-    - name: Install pandoc
+    - name: Install pandoc (Only on Windows)
+      if: matrix.config.os == 'windows-latest'
       run: |
-        brew install pandoc
+        choco install pandoc
 
     - name: Set up Python
       uses: actions/setup-python@v2
