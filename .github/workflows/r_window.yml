@@ -73,12 +73,13 @@ jobs:
       with:
         r-version: '4.0.5'
 
-    - name: Install R dependencies
+    - name: Install dependencies
       run: |
-        rem Optional: Install any R dependencies
-        rem install.packages(c('your', 'packages'))
+        install.packages(c("remotes", "rcmdcheck"))
+        remotes::install_deps(dependencies = TRUE)
+      shell: Rscript {0}
 
-    - name: Run my script
-      run: |
-        # 在這裡執行您的腳本或測試命令
+    - name: Check
+      run: rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "error")
+      shell: Rscript {0}
 
