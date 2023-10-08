@@ -1,7 +1,7 @@
 
 ## <u>`flairR`</u>: An R Wrapper for Accessing Flair NLP Tagging Features <img src="man/figures/logo.png" align="right" width="180"/>
 
-[![R](https://github.com/davidycliao/flaiR/actions/workflows/r2.yml/badge.svg)](https://github.com/davidycliao/flaiR/actions/workflows/r2.yml)
+[![R](https://github.com/davidycliao/flaiR/actions/workflows/r_macos.yml/badge.svg)](https://github.com/davidycliao/flaiR/actions/workflows/r_macos.yml)
 [![R-CMD-check](https://github.com/davidycliao/flaiR/actions/workflows/r.yml/badge.svg)](https://github.com/davidycliao/flaiR/actions/workflows/r.yml)
 [![coverage](https://github.com/davidycliao/flaiR/actions/workflows/test-coverage.yaml/badge.svg)](https://github.com/davidycliao/flaiR/actions/workflows/test-coverage.yaml)
 [![codecov](https://codecov.io/gh/davidycliao/flaiR/graph/badge.svg?token=CPIBIB6L78)](https://codecov.io/gh/davidycliao/flaiR)
@@ -11,23 +11,24 @@
 
 <div style="text-align: justify">
 
-`{flaiR}` is a R wrapper of the {FlairNLP} for R users, particularly for
-social science researchers. It offers streamlined access to the core
-features of `FlairNLP` from Python. FlairNLP is an advanced NLP
-framework that incorporates the latest techniques developed by the
-Humboldt University of Berlin. For a deeper understanding of Flair’s
-architecture, refer to the research article ‘[Contextual String
-Embeddings for Sequence
+`{flaiR}` is a R wrapper of the {`flairNLP/flair`} for R users,
+particularly for social science researchers. It offers streamlined
+access to the core features of {`flairNLP`}. `{flairNLP}` is an advanced
+NLP framework in Python that incorporates the advanced techniques
+developed by the Humboldt University of Berlin. For a deeper
+understanding of {flairNLP/flair}’s architecture, refer to the research
+article ‘[Contextual String Embeddings for Sequence
 Labeling](https://aclanthology.org/C18-1139.pdf)’ and the official
 [mannual](https://flairnlp.github.io) in Python.
 
 For R users, {`flairR`} primarily consists of two main components. The
 first is a wrapper function built on top of {`reticulate`}, which
 enables you to interact directly with Python modules in R and provides
-seamless support for documents in the R community. Secondly, to
-facilitate more efficient use for social science research, {`flairR`}
-wraps the FlairNLP Python with three major functions to extract features
-in a tidy and clean format using
+seamless support for documents and [tutorial (in
+progress)](https://davidycliao.github.io/flaiR/) in the R community.
+Secondly, to facilitate more efficient use for social science research,
+{`flairR`} wraps the FlairNLP Python with three major functions to
+extract features in a tidy and clean format using
 [data.table](https://cran.r-project.org/web/packages/data.table/index.html).
 The features include [**part-of-speech
 tagging**](https://davidycliao.github.io/flaiR/articles/get_pos.html),
