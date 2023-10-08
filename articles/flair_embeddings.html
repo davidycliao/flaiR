@@ -179,21 +179,337 @@ package in our work. Firstly, For example, let’s create a simple
 <hr>
 </div>
 <div class="section level2">
-<h2 id="employing-the-bert-model-for-extracting-embeddings">Employing the BERT Model for Extracting Embeddings<a class="anchor" aria-label="anchor" href="#employing-the-bert-model-for-extracting-embeddings"></a>
+<h2 id="classic-wordembeddings">Classic Wordembeddings<a class="anchor" aria-label="anchor" href="#classic-wordembeddings"></a>
+</h2>
+<div style="text-align: justify">
+<p>Flair is a very popular natural language processing library,
+providing a variety of embedding methods for text representation through
+Flair. In Flair, the simplest form of embedding that still contains
+semantic information about the word is called classic word embeddings.
+These embeddings are pre-trained and non-contextual. Let’s retrieve a
+few word embeddings. Then, we can utilize FastText embeddings with the
+following code. To use them, we simply instantiate a WordEmbeddings
+class by passing in the ID of the embedding of our choice. Then, we
+simply wrap our text into a Sentence object, and call the
+embed(sentence) method on our WordEmbeddings class.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">embedding</span> <span class="op">=</span> <span class="fu"><a href="../reference/flair_embeddings.WordEmbeddings.html">flair_embeddings.WordEmbeddings</a></span><span class="op">(</span><span class="st">'crawl'</span><span class="op">)</span> </span>
+<span><span class="va">sentence</span> <span class="op">=</span> <span class="fu"><a href="../reference/flair_data.sentence.html">flair_data.sentence</a></span><span class="op">(</span><span class="st">"one two three one"</span><span class="op">)</span> </span>
+<span><span class="va">embedding</span><span class="op">$</span><span class="fu">embed</span><span class="op">(</span><span class="va">sentence</span><span class="op">)</span> </span>
+<span><span class="co">#&gt; [[1]]</span></span>
+<span><span class="co">#&gt; Sentence[4]: "one two three one"</span></span>
+<span></span>
+<span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">sentence</span><span class="op">$</span><span class="va">tokens</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">sentence</span><span class="op">$</span><span class="va">tokens</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">embedding</span><span class="op">)</span>, n <span class="op">=</span><span class="fl">5</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="co">#&gt; tensor([-0.0535, -0.0368, -0.2851, -0.0381, -0.0486,  0.2383])</span></span>
+<span><span class="co">#&gt; tensor([ 0.0282, -0.0786, -0.1236,  0.1756, -0.1199,  0.0964])</span></span>
+<span><span class="co">#&gt; tensor([-0.0920, -0.0690, -0.1475,  0.2313, -0.0872,  0.0799])</span></span>
+<span><span class="co">#&gt; tensor([-0.0535, -0.0368, -0.2851, -0.0381, -0.0486,  0.2383])</span></span></code></pre></div>
+<p>Flair supports a range of classic word embeddings, each offering
+unique features and application scopes. Below is an overview, detailing
+the ID required to load each embedding and its corresponding
+language.</p>
+<table class="table">
+<thead><tr class="header">
+<th>Embedding Type</th>
+<th>ID</th>
+<th>Language</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>GloVe</td>
+<td>glove</td>
+<td>English</td>
+</tr>
+<tr class="even">
+<td>Komninos</td>
+<td>extvec</td>
+<td>English</td>
+</tr>
+<tr class="odd">
+<td>Twitter</td>
+<td>twitter</td>
+<td>English</td>
+</tr>
+<tr class="even">
+<td>Turian (small)</td>
+<td>turian</td>
+<td>English</td>
+</tr>
+<tr class="odd">
+<td>FastText (crawl)</td>
+<td>crawl</td>
+<td>English</td>
+</tr>
+<tr class="even">
+<td>FastText (news &amp; Wikipedia)</td>
+<td>ar</td>
+<td>Arabic</td>
+</tr>
+<tr class="odd">
+<td>FastText (news &amp; Wikipedia)</td>
+<td>bg</td>
+<td>Bulgarian</td>
+</tr>
+<tr class="even">
+<td>FastText (news &amp; Wikipedia)</td>
+<td>ca</td>
+<td>Catalan</td>
+</tr>
+<tr class="odd">
+<td>FastText (news &amp; Wikipedia)</td>
+<td>cz</td>
+<td>Czech</td>
+</tr>
+<tr class="even">
+<td>FastText (news &amp; Wikipedia)</td>
+<td>da</td>
+<td>Danish</td>
+</tr>
+<tr class="odd">
+<td>FastText (news &amp; Wikipedia)</td>
+<td>de</td>
+<td>German</td>
+</tr>
+<tr class="even">
+<td>FastText (news &amp; Wikipedia)</td>
+<td>es</td>
+<td>Spanish</td>
+</tr>
+<tr class="odd">
+<td>FastText (news &amp; Wikipedia)</td>
+<td>en</td>
+<td>English</td>
+</tr>
+<tr class="even">
+<td>FastText (news &amp; Wikipedia)</td>
+<td>eu</td>
+<td>Basque</td>
+</tr>
+<tr class="odd">
+<td>FastText (news &amp; Wikipedia)</td>
+<td>fa</td>
+<td>Persian</td>
+</tr>
+<tr class="even">
+<td>FastText (news &amp; Wikipedia)</td>
+<td>fi</td>
+<td>Finnish</td>
+</tr>
+<tr class="odd">
+<td>FastText (news &amp; Wikipedia)</td>
+<td>fr</td>
+<td>French</td>
+</tr>
+<tr class="even">
+<td>FastText (news &amp; Wikipedia)</td>
+<td>he</td>
+<td>Hebrew</td>
+</tr>
+<tr class="odd">
+<td>FastText (news &amp; Wikipedia)</td>
+<td>hi</td>
+<td>Hindi</td>
+</tr>
+<tr class="even">
+<td>FastText (news &amp; Wikipedia)</td>
+<td>hr</td>
+<td>Croatian</td>
+</tr>
+<tr class="odd">
+<td>FastText (news &amp; Wikipedia)</td>
+<td>id</td>
+<td>Indonesian</td>
+</tr>
+<tr class="even">
+<td>FastText (news &amp; Wikipedia)</td>
+<td>it</td>
+<td>Italian</td>
+</tr>
+<tr class="odd">
+<td>FastText (news &amp; Wikipedia)</td>
+<td>ja</td>
+<td>Japanese</td>
+</tr>
+<tr class="even">
+<td>FastText (news &amp; Wikipedia)</td>
+<td>ko</td>
+<td>Korean</td>
+</tr>
+<tr class="odd">
+<td>FastText (news &amp; Wikipedia)</td>
+<td>nl</td>
+<td>Dutch</td>
+</tr>
+<tr class="even">
+<td>FastText (news &amp; Wikipedia)</td>
+<td>no</td>
+<td>Norwegian</td>
+</tr>
+<tr class="odd">
+<td>FastText (news &amp; Wikipedia)</td>
+<td>pl</td>
+<td>Polish</td>
+</tr>
+<tr class="even">
+<td>FastText (news &amp; Wikipedia)</td>
+<td>pt</td>
+<td>Portuguese</td>
+</tr>
+<tr class="odd">
+<td>FastText (news &amp; Wikipedia)</td>
+<td>ro</td>
+<td>Romanian</td>
+</tr>
+<tr class="even">
+<td>FastText (news &amp; Wikipedia)</td>
+<td>ru</td>
+<td>Russian</td>
+</tr>
+<tr class="odd">
+<td>FastText (news &amp; Wikipedia)</td>
+<td>si</td>
+<td>Slovenian</td>
+</tr>
+<tr class="even">
+<td>FastText (news &amp; Wikipedia)</td>
+<td>sk</td>
+<td>Slovak</td>
+</tr>
+<tr class="odd">
+<td>FastText (news &amp; Wikipedia)</td>
+<td>sr</td>
+<td>Serbian</td>
+</tr>
+<tr class="even">
+<td>FastText (news &amp; Wikipedia)</td>
+<td>sv</td>
+<td>Swedish</td>
+</tr>
+<tr class="odd">
+<td>FastText (news &amp; Wikipedia)</td>
+<td>tr</td>
+<td>Turkish</td>
+</tr>
+<tr class="even">
+<td>FastText (news &amp; Wikipedia)</td>
+<td>zh</td>
+<td>Chinese</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p> </p>
+<hr>
+</div>
+<div class="section level2">
+<h2 id="contexual-embeddings">Contexual Embeddings<a class="anchor" aria-label="anchor" href="#contexual-embeddings"></a>
+</h2>
+<div style="text-align: justify">
+<p>Understanding the contextuality of Flair embeddings The idea behind
+contextual string embeddings is that each word embedding should be
+defined by not only its syntactic-semantic meaning but also the context
+it appears in. What this means is that each word will have a different
+embedding for every context it appears in. Each pre-trained Flair model
+offers a <strong>forward</strong> version and a
+<strong>backward</strong> version. Let’s assume you are processing a
+language that, just like this book, uses the left-to-right script. The
+forward version takes into account the context that happens before the
+word – on the left-hand side. The backward version works in the opposite
+direction. It takes into account the context after the word – on the
+right-hand side of the word. If this is true, then two same words that
+appear at the beginning of two different sentences should have identical
+forward embeddings, because their context is null. Let’s test this
+out:</p>
+<p>Because we are using a forward model, it only takes into account the
+context that occurs before a word. Additionally, since our word has no
+context on the left-hand side of its position in the sentence, the two
+embeddings are identical, and the code assumes they are identical,
+indeed output is <strong>True</strong>.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">embedding</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_embeddings.FlairEmbeddings.html">flair_embeddings.FlairEmbeddings</a></span><span class="op">(</span><span class="st">'news-forward'</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Initialized Flair forward embeddings</span></span>
+<span><span class="va">s1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_data.sentence.html">flair_data.sentence</a></span><span class="op">(</span><span class="st">"nice shirt"</span><span class="op">)</span> </span>
+<span><span class="va">s2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_data.sentence.html">flair_data.sentence</a></span><span class="op">(</span><span class="st">"nice pants"</span><span class="op">)</span> </span>
+<span></span>
+<span><span class="va">embedding</span><span class="op">$</span><span class="fu">embed</span><span class="op">(</span><span class="va">s1</span><span class="op">)</span> </span>
+<span><span class="co">#&gt; [[1]]</span></span>
+<span><span class="co">#&gt; Sentence[2]: "nice shirt"</span></span>
+<span><span class="va">embedding</span><span class="op">$</span><span class="fu">embed</span><span class="op">(</span><span class="va">s2</span><span class="op">)</span> </span>
+<span><span class="co">#&gt; [[1]]</span></span>
+<span><span class="co">#&gt; Sentence[2]: "nice pants"</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">" s1 sentence:"</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="va">s1</span><span class="op">[</span><span class="fl">0</span><span class="op">]</span>, sep <span class="op">=</span> <span class="st">""</span><span class="op">)</span>, <span class="st">"\n"</span>, <span class="st">"s2 sentence:"</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="va">s2</span><span class="op">[</span><span class="fl">0</span><span class="op">]</span>, sep <span class="op">=</span> <span class="st">""</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt;  s1 sentence: Token[0]: "nice" </span></span>
+<span><span class="co">#&gt;  s2 sentence: Token[0]: "nice"</span></span></code></pre></div>
+<p>We test whether the sum of the two 2048 embeddings of ‘nice’ is equal
+to 2048. If it is true, it indicates that the embedding results are
+consistent, which should theoretically be the case.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">s1</span><span class="op">[</span><span class="fl">0</span><span class="op">]</span><span class="op">$</span><span class="va">embedding</span><span class="op">$</span><span class="fu">numpy</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">s1</span><span class="op">[</span><span class="fl">0</span><span class="op">]</span><span class="op">$</span><span class="va">embedding</span><span class="op">$</span><span class="fu">numpy</span><span class="op">(</span><span class="op">)</span> <span class="op">==</span>  <span class="va">s2</span><span class="op">[</span><span class="fl">0</span><span class="op">]</span><span class="op">$</span><span class="va">embedding</span><span class="op">$</span><span class="fu">numpy</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] TRUE</span></span></code></pre></div>
+<p>Now we separately add a few more words, <code>very</code> and
+<code>pretty</code>, into two sentence objects.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">embedding</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_embeddings.FlairEmbeddings.html">flair_embeddings.FlairEmbeddings</a></span><span class="op">(</span><span class="st">'news-forward'</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Initialized Flair forward embeddings</span></span>
+<span><span class="va">s1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_data.sentence.html">flair_data.sentence</a></span><span class="op">(</span><span class="st">"nice shirt"</span><span class="op">)</span> </span>
+<span><span class="va">s2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_data.sentence.html">flair_data.sentence</a></span><span class="op">(</span><span class="st">"nice pants"</span><span class="op">)</span> </span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">embedding</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_embeddings.FlairEmbeddings.html">flair_embeddings.FlairEmbeddings</a></span><span class="op">(</span><span class="st">'news-forward'</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Initialized Flair forward embeddings</span></span>
+<span><span class="va">s1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_data.sentence.html">flair_data.sentence</a></span><span class="op">(</span><span class="st">"very nice shirt"</span><span class="op">)</span> </span>
+<span><span class="va">s2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_data.sentence.html">flair_data.sentence</a></span><span class="op">(</span><span class="st">"pretty nice pants"</span><span class="op">)</span> </span>
+<span></span>
+<span><span class="va">embedding</span><span class="op">$</span><span class="fu">embed</span><span class="op">(</span><span class="va">s1</span><span class="op">)</span> </span>
+<span><span class="co">#&gt; [[1]]</span></span>
+<span><span class="co">#&gt; Sentence[3]: "very nice shirt"</span></span>
+<span><span class="va">embedding</span><span class="op">$</span><span class="fu">embed</span><span class="op">(</span><span class="va">s2</span><span class="op">)</span> </span>
+<span><span class="co">#&gt; [[1]]</span></span>
+<span><span class="co">#&gt; Sentence[3]: "pretty nice pants"</span></span></code></pre></div>
+<p>The two sets of embeddings are not identical because the words are
+different, so it returns <strong>False</strong>.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">s1</span><span class="op">[</span><span class="fl">0</span><span class="op">]</span><span class="op">$</span><span class="va">embedding</span><span class="op">$</span><span class="fu">numpy</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">s1</span><span class="op">[</span><span class="fl">0</span><span class="op">]</span><span class="op">$</span><span class="va">embedding</span><span class="op">$</span><span class="fu">numpy</span><span class="op">(</span><span class="op">)</span> <span class="op">==</span>  <span class="va">s2</span><span class="op">[</span><span class="fl">0</span><span class="op">]</span><span class="op">$</span><span class="va">embedding</span><span class="op">$</span><span class="fu">numpy</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] FALSE</span></span></code></pre></div>
+<p>The measure of similarity between two vectors in an inner product
+space is known as cosine similarity. The formula for calculating cosine
+similarity between two vectors, such as vectors A and B, is as
+follows:</p>
+<p><span class="math inline">\(Cosine Similarity = \frac{\sum_{i} (A_i
+\cdot B_i)}{\sqrt{\sum_{i} (A_i^2)} \cdot \sqrt{\sum_{i}
+(B_i^2)}}\)</span></p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">lsa</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Loading required package: SnowballC</span></span>
+<span><span class="va">vector1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">s1</span><span class="op">[</span><span class="fl">0</span><span class="op">]</span><span class="op">$</span><span class="va">embedding</span><span class="op">$</span><span class="fu">numpy</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">vector2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">s2</span><span class="op">[</span><span class="fl">0</span><span class="op">]</span><span class="op">$</span><span class="va">embedding</span><span class="op">$</span><span class="fu">numpy</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p>We can observe that the similarity between the two words is 0.55.</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">cosine_similarity</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/lsa/man/cosine.html" class="external-link">cosine</a></span><span class="op">(</span><span class="va">vector1</span>, <span class="va">vector2</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">cosine_similarity</span><span class="op">)</span></span>
+<span><span class="co">#&gt;           [,1]</span></span>
+<span><span class="co">#&gt; [1,] 0.5571664</span></span></code></pre></div>
+</div>
+<p> </p>
+<hr>
+</div>
+<div class="section level2">
+<h2 id="extracting-embeddings-from-bert">Extracting Embeddings from BERT<a class="anchor" aria-label="anchor" href="#extracting-embeddings-from-bert"></a>
 </h2>
 <div style="text-align: justify">
 <p>First, we utilize the flair.embeddings.TransformerWordEmbeddings
 function to download BERT, and more transformer models can also be found
 on <a href="https://huggingface.co/flair" class="external-link">Flair NLP’s Hugging
 Face</a>.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">TransformerWordEmbeddings</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_embeddings.TransformerWordEmbeddings.html">flair_embeddings.TransformerWordEmbeddings</a></span><span class="op">(</span><span class="st">"bert-base-uncased"</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">embedding</span> <span class="op">&lt;-</span> <span class="va">TransformerWordEmbeddings</span><span class="op">$</span><span class="fu">embed</span><span class="op">(</span><span class="va">sentence</span><span class="op">)</span></span></code></pre></div>
 <p>Traverse each token in the sentence and print them. To view each
 token, it’s necessary to use<code>reticulate::py_str(token)</code> since
 the sentence is a Python object.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Iterate through each token in the sentence, printing them. </span></span>
 <span><span class="co"># Utilize reticulate::py_str(token) to view each token, given that the sentence is a Python object.</span></span>
 <span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">sentence</span><span class="op">$</span><span class="va">tokens</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
@@ -203,75 +519,18 @@ the sentence is a Python object.</p>
 <span>  <span class="va">token_embedding</span> <span class="op">&lt;-</span> <span class="va">sentence</span><span class="op">$</span><span class="va">tokens</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">embedding</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">token_embedding</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
-<span><span class="co">#&gt; Token:  Token[0]: "UCD" </span></span>
-<span><span class="co">#&gt; tensor([ 0.0833,  0.2852, -0.6398,  0.5306, -0.2550, -0.7952,  0.9191, -0.0284,</span></span>
-<span><span class="co">#&gt;         -0.1390, -0.0700])</span></span>
-<span><span class="co">#&gt; Token:  Token[1]: "is" </span></span>
-<span><span class="co">#&gt; tensor([ 0.0093,  0.3069, -0.3772, -0.5046,  0.3399,  0.3802,  1.4442, -0.0901,</span></span>
-<span><span class="co">#&gt;         -0.0049, -0.2420])</span></span>
-<span><span class="co">#&gt; Token:  Token[2]: "one" </span></span>
-<span><span class="co">#&gt; tensor([-0.1006,  0.4575, -0.0397, -0.9328,  0.2846,  0.2338,  1.3998,  0.1552,</span></span>
-<span><span class="co">#&gt;          0.1651, -0.2045])</span></span>
-<span><span class="co">#&gt; Token:  Token[3]: "of" </span></span>
-<span><span class="co">#&gt; tensor([-0.2752,  0.2917,  0.1150, -0.5803,  0.8611,  0.3942,  0.8704,  0.1432,</span></span>
-<span><span class="co">#&gt;         -0.3376, -0.2798])</span></span>
-<span><span class="co">#&gt; Token:  Token[4]: "the" </span></span>
-<span><span class="co">#&gt; tensor([-0.2464,  0.3974,  0.4161, -0.5347,  0.0285,  0.3619,  1.1400, -0.0707,</span></span>
-<span><span class="co">#&gt;          0.1255, -0.4121])</span></span>
-<span><span class="co">#&gt; Token:  Token[5]: "world" </span></span>
-<span><span class="co">#&gt; tensor([-0.8204,  0.7235, -0.0335,  0.1262,  0.1314,  0.5855,  1.6661, -0.2858,</span></span>
-<span><span class="co">#&gt;          0.1801, -0.8496])</span></span>
-<span><span class="co">#&gt; Token:  Token[6]: "'s" </span></span>
-<span><span class="co">#&gt; tensor([-0.6831,  0.7184, -0.1451, -0.4499,  0.1971,  0.3204,  1.2689, -0.3038,</span></span>
-<span><span class="co">#&gt;          0.0673, -0.6701])</span></span>
-<span><span class="co">#&gt; Token:  Token[7]: "top" </span></span>
-<span><span class="co">#&gt; tensor([ 0.2090,  0.5064,  0.0417, -0.5580, -0.5341,  0.4189,  0.7103, -0.3170,</span></span>
-<span><span class="co">#&gt;          0.0792,  0.0506])</span></span>
-<span><span class="co">#&gt; Token:  Token[8]: "universities" </span></span>
-<span><span class="co">#&gt; tensor([ 0.3336,  0.1307, -0.1218, -0.1945,  0.5289, -0.4657,  1.3310,  0.2141,</span></span>
-<span><span class="co">#&gt;          0.1781,  0.0481])</span></span>
-<span><span class="co">#&gt; Token:  Token[9]: "and" </span></span>
-<span><span class="co">#&gt; tensor([ 0.0842,  0.2225, -0.0061, -0.7238,  0.3044, -0.1714,  1.4067,  0.3702,</span></span>
-<span><span class="co">#&gt;         -0.9546, -0.3608])</span></span>
-<span><span class="co">#&gt; Token:  Token[10]: "is" </span></span>
-<span><span class="co">#&gt; tensor([ 0.0606,  0.7361,  0.0384, -0.7512,  0.6239,  0.3918,  1.4170, -0.0143,</span></span>
-<span><span class="co">#&gt;          0.1442,  0.1245])</span></span>
-<span><span class="co">#&gt; Token:  Token[11]: "ranked" </span></span>
-<span><span class="co">#&gt; tensor([-0.2530,  0.3414,  0.2172, -0.7527,  0.6933,  0.3993,  0.5563,  0.5353,</span></span>
-<span><span class="co">#&gt;          0.2479,  0.1477])</span></span>
-<span><span class="co">#&gt; Token:  Token[12]: "in" </span></span>
-<span><span class="co">#&gt; tensor([-0.4973, -0.0277,  0.1821, -0.6973,  0.4903, -0.1480,  1.0401,  0.6653,</span></span>
-<span><span class="co">#&gt;          0.1306, -0.0559])</span></span>
-<span><span class="co">#&gt; Token:  Token[13]: "the" </span></span>
-<span><span class="co">#&gt; tensor([-0.4150,  0.1021,  0.6204, -0.3566,  0.3788,  0.1652,  0.7545,  0.1566,</span></span>
-<span><span class="co">#&gt;          0.4301, -0.3805])</span></span>
-<span><span class="co">#&gt; Token:  Token[14]: "top" </span></span>
-<span><span class="co">#&gt; tensor([-0.0116,  0.4095,  0.4882,  0.0605, -0.1946, -0.0589,  0.9664, -0.1612,</span></span>
-<span><span class="co">#&gt;          0.7455,  0.3259])</span></span>
-<span><span class="co">#&gt; Token:  Token[15]: "1" </span></span>
-<span><span class="co">#&gt; tensor([ 0.2684, -0.1150,  0.0121, -0.3681, -0.4538,  0.6005,  0.6733,  0.3242,</span></span>
-<span><span class="co">#&gt;          0.1395, -0.4707])</span></span>
-<span><span class="co">#&gt; Token:  Token[16]: "%" </span></span>
-<span><span class="co">#&gt; tensor([-0.2299,  0.1644, -0.1590, -0.4592,  0.6184,  0.8257,  0.8378,  0.0844,</span></span>
-<span><span class="co">#&gt;          0.0695, -0.3707])</span></span>
-<span><span class="co">#&gt; Token:  Token[17]: "of" </span></span>
-<span><span class="co">#&gt; tensor([ 0.4932,  0.2413,  0.5705, -0.5453,  0.4407,  0.9492,  0.5458, -0.0643,</span></span>
-<span><span class="co">#&gt;         -0.0599, -0.2992])</span></span>
-<span><span class="co">#&gt; Token:  Token[18]: "higher" </span></span>
-<span><span class="co">#&gt; tensor([ 1.0912,  0.7395, -0.2275,  0.0513, -0.7952, -0.4250,  1.0819, -0.1928,</span></span>
-<span><span class="co">#&gt;          0.1182, -0.2961])</span></span>
-<span><span class="co">#&gt; Token:  Token[19]: "education" </span></span>
-<span><span class="co">#&gt; tensor([ 0.7011,  0.6579,  0.1685,  1.0606, -0.1816, -0.2890,  1.4887,  0.4833,</span></span>
-<span><span class="co">#&gt;          0.0555, -0.3187])</span></span>
-<span><span class="co">#&gt; Token:  Token[20]: "institutions" </span></span>
-<span><span class="co">#&gt; tensor([ 1.1192,  0.8685,  0.0450,  0.0711,  0.0641, -0.0049,  1.4312,  0.0940,</span></span>
-<span><span class="co">#&gt;          0.4002, -0.0662])</span></span>
-<span><span class="co">#&gt; Token:  Token[21]: "worldwide" </span></span>
-<span><span class="co">#&gt; tensor([ 0.0737,  0.6137,  0.1128, -0.3651, -0.0724,  0.6873,  1.2160, -0.1015,</span></span>
-<span><span class="co">#&gt;          0.4676, -0.5741])</span></span>
-<span><span class="co">#&gt; Token:  Token[22]: "." </span></span>
-<span><span class="co">#&gt; tensor([ 0.0663, -0.2634,  0.6907, -0.2992, -0.3788,  0.3833, -0.0426,  0.6789,</span></span>
-<span><span class="co">#&gt;          0.0010,  0.2179])</span></span></code></pre></div>
+<span><span class="co">#&gt; Token:  Token[0]: "one" </span></span>
+<span><span class="co">#&gt; tensor([-0.0535, -0.0368, -0.2851, -0.0381, -0.0486,  0.2383, -0.1200,  0.2620,</span></span>
+<span><span class="co">#&gt;         -0.0575,  0.0228])</span></span>
+<span><span class="co">#&gt; Token:  Token[1]: "two" </span></span>
+<span><span class="co">#&gt; tensor([ 0.0282, -0.0786, -0.1236,  0.1756, -0.1199,  0.0964, -0.1327,  0.4449,</span></span>
+<span><span class="co">#&gt;         -0.0264, -0.1168])</span></span>
+<span><span class="co">#&gt; Token:  Token[2]: "three" </span></span>
+<span><span class="co">#&gt; tensor([-0.0920, -0.0690, -0.1475,  0.2313, -0.0872,  0.0799, -0.0901,  0.4403,</span></span>
+<span><span class="co">#&gt;         -0.0103, -0.1494])</span></span>
+<span><span class="co">#&gt; Token:  Token[3]: "one" </span></span>
+<span><span class="co">#&gt; tensor([-0.0535, -0.0368, -0.2851, -0.0381, -0.0486,  0.2383, -0.1200,  0.2620,</span></span>
+<span><span class="co">#&gt;         -0.0575,  0.0228])</span></span></code></pre></div>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
