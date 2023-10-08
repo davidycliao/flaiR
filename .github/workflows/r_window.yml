@@ -46,7 +46,7 @@
 #         shell: Rscript {0}
 
 
-name: My CI Workflow
+name: R
 
 on: [push, pull_request]
 
@@ -61,7 +61,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
-        python-version: '3.x'  # 使用您需要的 Python 版本
+        python-version: '3.8'
 
     - name: Install Python dependencies
       run: |
