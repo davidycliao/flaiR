@@ -162,23 +162,6 @@
     
     
 <div class="section level2">
-<h2 id="create-sentence-object">Create Sentence Object<a class="anchor" aria-label="anchor" href="#create-sentence-object"></a>
-</h2>
-<div style="text-align: justify">
-<p>We will utilize {reticulate} to systematically use the Python flair
-package in our work. Firstly, For example, let’s create a simple
-<code>sentence</code> class and check its string representation”</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">flaiR</span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rstudio.github.io/reticulate/" class="external-link">reticulate</a></span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">string</span> <span class="op">&lt;-</span> <span class="st">"UCD is one of the world's top universities and is ranked in the top 1% of higher education institutions worldwide."</span></span>
-<span><span class="va">sentence</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_data.sentence.html">flair_data.sentence</a></span><span class="op">(</span><span class="va">string</span><span class="op">)</span></span></code></pre></div>
-</div>
-<p> </p>
-<hr>
-</div>
-<div class="section level2">
 <h2 id="classic-wordembeddings">Classic Wordembeddings<a class="anchor" aria-label="anchor" href="#classic-wordembeddings"></a>
 </h2>
 <div style="text-align: justify">
@@ -192,7 +175,7 @@ following code. To use them, we simply instantiate a WordEmbeddings
 class by passing in the ID of the embedding of our choice. Then, we
 simply wrap our text into a Sentence object, and call the
 embed(sentence) method on our WordEmbeddings class.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">embedding</span> <span class="op">=</span> <span class="fu"><a href="../reference/flair_embeddings.WordEmbeddings.html">flair_embeddings.WordEmbeddings</a></span><span class="op">(</span><span class="st">'crawl'</span><span class="op">)</span> </span>
 <span><span class="va">sentence</span> <span class="op">=</span> <span class="fu"><a href="../reference/flair_data.sentence.html">flair_data.sentence</a></span><span class="op">(</span><span class="st">"one two three one"</span><span class="op">)</span> </span>
 <span><span class="va">embedding</span><span class="op">$</span><span class="fu">embed</span><span class="op">(</span><span class="va">sentence</span><span class="op">)</span> </span>
@@ -427,7 +410,7 @@ context that occurs before a word. Additionally, since our word has no
 context on the left-hand side of its position in the sentence, the two
 embeddings are identical, and the code assumes they are identical,
 indeed output is <strong>True</strong>.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">embedding</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_embeddings.FlairEmbeddings.html">flair_embeddings.FlairEmbeddings</a></span><span class="op">(</span><span class="st">'news-forward'</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Initialized Flair forward embeddings</span></span>
 <span><span class="va">s1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_data.sentence.html">flair_data.sentence</a></span><span class="op">(</span><span class="st">"nice shirt"</span><span class="op">)</span> </span>
@@ -445,17 +428,17 @@ indeed output is <strong>True</strong>.</p>
 <p>We test whether the sum of the two 2048 embeddings of ‘nice’ is equal
 to 2048. If it is true, it indicates that the embedding results are
 consistent, which should theoretically be the case.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">s1</span><span class="op">[</span><span class="fl">0</span><span class="op">]</span><span class="op">$</span><span class="va">embedding</span><span class="op">$</span><span class="fu">numpy</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">s1</span><span class="op">[</span><span class="fl">0</span><span class="op">]</span><span class="op">$</span><span class="va">embedding</span><span class="op">$</span><span class="fu">numpy</span><span class="op">(</span><span class="op">)</span> <span class="op">==</span>  <span class="va">s2</span><span class="op">[</span><span class="fl">0</span><span class="op">]</span><span class="op">$</span><span class="va">embedding</span><span class="op">$</span><span class="fu">numpy</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] TRUE</span></span></code></pre></div>
 <p>Now we separately add a few more words, <code>very</code> and
 <code>pretty</code>, into two sentence objects.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">embedding</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_embeddings.FlairEmbeddings.html">flair_embeddings.FlairEmbeddings</a></span><span class="op">(</span><span class="st">'news-forward'</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Initialized Flair forward embeddings</span></span>
 <span><span class="va">s1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_data.sentence.html">flair_data.sentence</a></span><span class="op">(</span><span class="st">"nice shirt"</span><span class="op">)</span> </span>
 <span><span class="va">s2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_data.sentence.html">flair_data.sentence</a></span><span class="op">(</span><span class="st">"nice pants"</span><span class="op">)</span> </span></code></pre></div>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">embedding</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_embeddings.FlairEmbeddings.html">flair_embeddings.FlairEmbeddings</a></span><span class="op">(</span><span class="st">'news-forward'</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Initialized Flair forward embeddings</span></span>
 <span><span class="va">s1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_data.sentence.html">flair_data.sentence</a></span><span class="op">(</span><span class="st">"very nice shirt"</span><span class="op">)</span> </span>
@@ -469,7 +452,7 @@ consistent, which should theoretically be the case.</p>
 <span><span class="co">#&gt; Sentence[3]: "pretty nice pants"</span></span></code></pre></div>
 <p>The two sets of embeddings are not identical because the words are
 different, so it returns <strong>False</strong>.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">s1</span><span class="op">[</span><span class="fl">0</span><span class="op">]</span><span class="op">$</span><span class="va">embedding</span><span class="op">$</span><span class="fu">numpy</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">s1</span><span class="op">[</span><span class="fl">0</span><span class="op">]</span><span class="op">$</span><span class="va">embedding</span><span class="op">$</span><span class="fu">numpy</span><span class="op">(</span><span class="op">)</span> <span class="op">==</span>  <span class="va">s2</span><span class="op">[</span><span class="fl">0</span><span class="op">]</span><span class="op">$</span><span class="va">embedding</span><span class="op">$</span><span class="fu">numpy</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] FALSE</span></span></code></pre></div>
 <p>The measure of similarity between two vectors in an inner product
@@ -479,13 +462,13 @@ follows:</p>
 <p><span class="math inline">\(Cosine Similarity = \frac{\sum_{i} (A_i
 \cdot B_i)}{\sqrt{\sum_{i} (A_i^2)} \cdot \sqrt{\sum_{i}
 (B_i^2)}}\)</span></p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">lsa</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Loading required package: SnowballC</span></span>
 <span><span class="va">vector1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">s1</span><span class="op">[</span><span class="fl">0</span><span class="op">]</span><span class="op">$</span><span class="va">embedding</span><span class="op">$</span><span class="fu">numpy</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">vector2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">s2</span><span class="op">[</span><span class="fl">0</span><span class="op">]</span><span class="op">$</span><span class="va">embedding</span><span class="op">$</span><span class="fu">numpy</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>We can observe that the similarity between the two words is 0.55.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">cosine_similarity</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/lsa/man/cosine.html" class="external-link">cosine</a></span><span class="op">(</span><span class="va">vector1</span>, <span class="va">vector2</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">cosine_similarity</span><span class="op">)</span></span>
 <span><span class="co">#&gt;           [,1]</span></span>
@@ -502,14 +485,14 @@ follows:</p>
 function to download BERT, and more transformer models can also be found
 on <a href="https://huggingface.co/flair" class="external-link">Flair NLP’s Hugging
 Face</a>.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">TransformerWordEmbeddings</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_embeddings.TransformerWordEmbeddings.html">flair_embeddings.TransformerWordEmbeddings</a></span><span class="op">(</span><span class="st">"bert-base-uncased"</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">embedding</span> <span class="op">&lt;-</span> <span class="va">TransformerWordEmbeddings</span><span class="op">$</span><span class="fu">embed</span><span class="op">(</span><span class="va">sentence</span><span class="op">)</span></span></code></pre></div>
 <p>Traverse each token in the sentence and print them. To view each
 token, it’s necessary to use<code>reticulate::py_str(token)</code> since
 the sentence is a Python object.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Iterate through each token in the sentence, printing them. </span></span>
 <span><span class="co"># Utilize reticulate::py_str(token) to view each token, given that the sentence is a Python object.</span></span>
 <span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">sentence</span><span class="op">$</span><span class="va">tokens</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
