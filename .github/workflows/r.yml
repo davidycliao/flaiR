@@ -71,8 +71,6 @@
 #         with:
 #           upload-snapshots: true
 
-
-
 on:
   push:
     branches: [main, master]
@@ -102,7 +100,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      # 使用 setup-pandoc 动作，该动作应为你的构建提供一个合适版本的 Pandoc。
       - uses: r-lib/actions/setup-pandoc@v2
 
       - name: Setup Python (Only on ubuntu-latest)
@@ -136,7 +133,14 @@ jobs:
         run: |
           choco install pandoc
 
-      - name: Install Python dependencies
+      - name: Install Python dependencies (Only on Windows)
+        if: matrix.config.os == 'windows-latest'
+        run: |
+          python -m pip install --upgrade pip
+          pip install flair
+
+      - name: Install Python dependencies (Only on macOS)
+        if: matrix.config.os == 'macos-latest'
         run: |
           python -m pip install --upgrade pip
           pip install flair
@@ -144,7 +148,6 @@ jobs:
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
           extra-packages: rcmdcheck
-          # 似乎 "needs: check" 是不必要的或可能是个错误，因为在这个 workflow 中没有定义名为 check 的 job 或 step。
 
       - uses: r-lib/actions/check-r-package@v2
         with:
