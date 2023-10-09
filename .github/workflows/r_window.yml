@@ -121,6 +121,12 @@ jobs:
       with:
         r-version: '4.0.5'
 
+    - name: Install TinyTeX
+      run: |
+        install.packages('tinytex')
+        tinytex::install_tinytex()
+      shell: Rscript {0}
+
     - name: Install R dependencies
       run: |
         install.packages(c("remotes", "rcmdcheck", "reticulate"))
