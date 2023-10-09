@@ -70,22 +70,19 @@
     <a class="dropdown-item" href="../articles/quickstart.html#how-to-contribute">How to Contribute</a>
   </div>
 </li>
-<li class="active nav-item dropdown">
+<li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown--tutorial">
     <span class="fa fa-project-diagram"></span>
      
     Tutorial
   </a>
   <div class="dropdown-menu" aria-labelledby="dropdown--tutorial">
-    <a class="dropdown-item" href="../articles/introduction.html">Introduction</a>
-    <a class="dropdown-item" href="../articles/sentence_token.html">Flair Base Types</a>
-    <a class="dropdown-item" href="../articles/flair_embeddings.html">Flair Embeddings</a>
+    <a class="dropdown-item" href="../articles/tutorial.html#introduction">Introduction</a>
+    <a class="dropdown-item" href="../articles/tutorial.html#sentence-and-token">Sentence and Token</a>
+    <a class="dropdown-item" href="../articles/tutorial.html#flair-embedding">Flair Embeddings</a>
     <h6 class="dropdown-header" data-toc-skip>Sequence Taggings (Comming Soon)</h6>
     <h6 class="dropdown-header" data-toc-skip>Text Classification (Comming Soon)</h6>
     <h6 class="dropdown-header" data-toc-skip>Training the Model in FlaiR (Comming Soon)</h6>
-    <a class="dropdown-item" href="../articles/get_entities.html">Tagging Named Entities (featured in flaiR)</a>
-    <a class="dropdown-item" href="../articles/get_pos.html">Part-of-Speech Tagging (featured in flaiR)</a>
-    <a class="dropdown-item" href="../articles/get_sentiments.html">Tagging Sentiment (featured in flaiR)</a>
   </div>
 </li>
 <li class="nav-item dropdown">
@@ -178,7 +175,7 @@ the command again will not trigger a download.</p>
 </div>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tagger_ner</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_tagger_ner.html">load_tagger_ner</a></span><span class="op">(</span><span class="st">"ner"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2023-10-08 23:23:01,887 SequenceTagger predicts: Dictionary with 20 tags: &lt;unk&gt;, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, &lt;START&gt;, &lt;STOP&gt;</span></span></code></pre></div>
+<span><span class="co">#&gt; 2023-10-09 13:13:45,542 SequenceTagger predicts: Dictionary with 20 tags: &lt;unk&gt;, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, &lt;START&gt;, &lt;STOP&gt;</span></span></code></pre></div>
 <div style="text-align: justify">
 <p>If you want the computation to run faster, it is recommended to keep
 the show.text_id set to FALSE by default.</p>
@@ -195,7 +192,7 @@ the show.text_id set to FALSE by default.</p>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">time</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;  23.476   0.275  23.546</span></span></code></pre></div>
+<span><span class="co">#&gt;  24.761   0.379  25.126</span></span></code></pre></div>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">results</span><span class="op">)</span></span>
 <span><span class="co">#&gt;               doc_id                          entity  tag</span></span>
@@ -277,7 +274,7 @@ management.</p>
 <span><span class="co">#&gt; Processing batch 2 out of 2...</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">batch_process_time</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;  24.097   0.329  24.233</span></span></code></pre></div>
+<span><span class="co">#&gt;  24.066   0.344  24.314</span></span></code></pre></div>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">batch_process_results</span><span class="op">)</span></span>
 <span><span class="co">#&gt;               doc_id                          entity  tag text_id</span></span>

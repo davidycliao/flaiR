@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="description" content="flaiR">
-<title>Flair Embeddings • flaiR</title>
+<title>Tutorial in R • flaiR</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
@@ -19,7 +19,7 @@
 <link href="../deps/Source_Code_Pro-0.4.7/font.css" rel="stylesheet">
 <!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Flair Embeddings">
+<!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Tutorial in R">
 <meta property="og:description" content="flaiR">
 <meta property="og:image" content="https://davidycliao.github.io/flaiR/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -70,22 +70,19 @@
     <a class="dropdown-item" href="../articles/quickstart.html#how-to-contribute">How to Contribute</a>
   </div>
 </li>
-<li class="active nav-item dropdown">
+<li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown--tutorial">
     <span class="fa fa-project-diagram"></span>
      
     Tutorial
   </a>
   <div class="dropdown-menu" aria-labelledby="dropdown--tutorial">
-    <a class="dropdown-item" href="../articles/introduction.html">Introduction</a>
-    <a class="dropdown-item" href="../articles/sentence_token.html">Flair Base Types</a>
-    <a class="dropdown-item" href="../articles/flair_embeddings.html">Flair Embeddings</a>
+    <a class="dropdown-item" href="../articles/tutorial.html#introduction">Introduction</a>
+    <a class="dropdown-item" href="../articles/tutorial.html#sentence-and-token">Sentence and Token</a>
+    <a class="dropdown-item" href="../articles/tutorial.html#flair-embedding">Flair Embeddings</a>
     <h6 class="dropdown-header" data-toc-skip>Sequence Taggings (Comming Soon)</h6>
     <h6 class="dropdown-header" data-toc-skip>Text Classification (Comming Soon)</h6>
     <h6 class="dropdown-header" data-toc-skip>Training the Model in FlaiR (Comming Soon)</h6>
-    <a class="dropdown-item" href="../articles/get_entities.html">Tagging Named Entities (featured in flaiR)</a>
-    <a class="dropdown-item" href="../articles/get_pos.html">Part-of-Speech Tagging (featured in flaiR)</a>
-    <a class="dropdown-item" href="../articles/get_sentiments.html">Tagging Sentiment (featured in flaiR)</a>
   </div>
 </li>
 <li class="nav-item dropdown">
@@ -152,30 +149,364 @@
 
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-      <img src="../logo.png" class="logo" alt=""><h1>Flair Embeddings</h1>
+      <img src="../logo.png" class="logo" alt=""><h1>Tutorial in R</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/davidycliao/flaiR/blob/HEAD/vignettes/flair_embeddings.Rmd" class="external-link"><code>vignettes/flair_embeddings.Rmd</code></a></small>
-      <div class="d-none name"><code>flair_embeddings.Rmd</code></div>
+      <small class="dont-index">Source: <a href="https://github.com/davidycliao/flaiR/blob/HEAD/vignettes/tutorial.Rmd" class="external-link"><code>vignettes/tutorial.Rmd</code></a></small>
+      <div class="d-none name"><code>tutorial.Rmd</code></div>
     </div>
 
     
     
 <div class="section level2">
-<h2 id="classic-wordembeddings">Classic Wordembeddings<a class="anchor" aria-label="anchor" href="#classic-wordembeddings"></a>
+<h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
+</h2>
+<div style="text-align: justify">
+<p><strong>Flair NLP</strong> is an open-source library for Natural
+Language Processing (NLP) developed by <a href="https://github.com/zalandoresearch/" class="external-link">Zalando Research</a>. Known
+for its state-of-the-art solutions for NLP tasks like Named Entity
+Recognition (NER), Part-of-Speech tagging (POS), and more, it has
+garnered attention in the NLP community for its ease of use and powerful
+functionalities. Developed in Python, and built on the PyTorch
+framework, it offers a flexible and dynamic approach to deal with
+textual data. On the other hand, {flaiR} in R aims to continue the
+framework established by Flair in Python by creating a framework for R,
+thereby extending Flair’s capabilities to the R programming
+environment.</p>
+<p>One of the hallmark features of Flair is its <strong>contextual
+string embeddings</strong>, which is crucial in discerning the meaning
+of words in different contextual usages. Traditional embeddings assign a
+fixed vector to a word, without considering its context, which can be a
+limitation when trying to understand the nuances in the word’s usage
+across different sentences. On the contrary, Flair’s contextual
+embeddings generate word vectors by considering the surrounding text,
+thus capturing the word’s context and semantics more accurately. This is
+particularly impactful in scenarios where a word can have different
+meanings based on its usage.</p>
+<p>Flair offers pre-trained models for various languages and tasks,
+providing a solid foundation for various NLP applications such as text
+classification, sentiment analysis, and entity recognition, etc. For
+instance, if you’re involved in a project that requires identifying
+persons, organizations, or locations from text, Flair has pre-trained
+NER models that can simplify this task.</p>
+</div>
+<div class="section level3">
+<h3 id="oop-in-r-when-introducing-python">OOP in R when Introducing Python<a class="anchor" aria-label="anchor" href="#oop-in-r-when-introducing-python"></a>
+</h3>
+<div style="text-align: justify">
+<p>Object-Oriented Programming (OOP) is a programming paradigm that uses
+objects, which contain both data (attributes) and functions (methods),
+to design applications and software. The idea is to bind the data and
+the methods that operate on that data into one single unit, an object.
+Before the advent of R6, OOP was not very common in the early stages of
+R. To my knowledge, R6 is relatively rare; aside from {<a href="https://mlr3.mlr-org.com" class="external-link">mlr3</a>}, which is written in R6, most
+packages are accomplished in S4 and S3 (to my personal experience),
+which, of course, may be greatly related to the habits and tasks of R
+users. However, the purpose of ‘flaiR’ is to standardize wrapping the
+‘{flair NLP}’ Python functionality in R and to provide more convenient
+access for R users to utilize flair NLP features. Most usage of Flair
+NLP within the {flaiR} employs concepts of objects and classes, which
+are similar to R6. However, these features are packaged in {reticulate}
+from Python. In other words, some functionalities imported into R
+essentially belong to Python classes or modules.</p>
+<p>In addition, tensors serve as a fundamental building block for
+creating and training neural networks and for conducting various
+numerical computations in Python. For all of Flair’s NLP tasks in Python
+on PyTorch, there are numerous extensive functionalities for tensor
+operations, including element-wise operations, matrix multiplications,
+and reshaping. In this tutorial, we also cover how to work with tensors
+in R and how to convert tensors into matrices in the R environment. This
+is particularly important when using Flair word embeddings.</p>
+</div>
+<p> </p>
+</div>
+<div class="section level3">
+<h3 id="the-overview">The Overview<a class="anchor" aria-label="anchor" href="#the-overview"></a>
+</h3>
+<div style="text-align: justify">
+<p>The following tutorial is mainly based on Tadej Magajna’s ‘<a href="https://github.com/PacktPublishing/Natural-Language-Processing-with-Flair" class="external-link"><strong>Natural
+Language Processing with Flair: A Practical Guide to Understanding and
+Solving NLP Problems</strong></a>’, as well as the official <a href="https://flairnlp.github.io/docs/intro" class="external-link">Flair NLP</a> Python
+tutorial and blog. both are written in Python. If you utilize the
+examples from {flaiR} in R , I welcome you to cite this R repository,
+but you should also cite their works. Tutorial Key Aspects: Except when
+necessary, everything will be accomplished within the R environment,
+utilizing several important R packages, such as {<a href="https://quanteda.org" class="external-link">quanteda</a>}, {<a href="https://bnosac.github.io/udpipe/en/" class="external-link"><code>udpipe</code></a>}, and
+{<a href="https://mlr3.mlr-org.com" class="external-link">mlr3</a>}, to complete the following
+topics:</p>
+<ul>
+<li><p><strong><a href="#articles/sentence_token.html">Sentence and
+Token Object</a></strong></p></li>
+<li><p><strong><a href="#id_/articles/flair_embeddings.html">Flair
+Embedding in R</a></strong></p></li>
+<li><p><strong>Sequence Taggings</strong></p></li>
+<li><p><strong>Text Classification</strong></p></li>
+<li><p><strong>Training the Model in fliaR in R</strong></p></li>
+<li><p><strong>Featured Function in fliaR</strong></p></li>
+</ul>
+</div>
+<p> </p>
+<hr>
+</div>
+</div>
+<div class="section level2">
+<h2 id="sentence-and-token">Sentence and Token<a class="anchor" aria-label="anchor" href="#sentence-and-token"></a>
+</h2>
+<div style="text-align: justify">
+<p>Sentence and Token are fundamental classes.</p>
+<div class="section level3">
+<h3 id="sentence">
+<strong>Sentence</strong><a class="anchor" aria-label="anchor" href="#sentence"></a>
+</h3>
+<p>A Sentence in Flair is an object that contains a sequence of Token
+objects, and it can be annotated with labels, such as named entities,
+part-of-speech tags, and more. It also can store embeddings for the
+sentence as a whole and different kinds of linguistic annotations.</p>
+<p>Here’s a simple example of how you create a Sentence:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Creating a Sentence object</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">flaiR</span><span class="op">)</span></span>
+<span><span class="va">string</span> <span class="op">&lt;-</span> <span class="st">"What I see in UCD today, what I have seen of UCD in its impact on my own life and the life of Ireland."</span></span>
+<span><span class="va">sentence</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_data.sentence.html">flair_data.sentence</a></span><span class="op">(</span><span class="va">string</span><span class="op">)</span></span></code></pre></div>
+<p><code>Sentence[26]</code> means that there are a total of 26 tokens
+in the sentence.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">sentence</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Sentence[26]: "What I see in UCD today, what I have seen of UCD in its impact on my own life and the life of Ireland."</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="token">
+<strong>Token</strong><a class="anchor" aria-label="anchor" href="#token"></a>
+</h3>
+<p>When you use Flair to handle text data,<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content="&lt;p&gt;Flair is built on PyTorch, which is a library in
+Python.&lt;/p&gt;"><sup>1</sup></a> <code>Sentence</code>
+and <code>Token</code> objects often play central roles in many use
+cases. When you create a Sentence object, it usually automatically
+decomposes the internal raw text into multiple Token objects. In other
+words, the Sentence object automatically handles the text tokenization
+work, so you usually don’t need to create Token objects manually.</p>
+<p>Unlike R, which indexes from 1, Python indexes from 0. Therefore,
+when I use a for loop, I use <code>seq_along(sentence) - 1</code>. The
+output should be something like:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># The Sentence object has automatically created and contains multiple Token objects</span></span>
+<span><span class="co"># We can iterate through the Sentence object to view each Token.</span></span>
+<span></span>
+<span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">sentence</span><span class="op">)</span><span class="op">-</span><span class="fl">1</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">sentence</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="co">#&gt; Token[0]: "What"</span></span>
+<span><span class="co">#&gt; Token[1]: "I"</span></span>
+<span><span class="co">#&gt; Token[2]: "see"</span></span>
+<span><span class="co">#&gt; Token[3]: "in"</span></span>
+<span><span class="co">#&gt; Token[4]: "UCD"</span></span>
+<span><span class="co">#&gt; Token[5]: "today"</span></span>
+<span><span class="co">#&gt; Token[6]: ","</span></span>
+<span><span class="co">#&gt; Token[7]: "what"</span></span>
+<span><span class="co">#&gt; Token[8]: "I"</span></span>
+<span><span class="co">#&gt; Token[9]: "have"</span></span>
+<span><span class="co">#&gt; Token[10]: "seen"</span></span>
+<span><span class="co">#&gt; Token[11]: "of"</span></span>
+<span><span class="co">#&gt; Token[12]: "UCD"</span></span>
+<span><span class="co">#&gt; Token[13]: "in"</span></span>
+<span><span class="co">#&gt; Token[14]: "its"</span></span>
+<span><span class="co">#&gt; Token[15]: "impact"</span></span>
+<span><span class="co">#&gt; Token[16]: "on"</span></span>
+<span><span class="co">#&gt; Token[17]: "my"</span></span>
+<span><span class="co">#&gt; Token[18]: "own"</span></span>
+<span><span class="co">#&gt; Token[19]: "life"</span></span>
+<span><span class="co">#&gt; Token[20]: "and"</span></span>
+<span><span class="co">#&gt; Token[21]: "the"</span></span>
+<span><span class="co">#&gt; Token[22]: "life"</span></span>
+<span><span class="co">#&gt; Token[23]: "of"</span></span>
+<span><span class="co">#&gt; Token[24]: "Ireland"</span></span>
+<span><span class="co">#&gt; Token[25]: "."</span></span></code></pre></div>
+<p>Or you can directly use <code>$tokens</code> method to print all
+tokens.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">sentence</span><span class="op">$</span><span class="va">tokens</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [[1]]</span></span>
+<span><span class="co">#&gt; Token[0]: "What"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[2]]</span></span>
+<span><span class="co">#&gt; Token[1]: "I"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[3]]</span></span>
+<span><span class="co">#&gt; Token[2]: "see"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[4]]</span></span>
+<span><span class="co">#&gt; Token[3]: "in"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[5]]</span></span>
+<span><span class="co">#&gt; Token[4]: "UCD"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[6]]</span></span>
+<span><span class="co">#&gt; Token[5]: "today"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[7]]</span></span>
+<span><span class="co">#&gt; Token[6]: ","</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[8]]</span></span>
+<span><span class="co">#&gt; Token[7]: "what"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[9]]</span></span>
+<span><span class="co">#&gt; Token[8]: "I"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[10]]</span></span>
+<span><span class="co">#&gt; Token[9]: "have"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[11]]</span></span>
+<span><span class="co">#&gt; Token[10]: "seen"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[12]]</span></span>
+<span><span class="co">#&gt; Token[11]: "of"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[13]]</span></span>
+<span><span class="co">#&gt; Token[12]: "UCD"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[14]]</span></span>
+<span><span class="co">#&gt; Token[13]: "in"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[15]]</span></span>
+<span><span class="co">#&gt; Token[14]: "its"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[16]]</span></span>
+<span><span class="co">#&gt; Token[15]: "impact"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[17]]</span></span>
+<span><span class="co">#&gt; Token[16]: "on"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[18]]</span></span>
+<span><span class="co">#&gt; Token[17]: "my"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[19]]</span></span>
+<span><span class="co">#&gt; Token[18]: "own"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[20]]</span></span>
+<span><span class="co">#&gt; Token[19]: "life"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[21]]</span></span>
+<span><span class="co">#&gt; Token[20]: "and"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[22]]</span></span>
+<span><span class="co">#&gt; Token[21]: "the"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[23]]</span></span>
+<span><span class="co">#&gt; Token[22]: "life"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[24]]</span></span>
+<span><span class="co">#&gt; Token[23]: "of"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[25]]</span></span>
+<span><span class="co">#&gt; Token[24]: "Ireland"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[26]]</span></span>
+<span><span class="co">#&gt; Token[25]: "."</span></span></code></pre></div>
+<p><strong>Retrieve the Token</strong></p>
+<p>To comprehend the string representation format of the Sentence
+object, tagging at least one token is adequate. The
+<code>get_token(n)</code> method, a Python method, allows us to retrieve
+the Token object for a particular token. Additionally, we can use
+<strong><code>[]</code></strong> to index a specific token. It is
+noteworthy that Python indexes from 0, whereas R starts indexing from
+1.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># method in Python</span></span>
+<span><span class="va">sentence</span><span class="op">$</span><span class="fu">get_token</span><span class="op">(</span><span class="fl">5</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Token[4]: "UCD"</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># indexing in R </span></span>
+<span><span class="va">sentence</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span></span>
+<span><span class="co">#&gt; Token[4]: "UCD"</span></span></code></pre></div>
+<p>Each word (and punctuation) in the sentence is treated as an
+individual Token object. These Token objects store text information and
+other possible linguistic information (such as part-of-speech tags or
+named entity tags) and embeddings (if you used a model to generate
+them).</p>
+<p>Even though in most cases you do not need to create Token objects
+manually, understanding how to manage these objects manually is still
+useful in some situations, such as when you want fine-grained control
+over the tokenization process. For example, you can control the
+exactness of tokenization by adding manually created Token objects to a
+Sentence object.</p>
+<p>This design pattern in Flair allows users to handle text data in a
+very flexible way. Users can use the automatic tokenization feature for
+rapid development, and also perform finer-grained control to accommodate
+more use cases.</p>
+<p><strong>Annotate POS tag and NER tag</strong></p>
+<p>The <code>add_label(label_type, value)</code> method can be employed
+to assign a label to the token. We manually add a tag in this
+preliminary tutorial, so usually, in Universal POS tags, if
+<code>sentence[10]</code> is ‘see’, ‘seen’ might be tagged as
+<code>VERB</code>, indicating it is a past participle form of a
+verb.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">sentence</span><span class="op">[</span><span class="fl">10</span><span class="op">]</span><span class="op">$</span><span class="fu">add_label</span><span class="op">(</span><span class="st">'manual-pos'</span>, <span class="st">'VERB'</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">sentence</span><span class="op">[</span><span class="fl">10</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Token[10]: "seen" → VERB (1.0)</span></span></code></pre></div>
+<p>We can also add a NER (Named Entity Recognition) tag to
+<code>sentence[4]</code>, “UCD”, identifying it as a university in
+Dublin.</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">sentence</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span><span class="op">$</span><span class="fu">add_label</span><span class="op">(</span><span class="st">'ner'</span>, <span class="st">'ORG'</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">sentence</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Token[4]: "UCD" → ORG (1.0)</span></span></code></pre></div>
+<p>If we print the sentence object, <code>Sentence[50]</code> provides
+information for 50 tokens → [‘in’/ORG, ‘seen’/VERB], thus displaying two
+tagging pieces of information.</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">sentence</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Sentence[26]: "What I see in UCD today, what I have seen of UCD in its impact on my own life and the life of Ireland." → ["UCD"/ORG, "seen"/VERB]</span></span></code></pre></div>
+</div>
+</div>
+</div>
+<div class="section level2">
+<h2 id="flair-embedding">Flair Embedding<a class="anchor" aria-label="anchor" href="#flair-embedding"></a>
 </h2>
 <div style="text-align: justify">
 <p>Flair is a very popular natural language processing library,
 providing a variety of embedding methods for text representation through
-Flair. In Flair, the simplest form of embedding that still contains
-semantic information about the word is called classic word embeddings.
-These embeddings are pre-trained and non-contextual. Let’s retrieve a
-few word embeddings. Then, we can utilize FastText embeddings with the
-following code. To use them, we simply instantiate a WordEmbeddings
-class by passing in the ID of the embedding of our choice. Then, we
-simply wrap our text into a Sentence object, and call the
-embed(sentence) method on our WordEmbeddings class.</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+Flair. Flair Embeddings is a word embedding framowork in Natural
+Language Processing, developed by the <a href="https://engineering.zalando.com/posts/2018/11/zalando-research-releases-flair.html" class="external-link">Zalando</a>.
+Flair focuses on word-level representation and can capture contextual
+information of words, meaning that the same word can have different
+embeddings in different contexts. Unlike traditional word embeddings
+(such as Word2Vec or GloVe), Flair can dynamically generate word
+embeddings based on context and has achieved excellent results in
+various NLP tasks. Below are some key points about Flair Embeddings:</p>
+<p><strong>Context-Aware</strong></p>
+<p>Flair can understand the context of a word in a sentence and
+dynamically generate word embeddings based on this context. This is
+different from static embeddings, where the embedding of a word does not
+consider its context in a sentence.</p>
+<p><strong>Character-Based</strong></p>
+<p>Flair uses a character-level language model, meaning it can generate
+embeddings for rare words or even misspelled words. This is an important
+feature because it allows the model to understand and process words that
+have never appeared in the training data.</p>
+<p><strong>Multilingual Support</strong></p>
+<p>Flair provides various pre-trained character-level language models,
+supporting contextual word embeddings for multiple languages.</p>
+<p><strong>Combinability</strong></p>
+<p>Flair allows you to easily combine different word embeddings (e.g.,
+Flair Embeddings, Word2Vec, GloVe, etc.) to create powerful stacked
+embeddings.</p>
+</div>
+<div class="section level3">
+<h3 id="classic-wordembeddings">Classic Wordembeddings<a class="anchor" aria-label="anchor" href="#classic-wordembeddings"></a>
+</h3>
+<div style="text-align: justify">
+<p>In Flair, the simplest form of embedding that still contains semantic
+information about the word is called classic word embeddings. These
+embeddings are pre-trained and non-contextual. Let’s retrieve a few word
+embeddings. Then, we can utilize FastText embeddings with the following
+code. To use them, we simply instantiate a WordEmbeddings class by
+passing in the ID of the embedding of our choice. Then, we simply wrap
+our text into a Sentence object, and call the embed(sentence) method on
+our WordEmbeddings class.</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">embedding</span> <span class="op">=</span> <span class="fu"><a href="../reference/flair_embeddings.WordEmbeddings.html">flair_embeddings.WordEmbeddings</a></span><span class="op">(</span><span class="st">'crawl'</span><span class="op">)</span> </span>
 <span><span class="va">sentence</span> <span class="op">=</span> <span class="fu"><a href="../reference/flair_data.sentence.html">flair_data.sentence</a></span><span class="op">(</span><span class="st">"one two three one"</span><span class="op">)</span> </span>
 <span><span class="va">embedding</span><span class="op">$</span><span class="fu">embed</span><span class="op">(</span><span class="va">sentence</span><span class="op">)</span> </span>
@@ -386,9 +717,9 @@ language.</p>
 <p> </p>
 <hr>
 </div>
-<div class="section level2">
-<h2 id="contexual-embeddings">Contexual Embeddings<a class="anchor" aria-label="anchor" href="#contexual-embeddings"></a>
-</h2>
+<div class="section level3">
+<h3 id="contexual-embeddings">Contexual Embeddings<a class="anchor" aria-label="anchor" href="#contexual-embeddings"></a>
+</h3>
 <div style="text-align: justify">
 <p>Understanding the contextuality of Flair embeddings The idea behind
 contextual string embeddings is that each word embedding should be
@@ -410,7 +741,7 @@ context that occurs before a word. Additionally, since our word has no
 context on the left-hand side of its position in the sentence, the two
 embeddings are identical, and the code assumes they are identical,
 indeed output is <strong>True</strong>.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">embedding</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_embeddings.FlairEmbeddings.html">flair_embeddings.FlairEmbeddings</a></span><span class="op">(</span><span class="st">'news-forward'</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Initialized Flair forward embeddings</span></span>
 <span><span class="va">s1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_data.sentence.html">flair_data.sentence</a></span><span class="op">(</span><span class="st">"nice shirt"</span><span class="op">)</span> </span>
@@ -428,17 +759,17 @@ indeed output is <strong>True</strong>.</p>
 <p>We test whether the sum of the two 2048 embeddings of ‘nice’ is equal
 to 2048. If it is true, it indicates that the embedding results are
 consistent, which should theoretically be the case.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">s1</span><span class="op">[</span><span class="fl">0</span><span class="op">]</span><span class="op">$</span><span class="va">embedding</span><span class="op">$</span><span class="fu">numpy</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">s1</span><span class="op">[</span><span class="fl">0</span><span class="op">]</span><span class="op">$</span><span class="va">embedding</span><span class="op">$</span><span class="fu">numpy</span><span class="op">(</span><span class="op">)</span> <span class="op">==</span>  <span class="va">s2</span><span class="op">[</span><span class="fl">0</span><span class="op">]</span><span class="op">$</span><span class="va">embedding</span><span class="op">$</span><span class="fu">numpy</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] TRUE</span></span></code></pre></div>
 <p>Now we separately add a few more words, <code>very</code> and
 <code>pretty</code>, into two sentence objects.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">embedding</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_embeddings.FlairEmbeddings.html">flair_embeddings.FlairEmbeddings</a></span><span class="op">(</span><span class="st">'news-forward'</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Initialized Flair forward embeddings</span></span>
 <span><span class="va">s1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_data.sentence.html">flair_data.sentence</a></span><span class="op">(</span><span class="st">"nice shirt"</span><span class="op">)</span> </span>
 <span><span class="va">s2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_data.sentence.html">flair_data.sentence</a></span><span class="op">(</span><span class="st">"nice pants"</span><span class="op">)</span> </span></code></pre></div>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">embedding</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_embeddings.FlairEmbeddings.html">flair_embeddings.FlairEmbeddings</a></span><span class="op">(</span><span class="st">'news-forward'</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Initialized Flair forward embeddings</span></span>
 <span><span class="va">s1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_data.sentence.html">flair_data.sentence</a></span><span class="op">(</span><span class="st">"very nice shirt"</span><span class="op">)</span> </span>
@@ -452,7 +783,7 @@ consistent, which should theoretically be the case.</p>
 <span><span class="co">#&gt; Sentence[3]: "pretty nice pants"</span></span></code></pre></div>
 <p>The two sets of embeddings are not identical because the words are
 different, so it returns <strong>False</strong>.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">s1</span><span class="op">[</span><span class="fl">0</span><span class="op">]</span><span class="op">$</span><span class="va">embedding</span><span class="op">$</span><span class="fu">numpy</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">s1</span><span class="op">[</span><span class="fl">0</span><span class="op">]</span><span class="op">$</span><span class="va">embedding</span><span class="op">$</span><span class="fu">numpy</span><span class="op">(</span><span class="op">)</span> <span class="op">==</span>  <span class="va">s2</span><span class="op">[</span><span class="fl">0</span><span class="op">]</span><span class="op">$</span><span class="va">embedding</span><span class="op">$</span><span class="fu">numpy</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] FALSE</span></span></code></pre></div>
 <p>The measure of similarity between two vectors in an inner product
@@ -462,13 +793,13 @@ follows:</p>
 <p><span class="math inline">\(Cosine Similarity = \frac{\sum_{i} (A_i
 \cdot B_i)}{\sqrt{\sum_{i} (A_i^2)} \cdot \sqrt{\sum_{i}
 (B_i^2)}}\)</span></p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">lsa</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Loading required package: SnowballC</span></span>
 <span><span class="va">vector1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">s1</span><span class="op">[</span><span class="fl">0</span><span class="op">]</span><span class="op">$</span><span class="va">embedding</span><span class="op">$</span><span class="fu">numpy</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">vector2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">s2</span><span class="op">[</span><span class="fl">0</span><span class="op">]</span><span class="op">$</span><span class="va">embedding</span><span class="op">$</span><span class="fu">numpy</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>We can observe that the similarity between the two words is 0.55.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">cosine_similarity</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/lsa/man/cosine.html" class="external-link">cosine</a></span><span class="op">(</span><span class="va">vector1</span>, <span class="va">vector2</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">cosine_similarity</span><span class="op">)</span></span>
 <span><span class="co">#&gt;           [,1]</span></span>
@@ -477,22 +808,22 @@ follows:</p>
 <p> </p>
 <hr>
 </div>
-<div class="section level2">
-<h2 id="extracting-embeddings-from-bert">Extracting Embeddings from BERT<a class="anchor" aria-label="anchor" href="#extracting-embeddings-from-bert"></a>
-</h2>
+<div class="section level3">
+<h3 id="extracting-embeddings-from-bert">Extracting Embeddings from BERT<a class="anchor" aria-label="anchor" href="#extracting-embeddings-from-bert"></a>
+</h3>
 <div style="text-align: justify">
 <p>First, we utilize the flair.embeddings.TransformerWordEmbeddings
 function to download BERT, and more transformer models can also be found
 on <a href="https://huggingface.co/flair" class="external-link">Flair NLP’s Hugging
 Face</a>.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">TransformerWordEmbeddings</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_embeddings.TransformerWordEmbeddings.html">flair_embeddings.TransformerWordEmbeddings</a></span><span class="op">(</span><span class="st">"bert-base-uncased"</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">embedding</span> <span class="op">&lt;-</span> <span class="va">TransformerWordEmbeddings</span><span class="op">$</span><span class="fu">embed</span><span class="op">(</span><span class="va">sentence</span><span class="op">)</span></span></code></pre></div>
 <p>Traverse each token in the sentence and print them. To view each
 token, it’s necessary to use<code>reticulate::py_str(token)</code> since
 the sentence is a Python object.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Iterate through each token in the sentence, printing them. </span></span>
 <span><span class="co"># Utilize reticulate::py_str(token) to view each token, given that the sentence is a Python object.</span></span>
 <span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">sentence</span><span class="op">$</span><span class="va">tokens</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
@@ -516,6 +847,8 @@ the sentence is a Python object.</p>
 <span><span class="co">#&gt;         -0.0575,  0.0228])</span></span></code></pre></div>
 </div>
 </div>
+</div>
+
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>
 </div>
