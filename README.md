@@ -25,10 +25,10 @@ For R users, {`flairR`} primarily consists of two main components. The
 first is a wrapper function built on top of {`reticulate`}, which
 enables you to interact directly with Python modules in R and provides
 seamless support for documents and [tutorial (in
-progress)](https://davidycliao.github.io/flaiR/) in the R community.
-Secondly, to facilitate more efficient use for social science research,
-{`flairR`} wraps the FlairNLP Python with three major functions to
-extract features in a tidy and clean format using
+progress)](https://davidycliao.github.io/flaiR/articles/tutorial.html)
+in the R community. Secondly, to facilitate more efficient use for
+social science research, {`flairR`} wraps the FlairNLP Python with three
+major functions to extract features in a tidy and clean format using
 [data.table](https://cran.r-project.org/web/packages/data.table/index.html).
 The features include [**part-of-speech
 tagging**](https://davidycliao.github.io/flaiR/articles/get_pos.html),
@@ -94,8 +94,9 @@ By contributing to this project, you agree to abide by its terms.
 
 If you use this tool in academic research, we recommend citing the
 research article, [Contextual String Embeddings for Sequence
-Labeling](https://aclanthology.org/C18-1139.pdf) from `Flair` research
-team.
+Labeling](https://aclanthology.org/C18-1139.pdf) from
+[Flair](https://flairnlp.github.io) and [Zalando Research
+team](https://engineering.zalando.com/posts/2018/11/zalando-research-releases-flair.html).
 
 </div>
 

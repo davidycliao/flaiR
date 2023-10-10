@@ -1,3 +1,39 @@
+test_that("flair_models.TextClassifier retrieves Python TextClassifier class", {
+
+  # Note: You may specify a Python environment if required using use_python or use_condaenv.
+  # reticulate::use_python("path_to_python", required = TRUE)
+
+  # Call the function
+  TextClassifier <- flair_models.TextClassifier()
+
+  # Test: Check if TextClassifier is indeed a Python Class from the flair.models module
+  expect_s3_class(TextClassifier, "python.builtin.type")
+  expect_true("load" %in% py_list_attributes(TextClassifier))
+
+  # Optionally: Check if the TextClassifier can load a model (ensuring it's functional)
+  # Note: This might require internet access and additional time.
+  # skip_on_cran()  # Consider skipping this in CRAN checks
+  #
+  classifier <- TextClassifier$load('sentiment')
+  expect_s3_class(classifier, "python.builtin.object")
+  expect_true("predict" %in% py_list_attributes(classifier))
+})
+
+# flair_models returns the expected Python module
+test_that("flair_models returns the expected Python module", {
+
+  # Ensure reticulate uses the correct Python installation
+  # You might specify a particular Python environment to ensure consistency
+  # use_python("path/to/python", required = TRUE)
+
+  flair.models <- flair_models()
+
+  # Check if it is a Python Module and if it contains the expected attribute (TextClassifier)
+  expect_s3_class(flair.models, "python.builtin.module")
+  expect_true("TextClassifier" %in% py_list_attributes(flair.models))
+})
+
+
 # flair_datasets returns the expected output
 test_that("flair_datasets returns the expected output", {
   # Skip test if the "reticulate" library is not available

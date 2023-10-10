@@ -1,3 +1,58 @@
+#' Import the flair.models Python module
+#'
+#' @description This function utilizes the reticulate package to import flair.models from the Flair NLP Python library.
+#' Ensure that the Python environment is properly set up and the Flair package is installed.
+#'
+#' @return A Python module object representing flair.models.
+#' @references
+#' Python equivalent: \preformatted{
+#' from flair.models import *
+#' }
+#' @export
+flair_models <- function() {
+  flair.models <- reticulate::import("flair.models")
+  return(flair.models)
+}
+
+
+#' Retrieve TextClassifier from flair.models
+#'
+#' @description This function utilizes the reticulate package to directly import TextClassifier from flair.models in the Flair NLP Python library.
+#' Ensure that the Python environment is properly set up and the Flair package is installed.
+#'
+#' @return A Python object representing flair.models.TextClassifier.
+#' @export
+#' @references
+#' Python equivalent: \preformatted{
+#' from flair.models import TextClassifier
+#' }
+#' @examples
+#' \dontrun{
+#' # Ensure reticulate is using the correct Python environment
+#' # reticulate::use_python("path_to_your_python", required = TRUE)
+#
+#' # Load the TextClassifier
+#' TextClassifier <- flair_models.TextClassifier()
+#
+#' # Load a pre-trained sentiment model
+#' classifier <- TextClassifier$load('sentiment')
+#'
+#' # Create a sentence object
+#' sentence <- flair_data.sentence("Flair is pretty neat!")
+#'
+#' # Predict the sentiment
+#' classifier$predict(sentence)
+#
+#' # Display the sentiment
+#' print(sentence$get_labels())
+#' }
+flair_models.TextClassifier <- function() {
+  flair.models <- reticulate::import("flair.models")
+  TextClassifier <- flair.models$TextClassifier
+  return(TextClassifier)
+}
+
+
 #' Access the flair_datasets Module from Flair
 #'
 #' @description Utilizes the {reticulate} package to import the `flair.datasets`
