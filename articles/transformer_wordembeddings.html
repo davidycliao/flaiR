@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="description" content="flaiR">
-<title>Tagging Sentiment with Flair Standard Models • flaiR</title>
+<title>FlaiR Transformer WordEmbeddings • flaiR</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
@@ -19,7 +19,7 @@
 <link href="../deps/Source_Code_Pro-0.4.7/font.css" rel="stylesheet">
 <!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Tagging Sentiment with Flair Standard Models">
+<!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="FlaiR Transformer WordEmbeddings">
 <meta property="og:description" content="flaiR">
 <meta property="og:image" content="https://davidycliao.github.io/flaiR/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -85,7 +85,7 @@
     <h6 class="dropdown-header" data-toc-skip>Training the Model in FlaiR (Comming Soon)</h6>
   </div>
 </li>
-<li class="nav-item dropdown">
+<li class="active nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown--toolbox">
     <span class="fa fa-newspaper-o"></span>
      
@@ -150,67 +150,104 @@
 
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-      <img src="../logo.png" class="logo" alt=""><h1>Tagging Sentiment with Flair Standard Models</h1>
+      <img src="../logo.png" class="logo" alt=""><h1>FlaiR Transformer WordEmbeddings</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/davidycliao/flaiR/blob/HEAD/vignettes/get_sentiments.Rmd" class="external-link"><code>vignettes/get_sentiments.Rmd</code></a></small>
-      <div class="d-none name"><code>get_sentiments.Rmd</code></div>
+      <small class="dont-index">Source: <a href="https://github.com/davidycliao/flaiR/blob/HEAD/vignettes/transformer_wordembeddings.Rmd" class="external-link"><code>vignettes/transformer_wordembeddings.Rmd</code></a></small>
+      <div class="d-none name"><code>transformer_wordembeddings.Rmd</code></div>
     </div>
 
     
     
 <div class="section level2">
-<h2 id="an-example-using-sentiment-model-pre-trained-english-model">An Example Using <code>sentiment</code> Model (Pre-trained English
-Model)<a class="anchor" aria-label="anchor" href="#an-example-using-sentiment-model-pre-trained-english-model"></a>
+<h2 id="types-of-word-embedding-overview">Types of Word Embedding &amp; Overview<a class="anchor" aria-label="anchor" href="#types-of-word-embedding-overview"></a>
 </h2>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">flaiR</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"uk_immigration"</span><span class="op">)</span></span>
-<span><span class="va">uk_immigration</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">uk_immigration</span>, <span class="fl">5</span><span class="op">)</span></span></code></pre></div>
 <div style="text-align: justify">
-<p>Download the English sentiment model from FlairNLP on Hugging Face.
-Currently, it also supports a large English sentiment model and a German
-pre-trained model.</p>
+<p>All word embedding classes inherit from the
+<code>TokenEmbeddings</code> class and call the <code><a href="https://rdrr.io/r/stats/embed.html" class="external-link">embed()</a></code>
+method to embed the text. In most cases when using Flair, various and
+complex embedding processes are hidden behind the interface. Users
+simply need to instantiate the necessary embedding class and call
+<code><a href="https://rdrr.io/r/stats/embed.html" class="external-link">embed()</a></code> to embed text.</p>
+<p>Here are the types of embeddings currently supported in FlairNLP:</p>
+<table class="table">
+<colgroup>
+<col width="33%">
+<col width="33%">
+<col width="33%">
+</colgroup>
+<thead><tr class="header">
+<th>Class</th>
+<th>Type</th>
+<th>Paper</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td><a href="https://github.com/flairNLP/flair/tree/master/resources/docs/embeddings/BYTE_PAIR_EMBEDDINGS.md" class="external-link"><code>BytePairEmbeddings</code></a></td>
+<td>Subword-level word embeddings</td>
+<td><a href="https://www.aclweb.org/anthology/L18-1473" class="external-link">Heinzerling and
+Strube (2018)</a></td>
+</tr>
+<tr class="even">
+<td><a href="https://github.com/flairNLP/flair/tree/master/resources/docs/embeddings/CHARACTER_EMBEDDINGS.md" class="external-link"><code>CharacterEmbeddings</code></a></td>
+<td>Task-trained character-level embeddings of words</td>
+<td><a href="https://www.aclweb.org/anthology/N16-1030" class="external-link">Lample et
+al. (2016)</a></td>
+</tr>
+<tr class="odd">
+<td><a href="https://github.com/flairNLP/flair/tree/master/resources/docs/embeddings/ELMO_EMBEDDINGS.md" class="external-link"><code>ELMoEmbeddings</code></a></td>
+<td>Contextualized word-level embeddings</td>
+<td><a href="https://aclweb.org/anthology/N18-1202" class="external-link">Peters et
+al. (2018)</a></td>
+</tr>
+<tr class="even">
+<td><a href="https://github.com/flairNLP/flair/tree/master/resources/docs/embeddings/FASTTEXT_EMBEDDINGS.md" class="external-link"><code>FastTextEmbeddings</code></a></td>
+<td>Word embeddings with subword features</td>
+<td><a href="https://aclweb.org/anthology/Q17-1010" class="external-link">Bojanowski et
+al. (2017)</a></td>
+</tr>
+<tr class="odd">
+<td><a href="https://github.com/flairNLP/flair/tree/master/resources/docs/embeddings/FLAIR_EMBEDDINGS.md" class="external-link"><code>FlairEmbeddings</code></a></td>
+<td>Contextualized character-level embeddings</td>
+<td><a href="https://www.aclweb.org/anthology/C18-1139/" class="external-link">Akbik et
+al. (2018)</a></td>
+</tr>
+<tr class="even">
+<td><a href="https://github.com/flairNLP/flair/tree/master/resources/docs/embeddings/ONE_HOT_EMBEDDINGS.md" class="external-link"><code>OneHotEmbeddings</code></a></td>
+<td>Standard one-hot embeddings of text or tags</td>
+<td>-</td>
+</tr>
+<tr class="odd">
+<td><a href="https://github.com/flairNLP/flair/tree/master/resources/docs/embeddings/FLAIR_EMBEDDINGS.md" class="external-link"><code>PooledFlairEmbeddings</code></a></td>
+<td>Pooled variant of <code>FlairEmbeddings</code>
+</td>
+<td><a href="https://www.aclweb.org/anthology/N19-1078/" class="external-link">Akbik et
+al. (2019)</a></td>
+</tr>
+<tr class="even">
+<td><a href="https://github.com/flairNLP/flair/tree/master/resources/docs/embeddings/TRANSFORMER_EMBEDDINGS.md" class="external-link"><code>TransformerWordEmbeddings</code></a></td>
+<td>Embeddings from pretrained <a href="https://huggingface.co/transformers/pretrained_models.html" class="external-link">transformers</a>
+(BERT, XLM, GPT, RoBERTa, XLNet, DistilBERT etc.)</td>
+<td>
+<a href="https://www.aclweb.org/anthology/N19-1423/" class="external-link">Devlin et
+al. (2018)</a> <a href="https://d4mucfpksywv.cloudfront.net/better-language-models/language_models_are_unsupervised_multitask_learners.pdf" class="external-link">Radford
+et al. (2018)</a> <a href="https://arxiv.org/abs/1907.11692" class="external-link">Liu et
+al. (2019)</a> <a href="https://arxiv.org/abs/1901.02860" class="external-link">Dai et
+al. (2019)</a> <a href="https://arxiv.org/abs/1906.08237" class="external-link">Yang et
+al. (2019)</a> <a href="https://arxiv.org/abs/1901.07291" class="external-link">Lample and
+Conneau (2019)</a>
+</td>
+</tr>
+<tr class="odd">
+<td><a href="https://github.com/flairNLP/flair/tree/master/resources/docs/embeddings/CLASSIC_WORD_EMBEDDINGS.md" class="external-link"><code>WordEmbeddings</code></a></td>
+<td>Classic word embeddings</td>
+<td></td>
+</tr>
+</tbody>
+</table>
 </div>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">tagger_sent</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_tagger_sentiments.html">load_tagger_sentiments</a></span><span class="op">(</span><span class="st">"sentiment"</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_sentiments.html">get_sentiments</a></span><span class="op">(</span><span class="va">uk_immigration</span><span class="op">$</span><span class="va">text</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">uk_immigration</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>                          <span class="va">tagger_sent</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">results</span><span class="op">)</span></span>
-<span><span class="co">#&gt;    doc_id sentiment     score</span></span>
-<span><span class="co">#&gt; 1:      1  POSITIVE 0.8097585</span></span>
-<span><span class="co">#&gt; 2:      2  POSITIVE 0.9990165</span></span>
-<span><span class="co">#&gt; 3:      3  POSITIVE 0.8827487</span></span>
-<span><span class="co">#&gt; 4:      4  NEGATIVE 0.9997155</span></span>
-<span><span class="co">#&gt; 5:      5  POSITIVE 0.8604354</span></span></code></pre></div>
 </div>
-<div class="section level2">
-<h2 id="batch-processing-in-english-sentiment-model">Batch Processing in English Sentiment Model<a class="anchor" aria-label="anchor" href="#batch-processing-in-english-sentiment-model"></a>
-</h2>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">batch_process_results</span>  <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_sentiments_batch.html">get_sentiments_batch</a></span><span class="op">(</span><span class="va">uk_immigration</span><span class="op">$</span><span class="va">text</span>,</span>
-<span>                                               <span class="va">uk_immigration</span><span class="op">$</span><span class="va">speaker</span>, </span>
-<span>                                               <span class="va">tagger_sent</span>, </span>
-<span>                                               show.text_id <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>                                               batch_size <span class="op">=</span> <span class="fl">2</span>,</span>
-<span>                                               verbose <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="co">#&gt; CPU is used.</span></span>
-<span><span class="co">#&gt; Processing batch 1 out of 3...</span></span>
-<span><span class="co">#&gt; Processing batch 2 out of 3...</span></span>
-<span><span class="co">#&gt; Processing batch 3 out of 3...</span></span></code></pre></div>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">batch_process_results</span><span class="op">)</span></span>
-<span><span class="co">#&gt;              doc_id sentiment     score</span></span>
-<span><span class="co">#&gt; 1: Philip Hollobone  POSITIVE 0.8097585</span></span>
-<span><span class="co">#&gt; 2:  Stewart Jackson  POSITIVE 0.9990165</span></span>
-<span><span class="co">#&gt; 3: Philip Hollobone  POSITIVE 0.8827488</span></span>
-<span><span class="co">#&gt; 4:  Stewart Jackson  NEGATIVE 0.9997155</span></span>
-<span><span class="co">#&gt; 5: Philip Hollobone  POSITIVE 0.8604354</span></span></code></pre></div>
-</div>
-  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
-    </nav></aside>
+  </main>
 </div>
 
 

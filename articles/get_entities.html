@@ -86,13 +86,14 @@
   </div>
 </li>
 <li class="nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown--tool-box">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown--toolbox">
     <span class="fa fa-newspaper-o"></span>
      
-    Tool Box
+    ToolBox
   </a>
-  <div class="dropdown-menu" aria-labelledby="dropdown--tool-box">
-    <a class="dropdown-item" href="../articles/flair_models.html">Flar Models</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown--toolbox">
+    <a class="dropdown-item" href="../articles/flair_models.html">Flar Pre-trianed Models</a>
+    <a class="dropdown-item" href="../articles/transformer_wordembeddings.html">Transformer Wordembeddings</a>
     <a class="dropdown-item" href="../articles/highlight_text.html">Coloring Entities</a>
     <h6 class="dropdown-header" data-toc-skip>Visualizing the Sentiments (Comming Soon)</h6>
   </div>
@@ -175,7 +176,7 @@ the command again will not trigger a download.</p>
 </div>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tagger_ner</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_tagger_ner.html">load_tagger_ner</a></span><span class="op">(</span><span class="st">"ner"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2023-10-09 17:22:04,115 SequenceTagger predicts: Dictionary with 20 tags: &lt;unk&gt;, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, &lt;START&gt;, &lt;STOP&gt;</span></span></code></pre></div>
+<span><span class="co">#&gt; 2023-10-10 12:48:32,975 SequenceTagger predicts: Dictionary with 20 tags: &lt;unk&gt;, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, &lt;START&gt;, &lt;STOP&gt;</span></span></code></pre></div>
 <div style="text-align: justify">
 <p>If you want the computation to run faster, it is recommended to keep
 the show.text_id set to FALSE by default.</p>
@@ -192,7 +193,7 @@ the show.text_id set to FALSE by default.</p>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">time</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;  46.279   0.564  47.122</span></span></code></pre></div>
+<span><span class="co">#&gt;  27.473   0.322  27.738</span></span></code></pre></div>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">results</span><span class="op">)</span></span>
 <span><span class="co">#&gt;               doc_id                          entity  tag</span></span>
@@ -274,7 +275,7 @@ management.</p>
 <span><span class="co">#&gt; Processing batch 2 out of 2...</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">batch_process_time</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;  32.616   0.501  34.352</span></span></code></pre></div>
+<span><span class="co">#&gt;  26.381   0.291  26.562</span></span></code></pre></div>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">batch_process_results</span><span class="op">)</span></span>
 <span><span class="co">#&gt;               doc_id                          entity  tag text_id</span></span>
