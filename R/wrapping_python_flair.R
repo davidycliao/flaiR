@@ -1,3 +1,18 @@
+#' Flair Data Import Function
+#'
+#' This function imports and returns the `data` module from the Flair package in Python.
+#'
+#' @return A reference to the `data` module of the Flair Python package.
+#' @export
+#' @references
+#' From Flair's Python library: \code{from flair.data import *}
+#'
+flair_data <- function() {
+  flair.data <- reticulate::import("flair.data")
+  return(flair.data)
+}
+
+
 #' Import the flair.models Python module
 #'
 #' @description This function utilizes the reticulate package to import flair.models from the Flair NLP Python library.

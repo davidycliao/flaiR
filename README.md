@@ -15,9 +15,11 @@
 particularly for social science researchers. It offers streamlined
 access to the core features of {`flairNLP`}. `{flairNLP}` is an advanced
 NLP framework in Python that incorporates the advanced techniques
-developed by the Humboldt University of Berlin. For a deeper
-understanding of {flairNLP/flair}’s architecture, refer to the research
-article ‘[Contextual String Embeddings for Sequence
+developed by [Zalando
+Research](https://engineering.zalando.com/posts/2018/11/zalando-research-releases-flair.html)
+based in Berlin. For a deeper understanding of {flairNLP/flair}’s
+architecture, refer to the research article ‘[Contextual String
+Embeddings for Sequence
 Labeling](https://aclanthology.org/C18-1139.pdf)’ and the official
 [mannual](https://flairnlp.github.io) in Python. Here is an R wrapper
 providing R users with a seamless way to use Flair without dealing with
@@ -33,10 +35,7 @@ social science research, {`flairR`} extend {`flairNLP/flair`}’s core
 functionality for working with three major functions to extract features
 in a tidy and fast format–
 [data.table](https://cran.r-project.org/web/packages/data.table/index.html)
-in R. Secondly, to facilitate more efficient use in social science
-research, {`flairR`} extend {`flairNLP/flair`}’s by working with three
-major functions to extract features in a tidy and fast format using
-data.table in R.
+in R.
 
 The core features include:
 
@@ -47,7 +46,7 @@ The core features include:
   analysis**](https://davidycliao.github.io/flaiR/articles/get_entities.html)
 
 - [**named entity
-  recognition**](https://davidycliao.github.io/flaiR/articles/get_sentiments.html).
+  recognition**](https://davidycliao.github.io/flaiR/articles/get_sentiments.html)
 
 </div>
 
@@ -107,8 +106,8 @@ By contributing to this project, you agree to abide by its terms.
 If you use this tool in academic research, we recommend citing the
 research article, [Contextual String Embeddings for Sequence
 Labeling](https://aclanthology.org/C18-1139.pdf) from
-[Flair](https://flairnlp.github.io) and [Zalando Research
-team](https://engineering.zalando.com/posts/2018/11/zalando-research-releases-flair.html).
+[Flair](https://flairnlp.github.io) and [Zalando
+Research](https://engineering.zalando.com/posts/2018/11/zalando-research-releases-flair.html).
 
 </div>
 
