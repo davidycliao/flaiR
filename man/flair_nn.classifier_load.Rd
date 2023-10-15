@@ -2,7 +2,7 @@
 % Please edit documentation in R/wrapping_python_flair.R
 \name{flair_nn.classifier_load}
 \alias{flair_nn.classifier_load}
-\title{Create a Flair Classifier.load Object}
+\title{Create a Flair `Classifier.load` Object.}
 \usage{
 flair_nn.classifier_load(pre_trained)
 }
@@ -14,8 +14,8 @@ This parameter is defined but not used in the current function context.}
 A Flair Classifier object.
 }
 \description{
-This function utilizes the {reticulate} package to interface with Python
-and create a Classifier object from the Flair library.
+This function utilizes the {reticulate} package to interface
+with Python and create a Classifier object from the Flair library.
 }
 \examples{
 \dontrun{

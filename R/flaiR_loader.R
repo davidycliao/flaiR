@@ -1,4 +1,3 @@
-
 #' @title Load the Named Entity Recognition (NER) Tagger
 #'
 #' @description A helper function to load the appropriate tagger based on the provided language.
@@ -73,9 +72,9 @@ load_tagger_ner <- function(language = NULL) {
   SequenceTagger$load(language)
 }
 
-#' Load Flair POS Tagger
+#' @title Load Flair POS Tagger
 #'
-#' This function loads the POS (part-of-speech) tagger model for a specified language
+#' @description This function loads the POS (part-of-speech) tagger model for a specified language
 #' using the Flair library. If no language is specified, it defaults to 'pos-fast'.
 #'
 #' @param language A character string indicating the desired language model. If `NULL`,

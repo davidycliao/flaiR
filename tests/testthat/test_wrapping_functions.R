@@ -1,5 +1,38 @@
-# lair_models returns a module with expected attribute
+# flair_embeddings.FlairEmbeddings throws error for invalid type
+test_that("flair_embeddings.FlairEmbeddings throws error for invalid type", {
+  # Expect a specific error message
+  expect_error(flair_embeddings.FlairEmbeddings("invalid-type"),
+               "Invalid embeddings type. Choose `news-forward` or `news-backward`")
+})
 
+
+# flair_trainers returns the trainers module with expected attributes
+test_that("flair_trainers returns the trainers module with expected attributes", {
+  trainers_module <- flair_trainers()
+
+  # Check if the returned module is not NULL
+  expect_true(!is.null(trainers_module))
+
+  # Check if the module has expected attributes/classes
+  # For example, let's assume you expect a 'ModelTrainer' class in the trainers module
+  expect_true("ModelTrainer" %in% reticulate::py_list_attributes(trainers_module))
+})
+
+
+# flair_models.sequencetagger returns the SequenceTagger object
+test_that("flair_models.sequencetagger returns the SequenceTagger object", {
+  SequenceTagger <- flair_models.sequencetagger()
+
+  # Check if the returned object is not NULL
+  expect_true(!is.null(SequenceTagger))
+
+  # Check if the returned object has expected attribute/method
+  # e.g., predict - replace this with an actual method if it's not correct
+  expect_true("predict" %in% reticulate::py_list_attributes(SequenceTagger))
+})
+
+
+# lair_models returns a module with expected attribute
 test_that("flair_models returns a module with expected attribute", {
   flair_models_module <- flair_models()
 

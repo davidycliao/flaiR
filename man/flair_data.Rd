@@ -10,7 +10,8 @@ flair_data()
 A reference to the `data` module of the Flair Python package.
 }
 \description{
-This function imports and returns the `data` module from the Flair package in Python.
+This function imports and returns the `data` module from the
+Flair package in Python.
 }
 \references{
 From Flair's Python library: \code{from flair.data import *}

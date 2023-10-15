@@ -10,8 +10,8 @@ flair_splitter.SegtokSentenceSplitter()
 A Python module (`flair.splitter`).
 }
 \description{
-A function to interface with the Python `flair.splitter` module, specifically
-utilizing the `SegtokSentenceSplitter` class/method.
+A function to interface with the Python `flair.splitter` module,
+specifically utilizing the `SegtokSentenceSplitter` class/method.
 }
 \examples{
 \dontrun{

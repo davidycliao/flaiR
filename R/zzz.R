@@ -1,7 +1,8 @@
-#' .onAttach Function for the flaiR Package
+#' @title .onAttach Function for the flaiR Package
 #'
-#' This function is called when the flaiR package is loaded. It provides messages
-#' detailing the versions of Python and Flair being used, as well as other package details.
+#' @description This function is called when the flaiR package is loaded. \
+#' It provides messages detailing the versions of Python and Flair being used, a
+#' s well as other package details.
 #'
 #' @keywords internal
 #' @importFrom reticulate py_config

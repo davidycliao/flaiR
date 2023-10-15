@@ -1,6 +1,6 @@
-#' Extract Named Entities from a Batch of Texts
+#' @title Extract Named Entities from a Batch of Texts
 #'
-#' This function processes batches of texts and extracts named entities.
+#' @description This function processes batches of texts and extracts named entities.
 #'
 #' @param texts A character vector of texts to process.
 #' @param doc_ids A vector of document IDs corresponding to each text.

@@ -7,7 +7,8 @@
 .onAttach(...)
 }
 \description{
-This function is called when the flaiR package is loaded. It provides messages
-detailing the versions of Python and Flair being used, as well as other package details.
+This function is called when the flaiR package is loaded. \
+It provides messages detailing the versions of Python and Flair being used, a
+s well as other package details.
 }
 \keyword{internal}

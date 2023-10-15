@@ -1,6 +1,7 @@
-#' Flair Data Import Function
+#' @title Flair Data Import Function
 #'
-#' This function imports and returns the `data` module from the Flair package in Python.
+#' @description This function imports and returns the `data` module from the
+#' Flair package in Python.
 #'
 #' @return A reference to the `data` module of the Flair Python package.
 #' @export
@@ -13,7 +14,7 @@ flair_data <- function() {
 }
 
 
-#' Import the flair.models Python module
+#' @title Import the flair.models Python module
 #'
 #' @description This function utilizes the reticulate package to import flair.models from the Flair NLP Python library.
 #' Ensure that the Python environment is properly set up and the Flair package is installed.
@@ -30,7 +31,7 @@ flair_models <- function() {
 }
 
 
-#' Retrieve TextClassifier from flair.models
+#' @title Retrieve TextClassifier from flair.models
 #'
 #' @description This function utilizes the reticulate package to directly import TextClassifier from flair.models in the Flair NLP Python library.
 #' Ensure that the Python environment is properly set up and the Flair package is installed.
@@ -41,6 +42,7 @@ flair_models <- function() {
 #' Python equivalent: \preformatted{
 #' from flair.models import TextClassifier
 #' }
+#'
 #' @examples
 #' \dontrun{
 #' # Ensure reticulate is using the correct Python environment
@@ -68,7 +70,7 @@ flair_models.TextClassifier <- function() {
 }
 
 
-#' Access the flair_datasets Module from Flair
+#' @title Access the flair_datasets Module from Flair
 #'
 #' @description Utilizes the {reticulate} package to import the `flair.datasets`
 #' dataset from Flair's datasets in Python, enabling the use of this dataset in
@@ -104,7 +106,7 @@ flair_datasets <- function() {
 }
 
 
-#' Create a Flair Sentence Object
+#' @title Create a Flair Sentence Object
 #'
 #' @description  This function uses the {reticulate} package to interface with Python and
 #' create a Flair Sentence object.
@@ -133,10 +135,10 @@ flair_data.sentence <- function(sentence_text) {
 }
 
 
-#' Create a Flair Classifier.load Object
+#' @title Create a Flair `Classifier.load` Object.
 #'
-#' This function utilizes the {reticulate} package to interface with Python
-#' and create a Classifier object from the Flair library.
+#' @description This function utilizes the {reticulate} package to interface
+#' with Python and create a Classifier object from the Flair library.
 #'
 #' @param pre_trained A character string specifying the pre-trained model to use.
 #' This parameter is defined but not used in the current function context.
@@ -164,7 +166,7 @@ flair_nn.classifier_load <- function(pre_trained) {
 }
 
 
-#' Flair Embeddings Importer
+#' @title Flair Embeddings Importer
 #'
 #' @description This function imports and returns the \code{flair.embeddings} module from Flair.
 #' It provides a convenient R interface to the Flair library's embedding functionalities.
@@ -191,7 +193,7 @@ flair_embeddings <- function() {
 
 
 
-#' Flair Embedding Initialization
+#' @title Flair Embedding Initialization
 #'
 #' @description This function initializes Flair embeddings using Python's Flair
 #' library.
@@ -214,7 +216,13 @@ flair_embeddings <- function() {
 #'
 flair_embeddings.FlairEmbeddings <- function(embeddings_type = "news-forward") {
   flair_embeddings <- import('flair.embeddings')
-  embeddings  <- flair_embeddings$FlairEmbeddings(embeddings_type)
+
+  # Try to get embeddings and catch any Python errors
+  tryCatch({
+    embeddings <- flair_embeddings$FlairEmbeddings(embeddings_type)
+  }, error = function(e) {
+    stop("Invalid embeddings type. Choose `news-forward` or `news-backward`")
+  })
 
   if (embeddings_type == "news-backward") {
     message("Initialized Flair backward embeddings")
@@ -228,7 +236,8 @@ flair_embeddings.FlairEmbeddings <- function(embeddings_type = "news-forward") {
 }
 
 
-#' Create a Flair TransformerWordEmbeddings Object
+
+#' @title Create a Flair TransformerWordEmbeddings Object
 #'
 #' @description This function interfaces with Python via {reticulate} to create
 #' a `TransformerWordEmbeddings` object using the Flair library.
@@ -258,7 +267,7 @@ flair_embeddings.TransformerWordEmbeddings <- function(pre_trained_model = 'bert
 }
 
 
-#' Create a Flair WordEmbeddings Object
+#' @title Create a Flair WordEmbeddings Object
 #'
 #' @description This function interfaces with Python via {reticulate} to create
 #' a `WordEmbeddings` object using the Flair library.
@@ -289,9 +298,9 @@ flair_embeddings.WordEmbeddings <- function(pre_trained = "glove") {
   return(embedding)
 }
 
-#' TransformerDocumentEmbeddings Function
+#' @title TransformerDocumentEmbeddings Function
 #'
-#' This function initializes and returns a Transformer Document Embedding model from the Flair library.
+#' @description  This function initializes and returns a Transformer Document Embedding model from the Flair library.
 #' It takes a pre-trained model name as an argument and returns the respective embedding model.
 #'
 #' @param pre_trained A string specifying the name of a pre-trained transformer model.
@@ -319,10 +328,10 @@ flair_embeddings.TransformerDocumentEmbeddings <- function(pre_trained = "bert-b
 }
 
 
-#' Segtok Sentence Splitter
+#' @title Segtok Sentence Splitter
 #'
-#' A function to interface with the Python `flair.splitter` module, specifically
-#' utilizing the `SegtokSentenceSplitter` class/method.
+#' @description A function to interface with the Python `flair.splitter` module,
+#' specifically utilizing the `SegtokSentenceSplitter` class/method.
 #'
 #' @return A Python module (`flair.splitter`).
 #'
@@ -346,7 +355,7 @@ flair_splitter.SegtokSentenceSplitter <- function() {
 }
 
 
-#' Access Flair's SequenceTagger
+#' @title Access Flair's SequenceTagger
 #'
 #' @description
 #' This function utilizes the {reticulate} package to import the `SequenceTagger`s from Flair's models in Python,
@@ -382,7 +391,7 @@ flair_models.sequencetagger <- function() {
 }
 
 
-#' Import Flair's ModelTrainer in R
+#' @title Import Flair's ModelTrainer in R
 #'
 #' @description This function provides R access to Flair's ModelTrainer Python class using the {reticulate} package.
 #'
