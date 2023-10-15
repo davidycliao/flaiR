@@ -9,6 +9,7 @@ output: github_document
 [![coverage](https://github.com/davidycliao/flaiR/actions/workflows/test-coverage.yaml/badge.svg)](https://github.com/davidycliao/flaiR/actions/workflows/test-coverage.yaml)
 [![codecov](https://codecov.io/gh/davidycliao/flaiR/graph/badge.svg?token=CPIBIB6L78)](https://codecov.io/gh/davidycliao/flaiR)
 [![CodeFactor](https://www.codefactor.io/repository/github/davidycliao/flair/badge)](https://www.codefactor.io/repository/github/davidycliao/flair)
+[![Codespaces Prebuilds](https://github.com/davidycliao/flaiR/actions/workflows/codespaces/create_codespaces_prebuilds/badge.svg)](https://github.com/davidycliao/flaiR/actions/workflows/codespaces/create_codespaces_prebuilds)
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
@@ -35,7 +36,6 @@ install.packages("remotes")
 
 
 `{flaiR}` is an R wrapper for the `{flairNLP/flair}` library, designed specifically for R users, especially those in the social sciences. It provides easy access to the main functionalities of `{flairNLP}`. Developed by [Zalando Research](https://engineering.zalando.com/posts/2018/11/zalando-research-releases-flair.html) in Berlin, `{flairNLP}` is a sophisticated NLP framework in Python that incorporates cutting-edge techniques. Flair offers intuitive interfaces for utilizing and combining various word and document embeddings, including the proposed Flair embeddings and numerous transformers. For a comprehensive understanding of the `{flairNLP/flair}` architecture, you can refer to the research article '[Contextual String Embeddings for Sequence Labeling](https://aclanthology.org/C18-1139.pdf)' and the official [manual](https://flairnlp.github.io) written for its Python implementation. This R wrapper enables R users to leverage Flair's capabilities without the need to interact directly with Python.
-
 
 For R users, {`flairR`} primarily consists of two main components. The first is a wrapper function built on top of {`reticulate`}, which enables you to interact directly with Python modules in R and provides seamless support for documents and [tutorial (in progress)](https://davidycliao.github.io/flaiR/articles/tutorial.html) in the R community. Secondly, to facilitate more efficient use for social science research, {`flairR`} extend {`flairNLP/flair`}'s core functionality for working with three major functions to extract features in a tidy and fast format-- [data.table](https://cran.r-project.org/web/packages/data.table/index.html) in R. 
 
