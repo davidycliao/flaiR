@@ -187,8 +187,6 @@ test_that("flair_embeddings imports the Python module correctly", {
 
 
 # flair_embeddings.FlairEmbeddings initializes embeddings correctly
-
-
 test_that("flair_embeddings.FlairEmbeddings initializes embeddings correctly", {
   skip_if_not_installed("reticulate")
 
@@ -203,7 +201,7 @@ test_that("flair_embeddings.FlairEmbeddings initializes embeddings correctly", {
   # Check that an error containing certain text is thrown with invalid input
   expect_error(
     flair_embeddings.FlairEmbeddings("invalid_type"),
-    "ValueError.*invalid_type",
+    "Invalid embeddings type. Choose `news-forward` or `news-backward`",
     fixed = FALSE  # because we're using a regular expression
   )
 
@@ -255,7 +253,6 @@ test_that("flair_embeddings.TransformerDocumentEmbeddings returns an embedding",
 
 
 # flair_splitter.SegtokSentenceSplitter returns an object
-
 test_that("flair_splitter.SegtokSentenceSplitter returns an object", {
   skip_if_not_installed("reticulate")
   skip_on_cran()  # Optional: skip this test on CRAN to avoid unnecessary failures
@@ -307,7 +304,7 @@ test_that("flair_trainers returns an object", {
 
   # Optionally: Additional tests to check if the imported object has expected attributes or methods
   # For example, if we expect trainers to have a method named "ModelTrainer", we might test:
-  # expect_true("ModelTrainer" %in% names(reticulate::py_list_attributes(trainers)))
+  expect_true("ModelTrainer" %in% reticulate::py_list_attributes(trainers))
 })
 
 
@@ -343,8 +340,8 @@ test_that("flair_embeddings.FlairEmbeddings gives messages and stops as expected
 
   # Testing if the function issues an error with invalid input
   expect_error(flair_embeddings.FlairEmbeddings("invalid_type"),
-               "ValueError.*invalid_type",
-               fixed = FALSE  # because we're using a regular expression
+               "Invalid embeddings type. Choose `news-forward` or `news-backward`",
+               fixed = FALSE
   )
 })
 
@@ -401,5 +398,3 @@ test_that("flair_trainers returns expected object", {
   # Test that the returned object is of the expected class
   expect_true(inherits(trainers, "python.builtin.module"))
 })
-
-
