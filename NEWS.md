@@ -8,6 +8,9 @@
 
 * Provided some tutorials for interacting with R and Python using Flair.
 
+* add tutorial 
+
+
 # flaiR 0.0.3 (2020-09-10)
 
 __Modifications Overview__

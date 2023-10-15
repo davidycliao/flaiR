@@ -1,3 +1,31 @@
+# lair_models returns a module with expected attribute
+
+test_that("flair_models returns a module with expected attribute", {
+  flair_models_module <- flair_models()
+
+  # Check if the module is not NULL
+  expect_true(!is.null(flair_models_module))
+
+  # Check if a specific attribute (e.g., 'TextClassifier') is available in the module
+  expect_true("TextClassifier" %in% reticulate::py_list_attributes(flair_models_module))
+})
+
+
+
+# flair_data returns a module with Sentence attribute
+test_that("flair_data returns a module with Sentence attribute", {
+  flair_data_module <- flair_data()
+
+  # Check if the module is not NULL
+  expect_true(!is.null(flair_data_module))
+
+  # Check if a specific attribute (i.e., 'Sentence') is available in the module
+  expect_true("Sentence" %in% reticulate::py_list_attributes(flair_data_module))
+})
+
+
+# flair_models.TextClassifier retrieves Python TextClassifier class
+
 test_that("flair_models.TextClassifier retrieves Python TextClassifier class", {
 
   # Note: You may specify a Python environment if required using use_python or use_condaenv.

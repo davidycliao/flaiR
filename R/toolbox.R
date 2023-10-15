@@ -1,6 +1,6 @@
-#' Convert Embeddings to Matrix
+#' @title Convert Embeddings to Matrix
 #'
-#' This function takes a three-dimensional array of embeddings and converts them to a two-dimensional matrix
+#' @description This function takes a three-dimensional array of embeddings and converts them to a two-dimensional matrix
 #' based on the specified strategy.
 #'
 #' @param embeddings A three-dimensional array of shape (number_of_texts, number_of_words, embedding_dimension).
@@ -44,7 +44,7 @@ embeddings_to_matrix <- function(embeddings, strategy = "average") {
   )
 }
 
-#' Highlight Entities with Specified Colors and Tag
+#' @title Highlight Entities with Specified Colors and Tag
 #'
 #' @description This function highlights specified entities in a text string
 #' with specified background colors, font colors, and optional labels.
