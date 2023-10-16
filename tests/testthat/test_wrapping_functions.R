@@ -1,3 +1,19 @@
+# flair_nn returns the correct module
+test_that("flair_nn returns the correct module", {
+
+  # Load the module using the function
+  flair_module <- flair_nn(pre_trained = TRUE)
+
+  # Check that the returned module is not NULL
+  expect_true(!is.null(flair_module))
+
+  # Optionally, if you know some attributes or methods that should exist in the returned module, test for them
+  # For example, if the module should have a 'Classifier' method:
+  expect_true("Classifier" %in% names(flair_module))
+})
+
+library(testthat)
+
 # flair_embeddings.FlairEmbeddings throws error for invalid type
 test_that("flair_embeddings.FlairEmbeddings throws error for invalid type", {
   # Expect a specific error message
