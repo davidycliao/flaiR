@@ -18,10 +18,10 @@ specifically for R users, especially those in the social sciences. It
 provides easy access to the main functionalities of `{flairNLP}`.
 Developed by [Zalando
 Research](https://engineering.zalando.com/posts/2018/11/zalando-research-releases-flair.html)
-in Berlin, `{flairNLP}` is a sophisticated NLP framework in Python that
-incorporates cutting-edge techniques. Flair offers intuitive interfaces
-for utilizing and combining various word and document embeddings,
-including the proposed Flair embeddings and numerous transformers. For a
+in Berlin, Flair provides intuitive interfaces with exceptional
+multilingual support, especially for various embedding frameworks like
+Glove, and transformer-based models such as BERT. It also comes equipped
+with pre-trained models and context-aware capabilities. For a
 comprehensive understanding of the `{flairNLP/flair}` architecture, you
 can refer to the research article ‘[Contextual String Embeddings for
 Sequence Labeling](https://aclanthology.org/C18-1139.pdf)’ and the
