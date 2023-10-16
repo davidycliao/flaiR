@@ -131,7 +131,6 @@ get_pos_batch <- function(texts, doc_ids, tagger = NULL, language = NULL,
   # Combine the results from all batches
   results_dt <- rbindlist(results_list, fill = TRUE)
 
-  # Activate garbage collection
   check_and_gc(gc.active)
 
   return(results_dt)

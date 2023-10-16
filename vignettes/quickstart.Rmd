@@ -25,7 +25,7 @@ system(paste(reticulate::py_config()$python, "-m pip install flair"))
 ## Why Write {flaiR} to Access fair NLP in Python?
 <div style="text-align: justify">
 
-Flair ([Zalando Research](https://engineering.zalando.com/posts/2018/11/zalando-research-releases-flair.html) ) stands out as a notably feature-rich and user-friendly NLP framework. Flair provides intuitive interfaces with exceptional multilingual support, especially for various embedding frameworks like Glove, and transformer-based models such as BERT. It also comes equipped with pre-trained models and context-aware capabilities. In addition, Flair also establishes dependencies with primary NLP Python libraries (such as gensim, transformer, flair, and more); installing {`flaiR`} will subsequently install other related NLP packages in Python. By installing {`flaiR`} in R, we can seamlessly utilize the Python Flair NLP library in R alongside basic Python libraries (such as [NumPy](https://numpy.org) and [Pandas](https://pandas.pydata.org)) and modern Python NLP toolkits and frameworks (such as [PyTorch](https://pytorch.org) and [Gensim](https://radimrehurek.com/gensim/intro.html)) through reticulate in an R environment.
+In Python, Flair ( developed by [Zalando Research](https://engineering.zalando.com/posts/2018/11/zalando-research-releases-flair.html)) stands out as a notably feature-rich and user-friendly NLP framework. Flair provides intuitive interfaces with exceptional multilingual support, especially for various embedding frameworks like Glove, and transformer-based models such as BERT. It also comes equipped with pre-trained models and context-aware capabilities. In addition, Flair also establishes dependencies with primary NLP Python libraries (such as gensim, transformer, flair, and more); installing {`flaiR`} will subsequently install other related NLP packages in Python. By installing the {`flaiR`} package in R, users can seamlessly access the Python-based Flair library within R. This integration allows for the use of basic Python libraries, like [NumPy](https://numpy.org) and [Pandas](https://pandas.pydata.org), as well as modern NLP and deep learning frameworks such as [PyTorch](https://pytorch.org) and [Gensim](https://radimrehurek.com/gensim/intro.html), all through the reticulate interface in an R environment.
 
 
 </div>
@@ -112,10 +112,10 @@ Let's run named entity recognition (NER) over the following example sentence: "I
 library(flaiR)
 
 # make a sentence
-sentence = flair_data.sentence('I love Berlin and New York.')
+sentence <- flair_data.sentence('I love Berlin and New York.')
 
 # load the NER tagger
-tagger = flair_nn.classifier_load('ner')
+tagger <- flair_nn.classifier_load('ner')
 
 # run NER over sentence
 tagger$predict(sentence)
@@ -148,10 +148,10 @@ We use flair/pos-english for POS tagging in the standard models on Hugging Face.
 library(flaiR)
 
 # make a sentence
-sentence = flair_data.sentence('I love Berlin and New York.')
+sentence <- flair_data.sentence('I love Berlin and New York.')
 
 # load the NER tagger
-tagger = flair_nn.classifier_load('pos')
+tagger <- flair_nn.classifier_load('pos')
 
 # run NER over sentence
 tagger$predict(sentence)
@@ -187,10 +187,10 @@ You can do this with essentially the same code as above. Just instead of loading
 library(flaiR)
 
 # make a sentence
-sentence = flair_data.sentence('I love Berlin and New York.')
+sentence <- flair_data.sentence('I love Berlin and New York.')
 
 # load the flair_nn.classifier_load tagger
-tagger = flair_nn.classifier_load("sentiment")
+tagger <- flair_nn.classifier_load("sentiment")
 
 # run sentiment analysis over sentence
 tagger$predict(sentence)
@@ -220,10 +220,10 @@ Simply instantate `flair_embeddings.TransformerWordEmbeddings()`  and call `$emb
 library(flaiR)
 
 # initiate TransformerWordEmbeddings
-embedding = flair_embeddings.TransformerWordEmbeddings('bert-base-uncased')
+embedding <- flair_embeddings.TransformerWordEmbeddings('bert-base-uncased')
 
 # create a sentence
-sentence = flair_data.sentence('The grass is green .')
+sentence <- flair_data.sentence('The grass is green .')
 
 # embed words in sentence
 embedding$embed(sentence)
@@ -252,10 +252,10 @@ Sometimes you want to have an embedding for a whole document, not only individua
 
 ```{r}
 # initiate TransformerWordEmbeddings
-embedding = flair_embeddings.TransformerDocumentEmbeddings('bert-base-uncased')
+embedding <- flair_embeddings.TransformerDocumentEmbeddings('bert-base-uncased')
 
 # create a sentence
-sentence = flair_data.sentence('The grass is green .')
+sentence <- flair_data.sentence('The grass is green .')
 
 # embed words in sentence
 embedding$embed(sentence)
@@ -284,25 +284,26 @@ First, instantiate the two embeddings you wish to combine:
 
 ```{r}
 # init standard GloVe embedding
-glove_embedding = flair_embeddings.WordEmbeddings('glove')
+glove_embedding <- flair_embeddings.WordEmbeddings('glove')
 
 # init Flair forward and backwards embeddings
-flair_embedding_forward = flair_embeddings.FlairEmbeddings('news-forward')
-flair_embedding_backward = flair_embeddings.FlairEmbeddings('news-backward')
+flair_embedding_forward <- flair_embeddings.FlairEmbeddings('news-forward')
+flair_embedding_backward <- flair_embeddings.FlairEmbeddings('news-backward')
 ```
 
 Now, instantiate the `StackedEmbeddings` class and pass a list containing these two embeddings. Both R and Python have list functionality. Let's create a StackedEmbedding object that combines the GloVe and forward/backward Flair embeddings.
 ```{r}
-stacked_embeddings <- flair_embeddings()$StackedEmbeddings(list(glove_embedding, 
-                                                                flair_embedding_forward,
-                                                                flair_embedding_backward))
+stacked_embeddings <- flair_embeddings()$StackedEmbeddings(
+  list(glove_embedding,
+       flair_embedding_forward, 
+       flair_embedding_backward))
 ```
 
 
 Next, use the `$embed()` method to transform text into vectors for your sentences.
 ```{r}
 # make a sentence
-sentence = flair_data.sentence('I love Berlin and New York.')
+sentence <- flair_data.sentence('I love Berlin and New York.')
 
 # just embed a sentence using the StackedEmbedding as you would with any single embedding.
 stacked_embeddings$embed(sentence)
@@ -333,11 +334,10 @@ for (i in seq_along(sentence$tokens)) {
 <div style="text-align: justify">
 
 
-To enhance more efficient utilization in social science research, {flairR} encapsulates FlairNLP Python with three principal functions to extract features in a neat and orderly format using [data.table](https://cran.r-project.org/web/packages/data.table/index.html). Through these featured functions, you don't have to write loops to format parsed output on your own; {`flairR`} will automatically do it for you in a neat format. The main features include [**part-of-speech tagging**](https://davidycliao.github.io/flaiR/articles/get_pos.html), [**transformer-based sentiment analysis**](https://davidycliao.github.io/flaiR/articles/get_entities.html), and [**named entity recognition**](https://davidycliao.github.io/flaiR/articles/get_sentiments.html).
+To enhance more efficient utilization in social science research, {flairR} extends FlairNLP with three principal functions to extract features in a neat format with [data.table](https://cran.r-project.org/web/packages/data.table/index.html). Through these featured functions, you don't have to write loops to format parsed output on your own; {`flairR`} will automatically do it for you in a neat format. The main features include [**part-of-speech tagging**](https://davidycliao.github.io/flaiR/articles/get_pos.html), [**transformer-based sentiment analysis**](https://davidycliao.github.io/flaiR/articles/get_entities.html), and [**named entity recognition**](https://davidycliao.github.io/flaiR/articles/get_sentiments.html). In addition, to handle the load on RAM when dealing with larger corpus, {`flairR`}  supports batch processing to handle texts in batches, which is especially useful when dealing with large datasets, to optimize memory usage and performance.
 
 
-
-| **Core  Featured Function in flaiR**                    | Loader                     | Supported Models                                                                                                         |
+| **Core  Featured Function in flaiR**                    | Loader                     | Supported Models from Flair NLP                                                                                                        |
 |----------------------------------------------|----------------------------|--------------------------------------------------------------------------------------------------------------------------|
 | `get_entities()`, `get_entities_batch()`     | `load_tagger_ner()`        | `en` (English), `fr` (French), `da` (Danish), `nl` (Dutch), and more.                                                    |
 | `get_pos()`, `get_pos_batch()`               | `load_tagger_pos()`        | `pos` (English POS), `fr-pos` (French POS), `de-pos` (German POS), `nl-pos` (Dutch POS), and more.                       |
@@ -442,9 +442,9 @@ head(results, n = 10)
 ## How to Contribute
 
 <div style="text-align: justify">
+R developers who want to contribute to {`flaiR`} are welcome – {`flaiR`} is an open source project. I warmly invite R users who share similar interests to join in contributing to this package. Please feel free to shoot me an email to collaborate on the task. Contributions – whether they be comments, code suggestions, tutorial examples, or forking the repository – are greatly appreciated. Please note that the `flaiR` is released with the [Contributor Code of Conduct](https://github.com/davidycliao/flaiR/blob/master/CONDUCT.md). By contributing to this project, you agree to abide by its terms. 
 
-I currently am working as a postdoctoral researcher at  [Text and Policy Research Group](https://text-and-policy.com) in [SPIRe](https://www.ucd.ie/spire/) of University College Dublin, immersed in numerous ongoing research projects. My availability to maintain, test, and create examples for R users may be limited. I warmly invite R users who share similar interests to join in contributing to this package. Contributions – whether they be comments, code suggestions, tutorial examples, or forking the repository – are greatly appreciated. Please note that the `flaiR` is released with the [Contributor Code of Conduct](https://github.com/davidycliao/flaiR/blob/master/CONDUCT.md). By contributing to this project, you agree to abide by its terms. 
-
+The main communication channel is in [Discussion](https://github.com/davidycliao/flaiR/discussions). Feel free to ask help  and share insights with [Discussion](https://github.com/davidycliao/flaiR/discussions), and report any problems in [Issue](https://github.com/davidycliao/flaiR/issues).
 
 </div>
 

@@ -39,18 +39,19 @@ social science research, {`flairR`} extend {`flairNLP/flair`}’s core
 functionality for working with three major functions to extract features
 in a tidy and fast format–
 [data.table](https://cran.r-project.org/web/packages/data.table/index.html)
-in R.
+in R. In addition, to handle the load on RAM when dealing with larger
+corpus, {`flairR`} supports batch processing to handle texts in batches,
+which is especially useful when dealing with large datasets, to optimize
+memory usage and performance.
 
-The core features include:
+The core features (and example usage) can be found:
 
 - [**part-of-speech
   tagging**](https://davidycliao.github.io/flaiR/articles/get_pos.html)
-
-- [**transformer-based sentiment
-  analysis**](https://davidycliao.github.io/flaiR/articles/get_entities.html)
-
 - [**named entity
-  recognition**](https://davidycliao.github.io/flaiR/articles/get_sentiments.html)
+  recognition**](https://davidycliao.github.io/flaiR/articles/get_entities.html)
+- [**transformer-based sentiment
+  analysis**](https://davidycliao.github.io/flaiR/articles/get_sentiments.html)
 
 </div>
 
@@ -99,10 +100,12 @@ released with the [Contributor Code of
 Conduct](https://github.com/davidycliao/flaiR/blob/master/CONDUCT.md).
 By contributing to this project, you agree to abide by its terms.
 
-The main communication channel is in the
+The main communication channel is in
 [Discussion](https://github.com/davidycliao/flaiR/discussions). Feel
-free to ask help, report problems and share insights with the
-[Discussion](https://github.com/davidycliao/flaiR/discussions).
+free to ask help and share insights with
+[Discussion](https://github.com/davidycliao/flaiR/discussions), and
+report any problems in
+[Issue](https://github.com/davidycliao/flaiR/issues).
 
 </div>
 

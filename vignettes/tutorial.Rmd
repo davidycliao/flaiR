@@ -374,3 +374,110 @@ for (i in seq_along(sentence$tokens)) {
 </div>
 
 
+# Training a Binary Classifier in flaiR
+
+<div style="text-align: justify">
+
+
+In this section, we'll train a sentiment analysis model that can categorize text as either positive or negative. This case study is adapted from pages 116 to 130 of Tadej Magajna's book, '[Natural Language Processing with Flair](https://www.packtpub.com/product/natural-language-processing-with-flair/9781801072311)'. The process for training text classifiers in Flair mirrors the sequence followed for sequence labeling models. Specifically, the steps to train text classifiers are:
+
+- Load a tagged corpus and compute the label dictionary map.
+- Prepare the document embeddings.
+- Initialize the `TextClassifier` class.
+- Train the model."
+
+</div>
+
+## Loading a Tagged Corpus
+
+<div style="text-align: justify">
+
+Training text classification models requires a set of text documents (typically, sentences or paragraphs) where each document is associated with one or more classification labels. To train our sentiment analysis text classification model, we will be using the famous Internet Movie Database (IMDb) dataset, which contains 50,000 movie reviews from IMDB, where each review is labeled as either positive or negative. References to this dataset are already baked into Flair, so loading the dataset couldn't be easier:
+
+```{r}
+library(flaiR)
+Corpus <- flair_data()$Corpus
+IMDB <- flair_datasets()$IMDB
+
+corpus = IMDB()
+corpus$downsample(0.05)
+lbl_type = 'sentiment'
+label_dict = corpus$make_label_dictionary(label_type=lbl_type)
+
+```
+
+</div>
+
+## Loading the Embeddings
+<div style="text-align: justify">
+
+In flair, iit covers all the different types of document embeddings that we can use. Here, we simply use `DocumentPoolEmbeddings`. They require no training prior to training the classification model itself:
+
+```{r}
+DocumentPoolEmbeddings <- flair_embeddings()$DocumentPoolEmbeddings
+WordEmbeddings <- flair_embeddings()$WordEmbeddings
+glove = WordEmbeddings('glove')
+document_embeddings = DocumentPoolEmbeddings(glove)
+```
+
+</div>
+
+## Initializing the TextClassifier Class
+
+```{r}
+# initiate TextClassifier
+TextClassifier <- flair_models()$TextClassifier
+classifier <- TextClassifier(document_embeddings,
+                             label_dictionary=label_dict,
+                             label_type=lbl_type)
+```
+
+## Training the Model
+
+<div style="text-align: justify">
+
+
+Training the text classifier model involves two simple steps:
+
+- Defining the model trainer class by passing in the classifier model and the corpus
+- Setting off the training process passing in the required training hyperparameters.
+
+```{r}
+ModelTrainer <- flair_trainers()$ModelTrainer
+trainer <- ModelTrainer(classifier, corpus)
+trainer$train('classifier',
+              learning_rate=0.1,
+              mini_batch_size=32L,
+              max_epochs=10L)
+```
+</div>
+
+## Loading and Using the Classifiers
+<div style="text-align: justify">
+
+After training the text classification model, the resulting classifier will already be stored in memory as part of the classifier variable. It is possible, however, that your Python session exited after training. If so, you'll need to load the model into memory with the following:
+```{r}
+TextClassifier <- flair_models()$TextClassifier
+classifier = TextClassifier$load('classifier/best-model.pt')
+```
+
+
+We import the Sentence object. Now, we can generate predictions on some example text inputs.
+
+```{r}
+Sentence <- flair_data()$Sentence
+```
+
+```{r}
+sentence = Sentence("great")
+classifier$predict(sentence)
+print(sentence$labels)
+```
+
+```{r}
+sentence = Sentence("sad")
+classifier$predict(sentence)
+print(sentence$labels)
+```
+
+</div>
