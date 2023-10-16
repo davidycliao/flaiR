@@ -85,8 +85,9 @@ For R users, {`flairR`} is built on top of {reticulate}, enabling you to interac
 |---------------------------------------------------|-----------------------------------------------------------|
 | `flair_datasets()`                                | from flair.datasets import *                              |
 | `flair_data.sentence()`                           | from flair.data import Sentence                           |
-| `flair_nn.classifier_load()`                      | from flair.embeddings import *                            |
-| `flair_embeddings()`                              | from flair.nn import Classifier                           |
+| `flair_nn()`                                      | from flair_nn import *                                    |
+| `flair_nn.classifier_load()`                      | from flair.embeddings import Classifier                   |
+| `flair_embeddings()`                              | from flair.nn import *                                    |
 | `flair_embeddings.FlairEmbeddings()`              | from flair.embeddings import FlairEmbeddings              |
 | `flair_embeddings.TransformerWordEmbeddings()`    | from flair.embeddings import TransformerWordEmbeddings    |
 | `flair_embeddings.WordEmbeddings()`               | from flair.embeddings import WordEmbeddings               |
@@ -106,16 +107,20 @@ For R users, {`flairR`} is built on top of {reticulate}, enabling you to interac
 
 <div style="text-align: justify">
 
-Let's run named entity recognition (NER) over the following example sentence: "I love Berlin and New York. To do this, all you need is to make a Sentence for this text, load a pre-trained model and use it to predict tags for the sentence:
+Let's run named entity recognition over the following example sentence: "I love Berlin and New York. To do this, all you need is to make a Sentence for this text, load a pre-trained model and use it to predict tags for the sentence object.
 
 ```{r}
+# attach flaiR in R
 library(flaiR)
 
 # make a sentence
-sentence <- flair_data.sentence('I love Berlin and New York.')
+
+Sentence <- flair_data()$Sentence
+sentence <- Sentence('I love Berlin and New York.')
 
 # load the NER tagger
-tagger <- flair_nn.classifier_load('ner')
+Classifier <- flair_nn()$Classifier
+tagger <- Classifier$load('ner')
 
 # run NER over sentence
 tagger$predict(sentence)
@@ -127,7 +132,8 @@ This should print:
 print(sentence)
 ```
 
-Use a for loop to print out each pos tag.
+Use a for loop to print out each POS tag. It's important to note that Python is indexed from 0. Therefore, in an R environment, we must use `seq_along(sentence$get_labels()) - 1`.
+
 ```{r}
 for (i in seq_along(sentence$get_labels())) {
       print(sentence$get_labels()[[i]])
@@ -138,20 +144,22 @@ for (i in seq_along(sentence$get_labels())) {
 
 &nbsp;
 
-
 ### __Tag Part-of-Speech in Text__ 
 
 <div style="text-align: justify">
 
 We use flair/pos-english for POS tagging in the standard models on Hugging Face.
 ```{r}
+# attach flaiR in R
 library(flaiR)
 
 # make a sentence
-sentence <- flair_data.sentence('I love Berlin and New York.')
+Sentence <- flair_data()$Sentence
+sentence <- Sentence('I love Berlin and New York.')
 
 # load the NER tagger
-tagger <- flair_nn.classifier_load('pos')
+Classifier <- flair_nn()$Classifier
+tagger <- Classifier$load('pos')
 
 # run NER over sentence
 tagger$predict(sentence)
@@ -184,13 +192,16 @@ Let's run sentiment analysis over the same sentence to determine whether it is P
 You can do this with essentially the same code as above. Just instead of loading the 'ner' model, you now load the 'sentiment' model:
 
 ```{r}
+# attach flaiR in R
 library(flaiR)
 
 # make a sentence
-sentence <- flair_data.sentence('I love Berlin and New York.')
+Sentence <- flair_data()$Sentence
+sentence <- Sentence('I love Berlin and New York.')
 
 # load the flair_nn.classifier_load tagger
-tagger <- flair_nn.classifier_load("sentiment")
+Classifier <- flair_nn()$Classifier
+tagger <- Classifier$load('sentiment')
 
 # run sentiment analysis over sentence
 tagger$predict(sentence)
@@ -217,10 +228,13 @@ Let's use a standard BERT model (bert-base-uncased) to embed the sentence "the g
 Simply instantate `flair_embeddings.TransformerWordEmbeddings()`  and call `$embed()` over the sentence object:
 
 ```{r}
+# attach flaiR in R
 library(flaiR)
 
 # initiate TransformerWordEmbeddings
-embedding <- flair_embeddings.TransformerWordEmbeddings('bert-base-uncased')
+
+TransformerWordEmbeddings <- flair_embeddings()$TransformerWordEmbeddings
+embedding <- TransformerWordEmbeddings('bert-base-uncased')
 
 # create a sentence
 sentence <- flair_data.sentence('The grass is green .')
@@ -228,8 +242,8 @@ sentence <- flair_data.sentence('The grass is green .')
 # embed words in sentence
 embedding$embed(sentence)
 ```
-This will cause each word in the sentence to be embedded. You can iterate through the words and get each embedding like this:
 
+This will cause each word in the sentence to be embedded. You can iterate through the words and get each embedding like this:
 ```{r}
 for (i in seq_along(sentence$tokens)) {
   cat("Token: ",  reticulate::py_str(sentence$tokens[[i]]), "\n")

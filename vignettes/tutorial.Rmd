@@ -384,7 +384,7 @@ In this section, we'll train a sentiment analysis model that can categorize text
 - Load a tagged corpus and compute the label dictionary map.
 - Prepare the document embeddings.
 - Initialize the `TextClassifier` class.
-- Train the model."
+- Train the model.
 
 </div>
 
@@ -428,8 +428,8 @@ document_embeddings = DocumentPoolEmbeddings(glove)
 # initiate TextClassifier
 TextClassifier <- flair_models()$TextClassifier
 classifier <- TextClassifier(document_embeddings,
-                             label_dictionary=label_dict,
-                             label_type=lbl_type)
+                             label_dictionary = label_dict,
+                             label_type = lbl_type)
 ```
 
 ## Training the Model
@@ -443,8 +443,13 @@ Training the text classifier model involves two simple steps:
 - Setting off the training process passing in the required training hyperparameters.
 
 ```{r}
+# initiate ModelTrainer
 ModelTrainer <- flair_trainers()$ModelTrainer
+
+# fit the model
 trainer <- ModelTrainer(classifier, corpus)
+
+# start to train
 trainer$train('classifier',
               learning_rate=0.1,
               mini_batch_size=32L,
@@ -458,7 +463,7 @@ trainer$train('classifier',
 After training the text classification model, the resulting classifier will already be stored in memory as part of the classifier variable. It is possible, however, that your Python session exited after training. If so, you'll need to load the model into memory with the following:
 ```{r}
 TextClassifier <- flair_models()$TextClassifier
-classifier = TextClassifier$load('classifier/best-model.pt')
+classifier <- TextClassifier$load('classifier/best-model.pt')
 ```
 
 
@@ -469,15 +474,113 @@ Sentence <- flair_data()$Sentence
 ```
 
 ```{r}
-sentence = Sentence("great")
+sentence <- Sentence("great")
 classifier$predict(sentence)
 print(sentence$labels)
 ```
 
 ```{r}
-sentence = Sentence("sad")
+sentence <- Sentence("sad")
 classifier$predict(sentence)
 print(sentence$labels)
+```
+
+</div>
+
+# Training a RNN with FlaiR
+<div style="text-align: justify">
+
+Here, we train a sentiment analysis model to categorize text. In this case, we also include a pipeline that implements the use of Recurrent Neural Networks (RNN). This makes them particularly effective for tasks involving sequential data.
+
+</div>
+
+## Import Necessary Libraries
+
+```{r}
+library(flaiR)
+IMDB <- flair_datasets()$IMDB
+WordEmbeddings <- flair_embeddings()$WordEmbeddings
+FlairEmbeddings <- flair_embeddings()$FlairEmbeddings
+DocumentRNNEmbeddings <- flair_embeddings()$DocumentRNNEmbeddings
+TextClassifier <- flair_models()$TextClassifier
+ModelTrainer <- flair_trainers()$ModelTrainer
+```
+
+
+## Get the IMDB Corpus
+<div style="text-align: justify">
+
+The IMDB movie review dataset is used here, which is a commonly utilized dataset for sentiment analysis. `$downsample(0.1)` method means only 10% of the dataset is used, allowing for a faster demonstration
+```{r}
+corpus <- IMDB()$downsample(0.1) 
+
+# Create the label dictionary
+lbl_type <- 'sentiment'
+label_dict <- corpus$make_label_dictionary(label_type=lbl_type)
+```
+
+</div>
+
+## Stacked Embeddings in flaiR 
+<div style="text-align: justify">
+
+This is one of Flair's most powerful features: it allows for the integration of embeddings to enable the model to learn from more sparse features. Three types of embeddings are utilized here: GloVe embeddings, and two types of Flair embeddings (forward and backward). Word embeddings are used to convert words into vectors.
+```{r}
+# Make a list of word embeddings
+word_embeddings <- list(WordEmbeddings('glove'),
+                        FlairEmbeddings('news-forward-fast'),
+                        FlairEmbeddings('news-backward-fast'))
+
+# Initialize the document embeddings
+
+document_embeddings <- DocumentRNNEmbeddings(word_embeddings, 
+                                             hidden_size = 512L,
+                                             reproject_words = TRUE,
+                                             reproject_words_dimension = 256L)
+
+```
+
+```{r}
+# Create a Text Classifier with the embeddings and label dictionary
+classifier = TextClassifier(document_embeddings, 
+                            label_dictionary=label_dict, label_type='class')
+
+# Initialize the text classifier trainer with our corpus
+trainer = ModelTrainer(classifier, corpus)
+```
+</div>
+
+
+## Start the Training
+<div style="text-align: justify">
+
+For the sake of this example, setting max_epochs to 5. You might want to increase this for better performance.
+
+It is worth noting that  thelearning rate is a parameter that determines the step size at each iteration while moving towards a minimum of the loss function. A smaller learning rate could slow down the learning process, but it could lead to more precise convergence. `mini_batch_size` determines the number of samples that will be used to compute the gradient at each step. The 'L' in 32L is used in R to denote that the number is an integer.
+
+patience (aka early stop) is a hyperparameter used in conjunction with early stopping to avoid overfitting. It determines the number of epochs the training process will tolerate without improvements before stopping the training.  Setting max_epochs to 5 means the algorithm will make five passes through the dataset.
+
+```{r eval=FALSE, include=TRUE}
+# The 'L' in 32L is used in R to denote that the number is an integer.
+trainer$train('models/sentiment',
+              learning_rate=0.1,
+              mini_batch_size=32L,
+              patience=5L,
+              max_epochs=5L)  
+```
+
+
+</div>
+
+
+## To Apply the Trained Model for Prediction
+
+<div style="text-align: justify">
+
+```{r eval=FALSE, include=TRUE}
+sentence <- "This movie was really exciting!"
+classifier$predict(sentence)
+print(sentence.labels)
 ```
 
 </div>

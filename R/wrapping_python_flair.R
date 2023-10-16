@@ -134,6 +134,29 @@ flair_data.sentence <- function(sentence_text) {
   return(sentence)
 }
 
+#' @title Import Flair's Neural Network Module
+#'
+#' @description This function imports the neural network module from the
+#' Flair library.
+#'
+#' @param pre_trained A parameter (currently not being used in the function body).
+#'
+#' @return A reference to Flair's neural network module.
+#'
+#' @export
+#'
+#' @importFrom reticulate import
+#'
+#' @examples
+#' \dontrun{
+#'   flair_nn <- flair_nn(pre_trained = TRUE)
+#'   Classifier <- flair_nn$Classifier
+#' }
+flair_nn <- function(pre_trained) {
+  flair_nn <- import('flair.nn')
+  return(flair_nn)
+}
+
 
 #' @title Create a Flair `Classifier.load` Object.
 #'
@@ -164,7 +187,6 @@ flair_nn.classifier_load <- function(pre_trained) {
   classifier <- flair_nn$Classifier$load(pre_trained)
   return(classifier)
 }
-
 
 #' @title Flair Embeddings Importer
 #'
