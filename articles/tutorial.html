@@ -80,9 +80,8 @@
   <div class="dropdown-menu" aria-labelledby="dropdown--tutorial-in-r">
     <a class="dropdown-item" href="../articles/tutorial.html#introduction">Introduction</a>
     <a class="dropdown-item" href="../articles/tutorial.html#sentence-and-token">Sentence and Token</a>
+    <a class="dropdown-item" href="../articles/tutorial.html#sequence-taggings">Sequence Taggings</a>
     <a class="dropdown-item" href="../articles/tutorial.html#flair-embedding">Flair Embeddings</a>
-    <h6 class="dropdown-header" data-toc-skip>Sequence Taggings (Comming Soon)</h6>
-    <h6 class="dropdown-header" data-toc-skip>Text Classification (Comming Soon)</h6>
     <a class="dropdown-item" href="../articles/tutorial.html#training-a-binary-classifier-in-flair">Training a Binary Classifier in flaiR</a>
     <a class="dropdown-item" href="../articles/tutorial.html#training-a-rnn-with-flair">Training a RNN with FlaiR</a>
   </div>
@@ -95,7 +94,7 @@
   </a>
   <div class="dropdown-menu" aria-labelledby="dropdown--toolbox">
     <a class="dropdown-item" href="../articles/flair_models.html">Flar Pre-trianed Models</a>
-    <a class="dropdown-item" href="../articles/transformer_wordembeddings.html">Transformer Wordembeddings</a>
+    <a class="dropdown-item" href="../articles/transformer_wordembeddings.html">Wordembeddings in Flair</a>
     <a class="dropdown-item" href="../articles/highlight_text.html">Coloring Entities</a>
     <h6 class="dropdown-header" data-toc-skip>Visualizing the Sentiments (Comming Soon)</h6>
   </div>
@@ -464,6 +463,128 @@ tagging pieces of information.</p>
 <span><span class="co">#&gt; Sentence[26]: "What I see in UCD today, what I have seen of UCD in its impact on my own life and the life of Ireland." → ["UCD"/ORG, "seen"/VERB]</span></span></code></pre></div>
 </div>
 </div>
+<p> </p>
+<hr>
+</div>
+<div class="section level2">
+<h2 id="sequence-taggings">Sequence Taggings<a class="anchor" aria-label="anchor" href="#sequence-taggings"></a>
+</h2>
+<div class="section level3">
+<h3 id="tag-entities-in-text">
+<strong>Tag Entities in Text</strong><a class="anchor" aria-label="anchor" href="#tag-entities-in-text"></a>
+</h3>
+<div style="text-align: justify">
+<p>Let’s run named entity recognition over the following example
+sentence: “I love Berlin and New York. To do this, all you need is to
+make a Sentence for this text, load a pre-trained model and use it to
+predict tags for the sentence object.</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># attach flaiR in R</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">flaiR</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># make a sentence</span></span>
+<span></span>
+<span><span class="va">Sentence</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_data.html">flair_data</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">Sentence</span></span>
+<span><span class="va">sentence</span> <span class="op">&lt;-</span> <span class="fu">Sentence</span><span class="op">(</span><span class="st">'I love Berlin and New York.'</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># load the NER tagger</span></span>
+<span><span class="va">Classifier</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_nn.html">flair_nn</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">Classifier</span></span>
+<span><span class="va">tagger</span> <span class="op">&lt;-</span> <span class="va">Classifier</span><span class="op">$</span><span class="fu">load</span><span class="op">(</span><span class="st">'ner'</span><span class="op">)</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:24:51,459 SequenceTagger predicts: Dictionary with 20 tags: &lt;unk&gt;, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, &lt;START&gt;, &lt;STOP&gt;</span></span>
+<span></span>
+<span><span class="co"># run NER over sentence</span></span>
+<span><span class="va">tagger</span><span class="op">$</span><span class="fu">predict</span><span class="op">(</span><span class="va">sentence</span><span class="op">)</span></span></code></pre></div>
+<p>This should print:</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># print the sentence with all annotations</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">sentence</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Sentence[7]: "I love Berlin and New York." → ["Berlin"/LOC, "New York"/LOC]</span></span></code></pre></div>
+<p>Use a for loop to print out each POS tag. It’s important to note that
+Python is indexed from 0. Therefore, in an R environment, we must use
+<code>seq_along(sentence$get_labels()) - 1</code>.</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">sentence</span><span class="op">$</span><span class="fu">get_labels</span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">sentence</span><span class="op">$</span><span class="fu">get_labels</span><span class="op">(</span><span class="op">)</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span><span class="co">#&gt; 'Span[2:3]: "Berlin"'/'LOC' (0.9812)</span></span>
+<span><span class="co">#&gt; 'Span[4:6]: "New York"'/'LOC' (0.9957)</span></span></code></pre></div>
+</div>
+<p> </p>
+</div>
+<div class="section level3">
+<h3 id="tag-part-of-speech-in-text">
+<strong>Tag Part-of-Speech in Text</strong><a class="anchor" aria-label="anchor" href="#tag-part-of-speech-in-text"></a>
+</h3>
+<div style="text-align: justify">
+<p>We use flair/pos-english for POS tagging in the standard models on
+Hugging Face.</p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># attach flaiR in R</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">flaiR</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># make a sentence</span></span>
+<span><span class="va">Sentence</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_data.html">flair_data</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">Sentence</span></span>
+<span><span class="va">sentence</span> <span class="op">&lt;-</span> <span class="fu">Sentence</span><span class="op">(</span><span class="st">'I love Berlin and New York.'</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># load the NER tagger</span></span>
+<span><span class="va">Classifier</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_nn.html">flair_nn</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">Classifier</span></span>
+<span><span class="va">tagger</span> <span class="op">&lt;-</span> <span class="va">Classifier</span><span class="op">$</span><span class="fu">load</span><span class="op">(</span><span class="st">'pos'</span><span class="op">)</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:24:52,319 SequenceTagger predicts: Dictionary with 53 tags: &lt;unk&gt;, O, UH, ,, VBD, PRP, VB, PRP$, NN, RB, ., DT, JJ, VBP, VBG, IN, CD, NNS, NNP, WRB, VBZ, WDT, CC, TO, MD, VBN, WP, :, RP, EX, JJR, FW, XX, HYPH, POS, RBR, JJS, PDT, NNPS, RBS, AFX, WP$, -LRB-, -RRB-, ``, '', LS, $, SYM, ADD</span></span>
+<span></span>
+<span><span class="co"># run NER over sentence</span></span>
+<span><span class="va">tagger</span><span class="op">$</span><span class="fu">predict</span><span class="op">(</span><span class="va">sentence</span><span class="op">)</span></span></code></pre></div>
+<p>This should print:</p>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># print the sentence with all annotations</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">sentence</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Sentence[7]: "I love Berlin and New York." → ["I"/PRP, "love"/VBP, "Berlin"/NNP, "and"/CC, "New"/NNP, "York"/NNP, "."/.]</span></span></code></pre></div>
+<p>Use a for loop to print out each pos tag.</p>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">sentence</span><span class="op">$</span><span class="fu">get_labels</span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">sentence</span><span class="op">$</span><span class="fu">get_labels</span><span class="op">(</span><span class="op">)</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span><span class="co">#&gt; 'Token[0]: "I"'/'PRP' (1.0)</span></span>
+<span><span class="co">#&gt; 'Token[1]: "love"'/'VBP' (1.0)</span></span>
+<span><span class="co">#&gt; 'Token[2]: "Berlin"'/'NNP' (0.9999)</span></span>
+<span><span class="co">#&gt; 'Token[3]: "and"'/'CC' (1.0)</span></span>
+<span><span class="co">#&gt; 'Token[4]: "New"'/'NNP' (1.0)</span></span>
+<span><span class="co">#&gt; 'Token[5]: "York"'/'NNP' (1.0)</span></span>
+<span><span class="co">#&gt; 'Token[6]: "."'/'.' (1.0)</span></span></code></pre></div>
+</div>
+<p> </p>
+</div>
+<div class="section level3">
+<h3 id="detect-sentiment">
+<strong>Detect Sentiment</strong><a class="anchor" aria-label="anchor" href="#detect-sentiment"></a>
+</h3>
+<div style="text-align: justify">
+<p>Let’s run sentiment analysis over the same sentence to determine
+whether it is POSITIVE or NEGATIVE.</p>
+<p>You can do this with essentially the same code as above. Just instead
+of loading the ‘ner’ model, you now load the ‘sentiment’ model:</p>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># attach flaiR in R</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">flaiR</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># make a sentence</span></span>
+<span><span class="va">Sentence</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_data.html">flair_data</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">Sentence</span></span>
+<span><span class="va">sentence</span> <span class="op">&lt;-</span> <span class="fu">Sentence</span><span class="op">(</span><span class="st">'I love Berlin and New York.'</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># load the flair_nn.classifier_load tagger</span></span>
+<span><span class="va">Classifier</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_nn.html">flair_nn</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">Classifier</span></span>
+<span><span class="va">tagger</span> <span class="op">&lt;-</span> <span class="va">Classifier</span><span class="op">$</span><span class="fu">load</span><span class="op">(</span><span class="st">'sentiment'</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># run sentiment analysis over sentence</span></span>
+<span><span class="va">tagger</span><span class="op">$</span><span class="fu">predict</span><span class="op">(</span><span class="va">sentence</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># print the sentence with all annotations</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">sentence</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Sentence[7]: "I love Berlin and New York." → POSITIVE (0.9982)</span></span></code></pre></div>
+</div>
+<p> </p>
+<p> </p>
+<hr>
+</div>
 </div>
 <div class="section level2">
 <h2 id="flair-embedding">Flair Embedding<a class="anchor" aria-label="anchor" href="#flair-embedding"></a>
@@ -509,7 +630,7 @@ code. To use them, we simply instantiate a WordEmbeddings class by
 passing in the ID of the embedding of our choice. Then, we simply wrap
 our text into a Sentence object, and call the embed(sentence) method on
 our WordEmbeddings class.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">embedding</span> <span class="op">=</span> <span class="fu"><a href="../reference/flair_embeddings.WordEmbeddings.html">flair_embeddings.WordEmbeddings</a></span><span class="op">(</span><span class="st">'crawl'</span><span class="op">)</span> </span>
 <span><span class="va">sentence</span> <span class="op">=</span> <span class="fu"><a href="../reference/flair_data.sentence.html">flair_data.sentence</a></span><span class="op">(</span><span class="st">"one two three one"</span><span class="op">)</span> </span>
 <span><span class="va">embedding</span><span class="op">$</span><span class="fu">embed</span><span class="op">(</span><span class="va">sentence</span><span class="op">)</span> </span>
@@ -744,7 +865,7 @@ context that occurs before a word. Additionally, since our word has no
 context on the left-hand side of its position in the sentence, the two
 embeddings are identical, and the code assumes they are identical,
 indeed output is <strong>True</strong>.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">embedding</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_embeddings.FlairEmbeddings.html">flair_embeddings.FlairEmbeddings</a></span><span class="op">(</span><span class="st">'news-forward'</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Initialized Flair forward embeddings</span></span>
 <span><span class="va">s1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_data.sentence.html">flair_data.sentence</a></span><span class="op">(</span><span class="st">"nice shirt"</span><span class="op">)</span> </span>
@@ -762,17 +883,17 @@ indeed output is <strong>True</strong>.</p>
 <p>We test whether the sum of the two 2048 embeddings of ‘nice’ is equal
 to 2048. If it is true, it indicates that the embedding results are
 consistent, which should theoretically be the case.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">s1</span><span class="op">[</span><span class="fl">0</span><span class="op">]</span><span class="op">$</span><span class="va">embedding</span><span class="op">$</span><span class="fu">numpy</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">s1</span><span class="op">[</span><span class="fl">0</span><span class="op">]</span><span class="op">$</span><span class="va">embedding</span><span class="op">$</span><span class="fu">numpy</span><span class="op">(</span><span class="op">)</span> <span class="op">==</span>  <span class="va">s2</span><span class="op">[</span><span class="fl">0</span><span class="op">]</span><span class="op">$</span><span class="va">embedding</span><span class="op">$</span><span class="fu">numpy</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] TRUE</span></span></code></pre></div>
 <p>Now we separately add a few more words, <code>very</code> and
 <code>pretty</code>, into two sentence objects.</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">embedding</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_embeddings.FlairEmbeddings.html">flair_embeddings.FlairEmbeddings</a></span><span class="op">(</span><span class="st">'news-forward'</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Initialized Flair forward embeddings</span></span>
 <span><span class="va">s1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_data.sentence.html">flair_data.sentence</a></span><span class="op">(</span><span class="st">"nice shirt"</span><span class="op">)</span> </span>
 <span><span class="va">s2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_data.sentence.html">flair_data.sentence</a></span><span class="op">(</span><span class="st">"nice pants"</span><span class="op">)</span> </span></code></pre></div>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">embedding</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_embeddings.FlairEmbeddings.html">flair_embeddings.FlairEmbeddings</a></span><span class="op">(</span><span class="st">'news-forward'</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Initialized Flair forward embeddings</span></span>
 <span><span class="va">s1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_data.sentence.html">flair_data.sentence</a></span><span class="op">(</span><span class="st">"very nice shirt"</span><span class="op">)</span> </span>
@@ -786,7 +907,7 @@ consistent, which should theoretically be the case.</p>
 <span><span class="co">#&gt; Sentence[3]: "pretty nice pants"</span></span></code></pre></div>
 <p>The two sets of embeddings are not identical because the words are
 different, so it returns <strong>False</strong>.</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">s1</span><span class="op">[</span><span class="fl">0</span><span class="op">]</span><span class="op">$</span><span class="va">embedding</span><span class="op">$</span><span class="fu">numpy</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">s1</span><span class="op">[</span><span class="fl">0</span><span class="op">]</span><span class="op">$</span><span class="va">embedding</span><span class="op">$</span><span class="fu">numpy</span><span class="op">(</span><span class="op">)</span> <span class="op">==</span>  <span class="va">s2</span><span class="op">[</span><span class="fl">0</span><span class="op">]</span><span class="op">$</span><span class="va">embedding</span><span class="op">$</span><span class="fu">numpy</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] FALSE</span></span></code></pre></div>
 <p>The measure of similarity between two vectors in an inner product
@@ -796,13 +917,13 @@ follows:</p>
 <p><span class="math inline">\(Cosine Similarity = \frac{\sum_{i} (A_i
 \cdot B_i)}{\sqrt{\sum_{i} (A_i^2)} \cdot \sqrt{\sum_{i}
 (B_i^2)}}\)</span></p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">lsa</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Loading required package: SnowballC</span></span>
 <span><span class="va">vector1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">s1</span><span class="op">[</span><span class="fl">0</span><span class="op">]</span><span class="op">$</span><span class="va">embedding</span><span class="op">$</span><span class="fu">numpy</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">vector2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">s2</span><span class="op">[</span><span class="fl">0</span><span class="op">]</span><span class="op">$</span><span class="va">embedding</span><span class="op">$</span><span class="fu">numpy</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>We can observe that the similarity between the two words is 0.55.</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">cosine_similarity</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/lsa/man/cosine.html" class="external-link">cosine</a></span><span class="op">(</span><span class="va">vector1</span>, <span class="va">vector2</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">cosine_similarity</span><span class="op">)</span></span>
 <span><span class="co">#&gt;           [,1]</span></span>
@@ -819,14 +940,14 @@ follows:</p>
 function to download BERT, and more transformer models can also be found
 on <a href="https://huggingface.co/flair" class="external-link">Flair NLP’s Hugging
 Face</a>.</p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">TransformerWordEmbeddings</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_embeddings.TransformerWordEmbeddings.html">flair_embeddings.TransformerWordEmbeddings</a></span><span class="op">(</span><span class="st">"bert-base-uncased"</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">embedding</span> <span class="op">&lt;-</span> <span class="va">TransformerWordEmbeddings</span><span class="op">$</span><span class="fu">embed</span><span class="op">(</span><span class="va">sentence</span><span class="op">)</span></span></code></pre></div>
 <p>Traverse each token in the sentence and print them. To view each
 token, it’s necessary to use<code>reticulate::py_str(token)</code> since
 the sentence is a Python object.</p>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Iterate through each token in the sentence, printing them. </span></span>
 <span><span class="co"># Utilize reticulate::py_str(token) to view each token, given that the sentence is a Python object.</span></span>
 <span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">sentence</span><span class="op">$</span><span class="va">tokens</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
@@ -849,6 +970,8 @@ the sentence is a Python object.</p>
 <span><span class="co">#&gt; tensor([-0.0535, -0.0368, -0.2851, -0.0381, -0.0486,  0.2383, -0.1200,  0.2620,</span></span>
 <span><span class="co">#&gt;         -0.0575,  0.0228])</span></span></code></pre></div>
 </div>
+<p> </p>
+<hr>
 </div>
 </div>
 <div class="section level2">
@@ -880,23 +1003,23 @@ Database (IMDb) dataset, which contains 50,000 movie reviews from IMDB,
 where each review is labeled as either positive or negative. References
 to this dataset are already baked into Flair, so loading the dataset
 couldn’t be easier:</p>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">flaiR</span><span class="op">)</span></span>
 <span><span class="va">Corpus</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_data.html">flair_data</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">Corpus</span></span>
 <span><span class="va">IMDB</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_datasets.html">flair_datasets</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">IMDB</span></span>
 <span></span>
 <span><span class="va">corpus</span> <span class="op">=</span> <span class="fu">IMDB</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:00:57,985 Reading data from /Users/yenchiehliao/.flair/datasets/imdb_v4-rebalanced</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:00:57,985 Train: /Users/yenchiehliao/.flair/datasets/imdb_v4-rebalanced/train.txt</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:00:57,985 Dev: None</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:00:57,985 Test: None</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:00:58,600 Initialized corpus /Users/yenchiehliao/.flair/datasets/imdb_v4-rebalanced (label type name is 'sentiment')</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:01,594 Reading data from /Users/yenchiehliao/.flair/datasets/imdb_v4-rebalanced</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:01,594 Train: /Users/yenchiehliao/.flair/datasets/imdb_v4-rebalanced/train.txt</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:01,594 Dev: None</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:01,594 Test: None</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:02,121 Initialized corpus /Users/yenchiehliao/.flair/datasets/imdb_v4-rebalanced (label type name is 'sentiment')</span></span>
 <span><span class="va">corpus</span><span class="op">$</span><span class="fu">downsample</span><span class="op">(</span><span class="fl">0.05</span><span class="op">)</span></span>
-<span><span class="co">#&gt; &lt;flair.datasets.document_classification.IMDB object at 0x29cef27d0&gt;</span></span>
+<span><span class="co">#&gt; &lt;flair.datasets.document_classification.IMDB object at 0x2de639a50&gt;</span></span>
 <span><span class="va">lbl_type</span> <span class="op">=</span> <span class="st">'sentiment'</span></span>
 <span><span class="va">label_dict</span> <span class="op">=</span> <span class="va">corpus</span><span class="op">$</span><span class="fu">make_label_dictionary</span><span class="op">(</span>label_type<span class="op">=</span><span class="va">lbl_type</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:00:58,618 Computing label dictionary. Progress:</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:02,100 Dictionary created for label 'sentiment' with 3 values: POSITIVE (seen 1019 times), NEGATIVE (seen 1006 times)</span></span></code></pre></div>
+<span><span class="co">#&gt; 2023-10-19 01:25:02,134 Computing label dictionary. Progress:</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:05,249 Dictionary created for label 'sentiment' with 3 values: POSITIVE (seen 1013 times), NEGATIVE (seen 1012 times)</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level3">
@@ -907,7 +1030,7 @@ couldn’t be easier:</p>
 that we can use. Here, we simply use
 <code>DocumentPoolEmbeddings</code>. They require no training prior to
 training the classification model itself:</p>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">DocumentPoolEmbeddings</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_embeddings.html">flair_embeddings</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">DocumentPoolEmbeddings</span></span>
 <span><span class="va">WordEmbeddings</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_embeddings.html">flair_embeddings</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">WordEmbeddings</span></span>
 <span><span class="va">glove</span> <span class="op">=</span> <span class="fu">WordEmbeddings</span><span class="op">(</span><span class="st">'glove'</span><span class="op">)</span></span>
@@ -917,7 +1040,7 @@ training the classification model itself:</p>
 <div class="section level3">
 <h3 id="initializing-the-textclassifier-class">Initializing the TextClassifier Class<a class="anchor" aria-label="anchor" href="#initializing-the-textclassifier-class"></a>
 </h3>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># initiate TextClassifier</span></span>
 <span><span class="va">TextClassifier</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_models.html">flair_models</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">TextClassifier</span></span>
 <span><span class="va">classifier</span> <span class="op">&lt;-</span> <span class="fu">TextClassifier</span><span class="op">(</span><span class="va">document_embeddings</span>,</span>
@@ -935,7 +1058,7 @@ and the corpus</li>
 <li>Setting off the training process passing in the required training
 hyperparameters.</li>
 </ul>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># initiate ModelTrainer</span></span>
 <span><span class="va">ModelTrainer</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_trainers.html">flair_trainers</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">ModelTrainer</span></span>
 <span></span>
@@ -947,8 +1070,8 @@ hyperparameters.</li>
 <span>              learning_rate<span class="op">=</span><span class="fl">0.1</span>,</span>
 <span>              mini_batch_size<span class="op">=</span><span class="fl">32L</span>,</span>
 <span>              max_epochs<span class="op">=</span><span class="fl">10L</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:04,594 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:04,594 Model: "TextClassifier(</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:06,863 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:06,863 Model: "TextClassifier(</span></span>
 <span><span class="co">#&gt;   (embeddings): DocumentPoolEmbeddings(</span></span>
 <span><span class="co">#&gt;     fine_tune_mode=none, pooling=mean</span></span>
 <span><span class="co">#&gt;     (embeddings): StackedEmbeddings(</span></span>
@@ -966,222 +1089,224 @@ hyperparameters.</li>
 <span><span class="co">#&gt;   (weights): None</span></span>
 <span><span class="co">#&gt;   (weight_tensor) None</span></span>
 <span><span class="co">#&gt; )"</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:04,594 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:04,594 Corpus: "Corpus: 2025 train + 225 dev + 250 test sentences"</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:04,594 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:04,594 Parameters:</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:04,594  - learning_rate: "0.100000"</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:04,594  - mini_batch_size: "32"</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:04,595  - patience: "3"</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:04,595  - anneal_factor: "0.5"</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:04,595  - max_epochs: "10"</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:04,595  - shuffle: "True"</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:04,595  - train_with_dev: "False"</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:04,595  - batch_growth_annealing: "False"</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:04,595 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:04,595 Model training base path: "classifier"</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:04,595 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:04,595 Device: cpu</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:04,595 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:04,595 Embeddings storage mode: cpu</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:04,595 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:05,496 epoch 1 - iter 6/64 - loss 0.17467710 - time (sec): 0.90 - samples/sec: 213.19 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:06,429 epoch 1 - iter 12/64 - loss 0.08817654 - time (sec): 1.83 - samples/sec: 209.33 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:07,308 epoch 1 - iter 18/64 - loss 0.05912027 - time (sec): 2.71 - samples/sec: 212.32 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:08,189 epoch 1 - iter 24/64 - loss 0.04450826 - time (sec): 3.59 - samples/sec: 213.67 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:09,044 epoch 1 - iter 30/64 - loss 0.03570596 - time (sec): 4.45 - samples/sec: 215.80 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:09,914 epoch 1 - iter 36/64 - loss 0.33763016 - time (sec): 5.32 - samples/sec: 216.57 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:10,665 epoch 1 - iter 42/64 - loss 0.28979676 - time (sec): 6.07 - samples/sec: 221.43 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:11,608 epoch 1 - iter 48/64 - loss 0.25370957 - time (sec): 7.01 - samples/sec: 219.02 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:12,613 epoch 1 - iter 54/64 - loss 0.22560044 - time (sec): 8.02 - samples/sec: 215.51 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:13,850 epoch 1 - iter 60/64 - loss 0.20309693 - time (sec): 9.25 - samples/sec: 207.46 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:14,532 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:14,532 EPOCH 1 done: loss 0.1926 - lr 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:16,043 Evaluating as a multi-label problem: False</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:16,049 DEV : loss 4.223065376281738 - f1-score (micro avg)  0.4889</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:16,577 BAD EPOCHS (no improvement): 0</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:16,577 saving best model</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:17,161 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:18,617 epoch 2 - iter 6/64 - loss 1.77106071 - time (sec): 1.46 - samples/sec: 131.92 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:19,939 epoch 2 - iter 12/64 - loss 1.33984550 - time (sec): 2.78 - samples/sec: 138.24 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:21,494 epoch 2 - iter 18/64 - loss 1.16673618 - time (sec): 4.33 - samples/sec: 132.94 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:22,584 epoch 2 - iter 24/64 - loss 1.10192485 - time (sec): 5.42 - samples/sec: 141.63 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:23,520 epoch 2 - iter 30/64 - loss 1.07242407 - time (sec): 6.36 - samples/sec: 150.97 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:24,447 epoch 2 - iter 36/64 - loss 1.03745563 - time (sec): 7.29 - samples/sec: 158.11 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:25,273 epoch 2 - iter 42/64 - loss 1.01719362 - time (sec): 8.11 - samples/sec: 165.68 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:26,244 epoch 2 - iter 48/64 - loss 0.99319402 - time (sec): 9.08 - samples/sec: 169.11 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:27,208 epoch 2 - iter 54/64 - loss 0.98911306 - time (sec): 10.05 - samples/sec: 172.00 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:28,145 epoch 2 - iter 60/64 - loss 0.98353237 - time (sec): 10.98 - samples/sec: 174.81 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:28,634 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:28,634 EPOCH 2 done: loss 0.9778 - lr 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:29,777 Evaluating as a multi-label problem: False</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:29,783 DEV : loss 0.8331467509269714 - f1-score (micro avg)  0.5111</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:30,204 BAD EPOCHS (no improvement): 0</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:30,206 saving best model</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:30,539 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:31,605 epoch 3 - iter 6/64 - loss 0.89934901 - time (sec): 1.07 - samples/sec: 180.19 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:32,550 epoch 3 - iter 12/64 - loss 0.87294746 - time (sec): 2.01 - samples/sec: 191.02 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:33,603 epoch 3 - iter 18/64 - loss 0.84897877 - time (sec): 3.06 - samples/sec: 188.03 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:34,383 epoch 3 - iter 24/64 - loss 0.82771468 - time (sec): 3.84 - samples/sec: 199.79 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:35,558 epoch 3 - iter 30/64 - loss 0.81859027 - time (sec): 5.02 - samples/sec: 191.29 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:36,337 epoch 3 - iter 36/64 - loss 0.81934885 - time (sec): 5.80 - samples/sec: 198.71 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:37,268 epoch 3 - iter 42/64 - loss 0.82319801 - time (sec): 6.73 - samples/sec: 199.73 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:38,381 epoch 3 - iter 48/64 - loss 0.82846794 - time (sec): 7.84 - samples/sec: 195.89 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:39,197 epoch 3 - iter 54/64 - loss 0.82090156 - time (sec): 8.66 - samples/sec: 199.60 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:40,124 epoch 3 - iter 60/64 - loss 0.82543071 - time (sec): 9.58 - samples/sec: 200.32 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:40,590 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:40,591 EPOCH 3 done: loss 0.8206 - lr 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:41,710 Evaluating as a multi-label problem: False</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:41,715 DEV : loss 0.8138561248779297 - f1-score (micro avg)  0.5111</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:42,268 BAD EPOCHS (no improvement): 0</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:42,269 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:43,118 epoch 4 - iter 6/64 - loss 0.87941183 - time (sec): 0.85 - samples/sec: 226.19 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:44,340 epoch 4 - iter 12/64 - loss 0.86598660 - time (sec): 2.07 - samples/sec: 185.43 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:45,532 epoch 4 - iter 18/64 - loss 0.85813434 - time (sec): 3.26 - samples/sec: 176.53 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:46,771 epoch 4 - iter 24/64 - loss 0.84371790 - time (sec): 4.50 - samples/sec: 170.60 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:47,809 epoch 4 - iter 30/64 - loss 0.83947990 - time (sec): 5.54 - samples/sec: 173.28 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:48,748 epoch 4 - iter 36/64 - loss 0.84831818 - time (sec): 6.48 - samples/sec: 177.80 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:49,658 epoch 4 - iter 42/64 - loss 0.85050338 - time (sec): 7.39 - samples/sec: 181.89 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:50,720 epoch 4 - iter 48/64 - loss 0.84848628 - time (sec): 8.45 - samples/sec: 181.76 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:51,808 epoch 4 - iter 54/64 - loss 0.84924818 - time (sec): 9.54 - samples/sec: 181.16 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:52,546 epoch 4 - iter 60/64 - loss 0.84991924 - time (sec): 10.28 - samples/sec: 186.82 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:53,112 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:53,112 EPOCH 4 done: loss 0.8493 - lr 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:54,503 Evaluating as a multi-label problem: False</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:54,508 DEV : loss 0.7992691993713379 - f1-score (micro avg)  0.5156</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:54,912 BAD EPOCHS (no improvement): 0</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:54,913 saving best model</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:55,227 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:56,303 epoch 5 - iter 6/64 - loss 0.88248798 - time (sec): 1.08 - samples/sec: 178.37 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:57,236 epoch 5 - iter 12/64 - loss 0.86007783 - time (sec): 2.01 - samples/sec: 191.17 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:58,043 epoch 5 - iter 18/64 - loss 0.83738225 - time (sec): 2.82 - samples/sec: 204.51 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:58,996 epoch 5 - iter 24/64 - loss 0.83430672 - time (sec): 3.77 - samples/sec: 203.78 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:01:59,973 epoch 5 - iter 30/64 - loss 0.84202667 - time (sec): 4.75 - samples/sec: 202.28 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:02:00,970 epoch 5 - iter 36/64 - loss 0.84448471 - time (sec): 5.74 - samples/sec: 200.61 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:02:01,985 epoch 5 - iter 42/64 - loss 0.84845158 - time (sec): 6.76 - samples/sec: 198.86 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:02:02,880 epoch 5 - iter 48/64 - loss 0.83783804 - time (sec): 7.65 - samples/sec: 200.70 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:02:03,855 epoch 5 - iter 54/64 - loss 0.83517343 - time (sec): 8.63 - samples/sec: 200.28 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:02:04,875 epoch 5 - iter 60/64 - loss 0.82870159 - time (sec): 9.65 - samples/sec: 199.00 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:02:05,325 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:02:05,325 EPOCH 5 done: loss 0.8312 - lr 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:02:06,959 Evaluating as a multi-label problem: False</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:02:06,965 DEV : loss 0.8014695048332214 - f1-score (micro avg)  0.5111</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:02:07,400 BAD EPOCHS (no improvement): 1</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:02:07,401 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:02:08,660 epoch 6 - iter 6/64 - loss 0.80199683 - time (sec): 1.26 - samples/sec: 152.43 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:02:09,799 epoch 6 - iter 12/64 - loss 0.84186081 - time (sec): 2.40 - samples/sec: 160.09 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:02:10,796 epoch 6 - iter 18/64 - loss 0.84081944 - time (sec): 3.39 - samples/sec: 169.67 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:02:11,737 epoch 6 - iter 24/64 - loss 0.82330310 - time (sec): 4.34 - samples/sec: 177.10 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:02:12,668 epoch 6 - iter 30/64 - loss 0.82885266 - time (sec): 5.27 - samples/sec: 182.26 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:02:13,446 epoch 6 - iter 36/64 - loss 0.82245148 - time (sec): 6.05 - samples/sec: 190.56 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:02:14,404 epoch 6 - iter 42/64 - loss 0.81585073 - time (sec): 7.00 - samples/sec: 191.92 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:02:15,344 epoch 6 - iter 48/64 - loss 0.80671424 - time (sec): 7.94 - samples/sec: 193.38 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:02:16,311 epoch 6 - iter 54/64 - loss 0.80924756 - time (sec): 8.91 - samples/sec: 193.92 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:02:17,063 epoch 6 - iter 60/64 - loss 0.80421904 - time (sec): 9.66 - samples/sec: 198.71 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:02:17,576 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:02:17,576 EPOCH 6 done: loss 0.8103 - lr 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:02:18,705 Evaluating as a multi-label problem: False</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:02:18,710 DEV : loss 1.0144151449203491 - f1-score (micro avg)  0.5022</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:02:19,287 BAD EPOCHS (no improvement): 2</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:02:19,288 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:02:20,315 epoch 7 - iter 6/64 - loss 0.85965781 - time (sec): 1.03 - samples/sec: 186.92 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:02:21,089 epoch 7 - iter 12/64 - loss 0.85687336 - time (sec): 1.80 - samples/sec: 213.20 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:02:22,056 epoch 7 - iter 18/64 - loss 0.88137004 - time (sec): 2.77 - samples/sec: 208.11 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:02:23,010 epoch 7 - iter 24/64 - loss 0.84864045 - time (sec): 3.72 - samples/sec: 206.32 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:02:23,812 epoch 7 - iter 30/64 - loss 0.84805836 - time (sec): 4.52 - samples/sec: 212.18 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:02:24,789 epoch 7 - iter 36/64 - loss 0.83906466 - time (sec): 5.50 - samples/sec: 209.39 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:02:25,937 epoch 7 - iter 42/64 - loss 0.82523444 - time (sec): 6.65 - samples/sec: 202.14 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:02:27,078 epoch 7 - iter 48/64 - loss 0.82520091 - time (sec): 7.79 - samples/sec: 197.18 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:02:28,575 epoch 7 - iter 54/64 - loss 0.81890224 - time (sec): 9.29 - samples/sec: 186.07 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:02:29,955 epoch 7 - iter 60/64 - loss 0.81388411 - time (sec): 10.67 - samples/sec: 179.99 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:02:31,061 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:02:31,062 EPOCH 7 done: loss 0.8108 - lr 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:02:33,165 Evaluating as a multi-label problem: False</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:02:33,171 DEV : loss 0.6438564658164978 - f1-score (micro avg)  0.6444</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:02:34,026 BAD EPOCHS (no improvement): 0</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:02:34,027 saving best model</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:02:34,551 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:02:36,870 epoch 8 - iter 6/64 - loss 0.92702340 - time (sec): 2.32 - samples/sec: 82.82 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:02:38,350 epoch 8 - iter 12/64 - loss 0.86320431 - time (sec): 3.80 - samples/sec: 101.08 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:02:39,480 epoch 8 - iter 18/64 - loss 0.86913470 - time (sec): 4.93 - samples/sec: 116.86 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:02:40,504 epoch 8 - iter 24/64 - loss 0.84092430 - time (sec): 5.95 - samples/sec: 129.02 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:02:41,508 epoch 8 - iter 30/64 - loss 0.82743283 - time (sec): 6.96 - samples/sec: 138.00 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:02:42,436 epoch 8 - iter 36/64 - loss 0.81623015 - time (sec): 7.88 - samples/sec: 146.11 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:02:43,410 epoch 8 - iter 42/64 - loss 0.80985152 - time (sec): 8.86 - samples/sec: 151.71 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:02:44,131 epoch 8 - iter 48/64 - loss 0.79973187 - time (sec): 9.58 - samples/sec: 160.33 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:02:45,033 epoch 8 - iter 54/64 - loss 0.81488172 - time (sec): 10.48 - samples/sec: 164.86 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:02:45,969 epoch 8 - iter 60/64 - loss 0.82415696 - time (sec): 11.42 - samples/sec: 168.16 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:02:46,489 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:02:46,489 EPOCH 8 done: loss 0.8222 - lr 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:02:47,617 Evaluating as a multi-label problem: False</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:02:47,622 DEV : loss 0.9719510078430176 - f1-score (micro avg)  0.5156</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:02:48,010 BAD EPOCHS (no improvement): 1</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:02:48,011 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:02:48,953 epoch 9 - iter 6/64 - loss 0.77154239 - time (sec): 0.94 - samples/sec: 203.85 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:02:49,896 epoch 9 - iter 12/64 - loss 0.80384811 - time (sec): 1.89 - samples/sec: 203.67 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:02:50,903 epoch 9 - iter 18/64 - loss 0.80214290 - time (sec): 2.89 - samples/sec: 199.15 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:02:51,726 epoch 9 - iter 24/64 - loss 0.79425330 - time (sec): 3.71 - samples/sec: 206.73 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:02:52,740 epoch 9 - iter 30/64 - loss 0.77723816 - time (sec): 4.73 - samples/sec: 202.98 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:02:53,722 epoch 9 - iter 36/64 - loss 0.77009021 - time (sec): 5.71 - samples/sec: 201.73 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:02:54,743 epoch 9 - iter 42/64 - loss 0.76337857 - time (sec): 6.73 - samples/sec: 199.63 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:02:55,684 epoch 9 - iter 48/64 - loss 0.76443271 - time (sec): 7.67 - samples/sec: 200.18 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:02:56,700 epoch 9 - iter 54/64 - loss 0.75871913 - time (sec): 8.69 - samples/sec: 198.87 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:02:57,669 epoch 9 - iter 60/64 - loss 0.76235540 - time (sec): 9.66 - samples/sec: 198.79 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:02:58,245 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:02:58,245 EPOCH 9 done: loss 0.7654 - lr 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:02:59,422 Evaluating as a multi-label problem: False</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:02:59,428 DEV : loss 0.8047833442687988 - f1-score (micro avg)  0.5244</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:02:59,831 BAD EPOCHS (no improvement): 2</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:02:59,832 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:03:00,736 epoch 10 - iter 6/64 - loss 0.84228760 - time (sec): 0.90 - samples/sec: 212.43 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:03:01,677 epoch 10 - iter 12/64 - loss 0.80221283 - time (sec): 1.84 - samples/sec: 208.18 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:03:02,475 epoch 10 - iter 18/64 - loss 0.80507755 - time (sec): 2.64 - samples/sec: 218.00 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:03:03,400 epoch 10 - iter 24/64 - loss 0.81254683 - time (sec): 3.57 - samples/sec: 215.25 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:03:04,394 epoch 10 - iter 30/64 - loss 0.80012568 - time (sec): 4.56 - samples/sec: 210.46 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:03:05,442 epoch 10 - iter 36/64 - loss 0.79693445 - time (sec): 5.61 - samples/sec: 205.36 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:03:06,463 epoch 10 - iter 42/64 - loss 0.77838230 - time (sec): 6.63 - samples/sec: 202.69 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:03:07,412 epoch 10 - iter 48/64 - loss 0.77733104 - time (sec): 7.58 - samples/sec: 202.64 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:03:08,186 epoch 10 - iter 54/64 - loss 0.76781103 - time (sec): 8.35 - samples/sec: 206.85 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:03:09,103 epoch 10 - iter 60/64 - loss 0.75873687 - time (sec): 9.27 - samples/sec: 207.10 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:03:09,648 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:03:09,649 EPOCH 10 done: loss 0.7637 - lr 0.100000</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:03:10,880 Evaluating as a multi-label problem: False</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:03:10,885 DEV : loss 0.7975814342498779 - f1-score (micro avg)  0.5422</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:03:11,448 BAD EPOCHS (no improvement): 3</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:03:12,058 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:03:14,027 Evaluating as a multi-label problem: False</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:03:14,032 0.676    0.676   0.676   0.676</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:03:14,032 </span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:06,863 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:06,864 Corpus: "Corpus: 2025 train + 225 dev + 250 test sentences"</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:06,864 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:06,864 Parameters:</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:06,864  - learning_rate: "0.100000"</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:06,864  - mini_batch_size: "32"</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:06,864  - patience: "3"</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:06,864  - anneal_factor: "0.5"</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:06,864  - max_epochs: "10"</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:06,864  - shuffle: "True"</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:06,864  - train_with_dev: "False"</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:06,864  - batch_growth_annealing: "False"</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:06,864 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:06,864 Model training base path: "classifier"</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:06,864 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:06,864 Device: cpu</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:06,864 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:06,864 Embeddings storage mode: cpu</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:06,864 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:07,518 epoch 1 - iter 6/64 - loss 0.14904349 - time (sec): 0.65 - samples/sec: 293.83 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:08,216 epoch 1 - iter 12/64 - loss 0.07531340 - time (sec): 1.35 - samples/sec: 284.09 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:08,915 epoch 1 - iter 18/64 - loss 0.05053446 - time (sec): 2.05 - samples/sec: 280.91 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:09,574 epoch 1 - iter 24/64 - loss 0.03806293 - time (sec): 2.71 - samples/sec: 283.45 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:10,278 epoch 1 - iter 30/64 - loss 0.03056102 - time (sec): 3.41 - samples/sec: 281.22 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:10,966 epoch 1 - iter 36/64 - loss 0.38242202 - time (sec): 4.10 - samples/sec: 280.88 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:11,649 epoch 1 - iter 42/64 - loss 0.32821047 - time (sec): 4.79 - samples/sec: 280.86 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:12,343 epoch 1 - iter 48/64 - loss 0.28731997 - time (sec): 5.48 - samples/sec: 280.36 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:12,911 epoch 1 - iter 54/64 - loss 0.25547813 - time (sec): 6.05 - samples/sec: 285.76 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:13,576 epoch 1 - iter 60/64 - loss 0.22998813 - time (sec): 6.71 - samples/sec: 286.06 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:13,931 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:13,932 EPOCH 1 done: loss 0.2181 - lr 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:14,787 Evaluating as a multi-label problem: False</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:14,791 DEV : loss 4.520327091217041 - f1-score (micro avg)  0.4578</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:15,247 BAD EPOCHS (no improvement): 0</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:15,247 saving best model</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:15,608 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:16,211 epoch 2 - iter 6/64 - loss 1.58839284 - time (sec): 0.60 - samples/sec: 318.65 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:16,973 epoch 2 - iter 12/64 - loss 1.24970424 - time (sec): 1.36 - samples/sec: 281.50 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:17,711 epoch 2 - iter 18/64 - loss 1.12835495 - time (sec): 2.10 - samples/sec: 273.98 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:18,434 epoch 2 - iter 24/64 - loss 1.09368512 - time (sec): 2.83 - samples/sec: 271.79 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:19,066 epoch 2 - iter 30/64 - loss 1.08594199 - time (sec): 3.46 - samples/sec: 277.67 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:19,751 epoch 2 - iter 36/64 - loss 1.06247657 - time (sec): 4.14 - samples/sec: 278.07 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:20,418 epoch 2 - iter 42/64 - loss 1.05295493 - time (sec): 4.81 - samples/sec: 279.42 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:20,955 epoch 2 - iter 48/64 - loss 1.04324433 - time (sec): 5.35 - samples/sec: 287.31 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:21,654 epoch 2 - iter 54/64 - loss 1.02113958 - time (sec): 6.05 - samples/sec: 285.83 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:22,335 epoch 2 - iter 60/64 - loss 1.01168329 - time (sec): 6.73 - samples/sec: 285.44 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:22,617 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:22,617 EPOCH 2 done: loss 1.0090 - lr 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:23,596 Evaluating as a multi-label problem: False</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:23,600 DEV : loss 1.1113795042037964 - f1-score (micro avg)  0.4578</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:23,932 BAD EPOCHS (no improvement): 0</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:23,933 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:24,666 epoch 3 - iter 6/64 - loss 0.91622372 - time (sec): 0.73 - samples/sec: 261.92 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:25,376 epoch 3 - iter 12/64 - loss 0.89631758 - time (sec): 1.44 - samples/sec: 266.14 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:26,087 epoch 3 - iter 18/64 - loss 0.89120197 - time (sec): 2.15 - samples/sec: 267.41 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:26,749 epoch 3 - iter 24/64 - loss 0.90282082 - time (sec): 2.82 - samples/sec: 272.67 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:27,308 epoch 3 - iter 30/64 - loss 0.91202881 - time (sec): 3.38 - samples/sec: 284.44 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:28,003 epoch 3 - iter 36/64 - loss 0.90148506 - time (sec): 4.07 - samples/sec: 283.01 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:28,694 epoch 3 - iter 42/64 - loss 0.89535031 - time (sec): 4.76 - samples/sec: 282.29 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:29,262 epoch 3 - iter 48/64 - loss 0.88719882 - time (sec): 5.33 - samples/sec: 288.22 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:29,998 epoch 3 - iter 54/64 - loss 0.87921692 - time (sec): 6.07 - samples/sec: 284.88 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:30,634 epoch 3 - iter 60/64 - loss 0.87818653 - time (sec): 6.70 - samples/sec: 286.49 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:31,024 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:31,024 EPOCH 3 done: loss 0.8835 - lr 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:31,890 Evaluating as a multi-label problem: False</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:31,894 DEV : loss 0.9820147156715393 - f1-score (micro avg)  0.4578</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:32,332 BAD EPOCHS (no improvement): 0</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:32,333 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:32,972 epoch 4 - iter 6/64 - loss 0.80311307 - time (sec): 0.64 - samples/sec: 300.29 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:33,654 epoch 4 - iter 12/64 - loss 0.80711852 - time (sec): 1.32 - samples/sec: 290.73 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:34,294 epoch 4 - iter 18/64 - loss 0.82621486 - time (sec): 1.96 - samples/sec: 293.66 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:34,996 epoch 4 - iter 24/64 - loss 0.82458280 - time (sec): 2.66 - samples/sec: 288.44 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:35,686 epoch 4 - iter 30/64 - loss 0.82775710 - time (sec): 3.35 - samples/sec: 286.30 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:36,391 epoch 4 - iter 36/64 - loss 0.84367847 - time (sec): 4.06 - samples/sec: 283.88 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:36,954 epoch 4 - iter 42/64 - loss 0.84541816 - time (sec): 4.62 - samples/sec: 290.84 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:37,612 epoch 4 - iter 48/64 - loss 0.82968295 - time (sec): 5.28 - samples/sec: 290.97 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:38,129 epoch 4 - iter 54/64 - loss 0.83773603 - time (sec): 5.80 - samples/sec: 298.12 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:38,790 epoch 4 - iter 60/64 - loss 0.83910155 - time (sec): 6.46 - samples/sec: 297.33 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:39,164 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:39,164 EPOCH 4 done: loss 0.8381 - lr 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:40,014 Evaluating as a multi-label problem: False</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:40,018 DEV : loss 0.9469659328460693 - f1-score (micro avg)  0.4622</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:40,444 BAD EPOCHS (no improvement): 0</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:40,445 saving best model</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:40,705 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:41,386 epoch 5 - iter 6/64 - loss 0.83353906 - time (sec): 0.68 - samples/sec: 282.11 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:42,068 epoch 5 - iter 12/64 - loss 0.79895550 - time (sec): 1.36 - samples/sec: 281.83 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:42,646 epoch 5 - iter 18/64 - loss 0.82116959 - time (sec): 1.94 - samples/sec: 296.81 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:43,312 epoch 5 - iter 24/64 - loss 0.81938918 - time (sec): 2.61 - samples/sec: 294.67 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:43,979 epoch 5 - iter 30/64 - loss 0.81202700 - time (sec): 3.27 - samples/sec: 293.25 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:44,655 epoch 5 - iter 36/64 - loss 0.80577025 - time (sec): 3.95 - samples/sec: 291.65 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:45,255 epoch 5 - iter 42/64 - loss 0.78973722 - time (sec): 4.55 - samples/sec: 295.39 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:45,913 epoch 5 - iter 48/64 - loss 0.78046668 - time (sec): 5.21 - samples/sec: 294.93 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:46,571 epoch 5 - iter 54/64 - loss 0.78212922 - time (sec): 5.87 - samples/sec: 294.63 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:47,291 epoch 5 - iter 60/64 - loss 0.79046838 - time (sec): 6.59 - samples/sec: 291.54 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:47,550 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:47,551 EPOCH 5 done: loss 0.8043 - lr 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:48,489 Evaluating as a multi-label problem: False</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:48,493 DEV : loss 0.911342978477478 - f1-score (micro avg)  0.4756</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:48,819 BAD EPOCHS (no improvement): 0</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:48,819 saving best model</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:49,081 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:49,830 epoch 6 - iter 6/64 - loss 0.85119003 - time (sec): 0.75 - samples/sec: 256.41 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:50,531 epoch 6 - iter 12/64 - loss 0.80173484 - time (sec): 1.45 - samples/sec: 264.84 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:51,242 epoch 6 - iter 18/64 - loss 0.80690487 - time (sec): 2.16 - samples/sec: 266.57 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:51,911 epoch 6 - iter 24/64 - loss 0.82456772 - time (sec): 2.83 - samples/sec: 271.34 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:52,581 epoch 6 - iter 30/64 - loss 0.81853339 - time (sec): 3.50 - samples/sec: 274.27 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:53,116 epoch 6 - iter 36/64 - loss 0.81476640 - time (sec): 4.04 - samples/sec: 285.46 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:53,798 epoch 6 - iter 42/64 - loss 0.81526452 - time (sec): 4.72 - samples/sec: 284.92 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:54,496 epoch 6 - iter 48/64 - loss 0.81044052 - time (sec): 5.42 - samples/sec: 283.64 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:55,034 epoch 6 - iter 54/64 - loss 0.80821887 - time (sec): 5.95 - samples/sec: 290.28 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:55,672 epoch 6 - iter 60/64 - loss 0.81831188 - time (sec): 6.59 - samples/sec: 291.29 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:56,018 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:56,018 EPOCH 6 done: loss 0.8194 - lr 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:56,873 Evaluating as a multi-label problem: False</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:56,877 DEV : loss 0.8957750797271729 - f1-score (micro avg)  0.4756</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:57,313 BAD EPOCHS (no improvement): 0</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:57,313 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:57,996 epoch 7 - iter 6/64 - loss 0.81413944 - time (sec): 0.68 - samples/sec: 281.26 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:58,578 epoch 7 - iter 12/64 - loss 0.74697334 - time (sec): 1.27 - samples/sec: 303.54 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:59,264 epoch 7 - iter 18/64 - loss 0.76814228 - time (sec): 1.95 - samples/sec: 295.26 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:25:59,995 epoch 7 - iter 24/64 - loss 0.75026521 - time (sec): 2.68 - samples/sec: 286.36 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:26:00,663 epoch 7 - iter 30/64 - loss 0.75764540 - time (sec): 3.35 - samples/sec: 286.60 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:26:01,234 epoch 7 - iter 36/64 - loss 0.76024251 - time (sec): 3.92 - samples/sec: 293.84 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:26:01,895 epoch 7 - iter 42/64 - loss 0.77902515 - time (sec): 4.58 - samples/sec: 293.33 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:26:02,556 epoch 7 - iter 48/64 - loss 0.78722350 - time (sec): 5.24 - samples/sec: 292.95 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:26:03,118 epoch 7 - iter 54/64 - loss 0.78983370 - time (sec): 5.80 - samples/sec: 297.69 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:26:03,803 epoch 7 - iter 60/64 - loss 0.77625875 - time (sec): 6.49 - samples/sec: 295.85 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:26:04,166 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:26:04,166 EPOCH 7 done: loss 0.7800 - lr 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:26:05,007 Evaluating as a multi-label problem: False</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:26:05,011 DEV : loss 0.8673924207687378 - f1-score (micro avg)  0.48</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:26:05,449 BAD EPOCHS (no improvement): 0</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:26:05,449 saving best model</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:26:05,691 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:26:06,349 epoch 8 - iter 6/64 - loss 0.79568198 - time (sec): 0.66 - samples/sec: 291.59 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:26:06,928 epoch 8 - iter 12/64 - loss 0.82239677 - time (sec): 1.24 - samples/sec: 310.46 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:26:07,594 epoch 8 - iter 18/64 - loss 0.83511235 - time (sec): 1.90 - samples/sec: 302.69 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:26:08,288 epoch 8 - iter 24/64 - loss 0.83227635 - time (sec): 2.60 - samples/sec: 295.73 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:26:08,982 epoch 8 - iter 30/64 - loss 0.82175020 - time (sec): 3.29 - samples/sec: 291.67 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:26:09,645 epoch 8 - iter 36/64 - loss 0.81161572 - time (sec): 3.95 - samples/sec: 291.38 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:26:10,231 epoch 8 - iter 42/64 - loss 0.79206314 - time (sec): 4.54 - samples/sec: 296.02 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:26:10,893 epoch 8 - iter 48/64 - loss 0.80011542 - time (sec): 5.20 - samples/sec: 295.27 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:26:11,602 epoch 8 - iter 54/64 - loss 0.78985645 - time (sec): 5.91 - samples/sec: 292.36 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:26:12,278 epoch 8 - iter 60/64 - loss 0.79150691 - time (sec): 6.59 - samples/sec: 291.47 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:26:12,612 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:26:12,613 EPOCH 8 done: loss 0.7926 - lr 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:26:13,455 Evaluating as a multi-label problem: False</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:26:13,459 DEV : loss 0.8472224473953247 - f1-score (micro avg)  0.4978</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:26:13,785 BAD EPOCHS (no improvement): 0</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:26:13,786 saving best model</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:26:14,024 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:26:14,717 epoch 9 - iter 6/64 - loss 0.86467064 - time (sec): 0.69 - samples/sec: 277.23 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:26:15,373 epoch 9 - iter 12/64 - loss 0.81503742 - time (sec): 1.35 - samples/sec: 284.73 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:26:16,048 epoch 9 - iter 18/64 - loss 0.80410674 - time (sec): 2.02 - samples/sec: 284.63 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:26:16,626 epoch 9 - iter 24/64 - loss 0.80348786 - time (sec): 2.60 - samples/sec: 295.17 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:26:17,267 epoch 9 - iter 30/64 - loss 0.79546851 - time (sec): 3.24 - samples/sec: 296.11 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:26:17,956 epoch 9 - iter 36/64 - loss 0.79309196 - time (sec): 3.93 - samples/sec: 293.06 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:26:18,490 epoch 9 - iter 42/64 - loss 0.78523230 - time (sec): 4.47 - samples/sec: 300.99 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:26:19,215 epoch 9 - iter 48/64 - loss 0.79719469 - time (sec): 5.19 - samples/sec: 295.96 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:26:19,891 epoch 9 - iter 54/64 - loss 0.79378723 - time (sec): 5.87 - samples/sec: 294.57 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:26:20,489 epoch 9 - iter 60/64 - loss 0.80298835 - time (sec): 6.46 - samples/sec: 297.03 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:26:20,982 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:26:20,982 EPOCH 9 done: loss 0.8050 - lr 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:26:21,850 Evaluating as a multi-label problem: False</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:26:21,854 DEV : loss 0.8345580101013184 - f1-score (micro avg)  0.5022</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:26:22,179 BAD EPOCHS (no improvement): 0</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:26:22,179 saving best model</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:26:22,415 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:26:23,136 epoch 10 - iter 6/64 - loss 0.80962703 - time (sec): 0.72 - samples/sec: 266.45 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:26:23,860 epoch 10 - iter 12/64 - loss 0.78709017 - time (sec): 1.44 - samples/sec: 265.81 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:26:24,461 epoch 10 - iter 18/64 - loss 0.79186957 - time (sec): 2.05 - samples/sec: 281.66 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:26:25,106 epoch 10 - iter 24/64 - loss 0.80259121 - time (sec): 2.69 - samples/sec: 285.50 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:26:25,779 epoch 10 - iter 30/64 - loss 0.78489435 - time (sec): 3.36 - samples/sec: 285.42 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:26:26,441 epoch 10 - iter 36/64 - loss 0.77859329 - time (sec): 4.03 - samples/sec: 286.20 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:26:27,103 epoch 10 - iter 42/64 - loss 0.78158896 - time (sec): 4.69 - samples/sec: 286.70 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:26:27,683 epoch 10 - iter 48/64 - loss 0.78447498 - time (sec): 5.27 - samples/sec: 291.59 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:26:28,382 epoch 10 - iter 54/64 - loss 0.78606296 - time (sec): 5.97 - samples/sec: 289.60 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:26:29,053 epoch 10 - iter 60/64 - loss 0.77888749 - time (sec): 6.64 - samples/sec: 289.28 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:26:29,406 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:26:29,406 EPOCH 10 done: loss 0.7765 - lr 0.100000</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:26:30,254 Evaluating as a multi-label problem: False</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:26:30,258 DEV : loss 0.82691890001297 - f1-score (micro avg)  0.5022</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:26:30,689 BAD EPOCHS (no improvement): 0</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:26:30,918 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:26:31,928 Evaluating as a multi-label problem: False</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:26:31,932 0.54 0.54    0.54    0.54</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:26:31,932 </span></span>
 <span><span class="co">#&gt; Results:</span></span>
-<span><span class="co">#&gt; - F-score (micro) 0.676</span></span>
-<span><span class="co">#&gt; - F-score (macro) 0.6476</span></span>
-<span><span class="co">#&gt; - Accuracy 0.676</span></span>
+<span><span class="co">#&gt; - F-score (micro) 0.54</span></span>
+<span><span class="co">#&gt; - F-score (macro) 0.4271</span></span>
+<span><span class="co">#&gt; - Accuracy 0.54</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; By class:</span></span>
 <span><span class="co">#&gt;               precision    recall  f1-score   support</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     POSITIVE     0.6417    0.8955    0.7477       134</span></span>
-<span><span class="co">#&gt;     NEGATIVE     0.7778    0.4224    0.5475       116</span></span>
+<span><span class="co">#&gt;     NEGATIVE     0.5256    0.9685    0.6814       127</span></span>
+<span><span class="co">#&gt;     POSITIVE     0.7500    0.0976    0.1727       123</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     accuracy                         0.6760       250</span></span>
-<span><span class="co">#&gt;    macro avg     0.7097    0.6590    0.6476       250</span></span>
-<span><span class="co">#&gt; weighted avg     0.7048    0.6760    0.6548       250</span></span>
+<span><span class="co">#&gt;     accuracy                         0.5400       250</span></span>
+<span><span class="co">#&gt;    macro avg     0.6378    0.5330    0.4271       250</span></span>
+<span><span class="co">#&gt; weighted avg     0.6360    0.5400    0.4311       250</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; 2023-10-16 20:03:14,033 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:26:31,932 ----------------------------------------------------------------------------------------------------</span></span>
 <span><span class="co">#&gt; $test_score</span></span>
-<span><span class="co">#&gt; [1] 0.676</span></span>
+<span><span class="co">#&gt; [1] 0.54</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $dev_score_history</span></span>
-<span><span class="co">#&gt;  [1] 0.4888889 0.5111111 0.5111111 0.5155556 0.5111111 0.5022222 0.6444444</span></span>
-<span><span class="co">#&gt;  [8] 0.5155556 0.5244444 0.5422222</span></span>
+<span><span class="co">#&gt;  [1] 0.4577778 0.4577778 0.4577778 0.4622222 0.4755556 0.4755556 0.4800000</span></span>
+<span><span class="co">#&gt;  [8] 0.4977778 0.5022222 0.5022222</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $train_loss_history</span></span>
-<span><span class="co">#&gt;  [1] 0.1925916 0.9777627 0.8205658 0.8492980 0.8312414 0.8102981 0.8107973</span></span>
-<span><span class="co">#&gt;  [8] 0.8221552 0.7654126 0.7636506</span></span>
+<span><span class="co">#&gt;  [1] 0.2180829 1.0090348 0.8834772 0.8381495 0.8042567 0.8194290 0.7799814</span></span>
+<span><span class="co">#&gt;  [8] 0.7926098 0.8049870 0.7765227</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $dev_loss_history</span></span>
-<span><span class="co">#&gt;  [1] 4.2230654 0.8331468 0.8138561 0.7992692 0.8014695 1.0144151 0.6438565</span></span>
-<span><span class="co">#&gt;  [8] 0.9719510 0.8047833 0.7975814</span></span></code></pre></div>
+<span><span class="co">#&gt;  [1] 4.5203271 1.1113795 0.9820147 0.9469659 0.9113430 0.8957751 0.8673924</span></span>
+<span><span class="co">#&gt;  [8] 0.8472224 0.8345580 0.8269189</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level3">
@@ -1193,26 +1318,28 @@ classifier will already be stored in memory as part of the classifier
 variable. It is possible, however, that your Python session exited after
 training. If so, you’ll need to load the model into memory with the
 following:</p>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">TextClassifier</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_models.html">flair_models</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">TextClassifier</span></span>
 <span><span class="va">classifier</span> <span class="op">&lt;-</span> <span class="va">TextClassifier</span><span class="op">$</span><span class="fu">load</span><span class="op">(</span><span class="st">'classifier/best-model.pt'</span><span class="op">)</span></span></code></pre></div>
 <p>We import the Sentence object. Now, we can generate predictions on
 some example text inputs.</p>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">Sentence</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_data.html">flair_data</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">Sentence</span></span></code></pre></div>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sentence</span> <span class="op">&lt;-</span> <span class="fu">Sentence</span><span class="op">(</span><span class="st">"great"</span><span class="op">)</span></span>
 <span><span class="va">classifier</span><span class="op">$</span><span class="fu">predict</span><span class="op">(</span><span class="va">sentence</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">sentence</span><span class="op">$</span><span class="va">labels</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [[1]]</span></span>
 <span><span class="co">#&gt; 'Sentence[1]: "great"'/'POSITIVE' (0.9999)</span></span></code></pre></div>
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sentence</span> <span class="op">&lt;-</span> <span class="fu">Sentence</span><span class="op">(</span><span class="st">"sad"</span><span class="op">)</span></span>
 <span><span class="va">classifier</span><span class="op">$</span><span class="fu">predict</span><span class="op">(</span><span class="va">sentence</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">sentence</span><span class="op">$</span><span class="va">labels</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [[1]]</span></span>
-<span><span class="co">#&gt; 'Sentence[1]: "sad"'/'NEGATIVE' (0.9736)</span></span></code></pre></div>
+<span><span class="co">#&gt; 'Sentence[1]: "sad"'/'NEGATIVE' (0.9907)</span></span></code></pre></div>
 </div>
+<p> </p>
+<hr>
 </div>
 </div>
 <div class="section level2">
@@ -1227,7 +1354,7 @@ involving sequential data.</p>
 <div class="section level3">
 <h3 id="import-necessary-libraries">Import Necessary Libraries<a class="anchor" aria-label="anchor" href="#import-necessary-libraries"></a>
 </h3>
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">flaiR</span><span class="op">)</span></span>
 <span><span class="va">IMDB</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_datasets.html">flair_datasets</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">IMDB</span></span>
 <span><span class="va">WordEmbeddings</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_embeddings.html">flair_embeddings</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">WordEmbeddings</span></span>
@@ -1244,19 +1371,19 @@ involving sequential data.</p>
 utilized dataset for sentiment analysis. <code>$downsample(0.1)</code>
 method means only 10% of the dataset is used, allowing for a faster
 demonstration</p>
-<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">corpus</span> <span class="op">&lt;-</span> <span class="fu">IMDB</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">downsample</span><span class="op">(</span><span class="fl">0.1</span><span class="op">)</span> </span>
-<span><span class="co">#&gt; 2023-10-16 20:03:14,622 Reading data from /Users/yenchiehliao/.flair/datasets/imdb_v4-rebalanced</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:03:14,622 Train: /Users/yenchiehliao/.flair/datasets/imdb_v4-rebalanced/train.txt</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:03:14,622 Dev: None</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:03:14,622 Test: None</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:03:15,254 Initialized corpus /Users/yenchiehliao/.flair/datasets/imdb_v4-rebalanced (label type name is 'sentiment')</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:26:32,355 Reading data from /Users/yenchiehliao/.flair/datasets/imdb_v4-rebalanced</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:26:32,355 Train: /Users/yenchiehliao/.flair/datasets/imdb_v4-rebalanced/train.txt</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:26:32,355 Dev: None</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:26:32,355 Test: None</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:26:32,865 Initialized corpus /Users/yenchiehliao/.flair/datasets/imdb_v4-rebalanced (label type name is 'sentiment')</span></span>
 <span></span>
 <span><span class="co"># Create the label dictionary</span></span>
 <span><span class="va">lbl_type</span> <span class="op">&lt;-</span> <span class="st">'sentiment'</span></span>
 <span><span class="va">label_dict</span> <span class="op">&lt;-</span> <span class="va">corpus</span><span class="op">$</span><span class="fu">make_label_dictionary</span><span class="op">(</span>label_type<span class="op">=</span><span class="va">lbl_type</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:03:15,271 Computing label dictionary. Progress:</span></span>
-<span><span class="co">#&gt; 2023-10-16 20:03:24,981 Dictionary created for label 'sentiment' with 3 values: NEGATIVE (seen 2070 times), POSITIVE (seen 1980 times)</span></span></code></pre></div>
+<span><span class="co">#&gt; 2023-10-19 01:26:32,879 Computing label dictionary. Progress:</span></span>
+<span><span class="co">#&gt; 2023-10-19 01:26:39,046 Dictionary created for label 'sentiment' with 3 values: NEGATIVE (seen 2050 times), POSITIVE (seen 2000 times)</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level3">
@@ -1268,7 +1395,7 @@ integration of embeddings to enable the model to learn from more sparse
 features. Three types of embeddings are utilized here: GloVe embeddings,
 and two types of Flair embeddings (forward and backward). Word
 embeddings are used to convert words into vectors.</p>
-<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Make a list of word embeddings</span></span>
 <span><span class="va">word_embeddings</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu">WordEmbeddings</span><span class="op">(</span><span class="st">'glove'</span><span class="op">)</span>,</span>
 <span>                        <span class="fu">FlairEmbeddings</span><span class="op">(</span><span class="st">'news-forward-fast'</span><span class="op">)</span>,</span>
@@ -1280,7 +1407,7 @@ embeddings are used to convert words into vectors.</p>
 <span>                                             hidden_size <span class="op">=</span> <span class="fl">512L</span>,</span>
 <span>                                             reproject_words <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>                                             reproject_words_dimension <span class="op">=</span> <span class="fl">256L</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Create a Text Classifier with the embeddings and label dictionary</span></span>
 <span><span class="va">classifier</span> <span class="op">=</span> <span class="fu">TextClassifier</span><span class="op">(</span><span class="va">document_embeddings</span>, </span>
 <span>                            label_dictionary<span class="op">=</span><span class="va">label_dict</span>, label_type<span class="op">=</span><span class="st">'class'</span><span class="op">)</span></span>
@@ -1307,7 +1434,7 @@ with early stopping to avoid overfitting. It determines the number of
 epochs the training process will tolerate without improvements before
 stopping the training. Setting max_epochs to 5 means the algorithm will
 make five passes through the dataset.</p>
-<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># The 'L' in 32L is used in R to denote that the number is an integer.</span></span>
 <span><span class="va">trainer</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="st">'models/sentiment'</span>,</span>
 <span>              learning_rate<span class="op">=</span><span class="fl">0.1</span>,</span>
@@ -1320,7 +1447,7 @@ make five passes through the dataset.</p>
 <h3 id="to-apply-the-trained-model-for-prediction">To Apply the Trained Model for Prediction<a class="anchor" aria-label="anchor" href="#to-apply-the-trained-model-for-prediction"></a>
 </h3>
 <div style="text-align: justify">
-<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sentence</span> <span class="op">&lt;-</span> <span class="st">"This movie was really exciting!"</span></span>
 <span><span class="va">classifier</span><span class="op">$</span><span class="fu">predict</span><span class="op">(</span><span class="va">sentence</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">sentence.labels</span><span class="op">)</span></span></code></pre></div>
