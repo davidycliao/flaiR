@@ -174,15 +174,47 @@ ensure you have an internet connection. Once downloaded, the model will
 be stored in <strong>.flair</strong> as the cache in your device. So,
 once you’ve downloaded it and it hasn’t been manually removed, executing
 the command again will not trigger a download.</p>
-</div>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tagger_ner</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_tagger_ner.html">load_tagger_ner</a></span><span class="op">(</span><span class="st">"ner"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2023-10-19 12:25:57,168 SequenceTagger predicts: Dictionary with 20 tags: &lt;unk&gt;, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, &lt;START&gt;, &lt;STOP&gt;</span></span></code></pre></div>
+<span><span class="co">#&gt; 2023-10-20 00:13:37,677 SequenceTagger predicts: Dictionary with 20 tags: &lt;unk&gt;, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, &lt;START&gt;, &lt;STOP&gt;</span></span></code></pre></div>
+<p>This function sets the device for the Flair Python library. It allows
+you to set the device to use CPU, GPU, or specific MPS devices on Mac
+(such as mps:0, mps:1, mps:2).</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">tagger_pos</span><span class="op">$</span><span class="fu">to</span><span class="op">(</span><span class="fu"><a href="../reference/flair_device.html">flair_device</a></span><span class="op">(</span><span class="st">"mps"</span><span class="op">)</span><span class="op">)</span> </span></code></pre></div>
+<pre><code><span><span class="fu">SequenceTagger</span><span class="op">(</span></span>
+<span>  <span class="op">(</span><span class="va">embeddings</span><span class="op">)</span><span class="op">:</span> <span class="fu">StackedEmbeddings</span><span class="op">(</span></span>
+<span>    <span class="op">(</span><span class="va">list_embedding_0</span><span class="op">)</span><span class="op">:</span> <span class="fu">FlairEmbeddings</span><span class="op">(</span></span>
+<span>      <span class="op">(</span><span class="va">lm</span><span class="op">)</span><span class="op">:</span> <span class="fu">LanguageModel</span><span class="op">(</span></span>
+<span>        <span class="op">(</span><span class="va">drop</span><span class="op">)</span><span class="op">:</span> <span class="fu">Dropout</span><span class="op">(</span>p<span class="op">=</span><span class="fl">0.05</span>, inplace<span class="op">=</span><span class="va">False</span><span class="op">)</span></span>
+<span>        <span class="op">(</span><span class="va">encoder</span><span class="op">)</span><span class="op">:</span> <span class="fu">Embedding</span><span class="op">(</span><span class="fl">300</span>, <span class="fl">100</span><span class="op">)</span></span>
+<span>        <span class="op">(</span><span class="va">rnn</span><span class="op">)</span><span class="op">:</span> <span class="fu">LSTM</span><span class="op">(</span><span class="fl">100</span>, <span class="fl">2048</span><span class="op">)</span></span>
+<span>        <span class="op">(</span><span class="va">decoder</span><span class="op">)</span><span class="op">:</span> <span class="fu">Linear</span><span class="op">(</span>in_features<span class="op">=</span><span class="fl">2048</span>, out_features<span class="op">=</span><span class="fl">300</span>, bias<span class="op">=</span><span class="va">True</span><span class="op">)</span></span>
+<span>      <span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
+<span>    <span class="op">(</span><span class="va">list_embedding_1</span><span class="op">)</span><span class="op">:</span> <span class="fu">FlairEmbeddings</span><span class="op">(</span></span>
+<span>      <span class="op">(</span><span class="va">lm</span><span class="op">)</span><span class="op">:</span> <span class="fu">LanguageModel</span><span class="op">(</span></span>
+<span>        <span class="op">(</span><span class="va">drop</span><span class="op">)</span><span class="op">:</span> <span class="fu">Dropout</span><span class="op">(</span>p<span class="op">=</span><span class="fl">0.05</span>, inplace<span class="op">=</span><span class="va">False</span><span class="op">)</span></span>
+<span>        <span class="op">(</span><span class="va">encoder</span><span class="op">)</span><span class="op">:</span> <span class="fu">Embedding</span><span class="op">(</span><span class="fl">300</span>, <span class="fl">100</span><span class="op">)</span></span>
+<span>        <span class="op">(</span><span class="va">rnn</span><span class="op">)</span><span class="op">:</span> <span class="fu">LSTM</span><span class="op">(</span><span class="fl">100</span>, <span class="fl">2048</span><span class="op">)</span></span>
+<span>        <span class="op">(</span><span class="va">decoder</span><span class="op">)</span><span class="op">:</span> <span class="fu">Linear</span><span class="op">(</span>in_features<span class="op">=</span><span class="fl">2048</span>, out_features<span class="op">=</span><span class="fl">300</span>, bias<span class="op">=</span><span class="va">True</span><span class="op">)</span></span>
+<span>      <span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span>  <span class="op">(</span><span class="va">word_dropout</span><span class="op">)</span><span class="op">:</span> <span class="fu">WordDropout</span><span class="op">(</span>p<span class="op">=</span><span class="fl">0.05</span><span class="op">)</span></span>
+<span>  <span class="op">(</span><span class="va">locked_dropout</span><span class="op">)</span><span class="op">:</span> <span class="fu">LockedDropout</span><span class="op">(</span>p<span class="op">=</span><span class="fl">0.5</span><span class="op">)</span></span>
+<span>  <span class="op">(</span><span class="va">embedding2nn</span><span class="op">)</span><span class="op">:</span> <span class="fu">Linear</span><span class="op">(</span>in_features<span class="op">=</span><span class="fl">4096</span>, out_features<span class="op">=</span><span class="fl">4096</span>, bias<span class="op">=</span><span class="va">True</span><span class="op">)</span></span>
+<span>  <span class="op">(</span><span class="va">rnn</span><span class="op">)</span><span class="op">:</span> <span class="fu">LSTM</span><span class="op">(</span><span class="fl">4096</span>, <span class="fl">256</span>, batch_first<span class="op">=</span><span class="va">True</span>, bidirectional<span class="op">=</span><span class="va">True</span><span class="op">)</span></span>
+<span>  <span class="op">(</span><span class="va">linear</span><span class="op">)</span><span class="op">:</span> <span class="fu">Linear</span><span class="op">(</span>in_features<span class="op">=</span><span class="fl">512</span>, out_features<span class="op">=</span><span class="fl">53</span>, bias<span class="op">=</span><span class="va">True</span><span class="op">)</span></span>
+<span>  <span class="op">(</span><span class="va">loss_function</span><span class="op">)</span><span class="op">:</span> <span class="fu">ViterbiLoss</span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="op">(</span><span class="va">crf</span><span class="op">)</span><span class="op">:</span> <span class="fu">CRF</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre>
+</div>
 <div style="text-align: justify">
 <p>If you want the computation to run faster, it is recommended to keep
 the show.text_id set to FALSE by default.</p>
 </div>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">time</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span><span class="op">{</span></span>
 <span>    <span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_entities.html">get_entities</a></span><span class="op">(</span><span class="va">uk_immigration</span><span class="op">$</span><span class="va">text</span>,</span>
 <span>                            <span class="va">uk_immigration</span><span class="op">$</span><span class="va">speaker</span>, </span>
@@ -194,8 +226,8 @@ the show.text_id set to FALSE by default.</p>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">time</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;  23.968   0.330  24.098</span></span></code></pre></div>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<span><span class="co">#&gt;  25.356   0.498  26.004</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">results</span><span class="op">)</span></span>
 <span><span class="co">#&gt;               doc_id                          entity  tag</span></span>
 <span><span class="co">#&gt;  1: Philip Hollobone                    Conservative  ORG</span></span>
@@ -262,7 +294,7 @@ batches may provide an optimal compromise between these two scenarios.
 Batch processing can enhance efficiency and aid in memory
 management.</p>
 </div>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">batch_process_time</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span><span class="op">{</span></span>
 <span>    <span class="va">batch_process_results</span>  <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_entities_batch.html">get_entities_batch</a></span><span class="op">(</span><span class="va">uk_immigration</span><span class="op">$</span><span class="va">text</span>,</span>
 <span>                                                 <span class="va">uk_immigration</span><span class="op">$</span><span class="va">speaker</span>, </span>
@@ -276,8 +308,8 @@ management.</p>
 <span><span class="co">#&gt; Processing batch 2 out of 2...</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">batch_process_time</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;  23.947   0.301  24.045</span></span></code></pre></div>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<span><span class="co">#&gt;  24.594   0.319  24.745</span></span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">batch_process_results</span><span class="op">)</span></span>
 <span><span class="co">#&gt;               doc_id                          entity  tag text_id</span></span>
 <span><span class="co">#&gt;  1: Philip Hollobone                    Conservative  ORG      NA</span></span>

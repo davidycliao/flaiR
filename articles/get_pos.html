@@ -171,8 +171,40 @@
 Hugging Face.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tagger_pos</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_tagger_pos.html">load_tagger_pos</a></span><span class="op">(</span><span class="st">"pos"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2023-10-19 12:26:51,975 SequenceTagger predicts: Dictionary with 53 tags: &lt;unk&gt;, O, UH, ,, VBD, PRP, VB, PRP$, NN, RB, ., DT, JJ, VBP, VBG, IN, CD, NNS, NNP, WRB, VBZ, WDT, CC, TO, MD, VBN, WP, :, RP, EX, JJR, FW, XX, HYPH, POS, RBR, JJS, PDT, NNPS, RBS, AFX, WP$, -LRB-, -RRB-, ``, '', LS, $, SYM, ADD</span></span></code></pre></div>
+<span><span class="co">#&gt; 2023-10-20 00:14:35,824 SequenceTagger predicts: Dictionary with 53 tags: &lt;unk&gt;, O, UH, ,, VBD, PRP, VB, PRP$, NN, RB, ., DT, JJ, VBP, VBG, IN, CD, NNS, NNP, WRB, VBZ, WDT, CC, TO, MD, VBN, WP, :, RP, EX, JJR, FW, XX, HYPH, POS, RBR, JJS, PDT, NNPS, RBS, AFX, WP$, -LRB-, -RRB-, ``, '', LS, $, SYM, ADD</span></span></code></pre></div>
+<p>This function sets the device for the Flair Python library. It allows
+you to set the device to use CPU, GPU, or specific MPS devices on Mac
+(such as mps:0, mps:1, mps:2).</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">tagger_pos</span><span class="op">$</span><span class="fu">to</span><span class="op">(</span><span class="fu"><a href="../reference/flair_device.html">flair_device</a></span><span class="op">(</span><span class="st">"mps"</span><span class="op">)</span><span class="op">)</span> </span></code></pre></div>
+<pre><code><span><span class="fu">SequenceTagger</span><span class="op">(</span></span>
+<span>  <span class="op">(</span><span class="va">embeddings</span><span class="op">)</span><span class="op">:</span> <span class="fu">StackedEmbeddings</span><span class="op">(</span></span>
+<span>    <span class="op">(</span><span class="va">list_embedding_0</span><span class="op">)</span><span class="op">:</span> <span class="fu">FlairEmbeddings</span><span class="op">(</span></span>
+<span>      <span class="op">(</span><span class="va">lm</span><span class="op">)</span><span class="op">:</span> <span class="fu">LanguageModel</span><span class="op">(</span></span>
+<span>        <span class="op">(</span><span class="va">drop</span><span class="op">)</span><span class="op">:</span> <span class="fu">Dropout</span><span class="op">(</span>p<span class="op">=</span><span class="fl">0.05</span>, inplace<span class="op">=</span><span class="va">False</span><span class="op">)</span></span>
+<span>        <span class="op">(</span><span class="va">encoder</span><span class="op">)</span><span class="op">:</span> <span class="fu">Embedding</span><span class="op">(</span><span class="fl">300</span>, <span class="fl">100</span><span class="op">)</span></span>
+<span>        <span class="op">(</span><span class="va">rnn</span><span class="op">)</span><span class="op">:</span> <span class="fu">LSTM</span><span class="op">(</span><span class="fl">100</span>, <span class="fl">2048</span><span class="op">)</span></span>
+<span>        <span class="op">(</span><span class="va">decoder</span><span class="op">)</span><span class="op">:</span> <span class="fu">Linear</span><span class="op">(</span>in_features<span class="op">=</span><span class="fl">2048</span>, out_features<span class="op">=</span><span class="fl">300</span>, bias<span class="op">=</span><span class="va">True</span><span class="op">)</span></span>
+<span>      <span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
+<span>    <span class="op">(</span><span class="va">list_embedding_1</span><span class="op">)</span><span class="op">:</span> <span class="fu">FlairEmbeddings</span><span class="op">(</span></span>
+<span>      <span class="op">(</span><span class="va">lm</span><span class="op">)</span><span class="op">:</span> <span class="fu">LanguageModel</span><span class="op">(</span></span>
+<span>        <span class="op">(</span><span class="va">drop</span><span class="op">)</span><span class="op">:</span> <span class="fu">Dropout</span><span class="op">(</span>p<span class="op">=</span><span class="fl">0.05</span>, inplace<span class="op">=</span><span class="va">False</span><span class="op">)</span></span>
+<span>        <span class="op">(</span><span class="va">encoder</span><span class="op">)</span><span class="op">:</span> <span class="fu">Embedding</span><span class="op">(</span><span class="fl">300</span>, <span class="fl">100</span><span class="op">)</span></span>
+<span>        <span class="op">(</span><span class="va">rnn</span><span class="op">)</span><span class="op">:</span> <span class="fu">LSTM</span><span class="op">(</span><span class="fl">100</span>, <span class="fl">2048</span><span class="op">)</span></span>
+<span>        <span class="op">(</span><span class="va">decoder</span><span class="op">)</span><span class="op">:</span> <span class="fu">Linear</span><span class="op">(</span>in_features<span class="op">=</span><span class="fl">2048</span>, out_features<span class="op">=</span><span class="fl">300</span>, bias<span class="op">=</span><span class="va">True</span><span class="op">)</span></span>
+<span>      <span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span>  <span class="op">(</span><span class="va">word_dropout</span><span class="op">)</span><span class="op">:</span> <span class="fu">WordDropout</span><span class="op">(</span>p<span class="op">=</span><span class="fl">0.05</span><span class="op">)</span></span>
+<span>  <span class="op">(</span><span class="va">locked_dropout</span><span class="op">)</span><span class="op">:</span> <span class="fu">LockedDropout</span><span class="op">(</span>p<span class="op">=</span><span class="fl">0.5</span><span class="op">)</span></span>
+<span>  <span class="op">(</span><span class="va">embedding2nn</span><span class="op">)</span><span class="op">:</span> <span class="fu">Linear</span><span class="op">(</span>in_features<span class="op">=</span><span class="fl">4096</span>, out_features<span class="op">=</span><span class="fl">4096</span>, bias<span class="op">=</span><span class="va">True</span><span class="op">)</span></span>
+<span>  <span class="op">(</span><span class="va">rnn</span><span class="op">)</span><span class="op">:</span> <span class="fu">LSTM</span><span class="op">(</span><span class="fl">4096</span>, <span class="fl">256</span>, batch_first<span class="op">=</span><span class="va">True</span>, bidirectional<span class="op">=</span><span class="va">True</span><span class="op">)</span></span>
+<span>  <span class="op">(</span><span class="va">linear</span><span class="op">)</span><span class="op">:</span> <span class="fu">Linear</span><span class="op">(</span>in_features<span class="op">=</span><span class="fl">512</span>, out_features<span class="op">=</span><span class="fl">53</span>, bias<span class="op">=</span><span class="va">True</span><span class="op">)</span></span>
+<span>  <span class="op">(</span><span class="va">loss_function</span><span class="op">)</span><span class="op">:</span> <span class="fu">ViterbiLoss</span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="op">(</span><span class="va">crf</span><span class="op">)</span><span class="op">:</span> <span class="fu">CRF</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_pos.html">get_pos</a></span><span class="op">(</span><span class="va">uk_immigration</span><span class="op">$</span><span class="va">text</span>, </span>
 <span>                   <span class="va">uk_immigration</span><span class="op">$</span><span class="va">speaker</span>, <span class="va">tagger_pos</span>, </span>
 <span>                   show.text_id <span class="op">=</span> <span class="cn">FALSE</span>,</span>
@@ -194,15 +226,14 @@ Hugging Face.</p>
 <div class="section level2">
 <h2 id="batch-processing">Batch Processing<a class="anchor" aria-label="anchor" href="#batch-processing"></a>
 </h2>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">batch_process_results</span>  <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_pos_batch.html">get_pos_batch</a></span><span class="op">(</span><span class="va">uk_immigration</span><span class="op">$</span><span class="va">text</span>,</span>
 <span>                                        <span class="va">uk_immigration</span><span class="op">$</span><span class="va">speaker</span>, </span>
 <span>                                        <span class="va">tagger_pos</span>, </span>
 <span>                                        show.text_id <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>                                        batch_size <span class="op">=</span> <span class="fl">10</span>,</span>
-<span>                                        device <span class="op">=</span> <span class="st">"mps"</span>,</span>
 <span>                                        verbose <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="co">#&gt; MPS is used on Mac M1/M2.</span></span>
+<span><span class="co">#&gt; CPU is used.</span></span>
 <span><span class="co">#&gt; Processing batch starting at index: 1</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">batch_process_results</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                doc_id token_id text_id   token tag precision</span></span>
