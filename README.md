@@ -101,13 +101,14 @@ Conduct](https://github.com/davidycliao/flaiR/blob/master/CONDUCT.md).
 By contributing to this project, you agree to abide by its terms.
 
 The primary communication channel for R users can be found
-[here](https://github.com/davidycliao/flaiR/discussions).Please feel
+[here](https://github.com/davidycliao/flaiR/discussions). Please feel
 free to share your insights on the
 [Discussion](https://github.com/davidycliao/flaiR/discussions) page and
 report any issues related to the R interface in the
-[Issue](https://github.com/davidycliao/flaiR/issues) section. If it’s
-about the actual implementation of flair in Python, please go to the
-official [flair NLP](https://github.com/flairnlp/flair).
+[Issue](https://github.com/davidycliao/flaiR/issues) section. If the
+issue pertains to the actual implementation of Flair in Python, please
+submit a pull request to the offical [flair
+NLP](https://github.com/flairnlp/flair).
 
 </div>
 
