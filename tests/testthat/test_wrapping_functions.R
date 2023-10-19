@@ -12,7 +12,6 @@ test_that("flair_nn returns the correct module", {
   expect_true("Classifier" %in% names(flair_module))
 })
 
-library(testthat)
 
 # flair_embeddings.FlairEmbeddings throws error for invalid type
 test_that("flair_embeddings.FlairEmbeddings throws error for invalid type", {

@@ -33,11 +33,50 @@ uk_immigration <- head(uk_immigration, 10)
 <div style="text-align: justify">
 
 Use `load_tagger_ner` to call the NER pretrained model. The model will be downloaded from Flair's Hugging Face repo. Thus, ensure you have an internet connection. Once downloaded, the model will be stored in __.flair__ as the cache in your device. So, once you've downloaded it and it hasn't been manually removed, executing the command again will not trigger a download.
-</div>
+
 
 ```{r}
 tagger_ner <- load_tagger_ner("ner")
 ```
+
+This function sets the device for the Flair Python library. It allows you to set the device to use CPU, GPU, or specific MPS devices on Mac (such as mps:0, mps:1, mps:2).
+```{r eval=FALSE, include=TRUE}
+tagger_pos$to(flair_device("mps")) 
+```
+
+```
+SequenceTagger(
+  (embeddings): StackedEmbeddings(
+    (list_embedding_0): FlairEmbeddings(
+      (lm): LanguageModel(
+        (drop): Dropout(p=0.05, inplace=False)
+        (encoder): Embedding(300, 100)
+        (rnn): LSTM(100, 2048)
+        (decoder): Linear(in_features=2048, out_features=300, bias=True)
+      )
+    )
+    (list_embedding_1): FlairEmbeddings(
+      (lm): LanguageModel(
+        (drop): Dropout(p=0.05, inplace=False)
+        (encoder): Embedding(300, 100)
+        (rnn): LSTM(100, 2048)
+        (decoder): Linear(in_features=2048, out_features=300, bias=True)
+      )
+    )
+  )
+  (word_dropout): WordDropout(p=0.05)
+  (locked_dropout): LockedDropout(p=0.5)
+  (embedding2nn): Linear(in_features=4096, out_features=4096, bias=True)
+  (rnn): LSTM(4096, 256, batch_first=True, bidirectional=True)
+  (linear): Linear(in_features=512, out_features=53, bias=True)
+  (loss_function): ViterbiLoss()
+  (crf): CRF()
+)
+```
+
+</div>
+
+
 <div style="text-align: justify">
 
 If you want the computation to run faster, it is recommended to keep the show.text_id set to FALSE by default. 

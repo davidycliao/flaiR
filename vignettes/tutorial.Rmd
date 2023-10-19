@@ -549,6 +549,7 @@ document_embeddings = DocumentPoolEmbeddings(glove)
 </div>
 
 ## Initializing the TextClassifier Class
+<div style="text-align: justify">
 
 ```{r}
 # initiate TextClassifier
@@ -557,6 +558,33 @@ classifier <- TextClassifier(document_embeddings,
                              label_dictionary = label_dict,
                              label_type = lbl_type)
 ```
+
+`$to` allows you to set the device to use CPU, GPU, or specific MPS devices on Mac (such as mps:0, mps:1, mps:2).
+```{r eval=FALSE, include=TRUE}
+classifier$to(flair_device("mps")) 
+```
+
+```
+TextClassifier(
+  (embeddings): DocumentPoolEmbeddings(
+    fine_tune_mode=none, pooling=mean
+    (embeddings): StackedEmbeddings(
+      (list_embedding_0): WordEmbeddings(
+        'glove'
+        (embedding): Embedding(400001, 100)
+      )
+    )
+  )
+  (decoder): Linear(in_features=100, out_features=3, bias=True)
+  (dropout): Dropout(p=0.0, inplace=False)
+  (locked_dropout): LockedDropout(p=0.0)
+  (word_dropout): WordDropout(p=0.0)
+  (loss_function): CrossEntropyLoss()
+)
+```
+
+</div>
+
 
 ## Training the Model
 
@@ -579,6 +607,8 @@ trainer <- ModelTrainer(classifier, corpus)
 trainer$train('classifier',
               learning_rate=0.1,
               mini_batch_size=32L,
+              # specifies how embeddings are stored in RAM, ie."cpu", "cuda", "gpu", "mps".
+              # embeddings_storage_mode = "mps",
               max_epochs=10L)
 ```
 </div>

@@ -35,6 +35,40 @@ Download the de-pos part-of-speech tagging model from FlairNLP on Hugging Face.
 tagger_pos <- load_tagger_pos("pos")
 ```
 
+This function sets the device for the Flair Python library. It allows you to set the device to use CPU, GPU, or specific MPS devices on Mac (such as mps:0, mps:1, mps:2).
+```{r eval=FALSE, include=TRUE}
+tagger_pos$to(flair_device("mps")) 
+```
+
+```
+SequenceTagger(
+  (embeddings): StackedEmbeddings(
+    (list_embedding_0): FlairEmbeddings(
+      (lm): LanguageModel(
+        (drop): Dropout(p=0.05, inplace=False)
+        (encoder): Embedding(300, 100)
+        (rnn): LSTM(100, 2048)
+        (decoder): Linear(in_features=2048, out_features=300, bias=True)
+      )
+    )
+    (list_embedding_1): FlairEmbeddings(
+      (lm): LanguageModel(
+        (drop): Dropout(p=0.05, inplace=False)
+        (encoder): Embedding(300, 100)
+        (rnn): LSTM(100, 2048)
+        (decoder): Linear(in_features=2048, out_features=300, bias=True)
+      )
+    )
+  )
+  (word_dropout): WordDropout(p=0.05)
+  (locked_dropout): LockedDropout(p=0.5)
+  (embedding2nn): Linear(in_features=4096, out_features=4096, bias=True)
+  (rnn): LSTM(4096, 256, batch_first=True, bidirectional=True)
+  (linear): Linear(in_features=512, out_features=53, bias=True)
+  (loss_function): ViterbiLoss()
+  (crf): CRF()
+)
+```
 ```{r}
 results <- get_pos(uk_immigration$text, 
                    uk_immigration$speaker, tagger_pos, 
@@ -51,10 +85,8 @@ batch_process_results  <- get_pos_batch(uk_immigration$text,
                                         tagger_pos, 
                                         show.text_id = FALSE,
                                         batch_size = 10,
-                                        device = "mps",
                                         verbose = TRUE)
 print(batch_process_results)
-
 ```
 
 

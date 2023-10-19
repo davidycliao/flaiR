@@ -15,6 +15,7 @@ dataset from Flair's datasets in Python, enabling the use of this dataset in
 an R environment.
 }
 \examples{
+
 \dontrun{
 UD_ENGLISH <- flair_datasets()$UD_ENGLISH
 corpus <- UD_ENGLISH()$downsample(0.1)

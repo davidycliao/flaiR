@@ -37,13 +37,56 @@ uk_immigration <- head(uk_immigration, 5)
 
 Download the English sentiment model from FlairNLP on Hugging Face. Currently, it also supports a large English sentiment model and a German pre-trained model.
 
-</div>
 
 ```{r}
 tagger_sent <- load_tagger_sentiments("sentiment")
 ```
+This function sets the device for the Flair Python library. It allows you to set the device to use CPU, GPU, or specific MPS devices on Mac (such as mps:0, mps:1, mps:2).
 
+```{r eval=FALSE, include=TRUE}
+tagger_sent$to(flair_device("mps")) 
+```
 
+```
+TextClassifier(
+  (embeddings): TransformerDocumentEmbeddings(
+    (model): DistilBertModel(
+      (embeddings): Embeddings(
+        (word_embeddings): Embedding(30522, 768, padding_idx=0)
+        (position_embeddings): Embedding(512, 768)
+        (LayerNorm): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+        (dropout): Dropout(p=0.1, inplace=False)
+      )
+      (transformer): Transformer(
+        (layer): ModuleList(
+          (0-5): 6 x TransformerBlock(
+            (attention): MultiHeadSelfAttention(
+              (dropout): Dropout(p=0.1, inplace=False)
+              (q_lin): Linear(in_features=768, out_features=768, bias=True)
+              (k_lin): Linear(in_features=768, out_features=768, bias=True)
+              (v_lin): Linear(in_features=768, out_features=768, bias=True)
+              (out_lin): Linear(in_features=768, out_features=768, bias=True)
+            )
+            (sa_layer_norm): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+            (ffn): FFN(
+              (dropout): Dropout(p=0.1, inplace=False)
+              (lin1): Linear(in_features=768, out_features=3072, bias=True)
+              (lin2): Linear(in_features=3072, out_features=768, bias=True)
+              (activation): GELUActivation()
+            )
+            (output_layer_norm): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+          )
+        )
+      )
+    )
+  )
+  (decoder): Linear(in_features=768, out_features=2, bias=True)
+  (dropout): Dropout(p=0.0, inplace=False)
+  (locked_dropout): LockedDropout(p=0.0)
+  (word_dropout): WordDropout(p=0.0)
+  (loss_function): CrossEntropyLoss()
+)
+```
 ```{r }
 results <- get_sentiments(uk_immigration$text, seq_len(nrow(uk_immigration)),
                           tagger_sent)
@@ -53,6 +96,7 @@ results <- get_sentiments(uk_immigration$text, seq_len(nrow(uk_immigration)),
 print(results)
 ```
 
+</div>
 
 ## Batch Processing in English Sentiment Model
 ```{r}
@@ -63,7 +107,6 @@ batch_process_results  <- get_sentiments_batch(uk_immigration$text,
                                                batch_size = 2,
                                                verbose = TRUE)
 ```
-
 
 ```{r}
 print(batch_process_results)

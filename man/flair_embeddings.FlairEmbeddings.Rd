@@ -22,7 +22,6 @@ library.
 flair_embedding_forward <- flair_embeddings.FlairEmbeddings("news-forward")
 flair_embedding_backward <- flair_embeddings.FlairEmbeddings("news-backward")
 }
-
 }
 \references{
 FlairEmbeddings from Flair library in Python. Example usage in Python:

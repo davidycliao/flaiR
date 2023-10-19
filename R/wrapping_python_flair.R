@@ -1,15 +1,72 @@
+#' @title Set Flair Device
+#'
+#' @description This function sets the device for the Flair Python library.
+#' It allows you to set the device to use CPU, GPU, or specific MPS devices on Mac
+#' (such as mps:0, mps:1, mps:2).
+#'
+#' @param device A character string specifying the device.
+#' Valid options include: "cpu", "cuda", "mps:0", "mps:1", "mps:2", etc.
+#' @return The set device for Flair.
+#'
+#' @importFrom reticulate import
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' flair_device("cpu")    # Set device to CPU
+#' flair_device("cuda")   # Set device to GPU (if available)
+#' flair_device("mps:0")  # Set device to MPS device 0 (if available on Mac)
+#' }
+flair_device <- function(device = "cpu") {
+  flair <- import("flair")
+  torch <- import("torch")
+  flair$device <- torch$device(device)
+  return(flair$device)
+}
+
+
+#' @title Full Flair Module
+#'
+#' @description This function is a wrapper for the Flair Python library.
+#'
+#' @return Flair Python module
+#'
+#' @export
+#'
+#' @references
+#' Python equivalent: \preformatted{
+#' import flair
+#' }
+#'
+#' @importFrom reticulate import
+#'
+#' @examples
+#' \dontrun{
+#' # Python code:
+#' flair <- flair()
+#'}
+flair <- function() {
+  flair_module <- import("flair")
+  return(flair_module)
+}
+
+
 #' @title Flair Data Import Function
 #'
 #' @description This function imports and returns the `data` module from the
 #' Flair package in Python.
 #'
 #' @return A reference to the `data` module of the Flair Python package.
+#'
 #' @export
+#'
 #' @references
 #' From Flair's Python library: \code{from flair.data import *}
 #'
+#' @importFrom reticulate import
 flair_data <- function() {
-  flair.data <- reticulate::import("flair.data")
+  flair.data <- import("flair.data")
   return(flair.data)
 }
 
@@ -24,9 +81,12 @@ flair_data <- function() {
 #' Python equivalent: \preformatted{
 #' from flair.models import *
 #' }
+#'
+#' @importFrom reticulate import
+#'
 #' @export
 flair_models <- function() {
-  flair.models <- reticulate::import("flair.models")
+  flair.models <- import("flair.models")
   return(flair.models)
 }
 
@@ -37,13 +97,16 @@ flair_models <- function() {
 #' Ensure that the Python environment is properly set up and the Flair package is installed.
 #'
 #' @return A Python object representing flair.models.TextClassifier.
+#'
 #' @export
+#'
 #' @references
 #' Python equivalent: \preformatted{
 #' from flair.models import TextClassifier
 #' }
 #'
 #' @examples
+#'
 #' \dontrun{
 #' # Ensure reticulate is using the correct Python environment
 #' # reticulate::use_python("path_to_your_python", required = TRUE)
@@ -80,6 +143,7 @@ flair_models.TextClassifier <- function() {
 #' A Python Module(flair.datasets) from Flair, which can be utilized for NLP tasks.
 #'
 #' @examples
+#'
 #' \dontrun{
 #' UD_ENGLISH <- flair_datasets()$UD_ENGLISH
 #' corpus <- UD_ENGLISH()$downsample(0.1)
@@ -235,7 +299,6 @@ flair_embeddings <- function() {
 #' flair_embedding_forward <- flair_embeddings.FlairEmbeddings("news-forward")
 #' flair_embedding_backward <- flair_embeddings.FlairEmbeddings("news-backward")
 #' }
-#'
 flair_embeddings.FlairEmbeddings <- function(embeddings_type = "news-forward") {
   flair_embeddings <- import('flair.embeddings')
 
