@@ -6,6 +6,7 @@
 #'
 #' @param device A character string specifying the device.
 #' Valid options include: "cpu", "cuda", "mps:0", "mps:1", "mps:2", etc.
+#'
 #' @return The set device for Flair.
 #'
 #' @importFrom reticulate import
@@ -34,8 +35,7 @@ flair_device <- function(device = "cpu") {
 #'
 #' @export
 #'
-#' @references
-#' Python equivalent: \preformatted{
+#' @references Python equivalent: \preformatted{
 #' import flair
 #' }
 #'
@@ -43,7 +43,6 @@ flair_device <- function(device = "cpu") {
 #'
 #' @examples
 #' \dontrun{
-#' # Python code:
 #' flair <- flair()
 #'}
 flair <- function() {
@@ -77,6 +76,7 @@ flair_data <- function() {
 #' Ensure that the Python environment is properly set up and the Flair package is installed.
 #'
 #' @return A Python module object representing flair.models.
+#'
 #' @references
 #' Python equivalent: \preformatted{
 #' from flair.models import *
@@ -142,17 +142,13 @@ flair_models.TextClassifier <- function() {
 #' @return
 #' A Python Module(flair.datasets) from Flair, which can be utilized for NLP tasks.
 #'
-#' @examples
-#'
-#' \dontrun{
+#' @examples \dontrun{
 #' UD_ENGLISH <- flair_datasets()$UD_ENGLISH
-#' corpus <- UD_ENGLISH()$downsample(0.1)
-#' }
+#' corpus <- UD_ENGLISH()$downsample(0.1)}
 #'
 #' @importFrom reticulate import
 #'
-#' @references
-#' Python equivalent: \preformatted{
+#' @references Python equivalent: \preformatted{
 #' from flair.datasets import UD_ENGLISH
 #' corpus = UD_ENGLISH().downsample(0.1)
 #' }
@@ -260,9 +256,15 @@ flair_nn.classifier_load <- function(pre_trained) {
 #' @return The \code{flair.embeddings} module from Flair.
 #'
 #' @examples
-#' \dontrun{
 #' flair_embeddings <- flair_embeddings()$FlairEmbeddings
-#' }
+#' OpenAIGPTEmbeddings <- flair_embeddings()$OpenAIGPTEmbeddings
+#' StackedEmbeddings <- flair_embeddings()$StackedEmbeddings
+#' TransformerDocumentEmbeddings <- flair_embeddings()$TransformerDocumentEmbeddings
+#' TransformerWordEmbeddings <- flair_embeddings()$TransformerWordEmbeddings
+#' RoBERTaEmbeddings <- flair_embeddings()$RoBERTaEmbeddings
+#' TransformerOnnxDocumentEmbeddings <- flair_embeddings()$TransformerOnnxDocumentEmbeddings
+#' SentenceTransformerDocumentEmbeddings <- flair_embeddings()$SentenceTransformerDocumentEmbeddings
+#' PooledFlairEmbeddings <- flair_embeddings()$PooledFlairEmbeddings
 #'
 #' @references
 #' In Python's Flair library:
@@ -276,8 +278,6 @@ flair_embeddings <- function() {
   flair_embeddings <- import('flair.embeddings')
   return(flair_embeddings)
 }
-
-
 
 #' @title Flair Embedding Initialization
 #'

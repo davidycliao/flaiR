@@ -25,8 +25,6 @@ reticulate::py_install("flair")
 
 
 ## An Example Using `sentiment` Model (Pre-trained English Model)
-
-
 ```{r}
 library(flaiR)
 data("uk_immigration")
@@ -35,13 +33,13 @@ uk_immigration <- head(uk_immigration, 5)
 
 <div style="text-align: justify">
 
-Download the English sentiment model from FlairNLP on Hugging Face. Currently, it also supports a large English sentiment model and a German pre-trained model.
-
+Download the English sentiment model from FlairNLP on [Hugging Face](https://huggingface.co/flair). Currently, it also supports a large English sentiment model and a German pre-trained model.
 
 ```{r}
 tagger_sent <- load_tagger_sentiments("sentiment")
 ```
-This function sets the device for the Flair Python library. It allows you to set the device to use CPU, GPU, or specific MPS devices on Mac (such as mps:0, mps:1, mps:2).
+
+Flair NLP operates under the [PyTorch](https://pytorch.org) framework. As such, we can use the `$to` method to set the device for the Flair Python library. The flair_device("cpu")  allows you to select whether to use the CPU, CUDA devices (like cuda:0, cuda:1, cuda:2), or specific MPS devices on Mac (such as mps:0, mps:1, mps:2). For information on Accelerated PyTorch training on Mac, please refer to https://developer.apple.com/metal/pytorch/. For more about CUDA, please visit: https://developer.nvidia.com/cuda-zone 
 
 ```{r eval=FALSE, include=TRUE}
 tagger_sent$to(flair_device("mps")) 

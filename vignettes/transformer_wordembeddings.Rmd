@@ -126,25 +126,14 @@ __Source__: [https://github.com/flairNLP/flair/blob/master/resources/docs/embedd
 
 <div style="text-align: justify">
 
-
 So, if you want to load embeddings from the German forward LM model, instantiate the method as follows:
-
-
 ```{r}
 flair_de_forward <- FlairEmbeddings('de-forward')
 ```
-```{r}
-flair_de_forward <- FlairEmbeddings('de-forward')
-
-```
-
-
 
 And if you want to load embeddings from the Bulgarian backward LM model, instantiate the method as follows:
-
 ```{r}
 flair_bg_backward <- FlairEmbeddings('bg-backward')
-
 ```
 
 </div>
@@ -152,11 +141,9 @@ flair_bg_backward <- FlairEmbeddings('bg-backward')
 # Recommended Flair Usage in {flaiR} in R
 
 <div style="text-align: justify">
-
 We recommend combining both forward and backward Flair embeddings. Depending on the task, we also recommend adding standard word embeddings into the mix. So, our recommended `StackedEmbedding` for most English tasks is:
 
 ```{r}
-
 FlairEmbeddings <- flair_embeddings()$FlairEmbeddings
 WordEmbeddings <- flair_embeddings()$WordEmbeddings
 StackedEmbeddings <- flair_embeddings()$StackedEmbeddings
@@ -172,8 +159,6 @@ stacked_embeddings <- StackedEmbeddings(list(WordEmbeddings("glove"),
 
 That's it! Now just use this embedding like all the other embeddings, i.e. call the `embed()` method over your sentences.
 
-
-
 ```{r}
 # create a sentence
 Sentence <- flair_data()$Sentence
@@ -188,6 +173,7 @@ stacked_embeddings$embed(sentence)
 
 ```{r}
 # now check out the embedded tokens.
+# Note that Python is indexing from 0. In an R for loop, using seq_along(sentence) - 1 achieves the same effect.
 for (i in  seq_along(sentence)-1) {
   print(sentence[i])
   print(sentence[i]$embedding)
@@ -210,18 +196,16 @@ You can instantiate and use `PooledFlairEmbeddings` like any other embedding:
 
 
 ```{r}
+# initiate embedding from Flair NLP
 PooledFlairEmbeddings <- flair_embeddings()$PooledFlairEmbeddings
 flair_embedding_forward <- PooledFlairEmbeddings('news-forward')
-# create a sentence
+
+# create a sentence object
 sentence <- Sentence('The grass is green .')
 
 # embed words in sentence
 flair_embedding_forward$embed(sentence)
-
 ```
-
-
-
 
 Note that while we get some of our best results with `PooledFlairEmbeddings` they are very ineffective memory-wise since they keep past embeddings of all words in memory. In many cases, regular `FlairEmbeddings` will be nearly as good but with much lower memory requirements.
 
@@ -429,11 +413,10 @@ concatenated as explained above. Alternatively, you can set `layer_mean=True` to
 selected layers. The resulting vector will then always have the same dimensionality as a single layer:
 
 ```{r}
-# init embedding
+# initiate embedding from transformer. This model will be downloaded from Flair NLP huggingface.
 embeddings <- TransformerWordEmbeddings('bert-base-uncased', layers="all", layer_mean=TRUE)
 
-
-# create a sentence
+# create a sentence object
 sentence = Sentence("The Oktoberfest is the world's largest Volksfest .")
 
 # embed words in sentence
@@ -445,8 +428,7 @@ embedding$embed(sentence)
 ## Fine-tuneable or Not
 <div style="text-align: justify">
 
-Here's an example of how it might be done: In some setups, you may wish to fine-tune the transformer embeddings. In this case, set `fine_tune=True` in the init method.
-When fine-tuning, you should also only use the topmost layer, so best set `layers='-1'`.
+Here's an example of how it might be done: In some setups, you may wish to fine-tune the transformer embeddings. In this case, set `fine_tune=True` in the init method. When fine-tuning, you should also only use the topmost layer, so best set `layers='-1'`.
 ```{r}
 # use first and last subtoken for each word
 TransformerWordEmbeddings <- flair_embeddings()$TransformerWordEmbeddings
@@ -490,8 +472,6 @@ embedding. Most embeddings fall under this class, including the popular GloVe or
 
 Simply instantiate the `WordEmbeddings` class and pass a string identifier of the embedding you wish to load. So, if
 you want to use GloVe embeddings, pass the string 'glove' to the constructor:
-
-
 
 
 ```{r}

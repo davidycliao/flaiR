@@ -38,9 +38,9 @@ Flair offers pre-trained models for various languages and tasks, providing a sol
 
 <div style="text-align: justify">
 
-Object-Oriented Programming (OOP) is a programming paradigm that uses objects, which contain both data (attributes) and functions (methods), to design applications and software. The idea is to bind the data and the methods that operate on that data into one single unit, an object. Before the advent of R6, OOP was not very common in the early stages of R. To my knowledge, R6 is relatively rare; aside from {[mlr3](https://mlr3.mlr-org.com)}, which is written in R6, most packages are accomplished in S4 and S3 (to my personal experience), which, of course, may be greatly related to the habits and tasks of R users. However, the purpose of 'flaiR' is to standardize wrapping the '{flair NLP}' Python functionality in R and to provide more convenient access for R users to utilize flair NLP features. Most usage of Flair NLP within the {flaiR} employs concepts of objects and classes, which are similar to R6. However, these features are packaged in {reticulate} from Python. In other words, some functionalities imported into R essentially belong to Python classes or modules.
+Object-Oriented Programming (OOP) is a programming paradigm that uses objects, which contain both data (attributes) and functions (methods), to design applications and software. The idea is to bind the data and the methods that operate on that data into one single unit, an object. Before the advent of R6, OOP was not very common in the early stages of R. To my knowledge, R6 is relatively rare; aside from {[mlr3](https://mlr3.mlr-org.com)}, which is written in R6, most packages are accomplished in S4 and S3 (to my personal experience), which, of course, may be greatly related to the habits and tasks of R users. However, the purpose of {`flaiR`} is to standardize wrapping the '{flair NLP}' Python functionality in R and to provide more convenient access for R users to utilize flair NLP features. Most usage of Flair NLP within the {flaiR} employs concepts of objects and classes, which are similar to R6. However, these features are packaged in {reticulate} from Python. In other words, some functionalities imported into R essentially belong to Python classes or modules.
 
-In addition, tensors serve as a fundamental building block for creating and training neural networks and for conducting various numerical computations in Python. For all of Flair's NLP tasks in Python on PyTorch, there are numerous extensive functionalities for tensor operations, including element-wise operations, matrix multiplications, and reshaping. In this tutorial, we also cover how to work with tensors in R and how to convert tensors into matrices in the R environment. This is particularly important when using Flair word embeddings.
+In addition, tensors serve as a fundamental building block for creating and training neural networks and for conducting various numerical computations in Python. For all of Flair's NLP tasks in Python on PyTorch, there are numerous extensive functionalities for tensor operations, including element-wise operations, matrix multiplications, and reshaping. In this tutorial, we also cover how to work with tensors in R and how to convert tensors into matrices in the R environment. This is particularly important when using Flair word embeddings in R environment.
 
 </div>
 
@@ -53,17 +53,17 @@ In addition, tensors serve as a fundamental building block for creating and trai
 The following tutorial is mainly based on Tadej Magajna's '[__Natural Language Processing with Flair: A Practical Guide to Understanding and Solving NLP Problems__](https://github.com/PacktPublishing/Natural-Language-Processing-with-Flair)', as well as the official [Flair NLP](https://flairnlp.github.io/docs/intro) Python tutorial and blog. both are written in Python. If you utilize the examples from {flaiR} in R , I welcome you to cite this R repository, but you should also cite their works.  Except when necessary, everything will be accomplished within the R environment, utilizing several important R packages, such as {[quanteda](https://quanteda.org)}, {[`udpipe`](https://bnosac.github.io/udpipe/en/)}, and {[mlr3](https://mlr3.mlr-org.com)}, to complete the following topics:
 
 
-- __[Sentence and Token Object](#articles/sentence_token.html)__
+- __[Sentence and Token Object](#tutorial.html#sentence-and-token)__
 
-- __[Flair Embedding in R](#/articles/flair_embeddings.html)__
+- __[Sequence Taggings](#tutorial.html#sequence-taggings)__ 
 
-- __Sequence Taggings__ 
+- __[Embedding in flaiR](#tutorial.html#flair-embedding)__
 
-- __Text Classification__
+- __[Training a Binary Classifier in flaiR](#tutorial.html#training-a-binary-classifier-in-flair)__
 
-- __Training the Model in fliaR in R__
+- __[Training a RNN with FlaiR](#tutorial.html#training-a-rnn-with-flair)__
 
-- __Featured Function in fliaR__
+- __[Finetune BERT in FlaiR (Comming Soon)]()__
 
 </div>
 
@@ -522,19 +522,35 @@ Training text classification models requires a set of text documents (typically,
 
 ```{r}
 library(flaiR)
+# load IMDB from flair_datasets module
 Corpus <- flair_data()$Corpus
 IMDB <- flair_datasets()$IMDB
-
-corpus = IMDB()
-corpus$downsample(0.05)
-lbl_type = 'sentiment'
-label_dict = corpus$make_label_dictionary(label_type=lbl_type)
-
 ```
 
+```{r}
+# downsize to 0.05
+corpus = IMDB()
+corpus$downsample(0.05)
+```
+
+Print the sizes in the corpus object as follows - test: %d | train: %d | dev: %d"
+
+```{r}
+test_size <- length(corpus$test)
+train_size <- length(corpus$train)
+dev_size <- length(corpus$dev)
+output <- sprintf("Corpus object sizes - Test: %d | Train: %d | Dev: %d", test_size, train_size, dev_size)
+print(output)
+```
+
+```{r}
+lbl_type = 'sentiment'
+label_dict = corpus$make_label_dictionary(label_type=lbl_type)
+```
 </div>
 
 ## Loading the Embeddings
+
 <div style="text-align: justify">
 
 In flair, iit covers all the different types of document embeddings that we can use. Here, we simply use `DocumentPoolEmbeddings`. They require no training prior to training the classification model itself:
@@ -592,9 +608,11 @@ TextClassifier(
 
 
 Training the text classifier model involves two simple steps:
-
 - Defining the model trainer class by passing in the classifier model and the corpus
 - Setting off the training process passing in the required training hyperparameters.
+
+
+__It is worth noting that the 'L' in numbers like 32L and 5L is used in R to denote that the number is an integer. Without the 'L' suffix, numbers in R are treated as numeric, which are by default double-precision floating-point numbers. In contrast, Python determines the type based on the value of the number itself. Whole numbers (e.g., 5 or 32) are of type int, while numbers with decimal points (e.g., 5.0) are of type float. Floating-point numbers in both languages are representations of real numbers but can have some approximation due to the way they are stored in memory.__
 
 ```{r}
 # initiate ModelTrainer
@@ -604,6 +622,7 @@ ModelTrainer <- flair_trainers()$ModelTrainer
 trainer <- ModelTrainer(classifier, corpus)
 
 # start to train
+# note: the 'L' in 32L is used in R to denote that the number is an integer.
 trainer$train('classifier',
               learning_rate=0.1,
               mini_batch_size=32L,
@@ -648,17 +667,16 @@ print(sentence$labels)
 -----
 
 # Training a RNN with FlaiR
+
 <div style="text-align: justify">
 
-Here, we train a sentiment analysis model to categorize text. In this case, we also include a pipeline that implements the use of Recurrent Neural Networks (RNN). This makes them particularly effective for tasks involving sequential data.
+Here, we train a sentiment analysis model to categorize text. In this case, we also include a pipeline that implements the use of Recurrent Neural Networks (RNN). This makes them particularly effective for tasks involving sequential data. This section also show you how to implent one of most powerful feature in featrue, stacked Embeddings. You can stack multiple embeddings with different layers and let the classifier learn from different types of features. In Flair NLP, and with the {`flaiR`} package, it's very easy to accomplish this task.
 
 </div>
 
-## Import Necessary Libraries
-
+## Import Necessary Modules from Flair via {flaiR} in R
 ```{r}
 library(flaiR)
-IMDB <- flair_datasets()$IMDB
 WordEmbeddings <- flair_embeddings()$WordEmbeddings
 FlairEmbeddings <- flair_embeddings()$FlairEmbeddings
 DocumentRNNEmbeddings <- flair_embeddings()$DocumentRNNEmbeddings
@@ -666,15 +684,16 @@ TextClassifier <- flair_models()$TextClassifier
 ModelTrainer <- flair_trainers()$ModelTrainer
 ```
 
-
 ## Get the IMDB Corpus
+
 <div style="text-align: justify">
 
 The IMDB movie review dataset is used here, which is a commonly utilized dataset for sentiment analysis. `$downsample(0.1)` method means only 10% of the dataset is used, allowing for a faster demonstration
 ```{r}
+# load the IMDB file and downsize it to 0.1
+IMDB <- flair_datasets()$IMDB
 corpus <- IMDB()$downsample(0.1) 
-
-# Create the label dictionary
+# create the label dictionary
 lbl_type <- 'sentiment'
 label_dict <- corpus$make_label_dictionary(label_type=lbl_type)
 ```
@@ -686,27 +705,25 @@ label_dict <- corpus$make_label_dictionary(label_type=lbl_type)
 
 This is one of Flair's most powerful features: it allows for the integration of embeddings to enable the model to learn from more sparse features. Three types of embeddings are utilized here: GloVe embeddings, and two types of Flair embeddings (forward and backward). Word embeddings are used to convert words into vectors.
 ```{r}
-# Make a list of word embeddings
+# make a list of word embeddings
 word_embeddings <- list(WordEmbeddings('glove'),
                         FlairEmbeddings('news-forward-fast'),
                         FlairEmbeddings('news-backward-fast'))
 
-# Initialize the document embeddings
-
+# initialize the document embeddings
 document_embeddings <- DocumentRNNEmbeddings(word_embeddings, 
                                              hidden_size = 512L,
                                              reproject_words = TRUE,
                                              reproject_words_dimension = 256L)
-
 ```
 
 ```{r}
-# Create a Text Classifier with the embeddings and label dictionary
-classifier = TextClassifier(document_embeddings, 
+# create a Text Classifier with the embeddings and label dictionary
+classifier <- TextClassifier(document_embeddings, 
                             label_dictionary=label_dict, label_type='class')
 
-# Initialize the text classifier trainer with our corpus
-trainer = ModelTrainer(classifier, corpus)
+# initialize the text classifier trainer with our corpus
+trainer <- ModelTrainer(classifier, corpus)
 ```
 </div>
 
@@ -718,10 +735,11 @@ For the sake of this example, setting max_epochs to 5. You might want to increas
 
 It is worth noting that  thelearning rate is a parameter that determines the step size at each iteration while moving towards a minimum of the loss function. A smaller learning rate could slow down the learning process, but it could lead to more precise convergence. `mini_batch_size` determines the number of samples that will be used to compute the gradient at each step. The 'L' in 32L is used in R to denote that the number is an integer.
 
-patience (aka early stop) is a hyperparameter used in conjunction with early stopping to avoid overfitting. It determines the number of epochs the training process will tolerate without improvements before stopping the training.  Setting max_epochs to 5 means the algorithm will make five passes through the dataset.
+`patience` (aka early stop) is a hyperparameter used in conjunction with early stopping to avoid overfitting. It determines the number of epochs the training process will tolerate without improvements before stopping the training.  Setting max_epochs to 5 means the algorithm will make five passes through the dataset. 
+
 
 ```{r eval=FALSE, include=TRUE}
-# The 'L' in 32L is used in R to denote that the number is an integer.
+# note: the 'L' in 32L is used in R to denote that the number is an integer.
 trainer$train('models/sentiment',
               learning_rate=0.1,
               mini_batch_size=32L,
