@@ -67,7 +67,7 @@
     <a class="dropdown-item" href="../articles/quickstart.html#install-flair-with-using-remotes">Install flaiR via GitHub</a>
     <a class="dropdown-item" href="../articles/quickstart.html#wrapped-functions">Wrapped Functions</a>
     <a class="dropdown-item" href="../articles/quickstart.html#embeddings">FlaiR Embeddings</a>
-    <a class="dropdown-item" href="../articles/quickstart.html#featured-functions-for-nlp-tasks-with-data-table-output">Featured Functions in flaiR</a>
+    <a class="dropdown-item" href="../articles/quickstart.html#featured-functions-for-nlp-tasks-with-data-table-output">Features in flaiR</a>
     <a class="dropdown-item" href="../articles/quickstart.html#how-to-contribute">How to Contribute</a>
   </div>
 </li>
@@ -168,7 +168,7 @@
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"uk_immigration"</span><span class="op">)</span></span>
 <span><span class="va">uk_immigration</span> <span class="op">&lt;-</span> <span class="va">uk_immigration</span><span class="op">[</span><span class="fl">30</span>,<span class="op">]</span></span>
 <span><span class="va">tagger_ner</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_tagger_ner.html">load_tagger_ner</a></span><span class="op">(</span><span class="st">"ner"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2023-10-20 14:05:23,812 SequenceTagger predicts: Dictionary with 20 tags: &lt;unk&gt;, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, &lt;START&gt;, &lt;STOP&gt;</span></span>
+<span><span class="co">#&gt; 2023-10-20 17:10:47,143 SequenceTagger predicts: Dictionary with 20 tags: &lt;unk&gt;, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, &lt;START&gt;, &lt;STOP&gt;</span></span>
 <span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_entities.html">get_entities</a></span><span class="op">(</span><span class="va">uk_immigration</span><span class="op">$</span><span class="va">text</span>,</span>
 <span>                       tagger <span class="op">=</span> <span class="va">tagger_ner</span>,</span>
 <span>                       show.text_id <span class="op">=</span> <span class="cn">FALSE</span></span>

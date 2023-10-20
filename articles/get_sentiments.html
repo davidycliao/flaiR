@@ -67,7 +67,7 @@
     <a class="dropdown-item" href="../articles/quickstart.html#install-flair-with-using-remotes">Install flaiR via GitHub</a>
     <a class="dropdown-item" href="../articles/quickstart.html#wrapped-functions">Wrapped Functions</a>
     <a class="dropdown-item" href="../articles/quickstart.html#embeddings">FlaiR Embeddings</a>
-    <a class="dropdown-item" href="../articles/quickstart.html#featured-functions-for-nlp-tasks-with-data-table-output">Featured Functions in flaiR</a>
+    <a class="dropdown-item" href="../articles/quickstart.html#featured-functions-for-nlp-tasks-with-data-table-output">Features in flaiR</a>
     <a class="dropdown-item" href="../articles/quickstart.html#how-to-contribute">How to Contribute</a>
   </div>
 </li>
@@ -169,14 +169,18 @@ Model)<a class="anchor" aria-label="anchor" href="#an-example-using-sentiment-mo
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"uk_immigration"</span><span class="op">)</span></span>
 <span><span class="va">uk_immigration</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">uk_immigration</span>, <span class="fl">5</span><span class="op">)</span></span></code></pre></div>
 <div style="text-align: justify">
-<p>Download the English sentiment model from FlairNLP on Hugging Face.
-Currently, it also supports a large English sentiment model and a German
-pre-trained model.</p>
+<p>Download the English sentiment model from FlairNLP on <a href="https://huggingface.co/flair" class="external-link">Hugging Face</a>. Currently, it also
+supports a large English sentiment model and a German pre-trained
+model.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tagger_sent</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_tagger_sentiments.html">load_tagger_sentiments</a></span><span class="op">(</span><span class="st">"sentiment"</span><span class="op">)</span></span></code></pre></div>
-<p>This function sets the device for the Flair Python library. It allows
-you to set the device to use CPU, GPU, or specific MPS devices on Mac
-(such as mps:0, mps:1, mps:2).</p>
+<p>Flair NLP operates under the <a href="https://pytorch.org" class="external-link">PyTorch</a> framework. As such, we can use
+the <code>$to</code> method to set the device for the Flair Python
+library. The flair_device(“cpu”) allows you to select whether to use the
+CPU, CUDA devices (like cuda:0, cuda:1, cuda:2), or specific MPS devices
+on Mac (such as mps:0, mps:1, mps:2). For information on Accelerated
+PyTorch training on Mac, please refer to <a href="https://developer.apple.com/metal/pytorch/" class="external-link uri">https://developer.apple.com/metal/pytorch/</a>. For more
+about CUDA, please visit: <a href="https://developer.nvidia.com/cuda-zone" class="external-link uri">https://developer.nvidia.com/cuda-zone</a></p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tagger_sent</span><span class="op">$</span><span class="fu">to</span><span class="op">(</span><span class="fu"><a href="../reference/flair_device.html">flair_device</a></span><span class="op">(</span><span class="st">"mps"</span><span class="op">)</span><span class="op">)</span> </span></code></pre></div>
 <pre><code>TextClassifier(

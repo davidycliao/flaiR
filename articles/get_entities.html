@@ -67,7 +67,7 @@
     <a class="dropdown-item" href="../articles/quickstart.html#install-flair-with-using-remotes">Install flaiR via GitHub</a>
     <a class="dropdown-item" href="../articles/quickstart.html#wrapped-functions">Wrapped Functions</a>
     <a class="dropdown-item" href="../articles/quickstart.html#embeddings">FlaiR Embeddings</a>
-    <a class="dropdown-item" href="../articles/quickstart.html#featured-functions-for-nlp-tasks-with-data-table-output">Featured Functions in flaiR</a>
+    <a class="dropdown-item" href="../articles/quickstart.html#featured-functions-for-nlp-tasks-with-data-table-output">Features in flaiR</a>
     <a class="dropdown-item" href="../articles/quickstart.html#how-to-contribute">How to Contribute</a>
   </div>
 </li>
@@ -176,10 +176,14 @@ once you’ve downloaded it and it hasn’t been manually removed, executing
 the command again will not trigger a download.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tagger_ner</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_tagger_ner.html">load_tagger_ner</a></span><span class="op">(</span><span class="st">"ner"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2023-10-20 14:03:42,886 SequenceTagger predicts: Dictionary with 20 tags: &lt;unk&gt;, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, &lt;START&gt;, &lt;STOP&gt;</span></span></code></pre></div>
-<p>This function sets the device for the Flair Python library. It allows
-you to set the device to use CPU, GPU, or specific MPS devices on Mac
-(such as mps:0, mps:1, mps:2).</p>
+<span><span class="co">#&gt; 2023-10-20 17:09:10,431 SequenceTagger predicts: Dictionary with 20 tags: &lt;unk&gt;, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, &lt;START&gt;, &lt;STOP&gt;</span></span></code></pre></div>
+<p>Flair NLP operates under the <a href="https://pytorch.org" class="external-link">PyTorch</a> framework. As such, we can use
+the <code>$to</code> method to set the device for the Flair Python
+library. The flair_device(“cpu”) allows you to select whether to use the
+CPU, CUDA devices (like cuda:0, cuda:1, cuda:2), or specific MPS devices
+on Mac (such as mps:0, mps:1, mps:2). For information on Accelerated
+PyTorch training on Mac, please refer to <a href="https://developer.apple.com/metal/pytorch/" class="external-link uri">https://developer.apple.com/metal/pytorch/</a>. For more
+about CUDA, please visit: <a href="https://developer.nvidia.com/cuda-zone" class="external-link uri">https://developer.nvidia.com/cuda-zone</a></p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tagger_pos</span><span class="op">$</span><span class="fu">to</span><span class="op">(</span><span class="fu"><a href="../reference/flair_device.html">flair_device</a></span><span class="op">(</span><span class="st">"mps"</span><span class="op">)</span><span class="op">)</span> </span></code></pre></div>
 <pre><code><span><span class="fu">SequenceTagger</span><span class="op">(</span></span>
@@ -215,18 +219,64 @@ you to set the device to use CPU, GPU, or specific MPS devices on Mac
 the show.text_id set to FALSE by default.</p>
 </div>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">time</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span><span class="op">{</span></span>
-<span>    <span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_entities.html">get_entities</a></span><span class="op">(</span><span class="va">uk_immigration</span><span class="op">$</span><span class="va">text</span>,</span>
-<span>                            <span class="va">uk_immigration</span><span class="op">$</span><span class="va">speaker</span>, </span>
-<span>                            <span class="va">tagger_ner</span>,</span>
-<span>                            show.text_id <span class="op">=</span> <span class="cn">FALSE</span></span>
-<span>                            <span class="op">)</span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/gc.html" class="external-link">gc</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="op">}</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">time</span><span class="op">)</span></span>
-<span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;  26.141   0.835  27.471</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_entities.html">get_entities</a></span><span class="op">(</span><span class="va">uk_immigration</span><span class="op">$</span><span class="va">text</span>,</span>
+<span>                        <span class="va">uk_immigration</span><span class="op">$</span><span class="va">speaker</span>, </span>
+<span>                        <span class="va">tagger_ner</span>,</span>
+<span>                        show.text_id <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>                        <span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">results</span><span class="op">)</span></span>
+<span><span class="co">#&gt;               doc_id                          entity  tag</span></span>
+<span><span class="co">#&gt;  1: Philip Hollobone                    Conservative  ORG</span></span>
+<span><span class="co">#&gt;  2: Philip Hollobone Liberal Democrat Front Benchers  ORG</span></span>
+<span><span class="co">#&gt;  3: Philip Hollobone                    Back Benches MISC</span></span>
+<span><span class="co">#&gt;  4: Philip Hollobone                       Kettering  LOC</span></span>
+<span><span class="co">#&gt;  5: Philip Hollobone                            Sikh MISC</span></span>
+<span><span class="co">#&gt;  6: Philip Hollobone                       Kettering  LOC</span></span>
+<span><span class="co">#&gt;  7: Philip Hollobone                       Kettering  LOC</span></span>
+<span><span class="co">#&gt;  8: Philip Hollobone                         British MISC</span></span>
+<span><span class="co">#&gt;  9: Philip Hollobone                  United Kingdom  LOC</span></span>
+<span><span class="co">#&gt; 10: Philip Hollobone                          Norman MISC</span></span>
+<span><span class="co">#&gt; 11: Philip Hollobone                  United Kingdom  LOC</span></span>
+<span><span class="co">#&gt; 12:  Stewart Jackson                          Friend  PER</span></span>
+<span><span class="co">#&gt; 13:  Stewart Jackson        Archbishop of Canterbury  ORG</span></span>
+<span><span class="co">#&gt; 14:  Stewart Jackson                           Carey  PER</span></span>
+<span><span class="co">#&gt; 15: Philip Hollobone                          Friend  PER</span></span>
+<span><span class="co">#&gt; 16: Philip Hollobone                  United Kingdom  LOC</span></span>
+<span><span class="co">#&gt; 17: Philip Hollobone                              UK  LOC</span></span>
+<span><span class="co">#&gt; 18: Philip Hollobone                          Europe  LOC</span></span>
+<span><span class="co">#&gt; 19: Philip Hollobone                           Malta  LOC</span></span>
+<span><span class="co">#&gt; 20:  Stewart Jackson                         Barking  LOC</span></span>
+<span><span class="co">#&gt; 21:  Stewart Jackson                        Dagenham  LOC</span></span>
+<span><span class="co">#&gt; 22:  Stewart Jackson                British National  ORG</span></span>
+<span><span class="co">#&gt; 23:  Stewart Jackson                    Conservative  ORG</span></span>
+<span><span class="co">#&gt; 24:  Stewart Jackson                          Friend  PER</span></span>
+<span><span class="co">#&gt; 25:  Stewart Jackson                      Folkestone  LOC</span></span>
+<span><span class="co">#&gt; 26:  Stewart Jackson                           Hythe  LOC</span></span>
+<span><span class="co">#&gt; 27:  Stewart Jackson                          Howard  PER</span></span>
+<span><span class="co">#&gt; 28: Philip Hollobone                          Friend  PER</span></span>
+<span><span class="co">#&gt; 29: Philip Hollobone                         Shipley  PER</span></span>
+<span><span class="co">#&gt; 30: Philip Hollobone                   Philip Davies  PER</span></span>
+<span><span class="co">#&gt; 31: Philip Hollobone                        Solihull  LOC</span></span>
+<span><span class="co">#&gt; 32: Philip Hollobone                     Lorely Burt  ORG</span></span>
+<span><span class="co">#&gt; 33: Philip Hollobone                    Peterborough  LOC</span></span>
+<span><span class="co">#&gt; 34: Philip Hollobone                         Jackson  PER</span></span>
+<span><span class="co">#&gt; 35: Philip Hollobone                          Friend  PER</span></span>
+<span><span class="co">#&gt; 36:    Philip Davies                          Friend  PER</span></span>
+<span><span class="co">#&gt; 37:    Philip Davies                      Government  ORG</span></span>
+<span><span class="co">#&gt; 38: Philip Hollobone                       Kettering  LOC</span></span>
+<span><span class="co">#&gt; 39: Philip Hollobone                      Government  ORG</span></span>
+<span><span class="co">#&gt; 40: Philip Hollobone                       Kettering  LOC</span></span>
+<span><span class="co">#&gt; 41: Philip Hollobone                       Kettering  LOC</span></span>
+<span><span class="co">#&gt; 42: Philip Hollobone               Migrationwatch UK  ORG</span></span>
+<span><span class="co">#&gt; 43: Philip Hollobone                      Carshalton  LOC</span></span>
+<span><span class="co">#&gt; 44: Philip Hollobone                      Wallington  LOC</span></span>
+<span><span class="co">#&gt; 45: Philip Hollobone                       Tom Brake  PER</span></span>
+<span><span class="co">#&gt; 46: Philip Hollobone                            &lt;NA&gt; &lt;NA&gt;</span></span>
+<span><span class="co">#&gt; 47:      Phil Woolas                       Gentleman  PER</span></span>
+<span><span class="co">#&gt; 48:      Phil Woolas                      Carshalton  LOC</span></span>
+<span><span class="co">#&gt; 49:      Phil Woolas                      Wallington  LOC</span></span>
+<span><span class="co">#&gt; 50:      Phil Woolas                       Tom Brake  PER</span></span>
+<span><span class="co">#&gt;               doc_id                          entity  tag</span></span></code></pre></div>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">results</span><span class="op">)</span></span>
 <span><span class="co">#&gt;               doc_id                          entity  tag</span></span>
@@ -308,7 +358,7 @@ management.</p>
 <span><span class="co">#&gt; Processing batch 2 out of 2...</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">batch_process_time</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;  26.343   0.853  27.835</span></span></code></pre></div>
+<span><span class="co">#&gt;  25.304   0.553  26.133</span></span></code></pre></div>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">batch_process_results</span><span class="op">)</span></span>
 <span><span class="co">#&gt;               doc_id                          entity  tag text_id</span></span>
