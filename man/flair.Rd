@@ -14,7 +14,6 @@ This function is a wrapper for the Flair Python library.
 }
 \examples{
 \dontrun{
-# Python code:
 flair <- flair()
 }
 }

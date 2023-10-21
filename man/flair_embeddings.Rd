@@ -14,9 +14,15 @@ This function imports and returns the \code{flair.embeddings} module from Flair.
 It provides a convenient R interface to the Flair library's embedding functionalities.
 }
 \examples{
-\dontrun{
 flair_embeddings <- flair_embeddings()$FlairEmbeddings
-}
+OpenAIGPTEmbeddings <- flair_embeddings()$OpenAIGPTEmbeddings
+StackedEmbeddings <- flair_embeddings()$StackedEmbeddings
+TransformerDocumentEmbeddings <- flair_embeddings()$TransformerDocumentEmbeddings
+TransformerWordEmbeddings <- flair_embeddings()$TransformerWordEmbeddings
+RoBERTaEmbeddings <- flair_embeddings()$RoBERTaEmbeddings
+TransformerOnnxDocumentEmbeddings <- flair_embeddings()$TransformerOnnxDocumentEmbeddings
+SentenceTransformerDocumentEmbeddings <- flair_embeddings()$SentenceTransformerDocumentEmbeddings
+PooledFlairEmbeddings <- flair_embeddings()$PooledFlairEmbeddings
 
 }
 \references{

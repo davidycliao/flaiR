@@ -15,8 +15,8 @@ The set device for Flair.
 }
 \description{
 This function sets the device for the Flair Python library.
-It allows you to set the device to use CPU, GPU, or specific MPS devices on Mac
-(such as mps:0, mps:1, mps:2).
+It allows you to set the device to use CPU, GPU (such as coda:0, coda:1,
+and coda:3), or specific MPS devices on Mac (such as mps:0, mps:1, mps:2).
 }
 \examples{
 \dontrun{

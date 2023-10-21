@@ -1,8 +1,8 @@
 #' @title Set Flair Device
 #'
 #' @description This function sets the device for the Flair Python library.
-#' It allows you to set the device to use CPU, GPU, or specific MPS devices on Mac
-#' (such as mps:0, mps:1, mps:2).
+#' It allows you to set the device to use CPU, GPU (such as coda:0, coda:1,
+#' and coda:3), or specific MPS devices on Mac (such as mps:0, mps:1, mps:2).
 #'
 #' @param device A character string specifying the device.
 #' Valid options include: "cpu", "cuda", "mps:0", "mps:1", "mps:2", etc.
@@ -33,8 +33,6 @@ flair_device <- function(device = "cpu") {
 #'
 #' @return Flair Python module
 #'
-#' @export
-#'
 #' @references Python equivalent: \preformatted{
 #' import flair
 #' }
@@ -45,6 +43,7 @@ flair_device <- function(device = "cpu") {
 #' \dontrun{
 #' flair <- flair()
 #'}
+#' @export
 flair <- function() {
   flair_module <- import("flair")
   return(flair_module)
@@ -96,9 +95,8 @@ flair_models <- function() {
 #' @description This function utilizes the reticulate package to directly import TextClassifier from flair.models in the Flair NLP Python library.
 #' Ensure that the Python environment is properly set up and the Flair package is installed.
 #'
-#' @return A Python object representing flair.models.TextClassifier.
+#' @return A Python class representing flair.models.TextClassifier.
 #'
-#' @export
 #'
 #' @references
 #' Python equivalent: \preformatted{
@@ -106,11 +104,6 @@ flair_models <- function() {
 #' }
 #'
 #' @examples
-#'
-#' \dontrun{
-#' # Ensure reticulate is using the correct Python environment
-#' # reticulate::use_python("path_to_your_python", required = TRUE)
-#
 #' # Load the TextClassifier
 #' TextClassifier <- flair_models.TextClassifier()
 #
@@ -118,16 +111,19 @@ flair_models <- function() {
 #' classifier <- TextClassifier$load('sentiment')
 #'
 #' # Create a sentence object
-#' sentence <- flair_data.sentence("Flair is pretty neat!")
+#' Sentence <- flair_data()$Sentence
+#' sentence <- Sentence("Flair is pretty neat!")
 #'
 #' # Predict the sentiment
 #' classifier$predict(sentence)
 #
 #' # Display the sentiment
 #' print(sentence$get_labels())
-#' }
+#'
+#' @importFrom reticulate import
+#' @export
 flair_models.TextClassifier <- function() {
-  flair.models <- reticulate::import("flair.models")
+  flair.models <- import("flair.models")
   TextClassifier <- flair.models$TextClassifier
   return(TextClassifier)
 }

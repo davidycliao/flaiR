@@ -7,30 +7,27 @@
 flair_models.TextClassifier()
 }
 \value{
-A Python object representing flair.models.TextClassifier.
+A Python class representing flair.models.TextClassifier.
 }
 \description{
 This function utilizes the reticulate package to directly import TextClassifier from flair.models in the Flair NLP Python library.
 Ensure that the Python environment is properly set up and the Flair package is installed.
 }
 \examples{
-
-\dontrun{
-# Ensure reticulate is using the correct Python environment
-# reticulate::use_python("path_to_your_python", required = TRUE)
 # Load the TextClassifier
 TextClassifier <- flair_models.TextClassifier()
 # Load a pre-trained sentiment model
 classifier <- TextClassifier$load('sentiment')
 
 # Create a sentence object
-sentence <- flair_data.sentence("Flair is pretty neat!")
+Sentence <- flair_data()$Sentence
+sentence <- Sentence("Flair is pretty neat!")
 
 # Predict the sentiment
 classifier$predict(sentence)
 # Display the sentiment
 print(sentence$get_labels())
-}
+
 }
 \references{
 Python equivalent: \preformatted{
