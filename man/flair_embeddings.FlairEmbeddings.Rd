@@ -2,20 +2,96 @@
 % Please edit documentation in R/flair_embeddings.R
 \name{flair_embeddings.FlairEmbeddings}
 \alias{flair_embeddings.FlairEmbeddings}
-\title{Flair Embedding Initialization}
+\title{Initialization of Flair Forward and Backward Embeddings}
 \usage{
 flair_embeddings.FlairEmbeddings(embeddings_type = "news-forward")
 }
 \arguments{
-\item{embeddings_type}{Character, type of embeddings to initialize.
-Options: "news-forward", "news-backward".}
+\item{embeddings_type}{A character string specifying the type of embeddings to initialize. Options include: "news-forward", "news-backward".}
 }
 \value{
 A Flair embeddings object from Python's Flair library.
 }
 \description{
-This function initializes Flair embeddings using Python's Flair
-library.
+This function initializes Flair embeddings from flair.embeddings
+module.
+}
+\details{
+**Multi-Language Embeddings**:
+
+\itemize{
+  \item \strong{multi-X}: Supports 300+ languages, sourced from the JW300 corpus.
+  JW300 corpus, as proposed by Agić and Vulić (2019). The corpus is licensed under CC-BY-NC-SA.
+  \item \strong{multi-X-fast}: CPU-friendly version, trained on a mix of corpora in languages like English, German, French, Italian, Dutch, and Polish.
+}
+
+**English Embeddings**:
+
+\itemize{
+  \item \strong{'news-X'}: Trained with 1 billion word corpus
+  \item \strong{'news-X-fast'}: Trained with 1 billion word corpus, CPU-friendly.
+  \item \strong{'mix-X'}: Trained with mixed corpus (Web, Wikipedia, Subtitles)
+  \item \strong{'pubmed-X'}: Added by @jessepeng: Trained with 5% of PubMed
+  abstracts until 2015 (1150 hidden states, 3 layers)
+}
+
+**Specific Language Embeddings**:
+\describe{
+  \item {'ar-X'}{Arabic. Added by @stefan-it: Trained with Wikipedia/OPUS}
+  \item {'bg-X'}{Bulgarian. Added by @stefan-it: Trained with Wikipedia/OPUS}
+  \item {'bg-X'}{Bulgarian. Added by @stefan-it: Trained with Wikipedia/OPUS}
+  \item {'bg-X'}{Bulgarian. Added by @stefan-it: Trained with Wikipedia/OPUS}
+  \item {'bg-X'}{Bulgarian. Added by @stefan-it: Trained with Wikipedia/OPUS}
+  \item {'bg-X'}{Bulgarian. Added by @stefan-it: Trained with Wikipedia/OPUS}
+  \item {'bg-X'}{Bulgarian. Added by @stefan-it: Trained with Wikipedia/OPUS}
+  \item {'bg-X'}{Bulgarian. Added by @stefan-it: Trained with Wikipedia/OPUS}
+  \item {'bg-X'}{Bulgarian. Added by @stefan-it: Trained with Wikipedia/OPUS}
+  \item {'bg-X'}{Bulgarian. Added by @stefan-it: Trained with Wikipedia/OPUS}
+}
+
+**Specific Langauge Embeddings**:
+
+\itemize{
+  \item \strong{'de-X'}: German. Trained with mixed corpus (Web, Wikipedia, Subtitles)
+  \item \strong{de-historic-ha-X}: German (historical). Added by
+  @stefan-it: Historical German trained over Hamburger Anzeiger.
+  \item \strong{de-historic-wz-X}: German (historical). Added by
+  @stefan-it: Historical German trained over Wiener Zeitung.
+  \item \strong{de-historic-rw-X}: German (historical). Added by
+   @redewiedergabe: Historical German trained over 100 million tokens
+  \item \strong{de-impresso-hipe-v1-X}: In-domain data for the CLEF HIPE
+  Shared task. In-domain data (Swiss and Luxembourgish newspapers) for
+  CLEF HIPE Shared task. More information on the shared task can be found
+  in this paper.
+  \item \strong{'no-X'}: Norwegian. Added by @stefan-it: Trained with
+  Wikipedia/OPUS.
+  \item \strong{'nl-X'}: Dutch. Added by @stefan-it: Trained with Wikipedia/OPUS
+  \item \strong{'nl-v0-X'}: Dutch.Added by @stefan-it: LM embeddings (earlier version)
+  \item \strong{'ja-X'}: Japanese. Added by @frtacoa: Trained with 439M words
+  of Japanese Web crawls (2048 hidden states, 2 layers)
+  \item \strong{'ja-X'}: Japanese. Added by @frtacoa: Trained with 439M words
+  of Japanese Web crawls (2048 hidden states, 2 layers)
+
+  \item \strong{'fi-X'}: Finnish. Added by @stefan-it: Trained with Wikipedia/OPUS.
+  \item \strong{'fr-X'}: French. Added by @mhham: Trained with French Wikipedia
+  of Japanese Web crawls (2048 hidden states, 2 layers)
+
+}
+
+**Domain-Specific Embeddings**:
+
+\itemize{
+  \item \strong{'es-clinical-'}: Spanish (clinical). Added by @matirojasg:
+  Trained with Wikipedia
+  \item \strong{'pubmed-X'}:English.  Added by @jessepeng: Trained with 5%
+  of PubMed abstracts until 2015 (1150 hidden states, 3 layers)
+}
+
+The above are examples. Ensure you reference the correct embedding
+name and details for your application. Replace '*X*' with either
+'*forward*' or '*backward*'. For a comprehensive list of embeddings,
+please refer to:
+\href{https://github.com/flairNLP/flair/blob/master/resources/docs/embeddings/FLAIR_EMBEDDINGS.md}{Flair Embeddings Documentation}.
 }
 \examples{
 \dontrun{
@@ -24,8 +100,9 @@ flair_embedding_backward <- flair_embeddings.FlairEmbeddings("news-backward")
 }
 }
 \references{
-FlairEmbeddings from Flair library in Python. Example usage in Python:
+FlairEmbeddings from the Flair Python library. Python example usage:
 \preformatted{
+from flair.embeddings import FlairEmbeddings
 flair_embedding_forward = FlairEmbeddings('news-forward')
 flair_embedding_backward = FlairEmbeddings('news-backward')
 }

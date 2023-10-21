@@ -375,7 +375,7 @@ In Flair, the simplest form of embedding that still contains semantic informatio
 
 ```{r}
 embedding = flair_embeddings.WordEmbeddings('crawl') 
-sentence = flair_data.sentence("one two three one") 
+sentence = flair_data.Sentence("one two three one") 
 embedding$embed(sentence) 
 
 for (i in seq_along(sentence$tokens)) {
@@ -444,8 +444,8 @@ Because we are using a forward model, it only takes into account the context tha
 
 ```{r}
 embedding <- flair_embeddings.FlairEmbeddings('news-forward')
-s1 <- flair_data.sentence("nice shirt") 
-s2 <- flair_data.sentence("nice pants") 
+s1 <- flair_data.Sentence("nice shirt") 
+s2 <- flair_data.Sentence("nice pants") 
 
 embedding$embed(s1) 
 embedding$embed(s2) 
@@ -464,14 +464,14 @@ Now we separately add a few more words, `very` and `pretty`, into two sentence o
 
 ```{r}
 embedding <- flair_embeddings.FlairEmbeddings('news-forward')
-s1 <- flair_data.sentence("nice shirt") 
-s2 <- flair_data.sentence("nice pants") 
+s1 <- flair_data.Sentence("nice shirt") 
+s2 <- flair_data.Sentence("nice pants") 
 ```
 
 ```{r}
 embedding <- flair_embeddings.FlairEmbeddings('news-forward')
-s1 <- flair_data.sentence("very nice shirt") 
-s2 <- flair_data.sentence("pretty nice pants") 
+s1 <- flair_data.Sentence("very nice shirt") 
+s2 <- flair_data.Sentence("pretty nice pants") 
 
 embedding$embed(s1) 
 embedding$embed(s2) 

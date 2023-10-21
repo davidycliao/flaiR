@@ -47,7 +47,7 @@ smaller parts and later average the embeddings.}
 transformers. When set to TRUE, uses less memory, but might be slower.}
 }
 \value{
-A Flair TransformerWordEmbeddings object.
+A Flair TransformerWordEmbeddings in Python class.
 }
 \description{
 This function interfaces with Python via {reticulate} to

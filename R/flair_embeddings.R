@@ -1,4 +1,4 @@
-#' @title Flair Embeddings Importer
+#' @title Initialization of of Flair Embeddings Modules
 #'
 #' @description This function imports and returns the \code{flair.embeddings} module from Flair.
 #' It provides a convenient R interface to the Flair library's embedding functionalities.
@@ -30,21 +30,87 @@ flair_embeddings <- function() {
   return(flair_embeddings)
 }
 
-#' @title Flair Embedding Initialization
+#' @title Initializing a Class for Flair's Forward and Backward Embeddings
 #'
-#' @description This function initializes Flair embeddings using Python's Flair
-#' library.
+#' @description This function initializes Flair embeddings from flair.embeddings
+#' module.
 #'
+#' @details
+#' **Multi-Language Embeddings**:
+#' \itemize{
+#'   \item \strong{multi-X}: Supports 300+ languages, sourced from the JW300 corpus.
+#'   JW300 corpus, as proposed by Agić and Vulić (2019). The corpus is licensed under CC-BY-NC-SA.
+#'   \item \strong{multi-X-fast}: CPU-friendly version, trained on a mix of corpora in languages like English, German, French, Italian, Dutch, and Polish.
+#' }
+#'
+#' **English Embeddings**:
+#'
+#' \itemize{
+#'   \item \strong{'news-X'}: Trained with 1 billion word corpus
+#'   \item \strong{'news-X-fast'}: Trained with 1 billion word corpus, CPU-friendly.
+#'   \item \strong{'mix-X'}: Trained with mixed corpus (Web, Wikipedia, Subtitles)
+#'   \item \strong{'pubmed-X'}: Added by @jessepeng: Trained with 5% of PubMed
+#'   abstracts until 2015 (1150 hidden states, 3 layers)
+#' }
+#'
+#' **Specific Langauge Embeddings**:
+#'
+#' \itemize{
+#'   \item \strong{'de-X'}: German. Trained with mixed corpus (Web, Wikipedia, Subtitles)
+#'   \item \strong{de-historic-ha-X}: German (historical). Added by
+#'   @stefan-it: Historical German trained over Hamburger Anzeiger.
+#'   \item \strong{de-historic-wz-X}: German (historical). Added by
+#'   @stefan-it: Historical German trained over Wiener Zeitung.
+#'   \item \strong{de-historic-rw-X}: German (historical). Added by
+#'    @redewiedergabe: Historical German trained over 100 million tokens
+#'   \item \strong{de-impresso-hipe-v1-X}: In-domain data for the CLEF HIPE
+#'   Shared task. In-domain data (Swiss and Luxembourgish newspapers) for
+#'   CLEF HIPE Shared task. More information on the shared task can be found
+#'   in this paper.
+#'   \item \strong{'no-X'}: Norwegian. Added by @stefan-it: Trained with
+#'   Wikipedia/OPUS.
+#'   \item \strong{'nl-X'}: Dutch. Added by @stefan-it: Trained with Wikipedia/OPUS
+#'   \item \strong{'nl-v0-X'}: Dutch.Added by @stefan-it: LM embeddings (earlier version)
+#'   \item \strong{'ja-X'}: Japanese. Added by @frtacoa: Trained with 439M words
+#'   of Japanese Web crawls (2048 hidden states, 2 layers)
+#'   \item \strong{'ja-X'}: Japanese. Added by @frtacoa: Trained with 439M words
+#'   of Japanese Web crawls (2048 hidden states, 2 layers)
+#'
+#'   \item \strong{'fi-X'}: Finnish. Added by @stefan-it: Trained with Wikipedia/OPUS.
+#'   \item \strong{'fr-X'}: French. Added by @mhham: Trained with French Wikipedia
+#'   of Japanese Web crawls (2048 hidden states, 2 layers)
+#'
+#' }
+#'
+#' **Domain-Specific Embeddings**:
+#'
+#' \itemize{
+#'   \item \strong{'es-clinical-'}: Spanish (clinical). Added by @matirojasg:
+#'   Trained with Wikipedia
+#'   \item \strong{'pubmed-X'}:English.  Added by @jessepeng: Trained with 5%
+#'   of PubMed abstracts until 2015 (1150 hidden states, 3 layers)
+#' }
+#'
+#' The above are examples. Ensure you reference the correct embedding
+#' name and details for your application. Replace '*X*' with either
+#' '*forward*' or '*backward*'. For a comprehensive list of embeddings,
+#' please refer to:
+#' \href{https://github.com/flairNLP/flair/blob/master/resources/docs/embeddings/FLAIR_EMBEDDINGS.md}{Flair Embeddings Documentation}.
+
 #' @references
-#' FlairEmbeddings from Flair library in Python. Example usage in Python:
+#' FlairEmbeddings from the Flair Python library. Python example usage:
 #' \preformatted{
+#' from flair.embeddings import FlairEmbeddings
 #' flair_embedding_forward = FlairEmbeddings('news-forward')
 #' flair_embedding_backward = FlairEmbeddings('news-backward')
 #' }
-#' @param embeddings_type Character, type of embeddings to initialize.
-#' Options: "news-forward", "news-backward".
-#' @return A Flair embeddings object from Python's Flair library.
+#'
+#' @param embeddings_type A character string specifying the type of embeddings to initialize. Options include: "news-forward", "news-backward".
+#'
+#' @return A Flair embeddings class from the flair.embeddings module.
+#'
 #' @export
+#'
 #' @examples
 #' \dontrun{
 #' flair_embedding_forward <- flair_embeddings.FlairEmbeddings("news-forward")
@@ -52,26 +118,12 @@ flair_embeddings <- function() {
 #' }
 flair_embeddings.FlairEmbeddings <- function(embeddings_type = "news-forward") {
   flair_embeddings <- import('flair.embeddings')
-
-  # Try to get embeddings and catch any Python errors
-  tryCatch({
-    embeddings <- flair_embeddings$FlairEmbeddings(embeddings_type)
-  }, error = function(e) {
-    stop("Invalid embeddings type. Choose `news-forward` or `news-backward`")
-  })
-
-  if (embeddings_type == "news-backward") {
-    message("Initialized Flair backward embeddings")
-  } else if (embeddings_type == "news-forward") {
-    message("Initialized Flair forward embeddings")
-  } else {
-    stop("Invalid embeddings type. Choose `news-forward` or `news-backward`")
-  }
+  embeddings <- flair_embeddings$FlairEmbeddings(embeddings_type)
   return(embeddings)
 }
 
 
-#' @title Create a Flair WordEmbeddings Object
+#' @title Initializing a Class for Flair WordEmbeddings Class
 #'
 #' @description
 #' This function interfaces with Python via {reticulate} to create a `WordEmbeddings`
@@ -150,7 +202,7 @@ flair_embeddings.WordEmbeddings <- function(embeddings = "glove") {
 }
 
 
-#' @title TransformerDocumentEmbeddings Function
+#' @title Initializing a Class for TransformerDocumentEmbeddings
 #' @description This function interfaces with Python via {reticulate} to
 #' create a `flair_embeddings.TransformerDocumentEmbeddings` object from
 #' the flair.embeddings module.
@@ -185,7 +237,7 @@ flair_embeddings.WordEmbeddings <- function(embeddings = "glove") {
 #' @param memory_efficient (Optional) Enables memory efficient mode in
 #' transformers. When set to TRUE, uses less memory, but might be slower.
 #'
-#' @return A Flair TransformerWordEmbeddings object.
+#' @return A Flair TransformerWordEmbeddings in Python class.
 #'
 #' @details This function provides an interface for R users to easily
 #' access and utilize the power of Flair's TransformerDocumentEmbeddings.
@@ -229,7 +281,7 @@ flair_embeddings.TransformerDocumentEmbeddings <- function(model = "bert-base-un
 }
 
 
-#' @title Create a Flair TransformerWordEmbeddings Object
+#' @title Initializing a Class for TransformerWordEmbeddings
 #'
 #' @description This function interfaces with Python via {reticulate} to create
 #' a `TransformerWordEmbeddings` object object from the flair.embeddings module.
@@ -263,7 +315,7 @@ flair_embeddings.TransformerDocumentEmbeddings <- function(model = "bert-base-un
 #' @param memory_efficient (Optional) Enables memory efficient mode in transformers. When set to TRUE,
 #' uses less memory, but might be slower.
 #'
-#' @return A Flair TransformerWordEmbeddings object.
+#' @return A Flair TransformerWordEmbeddings in Python class.
 #'
 #' @details This function provides an interface for R users to easily
 #' access and utilize the power of Flair's TransformerWordEmbeddings.
@@ -306,4 +358,53 @@ flair_embeddings.TransformerWordEmbeddings <- function(model = "bert-base-uncase
   return(embedding)
 }
 
+#' @title Initializing a Class for StackedEmbeddings
+#'
+#' @description
+#' Creates a stacked embedding instance using multiple Flair embeddings.
+#'
+#' @param embeddings_list A list containing Flair embedding instances.
+#'
+#' @return
+#' An instance of the StackedEmbeddings from the flair.embeddings module.
+#'
+#' @details
+#' The function ensures that each embedding provided in the list is a recognized Flair embedding.
+#' If any of the embeddings in the list is not recognized, the function will throw an error.
+#'
+#' @examples
+#' \dontrun{
+#' glove_embedding <- flair_embeddings.WordEmbeddings("glove")
+#' fasttext_embedding <- flair_embeddings.WordEmbeddings("fasttext")
+#' stacked_embedding <- flair_embeddings.StackedEmbeddings(list(glove_embedding, fasttext_embedding))
+#' }
+#'
+#' @importFrom reticulate py_get_attr
+#' @importFrom reticulate import
+#'
+#' @export
+flair_embeddings.StackedEmbeddings <- function(embeddings_list) {
+  # Ensure that embeddings_list is a list
+  if (!is.list(embeddings_list)) {
+    stop("embeddings_list should be a list of Flair embeddings.")
+  }
 
+  # Ensure all elements in the list are valid Flair embeddings
+  for (embedding in embeddings_list) {
+    # Get the class name of the Python object
+    class_name <- py_get_attr(embedding, "__class__")$`__name__`
+
+    # Validate if it's a known Flair embedding class.
+    embedding_from_flair <- names(flair_embeddings())
+    if (!class_name %in% embedding_from_flair) {
+      stop(paste("The embedding of type", class_name, "is not a recognized Flair embedding."))
+    }
+  }
+
+  # Create the stacked embedding
+  flair_embeddings <- import("flair.embeddings")
+  StackedEmbeddings <- flair_embeddings$StackedEmbeddings
+  embedding <- StackedEmbeddings(embeddings = embeddings_list)
+
+  return(embedding)
+}
