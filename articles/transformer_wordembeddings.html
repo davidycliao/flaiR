@@ -195,7 +195,7 @@ simply need to instantiate the necessary embedding class and call
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td><a href=""><code>BytePairEmbeddings</code></a></td>
+<td><a href="articles/transformer_wordembeddings.html#bytepairembeddings"><code>BytePairEmbeddings</code></a></td>
 <td>Subword-level word embeddings</td>
 <td><a href="https://www.aclweb.org/anthology/L18-1473" class="external-link">Heinzerling and
 Strube (2018)</a></td>
@@ -263,6 +263,51 @@ Conneau (2019)</a>
 <hr>
 </div>
 <div class="section level2">
+<h2 id="byte-pair-embeddings">Byte Pair Embeddings<a class="anchor" aria-label="anchor" href="#byte-pair-embeddings"></a>
+</h2>
+<div style="text-align: justify">
+<p><em>Please note that ihis document for R is a conversion of the <a href="https://github.com/flairNLP/flair/blob/master/resources/docs/embeddings/BYTE_PAIR_EMBEDDINGS.md" class="external-link">Flair
+NLP</a> document implemented in Python.</em></p>
+<p><code>BytePairEmbeddings</code> are word embeddings that are
+precomputed on the subword-level. This means that they are able to embed
+any word by splitting words into subwords and looking up their
+embeddings. <code>BytePairEmbeddings</code> were proposed and computed
+by <a href="https://www.aclweb.org/anthology/L18-1473" class="external-link">Heinzerling and
+Strube (2018)</a> who found that they offer nearly the same accuracy as
+word embeddings, but at a fraction of the model size. So they are a
+great choice if you want to train small models.</p>
+<p>You initialize with a language code (275 languages supported), a
+number of ‘syllables’ (one of ) and a number of dimensions (one of 50,
+100, 200 or 300). The following initializes and uses byte pair
+embeddings for English:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">flaiR</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## flai<span style="color: #0000BB;">R</span>: An R Wrapper for Accessing Flair NLP Tagging Features</span></span></code></pre>
+<pre><code><span><span class="co">## Python: 3.11</span></span></code></pre>
+<pre><code><span><span class="co">## Flair: 0.12.2</span></span></code></pre>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># initialize embedding</span></span>
+<span><span class="va">BytePairEmbeddings</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_embeddings.html">flair_embeddings</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">BytePairEmbeddings</span></span>
+<span><span class="va">embedding</span> <span class="op">&lt;-</span> <span class="fu">BytePairEmbeddings</span><span class="op">(</span><span class="st">'en'</span><span class="op">)</span></span>
+<span><span class="co"># create a sentence</span></span>
+<span><span class="va">Sentence</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_data.html">flair_data</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">Sentence</span></span>
+<span><span class="va">sentence</span> <span class="op">=</span> <span class="fu">Sentence</span><span class="op">(</span><span class="st">'The grass is green .'</span><span class="op">)</span></span>
+<span><span class="co"># embed words in sentence</span></span>
+<span><span class="va">embedding</span><span class="op">$</span><span class="fu">embed</span><span class="op">(</span><span class="va">sentence</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [[1]]</span></span>
+<span><span class="co">## Sentence[5]: "The grass is green ."</span></span></code></pre>
+<p>More information can be found on the <a href="https://nlp.h-its.org/bpemb/" class="external-link">byte pair embeddings</a> web page.
+<code>BytePairEmbeddings</code> also have a multilingual model capable
+of embedding any word in any language. You can instantiate it with:</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">embedding</span> <span class="op">&lt;-</span> <span class="fu">BytePairEmbeddings</span><span class="op">(</span><span class="st">'multi'</span><span class="op">)</span></span></code></pre></div>
+<p>You can also load custom <code>BytePairEmbeddings</code> by
+specifying a path to model_file_path and embedding_file_path arguments.
+They correspond respectively to a SentencePiece model file and to an
+embedding file (Word2Vec plain text or GenSim binary). For example:</p>
+</div>
+</div>
+<div class="section level2">
 <h2 id="flair-embeddings">Flair Embeddings<a class="anchor" aria-label="anchor" href="#flair-embeddings"></a>
 </h2>
 <div style="text-align: justify">
@@ -271,13 +316,9 @@ NLP by <a href="https://engineering.zalando.com/posts/2018/11/zalando-research-r
 Research</a>.</strong> In Flair, the use of embedding is very quite
 straightforward. Here’s an example code snippet of how to use Flair’s
 contextual string embeddings:</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">flaiR</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## flai<span style="color: #0000BB;">R</span>: An R Wrapper for Accessing Flair NLP Tagging Features</span></span></code></pre>
-<pre><code><span><span class="co">## Python: 3.11</span></span></code></pre>
-<pre><code><span><span class="co">## Flair: 0.12.2</span></span></code></pre>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">FlairEmbeddings</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_embeddings.html">flair_embeddings</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">FlairEmbeddings</span></span>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">flaiR</span><span class="op">)</span></span>
+<span><span class="va">FlairEmbeddings</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_embeddings.html">flair_embeddings</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">FlairEmbeddings</span></span>
 <span><span class="co"># init embedding</span></span>
 <span><span class="va">flair_embedding_forward</span> <span class="op">&lt;-</span> <span class="fu">FlairEmbeddings</span><span class="op">(</span><span class="st">'news-forward'</span><span class="op">)</span></span>
 <span></span>
@@ -564,13 +605,15 @@ more information.</td>
 <div style="text-align: justify">
 <p>So, if you want to load embeddings from the German forward LM model,
 instantiate the method as follows:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">flair_de_forward</span> <span class="op">&lt;-</span> <span class="fu">FlairEmbeddings</span><span class="op">(</span><span class="st">'de-forward'</span><span class="op">)</span></span></code></pre></div>
 <p>And if you want to load embeddings from the Bulgarian backward LM
 model, instantiate the method as follows:</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">flair_bg_backward</span> <span class="op">&lt;-</span> <span class="fu">FlairEmbeddings</span><span class="op">(</span><span class="st">'bg-backward'</span><span class="op">)</span></span></code></pre></div>
 </div>
+<p> </p>
+<hr>
 </div>
 <div class="section level2">
 <h2 id="recommended-flair-usage-in-flair-in-r">Recommended Flair Usage in {flaiR} in R<a class="anchor" aria-label="anchor" href="#recommended-flair-usage-in-flair-in-r"></a>
@@ -580,7 +623,7 @@ model, instantiate the method as follows:</p>
 Depending on the task, we also recommend adding standard word embeddings
 into the mix. So, our recommended <code>StackedEmbedding</code> for most
 English tasks is:</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">FlairEmbeddings</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_embeddings.html">flair_embeddings</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">FlairEmbeddings</span></span>
 <span><span class="va">WordEmbeddings</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_embeddings.html">flair_embeddings</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">WordEmbeddings</span></span>
 <span><span class="va">StackedEmbeddings</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_embeddings.html">flair_embeddings</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">StackedEmbeddings</span></span>
@@ -591,14 +634,14 @@ English tasks is:</p>
 <span>                                             <span class="fu">FlairEmbeddings</span><span class="op">(</span><span class="st">"news-backward"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>That’s it! Now just use this embedding like all the other embeddings,
 i.e. call the <code><a href="https://rdrr.io/r/stats/embed.html" class="external-link">embed()</a></code> method over your sentences.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># create a sentence</span></span>
 <span><span class="va">Sentence</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_data.html">flair_data</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">Sentence</span></span>
 <span><span class="va">sentence</span> <span class="op">=</span> <span class="fu">Sentence</span><span class="op">(</span><span class="st">'The grass is green .'</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># just embed a sentence using the StackedEmbedding as you would with any single embedding.</span></span>
 <span><span class="va">stacked_embeddings</span><span class="op">$</span><span class="fu">embed</span><span class="op">(</span><span class="va">sentence</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># now check out the embedded tokens.</span></span>
 <span><span class="co"># Note that Python is indexing from 0. In an R for loop, using seq_along(sentence) - 1 achieves the same effect.</span></span>
 <span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span>  <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">sentence</span><span class="op">)</span><span class="op">-</span><span class="fl">1</span><span class="op">)</span> <span class="op">{</span></span>
@@ -619,6 +662,8 @@ i.e. call the <code><a href="https://rdrr.io/r/stats/embed.html" class="externa
 <p>Words are now embedded using a concatenation of three different
 embeddings. This combination often gives state-of-the-art accuracy.</p>
 </div>
+<p> </p>
+<hr>
 </div>
 <div class="section level2">
 <h2 id="pooled-flair-embeddings">Pooled Flair Embeddings<a class="anchor" aria-label="anchor" href="#pooled-flair-embeddings"></a>
@@ -636,7 +681,7 @@ occurences. More details on how this works may be found in <a href="https://www.
 al. (2019)</a>.</p>
 <p>You can instantiate and use <code>PooledFlairEmbeddings</code> like
 any other embedding:</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># initiate embedding from Flair NLP</span></span>
 <span><span class="va">PooledFlairEmbeddings</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_embeddings.html">flair_embeddings</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">PooledFlairEmbeddings</span></span>
 <span><span class="va">flair_embedding_forward</span> <span class="op">&lt;-</span> <span class="fu">PooledFlairEmbeddings</span><span class="op">(</span><span class="st">'news-forward'</span><span class="op">)</span></span>
@@ -654,6 +699,8 @@ since they keep past embeddings of all words in memory. In many cases,
 regular <code>FlairEmbeddings</code> will be nearly as good but with
 much lower memory requirements.</p>
 </div>
+<p> </p>
+<hr>
 </div>
 <div class="section level2">
 <h2 id="transformer-embeddings">Transformer Embeddings<a class="anchor" aria-label="anchor" href="#transformer-embeddings"></a>
@@ -661,19 +708,19 @@ much lower memory requirements.</p>
 <div style="text-align: justify">
 <p>Please note that content and examples in this section have been
 extensively revised from the <a href="https://github.com/flairNLP/flair/tree/master/resources/docs/embeddings/TRANSFORMER_EMBEDDINGS.md" class="external-link"><code>TransformerWordEmbeddings</code></a>
-official documentation.</p>
-<p>Flair supports various Transformer-based architectures like BERT or
-XLNet from <a href="https://github.com/huggingface" class="external-link">HuggingFace</a>,
-with two classes <a href="#flair.embeddings.token.TransformerWordEmbeddings"><code>TransformerWordEmbeddings</code></a>
+official documentation. Flair supports various Transformer-based
+architectures like BERT or XLNet from <a href="https://github.com/huggingface" class="external-link">HuggingFace</a>, with two classes
+<a href="#flair.embeddings.token.TransformerWordEmbeddings"><code>TransformerWordEmbeddings</code></a>
 (to embed words or tokens) and <a href="#flair.embeddings.document.TransformerDocumentEmbeddings"><code>TransformerDocumentEmbeddings</code></a>
 (to embed documents).</p>
 </div>
+<p> </p>
 <div class="section level3">
 <h3 id="embeddings-words-with-transformers">Embeddings Words with Transformers<a class="anchor" aria-label="anchor" href="#embeddings-words-with-transformers"></a>
 </h3>
 <div style="text-align: justify">
 <p>For instance, to load a standard BERT transformer model, do:</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">flaiR</span><span class="op">)</span></span>
 <span><span class="co"># initiate embedding and load BERT model from HugginFaces</span></span>
 <span><span class="va">TransformerWordEmbeddings</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_embeddings.html">flair_embeddings</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">TransformerWordEmbeddings</span></span>
@@ -688,7 +735,7 @@ with two classes <a href="#flair.embeddings.token.TransformerWordEmbeddings"><co
 <pre><code><span><span class="co">## [[1]]</span></span>
 <span><span class="co">## Sentence[5]: "The grass is green ."</span></span></code></pre>
 <p>If instead you want to use RoBERTa, do:</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">TransformerWordEmbeddings</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_embeddings.html">flair_embeddings</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">TransformerWordEmbeddings</span></span>
 <span><span class="va">embedding</span> <span class="op">&lt;-</span> <span class="fu">TransformerWordEmbeddings</span><span class="op">(</span><span class="st">'roberta-base'</span><span class="op">)</span></span>
 <span><span class="va">sentence</span> <span class="op">&lt;-</span> <span class="fu">Sentence</span><span class="op">(</span><span class="st">'The grass is green .'</span><span class="op">)</span></span>
@@ -704,13 +751,10 @@ can search for models to use.</p>
 <p>To embed a whole sentence as one (instead of each word in the
 sentence), simply use the <a href="#flair.embeddings.document.TransformerDocumentEmbeddings"><code>TransformerDocumentEmbeddings</code></a>
 instead:</p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">TransformerDocumentEmbeddings</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_embeddings.html">flair_embeddings</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">TransformerDocumentEmbeddings</span></span>
-<span></span>
 <span><span class="va">embedding</span> <span class="op">&lt;-</span> <span class="fu">TransformerDocumentEmbeddings</span><span class="op">(</span><span class="st">'roberta-base'</span><span class="op">)</span></span>
-<span></span>
 <span><span class="va">sentence</span> <span class="op">&lt;-</span> <span class="fu">Sentence</span><span class="op">(</span><span class="st">'The grass is green .'</span><span class="op">)</span></span>
-<span></span>
 <span><span class="va">embedding</span><span class="op">$</span><span class="fu">embed</span><span class="op">(</span><span class="va">sentence</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [[1]]</span></span>
 <span><span class="co">## Sentence[5]: "The grass is green ."</span></span></code></pre>
@@ -790,7 +834,7 @@ top 4 layers are used to make an embedding. If you set it to ‘-1’, only
 the last layer is used. If you set it to “all”, then all layers are
 used. This affects the length of an embedding, since layers are just
 concatenated.</p>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">Sentence</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_data.html">flair_data</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">Sentence</span></span>
 <span><span class="va">TransformerWordEmbeddings</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_embeddings.html">flair_embeddings</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">TransformerWordEmbeddings</span></span>
 <span><span class="va">sentence</span> <span class="op">=</span> <span class="fu">Sentence</span><span class="op">(</span><span class="st">'The grass is green.'</span><span class="op">)</span></span>
@@ -800,12 +844,12 @@ concatenated.</p>
 <span><span class="va">embeddings</span><span class="op">$</span><span class="fu">embed</span><span class="op">(</span><span class="va">sentence</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [[1]]</span></span>
 <span><span class="co">## Sentence[5]: "The grass is green."</span></span></code></pre>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">sentence</span><span class="op">[</span><span class="fl">0</span><span class="op">]</span><span class="op">$</span><span class="va">embedding</span><span class="op">$</span><span class="fu">size</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## torch.Size([768])</span></span></code></pre>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sentence</span><span class="op">$</span><span class="fu">clear_embeddings</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sentence</span> <span class="op">&lt;-</span> <span class="fu">Sentence</span><span class="op">(</span><span class="st">'The grass is green.'</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># use only last layers</span></span>
@@ -813,55 +857,54 @@ concatenated.</p>
 <span><span class="va">embeddings</span><span class="op">$</span><span class="fu">embed</span><span class="op">(</span><span class="va">sentence</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [[1]]</span></span>
 <span><span class="co">## Sentence[5]: "The grass is green."</span></span></code></pre>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">sentence</span><span class="op">[</span><span class="fl">0</span><span class="op">]</span><span class="op">$</span><span class="va">embedding</span><span class="op">$</span><span class="fu">size</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## torch.Size([768])</span></span></code></pre>
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sentence</span><span class="op">$</span><span class="fu">clear_embeddings</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># use last two layers</span></span>
 <span><span class="va">embeddings</span> <span class="op">&lt;-</span> <span class="fu">TransformerWordEmbeddings</span><span class="op">(</span><span class="st">'bert-base-uncased'</span>, layers<span class="op">=</span><span class="st">'-1,-2'</span>, layer_mean <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="va">embeddings</span><span class="op">$</span><span class="fu">embed</span><span class="op">(</span><span class="va">sentence</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [[1]]</span></span>
 <span><span class="co">## Sentence[5]: "The grass is green."</span></span></code></pre>
-<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">sentence</span><span class="op">[</span><span class="fl">0</span><span class="op">]</span><span class="op">$</span><span class="va">embedding</span><span class="op">$</span><span class="fu">size</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## torch.Size([1536])</span></span></code></pre>
-<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sentence</span><span class="op">$</span><span class="fu">clear_embeddings</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># use ALL layers</span></span>
 <span><span class="va">embeddings</span> <span class="op">=</span> <span class="fu">TransformerWordEmbeddings</span><span class="op">(</span><span class="st">'bert-base-uncased'</span>, layers<span class="op">=</span><span class="st">'all'</span>, layer_mean<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="va">embeddings</span><span class="op">$</span><span class="fu">embed</span><span class="op">(</span><span class="va">sentence</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [[1]]</span></span>
 <span><span class="co">## Sentence[5]: "The grass is green."</span></span></code></pre>
-<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">sentence</span><span class="op">[</span><span class="fl">0</span><span class="op">]</span><span class="op">$</span><span class="va">embedding</span><span class="op">$</span><span class="fu">size</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## torch.Size([9984])</span></span></code></pre>
 <p>Here’s an example of how it might be done:</p>
 <p>You can directly import torch from reticulate since it has already
 been installed through the flair dependency when you installed flair in
 Python.</p>
-<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># You can directly import torch from reticulate since it has already been installed through the flair dependency when you installed flair in Python.</span></span>
 <span><span class="va">torch</span> <span class="op">&lt;-</span> <span class="fu">reticulate</span><span class="fu">::</span><span class="fu"><a href="https://rstudio.github.io/reticulate/reference/import.html" class="external-link">import</a></span><span class="op">(</span><span class="st">'torch'</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Attempting to create a tensor with integer dimensions</span></span>
 <span><span class="va">torch</span><span class="op">$</span><span class="fu">Size</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fl">768L</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## torch.Size([768])</span></span></code></pre>
-<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">torch</span><span class="op">$</span><span class="fu">Size</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fl">1536L</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## torch.Size([1536])</span></span></code></pre>
-<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">torch</span><span class="op">$</span><span class="fu">Size</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fl">9984L</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## torch.Size([9984])</span></span></code></pre>
 <p>Notice the L after the numbers in the list? This ensures that R
 treats the numbers as integers. If you’re generating these numbers
 dynamically (e.g., through computation), you might want to ensure they
-are integers before attempting to create the tensor.</p>
-<p>I.e. the size of the embedding increases the mode layers we use (but
-ONLY if layer_mean is set to False, otherwise the length is always the
-same).</p>
+are integers before attempting to create the tensor. I.e. the size of
+the embedding increases the mode layers we use (but ONLY if layer_mean
+is set to False, otherwise the length is always the same).</p>
 </div>
 </div>
 <div class="section level3">
@@ -890,13 +933,13 @@ embeddings is calculated and used</li>
 </ul>
 <p>You can choose which one to use by passing this in the
 constructor:</p>
-<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># use first and last subtoken for each word</span></span>
 <span><span class="va">embeddings</span> <span class="op">=</span> <span class="fu">TransformerWordEmbeddings</span><span class="op">(</span><span class="st">'bert-base-uncased'</span>, subtoken_pooling<span class="op">=</span><span class="st">'first_last'</span><span class="op">)</span></span>
 <span><span class="va">embeddings</span><span class="op">$</span><span class="fu">embed</span><span class="op">(</span><span class="va">sentence</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [[1]]</span></span>
 <span><span class="co">## Sentence[5]: "The grass is green."</span></span></code></pre>
-<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb52"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">sentence</span><span class="op">[</span><span class="fl">0</span><span class="op">]</span><span class="op">$</span><span class="va">embedding</span><span class="op">$</span><span class="fu">size</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## torch.Size([9984])</span></span></code></pre>
 </div>
@@ -910,7 +953,7 @@ default, all layers you select are concatenated as explained above.
 Alternatively, you can set <code>layer_mean=True</code> to do a mean
 over all selected layers. The resulting vector will then always have the
 same dimensionality as a single layer:</p>
-<div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb54"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># initiate embedding from transformer. This model will be downloaded from Flair NLP huggingface.</span></span>
 <span><span class="va">embeddings</span> <span class="op">&lt;-</span> <span class="fu">TransformerWordEmbeddings</span><span class="op">(</span><span class="st">'bert-base-uncased'</span>, layers<span class="op">=</span><span class="st">"all"</span>, layer_mean<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
@@ -932,7 +975,7 @@ wish to fine-tune the transformer embeddings. In this case, set
 <code>fine_tune=True</code> in the init method. When fine-tuning, you
 should also only use the topmost layer, so best set
 <code>layers='-1'</code>.</p>
-<div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb56"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># use first and last subtoken for each word</span></span>
 <span><span class="va">TransformerWordEmbeddings</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_embeddings.html">flair_embeddings</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">TransformerWordEmbeddings</span></span>
 <span><span class="va">embeddings</span> <span class="op">&lt;-</span> <span class="fu">TransformerWordEmbeddings</span><span class="op">(</span><span class="st">'bert-base-uncased'</span>, fine_tune<span class="op">=</span><span class="cn">TRUE</span>, layers<span class="op">=</span><span class="st">'-1'</span><span class="op">)</span></span>
@@ -941,7 +984,7 @@ should also only use the topmost layer, so best set
 <span><span class="co">## Sentence[9]: "The Oktoberfest is the world's largest Volksfest ."</span></span></code></pre>
 <p>This will print a tensor that now has a gradient function and can be
 fine-tuned if you use it in a training routine.</p>
-<div class="sourceCode" id="cb55"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">sentence</span><span class="op">[</span><span class="fl">0</span><span class="op">]</span><span class="op">$</span><span class="va">embedding</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## tensor([-6.5871e-01,  1.0410e-01,  3.4632e-01, -3.3775e-01, -2.1013e-01,</span></span>
 <span><span class="co">##         -1.3036e-02,  5.1998e-01,  1.6574e+00, -5.2520e-02, -4.8633e-02,</span></span>
@@ -1125,7 +1168,7 @@ embeddings.</p>
 <p>Simply instantiate the <code>WordEmbeddings</code> class and pass a
 string identifier of the embedding you wish to load. So, if you want to
 use GloVe embeddings, pass the string ‘glove’ to the constructor:</p>
-<div class="sourceCode" id="cb57"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb60"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">flaiR</span><span class="op">)</span></span>
 <span><span class="co"># initiate embedding with glove</span></span>
 <span><span class="va">WordEmbeddings</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_embeddings.html">flair_embeddings</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">WordEmbeddings</span></span>
@@ -1134,7 +1177,7 @@ use GloVe embeddings, pass the string ‘glove’ to the constructor:</p>
 <code><a href="https://rdrr.io/r/stats/embed.html" class="external-link">embed()</a></code> method. You can also pass a list of sentences to
 this method since some embedding types make use of batching to increase
 speed.</p>
-<div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb61"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">flaiR</span><span class="op">)</span></span>
 <span><span class="co"># initiate a sentence object</span></span>
 <span><span class="va">Sentence</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_data.html">flair_data</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">Sentence</span></span>
@@ -1148,7 +1191,7 @@ speed.</p>
 <span><span class="co">## Sentence[5]: "The grass is green ."</span></span></code></pre>
 <p>This prints out the tokens and their embeddings. GloVe embeddings are
 Pytorch vectors of dimensionality 100.</p>
-<div class="sourceCode" id="cb60"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb63"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># view embedded tokens.</span></span>
 <span><span class="kw">for</span> <span class="op">(</span><span class="va">token</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">sentence</span><span class="op">)</span><span class="op">-</span><span class="fl">1</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">sentence</span><span class="op">[</span><span class="va">token</span><span class="op">]</span><span class="op">)</span></span>

@@ -138,7 +138,7 @@ Ensure that the Python environment is properly set up and the Flair package is i
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>A Python object representing flair.models.TextClassifier.</p>
+<p>A Python class representing flair.models.TextClassifier.</p>
     </div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
@@ -150,23 +150,23 @@ from flair.models import TextClassifier
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span><span class="co"># Ensure reticulate is using the correct Python environment</span></span></span>
-<span class="r-in"><span><span class="co"># reticulate::use_python("path_to_your_python", required = TRUE)</span></span></span>
-<span class="r-in"><span><span class="co"># Load the TextClassifier</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Load the TextClassifier</span></span></span>
 <span class="r-in"><span><span class="va">TextClassifier</span> <span class="op">&lt;-</span> <span class="fu">flair_models.TextClassifier</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># Load a pre-trained sentiment model</span></span></span>
 <span class="r-in"><span><span class="va">classifier</span> <span class="op">&lt;-</span> <span class="va">TextClassifier</span><span class="op">$</span><span class="fu">load</span><span class="op">(</span><span class="st">'sentiment'</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Create a sentence object</span></span></span>
-<span class="r-in"><span><span class="va">sentence</span> <span class="op">&lt;-</span> <span class="fu"><a href="flair_data.sentence.html">flair_data.sentence</a></span><span class="op">(</span><span class="st">"Flair is pretty neat!"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">Sentence</span> <span class="op">&lt;-</span> <span class="fu"><a href="flair_data.html">flair_data</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">Sentence</span></span></span>
+<span class="r-in"><span><span class="va">sentence</span> <span class="op">&lt;-</span> <span class="fu">Sentence</span><span class="op">(</span><span class="st">"Flair is pretty neat!"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Predict the sentiment</span></span></span>
 <span class="r-in"><span><span class="va">classifier</span><span class="op">$</span><span class="fu">predict</span><span class="op">(</span><span class="va">sentence</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># Display the sentiment</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">sentence</span><span class="op">$</span><span class="fu">get_labels</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 'Sentence[5]: "Flair is pretty neat!"'/'POSITIVE' (0.9997)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
