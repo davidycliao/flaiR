@@ -251,7 +251,7 @@ flair_nn.classifier_load <- function(pre_trained) {
 #'
 #' @return The \code{flair.embeddings} module from Flair.
 #'
-#' @examples
+#' @examples \dontrun{
 #' flair_embeddings <- flair_embeddings()$FlairEmbeddings
 #' OpenAIGPTEmbeddings <- flair_embeddings()$OpenAIGPTEmbeddings
 #' StackedEmbeddings <- flair_embeddings()$StackedEmbeddings
@@ -261,6 +261,7 @@ flair_nn.classifier_load <- function(pre_trained) {
 #' TransformerOnnxDocumentEmbeddings <- flair_embeddings()$TransformerOnnxDocumentEmbeddings
 #' SentenceTransformerDocumentEmbeddings <- flair_embeddings()$SentenceTransformerDocumentEmbeddings
 #' PooledFlairEmbeddings <- flair_embeddings()$PooledFlairEmbeddings
+#' }
 #'
 #' @references
 #' In Python's Flair library:
