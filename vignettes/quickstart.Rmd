@@ -83,7 +83,7 @@ For R users, {`flairR`} is built on top of {reticulate}, enabling you to interac
 | **Wrapped Functions**                             | Corresponding Code Practice in Python                     | 
 |---------------------------------------------------|-----------------------------------------------------------|
 | `flair_datasets()`                                | from flair.datasets import *                              |
-| `flair_data.sentence()`                           | from flair.data import Sentence                           |
+| `flair_data.Sentence()`                           | from flair.data import Sentence                           |
 | `flair_nn()`                                      | from flair_nn import *                                    |
 | `flair_nn.classifier_load()`                      | from flair.embeddings import Classifier                   |
 | `flair_embeddings()`                              | from flair.nn import *                                    |
@@ -92,7 +92,7 @@ For R users, {`flairR`} is built on top of {reticulate}, enabling you to interac
 | `flair_embeddings.WordEmbeddings()`               | from flair.embeddings import WordEmbeddings               |
 | `flair_embeddings.TransformerDocumentEmbeddings()`| from flair.embeddings import TransformerDocumentEmbeddings|
 | `flair_splitter.SegtokSentenceSplitter()`         | flair_splitter.SegtokSentenceSplitter                     |
-| `flair_models.sequencetagger()`                   | from flair.models import SequenceTagger                   |
+| `flair_models.Sequencetagger()`                   | from flair.models import SequenceTagger                   |
 | `flair_trainers()`                                | from flair.trainers import *                              |
 | `flair_models()`                                  | from flair.models import *                                |
 | `flair_models.TextClassifier()`                   | from flair.models import TextClassifier                   |
@@ -235,7 +235,7 @@ TransformerWordEmbeddings <- flair_embeddings()$TransformerWordEmbeddings
 embedding <- TransformerWordEmbeddings('bert-base-uncased')
 
 # create a sentence
-sentence <- flair_data.sentence('The grass is green .')
+sentence <- flair_data.Sentence('The grass is green .')
 
 # embed words in sentence
 embedding$embed(sentence)
@@ -267,7 +267,7 @@ Sometimes you want to have an embedding for a whole document, not only individua
 embedding <- flair_embeddings.TransformerDocumentEmbeddings('bert-base-uncased')
 
 # create a sentence
-sentence <- flair_data.sentence('The grass is green .')
+sentence <- flair_data.Sentence('The grass is green .')
 
 # embed words in sentence
 embedding$embed(sentence)
@@ -315,7 +315,7 @@ stacked_embeddings <- flair_embeddings()$StackedEmbeddings(
 Next, use the `$embed()` method to transform text into vectors for your sentences.
 ```{r}
 # make a sentence
-sentence <- flair_data.sentence('I love Berlin and New York.')
+sentence <- flair_data.Sentence('I love Berlin and New York.')
 
 # just embed a sentence using the StackedEmbedding as you would with any single embedding.
 stacked_embeddings$embed(sentence)

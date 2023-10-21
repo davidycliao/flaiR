@@ -34,9 +34,9 @@ test_that("flair_trainers returns the trainers module with expected attributes",
 })
 
 
-# flair_models.sequencetagger returns the SequenceTagger object
+# flair_models.Sequencetagger returns the SequenceTagger object
 test_that("flair_models.sequencetagger returns the SequenceTagger object", {
-  SequenceTagger <- flair_models.sequencetagger()
+  SequenceTagger <- flair_models.Sequencetagger()
 
   # Check if the returned object is not NULL
   expect_true(!is.null(SequenceTagger))
@@ -124,19 +124,19 @@ test_that("flair_datasets returns the expected output", {
   # expect_true("an_expected_attribute" %in% py_list_attributes(result))
 })
 
-# flair_data.sentence returns expected output
+# flair_data.Sentence returns expected output
 test_that("flair_data.sentence returns expected output", {
   # Skip test if the "reticulate" library is not available
   skip_if_not_installed("reticulate")
   library(reticulate)
 
   # Expected use case
-  result <- flair_data.sentence("This is a sample sentence.")
+  result <- flair_data.Sentence("This is a sample sentence.")
   expect_s3_class(result, "python.builtin.object")
   # Additional checks can be added based on expected attributes of the output
 
   # Check behavior with empty string
-  result_empty <- flair_data.sentence("")
+  result_empty <- flair_data.Sentence("")
   expect_s3_class(result_empty, "python.builtin.object")
 
 })
@@ -146,8 +146,8 @@ test_that("flair_data.sentence handles errors and unexpected input correctly", {
   library(reticulate)
 
   # Check that non-string input is handled appropriately
-  expect_error(flair_data.sentence(123), "TypeError: 'float' object is not subscriptable")
-  expect_error(flair_data.sentence(NULL), "TypeError: can only join an iterable")
+  expect_error(flair_data.Sentence(123), "TypeError: 'float' object is not subscriptable")
+  expect_error(flair_data.Sentence(NULL), "TypeError: can only join an iterable")
 
   # Add more test cases for other types of unexpected input
 })
@@ -266,7 +266,6 @@ test_that("flair_embeddings.TransformerDocumentEmbeddings returns an embedding",
                 "flair.embeddings.document.TransformerDocumentEmbeddings" %in% class(embedding))
 })
 
-
 # flair_splitter.SegtokSentenceSplitter returns an object
 test_that("flair_splitter.SegtokSentenceSplitter returns an object", {
   skip_if_not_installed("reticulate")
@@ -292,7 +291,7 @@ test_that("flair_models.sequencetagger returns an object", {
   available <- requireNamespace("reticulate") && reticulate::py_module_available("flair")
   skip_if_not(available, "Python or the 'flair' module is not available")
 
-  SequenceTagger <- flair_models.sequencetagger()
+  SequenceTagger <- flair_models.Sequencetagger()
 
   # Testing for expected class
   expect_true("python.builtin.object" %in% class(SequenceTagger))
@@ -387,7 +386,7 @@ test_that("flair_models.sequencetagger returns expected object", {
   available <- requireNamespace("reticulate") && reticulate::py_module_available("flair")
   skip_if_not(available, "Python or the 'flair' module is not available")
 
-  seq_tagger <- flair_models.sequencetagger()
+  seq_tagger <- flair_models.Sequencetagger()
 
   # Test that the function returns a non-null object
   expect_true(!is.null(seq_tagger))
