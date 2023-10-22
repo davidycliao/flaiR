@@ -3,8 +3,6 @@
 #' @description This function imports the neural network module from the
 #' Flair library.
 #'
-#' @param pre_trained A parameter (currently not being used in the function body).
-#'
 #' @return A reference to Flair's neural network module.
 #'
 #' @export
@@ -46,7 +44,7 @@ flair_nn <- function() {
 #' @importFrom reticulate import
 #'
 #' @export
-flair_nn.Classifier <- function(load = TRUE) {
+flair_nn.Classifier <- function() {
   flair_nn <- import('flair.nn')
   classifier <- flair_nn$Classifier
   return(classifier)

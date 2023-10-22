@@ -4,7 +4,7 @@
 \alias{flair_data}
 \title{Import flair.data Module}
 \usage{
-flair_data(load = TRUE)
+flair_data()
 }
 \value{
 A Python module (`flair.splitter`).

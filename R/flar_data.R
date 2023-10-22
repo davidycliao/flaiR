@@ -20,7 +20,7 @@
 #' \preformatted{
 #' from flair.data import Sentence
 #' }
-flair_data <- function(load = TRUE) {
+flair_data <- function() {
   flair_data <- import("flair.data")
   return(flair_data)
 }

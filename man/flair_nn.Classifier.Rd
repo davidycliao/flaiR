@@ -4,7 +4,7 @@
 \alias{flair_nn.Classifier}
 \title{Initializing a Class for Flair Classifier}
 \usage{
-flair_nn.Classifier(load = TRUE)
+flair_nn.Classifier()
 }
 \arguments{
 \item{load}{Logical. Indicates if the classifier should be loaded. Default is TRUE.

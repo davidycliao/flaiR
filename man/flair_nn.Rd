@@ -6,9 +6,6 @@
 \usage{
 flair_nn()
 }
-\arguments{
-\item{pre_trained}{A parameter (currently not being used in the function body).}
-}
 \value{
 A reference to Flair's neural network module.
 }
