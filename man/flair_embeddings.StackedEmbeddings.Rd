@@ -2,7 +2,7 @@
 % Please edit documentation in R/flair_embeddings.R
 \name{flair_embeddings.StackedEmbeddings}
 \alias{flair_embeddings.StackedEmbeddings}
-\title{StackedEmbeddings Function from Flair}
+\title{Initializing a Class for StackedEmbeddings}
 \usage{
 flair_embeddings.StackedEmbeddings(embeddings_list)
 }

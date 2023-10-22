@@ -203,6 +203,7 @@ flair_embeddings.WordEmbeddings <- function(embeddings = "glove") {
 
 
 #' @title Initializing a Class for TransformerDocumentEmbeddings
+#'
 #' @description This function interfaces with Python via {reticulate} to
 #' create a `flair_embeddings.TransformerDocumentEmbeddings` object from
 #' the flair.embeddings module.

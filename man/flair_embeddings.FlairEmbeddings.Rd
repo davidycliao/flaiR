@@ -2,7 +2,7 @@
 % Please edit documentation in R/flair_embeddings.R
 \name{flair_embeddings.FlairEmbeddings}
 \alias{flair_embeddings.FlairEmbeddings}
-\title{Initialization of Flair Forward and Backward Embeddings}
+\title{Initializing a Class for Flair's Forward and Backward Embeddings}
 \usage{
 flair_embeddings.FlairEmbeddings(embeddings_type = "news-forward")
 }
@@ -10,7 +10,7 @@ flair_embeddings.FlairEmbeddings(embeddings_type = "news-forward")
 \item{embeddings_type}{A character string specifying the type of embeddings to initialize. Options include: "news-forward", "news-backward".}
 }
 \value{
-A Flair embeddings object from Python's Flair library.
+A Flair embeddings class from the flair.embeddings module.
 }
 \description{
 This function initializes Flair embeddings from flair.embeddings
@@ -18,7 +18,6 @@ module.
 }
 \details{
 **Multi-Language Embeddings**:
-
 \itemize{
   \item \strong{multi-X}: Supports 300+ languages, sourced from the JW300 corpus.
   JW300 corpus, as proposed by Agić and Vulić (2019). The corpus is licensed under CC-BY-NC-SA.
@@ -33,20 +32,6 @@ module.
   \item \strong{'mix-X'}: Trained with mixed corpus (Web, Wikipedia, Subtitles)
   \item \strong{'pubmed-X'}: Added by @jessepeng: Trained with 5% of PubMed
   abstracts until 2015 (1150 hidden states, 3 layers)
-}
-
-**Specific Language Embeddings**:
-\describe{
-  \item {'ar-X'}{Arabic. Added by @stefan-it: Trained with Wikipedia/OPUS}
-  \item {'bg-X'}{Bulgarian. Added by @stefan-it: Trained with Wikipedia/OPUS}
-  \item {'bg-X'}{Bulgarian. Added by @stefan-it: Trained with Wikipedia/OPUS}
-  \item {'bg-X'}{Bulgarian. Added by @stefan-it: Trained with Wikipedia/OPUS}
-  \item {'bg-X'}{Bulgarian. Added by @stefan-it: Trained with Wikipedia/OPUS}
-  \item {'bg-X'}{Bulgarian. Added by @stefan-it: Trained with Wikipedia/OPUS}
-  \item {'bg-X'}{Bulgarian. Added by @stefan-it: Trained with Wikipedia/OPUS}
-  \item {'bg-X'}{Bulgarian. Added by @stefan-it: Trained with Wikipedia/OPUS}
-  \item {'bg-X'}{Bulgarian. Added by @stefan-it: Trained with Wikipedia/OPUS}
-  \item {'bg-X'}{Bulgarian. Added by @stefan-it: Trained with Wikipedia/OPUS}
 }
 
 **Specific Langauge Embeddings**:

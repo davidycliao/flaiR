@@ -7,11 +7,12 @@
 flair_splitter.SegtokSentenceSplitter()
 }
 \value{
-A Python module (`flair.splitter`).
+An instance of the Python class `SegtokSentenceSplitter` from the
+`flair.splitter` module.
 }
 \description{
-A function to interface with the Python `flair.splitter` module,
-specifically utilizing the `SegtokSentenceSplitter` class/method.
+Interface with the Python `flair.splitter` module to utilize the
+`SegtokSentenceSplitter` class/method.
 }
 \examples{
 \dontrun{
@@ -20,7 +21,7 @@ splitter <- flair_splitter.SegtokSentenceSplitter()
 
 }
 \references{
-Python reference:
+Python equivalent:
 \preformatted{
 from flair.splitter import SegtokSentenceSplitter
 }

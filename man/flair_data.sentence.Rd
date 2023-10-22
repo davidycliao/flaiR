@@ -2,7 +2,7 @@
 % Please edit documentation in R/flar_data.R
 \name{flair_data.Sentence}
 \alias{flair_data.Sentence}
-\title{Create a Flair Sentence Object}
+\title{Create a Flair Sentence}
 \usage{
 flair_data.Sentence(sentence_text)
 }
@@ -13,8 +13,14 @@ flair_data.Sentence(sentence_text)
 A Flair Sentence object.
 }
 \description{
+Flair is a powerful NLP framework that leverages state-of-the-art embeddings for various natural language processing tasks.
 This function uses the {reticulate} package to interface with Python and
 create a Flair Sentence object.
+}
+\note{
+Ensure the input string is in a language compatible with the intended
+Flair model. In R, when processing multiple text, you can use purrr or
+the basic R functions lapply and sapply.
 }
 \examples{
 \dontrun{
@@ -27,4 +33,7 @@ Python equivalent: \preformatted{
 from flair.data import Sentence
 sentence = Sentence("The quick brown fox jumps over the lazy dog.")
 }
+}
+\seealso{
+\link{https://flairnlp.github.io/docs/tutorial-basics/basic-types}, [Flair's GitHub Repository about `Senetence`](https://flairnlp.github.io/docs/tutorial-basics/basic-types)
 }

@@ -19,27 +19,54 @@ home:
     href: https://pureportal.strath.ac.uk/en/datasets/parlee-plenary-speeches-v2-data-set-annotated-full-text-of-151-mi
 
 reference:
-- title: R Wrapper Functions
-  desc: Accessing FlairNLP Classes and Objects through Wrapped Python Functions in R
+- title: flair Full Module
+  desc: Accessing whole flair module
 - contents:
   - flair
-  - flair_device
+
+- title: flair_embeddings Module
+  desc: Accessing flair.embeddings module from flair
+- contents:
   - flair_embeddings
   - flair_embeddings.FlairEmbeddings
   - flair_embeddings.TransformerDocumentEmbeddings
   - flair_embeddings.TransformerWordEmbeddings
   - flair_embeddings.WordEmbeddings
+
+- title: flair_data Module
+  desc: Accessing flair.data module from flair
+- contents:
   - flair_data
   - flair_data.Sentence
-  - flair_datasets
+
+- title: flair_nn Module
+  desc: Accessing flair.nn module from flair
+- contents:
   - flair_nn
-  - flair_nn.Classifier_load
-  - flair_splitter.SegtokSentenceSplitter
+  - flair_nn.Classifier
+
+- title: flair_trainers Module
+  desc: Accessing flair.trainers module from flair
+- contents:
   - flair_trainers
+
+- title: flair_splitter Module
+  desc: Accessing flair.splitter module from flair
+- contents:
+  - flair_splitter
+  - flair_splitter.SegtokSentenceSplitter
+
+- title: flair_models Module
+  desc: Accessing flair.models module from flair
+- contents:
   - flair_models
   - flair_models.TextClassifier
   - flair_models.Sequencetagger
 
+- title: flair_datasets Module
+  desc: Accessing flair.datasets module from flair
+- contents:
+  - flair_datasets
 
 - title: Designed flaiR Functions
   desc: Effortless Access to Core Tagging Features with flaiR Functions
@@ -67,6 +94,7 @@ reference:
   - clear_flair_cache
   - create_flair_env
   - show_flair_cache
+  - flair_device
 
 - title: Sampled Dataset
   desc:  A sampled ParSpeechV2
@@ -112,6 +140,49 @@ navbar:
     - text: "How to Contribute"
       href: articles/quickstart.html#how-to-contribute
 
+
+  - icon: fa-file-code-o
+    text: Reference
+    menu:
+    - text: "flaiR to flair NLP"
+      menu:
+      - text: "flair Full Module"
+        href: reference/index.html#flair-full-module
+      - text: "flair_embeddings Module"
+        href: reference/index.html#flair-embeddings-module
+      - text: "flair_data Module"
+        href: reference/index.html#flair-data-module
+      - text: "flair_nn Module"
+        href: reference/index.html#flair-nn-module
+      - text: "flair_trainers Module"
+        href: reference/index.html#flair-trainers-module
+      - text: "flair_splitter Module"
+        href: reference/index.html#flair-splitter-module
+      - text: "flair_models Module"
+        href: reference/index.html#flair-models-module
+      - text: "flair_dataset Module"
+        href: reference/index.html#flair-dataset-module
+    - text: "Extended Features in flaiR"
+      href: reference/index.html#designed-flair-functions
+    - text: "ToolBox"
+      href: reference/index.html#tool-box
+    - text: "Utility"
+      href: reference/index.html#utility-functions
+    - text: "Dataset"
+      href: reference/index.html#example-dataset
+
+  - icon: fa-newspaper-o
+    text: ToolBox
+    menu:
+    - text: "Flar Pre-trianed Models"
+      href: articles/flair_models.html
+    - text: "Wordembeddings in Flair"
+      href: articles/transformer_wordembeddings.html
+    - text: "Coloring Entities"
+      href: articles/highlight_text.html
+    - text: "Visualizing the Sentiments (Comming Soon)"
+      href:
+
   - icon: fa-project-diagram
     text: Tutorial in R
     menu:
@@ -127,32 +198,6 @@ navbar:
       href: articles/tutorial.html#training-a-binary-classifier-in-flair
     - text: "Training a RNN with FlaiR"
       href: articles/tutorial.html#training-a-rnn-with-flair
-
-  - icon: fa-newspaper-o
-    text: ToolBox
-    menu:
-    - text: "Flar Pre-trianed Models"
-      href: articles/flair_models.html
-    - text: "Wordembeddings in Flair"
-      href: articles/transformer_wordembeddings.html
-    - text: "Coloring Entities"
-      href: articles/highlight_text.html
-    - text: "Visualizing the Sentiments (Comming Soon)"
-      href:
-
-  - icon: fa-file-code-o
-    text: Reference
-    menu:
-    - text: "Wrapper Functions"
-      href: reference/index.html#wrapper-functions
-    - text: "Designed flaiR Functions"
-      href: reference/index.html#designed-flair-functions
-    - text: "ToolBox"
-      href: reference/index.html#tool-box
-    - text: "Utility"
-      href: reference/index.html#utility-functions
-    - text: "Dataset"
-      href: reference/index.html#example-dataset
 
   - icon: fa-newspaper-o
     text: News

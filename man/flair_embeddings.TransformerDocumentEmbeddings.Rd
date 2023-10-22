@@ -2,7 +2,7 @@
 % Please edit documentation in R/flair_embeddings.R
 \name{flair_embeddings.TransformerDocumentEmbeddings}
 \alias{flair_embeddings.TransformerDocumentEmbeddings}
-\title{TransformerDocumentEmbeddings Function}
+\title{Initializing a Class for TransformerDocumentEmbeddings}
 \usage{
 flair_embeddings.TransformerDocumentEmbeddings(
   model = "bert-base-uncased",

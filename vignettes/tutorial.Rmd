@@ -63,7 +63,7 @@ The following tutorial is mainly based on Tadej Magajna's '[__Natural Language P
 
 - __[Training a RNN with FlaiR](#tutorial.html#training-a-rnn-with-flair)__
 
-- __[Finetune BERT in FlaiR (Comming Soon)]()__
+- __[Finetune BERT in FlaiR (in progress)]()__
 
 </div>
 
@@ -320,7 +320,7 @@ library(flaiR)
 Sentence <- flair_data()$Sentence
 sentence <- Sentence('I love Berlin and New York.')
 
-# load the flair_nn.classifier_load tagger
+# load the Classifier tagger from flair.nn module
 Classifier <- flair_nn()$Classifier
 tagger <- Classifier$load('sentiment')
 

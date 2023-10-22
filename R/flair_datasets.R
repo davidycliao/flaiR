@@ -23,6 +23,9 @@
 #'  capabilities and datasets in NLP.
 #'
 #' @importFrom reticulate import
+#' @examples
+#' # print all the datasets from flair
+#' names(flair_datasets())
 #'
 #' @export
 flair_datasets <- function() {

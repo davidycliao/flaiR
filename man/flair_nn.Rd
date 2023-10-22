@@ -4,7 +4,7 @@
 \alias{flair_nn}
 \title{Import Flair's Neural Network Module}
 \usage{
-flair_nn(pre_trained)
+flair_nn(load = TRUE)
 }
 \arguments{
 \item{pre_trained}{A parameter (currently not being used in the function body).}
@@ -18,7 +18,7 @@ Flair library.
 }
 \examples{
 \dontrun{
-  flair_nn <- flair_nn(pre_trained = TRUE)
+  flair_nn <- flair_nn(load = TRUE)
   Classifier <- flair_nn$Classifier
 }
 }

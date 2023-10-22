@@ -2,7 +2,7 @@
 % Please edit documentation in R/flair_embeddings.R
 \name{flair_embeddings}
 \alias{flair_embeddings}
-\title{Flair Embeddings Importer}
+\title{Initialization of of Flair Embeddings Modules}
 \usage{
 flair_embeddings()
 }

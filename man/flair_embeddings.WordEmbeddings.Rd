@@ -2,7 +2,7 @@
 % Please edit documentation in R/flair_embeddings.R
 \name{flair_embeddings.WordEmbeddings}
 \alias{flair_embeddings.WordEmbeddings}
-\title{Create a Flair WordEmbeddings Object}
+\title{Initializing a Class for Flair WordEmbeddings Class}
 \usage{
 flair_embeddings.WordEmbeddings(embeddings = "glove")
 }

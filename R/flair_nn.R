@@ -13,28 +13,28 @@
 #'
 #' @examples
 #' \dontrun{
-#'   flair_nn <- flair_nn(pre_trained = TRUE)
+#'   flair_nn <- flair_nn(load = TRUE)
 #'   Classifier <- flair_nn$Classifier
 #' }
-flair_nn <- function(pre_trained) {
+flair_nn <- function(load = TRUE) {
   flair_nn <- import('flair.nn')
   return(flair_nn)
 }
 
 
-#' @title Create a Flair `Classifier.load` Object.
+#' @title Initializing a Class for Flair Classifier
 #'
-#' @description This function utilizes the {reticulate} package to interface
-#' with Python and create a Classifier object from the Flair library.
+#' @description This function interfaces with Python via the {reticulate} package
+#' to create a Classifier object from the Flair library.
 #'
-#' @param pre_trained A character string specifying the pre-trained model to use.
-#' This parameter is defined but not used in the current function context.
+#' @param load Logical. Indicates if the classifier should be loaded. Default is TRUE.
+#' This parameter is currently defined but not actively used in the function context.
 #'
-#' @return A Flair Classifier object.
+#' @return A Flair Classifier class instance.
 #'
 #' @examples
 #' \dontrun{
-#' classifier <- flair_nn.classifier_load("ner")
+#' classifier <- flair_nn.Classifier()
 #' }
 #'
 #' @references
@@ -46,8 +46,9 @@ flair_nn <- function(pre_trained) {
 #' @importFrom reticulate import
 #'
 #' @export
-flair_nn.classifier_load <- function(pre_trained) {
+flair_nn.Classifier <- function(load = TRUE) {
   flair_nn <- import('flair.nn')
-  classifier <- flair_nn$Classifier$load(pre_trained)
+  classifier <- flair_nn$Classifier
   return(classifier)
 }
+

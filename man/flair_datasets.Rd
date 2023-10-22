@@ -19,6 +19,9 @@ an R environment.
 UD_ENGLISH <- flair_datasets()$UD_ENGLISH
 corpus <- UD_ENGLISH()$downsample(0.1)}
 
+# print all the datasets from flair
+names(flair_datasets())
+
 }
 \references{
 Python equivalent: \preformatted{

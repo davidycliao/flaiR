@@ -2,7 +2,7 @@
 % Please edit documentation in R/flair_embeddings.R
 \name{flair_embeddings.TransformerWordEmbeddings}
 \alias{flair_embeddings.TransformerWordEmbeddings}
-\title{Create a Flair TransformerWordEmbeddings Object}
+\title{Initializing a Class for TransformerWordEmbeddings}
 \usage{
 flair_embeddings.TransformerWordEmbeddings(
   model = "bert-base-uncased",
