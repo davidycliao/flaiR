@@ -105,7 +105,7 @@
     Documents
   </a>
   <div class="dropdown-menu" aria-labelledby="dropdown--documents">
-    <a class="dropdown-item" href="../reference/index.html">All Reference</a>
+    <a class="dropdown-item" href="../reference/index.html">All Function Reference</a>
     <a class="dropdown-item" href="../reference/index.html#flair-full-module">The flair Module</a>
     <a class="dropdown-item" href="../reference/index.html#flair-embeddings-module">The flair_embeddings Module</a>
     <a class="dropdown-item" href="../reference/index.html#flair-data-module">The flair_data Module</a>
@@ -170,6 +170,7 @@
 <div class="section level2">
 <h2 id="generic-approach-using-part-of-speech-tagging">Generic Approach Using Part-of-Speech Tagging<a class="anchor" aria-label="anchor" href="#generic-approach-using-part-of-speech-tagging"></a>
 </h2>
+<div style="text-align: justify">
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">flaiR</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"de_immigration"</span><span class="op">)</span></span>
@@ -178,7 +179,7 @@
 Hugging Face.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tagger_pos</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_tagger_pos.html">load_tagger_pos</a></span><span class="op">(</span><span class="st">"pos"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2023-10-22 20:28:22,708 SequenceTagger predicts: Dictionary with 53 tags: &lt;unk&gt;, O, UH, ,, VBD, PRP, VB, PRP$, NN, RB, ., DT, JJ, VBP, VBG, IN, CD, NNS, NNP, WRB, VBZ, WDT, CC, TO, MD, VBN, WP, :, RP, EX, JJR, FW, XX, HYPH, POS, RBR, JJS, PDT, NNPS, RBS, AFX, WP$, -LRB-, -RRB-, ``, '', LS, $, SYM, ADD</span></span></code></pre></div>
+<span><span class="co">#&gt; 2023-10-23 00:54:56,931 SequenceTagger predicts: Dictionary with 53 tags: &lt;unk&gt;, O, UH, ,, VBD, PRP, VB, PRP$, NN, RB, ., DT, JJ, VBP, VBG, IN, CD, NNS, NNP, WRB, VBZ, WDT, CC, TO, MD, VBN, WP, :, RP, EX, JJR, FW, XX, HYPH, POS, RBR, JJS, PDT, NNPS, RBS, AFX, WP$, -LRB-, -RRB-, ``, '', LS, $, SYM, ADD</span></span></code></pre></div>
 <p>Flair NLP operates under the <a href="https://pytorch.org" class="external-link">PyTorch</a> framework. As such, we can use
 the <code>$to</code> method to set the device for the Flair Python
 library. The flair_device(“cpu”) allows you to select whether to use the
@@ -233,6 +234,7 @@ about CUDA, please visit: <a href="https://developer.nvidia.com/cuda-zone" class
 <span><span class="co">#&gt; 442:  Stewart Jackson       68      NA    this  DT    1.0000</span></span>
 <span><span class="co">#&gt; 443:  Stewart Jackson       69      NA country  NN    1.0000</span></span>
 <span><span class="co">#&gt; 444:  Stewart Jackson       70      NA       ?   .    0.9949</span></span></code></pre></div>
+</div>
 </div>
 <div class="section level2">
 <h2 id="batch-processing">Batch Processing<a class="anchor" aria-label="anchor" href="#batch-processing"></a>
