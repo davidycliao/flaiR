@@ -6,10 +6,6 @@
 \usage{
 flair_nn.Classifier()
 }
-\arguments{
-\item{load}{Logical. Indicates if the classifier should be loaded. Default is TRUE.
-This parameter is currently defined but not actively used in the function context.}
-}
 \value{
 A Flair Classifier class instance.
 }

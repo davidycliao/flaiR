@@ -37,7 +37,7 @@ flair_data <- function() {
 #'
 #' @examples
 #' \dontrun{
-#' flair_data.sentence("The quick brown fox jumps over the lazy dog.")
+#' flair_data.Sentence("The quick brown fox jumps over the lazy dog.")
 #' }
 #'
 #' @references
@@ -46,7 +46,7 @@ flair_data <- function() {
 #' sentence = Sentence("The quick brown fox jumps over the lazy dog.")
 #' }
 #'
-#' @seealso \link{https://flairnlp.github.io/docs/tutorial-basics/basic-types}, [Flair's GitHub Repository about `Senetence`](https://flairnlp.github.io/docs/tutorial-basics/basic-types)
+#' @seealso [Flair's GitHub Repository about Senetence object.](https://flairnlp.github.io/docs/tutorial-basics/basic-types)
 #'
 #' @note Ensure the input string is in a language compatible with the intended
 #' Flair model. In R, when processing multiple text, you can use purrr or

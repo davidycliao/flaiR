@@ -1,9 +1,24 @@
 #' @title Import Flair's Neural Network Module
 #'
-#' @description This function imports the neural network module from the
-#' Flair library.
+#' @description
+#' This function provides an interface to the `flair.nn` module of the Flair library. The module
+#' contains neural network components, including models, classifiers, decoders, dropout techniques,
+#' and more.
 #'
-#' @return A reference to Flair's neural network module.
+#' The `flair.nn` module encompasses various sub-modules such as:
+#' \itemize{
+#'   \item decoder
+#'   \item distance
+#'   \item dropout
+#'   \item loss
+#'   \item model
+#'   \item multitask
+#'   \item recurrent
+#' }
+#' Furthermore, it provides access to classes like `Model`, `Classifier`, `PrototypicalDecoder`,
+#' `LockedDropout`, and `WordDropout`, among others.
+#'
+#' @return A reference to Flair's neural network module (`flair.nn`).
 #'
 #' @export
 #'
@@ -11,12 +26,12 @@
 #'
 #' @examples
 #' \dontrun{
-#'   flair_nn <- flair_nn(load = TRUE)
-#'   Classifier <- flair_nn$Classifier
+#'   flair_nn_module <- flair_nn()
+#'   Classifier <- flair_nn_module$Classifier
 #' }
 flair_nn <- function() {
-  flair_nn <- import('flair.nn')
-  return(flair_nn)
+  flair_nn_module <- import('flair.nn')
+  return(flair_nn_module)
 }
 
 
@@ -24,9 +39,6 @@ flair_nn <- function() {
 #'
 #' @description This function interfaces with Python via the {reticulate} package
 #' to create a Classifier object from the Flair library.
-#'
-#' @param load Logical. Indicates if the classifier should be loaded. Default is TRUE.
-#' This parameter is currently defined but not actively used in the function context.
 #'
 #' @return A Flair Classifier class instance.
 #'

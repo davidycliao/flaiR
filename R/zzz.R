@@ -27,7 +27,7 @@
 #   }
 # }
 .onAttach <- function(...) {
-  packageStartupMessage(sprintf("flai\033[34mR\033[39m: An R Wrapper for Accessing Flair NLP Tagging Features %-5s", ""))
+  packageStartupMessage(sprintf("flai\033[34mR\033[39m: An R Wrapper for Accessing Flair NLP %-5s", ""))
   if (check_python_installed()) {
     packageStartupMessage(sprintf("Python: %-47s", reticulate::py_config()$version))
   } else {

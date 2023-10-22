@@ -24,7 +24,7 @@ the basic R functions lapply and sapply.
 }
 \examples{
 \dontrun{
-flair_data.sentence("The quick brown fox jumps over the lazy dog.")
+flair_data.Sentence("The quick brown fox jumps over the lazy dog.")
 }
 
 }
@@ -35,5 +35,5 @@ sentence = Sentence("The quick brown fox jumps over the lazy dog.")
 }
 }
 \seealso{
-\link{https://flairnlp.github.io/docs/tutorial-basics/basic-types}, [Flair's GitHub Repository about `Senetence`](https://flairnlp.github.io/docs/tutorial-basics/basic-types)
+[Flair's GitHub Repository about Senetence object.](https://flairnlp.github.io/docs/tutorial-basics/basic-types)
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/flair_splitter.R
 \name{flair_splitter}
 \alias{flair_splitter}
-\title{Imort Splitter Module}
+\title{Import Splitter Module}
 \usage{
 flair_splitter()
 }
@@ -10,20 +10,25 @@ flair_splitter()
 A Python module (`flair.splitter`).
 }
 \description{
-A function to interface with the Python `flair.splitter` module,
-specifically utilizing the `SegtokSentenceSplitter` class/method.
+A function to interface with the Python `flair.splitter` module.
+It provides access to various sentence splitting strategies implemented in the Flair library:
+1. `NoSentenceSplitter`: Treats the entire text as a single sentence without splitting it.
+2. `SegtokSentenceSplitter`: Uses the `segtok` library to split text into sentences.
+3. `SpacySentenceSplitter`: Uses the `spaCy` library for sentence splitting.
+4. `TagSentenceSplitter`: Assumes specific tags in the text to indicate sentence boundaries.
 }
 \examples{
 \dontrun{
-SegtokSentenceSplitter <- flair_splitter.SegtokSentenceSplitter()
+SegtokSentenceSplitter <- flair_splitter$SegtokSentenceSplitter()
 text <- "I am Taiwanese and come from Taiwan"
 sentences <- splitter$split(text)
 }
 
 }
 \references{
-Python reference:
+- Python reference for `SegtokSentenceSplitter`:
 \preformatted{
 from flair.splitter import SegtokSentenceSplitter
 }
+- Additional references for the other classes can be found within the Flair library documentation.
 }

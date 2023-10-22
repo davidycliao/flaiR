@@ -7,15 +7,29 @@
 flair_nn()
 }
 \value{
-A reference to Flair's neural network module.
+A reference to Flair's neural network module (`flair.nn`).
 }
 \description{
-This function imports the neural network module from the
-Flair library.
+This function provides an interface to the `flair.nn` module of the Flair library. The module
+contains neural network components, including models, classifiers, decoders, dropout techniques,
+and more.
+
+The `flair.nn` module encompasses various sub-modules such as:
+\itemize{
+  \item decoder
+  \item distance
+  \item dropout
+  \item loss
+  \item model
+  \item multitask
+  \item recurrent
+}
+Furthermore, it provides access to classes like `Model`, `Classifier`, `PrototypicalDecoder`,
+`LockedDropout`, and `WordDropout`, among others.
 }
 \examples{
 \dontrun{
-  flair_nn <- flair_nn(load = TRUE)
-  Classifier <- flair_nn$Classifier
+  flair_nn_module <- flair_nn()
+  Classifier <- flair_nn_module$Classifier
 }
 }
