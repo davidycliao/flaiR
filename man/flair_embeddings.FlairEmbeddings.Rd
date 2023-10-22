@@ -17,14 +17,14 @@ This function initializes Flair embeddings from flair.embeddings
 module.
 }
 \details{
-**Multi-Language Embeddings**:
+\strong{Multi-Language Embeddings:}
 \itemize{
   \item \strong{multi-X}: Supports 300+ languages, sourced from the JW300 corpus.
   JW300 corpus, as proposed by Agić and Vulić (2019). The corpus is licensed under CC-BY-NC-SA.
   \item \strong{multi-X-fast}: CPU-friendly version, trained on a mix of corpora in languages like English, German, French, Italian, Dutch, and Polish.
 }
 
-**English Embeddings**:
+\strong{English Embeddings:}
 
 \itemize{
   \item \strong{'news-X'}: Trained with 1 billion word corpus
@@ -34,7 +34,7 @@ module.
   abstracts until 2015 (1150 hidden states, 3 layers)
 }
 
-**Specific Langauge Embeddings**:
+\strong{Specific Langauge Embeddings:}
 
 \itemize{
   \item \strong{'de-X'}: German. Trained with mixed corpus (Web, Wikipedia, Subtitles)
@@ -63,7 +63,7 @@ module.
 
 }
 
-**Domain-Specific Embeddings**:
+\strong{Domain-Specific Embeddings:}
 
 \itemize{
   \item \strong{'es-clinical-'}: Spanish (clinical). Added by @matirojasg:

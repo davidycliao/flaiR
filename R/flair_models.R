@@ -1,8 +1,28 @@
-
 #' @title Import the flair.models Python module
 #'
-#' @description This function utilizes the reticulate package to import flair.models from the Flair NLP Python library.
-#' Ensure that the Python environment is properly set up and the Flair package is installed.
+#' @description
+#' This function imports the `flair.models` module from the Flair NLP Python
+#' library, providing access to several powerful models tailored for NLP tasks.
+#' Here are three primary methods available in this module:
+#'
+#' \itemize{
+#'   \item \strong{TextClassifier:} This method represents a neural network
+#'   model designed for text classification tasks. Given a piece of text,
+#'   it predicts a class label or category. For instance, it can be used
+#'   to classify movie reviews as positive or negative.
+#'   \item \strong{SequenceTagger:} Tailored for tasks like Named Entity
+#'   Recognition (NER) and Part-of-Speech (POS) tagging, this method
+#'   annotates sequences of words. For NER, it could tag entities in a
+#'   sentence such as locations, persons, or organizations. For POS tagging,
+#'   it can label each word in a sentence with its grammatical role
+#'   like noun, verb, adjective, etc.
+#'
+#'   \item \strong{LanguageModel:} This method represents a model
+#'   trained to predict the next word in a sequence, making it powerful
+#'   for tasks like text generation and completion. It learns the
+#'   statistical properties and structure of the language, and can be
+#'   the base for transfer learning in other NLP tasks.
+#' }
 #'
 #' @return A Python module object representing flair.models.
 #'

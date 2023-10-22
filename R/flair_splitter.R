@@ -1,11 +1,14 @@
-#' @title Import Splitter Module
+#' @title Import flair.splitter Module in R
 #'
-#' @description A function to interface with the Python `flair.splitter` module.
-#' It provides access to various sentence splitting strategies implemented in the Flair library:
-#' 1. `NoSentenceSplitter`: Treats the entire text as a single sentence without splitting it.
-#' 2. `SegtokSentenceSplitter`: Uses the `segtok` library to split text into sentences.
-#' 3. `SpacySentenceSplitter`: Uses the `spaCy` library for sentence splitting.
-#' 4. `TagSentenceSplitter`: Assumes specific tags in the text to indicate sentence boundaries.
+#' @description
+#' A function to interface with the Python \code{flair.splitter} module. This function provides access to various
+#' sentence splitting strategies implemented in the Flair library:
+#' \itemize{
+#'   \item \code{NoSentenceSplitter}: Treats the entire text as a single sentence without splitting it.
+#'   \item \code{SegtokSentenceSplitter}: Uses the \code{segtok} library to split text into sentences.
+#'   \item \code{SpacySentenceSplitter}: Uses the \code{spaCy} library for sentence splitting.
+#'   \item \code{TagSentenceSplitter}: Assumes specific tags in the text to indicate sentence boundaries.
+#' }
 #'
 #' @return A Python module (`flair.splitter`).
 #'
@@ -21,12 +24,12 @@
 #' @importFrom reticulate import
 #'
 #' @references
-#' - Python reference for `SegtokSentenceSplitter`:
+#' Python reference for `SegtokSentenceSplitter`:
 #' \preformatted{
-#' from flair.splitter import SegtokSentenceSplitter
+#' from flair.splitter import *
 #' }
-#' - Additional references for the other classes can be found within the Flair library documentation.
-#'
+#' Additional references for the other classes can be found within the Flair library documentation.
+#' \href{https://github.com/flairNLP/flair/blob/master/flair/splitter.py}{Flair GitHub}
 flair_splitter <- function() {
   flair_splitter <- import("flair.splitter")
   return(flair_splitter)

@@ -23,6 +23,7 @@ reticulate::py_install("flair")
 ```
 
 ## Generic Approach Using Part-of-Speech Tagging
+<div style="text-align: justify">
 
 ```{r}
 library(flaiR)
@@ -31,6 +32,8 @@ uk_immigration <- head(uk_immigration, 2)
 ```
 
 Download the de-pos part-of-speech tagging model from FlairNLP on Hugging Face.
+
+
 ```{r}
 tagger_pos <- load_tagger_pos("pos")
 ```
@@ -79,7 +82,7 @@ results <- get_pos(uk_immigration$text,
 print(results)
 ```
 
-
+</div>
 ## Batch Processing
 ```{r}
 batch_process_results  <- get_pos_batch(uk_immigration$text,

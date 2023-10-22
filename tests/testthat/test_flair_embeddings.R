@@ -34,33 +34,20 @@ test_that("flair_embeddings.FlairEmbeddings gives messages and stops as expected
                fixed = TRUE)
 })
 
-
-
-
-# Test 1: Function should raise an error if embeddings_list is not a list
+# Function should raise an error if embeddings_list is not a list
 test_that("function raises error for non-list input", {
   expect_error(flair_embeddings.StackedEmbeddings("not_a_list"),
                "embeddings_list should be a list of Flair embeddings.")
 })
 
-# Test 2: Function should raise an error for invalid embeddings in list
+# Function should raise an error for invalid embeddings in list
 test_that("function raises error for invalid embeddings", {
   invalid_embedding <- list(fake_embedding = "not_a_valid_embedding")
   expect_error(flair_embeddings.StackedEmbeddings(invalid_embedding),
                "no item called \"not_a_valid_embedding\" on the search list")
 })
 
-# # Test 3: Function should return a stacked embedding for valid embeddings
-# # Note: For this test, you'd need actual valid flair embeddings for it to work.
-# test_that("function returns a stacked embedding for valid embeddings", {
-#   # Replace the line below with actual embeddings
-#   valid_embeddings <- list(valid_embedding1, valid_embedding2)
-#
-#   result <- flair_embeddings.StackedEmbeddings(valid_embeddings)
-#
-#   # Check that the result is a StackedEmbeddings object. Modify this as per the actual class name.
-#   expect_true(inherits(result, "StackedEmbeddings"))
-# })
-
-
-
+# flair_embeddings.WordEmbeddings runs without errors
+test_that("flair_embeddings.WordEmbeddings runs without errors", {
+  expect_silent(flair_embeddings.WordEmbeddings())
+})
