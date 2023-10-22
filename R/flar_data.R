@@ -1,4 +1,4 @@
-#' @title Import Splitter Module
+#' @title Import flair.data Module
 #'
 #' @description A function to interface with the Python `flair.splitter` module,
 #' specifically to load the `SegtokSentenceSplitter` class/method.
@@ -9,11 +9,8 @@
 #'
 #' @examples
 #' \dontrun{
-#' splitter_module <- flair_splitter()
-#' SegtokSentenceSplitter <- splitter_module$SegtokSentenceSplitter
-#' text <- "I am Taiwanese and come from Taiwan."
-#' splitter_instance <- SegtokSentenceSplitter()
-#' sentences <- splitter_instance$split(text)
+#' Sentence <- flair_data()$Sentence
+#' sentences <- Sentence("I am Taiwanese and come from Taiwan.")
 #' }
 #'
 #' @importFrom reticulate import
@@ -21,13 +18,12 @@
 #' @references
 #' Python reference:
 #' \preformatted{
-#' from flair.splitter import SegtokSentenceSplitter
+#' from flair.data import Sentence
 #' }
-flair_splitter <- function(load = TRUE) {
-  flair_splitter <- reticulate::import("flair.splitter")
-  return(flair_splitter)
+flair_data <- function(load = TRUE) {
+  flair_data <- import("flair.data")
+  return(flair_data)
 }
-
 
 #' @title Create a Flair Sentence
 #'
