@@ -1,9 +1,7 @@
 #' @title Import Flair's Neural Network Module
 #'
 #' @description
-#' This function provides an interface to the `flair.nn` module of the Flair library. The module
-#' contains neural network components, including models, classifiers, decoders, dropout techniques,
-#' and more.
+#' This function provides an interface to the `flair.nn` module from the Flair library.
 #'
 #' The `flair.nn` module encompasses various sub-modules such as:
 #' \itemize{
@@ -14,9 +12,12 @@
 #'   \item model
 #'   \item multitask
 #'   \item recurrent
+#'   \item Model
+#'   \item Classifier
+#'   \item PrototypicalDecoder
+#'   \item LockedDropout
+#'   \item WordDropout
 #' }
-#' Furthermore, it provides access to classes like `Model`, `Classifier`, `PrototypicalDecoder`,
-#' `LockedDropout`, and `WordDropout`, among others.
 #'
 #' @return A reference to Flair's neural network module (`flair.nn`).
 #'
