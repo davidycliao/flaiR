@@ -25,7 +25,7 @@ test_that("flair_nn.classifier handles errors and unexpected input correctly", {
 test_that("flair_nn returns the correct module", {
 
   # Load the module using the function
-  flair_module <- flair_nn(load = TRUE)
+  flair_module <- flair_nn()
 
   # Check that the returned module is not NULL
   expect_true(!is.null(flair_module))
