@@ -48,18 +48,24 @@ Flair library."><meta property="og:image" content="https://davidycliao.github.io
   </div>
 </li>
 <li class="nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown--tutorial-in-r">
-    <span class="fa fa-project-diagram"></span>
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown--reference">
+    <span class="fa fa-file-code-o"></span>
      
-    Tutorial in R
+    Reference
   </a>
-  <div class="dropdown-menu" aria-labelledby="dropdown--tutorial-in-r">
-    <a class="dropdown-item" href="../articles/tutorial.html#introduction">Introduction</a>
-    <a class="dropdown-item" href="../articles/tutorial.html#sentence-and-token">Sentence and Token</a>
-    <a class="dropdown-item" href="../articles/tutorial.html#sequence-taggings">Sequence Taggings</a>
-    <a class="dropdown-item" href="../articles/tutorial.html#flair-embedding">Flair Embeddings</a>
-    <a class="dropdown-item" href="../articles/tutorial.html#training-a-binary-classifier-in-flair">Training a Binary Classifier in flaiR</a>
-    <a class="dropdown-item" href="../articles/tutorial.html#training-a-rnn-with-flair">Training a RNN with FlaiR</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown--reference">
+    <a class="dropdown-item" href="../reference/index.html#flair-full-module">flair Full Module</a>
+    <a class="dropdown-item" href="../reference/index.html#flair-embeddings-module">flair_embeddings Module</a>
+    <a class="dropdown-item" href="../reference/index.html#flair-data-module">flair_data Module</a>
+    <a class="dropdown-item" href="../reference/index.html#flair-nn-module">flair_nn Module</a>
+    <a class="dropdown-item" href="../reference/index.html#flair-trainers-module">flair_trainers Module</a>
+    <a class="dropdown-item" href="../reference/index.html#flair-splitter-module">flair_splitter Module</a>
+    <a class="dropdown-item" href="../reference/index.html#flair-models-module">flair_models Module</a>
+    <a class="dropdown-item" href="../reference/index.html#flair-dataset-module">flair_dataset Module</a>
+    <a class="dropdown-item" href="../reference/index.html#designed-flair-functions">Extended Features in flaiR</a>
+    <a class="dropdown-item" href="../reference/index.html#tool-box">ToolBox</a>
+    <a class="dropdown-item" href="../reference/index.html#utility-functions">Utility</a>
+    <a class="dropdown-item" href="../reference/index.html#example-dataset">Dataset</a>
   </div>
 </li>
 <li class="nav-item dropdown">
@@ -76,17 +82,18 @@ Flair library."><meta property="og:image" content="https://davidycliao.github.io
   </div>
 </li>
 <li class="nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown--reference">
-    <span class="fa fa-file-code-o"></span>
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown--tutorial-in-r">
+    <span class="fa fa-project-diagram"></span>
      
-    Reference
+    Tutorial in R
   </a>
-  <div class="dropdown-menu" aria-labelledby="dropdown--reference">
-    <a class="dropdown-item" href="../reference/index.html#wrapper-functions">Wrapper Functions</a>
-    <a class="dropdown-item" href="../reference/index.html#designed-flair-functions">Designed flaiR Functions</a>
-    <a class="dropdown-item" href="../reference/index.html#tool-box">ToolBox</a>
-    <a class="dropdown-item" href="../reference/index.html#utility-functions">Utility</a>
-    <a class="dropdown-item" href="../reference/index.html#example-dataset">Dataset</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown--tutorial-in-r">
+    <a class="dropdown-item" href="../articles/tutorial.html#introduction">Introduction</a>
+    <a class="dropdown-item" href="../articles/tutorial.html#sentence-and-token">Sentence and Token</a>
+    <a class="dropdown-item" href="../articles/tutorial.html#sequence-taggings">Sequence Taggings</a>
+    <a class="dropdown-item" href="../articles/tutorial.html#flair-embedding">Flair Embeddings</a>
+    <a class="dropdown-item" href="../articles/tutorial.html#training-a-binary-classifier-in-flair">Training a Binary Classifier in flaiR</a>
+    <a class="dropdown-item" href="../articles/tutorial.html#training-a-rnn-with-flair">Training a RNN with FlaiR</a>
   </div>
 </li>
 <li class="nav-item dropdown">
@@ -120,7 +127,7 @@ Flair library."><meta property="og:image" content="https://davidycliao.github.io
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Import Flair's Neural Network Module</h1>
-      <small class="dont-index">Source: <a href="https://github.com/davidycliao/flaiR/blob/HEAD/R/wrapping_python_flair.R" class="external-link"><code>R/wrapping_python_flair.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/davidycliao/flaiR/blob/HEAD/R/flair_nn.R" class="external-link"><code>R/flair_nn.R</code></a></small>
       <div class="d-none name"><code>flair_nn.Rd</code></div>
     </div>
 
@@ -131,15 +138,9 @@ Flair library.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">flair_nn</span><span class="op">(</span><span class="va">pre_trained</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">flair_nn</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
     </div>
 
-    <div class="section level2">
-    <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
-    <dl><dt>pre_trained</dt>
-<dd><p>A parameter (currently not being used in the function body).</p></dd>
-
-</dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
@@ -150,7 +151,7 @@ Flair library.</p>
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span>  <span class="va">flair_nn</span> <span class="op">&lt;-</span> <span class="fu">flair_nn</span><span class="op">(</span>pre_trained <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="va">flair_nn</span> <span class="op">&lt;-</span> <span class="fu">flair_nn</span><span class="op">(</span>load <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="va">Classifier</span> <span class="op">&lt;-</span> <span class="va">flair_nn</span><span class="op">$</span><span class="va">Classifier</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>

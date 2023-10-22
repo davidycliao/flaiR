@@ -72,18 +72,24 @@
   </div>
 </li>
 <li class="nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown--tutorial-in-r">
-    <span class="fa fa-project-diagram"></span>
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown--reference">
+    <span class="fa fa-file-code-o"></span>
      
-    Tutorial in R
+    Reference
   </a>
-  <div class="dropdown-menu" aria-labelledby="dropdown--tutorial-in-r">
-    <a class="dropdown-item" href="../articles/tutorial.html#introduction">Introduction</a>
-    <a class="dropdown-item" href="../articles/tutorial.html#sentence-and-token">Sentence and Token</a>
-    <a class="dropdown-item" href="../articles/tutorial.html#sequence-taggings">Sequence Taggings</a>
-    <a class="dropdown-item" href="../articles/tutorial.html#flair-embedding">Flair Embeddings</a>
-    <a class="dropdown-item" href="../articles/tutorial.html#training-a-binary-classifier-in-flair">Training a Binary Classifier in flaiR</a>
-    <a class="dropdown-item" href="../articles/tutorial.html#training-a-rnn-with-flair">Training a RNN with FlaiR</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown--reference">
+    <a class="dropdown-item" href="../reference/index.html#flair-full-module">flair Full Module</a>
+    <a class="dropdown-item" href="../reference/index.html#flair-embeddings-module">flair_embeddings Module</a>
+    <a class="dropdown-item" href="../reference/index.html#flair-data-module">flair_data Module</a>
+    <a class="dropdown-item" href="../reference/index.html#flair-nn-module">flair_nn Module</a>
+    <a class="dropdown-item" href="../reference/index.html#flair-trainers-module">flair_trainers Module</a>
+    <a class="dropdown-item" href="../reference/index.html#flair-splitter-module">flair_splitter Module</a>
+    <a class="dropdown-item" href="../reference/index.html#flair-models-module">flair_models Module</a>
+    <a class="dropdown-item" href="../reference/index.html#flair-dataset-module">flair_dataset Module</a>
+    <a class="dropdown-item" href="../reference/index.html#designed-flair-functions">Extended Features in flaiR</a>
+    <a class="dropdown-item" href="../reference/index.html#tool-box">ToolBox</a>
+    <a class="dropdown-item" href="../reference/index.html#utility-functions">Utility</a>
+    <a class="dropdown-item" href="../reference/index.html#example-dataset">Dataset</a>
   </div>
 </li>
 <li class="nav-item dropdown">
@@ -100,17 +106,18 @@
   </div>
 </li>
 <li class="nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown--reference">
-    <span class="fa fa-file-code-o"></span>
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown--tutorial-in-r">
+    <span class="fa fa-project-diagram"></span>
      
-    Reference
+    Tutorial in R
   </a>
-  <div class="dropdown-menu" aria-labelledby="dropdown--reference">
-    <a class="dropdown-item" href="../reference/index.html#wrapper-functions">Wrapper Functions</a>
-    <a class="dropdown-item" href="../reference/index.html#designed-flair-functions">Designed flaiR Functions</a>
-    <a class="dropdown-item" href="../reference/index.html#tool-box">ToolBox</a>
-    <a class="dropdown-item" href="../reference/index.html#utility-functions">Utility</a>
-    <a class="dropdown-item" href="../reference/index.html#example-dataset">Dataset</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown--tutorial-in-r">
+    <a class="dropdown-item" href="../articles/tutorial.html#introduction">Introduction</a>
+    <a class="dropdown-item" href="../articles/tutorial.html#sentence-and-token">Sentence and Token</a>
+    <a class="dropdown-item" href="../articles/tutorial.html#sequence-taggings">Sequence Taggings</a>
+    <a class="dropdown-item" href="../articles/tutorial.html#flair-embedding">Flair Embeddings</a>
+    <a class="dropdown-item" href="../articles/tutorial.html#training-a-binary-classifier-in-flair">Training a Binary Classifier in flaiR</a>
+    <a class="dropdown-item" href="../articles/tutorial.html#training-a-rnn-with-flair">Training a RNN with FlaiR</a>
   </div>
 </li>
 <li class="nav-item dropdown">
@@ -258,7 +265,7 @@ Python documentation and tutorial.</strong></p>
 <td>from flair.datasets import *</td>
 </tr>
 <tr class="even">
-<td><code><a href="../reference/flair_data.sentence.html">flair_data.sentence()</a></code></td>
+<td><code><a href="../reference/flair_data.Sentence.html">flair_data.Sentence()</a></code></td>
 <td>from flair.data import Sentence</td>
 </tr>
 <tr class="odd">
@@ -266,7 +273,7 @@ Python documentation and tutorial.</strong></p>
 <td>from flair_nn import *</td>
 </tr>
 <tr class="even">
-<td><code><a href="../reference/flair_nn.classifier_load.html">flair_nn.classifier_load()</a></code></td>
+<td><code>flair_nn.classifier_load()</code></td>
 <td>from flair.embeddings import Classifier</td>
 </tr>
 <tr class="odd">
@@ -294,7 +301,7 @@ Python documentation and tutorial.</strong></p>
 <td>flair_splitter.SegtokSentenceSplitter</td>
 </tr>
 <tr class="odd">
-<td><code><a href="../reference/flair_models.sequencetagger.html">flair_models.sequencetagger()</a></code></td>
+<td><code><a href="../reference/flair_models.Sequencetagger.html">flair_models.Sequencetagger()</a></code></td>
 <td>from flair.models import SequenceTagger</td>
 </tr>
 <tr class="even">
@@ -333,7 +340,7 @@ predict tags for the sentence object.</p>
 <span><span class="co"># load the NER tagger</span></span>
 <span><span class="va">Classifier</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_nn.html">flair_nn</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">Classifier</span></span>
 <span><span class="va">tagger</span> <span class="op">&lt;-</span> <span class="va">Classifier</span><span class="op">$</span><span class="fu">load</span><span class="op">(</span><span class="st">'ner'</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2023-10-21 14:40:42,553 SequenceTagger predicts: Dictionary with 20 tags: &lt;unk&gt;, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, &lt;START&gt;, &lt;STOP&gt;</span></span>
+<span><span class="co">#&gt; 2023-10-22 02:51:21,837 SequenceTagger predicts: Dictionary with 20 tags: &lt;unk&gt;, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, &lt;START&gt;, &lt;STOP&gt;</span></span>
 <span></span>
 <span><span class="co"># run NER over sentence</span></span>
 <span><span class="va">tagger</span><span class="op">$</span><span class="fu">predict</span><span class="op">(</span><span class="va">sentence</span><span class="op">)</span></span></code></pre></div>
@@ -372,7 +379,7 @@ Hugging Face.</p>
 <span><span class="co"># load the NER tagger</span></span>
 <span><span class="va">Classifier</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_nn.html">flair_nn</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">Classifier</span></span>
 <span><span class="va">tagger</span> <span class="op">&lt;-</span> <span class="va">Classifier</span><span class="op">$</span><span class="fu">load</span><span class="op">(</span><span class="st">'pos'</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2023-10-21 14:40:43,106 SequenceTagger predicts: Dictionary with 53 tags: &lt;unk&gt;, O, UH, ,, VBD, PRP, VB, PRP$, NN, RB, ., DT, JJ, VBP, VBG, IN, CD, NNS, NNP, WRB, VBZ, WDT, CC, TO, MD, VBN, WP, :, RP, EX, JJR, FW, XX, HYPH, POS, RBR, JJS, PDT, NNPS, RBS, AFX, WP$, -LRB-, -RRB-, ``, '', LS, $, SYM, ADD</span></span>
+<span><span class="co">#&gt; 2023-10-22 02:51:22,571 SequenceTagger predicts: Dictionary with 53 tags: &lt;unk&gt;, O, UH, ,, VBD, PRP, VB, PRP$, NN, RB, ., DT, JJ, VBP, VBG, IN, CD, NNS, NNP, WRB, VBZ, WDT, CC, TO, MD, VBN, WP, :, RP, EX, JJR, FW, XX, HYPH, POS, RBR, JJS, PDT, NNPS, RBS, AFX, WP$, -LRB-, -RRB-, ``, '', LS, $, SYM, ADD</span></span>
 <span></span>
 <span><span class="co"># run NER over sentence</span></span>
 <span><span class="va">tagger</span><span class="op">$</span><span class="fu">predict</span><span class="op">(</span><span class="va">sentence</span><span class="op">)</span></span></code></pre></div>
@@ -445,7 +452,7 @@ sentence “the grass is green”. Simply instantate
 <span><span class="va">embedding</span> <span class="op">&lt;-</span> <span class="fu">TransformerWordEmbeddings</span><span class="op">(</span><span class="st">'bert-base-uncased'</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># create a sentence</span></span>
-<span><span class="va">sentence</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_data.sentence.html">flair_data.sentence</a></span><span class="op">(</span><span class="st">'The grass is green .'</span><span class="op">)</span></span>
+<span><span class="va">sentence</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_data.Sentence.html">flair_data.Sentence</a></span><span class="op">(</span><span class="st">'The grass is green .'</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># embed words in sentence</span></span>
 <span><span class="va">embedding</span><span class="op">$</span><span class="fu">embed</span><span class="op">(</span><span class="va">sentence</span><span class="op">)</span></span>
@@ -487,9 +494,10 @@ embedding for the entire sentence:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># initiate TransformerWordEmbeddings</span></span>
 <span><span class="va">embedding</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_embeddings.TransformerDocumentEmbeddings.html">flair_embeddings.TransformerDocumentEmbeddings</a></span><span class="op">(</span><span class="st">'bert-base-uncased'</span><span class="op">)</span></span>
+<span><span class="co">#&gt; 2023-10-22 02:51:28,327 Using long sentences for Document embeddings is only beneficial for cls_pooling types 'mean' and 'max</span></span>
 <span></span>
 <span><span class="co"># create a sentence</span></span>
-<span><span class="va">sentence</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_data.sentence.html">flair_data.sentence</a></span><span class="op">(</span><span class="st">'The grass is green .'</span><span class="op">)</span></span>
+<span><span class="va">sentence</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_data.Sentence.html">flair_data.Sentence</a></span><span class="op">(</span><span class="st">'The grass is green .'</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># embed words in sentence</span></span>
 <span><span class="va">embedding</span><span class="op">$</span><span class="fu">embed</span><span class="op">(</span><span class="va">sentence</span><span class="op">)</span></span>
@@ -499,9 +507,9 @@ embedding for the entire sentence:</p>
 embedding from the sentence and print the embedding as follows:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">sentence</span><span class="op">$</span><span class="va">embedding</span>, n <span class="op">=</span> <span class="fl">20</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; tensor([-0.0717, -0.4132, -0.3651,  0.0199, -0.6143, -0.0525,  1.2074, -0.0852,</span></span>
-<span><span class="co">#&gt;         -0.3331,  0.0753, -0.3081, -0.2436,  0.6264,  0.0861,  0.1762, -0.5427,</span></span>
-<span><span class="co">#&gt;          0.4518,  0.5222, -0.0022,  0.2461])</span></span></code></pre></div>
+<span><span class="co">#&gt; tensor([-0.2858, -0.3261, -0.1122,  0.0343, -0.2689, -0.0302, -0.0390,  0.0157,</span></span>
+<span><span class="co">#&gt;         -0.2828,  0.1436,  0.0426, -0.2203, -0.0023, -0.5525,  0.1092, -0.0211,</span></span>
+<span><span class="co">#&gt;         -0.0151,  0.0724, -0.3034, -0.2250])</span></span></code></pre></div>
 </div>
 <p> </p>
 <p><strong>How to Stack Embeddings</strong></p>
@@ -520,9 +528,7 @@ lets combine classic <code>GloVe</code> embeddings with
 <span></span>
 <span><span class="co"># init Flair forward and backwards embeddings</span></span>
 <span><span class="va">flair_embedding_forward</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_embeddings.FlairEmbeddings.html">flair_embeddings.FlairEmbeddings</a></span><span class="op">(</span><span class="st">'news-forward'</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Initialized Flair forward embeddings</span></span>
-<span><span class="va">flair_embedding_backward</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_embeddings.FlairEmbeddings.html">flair_embeddings.FlairEmbeddings</a></span><span class="op">(</span><span class="st">'news-backward'</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Initialized Flair backward embeddings</span></span></code></pre></div>
+<span><span class="va">flair_embedding_backward</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_embeddings.FlairEmbeddings.html">flair_embeddings.FlairEmbeddings</a></span><span class="op">(</span><span class="st">'news-backward'</span><span class="op">)</span></span></code></pre></div>
 <p>Now, instantiate the <code>StackedEmbeddings</code> class and pass a
 list containing these two embeddings. Both R and Python have list
 functionality. Let’s create a StackedEmbedding object that combines the
@@ -536,7 +542,7 @@ GloVe and forward/backward Flair embeddings.</p>
 vectors for your sentences.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># make a sentence</span></span>
-<span><span class="va">sentence</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_data.sentence.html">flair_data.sentence</a></span><span class="op">(</span><span class="st">'I love Berlin and New York.'</span><span class="op">)</span></span>
+<span><span class="va">sentence</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_data.Sentence.html">flair_data.Sentence</a></span><span class="op">(</span><span class="st">'I love Berlin and New York.'</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># just embed a sentence using the StackedEmbedding as you would with any single embedding.</span></span>
 <span><span class="va">stacked_embeddings</span><span class="op">$</span><span class="fu">embed</span><span class="op">(</span><span class="va">sentence</span><span class="op">)</span></span></code></pre></div>
@@ -662,7 +668,7 @@ pre-trained models, see <a href="https://flairnlp.github.io/docs/tutorial-basics
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">flaiR</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tagger_pos</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_tagger_pos.html">load_tagger_pos</a></span><span class="op">(</span><span class="st">"pos-fast"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2023-10-21 14:40:50,890 SequenceTagger predicts: Dictionary with 53 tags: &lt;unk&gt;, O, UH, ,, VBD, PRP, VB, PRP$, NN, RB, ., DT, JJ, VBP, VBG, IN, CD, NNS, NNP, WRB, VBZ, WDT, CC, TO, MD, VBN, WP, :, RP, EX, JJR, FW, XX, HYPH, POS, RBR, JJS, PDT, NNPS, RBS, AFX, WP$, -LRB-, -RRB-, ``, '', LS, $, SYM, ADD</span></span></code></pre></div>
+<span><span class="co">#&gt; 2023-10-22 02:51:31,455 SequenceTagger predicts: Dictionary with 53 tags: &lt;unk&gt;, O, UH, ,, VBD, PRP, VB, PRP$, NN, RB, ., DT, JJ, VBP, VBG, IN, CD, NNS, NNP, WRB, VBZ, WDT, CC, TO, MD, VBN, WP, :, RP, EX, JJR, FW, XX, HYPH, POS, RBR, JJS, PDT, NNPS, RBS, AFX, WP$, -LRB-, -RRB-, ``, '', LS, $, SYM, ADD</span></span></code></pre></div>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_pos.html">get_pos</a></span><span class="op">(</span><span class="va">texts</span>, <span class="va">doc_ids</span>, <span class="va">tagger_pos</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">results</span>, n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
@@ -690,7 +696,7 @@ pre-trained models, see <a href="https://flairnlp.github.io/docs/tutorial-basics
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">flaiR</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tagger_ner</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_tagger_ner.html">load_tagger_ner</a></span><span class="op">(</span><span class="st">"ner"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2023-10-21 14:40:52,360 SequenceTagger predicts: Dictionary with 20 tags: &lt;unk&gt;, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, &lt;START&gt;, &lt;STOP&gt;</span></span></code></pre></div>
+<span><span class="co">#&gt; 2023-10-22 02:51:32,903 SequenceTagger predicts: Dictionary with 20 tags: &lt;unk&gt;, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, &lt;START&gt;, &lt;STOP&gt;</span></span></code></pre></div>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_entities.html">get_entities</a></span><span class="op">(</span><span class="va">texts</span>, <span class="va">doc_ids</span>, <span class="va">tagger_ner</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">results</span>, n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>

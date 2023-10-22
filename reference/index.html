@@ -46,18 +46,24 @@
   </div>
 </li>
 <li class="nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown--tutorial-in-r">
-    <span class="fa fa-project-diagram"></span>
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown--reference">
+    <span class="fa fa-file-code-o"></span>
      
-    Tutorial in R
+    Reference
   </a>
-  <div class="dropdown-menu" aria-labelledby="dropdown--tutorial-in-r">
-    <a class="dropdown-item" href="../articles/tutorial.html#introduction">Introduction</a>
-    <a class="dropdown-item" href="../articles/tutorial.html#sentence-and-token">Sentence and Token</a>
-    <a class="dropdown-item" href="../articles/tutorial.html#sequence-taggings">Sequence Taggings</a>
-    <a class="dropdown-item" href="../articles/tutorial.html#flair-embedding">Flair Embeddings</a>
-    <a class="dropdown-item" href="../articles/tutorial.html#training-a-binary-classifier-in-flair">Training a Binary Classifier in flaiR</a>
-    <a class="dropdown-item" href="../articles/tutorial.html#training-a-rnn-with-flair">Training a RNN with FlaiR</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown--reference">
+    <a class="dropdown-item" href="../reference/index.html#flair-full-module">flair Full Module</a>
+    <a class="dropdown-item" href="../reference/index.html#flair-embeddings-module">flair_embeddings Module</a>
+    <a class="dropdown-item" href="../reference/index.html#flair-data-module">flair_data Module</a>
+    <a class="dropdown-item" href="../reference/index.html#flair-nn-module">flair_nn Module</a>
+    <a class="dropdown-item" href="../reference/index.html#flair-trainers-module">flair_trainers Module</a>
+    <a class="dropdown-item" href="../reference/index.html#flair-splitter-module">flair_splitter Module</a>
+    <a class="dropdown-item" href="../reference/index.html#flair-models-module">flair_models Module</a>
+    <a class="dropdown-item" href="../reference/index.html#flair-dataset-module">flair_dataset Module</a>
+    <a class="dropdown-item" href="../reference/index.html#designed-flair-functions">Extended Features in flaiR</a>
+    <a class="dropdown-item" href="../reference/index.html#tool-box">ToolBox</a>
+    <a class="dropdown-item" href="../reference/index.html#utility-functions">Utility</a>
+    <a class="dropdown-item" href="../reference/index.html#example-dataset">Dataset</a>
   </div>
 </li>
 <li class="nav-item dropdown">
@@ -74,17 +80,18 @@
   </div>
 </li>
 <li class="nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown--reference">
-    <span class="fa fa-file-code-o"></span>
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown--tutorial-in-r">
+    <span class="fa fa-project-diagram"></span>
      
-    Reference
+    Tutorial in R
   </a>
-  <div class="dropdown-menu" aria-labelledby="dropdown--reference">
-    <a class="dropdown-item" href="../reference/index.html#wrapper-functions">Wrapper Functions</a>
-    <a class="dropdown-item" href="../reference/index.html#designed-flair-functions">Designed flaiR Functions</a>
-    <a class="dropdown-item" href="../reference/index.html#tool-box">ToolBox</a>
-    <a class="dropdown-item" href="../reference/index.html#utility-functions">Utility</a>
-    <a class="dropdown-item" href="../reference/index.html#example-dataset">Dataset</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown--tutorial-in-r">
+    <a class="dropdown-item" href="../articles/tutorial.html#introduction">Introduction</a>
+    <a class="dropdown-item" href="../articles/tutorial.html#sentence-and-token">Sentence and Token</a>
+    <a class="dropdown-item" href="../articles/tutorial.html#sequence-taggings">Sequence Taggings</a>
+    <a class="dropdown-item" href="../articles/tutorial.html#flair-embedding">Flair Embeddings</a>
+    <a class="dropdown-item" href="../articles/tutorial.html#training-a-binary-classifier-in-flair">Training a Binary Classifier in flaiR</a>
+    <a class="dropdown-item" href="../articles/tutorial.html#training-a-rnn-with-flair">Training a RNN with FlaiR</a>
   </div>
 </li>
 <li class="nav-item dropdown">
@@ -121,9 +128,9 @@
     </div>
 
     <div class="section level2">
-      <h2 id="r-wrapper-functions">R Wrapper Functions<a class="anchor" aria-label="anchor" href="#r-wrapper-functions"></a></h2>
+      <h2 id="flair-full-module">flair Full Module<a class="anchor" aria-label="anchor" href="#flair-full-module"></a></h2>
       
-      <p class="section-desc"></p><p>Accessing FlairNLP Classes and Objects through Wrapped Python Functions in R</p>
+      <p class="section-desc"></p><p>Accessing whole flair module</p>
 
       
     </div><div id="" class="section level2">
@@ -136,72 +143,138 @@
           <code><a href="flair.html">flair()</a></code> 
         </dt>
         <dd>Full Flair Module</dd>
-      </dl><dl><dt>
-          
-          <code><a href="flair_device.html">flair_device()</a></code> 
-        </dt>
-        <dd>Set Flair Device</dd>
-      </dl><dl><dt>
+      </dl></div><div class="section level2">
+      <h2 id="flair-embeddings-module">flair_embeddings Module<a class="anchor" aria-label="anchor" href="#flair-embeddings-module"></a></h2>
+      
+      <p class="section-desc"></p><p>Accessing flair.embeddings module from flair</p>
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
           
           <code><a href="flair_embeddings.html">flair_embeddings()</a></code> 
         </dt>
-        <dd>Flair Embeddings Importer</dd>
+        <dd>Initialization of of Flair Embeddings Modules</dd>
       </dl><dl><dt>
           
           <code><a href="flair_embeddings.FlairEmbeddings.html">flair_embeddings.FlairEmbeddings()</a></code> 
         </dt>
-        <dd>Flair Embedding Initialization</dd>
+        <dd>Initializing a Class for Flair's Forward and Backward Embeddings</dd>
       </dl><dl><dt>
           
           <code><a href="flair_embeddings.TransformerDocumentEmbeddings.html">flair_embeddings.TransformerDocumentEmbeddings()</a></code> 
         </dt>
-        <dd>TransformerDocumentEmbeddings Function</dd>
+        <dd>Initializing a Class for TransformerDocumentEmbeddings</dd>
       </dl><dl><dt>
           
           <code><a href="flair_embeddings.TransformerWordEmbeddings.html">flair_embeddings.TransformerWordEmbeddings()</a></code> 
         </dt>
-        <dd>Create a Flair TransformerWordEmbeddings Object</dd>
+        <dd>Initializing a Class for TransformerWordEmbeddings</dd>
       </dl><dl><dt>
           
           <code><a href="flair_embeddings.WordEmbeddings.html">flair_embeddings.WordEmbeddings()</a></code> 
         </dt>
-        <dd>Create a Flair WordEmbeddings Object</dd>
+        <dd>Initializing a Class for Flair WordEmbeddings Class</dd>
       </dl><dl><dt>
+          
+          <code><a href="flair_embeddings.StackedEmbeddings.html">flair_embeddings.StackedEmbeddings()</a></code> 
+        </dt>
+        <dd>Initializing a Class for StackedEmbeddings</dd>
+      </dl></div><div class="section level2">
+      <h2 id="flair-data-module">flair_data Module<a class="anchor" aria-label="anchor" href="#flair-data-module"></a></h2>
+      
+      <p class="section-desc"></p><p>Accessing flair.data module from flair</p>
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
           
           <code><a href="flair_data.html">flair_data()</a></code> 
         </dt>
-        <dd>Flair Data Import Function</dd>
+        <dd>Import flair.data Module</dd>
       </dl><dl><dt>
           
-          <code><a href="flair_data.sentence.html">flair_data.sentence()</a></code> 
+          <code><a href="flair_data.Sentence.html">flair_data.Sentence()</a></code> 
         </dt>
-        <dd>Create a Flair Sentence Object</dd>
-      </dl><dl><dt>
-          
-          <code><a href="flair_datasets.html">flair_datasets()</a></code> 
-        </dt>
-        <dd>Access the flair_datasets Module from Flair</dd>
-      </dl><dl><dt>
+        <dd>Create a Flair Sentence</dd>
+      </dl></div><div class="section level2">
+      <h2 id="flair-nn-module">flair_nn Module<a class="anchor" aria-label="anchor" href="#flair-nn-module"></a></h2>
+      
+      <p class="section-desc"></p><p>Accessing flair.nn module from flair</p>
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
           
           <code><a href="flair_nn.html">flair_nn()</a></code> 
         </dt>
         <dd>Import Flair's Neural Network Module</dd>
       </dl><dl><dt>
           
-          <code><a href="flair_nn.classifier_load.html">flair_nn.classifier_load()</a></code> 
+          <code><a href="flair_nn.Classifier.html">flair_nn.Classifier()</a></code> 
         </dt>
-        <dd>Create a Flair `Classifier.load` Object.</dd>
+        <dd>Initializing a Class for Flair Classifier</dd>
+      </dl></div><div class="section level2">
+      <h2 id="flair-trainers-module">flair_trainers Module<a class="anchor" aria-label="anchor" href="#flair-trainers-module"></a></h2>
+      
+      <p class="section-desc"></p><p>Accessing flair.trainers module from flair</p>
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
+          
+          <code><a href="flair_trainers.html">flair_trainers()</a></code> 
+        </dt>
+        <dd>Import Flair's ModelTrainer in R</dd>
+      </dl></div><div class="section level2">
+      <h2 id="flair-splitter-module">flair_splitter Module<a class="anchor" aria-label="anchor" href="#flair-splitter-module"></a></h2>
+      
+      <p class="section-desc"></p><p>Accessing flair.splitter module from flair</p>
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
+          
+          <code><a href="flair_splitter.html">flair_splitter()</a></code> 
+        </dt>
+        <dd>Imort Splitter Module</dd>
       </dl><dl><dt>
           
           <code><a href="flair_splitter.SegtokSentenceSplitter.html">flair_splitter.SegtokSentenceSplitter()</a></code> 
         </dt>
         <dd>Segtok Sentence Splitter</dd>
-      </dl><dl><dt>
-          
-          <code><a href="flair_trainers.html">flair_trainers()</a></code> 
-        </dt>
-        <dd>Import Flair's ModelTrainer in R</dd>
-      </dl><dl><dt>
+      </dl></div><div class="section level2">
+      <h2 id="flair-models-module">flair_models Module<a class="anchor" aria-label="anchor" href="#flair-models-module"></a></h2>
+      
+      <p class="section-desc"></p><p>Accessing flair.models module from flair</p>
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
           
           <code><a href="flair_models.html">flair_models()</a></code> 
         </dt>
@@ -213,9 +286,25 @@
         <dd>Retrieve TextClassifier from flair.models</dd>
       </dl><dl><dt>
           
-          <code><a href="flair_models.sequencetagger.html">flair_models.sequencetagger()</a></code> 
+          <code><a href="flair_models.Sequencetagger.html">flair_models.Sequencetagger()</a></code> 
         </dt>
         <dd>Access Flair's SequenceTagger</dd>
+      </dl></div><div class="section level2">
+      <h2 id="flair-datasets-module">flair_datasets Module<a class="anchor" aria-label="anchor" href="#flair-datasets-module"></a></h2>
+      
+      <p class="section-desc"></p><p>Accessing flair.datasets module from flair</p>
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
+          
+          <code><a href="flair_datasets.html">flair_datasets()</a></code> 
+        </dt>
+        <dd>Access the flair_datasets Module from Flair</dd>
       </dl></div><div class="section level2">
       <h2 id="designed-flair-functions">Designed flaiR Functions<a class="anchor" aria-label="anchor" href="#designed-flair-functions"></a></h2>
       
@@ -324,6 +413,11 @@
           <code><a href="show_flair_cache.html">show_flair_cache()</a></code> 
         </dt>
         <dd>Show Flair Cache Preloaed flair's Directory</dd>
+      </dl><dl><dt>
+          
+          <code><a href="flair_device.html">flair_device()</a></code> 
+        </dt>
+        <dd>Set Flair Device</dd>
       </dl></div><div class="section level2">
       <h2 id="sampled-dataset">Sampled Dataset<a class="anchor" aria-label="anchor" href="#sampled-dataset"></a></h2>
       

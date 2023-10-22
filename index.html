@@ -11,7 +11,7 @@
              flaiR offers features such as part-of-speech tagging, transformer-based 
              sentiment analysis, and named entity recognition. 
              To function properly, flaiR requires Python 3.7 or higher.">
-<title>An R Wrapper for Accessing Flair NLP Tagging Features • flaiR</title>
+<title>An R Wrapper for Accessing Flair NLP Library • flaiR</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="apple-touch-icon.png">
@@ -24,7 +24,7 @@
 <link href="deps/Source_Code_Pro-0.4.7/font.css" rel="stylesheet">
 <!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="An R Wrapper for Accessing Flair NLP Tagging Features">
+<!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="An R Wrapper for Accessing Flair NLP Library">
 <meta property="og:description" content="flaiR is an R wrapper designed to provide access to the primary 
              features of Flair in Python. FlairNLP is an advanced framework for 
              state-of-the-art natural language processing and sequence tagging. 
@@ -82,18 +82,24 @@
   </div>
 </li>
 <li class="nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown--tutorial-in-r">
-    <span class="fa fa-project-diagram"></span>
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown--reference">
+    <span class="fa fa-file-code-o"></span>
      
-    Tutorial in R
+    Reference
   </a>
-  <div class="dropdown-menu" aria-labelledby="dropdown--tutorial-in-r">
-    <a class="dropdown-item" href="articles/tutorial.html#introduction">Introduction</a>
-    <a class="dropdown-item" href="articles/tutorial.html#sentence-and-token">Sentence and Token</a>
-    <a class="dropdown-item" href="articles/tutorial.html#sequence-taggings">Sequence Taggings</a>
-    <a class="dropdown-item" href="articles/tutorial.html#flair-embedding">Flair Embeddings</a>
-    <a class="dropdown-item" href="articles/tutorial.html#training-a-binary-classifier-in-flair">Training a Binary Classifier in flaiR</a>
-    <a class="dropdown-item" href="articles/tutorial.html#training-a-rnn-with-flair">Training a RNN with FlaiR</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown--reference">
+    <a class="dropdown-item" href="reference/index.html#flair-full-module">flair Full Module</a>
+    <a class="dropdown-item" href="reference/index.html#flair-embeddings-module">flair_embeddings Module</a>
+    <a class="dropdown-item" href="reference/index.html#flair-data-module">flair_data Module</a>
+    <a class="dropdown-item" href="reference/index.html#flair-nn-module">flair_nn Module</a>
+    <a class="dropdown-item" href="reference/index.html#flair-trainers-module">flair_trainers Module</a>
+    <a class="dropdown-item" href="reference/index.html#flair-splitter-module">flair_splitter Module</a>
+    <a class="dropdown-item" href="reference/index.html#flair-models-module">flair_models Module</a>
+    <a class="dropdown-item" href="reference/index.html#flair-dataset-module">flair_dataset Module</a>
+    <a class="dropdown-item" href="reference/index.html#designed-flair-functions">Extended Features in flaiR</a>
+    <a class="dropdown-item" href="reference/index.html#tool-box">ToolBox</a>
+    <a class="dropdown-item" href="reference/index.html#utility-functions">Utility</a>
+    <a class="dropdown-item" href="reference/index.html#example-dataset">Dataset</a>
   </div>
 </li>
 <li class="nav-item dropdown">
@@ -110,17 +116,18 @@
   </div>
 </li>
 <li class="nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown--reference">
-    <span class="fa fa-file-code-o"></span>
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown--tutorial-in-r">
+    <span class="fa fa-project-diagram"></span>
      
-    Reference
+    Tutorial in R
   </a>
-  <div class="dropdown-menu" aria-labelledby="dropdown--reference">
-    <a class="dropdown-item" href="reference/index.html#wrapper-functions">Wrapper Functions</a>
-    <a class="dropdown-item" href="reference/index.html#designed-flair-functions">Designed flaiR Functions</a>
-    <a class="dropdown-item" href="reference/index.html#tool-box">ToolBox</a>
-    <a class="dropdown-item" href="reference/index.html#utility-functions">Utility</a>
-    <a class="dropdown-item" href="reference/index.html#example-dataset">Dataset</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown--tutorial-in-r">
+    <a class="dropdown-item" href="articles/tutorial.html#introduction">Introduction</a>
+    <a class="dropdown-item" href="articles/tutorial.html#sentence-and-token">Sentence and Token</a>
+    <a class="dropdown-item" href="articles/tutorial.html#sequence-taggings">Sequence Taggings</a>
+    <a class="dropdown-item" href="articles/tutorial.html#flair-embedding">Flair Embeddings</a>
+    <a class="dropdown-item" href="articles/tutorial.html#training-a-binary-classifier-in-flair">Training a Binary Classifier in flaiR</a>
+    <a class="dropdown-item" href="articles/tutorial.html#training-a-rnn-with-flair">Training a RNN with FlaiR</a>
   </div>
 </li>
 <li class="nav-item dropdown">
