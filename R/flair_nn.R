@@ -16,7 +16,7 @@
 #'   flair_nn <- flair_nn(load = TRUE)
 #'   Classifier <- flair_nn$Classifier
 #' }
-flair_nn <- function(load = TRUE) {
+flair_nn <- function() {
   flair_nn <- import('flair.nn')
   return(flair_nn)
 }

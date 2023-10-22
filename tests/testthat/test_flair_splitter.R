@@ -13,7 +13,6 @@ test_that("flair_splitter.SegtokSentenceSplitter returns an object", {
   expect_true("python.builtin.object" %in% class(SegtokSentenceSplitter))
 })
 
-
 # flair_splitter.SegtokSentenceSplitter returns expected object
 test_that("flair_splitter.SegtokSentenceSplitter returns expected object", {
   # Skip the test if the necessary modules are not available
@@ -27,7 +26,7 @@ test_that("flair_splitter.SegtokSentenceSplitter returns expected object", {
   expect_true(!is.null(splitter))
 
   # Test that the returned object is of the expected class
-  expect_true(inherits(splitter, "python.builtin.module"))
+  expect_true(inherits(splitter, "flair.splitter.SegtokSentenceSplitter"))
 })
 
 

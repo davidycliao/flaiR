@@ -4,7 +4,7 @@
 \alias{flair_splitter}
 \title{Imort Splitter Module}
 \usage{
-flair_splitter(load = TRUE)
+flair_splitter()
 }
 \value{
 A Python module (`flair.splitter`).

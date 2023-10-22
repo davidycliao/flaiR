@@ -238,6 +238,9 @@ flair_embeddings.WordEmbeddings <- function(embeddings = "glove") {
 #' @param memory_efficient (Optional) Enables memory efficient mode in
 #' transformers. When set to TRUE, uses less memory, but might be slower.
 #'
+#' @param use_context Logical. Whether to consider the surrounding context
+#' in some processing step. Default is FALSE.
+#'
 #' @return A Flair TransformerWordEmbeddings in Python class.
 #'
 #' @details This function provides an interface for R users to easily
@@ -312,6 +315,9 @@ flair_embeddings.TransformerDocumentEmbeddings <- function(model = "bert-base-un
 #' maximum sequence length. By default, Flair cuts off sentences that are too
 #' long. If this option is set to True, Flair will split long sentences into smaller
 #' parts and later average the embeddings.
+#'
+#' @param use_context Logical. Whether to consider the surrounding context
+#' in some processing step. Default is FALSE.
 #'
 #' @param memory_efficient (Optional) Enables memory efficient mode in transformers. When set to TRUE,
 #' uses less memory, but might be slower.

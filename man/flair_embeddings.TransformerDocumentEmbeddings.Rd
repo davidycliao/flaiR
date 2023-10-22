@@ -45,6 +45,9 @@ smaller parts and later average the embeddings.}
 
 \item{memory_efficient}{(Optional) Enables memory efficient mode in
 transformers. When set to TRUE, uses less memory, but might be slower.}
+
+\item{use_context}{Logical. Whether to consider the surrounding context
+in some processing step. Default is FALSE.}
 }
 \value{
 A Flair TransformerWordEmbeddings in Python class.

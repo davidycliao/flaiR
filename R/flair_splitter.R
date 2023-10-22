@@ -21,8 +21,8 @@
 #' \preformatted{
 #' from flair.splitter import SegtokSentenceSplitter
 #' }
-flair_splitter <- function(load = TRUE) {
-  flair_splitter <- reticulate::import("flair.splitter")
+flair_splitter <- function() {
+  flair_splitter <- import("flair.splitter")
   return(flair_splitter)
 }
 
@@ -50,7 +50,7 @@ flair_splitter <- function(load = TRUE) {
 #'
 #' @export
 flair_splitter.SegtokSentenceSplitter <- function() {
-  flair.splitter <- reticulate::import("flair.splitter")
+  flair.splitter <- import("flair.splitter")
   SegtokSentenceSplitter <-  flair.splitter$SegtokSentenceSplitter()
   return(SegtokSentenceSplitter)
 }

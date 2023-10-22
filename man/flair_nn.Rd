@@ -4,7 +4,7 @@
 \alias{flair_nn}
 \title{Import Flair's Neural Network Module}
 \usage{
-flair_nn(load = TRUE)
+flair_nn()
 }
 \arguments{
 \item{pre_trained}{A parameter (currently not being used in the function body).}
