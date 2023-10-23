@@ -24,8 +24,7 @@ the basic R functions lapply and sapply.
 }
 \examples{
 \dontrun{
-flair_data.Sentence("The quick brown fox jumps over the lazy dog.")
-}
+flair_data.Sentence("The quick brown fox jumps over the lazy dog.")}
 
 }
 \references{

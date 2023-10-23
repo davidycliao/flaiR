@@ -32,7 +32,8 @@
 #' @examples
 #' \dontrun{
 #' Sentence <- flair_data()$Sentence
-#' sentences <- Sentence("I am Taiwanese and come from Taiwan.")
+#' Token <- flair_data()$Token
+#' Corpus <- flair_data()$Corpus
 #' }
 #'
 #' @importFrom reticulate import
@@ -61,8 +62,7 @@ flair_data <- function() {
 #'
 #' @examples
 #' \dontrun{
-#' flair_data.Sentence("The quick brown fox jumps over the lazy dog.")
-#' }
+#' flair_data.Sentence("The quick brown fox jumps over the lazy dog.")}
 #'
 #' @references
 #' Python equivalent: \preformatted{

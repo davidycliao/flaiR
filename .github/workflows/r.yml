@@ -120,7 +120,10 @@ jobs:
         if: matrix.config.os == 'ubuntu-latest'
         uses: actions/setup-python@v2
         with:
-          python-version: '3.x'
+          python-version: '3.8'
+
+      - name: Set PYTHONUTF8 Environment Variable
+        run: echo ::set-env name=PYTHONUTF8::1
 
       - name: Install Python venv and dependencies (Only on ubuntu-latest)
         if: matrix.config.os == 'ubuntu-latest'

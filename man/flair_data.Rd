@@ -37,7 +37,8 @@ to access these functionalities directly from R.
 \examples{
 \dontrun{
 Sentence <- flair_data()$Sentence
-sentences <- Sentence("I am Taiwanese and come from Taiwan.")
+Token <- flair_data()$Token
+Corpus <- flair_data()$Corpus
 }
 
 }

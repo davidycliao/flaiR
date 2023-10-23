@@ -1,5 +1,8 @@
 ---
 title: "Quick Start"
+author: 
+  - name: "David (Yen-Chieh) Liao"
+    affiliation: "Postdoc at SPIRe UCD"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Quick Start}
@@ -72,11 +75,15 @@ Afterward, you might see the message __"Virtual environment 'r-reticulate' succe
 -----
 
 
-## Wrapped Functions
+## Class and Ojbect in R via flaiR
 
 <div style="text-align: justify">
 
-For R users, {`flairR`} is built on top of {reticulate}, enabling you to interact directly with Python modules in R and providing seamless support for documents in the R community. __Please note that the following basic examples and explanations are derived from the official [Flair NLP](https://flairnlp.github.io/docs/intro) Python documentation and tutorial.__
+For R users, {`flairR`} is built on top of {reticulate}, enabling you to interact directly with Python modules in R and providing seamless support for documents in the R community. 
+
+In the {`flairR`} architecture, we use the simplest S3 method to wrap both modules and methods within those modules, allowing R users to conveniently access and use Python functionalities. Here are the main modules and methods (functions) wrapped in {flairR}:
+
+
 
 </div>
 
@@ -85,22 +92,26 @@ For R users, {`flairR`} is built on top of {reticulate}, enabling you to interac
 | `flair_datasets()`                                | from flair.datasets import *                              |
 | `flair_data.Sentence()`                           | from flair.data import Sentence                           |
 | `flair_nn()`                                      | from flair_nn import *                                    |
-| `flair_nn.classifier_load()`                      | from flair.embeddings import Classifier                   |
+| `flair_nn.Classifier()`                           | from flair.embeddings import Classifier                   |
 | `flair_embeddings()`                              | from flair.nn import *                                    |
 | `flair_embeddings.FlairEmbeddings()`              | from flair.embeddings import FlairEmbeddings              |
 | `flair_embeddings.TransformerWordEmbeddings()`    | from flair.embeddings import TransformerWordEmbeddings    |
 | `flair_embeddings.WordEmbeddings()`               | from flair.embeddings import WordEmbeddings               |
 | `flair_embeddings.TransformerDocumentEmbeddings()`| from flair.embeddings import TransformerDocumentEmbeddings|
-| `flair_splitter.SegtokSentenceSplitter()`         | flair_splitter.SegtokSentenceSplitter                     |
+| `flair_splitter()`                                | import flair.splitter                                     |
+| `flair_splitter.SegtokSentenceSplitter()`         | from flair.models import  SegtokSentenceSplitter          |
 | `flair_models.Sequencetagger()`                   | from flair.models import SequenceTagger                   |
-| `flair_trainers()`                                | from flair.trainers import *                              |
-| `flair_models()`                                  | from flair.models import *                                |
+| `flair_trainers()`                                | import flair.trainers                                     |
+| `flair_models()`                                  | import flair.models                                       |
 | `flair_models.TextClassifier()`                   | from flair.models import TextClassifier                   |
  
  
  
 
+__Please note that the following basic examples are derived from the official [Flair NLP](https://flairnlp.github.io/docs/intro) Python documentation and tutorial.__
+
 &nbsp;
+
 
 ### __Tag Entities in Text__ 
 
@@ -218,13 +229,12 @@ print(sentence)
 
 ### __Embeddings__
 
-
 __Embeddings Words with Transformers__
 
 <div style="text-align: justify">
 
 Let's use a standard BERT model (bert-base-uncased) to embed the sentence "the grass is green".
-Simply instantate `flair_embeddings.TransformerWordEmbeddings()`  and call `$embed()` over the sentence object:
+Simply instantate `flair_embeddings.TransformerWordEmbeddings()`and use `$embed()` over the sentence object:
 
 ```{r}
 # attach flaiR in R
@@ -341,7 +351,7 @@ for (i in seq_along(sentence$tokens)) {
 
 -----
 
-## Featured Functions for NLP Tasks with data.table Output
+## Extended Feats for NLP Tasks in flaiR
 
 <div style="text-align: justify">
 

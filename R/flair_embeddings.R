@@ -1,4 +1,4 @@
-#' @title Initialization of of Flair Embeddings Modules
+#' @title Initialization of Flair Embeddings Modules
 #'
 #' @description This function provides an interface for R users to access and utilize the
 #' \code{flair.embeddings} module from the Flair NLP library. Flair's embedding functionalities offer
@@ -6,61 +6,42 @@
 #' R users can seamlessly incorporate these advanced embeddings into their NLP workflows without delving
 #' deep into Python. Essentially, this function acts as a bridge between R's ecosystem and Flair's rich
 #' embedding capabilities.
-#' \itemize{
-#'   \item \code{flair_embeddings()$FlairEmbeddings}Contextual string embeddings
-#'    capturing latent syntactic-semantic information beyond standard word
-#'    embeddings.
-#'   \item \code{flair_embeddings()$WordEmbeddings}Classic word embeddings
-#'   like GloVe or FastText.
-#'   \item \code{flair_embeddings()$TransformerWordEmbeddings}  Word embeddings
-#'   from transformer models such as BERT, RoBERTa, etc.
-#'   \item \code{flair_embeddings()$TransformerDocumentEmbeddings}Transformer-based
-#'   embeddings for entire documents or sentences.
-#'   \item \code{flair_embeddings()$StackedEmbeddings}Combines multiple
-#'   embeddings for a richer representation.
-#'   \item \code{flair_embeddings()$DocumentPoolEmbeddings}Provides a single
-#'   embedding vector for an entire document based on the chosen operation
-#'    mode (mean, max, etc.).
-#'   \item \code{flair_embeddings()$BytePairEmbeddings}Embeddings based on
-#'   the Byte-Pair Encoding (BPE) mechanism used in subword tokenization.
-#'   \item \code{flair_embeddings()$ELMoEmbeddings}Deep contextual embeddings
-#'   derived from the internal state of a pretrained bidirectional LSTM.
-#' Each embedding type offers unique features suitable for various NLP tasks.
-#' By understanding their differences and capabilities, R users can select
-#' the appropriate embeddings to enhance their NLP models.
+#'
+#' @details This function allows R users to access the following Flair embeddings modules:
+#' \describe{
+#'   \item{FlairEmbeddings}{Contextual string embeddings capturing latent syntactic-semantic information beyond standard word embeddings.}
+#'   \item{WordEmbeddings}{Classic word embeddings like GloVe or FastText.}
+#'   \item{TransformerWordEmbeddings}{Word embeddings from transformer models such as BERT, RoBERTa, etc.}
+#'   \item{TransformerDocumentEmbeddings}{Transformer-based embeddings for entire documents or sentences.}
+#'   \item{StackedEmbeddings}{Combines multiple embeddings for a richer representation.}
+#'   \item{DocumentPoolEmbeddings}{Provides a single embedding vector for an entire document based on the chosen operation mode (mean, max, etc.).}
+#'   \item{BytePairEmbeddings}{Embeddings based on the Byte-Pair Encoding (BPE) mechanism used in subword tokenization.}
+#'   \item{ELMoEmbeddings}{Deep contextual embeddings derived from the internal state of a pretrained bidirectional LSTM.}
 #' }
+#' Each embedding type offers unique features suitable for various NLP tasks. By understanding their differences and capabilities, R users can select
+#' the appropriate embeddings to enhance their NLP models.
 #'
 #' @return The \code{flair.embeddings} module from Flair.
 #'
-#' @examples \dontrun{
-#' # FlairEmbeddings
-#' # Description: These are contextual string embeddings that capture latent
-#' # syntactic-semantic information that goes beyond standard word embeddings.
+#' @examples
+#' \dontrun{
+#' # Example 1: Initialize FlairEmbeddings
 #' FlairEmbeddings <- flair_embeddings()$FlairEmbeddings
 #' embedding <- FlairEmbeddings('news-forward')
 #'
-#' # WordEmbeddings:
-#' # Description: These are classic word embeddings like GloVe or FastText.
+#' # Example 2: Initialize WordEmbeddings
 #' WordEmbeddings <- flair_embeddings()$WordEmbeddings
-#' embedding <-  WordEmbeddings ('glove')
+#' embedding <- WordEmbeddings('glove')
 #'
-#' # TransformerWordEmbeddings:
-#' # Description: Word embeddings from transformer models like BERT, RoBERTa,
-#' # etc. They are pre-trained on massive amounts of data and have given
-#' # state-of-the-art results on many NLP tasks.
+#' # Example 3: Initialize TransformerWordEmbeddings
 #' TransformerWordEmbeddings <- flair_embeddings()$TransformerWordEmbeddings
 #' embedding <- TransformerWordEmbeddings('bert-base-uncased')
 #'
-#' # TransformerDocumentEmbeddings:
-#' # Description: Similar to TransformerWordEmbeddings but for entire documents
-#' # or sentences.
+#' # Example 4: Initialize TransformerDocumentEmbeddings
 #' TransformerDocumentEmbeddings <- flair_embeddings()$TransformerDocumentEmbeddings
 #' embedding <- TransformerDocumentEmbeddings('bert-base-uncased')
 #'
-#' # StackedEmbeddings:
-#' # Description: This class allows you to combine multiple embeddings to be
-#' # used together. For instance, you can combine FlairEmbeddings with
-#' # WordEmbeddings for a richer representation.
+#' # Example 5: Initialize StackedEmbeddings
 #' StackedEmbeddings <- flair_embeddings()$StackedEmbeddings
 #' WordEmbeddings <-  flair_embeddings()$WordEmbeddings
 #' FlairEmbeddings <-  flair_embeddings()$FlairEmbeddings
@@ -70,19 +51,18 @@
 #'                                             FlairEmbeddings('news-forward'),
 #'                                             FlairEmbeddings('news-backward')
 #'                                        )
-#' # DocumentPoolEmbeddings:
-#' # Description: Used to obtain a single embedding vector for a full document
-#' # based on the mode of operation (mean, max, etc.).
+#'
+#' # Example 6: Initialize DocumentPoolEmbeddings
 #' DocumentPoolEmbeddings <- flair_embeddings()$DocumentPoolEmbeddings
 #' WordEmbeddings <- flair_embeddings()$WordEmbeddings
 #' doc_embeddings <- DocumentPoolEmbeddings(list(WordEmbeddings('glove')))
 #'
-#' # ELMoEmbeddings:
-#' # Description: ELMo (Embeddings from Language Models) embeddings are deep
-#' # contextual embeddings derived from the internal state of a pretrained
-#' # bidirectional LSTM.
+#' # Example 7: Initialize ELMoEmbeddings
+#' # ELMo (Embeddings from Language Models) embeddings are deep contextual embeddings
+#' # derived from the internal state of a pretrained bidirectional LSTM.
 #' # ELMoEmbeddings <- flair_embeddings()$ELMoEmbeddings
 #' # embedding <- ELMoEmbeddings()
+#'
 #' }
 #'
 #' @references
@@ -92,11 +72,14 @@
 #' }
 #'
 #' @importFrom reticulate import
+#'
 #' @export
 flair_embeddings <- function() {
   flair_embeddings <- import('flair.embeddings')
   return(flair_embeddings)
 }
+
+
 
 #' @title Initializing a Class for Flair's Forward and Backward Embeddings
 #'
