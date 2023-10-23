@@ -70,6 +70,8 @@
     <a class="dropdown-item" href="../articles/get_pos.html">Part-of-speech Tagging</a>
     <a class="dropdown-item" href="../articles/get_entities.html">Named Entity Recognition</a>
     <a class="dropdown-item" href="../articles/get_sentiments.html">Tagging Sentiment</a>
+    <a class="dropdown-item" href="../articles/highlight_text.html">The Coloring Entities</a>
+    <h6 class="dropdown-header" data-toc-skip>Visualizing the Sentiments (in progress)</h6>
   </div>
 </li>
 <li class="active nav-item dropdown">
@@ -82,16 +84,14 @@
     <a class="dropdown-item" href="../reference/index.html">All Function Reference</a>
     <a class="dropdown-item" href="../reference/index.html#the-flair-module">The flair Module</a>
     <a class="dropdown-item" href="../reference/index.html#the-flair-embeddings-module">The flair_embeddings Module</a>
-    <a class="dropdown-item" href="../reference/index.html#flair-data-module">The flair_data Module</a>
-    <a class="dropdown-item" href="../reference/index.html#flair-nn-module">The flair_nn Module</a>
-    <a class="dropdown-item" href="../reference/index.html#flair-trainers-module">The flair_trainers Module</a>
-    <a class="dropdown-item" href="../reference/index.html#flair-splitter-module">The flair_splitter Module</a>
-    <a class="dropdown-item" href="../reference/index.html#flair-models-module">The flair_models Module</a>
-    <a class="dropdown-item" href="../reference/index.html#flair-datasets-module">The flair_datasets Module</a>
+    <a class="dropdown-item" href="../reference/index.html#the-flair-data-module">The flair_data Module</a>
+    <a class="dropdown-item" href="../reference/index.html#the-flair-nn-module">The flair_nn Module</a>
+    <a class="dropdown-item" href="../reference/index.html#the-flair-trainers-module">The flair_trainers Module</a>
+    <a class="dropdown-item" href="../reference/index.html#the-flair-splitter-module">The flair_splitter Module</a>
+    <a class="dropdown-item" href="../reference/index.html#the-flair-models-module">The flair_models Module</a>
+    <a class="dropdown-item" href="../reference/index.html#the-flair-datasets-module">The flair_datasets Module</a>
     <a class="dropdown-item" href="../articles/flair_models.html">The Pre-trianed Models for NLP Tasks</a>
     <a class="dropdown-item" href="../articles/transformer_wordembeddings.html">The Wordembeddings in Flair</a>
-    <a class="dropdown-item" href="../articles/highlight_text.html">The Coloring Entities</a>
-    <h6 class="dropdown-header" data-toc-skip>Visualizing the Sentiments (in progress)</h6>
   </div>
 </li>
 <li class="nav-item dropdown">
@@ -162,7 +162,7 @@ Accessing flair.embeddings module from flair. <code>flair.embeddings</code> is a
           
           <code><a href="flair_embeddings.html">flair_embeddings()</a></code> 
         </dt>
-        <dd>Initialization of of Flair Embeddings Modules</dd>
+        <dd>Initialization of Flair Embeddings Modules</dd>
       </dl><dl><dt>
           
           <code><a href="flair_embeddings.FlairEmbeddings.html">flair_embeddings.FlairEmbeddings()</a></code> 
@@ -339,6 +339,16 @@ To facilitate more efficient use for social science research, {flairR} extend {f
         <dd>Load the Named Entity Recognition (NER) Tagger</dd>
       </dl><dl><dt>
           
+          <code><a href="load_tagger_pos.html">load_tagger_pos()</a></code> 
+        </dt>
+        <dd>Load Flair POS Tagger</dd>
+      </dl><dl><dt>
+          
+          <code><a href="load_tagger_sentiments.html">load_tagger_sentiments()</a></code> 
+        </dt>
+        <dd>Load a Sentiment or Language Tagger Model from Flair</dd>
+      </dl><dl><dt>
+          
           <code><a href="get_entities.html">get_entities()</a></code> 
         </dt>
         <dd>Tagging Named Entities with Flair Models</dd>
@@ -349,11 +359,6 @@ To facilitate more efficient use for social science research, {flairR} extend {f
         <dd>Extract Named Entities from a Batch of Texts</dd>
       </dl><dl><dt>
           
-          <code><a href="load_tagger_pos.html">load_tagger_pos()</a></code> 
-        </dt>
-        <dd>Load Flair POS Tagger</dd>
-      </dl><dl><dt>
-          
           <code><a href="get_pos.html">get_pos()</a></code> 
         </dt>
         <dd>Tagging Part-of-Speech Tagging with Flair Models</dd>
@@ -362,11 +367,6 @@ To facilitate more efficient use for social science research, {flairR} extend {f
           <code><a href="get_pos_batch.html">get_pos_batch()</a></code> 
         </dt>
         <dd>Batch Process of Part-of-Speech Tagging</dd>
-      </dl><dl><dt>
-          
-          <code><a href="load_tagger_sentiments.html">load_tagger_sentiments()</a></code> 
-        </dt>
-        <dd>Load a Sentiment or Language Tagger Model from Flair</dd>
       </dl><dl><dt>
           
           <code><a href="get_sentiments.html">get_sentiments()</a></code> 
