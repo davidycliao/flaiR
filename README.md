@@ -31,13 +31,14 @@ in the community. For a comprehensive understanding of the
 ‘[Contextual String Embeddings for Sequence
 Labeling](https://aclanthology.org/C18-1139.pdf)’ and the official
 [manual](https://flairnlp.github.io) written for its Python
-implementation. This R wrapper enables R users to leverage Flair’s
-capabilities without the need to interact directly with Python.
+implementation.
 
-For R users, {`flairR`} primarily consists of two main components. The
-first is a wrapper function in {`flaiR`} built on top of {`reticulate`},
-which enables you to interact directly with Python modules in R and
-provides seamless support for documents and [tutorial (in
+`{flaiR}` enables R users to leverage Flair’s capabilities without the
+need to interact directly with Python. For R users, {`flairR`} primarily
+consists of two main components. The first is a wrapper function in
+{`flaiR`} built on top of {`reticulate`}, which enables you to interact
+directly with Python modules in R and provides seamless support for
+documents and [tutorial (in
 progress)](https://davidycliao.github.io/flaiR/articles/tutorial.html)
 in the R community. Secondly, to facilitate more efficient use for
 social science research, {`flairR`} extend {`flairNLP/flair`}’s core
@@ -97,13 +98,15 @@ library(flaiR)
 
 <div style="text-align: justify">
 
-R developers who want to contribute to {`flaiR`} are welcome – {`flaiR`}
-is an open source project. I warmly invite R users who share similar
-interests to join in contributing to this package. Please feel free to
-shoot me an email to collaborate on the task. Contributions – whether
-they be comments, code suggestions, tutorial examples, or forking the
-repository – are greatly appreciated. Please note that the `flaiR` is
-released with the [Contributor Code of
+`{flaiR}` is maintained and developed by [David
+Liao](https://davidycliao.github.io) and friends. R developers who want
+to contribute to {`flaiR`} are welcome – {`flaiR`} is an open source
+project. I warmly invite R users who share similar interests to join in
+contributing to this package. Please feel free to shoot me an email to
+collaborate on the task. Contributions – whether they be comments, code
+suggestions, tutorial examples, or forking the repository – are greatly
+appreciated. Please note that the `flaiR` is released with the
+[Contributor Code of
 Conduct](https://github.com/davidycliao/flaiR/blob/master/CONDUCT.md).
 By contributing to this project, you agree to abide by its terms.
 
