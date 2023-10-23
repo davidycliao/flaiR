@@ -102,9 +102,6 @@ jobs:
 
       - uses: r-lib/actions/setup-pandoc@v2
 
-      - name: Set PYTHONUTF8 Environment Variable
-        run: echo ::set-env name=PYTHONUTF8::1
-
       - name: Setup Python
         uses: actions/setup-python@v2
         with:
