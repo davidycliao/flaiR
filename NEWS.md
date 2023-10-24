@@ -1,5 +1,7 @@
 # flaiR 0.0.5 (2023-10-01)
 
+<div style="text-align: justify">
+
 * Added more tests to monitor function operation. 
 
 * Added wrapped functions integrating Python code.
@@ -10,7 +12,15 @@
 
 * Notice that Python 3.x and flair may fail to install Python dependencies on windows-latest due to potential compatibility issues with the latest Python versions on Windows. To fix this, I modified the Python version in your actions/setup-python@v2 step to use Python 3.9 or a lower version. 
 
+</div>
+
+&nbsp;
+
+-----
+
 # flaiR 0.0.3 (2023-09-10)
+
+<div style="text-align: justify">
 
 __Modifications Overview__
 
@@ -33,11 +43,20 @@ The inception of the batch_size parameter (defaulted at 5) in the get_entities_b
     
   + batch_size: An integer specifying the size of each batch. Default is 5.
 
+</div>
+
+&nbsp;
+
+-----
+
 
 # flaiR 0.0.1 (development version)
+
+<div style="text-align: justify">
 
 * The features in flaiR currently include part-of-speech tagging, sentiment tagging, and named entity recognition tagging.  flaiR requires Python version 3.7  or higher to operate concurrently.
 
 * create_flair_env(): A function to install the Flair Python library using the `reticulate` R package, which is automatically generated.
 
+</div>
 
