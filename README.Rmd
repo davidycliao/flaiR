@@ -35,17 +35,17 @@ install.packages("remotes")
 <div style="text-align: justify">
 
 
-`{flaiR}` is an R wrapper for the [{flairNLP/flair}](https://github.com/flairnlp/flair) library in Python, designed specifically for R users, especially those in the social sciences. It provides easy access to the main functionalities of `{flairNLP}`. Developed by [Zalando Research](https://engineering.zalando.com/posts/2018/11/zalando-research-releases-flair.html) in Berlin, Flair provides intuitive interfaces with exceptional multilingual support, especially for various embedding frameworks, and is compatible with the HuggingFace API. It also comes equipped with state-of-the-art natural language processing models to analyze your text, such as named entity recognition, sentiment analysis, part-of-speech tagging, biomedical data, sense disambiguation, and classification, with support for a rapidly growing number of languages in the community. For a comprehensive understanding of the `{flairNLP/flair}` architecture, you can refer to the research article '[Contextual String Embeddings for Sequence Labeling](https://aclanthology.org/C18-1139.pdf)' and the official [manual](https://flairnlp.github.io) written for its Python implementation. 
+`{flaiR}` is an R wrapper for the [{flairNLP/flair}](https://github.com/flairnlp/flair) library in Python, designed specifically for R users, especially those in the social sciences. It provides easy access to the main functionalities of `{flairNLP}`. Developed by [Zalando Research](https://engineering.zalando.com/posts/2018/11/zalando-research-releases-flair.html) in Berlin, Flair provides intuitive interfaces with exceptional multilingual support, especially for various embedding frameworks, and is compatible with the [HuggingFace](https://huggingface.co). It also comes equipped with state-of-the-art natural language processing models to analyze your text, such as named entity recognition, sentiment analysis, part-of-speech tagging, biomedical data, sense disambiguation, and classification, with support for a rapidly growing number of languages in the community. For a comprehensive understanding of the `{flairNLP/flair}` architecture, you can refer to the research article '[Contextual String Embeddings for Sequence Labeling](https://aclanthology.org/C18-1139.pdf)' and the official [manual](https://flairnlp.github.io) written for its Python implementation. 
 
-`{flaiR}` enables R users to leverage Flair's capabilities without the need to interact directly with Python. For R users, {`flairR`} primarily consists of two main components. The first is a wrapper function in {`flaiR`} built on top of {`reticulate`}, which enables you to interact directly with Python modules in R and provides seamless support for documents and [tutorial (in progress)](https://davidycliao.github.io/flaiR/articles/tutorial.html) in the R community. Secondly, to facilitate more efficient use for social science research, {`flairR`} extend {`flairNLP/flair`}'s core functionality for working with three major functions to extract features in a tidy and fast format-- [data.table](https://cran.r-project.org/web/packages/data.table/index.html) in R. 
+For R users, {`flairR`} primarily consists of two main components. The first is wrapper functions in {`flaiR`} built on top of {`reticulate`}, which enables you to interact directly with Python modules in R and provides seamless support for documents and [tutorial (in progress)](https://davidycliao.github.io/flaiR/articles/tutorial.html) in the R community. `{flaiR}` enables R users to leverage Flair's capabilities without the need to interact directly with Python. Secondly, to facilitate more efficient use for social science research, {`flairR`} expands {`flairNLP/flair`}'s core functionality for working with three major functions to extract features in a tidy and fast format-- [data.table](https://cran.r-project.org/web/packages/data.table/index.html) in R. 
 
-The core features (and example usage) can be found: 
+The expanded features (and examples) can be found: 
 
 - [**part-of-speech tagging**](https://davidycliao.github.io/flaiR/articles/get_pos.html)
 - [**named entity recognition**](https://davidycliao.github.io/flaiR/articles/get_entities.html)
 - [**transformer-based sentiment analysis**](https://davidycliao.github.io/flaiR/articles/get_sentiments.html)
 
-In addition, to handle the load on RAM when dealing with larger corpus, {`flairR`}  supports batch processing to handle texts in batches, which is especially useful when dealing with large datasets, to optimize memory usage and performance.
+In addition, to handle the load on RAM when dealing with larger corpus, {`flairR`}  supports batch processing to handle texts in batches, which is especially useful when dealing with large datasets, to optimize memory usage and performance. The implementation of batch processing can also utilize GPU acceleration for faster computations.
 
 </div>
 
@@ -66,7 +66,7 @@ remotes::install_github("davidycliao/flaiR", force = TRUE)
 
 ```r
 library(flaiR)
-#> flaiR: An R Wrapper for Accessing Flair NLP Tagging Features      
+#> flaiR: An R Wrapper for Accessing Flair NLP
 #> Python: 3.11                                           
 #> Flair: 0.12.2  
 ```

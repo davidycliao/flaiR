@@ -8,6 +8,7 @@
 
 * Provided some tutorials for interacting with R and Python using Flair.
 
+* Notice that Python 3.x and flair may fail to install Python dependencies on windows-latest due to potential compatibility issues with the latest Python versions on Windows. To fix this, I modified the Python version in your actions/setup-python@v2 step to use Python 3.9 or a lower version. 
 
 # flaiR 0.0.3 (2023-09-10)
 
