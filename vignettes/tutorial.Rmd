@@ -358,17 +358,63 @@ __Context-Aware__
 
 Flair can understand the context of a word in a sentence and dynamically generate word embeddings based on this context. This is different from static embeddings, where the embedding of a word does not consider its context in a sentence.
 
+Flair is a dynamic word embedding technique that can understand the meaning of words based on context. In contrast, static word embeddings, such as Word2Vec or GloVe, provide a fixed embedding for each word without considering its context in a sentence.
+
+Therefore, context-sensitive embedding techniques, such as Flair, can capture the meaning of words in specific sentences more accurately, thus enhancing the performance of language models in various tasks.
+
+Example:
+
+Consider the following two English sentences:
+
+- "I am interested in the bank of the river."
+- "I need to go to the bank to withdraw money."
+
+Here, the word "bank" has two different meanings. In the first sentence, it refers to the edge or shore of a river. In the second sentence, it refers to a financial institution.
+
+For static embeddings, the word "bank" might have an embedding that lies somewhere between these two meanings because it doesn't consider context. But for dynamic embeddings like Flair, "bank" in the first sentence will have an embedding related to rivers, and in the second sentence, it will have an embedding related to finance.
+
+
+```{r}
+FlairEmbeddings <- flair_embeddings()$FlairEmbeddings
+Sentence <- flair_data()$Sentence
+
+
+# Initialize Flair embeddings
+flair_embedding_forward <- FlairEmbeddings('news-forward')
+
+# Define the two sentences
+sentence1 <-  Sentence("I am interested in the bank of the river.")
+sentence2 <-  Sentence("I need to go to the bank to withdraw money.")
+
+# Get the embeddings
+
+flair_embedding_forward$embed(sentence1)
+flair_embedding_forward$embed(sentence2)
+
+# Extract the embedding for "bank" from the sentences
+bank_embedding_sentence1 = sentence1[5]$embedding  # "bank" is the seventh word
+bank_embedding_sentence2 = sentence2[6]$embedding  # "bank" is the sixth word
+```
+
+
+Same word, similar vector representation, but essentially different. In this way, you can see how the dynamic embeddings for "bank" in the two sentences differ based on context. Although we printed the embeddings here, in reality, they would be high-dimensional vectors, so you might see a lot of numbers. If you want a more intuitive view of the differences, you could compute the cosine similarity or other metrics between the two embeddings.
+
+This is just a simple demonstration. In practice, you can also combine multiple embedding techniques, such as `WordEmbeddings` and `FlairEmbeddings`, to get richer word vectors.
+```{r}
+library(lsa)
+cosine(as.numeric( bank_embedding_sentence1$numpy()), 
+       as.numeric( bank_embedding_sentence2$numpy()))
+```
+
+
 __Character-Based__
 
-Flair uses a character-level language model, meaning it can generate embeddings for rare words or even misspelled words. This is an important feature because it allows the model to understand and process words that have never appeared in the training data.
+Flair uses a character-level language model, meaning it can generate embeddings for rare words or even misspelled words. This is an important feature because it allows the model to understand and process words that have never appeared in the training data. Flair uses a bidirectional LSTM (Long Short-Term Memory) network that operates at a character level. This means that it feeds individual characters into the LSTM instead of words.
+
 
 __Multilingual Support__
 
-Flair provides various pre-trained character-level language models, supporting contextual word embeddings for multiple languages.
-
-__Combinability__
-
-Flair allows you to easily combine different word embeddings (e.g., Flair Embeddings, Word2Vec, GloVe, etc.) to create powerful stacked embeddings.
+Flair provides various pre-trained character-level language models, supporting contextual word embeddings for multiple languages.  Flair allows you to easily combine different word embeddings (e.g., Flair Embeddings, Word2Vec, GloVe, etc.) to create powerful stacked embeddings.
 
 </div>
 
