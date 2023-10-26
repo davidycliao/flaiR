@@ -25,6 +25,7 @@
 #'
 #' @examples
 #' Example 1: Initialize FlairEmbeddings
+#' library(flaiR)
 #' FlairEmbeddings <- flair_embeddings()$FlairEmbeddings
 #' embedding <- FlairEmbeddings('news-forward')
 #'
@@ -60,9 +61,7 @@
 #'
 #' @references
 #' In Python's Flair library:
-#' \preformatted{
-#' from flair.embeddings import *
-#' }
+#' \preformatted{from flair.embeddings import * }
 #'
 #' @importFrom reticulate import
 #'

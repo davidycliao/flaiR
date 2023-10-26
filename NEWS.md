@@ -12,7 +12,7 @@
 
 * Notice that Python 3.x and flair may fail to install Python dependencies on windows-latest due to potential compatibility issues with the latest Python versions on Windows. To fix this, I modified the Python version in your actions/setup-python@v2 step to use Python 3.9 or a lower version. 
 
-* add two new example dataset for tutorial and documents. 
+* Added two new example datasets for tutorials and documentation.
 
 
 </div>
