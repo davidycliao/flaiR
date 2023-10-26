@@ -33,23 +33,33 @@ Each embedding type offers unique features suitable for various NLP tasks. By un
 the appropriate embeddings to enhance their NLP models.
 }
 \examples{
-Example 1: Initialize FlairEmbeddings
+\dontrun{
+library(flaiR)
+# Initialize FlairEmbeddings
 FlairEmbeddings <- flair_embeddings()$FlairEmbeddings
 embedding <- FlairEmbeddings('news-forward')
+}
 
-Example 2: Initialize WordEmbeddings
+\dontrun{
+# Initialize WordEmbeddings
 WordEmbeddings <- flair_embeddings()$WordEmbeddings
 embedding <- WordEmbeddings('glove')
+}
 
-Example 3: Initialize TransformerWordEmbeddings
+\dontrun{
+# Initialize TransformerWordEmbeddings
 TransformerWordEmbeddings <- flair_embeddings()$TransformerWordEmbeddings
 embedding <- TransformerWordEmbeddings('bert-base-uncased')
+}
 
-Example 4: Initialize TransformerDocumentEmbeddings
+\dontrun{
+# Initialize TransformerDocumentEmbeddings
 TransformerDocumentEmbeddings <- flair_embeddings()$TransformerDocumentEmbeddings
 embedding <- TransformerDocumentEmbeddings('bert-base-uncased')
+}
 
-Example 5: Initialize StackedEmbeddings
+\dontrun{
+# Initialize StackedEmbeddings
 StackedEmbeddings <- flair_embeddings()$StackedEmbeddings
 WordEmbeddings <-  flair_embeddings()$WordEmbeddings
 FlairEmbeddings <-  flair_embeddings()$FlairEmbeddings
@@ -60,17 +70,18 @@ stacked_embeddings <- StackedEmbeddings(
                                             FlairEmbeddings('news-backward')
                                             )
                                        )
+}
 
-Example 6: Initialize DocumentPoolEmbeddings
+\dontrun{
+# Example 6: Initialize DocumentPoolEmbeddings
 DocumentPoolEmbeddings <- flair_embeddings()$DocumentPoolEmbeddings
 WordEmbeddings <- flair_embeddings()$WordEmbeddings
 doc_embeddings <- DocumentPoolEmbeddings(list(WordEmbeddings('glove')))
+}
 
 
 }
 \references{
 In Python's Flair library:
-\preformatted{
-from flair.embeddings import *
-}
+\preformatted{from flair.embeddings import * }
 }
