@@ -49,7 +49,7 @@ embedding capabilities."><meta property="og:image" content="https://davidycliao.
   <div class="dropdown-menu" aria-labelledby="dropdown--quick-start">
     <a class="dropdown-item" href="../articles/quickstart.html#why-write-%7BflaiR%7D-to-access-fair-nlp-in-python">Why {flaiR}</a>
     <a class="dropdown-item" href="../articles/quickstart.html#install-flair-with-using-remotes">Install flaiR via GitHub</a>
-    <a class="dropdown-item" href="../articles/quickstart.html#quickstart.html#class-and-ojbect-in-r-via-flair">Wrapped Functions</a>
+    <a class="dropdown-item" href="../articles/quickstart.html#class-and-ojbect-in-r-via-flair">Class and Ojbect in R</a>
     <a class="dropdown-item" href="../articles/quickstart.html#embeddings">FlaiR Embeddings</a>
     <a class="dropdown-item" href="../articles/quickstart.html#expanded-feats-for-nlp-tasks-in-flair">Feats in flaiR</a>
     <a class="dropdown-item" href="../articles/quickstart.html#how-to-contribute">How to Contribute</a>
@@ -191,15 +191,60 @@ the appropriate embeddings to enhance their NLP models.</p>
     </div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
-    <p>In Python's Flair library:</p><div class="sourceCode"><pre><code>
-from flair.embeddings import *
-</code></pre></div>
+    <p>In Python's Flair library:</p><div class="sourceCode"><pre><code>from flair.embeddings import * </code></pre></div>
 
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">flaiR</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># Initialize FlairEmbeddings</span></span></span>
+<span class="r-in"><span><span class="va">FlairEmbeddings</span> <span class="op">&lt;-</span> <span class="fu">flair_embeddings</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">FlairEmbeddings</span></span></span>
+<span class="r-in"><span><span class="va">embedding</span> <span class="op">&lt;-</span> <span class="fu">FlairEmbeddings</span><span class="op">(</span><span class="st">'news-forward'</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="co"># Initialize WordEmbeddings</span></span></span>
+<span class="r-in"><span><span class="va">WordEmbeddings</span> <span class="op">&lt;-</span> <span class="fu">flair_embeddings</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">WordEmbeddings</span></span></span>
+<span class="r-in"><span><span class="va">embedding</span> <span class="op">&lt;-</span> <span class="fu">WordEmbeddings</span><span class="op">(</span><span class="st">'glove'</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="co"># Initialize TransformerWordEmbeddings</span></span></span>
+<span class="r-in"><span><span class="va">TransformerWordEmbeddings</span> <span class="op">&lt;-</span> <span class="fu">flair_embeddings</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">TransformerWordEmbeddings</span></span></span>
+<span class="r-in"><span><span class="va">embedding</span> <span class="op">&lt;-</span> <span class="fu">TransformerWordEmbeddings</span><span class="op">(</span><span class="st">'bert-base-uncased'</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="co"># Initialize TransformerDocumentEmbeddings</span></span></span>
+<span class="r-in"><span><span class="va">TransformerDocumentEmbeddings</span> <span class="op">&lt;-</span> <span class="fu">flair_embeddings</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">TransformerDocumentEmbeddings</span></span></span>
+<span class="r-in"><span><span class="va">embedding</span> <span class="op">&lt;-</span> <span class="fu">TransformerDocumentEmbeddings</span><span class="op">(</span><span class="st">'bert-base-uncased'</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="co"># Initialize StackedEmbeddings</span></span></span>
+<span class="r-in"><span><span class="va">StackedEmbeddings</span> <span class="op">&lt;-</span> <span class="fu">flair_embeddings</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">StackedEmbeddings</span></span></span>
+<span class="r-in"><span><span class="va">WordEmbeddings</span> <span class="op">&lt;-</span>  <span class="fu">flair_embeddings</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">WordEmbeddings</span></span></span>
+<span class="r-in"><span><span class="va">FlairEmbeddings</span> <span class="op">&lt;-</span>  <span class="fu">flair_embeddings</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">FlairEmbeddings</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">stacked_embeddings</span> <span class="op">&lt;-</span> <span class="fu">StackedEmbeddings</span><span class="op">(</span></span></span>
+<span class="r-in"><span>                                       <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu">WordEmbeddings</span><span class="op">(</span><span class="st">'glove'</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                                            <span class="fu">FlairEmbeddings</span><span class="op">(</span><span class="st">'news-forward'</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                                            <span class="fu">FlairEmbeddings</span><span class="op">(</span><span class="st">'news-backward'</span><span class="op">)</span></span></span>
+<span class="r-in"><span>                                            <span class="op">)</span></span></span>
+<span class="r-in"><span>                                       <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="co"># Example 6: Initialize DocumentPoolEmbeddings</span></span></span>
+<span class="r-in"><span><span class="va">DocumentPoolEmbeddings</span> <span class="op">&lt;-</span> <span class="fu">flair_embeddings</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">DocumentPoolEmbeddings</span></span></span>
+<span class="r-in"><span><span class="va">WordEmbeddings</span> <span class="op">&lt;-</span> <span class="fu">flair_embeddings</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">WordEmbeddings</span></span></span>
+<span class="r-in"><span><span class="va">doc_embeddings</span> <span class="op">&lt;-</span> <span class="fu">DocumentPoolEmbeddings</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu">WordEmbeddings</span><span class="op">(</span><span class="st">'glove'</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+</code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>
