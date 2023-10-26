@@ -232,7 +232,7 @@ __In R__
 
 Below, we use data from the article ['The Temporal Focus of Campaign Communication'](https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&ved=2ahUKEwjz_bS3p5KCAxWEWEEAHcuVAi4QFnoECA8QAQ&url=https%3A%2F%2Fwww.journals.uchicago.edu%2Fdoi%2Ffull%2F10.1086%2F715165&usg=AOvVaw3f_J3sXTrym2ZR64pF3ZtN&opi=89978449) by [Stefan Muller](https://muellerstefan.net), published in _Journal of Politics_ in 2020, as an example.
 
-First, I vectorize the cc_muller$text using the Sentence function to transform it into a list object. Then, we reformat cc_muller$class_pro_retro as a factor. It's essential to note that R handles numerical values differently than Python. In R, numerical values are represented with a floating point, so it's advisable to convert them into factors or strings. Lastly, I employ the map function from the purrr package to assign labels to each sentence corpus using the $add_label method.
+First, I vectorize the `cc_muller$text` using the Sentence function to transform it into a list object. Then, we reformat `cc_muller$class_pro_retro` as a factor. It's essential to note that R handles numerical values differently than Python. In R, numerical values are represented with a floating point, so it's advisable to convert them into factors or strings. Lastly, I employ the map function from the purrr package to assign labels to each sentence corpus using the $add_label method.
 
 
 ```{r}

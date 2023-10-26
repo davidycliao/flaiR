@@ -24,24 +24,33 @@
 #' @return The \code{flair.embeddings} module from Flair.
 #'
 #' @examples
-#' Example 1: Initialize FlairEmbeddings
+#' # Example 1: Initialize FlairEmbeddings
+#' \dontrun{
 #' library(flaiR)
 #' FlairEmbeddings <- flair_embeddings()$FlairEmbeddings
 #' embedding <- FlairEmbeddings('news-forward')
+#' }
 #'
-#' Example 2: Initialize WordEmbeddings
+#' # Example 2: Initialize WordEmbeddings
+#' \dontrun{
 #' WordEmbeddings <- flair_embeddings()$WordEmbeddings
 #' embedding <- WordEmbeddings('glove')
+#' }
 #'
-#' Example 3: Initialize TransformerWordEmbeddings
+#' # Example 3: Initialize TransformerWordEmbeddings
+#' \dontrun{
 #' TransformerWordEmbeddings <- flair_embeddings()$TransformerWordEmbeddings
 #' embedding <- TransformerWordEmbeddings('bert-base-uncased')
+#' }
 #'
-#' Example 4: Initialize TransformerDocumentEmbeddings
+#' # Example 4: Initialize TransformerDocumentEmbeddings
+#' \dontrun{
 #' TransformerDocumentEmbeddings <- flair_embeddings()$TransformerDocumentEmbeddings
 #' embedding <- TransformerDocumentEmbeddings('bert-base-uncased')
+#' }
 #'
-#' Example 5: Initialize StackedEmbeddings
+#' # Example 5: Initialize StackedEmbeddings
+#' \dontrun{
 #' StackedEmbeddings <- flair_embeddings()$StackedEmbeddings
 #' WordEmbeddings <-  flair_embeddings()$WordEmbeddings
 #' FlairEmbeddings <-  flair_embeddings()$FlairEmbeddings
@@ -52,11 +61,14 @@
 #'                                             FlairEmbeddings('news-backward')
 #'                                             )
 #'                                        )
+#' }
 #'
-#' Example 6: Initialize DocumentPoolEmbeddings
+#' # Example 6: Initialize DocumentPoolEmbeddings
+#' \dontrun{
 #' DocumentPoolEmbeddings <- flair_embeddings()$DocumentPoolEmbeddings
 #' WordEmbeddings <- flair_embeddings()$WordEmbeddings
 #' doc_embeddings <- DocumentPoolEmbeddings(list(WordEmbeddings('glove')))
+#' }
 #'
 #'
 #' @references
