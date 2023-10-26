@@ -65,9 +65,9 @@
   <div class="dropdown-menu" aria-labelledby="dropdown--quick-start">
     <a class="dropdown-item" href="../articles/quickstart.html#why-write-%7BflaiR%7D-to-access-fair-nlp-in-python">Why {flaiR}</a>
     <a class="dropdown-item" href="../articles/quickstart.html#install-flair-with-using-remotes">Install flaiR via GitHub</a>
-    <a class="dropdown-item" href="../articles/quickstart.html#wrapped-functions">Wrapped Functions</a>
+    <a class="dropdown-item" href="../articles/quickstart.html#quickstart.html#class-and-ojbect-in-r-via-flair">Wrapped Functions</a>
     <a class="dropdown-item" href="../articles/quickstart.html#embeddings">FlaiR Embeddings</a>
-    <a class="dropdown-item" href="../articles/quickstart.html#featured-functions-for-nlp-tasks-with-data-table-output">Features in flaiR</a>
+    <a class="dropdown-item" href="../articles/quickstart.html#expanded-feats-for-nlp-tasks-in-flair">Feats in flaiR</a>
     <a class="dropdown-item" href="../articles/quickstart.html#how-to-contribute">How to Contribute</a>
   </div>
 </li>
@@ -159,11 +159,14 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Tagging Named Entities with Flair Standard Models</h1>
-            
-      
-      <small class="dont-index">Source: <a href="https://github.com/davidycliao/flaiR/blob/HEAD/vignettes/get_entities.Rmd" class="external-link"><code>vignettes/get_entities.Rmd</code></a></small>
+                        <h4 data-toc-skip class="author">David
+(Yen-Chieh) Liao</h4>
+            <address class="author_afil">
+      Postdoc at Text &amp; Policy Research Group and SPIRe in
+UCD<br><small class="dont-index">Source: <a href="https://github.com/davidycliao/flaiR/blob/HEAD/vignettes/get_entities.Rmd" class="external-link"><code>vignettes/get_entities.Rmd</code></a></small>
       <div class="d-none name"><code>get_entities.Rmd</code></div>
-    </div>
+    </address>
+</div>
 
     
     
@@ -183,7 +186,7 @@ once you’ve downloaded it and it hasn’t been manually removed, executing
 the command again will not trigger a download.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tagger_ner</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_tagger_ner.html">load_tagger_ner</a></span><span class="op">(</span><span class="st">"ner"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2023-10-25 16:07:29,311 SequenceTagger predicts: Dictionary with 20 tags: &lt;unk&gt;, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, &lt;START&gt;, &lt;STOP&gt;</span></span></code></pre></div>
+<span><span class="co">#&gt; 2023-10-26 01:56:50,596 SequenceTagger predicts: Dictionary with 20 tags: &lt;unk&gt;, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, &lt;START&gt;, &lt;STOP&gt;</span></span></code></pre></div>
 <p>Flair NLP operates under the <a href="https://pytorch.org" class="external-link">PyTorch</a> framework. As such, we can use
 the <code>$to</code> method to set the device for the Flair Python
 library. The flair_device(“cpu”) allows you to select whether to use the
@@ -350,6 +353,16 @@ document in the dataset is sizable. Parsing the documents in smaller
 batches may provide an optimal compromise between these two scenarios.
 Batch processing can enhance efficiency and aid in memory
 management.</p>
+<p>By default, the batch_size parameter is set to 5. You can consider
+starting with this default value and then experimenting with different
+batch sizes to find the one that works best for your specific use case.
+You can monitor memory usage and processing time to help you make a
+decision. If you have access to a GPU, you might also try larger batch
+sizes to take advantage of GPU parallelism. However, be cautious not to
+set the batch size too large, as it can lead to out-of-memory errors.
+Ultimately, the choice of batch size should be based on a balance
+between memory constraints, processing efficiency, and the specific
+requirements of your entity extraction task.</p>
 </div>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">batch_process_time</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span><span class="op">{</span></span>
@@ -365,7 +378,7 @@ management.</p>
 <span><span class="co">#&gt; Processing batch 2 out of 2...</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">batch_process_time</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;  25.206   0.386  25.471</span></span></code></pre></div>
+<span><span class="co">#&gt;  25.298   0.566  25.861</span></span></code></pre></div>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">batch_process_results</span><span class="op">)</span></span>
 <span><span class="co">#&gt;               doc_id                          entity  tag text_id</span></span>

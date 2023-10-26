@@ -65,9 +65,9 @@
   <div class="dropdown-menu" aria-labelledby="dropdown--quick-start">
     <a class="dropdown-item" href="../articles/quickstart.html#why-write-%7BflaiR%7D-to-access-fair-nlp-in-python">Why {flaiR}</a>
     <a class="dropdown-item" href="../articles/quickstart.html#install-flair-with-using-remotes">Install flaiR via GitHub</a>
-    <a class="dropdown-item" href="../articles/quickstart.html#wrapped-functions">Wrapped Functions</a>
+    <a class="dropdown-item" href="../articles/quickstart.html#quickstart.html#class-and-ojbect-in-r-via-flair">Wrapped Functions</a>
     <a class="dropdown-item" href="../articles/quickstart.html#embeddings">FlaiR Embeddings</a>
-    <a class="dropdown-item" href="../articles/quickstart.html#featured-functions-for-nlp-tasks-with-data-table-output">Features in flaiR</a>
+    <a class="dropdown-item" href="../articles/quickstart.html#expanded-feats-for-nlp-tasks-in-flair">Feats in flaiR</a>
     <a class="dropdown-item" href="../articles/quickstart.html#how-to-contribute">How to Contribute</a>
   </div>
 </li>
@@ -159,11 +159,14 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Highlight Entities with Colors</h1>
-            
-      
-      <small class="dont-index">Source: <a href="https://github.com/davidycliao/flaiR/blob/HEAD/vignettes/highlight_text.Rmd" class="external-link"><code>vignettes/highlight_text.Rmd</code></a></small>
+                        <h4 data-toc-skip class="author">David
+(Yen-Chieh) Liao</h4>
+            <address class="author_afil">
+      Postdoc at Text and Policy Research Group and SPIRe in
+UCD<br><small class="dont-index">Source: <a href="https://github.com/davidycliao/flaiR/blob/HEAD/vignettes/highlight_text.Rmd" class="external-link"><code>vignettes/highlight_text.Rmd</code></a></small>
       <div class="d-none name"><code>highlight_text.Rmd</code></div>
-    </div>
+    </address>
+</div>
 
     
     
@@ -175,7 +178,7 @@
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"uk_immigration"</span><span class="op">)</span></span>
 <span><span class="va">uk_immigration</span> <span class="op">&lt;-</span> <span class="va">uk_immigration</span><span class="op">[</span><span class="fl">30</span>,<span class="op">]</span></span>
 <span><span class="va">tagger_ner</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_tagger_ner.html">load_tagger_ner</a></span><span class="op">(</span><span class="st">"ner"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2023-10-25 16:09:05,084 SequenceTagger predicts: Dictionary with 20 tags: &lt;unk&gt;, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, &lt;START&gt;, &lt;STOP&gt;</span></span>
+<span><span class="co">#&gt; 2023-10-26 01:58:27,593 SequenceTagger predicts: Dictionary with 20 tags: &lt;unk&gt;, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, &lt;START&gt;, &lt;STOP&gt;</span></span>
 <span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_entities.html">get_entities</a></span><span class="op">(</span><span class="va">uk_immigration</span><span class="op">$</span><span class="va">text</span>,</span>
 <span>                       tagger <span class="op">=</span> <span class="va">tagger_ner</span>,</span>
 <span>                       show.text_id <span class="op">=</span> <span class="cn">FALSE</span></span>

@@ -65,9 +65,9 @@
   <div class="dropdown-menu" aria-labelledby="dropdown--quick-start">
     <a class="dropdown-item" href="../articles/quickstart.html#why-write-%7BflaiR%7D-to-access-fair-nlp-in-python">Why {flaiR}</a>
     <a class="dropdown-item" href="../articles/quickstart.html#install-flair-with-using-remotes">Install flaiR via GitHub</a>
-    <a class="dropdown-item" href="../articles/quickstart.html#wrapped-functions">Wrapped Functions</a>
+    <a class="dropdown-item" href="../articles/quickstart.html#quickstart.html#class-and-ojbect-in-r-via-flair">Wrapped Functions</a>
     <a class="dropdown-item" href="../articles/quickstart.html#embeddings">FlaiR Embeddings</a>
-    <a class="dropdown-item" href="../articles/quickstart.html#featured-functions-for-nlp-tasks-with-data-table-output">Features in flaiR</a>
+    <a class="dropdown-item" href="../articles/quickstart.html#expanded-feats-for-nlp-tasks-in-flair">Feats in flaiR</a>
     <a class="dropdown-item" href="../articles/quickstart.html#how-to-contribute">How to Contribute</a>
   </div>
 </li>
@@ -159,11 +159,14 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Tagging Part-of-Speech Tagging with Flair Standard Models</h1>
-            
-      
-      <small class="dont-index">Source: <a href="https://github.com/davidycliao/flaiR/blob/HEAD/vignettes/get_pos.Rmd" class="external-link"><code>vignettes/get_pos.Rmd</code></a></small>
+                        <h4 data-toc-skip class="author">David
+(Yen-Chieh) Liao</h4>
+            <address class="author_afil">
+      Postdoc at Text &amp; Policy Research Group and SPIRe in
+UCD<br><small class="dont-index">Source: <a href="https://github.com/davidycliao/flaiR/blob/HEAD/vignettes/get_pos.Rmd" class="external-link"><code>vignettes/get_pos.Rmd</code></a></small>
       <div class="d-none name"><code>get_pos.Rmd</code></div>
-    </div>
+    </address>
+</div>
 
     
     
@@ -179,7 +182,7 @@
 Hugging Face.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tagger_pos</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_tagger_pos.html">load_tagger_pos</a></span><span class="op">(</span><span class="st">"pos"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2023-10-25 16:08:28,846 SequenceTagger predicts: Dictionary with 53 tags: &lt;unk&gt;, O, UH, ,, VBD, PRP, VB, PRP$, NN, RB, ., DT, JJ, VBP, VBG, IN, CD, NNS, NNP, WRB, VBZ, WDT, CC, TO, MD, VBN, WP, :, RP, EX, JJR, FW, XX, HYPH, POS, RBR, JJS, PDT, NNPS, RBS, AFX, WP$, -LRB-, -RRB-, ``, '', LS, $, SYM, ADD</span></span></code></pre></div>
+<span><span class="co">#&gt; 2023-10-26 01:57:50,541 SequenceTagger predicts: Dictionary with 53 tags: &lt;unk&gt;, O, UH, ,, VBD, PRP, VB, PRP$, NN, RB, ., DT, JJ, VBP, VBG, IN, CD, NNS, NNP, WRB, VBZ, WDT, CC, TO, MD, VBN, WP, :, RP, EX, JJR, FW, XX, HYPH, POS, RBR, JJS, PDT, NNPS, RBS, AFX, WP$, -LRB-, -RRB-, ``, '', LS, $, SYM, ADD</span></span></code></pre></div>
 <p>Flair NLP operates under the <a href="https://pytorch.org" class="external-link">PyTorch</a> framework. As such, we can use
 the <code>$to</code> method to set the device for the Flair Python
 library. The flair_device(“cpu”) allows you to select whether to use the
@@ -239,6 +242,18 @@ about CUDA, please visit: <a href="https://developer.nvidia.com/cuda-zone" class
 <div class="section level2">
 <h2 id="batch-processing">Batch Processing<a class="anchor" aria-label="anchor" href="#batch-processing"></a>
 </h2>
+<div style="text-align: justify">
+<p>By default, the batch_size parameter is set to 5. You can consider
+starting with this default value and then experimenting with different
+batch sizes to find the one that works best for your specific use case.
+You can monitor memory usage and processing time to help you make a
+decision. If you have access to a GPU, you might also try larger batch
+sizes to take advantage of GPU parallelism. However, be cautious not to
+set the batch size too large, as it can lead to out-of-memory errors.
+Ultimately, the choice of batch size should be based on a balance
+between memory constraints, processing efficiency, and the specific
+requirements of your entity extraction task.</p>
+</div>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">batch_process_results</span>  <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_pos_batch.html">get_pos_batch</a></span><span class="op">(</span><span class="va">uk_immigration</span><span class="op">$</span><span class="va">text</span>,</span>
 <span>                                        <span class="va">uk_immigration</span><span class="op">$</span><span class="va">speaker</span>, </span>
