@@ -19,13 +19,13 @@ home:
     href: https://pureportal.strath.ac.uk/en/datasets/parlee-plenary-speeches-v2-data-set-annotated-full-text-of-151-mi
 
 reference:
-- title: The flair Module
+- title: The flair Module (Python)
   desc: <div class="text-justify">This is a very high-level overview of flair. Accessing whole flair module. The flair library is a powerful NLP (Natural Language Processing) tool based on PyTorch. Its primary focus is to provide state-of-the-art models for NLP tasks while keeping the API simple and easy to use.</div>
 
 - contents:
   - flair
 
-- title: The flair_embeddings Module
+- title: The flair_embeddings Module  (Python)
   desc: <div class="text-justify">Accessing flair.embeddings module from flair. `flair.embeddings` is a module from the Flair NLP library, which provides several state-of-the-art embeddings (vector representations) for natural language processing (NLP) tasks. Embeddings are crucial in NLP because they allow models to understand the semantic content of words, capturing relationships between words, similarities, and much more. The Flair library provides a rich set of embeddings, which can be either standalone or combined to enhance performance on various tasks.</div>
 - contents:
   - flair_embeddings
@@ -35,37 +35,37 @@ reference:
   - flair_embeddings.WordEmbeddings
   - flair_embeddings.StackedEmbeddings
 
-- title: The flair_data Module
+- title: The flair_data Module (Python)
   desc: <div class="text-justify">Accessing flair.data module from flair. `flair.data` is a foundational module in the Flair library that provides data structures and utilities for handling and processing linguistic data. This module is central to the library, ensuring that data is structured correctly before it's processed by models or embeddings.</div>
 - contents:
   - flair_data
   - flair_data.Sentence
 
-- title: The flair_nn Module
+- title: The flair_nn Module  (Python)
   desc: <div class="text-justify">Accessing flair.nn module from flair. The flair.nn module in the Flair library is focused on neural network architectures and components. This module offers several classes and functionalities that are essential for building, training, and deploying neural network models in the Flair ecosystem.</div>
 - contents:
   - flair_nn
   - flair_nn.Classifier
 
-- title: The flair_trainers Module
+- title: The flair_trainers Module  (Python)
   desc: <div class="text-justify">Accessing flair.trainers module from flair. `flair.trainers` module in the Flair library is dedicated to training routines for various machine learning models. This module handles the optimization process, scheduling, and many other functionalities required to train models effectively and efficiently.</div>
 - contents:
   - flair_trainers
 
-- title: The flair_splitter Module
+- title: The flair_splitter Module (Python)
   desc: Accessing flair.splitter module from flair.
 - contents:
   - flair_splitter
   - flair_splitter.SegtokSentenceSplitter
 
-- title: The flair_models Module
+- title: The flair_models Module  (Python)
   desc: <div class="text-justify">Accessing flair.models module from flair. The flair.models module is a part of the Flair NLP library that contains model architectures and pre-trained models for various NLP tasks. </div>
 - contents:
   - flair_models
   - flair_models.TextClassifier
   - flair_models.Sequencetagger
 
-- title: The flair_datasets Module
+- title: The flair_datasets Module  (Python)
   desc: <div class="text-justify">Accessing flair.datasets module from flair. The flair.datasets module is an integral part of the Flair library, focusing on the provision and handling of datasets for various natural language processing tasks.</div>
 - contents:
   - flair_datasets
@@ -83,26 +83,25 @@ reference:
   - get_sentiments
   - get_sentiments_batch
 
-- title: Toolbox
-  desc:
+- title: flairR Toolbox
+  desc: <div class="text-justify"> {flairR}'s Funtions</div>
 - contents:
+  - flair_device
   - highlight_text
   - map_entities
   - embeddings_to_matrix
-
-- title: Utility
-  desc:
-- contents:
   - clear_flair_cache
   - create_flair_env
   - show_flair_cache
-  - flair_device
 
-- title: Sampled Dataset
-  desc:  A sampled ParSpeechV2
+
+- title: flairR Tutorial Dataset
+  desc: <div class="text-justify"> {flairR}'s Funtions</div>
 - contents:
   - de_immigration
   - uk_immigration
+  - cc_muller
+  - hatespeech_zh_tw
 
 authors:
   David Liao:
@@ -134,11 +133,11 @@ navbar:
     - text: "Install flaiR via GitHub"
       href: articles/quickstart.html#install-flair-with-using-remotes
     - text: "Wrapped Functions"
-      href: articles/quickstart.html#wrapped-functions
+      href: articles/quickstart.html#quickstart.html#class-and-ojbect-in-r-via-flair
     - text: "FlaiR Embeddings"
       href: articles/quickstart.html#embeddings
-    - text: "Features in flaiR"
-      href: articles/quickstart.html#featured-functions-for-nlp-tasks-with-data-table-output
+    - text: "Feats in flaiR"
+      href: articles/quickstart.html#expanded-feats-for-nlp-tasks-in-flair
     - text: "How to Contribute"
       href: articles/quickstart.html#how-to-contribute
 

@@ -2,7 +2,7 @@
 title: "Tutorials"
 author: 
   - name: "David (Yen-Chieh) Liao"
-    affiliation: "Postdoc at SPIRe UCD"
+    affiliation: "Postdoc at Text & Policy Research Group and SPIRe in UCD"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Tutorials}
@@ -202,9 +202,14 @@ obtain_statistics: This method gives a quick overview of the statistics of the c
 
 
 ```{r}
-# Create some example sentences
+library(flaiR)
 Corpus <- flair_data()$Corpus
 Sentence <- flair_data()$Sentence
+```
+
+
+```{r}
+# Create some example sentences
 train <- list(Sentence('This is a training example.'))
 dev <-  list(Sentence('This is a validation example.'))
 test <- list(Sentence('This is a test example.'))
@@ -222,6 +227,56 @@ data <- fromJSON(corpus$obtain_statistics())
 formatted_str <- toJSON(data, pretty=TRUE)
 print(formatted_str)
 ```
+
+__In R__
+
+Below, we use data from the article ['The Temporal Focus of Campaign Communication'](https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&ved=2ahUKEwjz_bS3p5KCAxWEWEEAHcuVAi4QFnoECA8QAQ&url=https%3A%2F%2Fwww.journals.uchicago.edu%2Fdoi%2Ffull%2F10.1086%2F715165&usg=AOvVaw3f_J3sXTrym2ZR64pF3ZtN&opi=89978449) by [Stefan Muller](https://muellerstefan.net), published in _Journal of Politics_ in 2020, as an example.
+
+First, I vectorize the cc_muller$text using the Sentence function to transform it into a list object. Then, we reformat cc_muller$class_pro_retro as a factor. It's essential to note that R handles numerical values differently than Python. In R, numerical values are represented with a floating point, so it's advisable to convert them into factors or strings. Lastly, I employ the map function from the purrr package to assign labels to each sentence corpus using the $add_label method.
+
+
+```{r}
+library(purrr)
+data(cc_muller)
+# The `Sentence` object tokenizes text 
+text <- lapply( cc_muller$text, Sentence)
+# split sentence object to train and test. 
+labels <- as.factor(cc_muller$class_pro_retro)
+# `$add_label` method assigns the corresponding coded type to each Sentence corpus.
+text <- map2(text, labels, ~ .x$add_label("classification", .y), .progress = TRUE)
+```
+
+To perform a train-test split using base R, we can follow these steps:
+```{r}
+set.seed(2046)
+sample <- sample(c(TRUE, FALSE), length(text), replace=TRUE, prob=c(0.8, 0.2))
+train  <- text[sample]
+test   <- text[!sample]
+sprintf("Corpus object sizes - Train: %d |  Test: %d", length(train), length(test))
+```
+
+If you don't provide a dev set, Flair won't force you to carve out a portion of your test set to serve as a dev set. However, in some cases when only the train and test sets are provided without a dev set, Flair might automatically take a fraction of the train set (e.g., 10%) to use as a dev set ([#2259](https://github.com/flairNLP/flair/issues/2259#issuecomment-830040253)). This is to offer a mechanism for model selection and early stopping to prevent the model from overfitting on the train set.
+
+
+In the "Corpus" function, there is a random selection of "dev." To ensure reproducibility, we need to set the seed in the Flair framework. We can accomplish this by calling the top-level module "flair" from via {flaiR} and using `$set_seed(1964L)` to set the seed.
+
+```{r}
+flair <- flair()
+flair$set_seed(1964L)
+```
+
+```{r}
+corpus <- Corpus(train=train, 
+                 # dev=test,
+                test=test)
+sprintf("Corpus object sizes - Train: %d | Test: %d | Dev: %d", 
+        length(corpus$train), 
+        length(corpus$test),
+        length(corpus$dev))
+```
+
+In the later sections, there will be more similar processing using the `Corpus`. Following that, we will focus on advanced NLP applications.
+
 
 </div>
 

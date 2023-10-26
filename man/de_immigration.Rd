@@ -27,7 +27,9 @@ A data frame with 16 variables:
 }
 }
 \source{
-Describe the source of your data here.
+Data collected from `ParSpeechV2` the House of Commons for the
+year 2010. The dataset is publicly available at
+\url{https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/L4OAKN}.
 }
 \usage{
 data("de_immigration")

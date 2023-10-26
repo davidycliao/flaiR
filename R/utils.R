@@ -131,6 +131,14 @@ create_flair_env <- function(env = "r-reticulate") {
 #' If CUDA is not available, a message is shown. Additionally, if the system
 #' is running on a Mac M1, MPS will be used instead of CUDA.
 #'
+#' @note Flair NLP operates under the [PyTorch](https://pytorch.org) framework.
+#' As such, we can use the `$to` method to set the device for the Flair Python
+#' library. `flair_device("cpu")`  allows you to select whether to use the CPU,
+#' CUDA devices (like cuda:0, cuda:1, cuda:2), or specific MPS devices on Mac
+#' (such as mps:0, mps:1, mps:2). For information on Accelerated PyTorch
+#' training on Mac, please refer to https://developer.apple.com/metal/pytorch/.
+#' For more about CUDA, please visit: https://developer.nvidia.com/cuda-zone.
+#'
 #' @param device Character. The device to be set for PyTorch.
 #' @importFrom reticulate import
 #' @keywords internal

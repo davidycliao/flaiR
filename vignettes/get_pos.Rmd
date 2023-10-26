@@ -1,5 +1,8 @@
 ---
 title: "Tagging Part-of-Speech Tagging with Flair Standard Models"
+author: 
+  - name: "David (Yen-Chieh) Liao"
+    affiliation: "Postdoc at Text & Policy Research Group and SPIRe in UCD"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Tagging Part-of-Speech Tagging with Flair Standard Models}
@@ -84,6 +87,12 @@ print(results)
 
 </div>
 ## Batch Processing
+<div style="text-align: justify">
+
+By default, the batch_size parameter is set to 5. You can consider starting with this default value and then experimenting with different batch sizes to find the one that works best for your specific use case. You can monitor memory usage and processing time to help you make a decision. If you have access to a GPU, you might also try larger batch sizes to take advantage of GPU parallelism. However, be cautious not to set the batch size too large, as it can lead to out-of-memory errors. Ultimately, the choice of batch size should be based on a balance between memory constraints, processing efficiency, and the specific requirements of your entity extraction task.
+
+</div>
+
 ```{r}
 batch_process_results  <- get_pos_batch(uk_immigration$text,
                                         uk_immigration$speaker, 

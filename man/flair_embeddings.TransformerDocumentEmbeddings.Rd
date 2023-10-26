@@ -71,7 +71,7 @@ embedding <- flair_embeddings.TransformerDocumentEmbeddings("bert-base-uncased")
 }
 \references{
 In Python's Flair library:
-\code{
+\preformatted{
 from flair.embeddings import TransformerDocumentEmbeddings
 embedding = TransformerDocumentEmbeddings('bert-base-uncased')
 }

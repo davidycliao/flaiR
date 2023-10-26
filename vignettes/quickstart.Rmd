@@ -2,7 +2,7 @@
 title: "Quick Start"
 author: 
   - name: "David (Yen-Chieh) Liao"
-    affiliation: "Postdoc at SPIRe UCD"
+    affiliation: "Postdoc at Text & Policy Research Group and SPIRe in UCD"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Quick Start}
@@ -44,6 +44,7 @@ In Python, Flair ( developed by [Zalando Research](https://engineering.zalando.c
 
 `flaiR` is built on top of the reticulate package and incorporates key functions to access the core features of __FlairNLP__, returning data in a tidy and clean [`data.table`](https://cran.r-project.org/web/packages/data.table/index.html). The installation consists of two parts: first, install [Python 3.7](https://www.python.org/downloads/) or higher, and second, install [R](https://cran.r-project.org) (version 3.6.3 or higher) along with RStudio. ~~Additionally, you'll also need [`Anaconda`](Anaconda) to assist `reticulate` in setting up your Python environment, as well as enabling your RStudio to identify the environment.~~
 
+
 __System Requirement:__
 
 - Python (>= 3.7.0)
@@ -67,6 +68,20 @@ library(flaiR)
 ```
 
 Afterward, you might see the message __"Virtual environment 'r-reticulate' successfully created."__ Next, you will be prompted to confirm whether or not you want to use `r-reticulate`. Enter __"Yes,"__ and it will automatically install `flair` via your conda environment in Python.  If there are any issues with the installation, feel free to ask in the <u>[Discussion](https://github.com/davidycliao/flaiR/discussions)</u>.
+
+
+
+
+</div>
+
+__Installation Note__
+
+<div style="text-align: justify">
+
+- 20 Oct 2023
+We notice that Python 3.x and flair may fail to install Python dependencies on windows-latest due to potential compatibility issues with the latest Python versions on Windows. To fix this, I recommend to use Python 3.9 (_[News Updated:2023-10-24](#news/index.html#flair-005-development-version)_).
+
+
 
 </div>
 
@@ -351,7 +366,7 @@ for (i in seq_along(sentence$tokens)) {
 
 -----
 
-## Extended Feats for NLP Tasks in flaiR
+## Expanded Feats for NLP Tasks in flaiR
 
 <div style="text-align: justify">
 
@@ -410,8 +425,7 @@ head(results, n = 10)
 
 <div style="text-align: justify">
 
-Load the pretrained model "ner". For more pretrained models, see https://flairnlp.github.io/docs/tutorial-basics/tagging-entities.
-
+Load the pretrained model `ner`. For more pretrained models, see https://flairnlp.github.io/docs/tutorial-basics/tagging-entities.
 
 
 ```{r}

@@ -33,24 +33,30 @@ Each embedding type offers unique features suitable for various NLP tasks. By un
 the appropriate embeddings to enhance their NLP models.
 }
 \examples{
+Example 1: Initialize FlairEmbeddings
 \dontrun{
-# Example 1: Initialize FlairEmbeddings
 FlairEmbeddings <- flair_embeddings()$FlairEmbeddings
 embedding <- FlairEmbeddings('news-forward')
+}
 
-# Example 2: Initialize WordEmbeddings
+Example 2: Initialize WordEmbeddings
+\dontrun{
 WordEmbeddings <- flair_embeddings()$WordEmbeddings
 embedding <- WordEmbeddings('glove')
+}
 
-# Example 3: Initialize TransformerWordEmbeddings
+Example 3: Initialize TransformerWordEmbeddings
+\dontrun{
 TransformerWordEmbeddings <- flair_embeddings()$TransformerWordEmbeddings
 embedding <- TransformerWordEmbeddings('bert-base-uncased')
-
-# Example 4: Initialize TransformerDocumentEmbeddings
+}
+Example 4: Initialize TransformerDocumentEmbeddings
+\dontrun{
 TransformerDocumentEmbeddings <- flair_embeddings()$TransformerDocumentEmbeddings
 embedding <- TransformerDocumentEmbeddings('bert-base-uncased')
-
-# Example 5: Initialize StackedEmbeddings
+}
+Example 5: Initialize StackedEmbeddings
+\dontrun{
 StackedEmbeddings <- flair_embeddings()$StackedEmbeddings
 WordEmbeddings <-  flair_embeddings()$WordEmbeddings
 FlairEmbeddings <-  flair_embeddings()$FlairEmbeddings
@@ -59,25 +65,22 @@ stacked_embeddings <- StackedEmbeddings(
                                        list(WordEmbeddings('glove'),
                                             FlairEmbeddings('news-forward'),
                                             FlairEmbeddings('news-backward')
+                                            )
                                        )
 
-# Example 6: Initialize DocumentPoolEmbeddings
+}
+
+Example 6: Initialize DocumentPoolEmbeddings
+\dontrun{
 DocumentPoolEmbeddings <- flair_embeddings()$DocumentPoolEmbeddings
 WordEmbeddings <- flair_embeddings()$WordEmbeddings
 doc_embeddings <- DocumentPoolEmbeddings(list(WordEmbeddings('glove')))
-
-# Example 7: Initialize ELMoEmbeddings
-# ELMo (Embeddings from Language Models) embeddings are deep contextual embeddings
-# derived from the internal state of a pretrained bidirectional LSTM.
-# ELMoEmbeddings <- flair_embeddings()$ELMoEmbeddings
-# embedding <- ELMoEmbeddings()
-
 }
 
 }
 \references{
 In Python's Flair library:
-\code{
+\preformatted{
 from flair.embeddings import *
 }
 }
