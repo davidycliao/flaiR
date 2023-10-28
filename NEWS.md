@@ -1,3 +1,13 @@
+# flaiR 0.0.6 (2023-10-29)
+
+<div style="text-align: justify">
+
+* The major module _flair_ in {`flaiR`} should be renamed from `flair()` to `import_flair()` to avoid overlapping with conventional practice `import flair` in Python.
+
+</div>
+
+
+
 # flaiR 0.0.5 (2023-10-01)
 
 <div style="text-align: justify">
