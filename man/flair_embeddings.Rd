@@ -73,7 +73,7 @@ stacked_embeddings <- StackedEmbeddings(
 }
 
 \dontrun{
-# Example 6: Initialize DocumentPoolEmbeddings
+# Initialize DocumentPoolEmbeddings
 DocumentPoolEmbeddings <- flair_embeddings()$DocumentPoolEmbeddings
 WordEmbeddings <- flair_embeddings()$WordEmbeddings
 doc_embeddings <- DocumentPoolEmbeddings(list(WordEmbeddings('glove')))

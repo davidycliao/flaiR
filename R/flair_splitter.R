@@ -28,7 +28,8 @@
 #' \preformatted{
 #' from flair.splitter import *
 #' }
-#' Additional references for the other classes can be found within the Flair library documentation.
+#' Additional references for the other classes can be found within the Flair
+#' library documentation.
 #' \href{https://github.com/flairNLP/flair/blob/master/flair/splitter.py}{Flair GitHub}
 flair_splitter <- function() {
   flair_splitter <- import("flair.splitter")

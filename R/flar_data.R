@@ -49,15 +49,13 @@ flair_data <- function() {
 }
 
 
-
 #' @title Create a Flair Sentence
 #'
-#' @description Flair is a powerful NLP framework that leverages state-of-the-art embeddings for various natural language processing tasks.
-#' This function uses the {reticulate} package to interface with Python and
-#' create a Flair Sentence object.
+#' @description Flair is a powerful NLP framework that leverages state-of-the-art
+#' embeddings for various natural language processing tasks.
 #'
-#'
-#' @param sentence_text A character string to be converted into a Flair Sentence object.
+#' @param sentence_text A character string to be converted into a Flair Sentence
+#' object.
 #' @return A Flair Sentence object.
 #'
 #' @examples
@@ -65,8 +63,7 @@ flair_data <- function() {
 #' flair_data.Sentence("The quick brown fox jumps over the lazy dog.")}
 #'
 #' @references
-#' Python equivalent: \preformatted{
-#' from flair.data import Sentence
+#' Python equivalent: \preformatted{ from flair.data import Sentence
 #' sentence = Sentence("The quick brown fox jumps over the lazy dog.")
 #' }
 #'
@@ -84,4 +81,3 @@ flair_data.Sentence <- function(sentence_text) {
   sentence <- flair_data$Sentence(sentence_text)
   return(sentence)
 }
-

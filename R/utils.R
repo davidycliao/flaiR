@@ -39,7 +39,7 @@ clear_flair_cache <- function(...) {
 }
 
 
-#' Show Flair Cache Preloaed flair's Directory
+#' @title  Show Flair Cache Preloaed flair's Directory
 #'
 #' @description This function lists the contents of the flair cache directory
 #' and returns them as a data frame.
@@ -125,7 +125,8 @@ create_flair_env <- function(env = "r-reticulate") {
   }
 }
 
-#' Check the Device for cccelerating PyTorch
+
+#' @title Check the Device for ccelerating PyTorch
 #'
 #' @description This function verifies if the specified device is available for PyTorch.
 #' If CUDA is not available, a message is shown. Additionally, if the system
@@ -186,20 +187,20 @@ check_device <- function(device) {
 }
 
 
-#' Check the Specified Batch Size
+#' @title Check the Specified Batch Size
 #'
 #' @description Validates if the given batch size is a positive integer.
 #'
 #' @param batch_size Integer. The batch size to be checked.
 #' @keywords internal
-
 check_batch_size <- function(batch_size) {
   if (!is.numeric(batch_size) || batch_size <= 0 || (batch_size %% 1 != 0)) {
     stop("Invalid batch size. It must be a positive integer.")
   }
 }
 
-#' Check the texts and document IDs
+
+#' @title Check the texts and document IDs
 #'
 #' @description Validates if the given texts and document IDs are not NULL or empty.
 #'
@@ -229,15 +230,11 @@ check_texts_and_ids <- function(texts, doc_ids) {
   } else if (length(texts) != length(doc_ids)) {
     stop("The lengths of texts and doc_ids do not match.")
   }
-
   list(texts = texts, doc_ids = doc_ids)
 }
 
 
-
-
-
-#' Check the `show.text_id` parameter
+#' @title Check the `show.text_id` Parameter
 #'
 #' @description Validates if the given `show.text_id` is a logical value.
 #'
@@ -249,7 +246,8 @@ check_show.text_id <- function(show.text_id) {
   }
 }
 
-#' Perform Garbage Collection Based on Condition
+
+#' @title  Perform Garbage Collection Based on Condition
 #'
 #' @description This function checks the value of `gc.active` to determine whether
 #' or not to perform garbage collection. If `gc.active` is `TRUE`,
@@ -285,7 +283,9 @@ check_and_gc <- function(gc.active) {
 #' @param language The language to check.
 #' @param supported_lan_models A vector of supported languages.
 #'
-#' @return This function does not return anything, but stops execution if the check fails.
+#' @return This function does not return anything, but stops execution if the
+#' check fails.
+#'
 #' @examples
 #' # Assuming 'en' is a supported language and 'abc' is not:
 #' check_language_supported("en", c("en", "de", "fr"))
@@ -301,6 +301,7 @@ check_language_supported <- function(language, supported_lan_models) {
                  ".")
   )
 }
+
 
 #' @title Check Environment Pre-requisites
 #'
@@ -339,20 +340,21 @@ check_prerequisites <- function(...) {
   return("All pre-requisites met.")
 }
 
+
 #' @title Retrieve Flair Version
 #'
 #' @description Gets the version of the installed Flair module in the current
 #' Python environment.
 #'
 #' @keywords internal
-#' @return Character string representing the version of Flair.
-#' If Flair is not installed, this may return `NULL` or cause an error
-#' (based on `reticulate` behavior).
+#' @return Character string representing the version of Flair. If Flair is not
+#' installed, this may return `NULL` or cause an error.
 get_flair_version <- function(...) {
   flair <- reticulate::import("flair")
   # Assuming flair has an attribute `__version__` (this might not be true)
   return(flair$`__version__`)
 }
+
 
 #' @title Check Flair
 #'
@@ -365,6 +367,7 @@ get_flair_version <- function(...) {
 check_flair_installed <- function(...) {
   return(reticulate::py_module_available("flair"))
 }
+
 
 #' @title Check for Available Python Installation
 #'

@@ -20,9 +20,17 @@
 #' flair_device("mps:0")  # Set device to MPS device 0 (if available on Mac)
 #' }
 flair_device <- function(device = "cpu") {
+  ## ---------------------------------------------------------------------------
+  ## Set Flair Device
   ##
+  ## Args:
+  ##   device (str): A character string specifying the device.
+  ##   Valid options include: "cpu", "cuda", "mps:0", "mps:1", "mps:2", etc.
   ##
-  torch <- import("torch")
+  ## Returns:
+  ##   python module: the set device for Flair.
+  ## ---------------------------------------------------------------------------
+  flair <- import("flair")
   flair$device <- flair$torch$device(device)
   return(flair$device)
 }

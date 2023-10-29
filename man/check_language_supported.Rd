@@ -12,7 +12,8 @@ check_language_supported(language, supported_lan_models)
 \item{supported_lan_models}{A vector of supported languages.}
 }
 \value{
-This function does not return anything, but stops execution if the check fails.
+This function does not return anything, but stops execution if the
+check fails.
 }
 \description{
 This function checks whether a provided language is supported.

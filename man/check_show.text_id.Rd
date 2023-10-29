@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{check_show.text_id}
 \alias{check_show.text_id}
-\title{Check the `show.text_id` parameter}
+\title{Check the `show.text_id` Parameter}
 \usage{
 check_show.text_id(show.text_id)
 }
