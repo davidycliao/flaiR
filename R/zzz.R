@@ -97,7 +97,7 @@
       paste(python_path, "-m pip install flair")
     )
 
-    sapply(commands, system)
+    vapply(commands, system)
     flair_check_again <- check_flair_version()
 
     if (isFALSE(flair_check_again[[2]])) {
@@ -119,21 +119,3 @@
   #   packageStartupMessage("Flair NLP can be successfully imported in R via {flaiR} ! \U1F44F")
   # }
 }
-
-# pip_upgrade_command <- paste(python_path, "-m pip install --upgrade pip")
-# system(pip_upgrade_command)
-# torch_install_command <- paste(python_path, "-m pip install torch")
-# system(torch_install_command)
-# flair_install_command <- paste(python_path, "-m pip install flair")
-# system(flair_install_command)
-#
-#
-#
-# commands <- c(
-#   paste(python_path, "-m pip install --upgrade pip"),
-#   paste(python_path, "-m pip install torch"),
-#   paste(python_path, "-m pip install flair")
-# )
-#
-# sapply(commands, system)
-
