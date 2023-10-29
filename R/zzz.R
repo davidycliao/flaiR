@@ -1,3 +1,4 @@
+
 #' @title .onAttach Function for the flaiR Package
 #'
 #' @description This function is called when the flaiR package is loaded. \
@@ -98,13 +99,14 @@
     vapply(commands, system, FUN.VALUE = integer(1))
 
     re_installation <- suppressWarnings(check_flair_version())
-    if (isFALSE(reinstallation[[2]])) {
+    if (isFALSE(re_installation[[2]])) {
       packageStartupMessage("Failed to install Flair. {flaiR} requires Flair NLP. Please ensure Flair NLP is installed in Python manually.")
       }
     } else {
     packageStartupMessage(sprintf("\033[1m\033[34mflaiR\033[39m\033[22m: \033[1m\033[33mAn R Wrapper for Accessing Flair NLP\033[39m\033[22m %-5s", ""))
     packageStartupMessage(paste(flair_version[[1]], torch_version[[1]], sep = " | "))
     packageStartupMessage("Flair NLP can be successfully imported in R via {flaiR} ! \U1F44F")
+    reticulate::use_python(Sys.which("python3"))
   }
 
   # 3. Test the command manually
@@ -117,3 +119,20 @@
   #   packageStartupMessage("Flair NLP can be successfully imported in R via {flaiR} ! \U1F44F")
   # }
 }
+#'
+#'
+#' #' On load actions for the flaiR package
+#' #'
+#' #' This function is internally called when the flaiR package is loaded.
+#' #' It prints the versions of flaiR and its dependency, reticulate.
+#' #'
+#' #' @keywords internal
+#' .onLoad <- function() {
+#'   reticulate_version <- as.character(packageVersion("reticulate"))
+#'   flaiR_version <- as.character(packageVersion("flaiR"))
+#'   message("Loading {flaiR} (v", flaiR_version, ") with reticulate ", reticulate_version)
+#' }
+#'
+#'
+#'
+
