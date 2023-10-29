@@ -1,55 +1,33 @@
-
 #' @title .onAttach Function for the flaiR Package
 #'
-#' @description This function is called when the flaiR package is loaded. \
-#' It provides messages detailing the versions of Python and Flair being used, a
-#' s well as other package details.
-#'
+#' @description The provided R code describes the \code{.onAttach} function for the \code{flaiR} package.
+#' This function is automatically invoked when the \code{flaiR} package is loaded. Its primary purpose
+#' is to set up and check the environment for the package and to display startup messages.
+#' .onAttach is triggered when the flaiR package gets loaded. It produces
+#' messages indicating the versions of Python and Flair in use and provides o
+#' ther details related to the package.
+#' @details
+#' \itemize{
+#'   \item \strong{Specifying Python Path:} The function starts by looking for the path of Python 3.
+#'   If it doesn't find it, it stops the package load with an error message.
+#'   \item \strong{Checking Python Version:} Next, the function checks whether the identified version
+#'   of Python is Python 3. If it's not, it emits a warning.
+#'   \item \strong{Checking PyTorch Version:} The function then checks if PyTorch is correctly installed
+#'   and fetches its version information.
+#'   \item \strong{Checking Flair Version:} It also checks if Flair is correctly installed and fetches
+#'   its version.
+#'   \item \strong{Installation Status of Flair:} If Flair isn't installed, the function attempts to install
+#'   PyTorch and Flair automatically using pip commands. If the installation fails, it produces an error message.
+#'   \item \strong{Success Message:} If all the checks pass, a message is displayed indicating that Flair can
+#'   be successfully imported in R via \code{flaiR}.
+#'   \item \strong{Specifying Python Version for Use:} Lastly, the function specifies which version of Python
+#'   to use within R using the \code{reticulate} package.
+#' }
 #' @keywords internal
 #' @importFrom reticulate py_config
+#' @importFrom reticulate use_python
 #' @export
-# .onAttach <- function(...) {
-#   packageStartupMessage(sprintf(" flai\033[34mR\033[39m: An R Wrapper for Accessing Flair NLP Tagging Features %-5s", ""))
-#
-#   # Check and report Python is installed
-#   if (check_python_installed()) {
-#     packageStartupMessage(sprintf(" Python: %-47s", reticulate::py_config()$version))
-#   } else {
-#     packageStartupMessage(sprintf(" Python: %-50s", paste0("\033[31m", "\u2717", "\033[39m")))
-#   }
-#
-#   # Check and report  flair is installed
-#   if (reticulate::py_module_available("flair")) {
-#     packageStartupMessage(sprintf(" Flair: %-47s",  get_flair_version()))
-#   } else {
-#     packageStartupMessage(sprintf(" Flair: %-50s", paste0("\033[31m", "\u2717", "\033[39m")))
-#     packageStartupMessage(sprintf(" Flair %-50s", paste0("is installing from Python")))
-#     # system(paste(reticulate::py_config()$python, "-m pip install flair"))
-#   }
-# }
-
-
-# .onAttach <- function(...) {
-#   packageStartupMessage(sprintf("\033[1m\033[34mflaiR\033[39m\033[22m: \033[1m\033[33mAn R Wrapper for Accessing Flair NLP\033[39m\033[22m %-5s", ""))
-#   if (check_python_installed()) {
-#     packageStartupMessage(sprintf("Python: %-47s", reticulate::py_config()$version))
-#   } else {
-#     stop("Python is not installed. This package requires Python to run Flair.")
-#   }
-#   if (!reticulate::py_module_available("flair")) {
-#     packageStartupMessage("Attempting to install Flair in Python...")
-#     system(paste(reticulate::py_config()$python, "-m pip3 install torch torchvision torchaudio"))
-#     if (!reticulate::py_module_available("flair")) {
-#       packageStartupMessage("Failed to install Flair. This package requires Flair. Please ensure Flair is installed in Python manually.")
-#     } else {
-#       packageStartupMessage(sprintf("Flair: %-47s", get_flair_version()))
-#     }
-#   } else {
-#     packageStartupMessage(sprintf("Flair: %-47s", get_flair_version()))
-#     packageStartupMessage("Flair NLP can be successfully imported in R via {flaiR} ! \U1F44F")
-#   }
-# }
-
+#'
 .onAttach <- function(...) {
   # Specify Python path explicitly
   python_path <- Sys.which("python3")
@@ -101,12 +79,13 @@
     re_installation <- suppressWarnings(check_flair_version())
     if (isFALSE(re_installation[[2]])) {
       packageStartupMessage("Failed to install Flair. {flaiR} requires Flair NLP. Please ensure Flair NLP is installed in Python manually.")
-      }
-    } else {
+    }
+  } else {
     packageStartupMessage(sprintf("\033[1m\033[34mflaiR\033[39m\033[22m: \033[1m\033[33mAn R Wrapper for Accessing Flair NLP\033[39m\033[22m %-5s", ""))
     packageStartupMessage(paste(flair_version[[1]], torch_version[[1]], sep = " | "))
     packageStartupMessage("Flair NLP can be successfully imported in R via {flaiR} ! \U1F44F")
     reticulate::use_python(Sys.which("python3"))
+    py_config()
   }
 
   # 3. Test the command manually
@@ -119,6 +98,52 @@
   #   packageStartupMessage("Flair NLP can be successfully imported in R via {flaiR} ! \U1F44F")
   # }
 }
+
+
+#  V1
+# .onAttach <- function(...) {
+#   packageStartupMessage(sprintf(" flai\033[34mR\033[39m: An R Wrapper for Accessing Flair NLP Tagging Features %-5s", ""))
+#
+#   # Check and report Python is installed
+#   if (check_python_installed()) {
+#     packageStartupMessage(sprintf(" Python: %-47s", reticulate::py_config()$version))
+#   } else {
+#     packageStartupMessage(sprintf(" Python: %-50s", paste0("\033[31m", "\u2717", "\033[39m")))
+#   }
+#
+#   # Check and report  flair is installed
+#   if (reticulate::py_module_available("flair")) {
+#     packageStartupMessage(sprintf(" Flair: %-47s",  get_flair_version()))
+#   } else {
+#     packageStartupMessage(sprintf(" Flair: %-50s", paste0("\033[31m", "\u2717", "\033[39m")))
+#     packageStartupMessage(sprintf(" Flair %-50s", paste0("is installing from Python")))
+#     # system(paste(reticulate::py_config()$python, "-m pip install flair"))
+#   }
+# }
+
+# Current
+# .onAttach <- function(...) {
+#   packageStartupMessage(sprintf("\033[1m\033[34mflaiR\033[39m\033[22m: \033[1m\033[33mAn R Wrapper for Accessing Flair NLP\033[39m\033[22m %-5s", ""))
+#   if (check_python_installed()) {
+#     packageStartupMessage(sprintf("Python: %-47s", reticulate::py_config()$version))
+#   } else {
+#     stop("Python is not installed. This package requires Python to run Flair.")
+#   }
+#   if (!reticulate::py_module_available("flair")) {
+#     packageStartupMessage("Attempting to install Flair in Python...")
+#     system(paste(reticulate::py_config()$python, "-m pip3 install torch torchvision torchaudio"))
+#     if (!reticulate::py_module_available("flair")) {
+#       packageStartupMessage("Failed to install Flair. This package requires Flair. Please ensure Flair is installed in Python manually.")
+#     } else {
+#       packageStartupMessage(sprintf("Flair: %-47s", get_flair_version()))
+#     }
+#   } else {
+#     packageStartupMessage(sprintf("Flair: %-47s", get_flair_version()))
+#     packageStartupMessage("Flair NLP can be successfully imported in R via {flaiR} ! \U1F44F")
+#   }
+# }
+
+
 #'
 #'
 #' #' On load actions for the flaiR package

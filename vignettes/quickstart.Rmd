@@ -20,7 +20,7 @@ knitr::opts_chunk$set(
 ```{r include=FALSE}
 library(reticulate)
 library(flaiR)
-reticulate::py_install("flair")
+# reticulate::py_install("flair")
 system(paste(reticulate::py_config()$python, "-m pip install flair"))
 ```
 
@@ -54,7 +54,15 @@ __System Requirement:__
 - Anaconda ___(highly recommended)___
 
 
-If you're using Python-based packages in R for the first time, such as {`flaiR`} or {`reticulate`}, you probably haven't installed a Conda environment yet. When loading flaiR in R, two main steps occur. First, __a [conda](https://docs.conda.io/projects/conda/en/4.6.0/_downloads/52a95608c49671267e40c689e0bc00ca/conda-cheatsheet.pdf) environment is created through {[reticulate](https://ugoproto.github.io/ugo_r_doc/pdf/reticulate.pdf)}__. During this process, you will observe numerous messages related to the installation of the Python environment and the Python flair module. Notably, flair has numerous dependencies, including libraries related to transformers (like the Pytorch, gensim, flair, etc). Thus, the installation might take some time to complete. 
+First, When first installing and loading the package, {flaiR} uses the system tool and goes through three evaluation stages. First and foremost, {flaiR} requires you to have at least Python 3 installed. If your device does not have Python 3, you will not be able to successfully install {flaiR}. Once this step is successful, the system further assesses whether you have the appropriate versions of PyTorch and Flair installed. The primary focus is on Flair, and if you haven't installed it, the message "Flair is installing from Python" will be displayed.
+
+During this process, you will observe numerous messages related to the installation of the Python environment and the Python flair module. Notably, flair has numerous dependencies, including libraries related to transformers (like the Pytorch, gensim, flair, etc). Thus, the installation might take some time to complete. 
+
+There's also another scenario to consider. If {flaiR} is unable to automatically install Flair and PyTorch, it will attempt to force the installation again. However, if this attempt fails, you'll encounter the message: "Failed to install Flair. {flaiR} requires Flair NLP. Please ensure Flair NLP is installed in Python manually." If you're using an Apple operating environment, it's essential at this point to check the compatibility of your M1/M2 chip with Python and Torch.  If there are any issues with the installation, feel free to ask in the <u>[Discussion](https://github.com/davidycliao/flaiR/discussions)</u>.
+
+
+&nbsp;
+
 
 When you copy the command below, you will generally be asked to upgrade the package. This is because this package operates on the {`reticulate`}, and when your packages in R are outdated, RStudio would likely display __“These packages have more recent versions available.”__ to prompt you to update. We recommend that you update.
 
@@ -64,14 +72,13 @@ remotes::install_github("davidycliao/flaiR", force = TRUE)
 library(flaiR)
 ```
 
-Afterward, you might see the message __"Virtual environment 'r-reticulate' successfully created."__ Next, you will be prompted to confirm whether or not you want to use `r-reticulate`. Enter __"Yes,"__ and it will automatically install `flair` via your conda environment in Python.  If there are any issues with the installation, feel free to ask in the <u>[Discussion](https://github.com/davidycliao/flaiR/discussions)</u>.
 
 
-{`flaiR`} can be used alongside your existing Python environment on your system without the need to specifically install Anaconda.
+<!-- {`flaiR`} can be used alongside your existing Python environment on your system without the need to specifically install [Anaconda](https://github.com/conda-forge/miniforge). -->
 
-However, we recommend using Anaconda with `flaiR`. `flaiR` can seamlessly integrate and utilize Python environments within Anaconda. This means you can leverage environments managed by Anaconda for use with `flaiR`.
+<!-- However, we recommend using Anaconda with `flaiR`. `flaiR` can seamlessly integrate and utilize Python environments within Anaconda. This means you can leverage environments managed by Anaconda for use with `flaiR`. -->
 
-Anaconda provides a virtual environment management tool that allows you to easily create, switch, and delete independent Python environments.  This is more flexible than using the pure Python `pip` package manager, especially when dealing with dependency issues. Additionally, Anaconda offers many pre-compiled binary packages that are typically easier to install and avoid compilation dependency problems.
+<!-- Anaconda provides a virtual environment management tool that allows you to easily create, switch, and delete independent Python environments.  This is more flexible than using the pure Python `pip` package manager, especially when dealing with dependency issues. Additionally, Anaconda offers many pre-compiled binary packages that are typically easier to install and avoid compilation dependency problems. -->
 
 
 
