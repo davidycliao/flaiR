@@ -97,9 +97,9 @@
       paste(python_path, "-m pip install flair")
     )
 
-    vapply(commands, system)
-    flair_check_again <- check_flair_version()
+    vapply(commands, system, FUN.VALUE = integer(1))
 
+    flair_check_again <- check_flair_version()
     if (isFALSE(flair_check_again[[2]])) {
       packageStartupMessage("Failed to install Flair. {flaiR} requires Flair NLP. Please ensure Flair NLP is installed in Python manually.")
       }
