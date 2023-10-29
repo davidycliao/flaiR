@@ -27,7 +27,6 @@
 #' @importFrom reticulate py_config
 #' @importFrom reticulate use_python
 #' @export
-#'
 .onAttach <- function(...) {
   # Specify Python path explicitly
   python_path <- Sys.which("python3")
@@ -85,8 +84,7 @@
     packageStartupMessage(paste(flair_version[[1]], torch_version[[1]], sep = " | "))
     packageStartupMessage("Flair NLP can be successfully imported in R via {flaiR} ! \U1F44F")
     reticulate::use_python(Sys.which("python3"))
-    py_config()
-  }
+    }
 
   # 3. Test the command manually
   # test_flair_command <- paste(python_path, "-c 'import flair'")
