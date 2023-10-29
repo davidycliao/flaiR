@@ -84,13 +84,11 @@
     return(list(paste("flair", paste0("\033[32m", "\u2713", "\033[39m") ,result[1], sep = " "), TRUE))
   }
 
-  flair_version <- check_flair_version()
-  torch_version <- check_torch_version()
+  flair_version <- suppressWarnings(check_flair_version())
+  torch_version <- suppressWarnings(check_torch_version())
 
   if (isFALSE(flair_version[[2]])) {
-    # system(paste(reticulate::py_config()$python, "-m pip install flair"))
     packageStartupMessage(sprintf(" Flair %-50s", paste0("is installing from Python")))
-
     commands <- c(
       paste(python_path, "-m pip install --upgrade pip"),
       paste(python_path, "-m pip install torch"),
@@ -99,8 +97,8 @@
 
     vapply(commands, system, FUN.VALUE = integer(1))
 
-    flair_check_again <- check_flair_version()
-    if (isFALSE(flair_check_again[[2]])) {
+    re_installation <- suppressWarnings(check_flair_version())
+    if (isFALSE(reinstallation[[2]])) {
       packageStartupMessage("Failed to install Flair. {flaiR} requires Flair NLP. Please ensure Flair NLP is installed in Python manually.")
       }
     } else {
