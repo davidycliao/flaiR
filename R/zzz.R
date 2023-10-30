@@ -41,26 +41,26 @@
   }
 
   # Check if PyTorch is genuinely installed and its version
-  check_torch_version <- function() {
-    torch_version_command <- paste(python_path, "-c 'import torch; print(torch.__version__)'")
-    result <- system(torch_version_command, intern = TRUE)
-    if (length(result) == 0 || result[1] == "ERROR" || is.na(result[1])) {
-      return(list(paste("PyTorch", paste0("\033[31m", "\u2717", "\033[39m"), sep = " "), FALSE))
-    }
-    # Return flair version
-    return(list(paste("PyTorch", paste0("\033[32m", "\u2713", "\033[39m") ,result[1], sep = " "), TRUE))
-  }
+  # check_torch_version <- function() {
+  #   torch_version_command <- paste(python_path, "-c 'import torch; print(torch.__version__)'")
+  #   result <- system(torch_version_command, intern = TRUE)
+  #   if (length(result) == 0 || result[1] == "ERROR" || is.na(result[1])) {
+  #     return(list(paste("PyTorch", paste0("\033[31m", "\u2717", "\033[39m"), sep = " "), FALSE))
+  #   }
+  #   # Return flair version
+  #   return(list(paste("PyTorch", paste0("\033[32m", "\u2713", "\033[39m") ,result[1], sep = " "), TRUE))
+  # }
 
   # Check if flair is genuinely installed and its version
-  check_flair_version <- function() {
-    flair_version_command <- paste(python_path, "-c 'import flair; print(flair.__version__)'")
-    result <- system(flair_version_command, intern = TRUE)
-    if (length(result) == 0 || result[1] == "ERROR" || is.na(result[1])) {
-      return(list(paste("flair", paste0("\033[31m", "\u2717", "\033[39m"), sep = " "), FALSE))
-    }
-    # Return flair version
-    return(list(paste("flair", paste0("\033[32m", "\u2713", "\033[39m") ,result[1], sep = " "), TRUE))
-  }
+  # check_flair_version <- function() {
+  #   flair_version_command <- paste(python_path, "-c 'import flair; print(flair.__version__)'")
+  #   result <- system(flair_version_command, intern = TRUE)
+  #   if (length(result) == 0 || result[1] == "ERROR" || is.na(result[1])) {
+  #     return(list(paste("flair", paste0("\033[31m", "\u2717", "\033[39m"), sep = " "), FALSE))
+  #   }
+  #   # Return flair version
+  #   return(list(paste("flair", paste0("\033[32m", "\u2713", "\033[39m") ,result[1], sep = " "), TRUE))
+  # }
 
   flair_version <- suppressWarnings(check_flair_version())
   torch_version <- suppressWarnings(check_torch_version())
@@ -85,16 +85,6 @@
     packageStartupMessage("Flair NLP can be successfully imported in R via {flaiR} ! \U1F44F")
     reticulate::use_python(Sys.which("python3"))
     }
-
-  # 3. Test the command manually
-  # test_flair_command <- paste(python_path, "-c 'import flair'")
-  # test_result <- try(system(test_flair_command, intern = TRUE, ignore.stderr = TRUE), silent = TRUE)
-
-  # if (inherits(test_result, "try-error")) {
-  #   warning("There was an issue while manually testing the flair import. This might mean flair isn't installed in Python.")
-  # } else {
-  #   packageStartupMessage("Flair NLP can be successfully imported in R via {flaiR} ! \U1F44F")
-  # }
 }
 
 
@@ -140,22 +130,3 @@
 #     packageStartupMessage("Flair NLP can be successfully imported in R via {flaiR} ! \U1F44F")
 #   }
 # }
-
-
-#'
-#'
-#' #' On load actions for the flaiR package
-#' #'
-#' #' This function is internally called when the flaiR package is loaded.
-#' #' It prints the versions of flaiR and its dependency, reticulate.
-#' #'
-#' #' @keywords internal
-#' .onLoad <- function() {
-#'   reticulate_version <- as.character(packageVersion("reticulate"))
-#'   flaiR_version <- as.character(packageVersion("flaiR"))
-#'   message("Loading {flaiR} (v", flaiR_version, ") with reticulate ", reticulate_version)
-#' }
-#'
-#'
-#'
-
