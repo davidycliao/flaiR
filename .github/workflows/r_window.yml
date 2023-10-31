@@ -207,6 +207,8 @@
 #       shell: Rscript {0}
 #
 
+
+
 name: R
 
 on: [push, pull_request]
@@ -244,6 +246,9 @@ jobs:
         tinytex::install_tinytex()
       shell: Rscript {0}
 
+    - name: List contents of TinyTeX bin directory (For Debugging)
+      run: Get-ChildItem -Path C:\Users\runneradmin\AppData\Roaming\TinyTeX\bin\win32
+
     - name: Add TinyTeX to PATH
       run: |
         echo "C:\Users\runneradmin\AppData\Roaming\TinyTeX\bin\win32" >> $GITHUB_PATH
@@ -252,8 +257,10 @@ jobs:
       run: echo $env:PATH
 
     - name: Test pdflatex using full path
-      run: |
-        C:\Users\runneradmin\AppData\Roaming\TinyTeX\bin\win32\pdflatex --version
+      run: & 'C:\Users\runneradmin\AppData\Roaming\TinyTeX\bin\win32\pdflatex.exe' --version
+
+    - name: Refresh environment variables (For Debugging)
+      run: $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
 
     - name: Install R dependencies
       run: |
