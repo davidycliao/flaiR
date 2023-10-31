@@ -256,8 +256,6 @@ jobs:
     - name: Print PATH (For Debugging)
       run: echo $env:PATH
 
-    - name: Test pdflatex using full path
-      run: & 'C:\Users\runneradmin\AppData\Roaming\TinyTeX\bin\win32\pdflatex.exe' --version
 
     - name: Refresh environment variables (For Debugging)
       run: $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
