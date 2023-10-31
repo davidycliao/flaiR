@@ -207,7 +207,6 @@
 #       shell: Rscript {0}
 #
 
-
 name: R
 
 on: [push, pull_request]
@@ -241,8 +240,8 @@ jobs:
 
     - name: Install TinyTeX
       run: |
-        install.packages('tinytex')
-        tinytex::install_tinytex()
+        install.packages('tinytex', repos = 'https://cran.rstudio.com/')
+        tinytex::install_tinytex(force_install = TRUE)
       shell: Rscript {0}
 
     - name: Add TinyTeX to PATH
@@ -271,5 +270,3 @@ jobs:
     - name: Check
       run: rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "error")
       shell: Rscript {0}
-
-
