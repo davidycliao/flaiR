@@ -246,8 +246,9 @@ jobs:
         tinytex::install_tinytex()
       shell: Rscript {0}
 
-    - name: List contents of TinyTeX bin directory (For Debugging)
-      run: Get-ChildItem -Path C:\Users\runneradmin\AppData\Roaming\TinyTeX\bin\win32
+    - name: Search for pdflatex.exe
+      run: |
+        Get-ChildItem -Path C:\Users\runneradmin\AppData\Roaming\ -Recurse -File | Where-Object { $_.Name -eq "pdflatex.exe" }
 
     - name: Add TinyTeX to PATH
       run: |
