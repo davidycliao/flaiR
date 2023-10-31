@@ -241,7 +241,7 @@ jobs:
     - name: Install TinyTeX
       run: |
         install.packages('tinytex', repos = 'https://cran.rstudio.com/')
-        tinytex::install_tinytex(force_install = TRUE)
+        tinytex::install_tinytex()
       shell: Rscript {0}
 
     - name: Add TinyTeX to PATH
