@@ -34,25 +34,30 @@
   # Depending on OS, determine Python command
   if (os_name == "Windows") {
     python_cmd <- "python"
+    python_path <- normalizePath(Sys.which(python_cmd), winslash = "/", mustWork = TRUE)
   } else {
     # For Linux and macOS
     python_cmd <- "python3"
+    python_path <- Sys.which(python_cmd)
   }
 
-  # Specify Python path explicitly
-  python_path <- Sys.which(python_cmd)
-
-  # Specify Python path explicitly
-  python_path <- Sys.which("python3")
+  # If Python path is empty, raise an error
   if (python_path == "") {
-    stop("Cannot locate the Python 3 path. Ensure Python 3 is installed and in your system's path.")
+    stop(paste("Cannot locate the", python_cmd, "path. Ensure it's installed and in your system's path."))
   }
 
-  # Check Python version
-  python_version <- system(paste(python_path, "--version"), intern = TRUE)
+  # Try to get Python version and handle any errors
+  tryCatch({
+    python_version <- system(paste(python_path, "--version"), intern = TRUE)
+  }, error = function(e) {
+    stop(paste("Failed to get Python version with path:", python_path, "Error:", e$message))
+  })
+
+  # Check if Python version is 2 or 3
   if (!grepl("Python 3", python_version)) {
     warning("You seem to be using Python 2. This package may require Python 3. Consider installing or using Python 3.")
   }
+
 
   # Check if PyTorch is genuinely installed and its version
   check_torch_version <- function() {
