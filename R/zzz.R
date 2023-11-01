@@ -24,11 +24,10 @@
 #'   to use within R using the \code{reticulate} package.
 #' }
 #' @keywords internal
-#' @importFrom reticulate py_config
 #' @importFrom reticulate use_python
 #' @export
 .onAttach <- function(...) {
-  # Check operating system
+  # Check operating system, mac by default
   os_name <- Sys.info()["sysname"]
 
   # Depending on OS, determine Python command
@@ -57,7 +56,6 @@
   if (!grepl("Python 3", python_version)) {
     warning("You seem to be using Python 2. This package may require Python 3. Consider installing or using Python 3.")
   }
-
 
   # Check if PyTorch is genuinely installed and its version
   check_torch_version <- function() {
@@ -102,9 +100,11 @@
     packageStartupMessage(sprintf("\033[1m\033[34mflaiR\033[39m\033[22m: \033[1m\033[33mAn R Wrapper for Accessing Flair NLP\033[39m\033[22m %-5s", ""))
     packageStartupMessage(paste(flair_version[[1]], torch_version[[1]], sep = " | "))
     packageStartupMessage("Flair NLP can be successfully imported in R via {flaiR} ! \U1F44F")
-    reticulate::use_python(Sys.which("python3"))
+    Sys.setenv(RETICULATE_PYTHON = Sys.which("python3"))
     }
 }
+
+
 
 # .onAttach <- function(...) {
 #   # Specify Python path explicitly
