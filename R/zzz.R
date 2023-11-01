@@ -76,7 +76,8 @@
       return(list(paste("flair", paste0("\033[31m", "\u2717", "\033[39m"), sep = " "), FALSE))
     }
     # Return flair version
-    return(list(paste("flair", paste0("\033[32m", "\u2713", "\033[39m") ,result[1], sep = " "), TRUE))
+    # return(list(paste("Flair NLP", paste0("\033[32m", "\u2713", "\033[39m") ,result[1], sep = " "), TRUE))
+    return(list(result[1], TRUE))
   }
 
   flair_version <- suppressWarnings(check_flair_version())
@@ -97,9 +98,9 @@
       packageStartupMessage("Failed to install Flair. {flaiR} requires Flair NLP. Please ensure Flair NLP is installed in Python manually.")
     }
   } else {
-    packageStartupMessage(sprintf("\033[1m\033[34mflaiR\033[39m\033[22m: \033[1m\033[33mAn R Wrapper for Accessing Flair NLP\033[39m\033[22m %-5s", ""))
-    packageStartupMessage(paste(flair_version[[1]], torch_version[[1]], sep = " | "))
-    packageStartupMessage("Flair NLP can be successfully imported in R via {flaiR} ! \U1F44F")
+    packageStartupMessage(sprintf("\033[1m\033[34mflaiR\033[39m\033[22m: \033[1m\033[33mAn R Wrapper for Accessing Flair NLP\033[39m\033[22m %-5s", paste("\033[1m\033[33m", flair_version[1],"\033[39m\033[22m", sep = "")))
+    # packageStartupMessage(paste(flair_version[[1]], torch_version[[1]], sep = " | "))
+    # packageStartupMessage("Flair NLP can be successfully imported in R via {flaiR} ! \U1F44F")
     Sys.setenv(RETICULATE_PYTHON = Sys.which("python3"))
     }
 }
