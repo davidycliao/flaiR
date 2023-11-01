@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{check_device}
 \alias{check_device}
-\title{Check the Device for cccelerating PyTorch}
+\title{Check the Device for ccelerating PyTorch}
 \usage{
 check_device(device)
 }

@@ -10,8 +10,9 @@ flair_models.TextClassifier()
 A Python class representing flair.models.TextClassifier.
 }
 \description{
-This function utilizes the reticulate package to directly import TextClassifier from flair.models in the Flair NLP Python library.
-Ensure that the Python environment is properly set up and the Flair package is installed.
+This function utilizes the reticulate package to directly import
+TextClassifier from flair.models in the Flair NLP Python library. Ensure that
+the Python environment is properly set up and the Flair package is installed.
 }
 \examples{
 # Load the TextClassifier

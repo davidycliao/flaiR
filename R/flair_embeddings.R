@@ -64,7 +64,7 @@
 #' }
 #'
 #' \dontrun{
-#' # Example 6: Initialize DocumentPoolEmbeddings
+#' # Initialize DocumentPoolEmbeddings
 #' DocumentPoolEmbeddings <- flair_embeddings()$DocumentPoolEmbeddings
 #' WordEmbeddings <- flair_embeddings()$WordEmbeddings
 #' doc_embeddings <- DocumentPoolEmbeddings(list(WordEmbeddings('glove')))
@@ -82,7 +82,6 @@ flair_embeddings <- function() {
   flair_embeddings <- import('flair.embeddings')
   return(flair_embeddings)
 }
-
 
 
 #' @title Initializing a Class for Flair's Forward and Backward Embeddings
@@ -304,8 +303,9 @@ flair_embeddings.WordEmbeddings <- function(embeddings = "glove") {
 #' R users to leverage state-of-the-art NLP models.
 #'
 #' @seealso
-#' \link[flair]{https://github.com/flairNLP/flair} Flair's official GitHub repository.
+#' Flair's official GitHub repository: \url{https://github.com/flairNLP/flair}
 #'
+
 #' @examples
 #' \dontrun{
 #' embedding <- flair_embeddings.TransformerDocumentEmbeddings("bert-base-uncased")
@@ -385,7 +385,7 @@ flair_embeddings.TransformerDocumentEmbeddings <- function(model = "bert-base-un
 #' R users to leverage state-of-the-art NLP models.
 #'
 #' @seealso
-#' \link[flair]{https://github.com/flairNLP/flair} Flair's official GitHub repository.
+#' Flair's official GitHub repository: \url{https://github.com/flairNLP/flair}
 #'
 #' @examples
 #' \dontrun{

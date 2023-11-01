@@ -7,8 +7,29 @@
 .onAttach(...)
 }
 \description{
-This function is called when the flaiR package is loaded. \
-It provides messages detailing the versions of Python and Flair being used, a
-s well as other package details.
+The provided R code describes the \code{.onAttach} function for the \code{flaiR} package.
+This function is automatically invoked when the \code{flaiR} package is loaded. Its primary purpose
+is to set up and check the environment for the package and to display startup messages.
+.onAttach is triggered when the flaiR package gets loaded. It produces
+messages indicating the versions of Python and Flair in use and provides o
+ther details related to the package.
+}
+\details{
+\itemize{
+  \item \strong{Specifying Python Path:} The function starts by looking for the path of Python 3.
+  If it doesn't find it, it stops the package load with an error message.
+  \item \strong{Checking Python Version:} Next, the function checks whether the identified version
+  of Python is Python 3. If it's not, it emits a warning.
+  \item \strong{Checking PyTorch Version:} The function then checks if PyTorch is correctly installed
+  and fetches its version information.
+  \item \strong{Checking Flair Version:} It also checks if Flair is correctly installed and fetches
+  its version.
+  \item \strong{Installation Status of Flair:} If Flair isn't installed, the function attempts to install
+  PyTorch and Flair automatically using pip commands. If the installation fails, it produces an error message.
+  \item \strong{Success Message:} If all the checks pass, a message is displayed indicating that Flair can
+  be successfully imported in R via \code{flaiR}.
+  \item \strong{Specifying Python Version for Use:} Lastly, the function specifies which version of Python
+  to use within R using the \code{reticulate} package.
+}
 }
 \keyword{internal}

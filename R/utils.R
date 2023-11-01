@@ -39,7 +39,7 @@ clear_flair_cache <- function(...) {
 }
 
 
-#' Show Flair Cache Preloaed flair's Directory
+#' @title  Show Flair Cache Preloaed flair's Directory
 #'
 #' @description This function lists the contents of the flair cache directory
 #' and returns them as a data frame.
@@ -125,7 +125,8 @@ create_flair_env <- function(env = "r-reticulate") {
   }
 }
 
-#' Check the Device for cccelerating PyTorch
+
+#' @title Check the Device for ccelerating PyTorch
 #'
 #' @description This function verifies if the specified device is available for PyTorch.
 #' If CUDA is not available, a message is shown. Additionally, if the system
@@ -186,38 +187,26 @@ check_device <- function(device) {
 }
 
 
-#' Check the Specified Batch Size
+#' @title Check the Specified Batch Size
 #'
 #' @description Validates if the given batch size is a positive integer.
 #'
 #' @param batch_size Integer. The batch size to be checked.
 #' @keywords internal
-
 check_batch_size <- function(batch_size) {
   if (!is.numeric(batch_size) || batch_size <= 0 || (batch_size %% 1 != 0)) {
     stop("Invalid batch size. It must be a positive integer.")
   }
 }
 
-#' Check the texts and document IDs
+
+#' @title Check the texts and document IDs
 #'
 #' @description Validates if the given texts and document IDs are not NULL or empty.
 #'
 #' @param texts List. A list of texts.
 #' @param doc_ids List. A list of document IDs.
 #' @keywords internal
-
-# check_texts_and_ids <- function(texts, doc_ids) {
-#   if (is.null(texts) || length(texts) == 0) {
-#     stop("The texts cannot be NULL or empty.")
-#   }
-#   if (is.null(doc_ids) || length(doc_ids) == 0) {
-#     stop("The doc_ids cannot be NULL or empty.")
-#   }
-#   if (length(texts) != length(doc_ids)) {
-#     stop("The lengths of texts and doc_ids do not match.")
-#   }
-# }
 check_texts_and_ids <- function(texts, doc_ids) {
   if (is.null(texts) || length(texts) == 0) {
     stop("The texts cannot be NULL or empty.")
@@ -229,15 +218,11 @@ check_texts_and_ids <- function(texts, doc_ids) {
   } else if (length(texts) != length(doc_ids)) {
     stop("The lengths of texts and doc_ids do not match.")
   }
-
   list(texts = texts, doc_ids = doc_ids)
 }
 
 
-
-
-
-#' Check the `show.text_id` parameter
+#' @title Check the `show.text_id` Parameter
 #'
 #' @description Validates if the given `show.text_id` is a logical value.
 #'
@@ -249,7 +234,8 @@ check_show.text_id <- function(show.text_id) {
   }
 }
 
-#' Perform Garbage Collection Based on Condition
+
+#' @title  Perform Garbage Collection Based on Condition
 #'
 #' @description This function checks the value of `gc.active` to determine whether
 #' or not to perform garbage collection. If `gc.active` is `TRUE`,
@@ -285,7 +271,9 @@ check_and_gc <- function(gc.active) {
 #' @param language The language to check.
 #' @param supported_lan_models A vector of supported languages.
 #'
-#' @return This function does not return anything, but stops execution if the check fails.
+#' @return This function does not return anything, but stops execution if the
+#' check fails.
+#'
 #' @examples
 #' # Assuming 'en' is a supported language and 'abc' is not:
 #' check_language_supported("en", c("en", "de", "fr"))
@@ -301,6 +289,7 @@ check_language_supported <- function(language, supported_lan_models) {
                  ".")
   )
 }
+
 
 #' @title Check Environment Pre-requisites
 #'
@@ -339,20 +328,21 @@ check_prerequisites <- function(...) {
   return("All pre-requisites met.")
 }
 
+
 #' @title Retrieve Flair Version
 #'
 #' @description Gets the version of the installed Flair module in the current
 #' Python environment.
 #'
 #' @keywords internal
-#' @return Character string representing the version of Flair.
-#' If Flair is not installed, this may return `NULL` or cause an error
-#' (based on `reticulate` behavior).
+#' @return Character string representing the version of Flair. If Flair is not
+#' installed, this may return `NULL` or cause an error.
 get_flair_version <- function(...) {
   flair <- reticulate::import("flair")
   # Assuming flair has an attribute `__version__` (this might not be true)
   return(flair$`__version__`)
 }
+
 
 #' @title Check Flair
 #'
@@ -365,6 +355,7 @@ get_flair_version <- function(...) {
 check_flair_installed <- function(...) {
   return(reticulate::py_module_available("flair"))
 }
+
 
 #' @title Check for Available Python Installation
 #'
@@ -395,3 +386,99 @@ check_python_installed <- function(...) {
     return(FALSE)
   }
 }
+
+#' @title Check the installed version of the `transformers` library in Python
+#'
+#' @description This function checks the installed version of the `transformers` library in Python
+#' and returns a list containing a formatted string indicating success or failure
+#' and a boolean indicating the result.
+#'
+#' @return A list containing a string with the version check result and a boolean
+#'  indicating success (TRUE) or failure (FALSE).
+#'
+#' @keywords internal
+check_transformers_version <- function() {
+
+  transformers_version_command <- paste(python_path, "-c 'import transformers; print(transformers.__version__)'")
+  result <- system(transformers_version_command, intern = TRUE)
+
+  if (length(result) == 0 || result[1] == "ERROR" || is.na(result[1])) {
+    return(list(paste("transformers", paste0("\033[31m", "\u2717", "\033[39m"), sep = " "), FALSE))
+  }
+
+  # Return transformers version
+  return(list(paste("transformers", paste0("\033[32m", "\u2713", "\033[39m") ,result[1], sep = " "), TRUE))
+}
+
+
+#' @title Check the installed version of the `flair` library in Python
+#'
+#' @description This function checks the installed version of the `flair`
+#' library in Python and returns a list containing a formatted string indicating
+#' success or failure and a boolean indicating the result.
+#'
+#' @return A list containing a string with the version check result and a boolean indicating success (TRUE) or failure (FALSE).
+#' @keywords internal
+check_flair_version <- function() {
+
+  flair_version_command <- paste(python_path, "-c 'import flair; print(flair.__version__)'")
+  result <- system(flair_version_command, intern = TRUE)
+
+  if (length(result) == 0 || result[1] == "ERROR" || is.na(result[1])) {
+    return(list(paste("flair", paste0("\033[31m", "\u2717", "\033[39m"), sep = " "), FALSE))
+  }
+
+  # Return flair version
+  return(list(paste("flair", paste0("\033[32m", "\u2713", "\033[39m") ,result[1], sep = " "), TRUE))
+}
+
+
+#' @title Check the installed version of the `torch` library in Python
+#'
+#' @description This function checks the installed version of the `torch` library
+#' in Python. It returns a list containing a formatted string indicating
+#' success or failure  and a boolean indicating the result.
+#'
+#' @return A list containing a string with the version check result and a boolean
+#' indicating success (TRUE) or failure (FALSE).
+#' @keywords internal
+check_torch_version <- function() {
+
+  torch_version_command <- paste(python_path, "-c 'import torch; print(torch.__version__)'")
+  result <- system(torch_version_command, intern = TRUE)
+
+  if (length(result) == 0 || result[1] == "ERROR" || is.na(result[1])) {
+    return(list(paste("PyTorch", paste0("\033[31m", "\u2717", "\033[39m"), sep = " "), FALSE))
+  }
+
+  # Return PyTorch version
+  return(list(paste("PyTorch", paste0("\033[32m", "\u2713", "\033[39m"), result[1], sep = " "), TRUE))
+}
+
+
+#' @title Upgrade specific Python packages
+#'
+#' @description This function upgrades pip, transformers, flair, and numpy using
+#' pip.
+#'
+#' @return A numeric vector indicating the success or failure for each command.
+#'         A return value of 0 typically indicates success.
+#' @keywords internal
+upgrade_python_packages <- function() {
+
+  # Define commands to upgrade specific packages
+  python_path <- Sys.which("python3")
+  commands <- c(
+    paste(python_path, "-m pip install --upgrade pip"),
+    paste(python_path, "-m pip install --upgrade transformers"),
+    paste(python_path, "-m pip install --upgrade flair"),
+    paste(python_path, "-m pip install --upgrade numpy")
+  )
+
+  # Execute each command and capture the return status
+  return_statuses <- vapply(commands, system, FUN.VALUE = integer(1))
+
+  return(return_statuses)
+}
+
+

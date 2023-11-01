@@ -77,5 +77,5 @@ embedding = TransformerDocumentEmbeddings('bert-base-uncased')
 }
 }
 \seealso{
-\link[flair]{https://github.com/flairNLP/flair} Flair's official GitHub repository.
+Flair's official GitHub repository: \url{https://github.com/flairNLP/flair}
 }

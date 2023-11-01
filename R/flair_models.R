@@ -42,8 +42,9 @@ flair_models <- function() {
 
 #' @title Retrieve TextClassifier from flair.models
 #'
-#' @description This function utilizes the reticulate package to directly import TextClassifier from flair.models in the Flair NLP Python library.
-#' Ensure that the Python environment is properly set up and the Flair package is installed.
+#' @description This function utilizes the reticulate package to directly import
+#' TextClassifier from flair.models in the Flair NLP Python library. Ensure that
+#' the Python environment is properly set up and the Flair package is installed.
 #'
 #' @return A Python class representing flair.models.TextClassifier.
 #'
@@ -78,18 +79,22 @@ flair_models.TextClassifier <- function() {
   return(TextClassifier)
 }
 
+
 #' @title Access Flair's SequenceTagger
 #'
 #' @description
-#' This function utilizes the {reticulate} package to import the `SequenceTagger`s from Flair's models in Python,
-#' enabling interaction with Flair's sequence tagging models in an R environment.
+#' This function utilizes the {reticulate} package to import the `SequenceTagger`s
+#' from Flair's models in Python, enabling interaction with Flair's sequence
+#' tagging models in an R environment.
 #'
 #' @details
-#' The function does not take any parameters and directly returns the `SequenceTagger` when called, which can be used further
-#' for sequence tagging tasks using pre-trained models from Flair.
+#' The function does not take any parameters and directly returns the
+#' `SequenceTagger` when called, which can be used further for sequence tagging
+#' tasks using pre-trained models from Flair.
 #'
 #' @return
-#' A Python module (`SequenceTagger`) from Flair, which can be utilized to load and use sequence tagging models.
+#' A Python module (`SequenceTagger`) from Flair, which can be utilized to load
+#' and use sequence tagging models.
 #'
 #' @examples
 #' \dontrun{
@@ -105,7 +110,8 @@ flair_models.TextClassifier <- function() {
 #' }
 #'
 #' @seealso
-#' \url{https://github.com/flairNLP/flair} for more information on Flair's capabilities in NLP and sequence tagging.
+#' \url{https://github.com/flairNLP/flair} for more information on Flair's
+#' capabilities in NLP and sequence tagging.
 #'
 #' @export
 flair_models.Sequencetagger <- function() {
