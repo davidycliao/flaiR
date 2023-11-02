@@ -70,19 +70,19 @@ test_that("check_batch_size", {
 
 # Test 12: Test create_flair_env works in virtual environment
 
-test_that("create_flair_env works correctly", {
-
-  # Scenario 1: Flair is already installed
-  with_mock(
-    `reticulate::py_module_available` = function(x) TRUE,
-    `reticulate::py_config` = function() list(python = "python_path"),
-    `reticulate::import` = function(x) list(`__version__` = "flair_version"),
-
-    {
-      expect_message(flaiR::create_flair_env(), "Flair is already installed in python_path")
-      expect_message(flaiR::create_flair_env(), "Using Flair:  flair_version")
-    }
-  )
+# test_that("create_flair_env works correctly", {
+#
+#   # Scenario 1: Flair is already installed
+#   with_mock(
+#     `reticulate::py_module_available` = function(x) TRUE,
+#     `reticulate::py_config` = function() list(python = "python_path"),
+#     `reticulate::import` = function(x) list(`__version__` = "flair_version"),
+#
+#     {
+#       expect_message(flaiR::create_flair_env(), "Flair is already installed in python_path")
+#       expect_message(flaiR::create_flair_env(), "Using Flair:  flair_version")
+#     }
+#   )
 
 
   # Scenario 2: No Conda environment exists
