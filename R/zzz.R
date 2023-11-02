@@ -84,7 +84,7 @@
   torch_version <- suppressWarnings(check_torch_version())
 
   if (isFALSE(flair_version[[2]])) {
-    packageStartupMessage(sprintf(" Flair %-50s", paste0("is installing from Python")))
+    packageStartupMessage(sprintf(" Flair NLP %-50s", paste0("is installing from Python")))
     commands <- c(
       paste(python_path, "-m pip install --upgrade pip"),
       paste(python_path, "-m pip install torch"),

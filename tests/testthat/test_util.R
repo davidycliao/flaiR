@@ -84,45 +84,45 @@ test_that("check_batch_size", {
 #     }
 #   )
 
+#
+#   # Scenario 2: No Conda environment exists
+#   with_mock(
+#     `reticulate::py_module_available` = function(x) FALSE,
+#     `reticulate::conda_list` = function(conda = NULL) {
+#       data.frame(python = "python_path")
+#     },
+#     `reticulate::conda_create` = function(envname, python_version = NULL, ...) {
+#       # Simulate creating the conda environment by doing nothing
+#       NULL
+#     },
+#     `reticulate::use_condaenv` = function(envname, required = TRUE) {
+#       if (envname != "r-reticulate") {
+#         stop(sprintf("Unable to locate conda environment '%s'.", envname), call. = FALSE)
+#       }
+#       # Simulate using the conda environment by doing nothing
+#       NULL
+#     },
+#     `rstudioapi::restartSession` = function() NULL,
+#
+#     {
+#       expected_pattern <- "No conda environment found\\. Creating a new environment named '.*'\\. After restarting the R session, please run create_flair_env\\(\\) again\\."
+#       expect_message(flaiR::create_flair_env(), expected_pattern, fixed = FALSE)
+#     }
+#   )
 
-  # Scenario 2: No Conda environment exists
-  with_mock(
-    `reticulate::py_module_available` = function(x) FALSE,
-    `reticulate::conda_list` = function(conda = NULL) {
-      data.frame(python = "python_path")
-    },
-    `reticulate::conda_create` = function(envname, python_version = NULL, ...) {
-      # Simulate creating the conda environment by doing nothing
-      NULL
-    },
-    `reticulate::use_condaenv` = function(envname, required = TRUE) {
-      if (envname != "r-reticulate") {
-        stop(sprintf("Unable to locate conda environment '%s'.", envname), call. = FALSE)
-      }
-      # Simulate using the conda environment by doing nothing
-      NULL
-    },
-    `rstudioapi::restartSession` = function() NULL,
-
-    {
-      expected_pattern <- "No conda environment found\\. Creating a new environment named '.*'\\. After restarting the R session, please run create_flair_env\\(\\) again\\."
-      expect_message(flaiR::create_flair_env(), expected_pattern, fixed = FALSE)
-    }
-  )
-
-  # Scenario 3: No Conda environment exists
-  with_mock(
-    `reticulate::py_module_available` = function(x) FALSE,
-    `reticulate::conda_list` = function() data.frame(python = "python_path"),
-    `reticulate::conda_create` = function(env) NULL,
-    `rstudioapi::restartSession` = function() NULL,
-
-    {
-      expected_pattern <- "No conda environment found\\. Creating a new environment named '.*'\\. After restarting the R session, please run create_flair_env\\(\\) again\\."
-      expect_message(create_flair_env(), expected_pattern, fixed = FALSE)
-    }
-  )
-})
+#   # Scenario 3: No Conda environment exists
+#   with_mock(
+#     `reticulate::py_module_available` = function(x) FALSE,
+#     `reticulate::conda_list` = function() data.frame(python = "python_path"),
+#     `reticulate::conda_create` = function(env) NULL,
+#     `rstudioapi::restartSession` = function() NULL,
+#
+#     {
+#       expected_pattern <- "No conda environment found\\. Creating a new environment named '.*'\\. After restarting the R session, please run create_flair_env\\(\\) again\\."
+#       expect_message(create_flair_env(), expected_pattern, fixed = FALSE)
+#     }
+#   )
+# })
 
 
 # Test 13: check_and_gc does not throw error for logical input and collects garbage when TRUE

@@ -455,30 +455,84 @@ check_torch_version <- function() {
   return(list(paste("PyTorch", paste0("\033[32m", "\u2713", "\033[39m"), result[1], sep = " "), TRUE))
 }
 
+
+#' @title Install a Specific Python Package and Return Its Version
 #'
-#' #' @title Upgrade specific Python packages
-#' #'
-#' #' @description This function upgrades pip, transformers, flair, and numpy using
-#' #' pip.
-#' #'
-#' #' @return A numeric vector indicating the success or failure for each command.
-#' #'         A return value of 0 typically indicates success.
-#' #' @keywords internal
-#' upgrade_python_packages <- function() {
+#' @description This function checks for the Python interpreter's location (either
+#' specified by the user or automatically located), compares it with the current
+#' R session's Python setting, installs a specified Python package using the identified
+#' Python interpreter, and returns the package version and installation environment.
 #'
-#'   # Define commands to upgrade specific packages
-#'   python_path <- Sys.which("python3")
-#'   commands <- c(
-#'     paste(python_path, "-m pip install --upgrade pip"),
-#'     paste(python_path, "-m pip install --upgrade transformers"),
-#'     paste(python_path, "-m pip install --upgrade flair"),
-#'     paste(python_path, "-m pip install --upgrade numpy")
-#'   )
+#' @param package_name The name of the Python package to install.
+#' @param package_version The version of the Python package to install. If `NULL`,
+#'  the latest version is installed.
+#' @param python_path The path to the Python interpreter to be used for
+#' installation. If not provided, it defaults to the result of `Sys.which("python3")`.
+#' @return A list containing the package name, installed version, and the path
+#' to the Python interpreter used for installation.
 #'
-#'   # Execute each command and capture the return status
-#'   return_statuses <- vapply(commands, system, FUN.VALUE = integer(1))
-#'
-#'   return(return_statuses)
+#' @examples
+#' \dontrun{
+#' trainers <- flair_trainers()
+#' install_python_package(package_name ="flair", package_version ="0.12")
 #' }
+#' @export
+install_python_package <- function(package_name, package_version = NULL, python_path = Sys.which("python3")) {
+  # Check if a path is given or found by Sys.which
+  if (python_path == "") {
+    stop("Python is not installed, not found in the system PATH, or an incorrect path was provided.")
+  } else {
+    message("Using Python at: ", python_path)
+  }
+
+
+  # Define the full package reference
+  if (is.null(package_version)) {
+    package_ref <- package_name
+    warning(paste("The version of the Python package is not defined. Flair will automatically install the current version of ", "package_name", sep = " " ))
+  } else {
+    package_ref <- paste(package_name, "==", package_version, sep = "")
+  }
+
+  # Find Python path
+  python_path <- Sys.which("python3")
+
+  # Check if Python is found
+  if (python_path == "") {
+    stop("Python is not installed or not found in the system PATH.")
+  } else {
+    message("Python found at: ", python_path)
+  }
+
+  # Check if Python location is the same as the current session
+  sys_py <- system2(python_path, "-c 'import sys; print(sys.executable)'", stdout = TRUE)
+  r_py <- Sys.getenv("RETICULATE_PYTHON")
+  if (r_py != "" && normalizePath(sys_py) != normalizePath(r_py)) {
+    warning("Python location is not the same as the current R session.")
+  } else {
+    message("Python location is consistent with the current R session.")
+  }
+
+  # Install the specified package
+  install_command <- paste(python_path, "-m pip install", package_ref)
+  update_pip_first <- paste(python_path, "-m pip install --upgrade pip")
+  system(update_pip_first)
+  system(install_command)
+
+  # Check if the package is installed and get the version
+  check_version_command <- paste(python_path, "-c 'import", package_name, "; print(", package_name, ".__version__)'", sep=" ")
+  package_version_installed <- system(check_version_command, intern = TRUE)
+
+  if (length(package_version_installed) > 0 && !startsWith(package_version_installed, "Traceback")) {
+    message("Package '", package_name, "' installed successfully, version: ", package_version_installed)
+    return(list(
+      package_name = package_name,
+      package_version = package_version_installed,
+      python_path = python_path
+    ))
+  } else {
+    stop("Failed to install the package or retrieve the version.")
+  }
+}
 
 
