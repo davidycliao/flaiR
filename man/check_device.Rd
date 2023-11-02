@@ -2,14 +2,25 @@
 % Please edit documentation in R/utils.R
 \name{check_device}
 \alias{check_device}
-\title{Check the Device for ccelerating PyTorch}
+\title{Create or Use Python environment for Flair}
 \usage{
 check_device(device)
 }
 \arguments{
 \item{device}{Character. The device to be set for PyTorch.}
+
+\item{env}{The name of the conda environment to be used or
+created (default is "r-reticulate").}
+}
+\value{
+Nothing is returned. The function primarily ensures that the Python
+library Flair is installed and available.
 }
 \description{
+This function checks whether the Flair Python library is installed in the
+current Python environment. If it is not, it attempts to install it either
+in the current conda environment or creates a new one.
+
 This function verifies if the specified device is available for PyTorch.
 If CUDA is not available, a message is shown. Additionally, if the system
 is running on a Mac M1, MPS will be used instead of CUDA.

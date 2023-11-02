@@ -104,29 +104,29 @@ show_flair_cache <- function() {
 #' @export
 #' @importFrom reticulate import py_config use_condaenv
 #' @importFrom rstudioapi restartSession
-create_flair_env <- function(env = "r-reticulate") {
-  # check if flair is already installed in the current Python environment
-  if (reticulate::py_module_available("flair")) {
-    message("Environment creation stopped.", "\n", "Flair is already installed in ", reticulate::py_config()$python)
-    message(sprintf("Using Flair:  %-48s", reticulate::import("flair")$`__version__`))
-    return(invisible(NULL))
-  }
-  paths <- reticulate::conda_list()
-  env_path <- paths[grep("envs/", paths$python), "python"][1]
-  if (grepl("envs/", env_path)) {
-    message("you already created:", length(paths[grep("envs/", paths$python), "python"]))
-    message("you can run use_condaenv(",as.character(env_path),") to activate the enviroment in your R." )
-    reticulate::use_condaenv(env)
-  } else {
-    # No conda environment found or active, so create one
-    reticulate::conda_create(env)
-    message("No conda environment found. Creating a new environment named '", env, "'. ", "After restarting the R session, please run create_flair_env() again.")
-    rstudioapi::restartSession()
-  }
-}
+# create_flair_env <- function(env = "r-reticulate") {
+#   # check if flair is already installed in the current Python environment
+#   if (reticulate::py_module_available("flair")) {
+#     message("Environment creation stopped.", "\n", "Flair is already installed in ", reticulate::py_config()$python)
+#     message(sprintf("Using Flair:  %-48s", reticulate::import("flair")$`__version__`))
+#     return(invisible(NULL))
+#   }
+#   paths <- reticulate::conda_list()
+#   env_path <- paths[grep("envs/", paths$python), "python"][1]
+#   if (grepl("envs/", env_path)) {
+#     message("you already created:", length(paths[grep("envs/", paths$python), "python"]))
+#     message("you can run use_condaenv(",as.character(env_path),") to activate the enviroment in your R." )
+#     reticulate::use_condaenv(env)
+#   } else {
+#     # No conda environment found or active, so create one
+#     reticulate::conda_create(env)
+#     message("No conda environment found. Creating a new environment named '", env, "'. ", "After restarting the R session, please run create_flair_env() again.")
+#     rstudioapi::restartSession()
+#   }
+# }
 
 
-#' @title Check the Device for ccelerating PyTorch
+#' @title Check the Device for Accelerating PyTorch
 #'
 #' @description This function verifies if the specified device is available for PyTorch.
 #' If CUDA is not available, a message is shown. Additionally, if the system
@@ -455,30 +455,30 @@ check_torch_version <- function() {
   return(list(paste("PyTorch", paste0("\033[32m", "\u2713", "\033[39m"), result[1], sep = " "), TRUE))
 }
 
-
-#' @title Upgrade specific Python packages
 #'
-#' @description This function upgrades pip, transformers, flair, and numpy using
-#' pip.
+#' #' @title Upgrade specific Python packages
+#' #'
+#' #' @description This function upgrades pip, transformers, flair, and numpy using
+#' #' pip.
+#' #'
+#' #' @return A numeric vector indicating the success or failure for each command.
+#' #'         A return value of 0 typically indicates success.
+#' #' @keywords internal
+#' upgrade_python_packages <- function() {
 #'
-#' @return A numeric vector indicating the success or failure for each command.
-#'         A return value of 0 typically indicates success.
-#' @keywords internal
-upgrade_python_packages <- function() {
-
-  # Define commands to upgrade specific packages
-  python_path <- Sys.which("python3")
-  commands <- c(
-    paste(python_path, "-m pip install --upgrade pip"),
-    paste(python_path, "-m pip install --upgrade transformers"),
-    paste(python_path, "-m pip install --upgrade flair"),
-    paste(python_path, "-m pip install --upgrade numpy")
-  )
-
-  # Execute each command and capture the return status
-  return_statuses <- vapply(commands, system, FUN.VALUE = integer(1))
-
-  return(return_statuses)
-}
+#'   # Define commands to upgrade specific packages
+#'   python_path <- Sys.which("python3")
+#'   commands <- c(
+#'     paste(python_path, "-m pip install --upgrade pip"),
+#'     paste(python_path, "-m pip install --upgrade transformers"),
+#'     paste(python_path, "-m pip install --upgrade flair"),
+#'     paste(python_path, "-m pip install --upgrade numpy")
+#'   )
+#'
+#'   # Execute each command and capture the return status
+#'   return_statuses <- vapply(commands, system, FUN.VALUE = integer(1))
+#'
+#'   return(return_statuses)
+#' }
 
 
