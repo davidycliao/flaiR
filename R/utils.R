@@ -88,43 +88,43 @@ show_flair_cache <- function() {
   }
 }
 
-
-#' @title Create or Use Python environment for Flair
 #'
-#' @description
-#' This function checks whether the Flair Python library is installed in the
-#' current Python environment. If it is not, it attempts to install it either
-#' in the current conda environment or creates a new one.
+#' #' @title Create or Use Python environment for Flair
+#' #'
+#' #' @description
+#' #' This function checks whether the Flair Python library is installed in the
+#' #' current Python environment. If it is not, it attempts to install it either
+#' #' in the current conda environment or creates a new one.
+#' #'
+#' #' @param env The name of the conda environment to be used or
+#' #' created (default is "r-reticulate").
+#' #'
+#' #' @return Nothing is returned. The function primarily ensures that the Python
+#' #' library Flair is installed and available.
+#' #' @export
+#' #' @importFrom reticulate import py_config use_condaenv
+#' #' @importFrom rstudioapi restartSession
+#' create_flair_env <- function(env = "r-reticulate") {
+#'   # check if flair is already installed in the current Python environment
+#'   if (reticulate::py_module_available("flair")) {
+#'     message("Environment creation stopped.", "\n", "Flair is already installed in ", reticulate::py_config()$python)
+#'     message(sprintf("Using Flair:  %-48s", reticulate::import("flair")$`__version__`))
+#'     return(invisible(NULL))
+#'   }
+#'   paths <- reticulate::conda_list()
+#'   env_path <- paths[grep("envs/", paths$python), "python"][1]
+#'   if (grepl("envs/", env_path)) {
+#'     message("you already created:", length(paths[grep("envs/", paths$python), "python"]))
+#'     message("you can run use_condaenv(",as.character(env_path),") to activate the enviroment in your R." )
+#'     reticulate::use_condaenv(env)
+#'   } else {
+#'     # No conda environment found or active, so create one
+#'     reticulate::conda_create(env)
+#'     message("No conda environment found. Creating a new environment named '", env, "'. ", "After restarting the R session, please run create_flair_env() again.")
+#'     rstudioapi::restartSession()
+#'   }
+#' }
 #'
-#' @param env The name of the conda environment to be used or
-#' created (default is "r-reticulate").
-#'
-#' @return Nothing is returned. The function primarily ensures that the Python
-#' library Flair is installed and available.
-#' @export
-#' @importFrom reticulate import py_config use_condaenv
-#' @importFrom rstudioapi restartSession
-# create_flair_env <- function(env = "r-reticulate") {
-#   # check if flair is already installed in the current Python environment
-#   if (reticulate::py_module_available("flair")) {
-#     message("Environment creation stopped.", "\n", "Flair is already installed in ", reticulate::py_config()$python)
-#     message(sprintf("Using Flair:  %-48s", reticulate::import("flair")$`__version__`))
-#     return(invisible(NULL))
-#   }
-#   paths <- reticulate::conda_list()
-#   env_path <- paths[grep("envs/", paths$python), "python"][1]
-#   if (grepl("envs/", env_path)) {
-#     message("you already created:", length(paths[grep("envs/", paths$python), "python"]))
-#     message("you can run use_condaenv(",as.character(env_path),") to activate the enviroment in your R." )
-#     reticulate::use_condaenv(env)
-#   } else {
-#     # No conda environment found or active, so create one
-#     reticulate::conda_create(env)
-#     message("No conda environment found. Creating a new environment named '", env, "'. ", "After restarting the R session, please run create_flair_env() again.")
-#     rstudioapi::restartSession()
-#   }
-# }
-
 
 #' @title Check the Device for Accelerating PyTorch
 #'
@@ -185,7 +185,6 @@ check_device <- function(device) {
     return(pytorch$device("cpu"))
   }
 }
-
 
 #' @title Check the Specified Batch Size
 #'
@@ -473,7 +472,6 @@ check_torch_version <- function() {
 #'
 #' @examples
 #' \dontrun{
-#' trainers <- flair_trainers()
 #' install_python_package(package_name ="flair", package_version ="0.12")
 #' }
 #' @export
@@ -534,5 +532,52 @@ install_python_package <- function(package_name, package_version = NULL, python_
     stop("Failed to install the package or retrieve the version.")
   }
 }
+
+
+# install_python_package <- function(package_name, package_version = NULL, python_path = Sys.which("python3")) {
+#   if (python_path == "") {
+#     stop("Python is not installed, not found in the system PATH, or an incorrect path was provided.")
+#   } else {
+#     message("Using Python at: ", python_path)
+#   }
+#
+#   if (is.null(package_version)) {
+#     package_ref <- package_name
+#     warning("The version of the Python package is not defined. The latest version of the package will be installed.")
+#   } else {
+#     package_ref <- paste(package_name, "==", package_version, sep = "")
+#   }
+#
+#   # Upgrade pip before installing the package
+#   update_pip_command <- paste(python_path, "-m pip install --upgrade pip")
+#   if (system(update_pip_command, intern = TRUE) != 0) {
+#     warning("Failed to upgrade pip. Please check your Python installation.")
+#   }
+#
+#   # Install the specified package
+#   install_command <- paste(python_path, "-m pip install", package_ref)
+#   if (system(install_command, intern = TRUE) != 0) {
+#     stop("Failed to install the package. Please check the command and try again.")
+#   }
+#
+#   # Check if the package is installed and get the version
+#   check_version_command <- paste(python_path, "-c 'import", package_name, "; print(", package_name, ".__version__)'")
+#   package_version_installed <- tryCatch({
+#     system(check_version_command, intern = TRUE)
+#   }, error = function(e) {
+#     NA
+#   })
+#
+#   if (is.na(package_version_installed)) {
+#     stop("Failed to install the package or retrieve the version.")
+#   }
+#
+#   message("Package '", package_name, "' installed successfully, version: ", package_version_installed)
+#   return(list(
+#     package_name = package_name,
+#     package_version = package_version_installed,
+#     python_path = python_path
+#   ))
+# }
 
 

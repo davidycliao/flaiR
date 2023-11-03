@@ -34,10 +34,12 @@
   if (os_name == "Windows") {
     python_cmd <- "python"
     python_path <- normalizePath(Sys.which(python_cmd), winslash = "/", mustWork = TRUE)
+    return(python_path)
   } else {
     # For Linux and macOS
     python_cmd <- "python3"
     python_path <- Sys.which(python_cmd)
+    return(python_path)
   }
 
   # If Python path is empty, raise an error

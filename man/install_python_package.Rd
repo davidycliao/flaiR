@@ -31,7 +31,6 @@ Python interpreter, and returns the package version and installation environment
 }
 \examples{
 \dontrun{
-trainers <- flair_trainers()
 install_python_package(package_name ="flair", package_version ="0.12")
 }
 }

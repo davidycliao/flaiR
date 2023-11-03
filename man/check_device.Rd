@@ -2,28 +2,54 @@
 % Please edit documentation in R/utils.R
 \name{check_device}
 \alias{check_device}
-\title{Create or Use Python environment for Flair}
+\title{Check the Device for Accelerating PyTorch}
 \usage{
 check_device(device)
 }
 \arguments{
 \item{device}{Character. The device to be set for PyTorch.}
-
-\item{env}{The name of the conda environment to be used or
-created (default is "r-reticulate").}
-}
-\value{
-Nothing is returned. The function primarily ensures that the Python
-library Flair is installed and available.
 }
 \description{
-This function checks whether the Flair Python library is installed in the
-current Python environment. If it is not, it attempts to install it either
-in the current conda environment or creates a new one.
-
 This function verifies if the specified device is available for PyTorch.
 If CUDA is not available, a message is shown. Additionally, if the system
 is running on a Mac M1, MPS will be used instead of CUDA.
+}
+\details{
+#' @title Create or Use Python environment for Flair
+#'
+#' @description
+#' This function checks whether the Flair Python library is installed in the
+#' current Python environment. If it is not, it attempts to install it either
+#' in the current conda environment or creates a new one.
+#'
+#' @param env The name of the conda environment to be used or
+#' created (default is "r-reticulate").
+#'
+#' @return Nothing is returned. The function primarily ensures that the Python
+#' library Flair is installed and available.
+#' @export
+#' @importFrom reticulate import py_config use_condaenv
+#' @importFrom rstudioapi restartSession
+create_flair_env <- function(env = "r-reticulate") {
+  # check if flair is already installed in the current Python environment
+  if (reticulate::py_module_available("flair")) {
+    message("Environment creation stopped.", "\n", "Flair is already installed in ", reticulate::py_config()$python)
+    message(sprintf("Using Flair:  %-48s", reticulate::import("flair")$`__version__`))
+    return(invisible(NULL))
+  }
+  paths <- reticulate::conda_list()
+  env_path <- paths[grep("envs/", paths$python), "python"][1]
+  if (grepl("envs/", env_path)) {
+    message("you already created:", length(paths[grep("envs/", paths$python), "python"]))
+    message("you can run use_condaenv(",as.character(env_path),") to activate the enviroment in your R." )
+    reticulate::use_condaenv(env)
+  } else {
+    # No conda environment found or active, so create one
+    reticulate::conda_create(env)
+    message("No conda environment found. Creating a new environment named '", env, "'. ", "After restarting the R session, please run create_flair_env() again.")
+    rstudioapi::restartSession()
+  }
+}
 }
 \note{
 Flair NLP operates under the [PyTorch](https://pytorch.org) framework.

@@ -115,7 +115,6 @@
 #                          function(i) {process_text(texts[[i]], doc_ids[[i]])})
 #   rbindlist(results_list, fill = TRUE)
 # }
-
 get_entities <- function(texts, doc_ids = NULL, tagger = NULL, language = NULL,
                          show.text_id = FALSE, gc.active = FALSE) {
 
