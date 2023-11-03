@@ -7,57 +7,26 @@
 check_device(device)
 }
 \arguments{
-\item{device}{Character. The device to be set for PyTorch.}
+\item{device}{A character string specifying the device type.}
+}
+\value{
+A PyTorch device object.
 }
 \description{
 This function verifies if the specified device is available for PyTorch.
 If CUDA is not available, a message is shown. Additionally, if the system
-is running on a Mac M1, MPS will be used instead of CUDA.
+is running on a Mac M1, MPS will be used instead of CUDA. Checks if the specified device is compatible with the current system's
+hardware and operating system configuration, particularly for Mac systems
+with Apple M1/M2 silicon using Metal Performance Shaders (MPS).
 }
 \details{
-#' @title Create or Use Python environment for Flair
-#'
-#' @description
-#' This function checks whether the Flair Python library is installed in the
-#' current Python environment. If it is not, it attempts to install it either
-#' in the current conda environment or creates a new one.
-#'
-#' @param env The name of the conda environment to be used or
-#' created (default is "r-reticulate").
-#'
-#' @return Nothing is returned. The function primarily ensures that the Python
-#' library Flair is installed and available.
-#' @export
-#' @importFrom reticulate import py_config use_condaenv
-#' @importFrom rstudioapi restartSession
-create_flair_env <- function(env = "r-reticulate") {
-  # check if flair is already installed in the current Python environment
-  if (reticulate::py_module_available("flair")) {
-    message("Environment creation stopped.", "\n", "Flair is already installed in ", reticulate::py_config()$python)
-    message(sprintf("Using Flair:  %-48s", reticulate::import("flair")$`__version__`))
-    return(invisible(NULL))
-  }
-  paths <- reticulate::conda_list()
-  env_path <- paths[grep("envs/", paths$python), "python"][1]
-  if (grepl("envs/", env_path)) {
-    message("you already created:", length(paths[grep("envs/", paths$python), "python"]))
-    message("you can run use_condaenv(",as.character(env_path),") to activate the enviroment in your R." )
-    reticulate::use_condaenv(env)
-  } else {
-    # No conda environment found or active, so create one
-    reticulate::conda_create(env)
-    message("No conda environment found. Creating a new environment named '", env, "'. ", "After restarting the R session, please run create_flair_env() again.")
-    rstudioapi::restartSession()
-  }
-}
-}
-\note{
-Flair NLP operates under the [PyTorch](https://pytorch.org) framework.
-As such, we can use the `$to` method to set the device for the Flair Python
-library. `flair_device("cpu")`  allows you to select whether to use the CPU,
-CUDA devices (like cuda:0, cuda:1, cuda:2), or specific MPS devices on Mac
-(such as mps:0, mps:1, mps:2). For information on Accelerated PyTorch
-training on Mac, please refer to https://developer.apple.com/metal/pytorch/.
-For more about CUDA, please visit: https://developer.nvidia.com/cuda-zone.
+If MPS is available and the system meets the requirements, a device of type
+MPS will be returned. Otherwise, a CPU device will be used. The requirements
+for using MPS are as follows:\\cr
+- Mac computers with Apple silicon or AMD GPUs\\cr
+- macOS 12.3 or later\\cr
+- Python 3.7 or later\\cr
+- Xcode command-line tools installed (`xcode-select --install`)\\cr
+More information at: \url{https://developer.apple.com/metal/pytorch/}.
 }
 \keyword{internal}
