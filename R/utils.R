@@ -157,13 +157,13 @@ check_device <- function(device) {
       message("MPS is used on Mac M1/M2.")
       return(pytorch$device(device))
     } else {
-      warning("MPS requires macOS 12.3 or higher. Falling back to CPU.",
-              "\nTo use MPS, ensure the following requirements are met:",
-              "\n- Mac computers with Apple silicon or AMD GPUs",
-              "\n- macOS 12.3 or later",
-              "\n- Python 3.7 or later",
-              "\n- Xcode command-line tools installed (xcode-select --install)",
-              "\nMore information: https://developer.apple.com/metal/pytorch/")
+      warning("MPS requires macOS 12.3 or higher. Falling back to CPU.\\cr
+         To use MPS, ensure the following requirements are met:\\cr
+         - Mac computers with Apple silicon or AMD GPUs\\cr
+         - macOS 12.3 or later\\cr
+         - Python 3.7 or later\\cr
+         - Xcode command-line tools installed (xcode-select --install)\\cr
+         More information: https://developer.apple.com/metal/pytorch/")
       message("Using CPU.")
       return(pytorch$device("cpu"))
     }
