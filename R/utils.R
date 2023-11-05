@@ -481,4 +481,44 @@ install_python_package <- function(package_name, package_version = NULL, python_
 #   ))
 # }
 
+#' @title Uninstall a Python Package
+#'
+#' @description `uninstall_python_package` function uninstalls a specified Python
+#' package using the system's Python installation. It checks if Python is
+#' installed and accessible, then proceeds to uninstall the package. Finally,
+#' `uninstall_python_package` verifies that the package has been successfully uninstalled.
+#'
+#' @param package_name The name of the Python package to uninstall.
+#' @param python_path The path to the Python executable. If not provided, it uses the system's default Python path.
+#'
+#' @return Invisibly returns TRUE if the package is successfully uninstalled, otherwise it stops with an error message.
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' uninstall_python_package("numpy")
+#' }
+uninstall_python_package <- function(package_name, python_path = Sys.which("python3")) {
+  # Check if Python is installed or found in the system PATH
+  if (python_path == "") {
+    stop("Python is not installed, not found in the system PATH, or an incorrect path was provided.")
+  } else {
+    message("Using Python at: ", python_path)
+  }
+
+  # Uninstall the specified package
+  uninstall_command <- paste(python_path, "-m pip uninstall -y", package_name)
+  system(uninstall_command)
+
+  # Check if the package is still installed
+  check_uninstall_command <- paste(python_path, "-c 'import ", package_name, "'", sep="")
+  package_uninstall_check <- try(system(check_uninstall_command, intern = TRUE, ignore.stderr = TRUE), silent = TRUE)
+
+  if (inherits(package_uninstall_check, "try-error")) {
+    message("Package '", package_name, "' was successfully uninstalled.")
+    invisible(TRUE)
+  } else {
+    stop("Failed to uninstall the package. It may still be installed.")
+  }
+}
 

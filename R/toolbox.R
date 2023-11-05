@@ -120,6 +120,7 @@ highlight_text <- function(text, entities_mapping, font_family = "Arial") {
   return(HTML(justified_text))
 }
 
+
 #' @title Create Mapping for NER Highlighting
 #'
 #' @description This function generates a mapping list for Named Entity Recognition (NER)
