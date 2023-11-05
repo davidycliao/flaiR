@@ -211,3 +211,76 @@
 #     packageStartupMessage("Flair NLP can be successfully imported in R via {flaiR} ! \U1F44F")
 #   }
 # }
+
+
+
+#' @title On Load Function for Flair Package
+#' @description This function is executed when the flair package is loaded.
+#' It prints a message indicating that the package has been loaded and shows its version.
+#' @param libname Name of the library (not typically used in the function body).
+#' @param pkgname Name of the package, defaults to "flair".
+#' @importFrom utils packageVersion
+#' @export
+.onLoad <- function(libname, pkgname = "flair") {
+  # Check operating system, mac by default
+  os_name <- Sys.info()["sysname"]
+
+  # Depending on OS, determine Python command
+  if (os_name == "Windows") {
+    python_cmd <- "python"
+    python_path <- normalizePath(Sys.which(python_cmd), winslash = "/", mustWork = TRUE)
+    return(python_path)
+  } else {
+    # For Linux and macOS
+    python_cmd <- "python3"
+    python_path <- Sys.which(python_cmd)
+    return(python_path)
+  }
+
+  # If Python path is empty, raise an error
+  if (python_path == "") {
+    stop(paste("Cannot locate the", python_cmd, "path. Ensure it's installed and in your system's path."))
+  }
+
+  # Try to get Python version and handle any errors
+  tryCatch({
+    python_version <- system(paste(python_path, "--version"), intern = TRUE)
+  }, error = function(e) {
+    stop(paste("Failed to get Python version with path:", python_path, "Error:", e$message))
+  })
+
+  # Check if Python version is 2 or 3
+  if (!grepl("Python 3", python_version)) {
+    warning("You seem to be using Python 2. This package may require Python 3. Consider installing or using Python 3.")
+  }
+
+  # Check if PyTorch is genuinely installed and its version
+  check_torch_version <- function() {
+    torch_version_command <- paste(python_path, "-c 'import torch; print(torch.__version__)'")
+    result <- system(torch_version_command, intern = TRUE)
+    if (length(result) == 0 || result[1] == "ERROR" || is.na(result[1])) {
+      return(list(paste("PyTorch", paste0("\033[31m", "\u2717", "\033[39m"), sep = " "), FALSE))
+    }
+    # Return flair version
+    return(list(paste("PyTorch", paste0("\033[32m", "\u2713", "\033[39m") ,result[1], sep = " "), TRUE))
+  }
+
+  # Check if flair is genuinely installed and its version
+  check_flair_version <- function() {
+    flair_version_command <- paste(python_path, "-c 'import flair; print(flair.__version__)'")
+    result <- system(flair_version_command, intern = TRUE)
+    if (length(result) == 0 || result[1] == "ERROR" || is.na(result[1])) {
+      return(list(paste("flair", paste0("\033[31m", "\u2717", "\033[39m"), sep = " "), FALSE))
+    }
+    # Return flair version
+    # return(list(paste("Flair NLP", paste0("\033[32m", "\u2713", "\033[39m") ,result[1], sep = " "), TRUE))
+    return(list(result[1], TRUE))
+  }
+
+  flair_version <- suppressWarnings(check_flair_version())
+  torch_version <- suppressWarnings(check_torch_version())
+  packageStartupMessage("loading: ", pkgname, " ", utils::packageVersion(pkgname))
+  packageStartupMessage(sprintf("\033[1m\033[34mflaiR\033[39m\033[22m: \033[1m\033[33mAn R Wrapper for Accessing Flair NLP\033[39m\033[22m %-5s", paste("\033[1m\033[33m", flair_version[1],"\033[39m\033[22m", sep = "")))
+
+}
+
