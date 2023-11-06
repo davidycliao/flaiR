@@ -73,7 +73,7 @@
   if (!reticulate::py_module_available("flair")) {
     packageStartupMessage("flair NLP is not installed.")
     packageStartupMessage("flair NLP is installing in virtual environment: ", venv)
-    reticulate::py_install("flair==0.13", envname = venv)
+    reticulate::py_install("flair", envname = venv)
     if (!reticulate::py_module_available("flair")) {
       packageStartupMessage("Failed to install flair NLP. {flaiR} requires Flair NLP. Please ensure Flair NLP is installed in Python manually.")
     }
