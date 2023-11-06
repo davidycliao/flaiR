@@ -59,7 +59,9 @@ Flair also comes equipped with pre-trained models and context-aware capabilities
 
 <div style="text-align: justify">
 
-`flaiR` is built on top of the reticulate package and incorporates key functions to access the core features of __FlairNLP__, returning data in a tidy and clean [`data.table`](https://cran.r-project.org/web/packages/data.table/index.html). The installation consists of two parts: first, install [Python 3.8](https://www.python.org/downloads/) or higher, and second, install [R](https://cran.r-project.org) (version 3.6.3 or higher) along with RStudio. ~~Additionally, you'll also need [`Anaconda`](Anaconda) to assist `reticulate` in setting up your Python environment, as well as enabling your RStudio to identify the environment.~~
+`flaiR` is built on top of the reticulate package and incorporates key functions to access the core features of __FlairNLP__, returning data in a tidy and clean [`data.table`](https://cran.r-project.org/web/packages/data.table/index.html). 
+
+The installation consists of two parts: firstly, install [Python 3.8](https://www.python.org/downloads/) or above (available here; opt for the stable version, which currently goes up to 3.11, and avoid pre-release versions). Secondly, install R (version 3.6.3 or higher), along with RStudio. Additionally, you'll also need Anaconda to assist pip in safely and stably collecting dependencies for setting up your Python environment.
 
 
 __System Requirement:__
@@ -72,8 +74,11 @@ __System Requirement:__
 
 - Anaconda ___(highly recommended)___
 
+When first installing and loading the {flaiR} package, it utilizes the system environment tool and undergoes three evaluation stages for the automatic installation of Flair. Initially, flaiR requires at least Python 3 to be installed on your device. If Python 3 is not present, you will not be able to successfully install flaiR in R. At this point, it is essential to check if the correct version of Python is installed. We recommend installing Python 3.8 or a slightly higher version, but avoid installing pre-release versions.
 
-First, When first installing and loading the package, {flaiR} uses the system environment tool and goes through three evaluation stages. First, {flaiR} requires you to have at least Python 3 installed. If your device does not have Python 3, you will not be able to successfully install {flaiR}. Once this step is successful, the system further assesses whether you have the appropriate versions of PyTorch and Flair installed. The primary focus is on Flair, and if you haven't installed it, the message "Flair is installing from Python" will be displayed.
+Once this prerequisite is met, the installation process assesses whether the flair_env environment exists. This is to check if you are a new installer, in which case flaiR automatically creates an environment named flair_env through {reticulate}. If you already have `flair_env`, this step will be skipped when you reload {flaiR}.
+
+In terms of installation design, we have also accounted for situations where the installation of Python might be skipped, allowing for the automatic installation of flaiR in your R environment. This typically occurs if the installation fails. After a second attempt, if the installation still fails, the user will be prompted to install 'flair' manually."
 
 During this process, you will observe numerous messages related to the installation of the Python environment and the Python flair module. Notably, flair has numerous dependencies, including libraries related to transformers (like the Pytorch, gensim, flair, etc). Thus, the installation might take some time to complete. 
 
