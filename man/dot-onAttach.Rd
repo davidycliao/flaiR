@@ -2,34 +2,28 @@
 % Please edit documentation in R/zzz.R
 \name{.onAttach}
 \alias{.onAttach}
-\title{.onAttach Function for the flaiR Package}
+\title{Install Python Dependencies and Load the flaiR}
 \usage{
 .onAttach(...)
 }
+\arguments{
+\item{venv}{A character string specifying the name of the virtual environment.
+Default is 'flair_env'.}
+}
 \description{
-The provided R code describes the \code{.onAttach} function for the \code{flaiR} package.
-This function is automatically invoked when the \code{flaiR} package is loaded. Its primary purpose
-is to set up and check the environment for the package and to display startup messages.
-.onAttach is triggered when the flaiR package gets loaded. It produces
-messages indicating the versions of Python and Flair in use and provides o
-ther details related to the package.
+.onAttach sets up a virtual environment, checks for Python availability,
+and ensures the 'flair' module is installed in flair_env in Python.
 }
 \details{
+The function performs the following steps:
 \itemize{
-  \item \strong{Specifying Python Path:} The function starts by looking for the path of Python 3.
-  If it doesn't find it, it stops the package load with an error message.
-  \item \strong{Checking Python Version:} Next, the function checks whether the identified version
-  of Python is Python 3. If it's not, it emits a warning.
-  \item \strong{Checking PyTorch Version:} The function then checks if PyTorch is correctly installed
-  and fetches its version information.
-  \item \strong{Checking Flair Version:} It also checks if Flair is correctly installed and fetches
-  its version.
-  \item \strong{Installation Status of Flair:} If Flair isn't installed, the function attempts to install
-  PyTorch and Flair automatically using pip commands. If the installation fails, it produces an error message.
-  \item \strong{Success Message:} If all the checks pass, a message is displayed indicating that Flair can
-  be successfully imported in R via \code{flaiR}.
-  \item \strong{Specifying Python Version for Use:} Lastly, the function specifies which version of Python
-  to use within R using the \code{reticulate} package.
+  \item Checks if the virtual environment specified by \code{venv} exists.
+        If not, it creates the environment.
+  \item Activates the virtual environment.
+  \item Checks for the availability of Python. If Python is not available,
+        it displays an error message.
+  \item Checks if the 'flair' Python module is available in the virtual
+        environment. If not, it attempts to install 'flair'. If the
+        installation fails, it prompts the user to install 'flair' manually.
 }
 }
-\keyword{internal}
