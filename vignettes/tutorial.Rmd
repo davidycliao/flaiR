@@ -20,11 +20,10 @@ knitr::opts_chunk$set(
 
 
 ```{r, include = FALSE}
-# system(paste(Sys.which("python3"), "-m pip install --upgrade pip"))
-# system(paste(Sys.which("python3"), "-m pip install torch"))
-# system(paste(Sys.which("python3"), "-m pip install flair"))
-# Sys.setenv(RETICULATE_PYTHON = Sys.which("python3"))
-# library(flaiR)
+system(paste(Sys.which("python3"), "-m pip install --upgrade pip"))
+system(paste(Sys.which("python3"), "-m pip install torch"))
+system(paste(Sys.which("python3"), "-m pip install flair"))
+Sys.setenv(RETICULATE_PYTHON = Sys.which("python3"))
 library(flaiR)
 library(reticulate)
 # system(paste(reticulate::py_config()$python, "-m pip install flair"))
