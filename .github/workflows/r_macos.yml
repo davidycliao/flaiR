@@ -81,10 +81,16 @@ jobs:
         with:
           python-version: '3.8'
 
-      # Add this step to install flair
-      - name: Install flair
+      # Step to create and activate the Python virtual environment
+      - name: Create and activate virtual environment
         run: |
-          python -m pip install --upgrade pip
+          python -m venv flair_env
+          source flair_env/bin/activate
+
+      # Step to install flair within the virtual environment
+      - name: Install flair in virtual environment
+        run: |
+          pip install --upgrade pip
           pip install flair
 
       - name: Set up R ${{ matrix.r-version }}
@@ -101,3 +107,5 @@ jobs:
       - name: Check
         run: rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "error")
         shell: Rscript {0}
+
+
