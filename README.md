@@ -75,9 +75,15 @@ The installation consists of two parts: First, install [Python
 3.6.3](https://www.r-project.org) or higher. Although we have tested it
 on Github Action with R 3.6.2, we strongly recommend installing [R 4.0.0
 or above](https://github.com/davidycliao/flaiR/actions/runs/6416611291)
-to ensure compatibility between the R environment and {`reticulate`}. If
-there are any issues with the installation, feel free to ask in the
-<u>[Discussion](https://github.com/davidycliao/flaiR/discussions) </u>.
+to ensure compatibility between the R environment and {`reticulate`}.
+When first installed, {flaiR} automatically creates a virtual
+environment named `flair_env` through {reticulate} in R. The purpose of
+this is to prevent conflicts with dependencies required by flair that
+might arise from other packages installed on your system, and to ensure
+that pip can successfully collect all the dependencies needed for Flair
+NLP. If there are any issues with the installation, feel free to ask in
+the <u>[Discussion](https://github.com/davidycliao/flaiR/discussions)
+</u>.
 
 </div>
 
@@ -88,9 +94,7 @@ remotes::install_github("davidycliao/flaiR", force = TRUE)
 
 ``` r
 library(flaiR)
-#> flaiR: An R Wrapper for Accessing Flair NLP
-#> Python: 3.11                                           
-#> Flair: 0.12.2  
+#> flaiR: An R Wrapper for Accessing Flair NLP 0.12
 ```
 
 <br>
@@ -124,23 +128,3 @@ NLP](https://github.com/flairnlp/flair).
 </div>
 
 <br>
-
-## Citing the Contributions of `Flair NLP`
-
-<div style="text-align: justify">
-
-If you use this tool in academic research, we recommend citing the
-research article, [Contextual String Embeddings for Sequence
-Labeling](https://aclanthology.org/C18-1139.pdf) from
-[Flair](https://flairnlp.github.io) and [Zalando
-Research](https://engineering.zalando.com/posts/2018/11/zalando-research-releases-flair.html).
-
-</div>
-
-    @inproceedings{akbik2018coling,
-      title={Contextual String Embeddings for Sequence Labeling},
-      author={Akbik, Alan and Blythe, Duncan and Vollgraf, Roland},
-      booktitle = {{COLING} 2018, 27th International Conference on Computational Linguistics},
-      pages     = {1638--1649},
-      year      = {2018}
-    }
