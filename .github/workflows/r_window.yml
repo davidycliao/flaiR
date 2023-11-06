@@ -209,75 +209,6 @@
 
 
 
-# name: R
-#
-# on: [push, pull_request]
-#
-# jobs:
-#   build:
-#     runs-on: windows-latest
-#
-#     steps:
-#     - name: Check out repository
-#       uses: actions/checkout@v2
-#
-#     - name: Install pandoc
-#       run: |
-#         choco install pandoc
-#
-#     - name: Set up Python
-#       uses: actions/setup-python@v2
-#       with:
-#         python-version: '3.8'
-#
-#     - name: Install Python dependencies
-#       run: |
-#         python -m pip install --upgrade pip
-#         pip install flair
-#
-#     - name: Set up R
-#       uses: r-lib/actions/setup-r@v1
-#       with:
-#         r-version: '4.0.5'
-#
-#     - name: Install TinyTeX
-#       run: |
-#         install.packages('tinytex', repos = 'https://cran.rstudio.com/')
-#         tinytex::install_tinytex()
-#       shell: Rscript {0}
-#
-#     - name: Search for pdflatex.exe
-#       run: |
-#         Get-ChildItem -Path C:\Users\runneradmin\AppData\Roaming\ -Recurse -File | Where-Object { $_.Name -eq "pdflatex.exe" }
-#
-#     - name: Add TinyTeX to PATH
-#       run: |
-#         echo "C:\Users\runneradmin\AppData\Roaming\TinyTeX\bin\win32" >> $GITHUB_PATH
-#
-#     - name: Print PATH (For Debugging)
-#       run: echo $env:PATH
-#
-#
-#     - name: Refresh environment variables (For Debugging)
-#       run: $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
-#
-#     - name: Install R dependencies
-#       run: |
-#         install.packages(c("remotes", "rcmdcheck", "reticulate"))
-#         remotes::install_deps(dependencies = TRUE)
-#       shell: Rscript {0}
-#
-#     - name: Set Python Path for R reticulate
-#       run: |
-#         library(reticulate)
-#         use_python(Sys.which("python"), required = TRUE)
-#       shell: Rscript {0}
-#
-#     - name: Check
-#       run: rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "error")
-#       shell: Rscript {0}
-
-
 name: R
 
 on: [push, pull_request]
@@ -291,7 +222,8 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Install pandoc
-      run: choco install pandoc
+      run: |
+        choco install pandoc
 
     - name: Set up Python
       uses: actions/setup-python@v2
@@ -310,24 +242,92 @@ jobs:
 
     - name: Install TinyTeX
       run: |
-        install.packages('tinytex', repos = 'http://cran.rstudio.com/')
+        install.packages('tinytex', repos = 'https://cran.rstudio.com/')
         tinytex::install_tinytex()
       shell: Rscript {0}
 
+    - name: Search for pdflatex.exe
+      run: |
+        Get-ChildItem -Path C:\Users\runneradmin\AppData\Roaming\ -Recurse -File | Where-Object { $_.Name -eq "pdflatex.exe" }
+
+    - name: Add TinyTeX to PATH
+      run: |
+        echo "C:\Users\runneradmin\AppData\Roaming\TinyTeX\bin\win32" >> $GITHUB_PATH
+
+    - name: Print PATH (For Debugging)
+      run: echo $env:PATH
+
+
+    - name: Refresh environment variables (For Debugging)
+      run: $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
+
     - name: Install R dependencies
       run: |
-        install.packages(c("remotes", "rcmdcheck", "reticulate", "knitr"), repos = 'http://cran.rstudio.com/')
+        install.packages(c("remotes", "rcmdcheck", "reticulate"))
         remotes::install_deps(dependencies = TRUE)
       shell: Rscript {0}
 
     - name: Set Python Path for R reticulate
       run: |
         library(reticulate)
-        Sys.setenv(RETICULATE_PYTHON = Sys.which("python"))
-        reticulate::py_discover_config()
+        use_python(Sys.which("python"), required = TRUE)
       shell: Rscript {0}
 
     - name: Check
       run: rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "error")
       shell: Rscript {0}
+
+#
+# name: R
+#
+# on: [push, pull_request]
+#
+# jobs:
+#   build:
+#     runs-on: windows-latest
+#
+#     steps:
+#     - name: Check out repository
+#       uses: actions/checkout@v2
+#
+#     - name: Install pandoc
+#       run: choco install pandoc
+#
+#     - name: Set up Python
+#       uses: actions/setup-python@v2
+#       with:
+#         python-version: '3.8'
+#
+#     - name: Install Python dependencies
+#       run: |
+#         python -m pip install --upgrade pip
+#         pip install flair
+#
+#     - name: Set up R
+#       uses: r-lib/actions/setup-r@v1
+#       with:
+#         r-version: '4.0.5'
+#
+#     - name: Install TinyTeX
+#       run: |
+#         install.packages('tinytex', repos = 'http://cran.rstudio.com/')
+#         tinytex::install_tinytex()
+#       shell: Rscript {0}
+#
+#     - name: Install R dependencies
+#       run: |
+#         install.packages(c("remotes", "rcmdcheck", "reticulate", "knitr"), repos = 'http://cran.rstudio.com/')
+#         remotes::install_deps(dependencies = TRUE)
+#       shell: Rscript {0}
+#
+#     - name: Set Python Path for R reticulate
+#       run: |
+#         library(reticulate)
+#         Sys.setenv(RETICULATE_PYTHON = Sys.which("python"))
+#         reticulate::py_discover_config()
+#       shell: Rscript {0}
+#
+#     - name: Check
+#       run: rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "error")
+#       shell: Rscript {0}
 
