@@ -101,9 +101,11 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    # Add this step to install Python virtual environment tools
+    # Update and install Python virtual environment tools
     - name: Install Python virtual environment tools
-      run: sudo apt-get install python3-venv
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y python3-venv
 
     - uses: r-lib/actions/setup-r@v2
       with:
@@ -113,8 +115,8 @@ jobs:
       with:
         extra-packages: covr
 
-    # Debug: Install dependencies individually
-    - name: Debug Install dependencies
+    # Debug: Install R dependencies individually
+    - name: Debug Install R dependencies
       run: |
         Rscript -e 'install.packages("covr", dependencies = TRUE)'
         Rscript -e 'install.packages("sessioninfo", dependencies = TRUE)'
@@ -127,18 +129,20 @@ jobs:
     - name: Install pak
       run: Rscript -e 'install.packages("pak", repos = "https://r-lib.github.io/p/pak/stable/")'
 
-    # Debug: Explicitly set dependencies
-    - name: Set Dependencies
+    # Debug: Explicitly set R dependencies
+    - name: Set R Dependencies
       run: |
         Rscript -e 'pak::local_system_requirements(execute = TRUE)'
         Rscript -e 'pak::pkg_install("covr")'
         Rscript -e 'pak::pkg_install("sessioninfo")'
 
-    # Add this step to install Python and Flair
+    # Install Python and Flair
     - name: Install Python and Flair
       run: |
         sudo apt-get update
-        sudo apt-get install python3-pip
+        sudo apt-get install -y python3-pip
+        python3 --version
+        pip3 --version
         pip3 install flair
 
     - name: Test coverage
