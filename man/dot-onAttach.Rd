@@ -7,8 +7,7 @@
 .onAttach(...)
 }
 \arguments{
-\item{venv}{A character string specifying the name of the virtual environment.
-Default is 'flair_env'.}
+\item{...}{A character string specifying the name of the virtual environment.}
 }
 \description{
 .onAttach sets up a virtual environment, checks for Python availability,

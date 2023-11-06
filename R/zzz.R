@@ -3,8 +3,7 @@
 #' @description .onAttach sets up a virtual environment, checks for Python availability,
 #' and ensures the 'flair' module is installed in flair_env in Python.
 #'
-#' @param venv A character string specifying the name of the virtual environment.
-#'        Default is 'flair_env'.
+#' @param ... A character string specifying the name of the virtual environment.
 #'
 #' @details
 #' The function performs the following steps:
