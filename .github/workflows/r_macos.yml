@@ -6,52 +6,6 @@
 # See https://github.com/r-lib/actions/tree/master/examples#readme for
 # additional example workflows available for the R community.
 
-# name: R
-#
-# on:
-#   push:
-#     branches: [ "main" ]
-#   pull_request:
-#     branches: [ "main" ]
-#
-# permissions:
-#   contents: read
-#
-# jobs:
-#   build:
-#     runs-on: macos-latest
-#     strategy:
-#       matrix:
-#         r-version: ['4.0.0', '4.1.0', '4.1.1']
-#     steps:
-#       - uses: actions/checkout@v3
-#
-#       - name: Install pandoc
-#         run: |
-#           brew install pandoc
-#
-#       - name: Set up Python
-#         uses: actions/setup-python@v2
-#         with:
-#           python-version: '3.8'
-#
-#       - name: Set up R ${{ matrix.r-version }}
-#         uses: r-lib/actions/setup-r@v1
-#         with:
-#           r-version: ${{ matrix.r-version }}
-#
-#       - name: Install dependencies
-#         run: |
-#           install.packages(c("remotes", "rcmdcheck", "purrr"))
-#           remotes::install_deps(dependencies = TRUE)
-#         shell: Rscript {0}
-#
-#       - name: Check
-#         run: rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "error")
-#         shell: Rscript {0}
-
-
-
 name: R
 
 on:
@@ -81,18 +35,6 @@ jobs:
         with:
           python-version: '3.8'
 
-      # Step to create and activate the Python virtual environment
-      - name: Create and activate virtual environment
-        run: |
-          python -m venv flair_env
-          source flair_env/bin/activate
-
-      # Step to install flair within the virtual environment
-      - name: Install flair in virtual environment
-        run: |
-          pip install --upgrade pip
-          pip install flair
-
       - name: Set up R ${{ matrix.r-version }}
         uses: r-lib/actions/setup-r@v1
         with:
@@ -100,7 +42,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          install.packages(c("remotes", "rcmdcheck", "purrr", "knitr"))
+          install.packages(c("remotes", "rcmdcheck", "purrr"))
           remotes::install_deps(dependencies = TRUE)
         shell: Rscript {0}
 
