@@ -35,6 +35,9 @@ jobs:
         with:
           python-version: '3.8'
 
+      - name: Install Python dependencies
+        run: pip install flair==0.12.0
+
       - name: Set up R ${{ matrix.r-version }}
         uses: r-lib/actions/setup-r@v1
         with:

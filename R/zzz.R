@@ -68,6 +68,11 @@
   # Use the virtual environment
   reticulate::use_virtualenv(venv, required = TRUE)
 
+  # Print Python configuration information
+  packageStartupMessage("Current Python Configuration:")
+  print(reticulate::py_config())
+
+
   # Check and install flair if not available
   if (!reticulate::py_module_available("flair")) {
     packageStartupMessage("flair NLP is not installed.")
@@ -77,7 +82,7 @@
       packageStartupMessage("Failed to install flair NLP. {flaiR} requires Flair NLP. Please ensure Flair NLP is installed in Python manually.")
     }
   } else {
-    packageStartupMessage(sprintf(" \033[1m\033[34mflaiR\033[39m\033[22m: \033[1m\033[33mAn R Wrapper for Accessing Flair NLP\033[39m\033[22m %-5s", paste("\033[1m\033[33m",  get_flair_version(),"\033[39m\033[22m", sep = "")))
+    packageStartupMessage(sprintf("\033[1m\033[34mflaiR\033[39m\033[22m: \033[1m\033[33mAn R Wrapper for Accessing Flair NLP\033[39m\033[22m %-5s", paste("\033[1m\033[33m",  get_flair_version(),"\033[39m\033[22m", sep = "")))
   }
 }
 
