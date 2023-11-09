@@ -6,6 +6,17 @@
 # See https://github.com/r-lib/actions/tree/master/examples#readme for
 # additional example workflows available for the R community.
 
+name: R
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+permissions:
+  contents: read
+
 jobs:
   build:
     runs-on: macos-latest
@@ -27,7 +38,7 @@ jobs:
         run: |
           python -m venv flair_env
           source flair_env/bin/activate
-          pip install flair==0.12
+          pip install flair==0.12.0
 
       - name: Set up R ${{ matrix.r-version }}
         uses: r-lib/actions/setup-r@v1
@@ -43,5 +54,3 @@ jobs:
       - name: Check
         run: rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "error")
         shell: Rscript {0}
-
-
