@@ -38,7 +38,7 @@ jobs:
         run: |
           python -m venv flair_env
           source flair_env/bin/activate
-          pip install flair==0.12.0
+          pip install flair
 
       - name: Set up R ${{ matrix.r-version }}
         uses: r-lib/actions/setup-r@v1
