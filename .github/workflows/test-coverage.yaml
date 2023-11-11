@@ -1,13 +1,13 @@
 # Workflow derived from https://github.com/r-lib/actions/tree/v2/examples
 # Need help debugging build failures? Start at https://github.com/r-lib/actions#where-to-find-help
 
+name: test-coverage
+
 on:
   push:
     branches: [main, master]
   pull_request:
     branches: [main, master]
-
-name: test-coverage
 
 jobs:
   build:
@@ -17,39 +17,33 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+
     - uses: r-lib/actions/setup-r@v2
       with:
         use-public-rspm: true
+
     - uses: r-lib/actions/setup-r-dependencies@v2
       with:
         extra-packages: covr
 
-    # Debug: Install dependencies individually
-    - name: Debug Install dependencies
-      run: |
-        Rscript -e 'install.packages("covr", dependencies = TRUE)'
-        Rscript -e 'install.packages("sessioninfo", dependencies = TRUE)'
-    # Debug: Print session info
-    - name: Print Session Info
-      run: Rscript -e 'sessionInfo()'
-
-    # Install pak and other dependencies
-    - name: Install pak
-      run: Rscript -e 'install.packages("pak", repos = "https://r-lib.github.io/p/pak/stable/")'
-
-
-    # Debug: Explicitly set dependencies
-    - name: Set Dependencies
-      run: |
-        Rscript -e 'pak::local_system_requirements(execute = TRUE)'
-        Rscript -e 'pak::pkg_install("covr")'
-        Rscript -e 'pak::pkg_install("sessioninfo")'
-    # Add this step to install Python and Flair
-    - name: Install Python and Flair
+    # Install Python, venv, and Flair dependencies
+    - name: Install Python and Flair dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install python3-pip
+        sudo apt-get install -y python3-pip python3-venv
         pip3 install flair
+
+    # Optional: Set up a Python virtual environment
+    - name: Set up Python virtual environment
+      run: |
+        python3 -m venv venv
+        source venv/bin/activate
+
+    # Debug: Print session info after Python setup
+    - name: Print Session Info After Python Setup
+      run: Rscript -e 'sessionInfo()'
+
+    # Test coverage
     - name: Test coverage
       run: |
         covr::codecov(
@@ -59,6 +53,7 @@ jobs:
         )
       shell: Rscript {0}
 
+    # Debug: Print session info after test coverage
     - name: Show testthat output
       if: always()
       run: |
