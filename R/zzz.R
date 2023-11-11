@@ -1,5 +1,4 @@
 #' @title Install Python Dependencies and Load the flaiR
-
 #' @description .onAttach sets up a virtual environment, checks for Python availability,
 #' and ensures the 'flair' module is installed in flair_env in Python.
 #'
@@ -71,7 +70,6 @@
   # Print Python configuration information
   packageStartupMessage("Current Python Configuration:")
   print(reticulate::py_config())
-
 
   # Check and install flair if not available
   if (!reticulate::py_module_available("flair")) {
