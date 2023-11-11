@@ -58,7 +58,46 @@
 
 
 
-name: R
+# name: R
+#
+# on:
+#   push:
+#     branches: [ "main" ]
+#   pull_request:
+#     branches: [ "main" ]
+#
+# permissions:
+#   contents: read
+#
+# jobs:
+#   build:
+#     runs-on: macos-latest
+#     strategy:
+#       matrix:
+#         r-version: ['4.0.0', '4.1.0', '4.1.1']
+#     steps:
+#       - uses: actions/checkout@v3
+#
+#       - name: Install pandoc
+#         run: |
+#           brew install pandoc
+#       - name: Set up R ${{ matrix.r-version }}
+#         uses: r-lib/actions/setup-r@v1
+#         with:
+#           r-version: ${{ matrix.r-version }}
+#
+#       - name: Install dependencies
+#         run: |
+#           install.packages(c("remotes", "rcmdcheck"))
+#           remotes::install_deps(dependencies = TRUE)
+#         shell: Rscript {0}
+#
+#       - name: Check
+#         run: rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "error")
+#         shell: Rscript {0}
+
+
+name: R-CI
 
 on:
   push:
@@ -75,23 +114,45 @@ jobs:
     strategy:
       matrix:
         r-version: ['4.0.0', '4.1.0', '4.1.1']
+
     steps:
       - uses: actions/checkout@v3
 
       - name: Install pandoc
-        run: |
-          brew install pandoc
+        run: brew install pandoc
+
       - name: Set up R ${{ matrix.r-version }}
         uses: r-lib/actions/setup-r@v1
         with:
           r-version: ${{ matrix.r-version }}
 
-      - name: Install dependencies
+      - name: Install R dependencies
         run: |
           install.packages(c("remotes", "rcmdcheck"))
           remotes::install_deps(dependencies = TRUE)
         shell: Rscript {0}
 
-      - name: Check
+      - name: Check R package
         run: rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "error")
         shell: Rscript {0}
+
+      # Set up Python environment
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8' # Choose the Python version
+
+      # Install Miniconda
+      - name: Install Miniconda
+        run: |
+          wget https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh -O miniconda.sh
+          bash miniconda.sh -b -p $HOME/miniconda
+          echo "$HOME/miniconda/bin" >> $GITHUB_PATH
+
+      # Install PyTorch, torchvision, and torchaudio with Conda
+      - name: Install PyTorch with Conda
+        run: conda install pytorch=1.7.1 torchvision torchaudio -c pytorch
+
+      # Install Flair
+      - name: Install Flair
+        run: pip install flair
