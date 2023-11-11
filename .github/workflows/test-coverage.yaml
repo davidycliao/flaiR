@@ -1,88 +1,5 @@
 # Workflow derived from https://github.com/r-lib/actions/tree/v2/examples
 # Need help debugging build failures? Start at https://github.com/r-lib/actions#where-to-find-help
-#
-# on:
-#   push:
-#     branches: [main, master]
-#   pull_request:
-#     branches: [main, master]
-#
-# name: test-coverage
-#
-# jobs:
-#   build:
-#     runs-on: ubuntu-latest
-#     env:
-#       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
-#
-#     steps:
-#     - uses: actions/checkout@v2
-#     - uses: r-lib/actions/setup-r@v2
-#       with:
-#         use-public-rspm: true
-#     - uses: r-lib/actions/setup-r-dependencies@v2
-#       with:
-#         extra-packages: covr
-#
-#     # Debug: Install dependencies individually
-#     - name: Debug Install dependencies
-#       run: |
-#         Rscript -e 'install.packages("covr", dependencies = TRUE)'
-#         Rscript -e 'install.packages("sessioninfo", dependencies = TRUE)'
-#
-#     # Debug: Print session info
-#     - name: Print Session Info
-#       run: Rscript -e 'sessionInfo()'
-#
-#     # Install pak and other dependencies
-#     - name: Install pak
-#       run: Rscript -e 'install.packages("pak", repos = "https://r-lib.github.io/p/pak/stable/")'
-#
-#
-#     # Debug: Explicitly set dependencies
-#     - name: Set Dependencies
-#       run: |
-#         Rscript -e 'pak::local_system_requirements(execute = TRUE)'
-#         Rscript -e 'pak::pkg_install("covr")'
-#         Rscript -e 'pak::pkg_install("sessioninfo")'
-#
-#     # Add this step to install Python and Flair
-#     - name: Install Python and Flair
-#       run: |
-#         sudo apt-get update
-#         sudo apt-get install python3-pip
-#         pip3 install flair
-#
-#     - name: Test coverage
-#       run: |
-#         covr::codecov(
-#           quiet = FALSE,
-#           clean = FALSE,
-#           install_path = file.path(Sys.getenv("RUNNER_TEMP"), "package")
-#         )
-#       shell: Rscript {0}
-#
-#     - name: Show testthat output
-#       if: always()
-#       run: |
-#         find ${{ runner.temp }}/package -name 'testthat.Rout*' -exec cat '{}' \; || true
-#       shell: bash
-#
-#     - name: Upload test results
-#       if: failure()
-#       uses: actions/upload-artifact@v2
-#       with:
-#         name: coverage-test-failures
-#         path: ${{ runner.temp }}/package
-#
-#     - name: Cache R packages
-#       uses: actions/cache@v2
-#       with:
-#         path: ${{ env.R_LIBS_USER }}
-#         key: ${{ runner.os }}-${{ hashFiles('.github/R-dependencies') }}
-#         restore-keys: ${{ runner.os }}-
-#
-
 
 on:
   push:
@@ -100,35 +17,18 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-
-    # Install Python3-venv (new step added here)
-    - name: Install Python3-venv
-      run: sudo apt-get install -y python3-venv
-
-    # Update and install Python virtual environment tools
-    - name: Install Python virtual environment tools
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y python3-venv
     - uses: r-lib/actions/setup-r@v2
       with:
         use-public-rspm: true
-
-
-    - uses: r-lib/actions/setup-r@v2
-      with:
-        use-public-rspm: true
-
     - uses: r-lib/actions/setup-r-dependencies@v2
       with:
         extra-packages: covr
 
-    # Debug: Install R dependencies individually
-    - name: Debug Install R dependencies
+    # Debug: Install dependencies individually
+    - name: Debug Install dependencies
       run: |
         Rscript -e 'install.packages("covr", dependencies = TRUE)'
         Rscript -e 'install.packages("sessioninfo", dependencies = TRUE)'
-
     # Debug: Print session info
     - name: Print Session Info
       run: Rscript -e 'sessionInfo()'
@@ -137,22 +37,19 @@ jobs:
     - name: Install pak
       run: Rscript -e 'install.packages("pak", repos = "https://r-lib.github.io/p/pak/stable/")'
 
-    # Debug: Explicitly set R dependencies
-    - name: Set R Dependencies
+
+    # Debug: Explicitly set dependencies
+    - name: Set Dependencies
       run: |
         Rscript -e 'pak::local_system_requirements(execute = TRUE)'
         Rscript -e 'pak::pkg_install("covr")'
         Rscript -e 'pak::pkg_install("sessioninfo")'
-
-    # Install Python and Flair
+    # Add this step to install Python and Flair
     - name: Install Python and Flair
       run: |
         sudo apt-get update
-        sudo apt-get install -y python3-pip
-        python3 --version
-        pip3 --version
+        sudo apt-get install python3-pip
         pip3 install flair
-
     - name: Test coverage
       run: |
         covr::codecov(
