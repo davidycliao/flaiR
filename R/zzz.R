@@ -69,7 +69,12 @@
 
   # Print Python configuration information
   packageStartupMessage("Current Python Configuration:")
-  print(reticulate::py_config())
+  packageStartupMessage(capture.output(reticulate::py_config())[1])
+  packageStartupMessage(capture.output(reticulate::py_config())[2])
+  packageStartupMessage(capture.output(reticulate::py_config())[3])
+  packageStartupMessage(capture.output(reticulate::py_config())[4])
+  packageStartupMessage(capture.output(reticulate::py_config())[5])
+  packageStartupMessage(capture.output(reticulate::py_config())[6])
 
   # Check and install flair if not available
   if (!reticulate::py_module_available("flair")) {
