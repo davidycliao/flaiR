@@ -204,10 +204,9 @@ jobs:
         Rscript -e 'covr::codecov(
           quiet = FALSE,
           clean = FALSE,
-          install_path = file.path(Sys.getenv("RUNNER_TEMP"), "package")
+          install_path = file.path(Sys.getenv("RETICULATE_PYTHON"), "package")
         )'
       shell: bash
-
 
     - name: Show testthat output
       if: always()
