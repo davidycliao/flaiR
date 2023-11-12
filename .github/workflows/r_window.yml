@@ -8,7 +8,7 @@
 
 
 
-name: R
+name: R-Windows
 
 on: [push, pull_request]
 
@@ -72,6 +72,6 @@ jobs:
         use_python(Sys.which("python"), required = TRUE)
       shell: Rscript {0}
 
-    # - name: Check
-    #   run: rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "error")
-    #   shell: Rscript {0}
+    - name: Check
+      run: rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "error")
+      shell: Rscript {0}
