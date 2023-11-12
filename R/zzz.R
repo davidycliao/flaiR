@@ -18,6 +18,7 @@
 #' }
 #' @importFrom reticulate py_module_available
 #' @importFrom reticulate py_install
+#' @importFrom utils capture.output
 .onAttach <- function(...) {
 
   # Check operating system, mac by default
@@ -69,12 +70,7 @@
 
   # Print Python configuration information
   packageStartupMessage("Current Python Configuration:")
-  packageStartupMessage(capture.output(reticulate::py_config())[1])
-  packageStartupMessage(capture.output(reticulate::py_config())[2])
-  packageStartupMessage(capture.output(reticulate::py_config())[3])
-  packageStartupMessage(capture.output(reticulate::py_config())[4])
-  packageStartupMessage(capture.output(reticulate::py_config())[5])
-  packageStartupMessage(capture.output(reticulate::py_config())[6])
+  print(reticulate::py_config())
 
   # Check and install flair if not available
   if (!reticulate::py_module_available("flair")) {
