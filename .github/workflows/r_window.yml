@@ -72,6 +72,11 @@ jobs:
         use_python(Sys.which("python"), required = TRUE)
       shell: Rscript {0}
 
+    - name: Install rmarkdown
+      run: install.packages("rmarkdown")
+      shell: Rscript {0}
+
     - name: Check
       run: rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "error")
       shell: Rscript {0}
+
