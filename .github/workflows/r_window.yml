@@ -62,7 +62,7 @@ jobs:
 
     - name: Install R dependencies
       run: |
-        install.packages(c("remotes", "rcmdcheck", "reticulate"))
+        install.packages(c("remotes", "rcmdcheck", "reticulate", "rmarkdown"))
         remotes::install_deps(dependencies = TRUE)
       shell: Rscript {0}
 
