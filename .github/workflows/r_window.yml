@@ -82,7 +82,9 @@ jobs:
     - name: Install MiKTeX
       run: |
         choco install miktex
-        echo "C:\hostedtoolcache\windows\Python\3.10.11\x64" >> $GITHUB_PATH
+        # Add the path where MiKTeX's pdflatex is located to the system PATH
+        # Replace 'C:\path\to\miktex\bin' with the actual path where MiKTeX is installed
+        echo "C:\path\to\miktex\bin" >> $GITHUB_PATH
       shell: cmd
 
     - name: Check
