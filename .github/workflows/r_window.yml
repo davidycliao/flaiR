@@ -82,9 +82,8 @@ jobs:
     - name: Install MiKTeX
       run: |
         choco install miktex
-        echo "C:\Program Files\MiKTeX\miktex\bin\x64" >> $GITHUB_PATH
+        echo "C:\hostedtoolcache\windows\Python\3.10.11\x64" >> $GITHUB_PATH
       shell: cmd
-
 
     - name: Check
       run: rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "error")
