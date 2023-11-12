@@ -74,82 +74,142 @@
 #         key: ${{ runner.os }}-${{ hashFiles('.github/R-dependencies') }}
 #         restore-keys: ${{ runner.os }}-
 
+#
+# name: test-coverage
+#
+# on:
+#   push:
+#     branches: [main, master]
+#   pull_request:
+#     branches: [main, master]
+#
+# jobs:
+#   build:
+#     runs-on: ubuntu-latest
+#     env:
+#       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
+#
+#     steps:
+#     - uses: actions/checkout@v2
+#
+#     - uses: r-lib/actions/setup-r@v2
+#       with:
+#         use-public-rspm: true
+#
+#     - uses: r-lib/actions/setup-r-dependencies@v2
+#       with:
+#         extra-packages: covr
+#
+#     # 更新：安装特定版本的 Python 和所需的依赖
+#     - name: Install specific version of Python and Flair dependencies
+#       run: |
+#         sudo apt-get update
+#         sudo apt-get install -y python3.10-venv python3.10-distutils python3.10-dev
+#         python3.10 -m venv venv
+#         source venv/bin/activate
+#         pip install flair
+#
+#     # 新增：打印 Python 环境信息
+#     - name: Print Python environment info
+#       run: |
+#         source venv/bin/activate
+#         python --version
+#         pip list
+#
+#     # 更新：激活虚拟环境后再执行 R 脚本
+#     - name: Print Session Info After Python Setup
+#       run: |
+#         source venv/bin/activate
+#         Rscript -e 'sessionInfo()'
+#
+#     # 更新：Test coverage
+#     - name: Test coverage
+#       run: |
+#         source venv/bin/activate
+#         covr::codecov(
+#           quiet = FALSE,
+#           clean = FALSE,
+#           install_path = file.path(Sys.getenv("RUNNER_TEMP"), "package")
+#         )
+#       shell: Rscript {0}
+#
+#     # 现有步骤：Debugging and result upload
+#     - name: Show testthat output
+#       if: always()
+#       run: |
+#         find ${{ runner.temp }}/package -name 'testthat.Rout*' -exec cat '{}' \; || true
+#       shell: bash
+#
+#     - name: Upload test results
+#       if: failure()
+#       uses: actions/upload-artifact@v2
+#       with:
+#         name: coverage-test-failures
+#         path: ${{ runner.temp }}/package
+#
+#     - name: Cache R packages
+#       uses: actions/cache@v2
+#       with:
+#         path: ${{ env.R_LIBS_USER }}
+#         key: ${{ runner.os }}-${{ hashFiles('.github/R-dependencies') }}
+#         restore-keys: ${{ runner.os }}-
 
-name: test-coverage
 
-on:
-  push:
-    branches: [main, master]
-  pull_request:
-    branches: [main, master]
+name: R-Python Integration and Test Coverage
+
+on: [push, pull_request]
 
 jobs:
-  build:
+  build-and-test:
     runs-on: ubuntu-latest
-    env:
-      R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
 
     steps:
-    - uses: actions/checkout@v2
+    - name: Check out repository
+      uses: actions/checkout@v2
 
-    - uses: r-lib/actions/setup-r@v2
+    - name: Set up Python
+      uses: actions/setup-python@v2
       with:
-        use-public-rspm: true
+        python-version: '3.10.13'
 
-    - uses: r-lib/actions/setup-r-dependencies@v2
-      with:
-        extra-packages: covr
-
-    # 更新：安装特定版本的 Python 和所需的依赖
-    - name: Install specific version of Python and Flair dependencies
+    - name: Create and activate Python virtual environment
       run: |
-        sudo apt-get update
-        sudo apt-get install -y python3.10-venv python3.10-distutils python3.10-dev
-        python3.10 -m venv venv
+        python -m venv venv
         source venv/bin/activate
+        python -m pip install --upgrade pip
         pip install flair
 
-    # 新增：打印 Python 环境信息
-    - name: Print Python environment info
-      run: |
-        source venv/bin/activate
-        python --version
-        pip list
+    - name: Set up R
+      uses: r-lib/actions/setup-r@v2
+      with:
+        r-version: '4.3.2'
 
-    # 更新：激活虚拟环境后再执行 R 脚本
-    - name: Print Session Info After Python Setup
+    - name: Install R dependencies
       run: |
-        source venv/bin/activate
-        Rscript -e 'sessionInfo()'
+        install.packages('renv')
+        renv::restore()
+      shell: Rscript {0}
 
-    # 更新：Test coverage
-    - name: Test coverage
+    - name: Check renv status
+      run: Rscript -e 'renv::status()'
+
+    - name: Set Python Path for R reticulate
       run: |
-        source venv/bin/activate
-        covr::codecov(
+        echo "RETICULATE_PYTHON=$(pwd)/venv/bin/python" >> $GITHUB_ENV
+      shell: bash
+
+    - name: Run Test Coverage
+      run: |
+        Rscript -e 'reticulate::use_virtualenv("venv", required = TRUE)'
+        Rscript -e 'covr::codecov(
           quiet = FALSE,
           clean = FALSE,
           install_path = file.path(Sys.getenv("RUNNER_TEMP"), "package")
-        )
-      shell: Rscript {0}
+        )'
+      shell: bash
 
-    # 现有步骤：Debugging and result upload
     - name: Show testthat output
       if: always()
       run: |
-        find ${{ runner.temp }}/package -name 'testthat.Rout*' -exec cat '{}' \; || true
+        find /home/runner/work/_temp/package -name 'testthat.Rout*' -exec cat '{}' \; || true
       shell: bash
-
-    - name: Upload test results
-      if: failure()
-      uses: actions/upload-artifact@v2
-      with:
-        name: coverage-test-failures
-        path: ${{ runner.temp }}/package
-
-    - name: Cache R packages
-      uses: actions/cache@v2
-      with:
-        path: ${{ env.R_LIBS_USER }}
-        key: ${{ runner.os }}-${{ hashFiles('.github/R-dependencies') }}
-        restore-keys: ${{ runner.os }}-
