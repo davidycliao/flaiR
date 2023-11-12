@@ -18,7 +18,6 @@
 #' }
 #' @importFrom reticulate py_module_available
 #' @importFrom reticulate py_install
-#' @importFrom utils capture.output
 .onAttach <- function(...) {
 
   # Check operating system, mac by default
@@ -69,8 +68,8 @@
   reticulate::use_virtualenv(venv, required = TRUE)
 
   # Print Python configuration information
-  packageStartupMessage("Current Python Configuration:")
-  print(reticulate::py_config())
+  # packageStartupMessage("Current Python Configuration:")
+  # print(reticulate::py_config())
 
   # Check and install flair if not available
   if (!reticulate::py_module_available("flair")) {
@@ -84,5 +83,4 @@
     packageStartupMessage(sprintf("\033[1m\033[34mflaiR\033[39m\033[22m: \033[1m\033[33mAn R Wrapper for Accessing Flair NLP\033[39m\033[22m %-5s", paste("\033[1m\033[33m",  get_flair_version(),"\033[39m\033[22m", sep = "")))
   }
 }
-
 
