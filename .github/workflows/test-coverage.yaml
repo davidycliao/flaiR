@@ -200,13 +200,14 @@ jobs:
 
     - name: Run Test Coverage
       run: |
-        Rscript -e 'reticulate::use_virtualenv(env = Sys.getenv("RETICULATE_PYTHON"), required = TRUE)'
+        Rscript -e 'reticulate::use_virtualenv(Sys.getenv("RETICULATE_PYTHON"), required = TRUE)'
         Rscript -e 'covr::codecov(
           quiet = FALSE,
           clean = FALSE,
           install_path = file.path(Sys.getenv("RUNNER_TEMP"), "package")
         )'
       shell: bash
+
 
     - name: Show testthat output
       if: always()
