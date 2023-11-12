@@ -72,9 +72,22 @@ jobs:
         use_python(Sys.which("python"), required = TRUE)
       shell: Rscript {0}
 
-    - name: Install rmarkdown
-      run: install.packages("rmarkdown")
+    # - name: Install rmarkdown
+    #   run: install.packages("rmarkdown")
+    #   shell: Rscript {0}
+    #
+    # Add a step to restore packages using renv
+    - name: Restore R packages with renv
+      run: |
+        install.packages("renv")
+        renv::restore()
       shell: Rscript {0}
+
+    # Add a step to install MiKTeX for LaTeX on Windows
+    - name: Install MiKTeX
+      run: |
+        choco install miktex
+      shell: cmd
 
     - name: Check
       run: rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "error")
