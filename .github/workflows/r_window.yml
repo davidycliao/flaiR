@@ -151,8 +151,10 @@ jobs:
           renv::restore()
         shell: Rscript {0}
 
-      # No need to install MiKTeX as TinyTeX is already installed
       - name: Check
-        run: rcmdcheck::rcmdcheck(args = "--no-manual --no-build-vignettes", error_on = "error")
-        shell: Rscript {0}
+        run: |
+          R CMD build --no-build-vignettes .
+          R CMD check *tar.gz --no-manual
+        shell: bash
+
 
