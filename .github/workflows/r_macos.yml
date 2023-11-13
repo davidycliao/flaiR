@@ -116,8 +116,9 @@ jobs:
 
       - name: Install R dependencies
         run: |
-          install.packages(c("remotes", "rcmdcheck", "reticulate", "renv"))
-          renv::restore()
+          Rscript -e "install.packages(c('remotes', 'rcmdcheck', 'reticulate', 'renv'))"
+          Rscript -e "renv::restore()"
+        shell: bash
 
       # Set up Python environment
       - name: Set up Python
