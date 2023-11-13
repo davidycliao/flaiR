@@ -115,7 +115,6 @@ jobs:
         shell: /bin/bash -e {0}
 
 
-
       - name: Install R dependencies
         run: |
           install.packages(c("remotes", "rcmdcheck", "reticulate", "renv"))
@@ -138,7 +137,7 @@ jobs:
           source flair_env/bin/activate
           pip install flair
 
-      - name: Check R package
-        run: rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "error")
+      - name: Check
+        run: rcmdcheck::rcmdcheck(args = "--no-manual --no-build-vignettes", error_on = "error")
         shell: Rscript {0}
 

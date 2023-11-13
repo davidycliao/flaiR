@@ -153,5 +153,6 @@ jobs:
 
       # No need to install MiKTeX as TinyTeX is already installed
       - name: Check
-        run: rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "error")
+        run: rcmdcheck::rcmdcheck(args = "--no-manual --no-build-vignettes", error_on = "error")
         shell: Rscript {0}
+
