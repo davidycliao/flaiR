@@ -54,6 +54,16 @@
 #           R CMD check *tar.gz --as-cran
 
 
+name: R-ubuntu
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
 jobs:
   R-CMD-check:
     runs-on: ubuntu-20.04
