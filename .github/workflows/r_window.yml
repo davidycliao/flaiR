@@ -7,6 +7,89 @@
 # additional example workflows available for the R community.
 
 
+#
+# name: R-Windows
+#
+# on: [push, pull_request]
+#
+# jobs:
+#   build:
+#     runs-on: windows-latest
+#
+#     steps:
+#     - name: Check out repository
+#       uses: actions/checkout@v2
+#
+#     - name: Install pandoc
+#       run: |
+#         choco install pandoc
+#
+#     - name: Set up Python
+#       uses: actions/setup-python@v2
+#       with:
+#         python-version: '3.10.x'
+#
+#     - name: Install Python dependencies
+#       run: |
+#         python -m pip install --upgrade pip
+#         pip install flair
+#
+#     - name: Set up R
+#       uses: r-lib/actions/setup-r@v1
+#       with:
+#         r-version: '4.0.5'
+#
+#     - name: Install TinyTeX
+#       run: |
+#         install.packages('tinytex', repos = 'https://cran.rstudio.com/')
+#         tinytex::install_tinytex()
+#       shell: Rscript {0}
+#
+#     - name: Search for pdflatex.exe
+#       run: |
+#         Get-ChildItem -Path C:\Users\runneradmin\AppData\Roaming\ -Recurse -File | Where-Object { $_.Name -eq "pdflatex.exe" }
+#
+#     - name: Add TinyTeX to PATH
+#       run: |
+#         echo "C:\Users\runneradmin\AppData\Roaming\TinyTeX\bin\win32" >> $GITHUB_PATH
+#
+#     - name: Print PATH (For Debugging)
+#       run: echo $env:PATH
+#
+#
+#     - name: Refresh environment variables (For Debugging)
+#       run: $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
+#
+#     - name: Install R dependencies
+#       run: |
+#         install.packages(c("remotes", "rcmdcheck", "reticulate", "rmarkdown"))
+#         remotes::install_deps(dependencies = TRUE)
+#       shell: Rscript {0}
+#
+#     - name: Set Python Path for R reticulate
+#       run: |
+#         library(reticulate)
+#         use_python(Sys.which("python"), required = TRUE)
+#       shell: Rscript {0}
+#
+#     - name: Restore R packages with renv
+#       run: |
+#         install.packages("renv")
+#         renv::restore()
+#       shell: Rscript {0}
+#
+#     # Add a step to install MiKTeX for LaTeX on Windows
+#     - name: Install MiKTeX
+#       run: |
+#         choco install miktex
+#         echo "C:\Program Files\MiKTeX\miktex\bin\x64" >> $GITHUB_PATH
+#       shell: cmd
+#
+#     - name: Check
+#       run: rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "error")
+#       shell: Rscript {0}
+#
+
 
 name: R-Windows
 
@@ -17,75 +100,58 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - name: Check out repository
-      uses: actions/checkout@v2
+      - name: Check out repository
+        uses: actions/checkout@v2
 
-    - name: Install pandoc
-      run: |
-        choco install pandoc
+      - name: Install pandoc
+        run: choco install pandoc
 
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.10.x'
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.10.x'
 
-    - name: Install Python dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install flair
+      - name: Install Python virtualenv
+        run: pip install virtualenv
 
-    - name: Set up R
-      uses: r-lib/actions/setup-r@v1
-      with:
-        r-version: '4.0.5'
+      - name: Create Python virtual environment
+        run: virtualenv flair_env
 
-    - name: Install TinyTeX
-      run: |
-        install.packages('tinytex', repos = 'https://cran.rstudio.com/')
-        tinytex::install_tinytex()
-      shell: Rscript {0}
+      - name: Install Python dependencies in virtual environment
+        run: |
+          .\flair_env\Scripts\activate
+          pip install flair
 
-    - name: Search for pdflatex.exe
-      run: |
-        Get-ChildItem -Path C:\Users\runneradmin\AppData\Roaming\ -Recurse -File | Where-Object { $_.Name -eq "pdflatex.exe" }
+      - name: Set up R
+        uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: '4.0.5'
 
-    - name: Add TinyTeX to PATH
-      run: |
-        echo "C:\Users\runneradmin\AppData\Roaming\TinyTeX\bin\win32" >> $GITHUB_PATH
+      - name: Install TinyTeX
+        run: |
+          install.packages('tinytex', repos = 'https://cran.rstudio.com/')
+          tinytex::install_tinytex()
+        shell: Rscript {0}
 
-    - name: Print PATH (For Debugging)
-      run: echo $env:PATH
+      - name: Install R dependencies
+        run: |
+          install.packages(c("remotes", "rcmdcheck", "reticulate", "rmarkdown"))
+          remotes::install_deps(dependencies = TRUE)
+        shell: Rscript {0}
 
+      - name: Set Python Path for R reticulate
+        run: |
+          library(reticulate)
+          use_virtualenv("flair_env", required = TRUE)
+        shell: Rscript {0}
 
-    - name: Refresh environment variables (For Debugging)
-      run: $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
+      - name: Restore R packages with renv
+        run: |
+          install.packages("renv")
+          renv::restore()
+        shell: Rscript {0}
 
-    - name: Install R dependencies
-      run: |
-        install.packages(c("remotes", "rcmdcheck", "reticulate", "rmarkdown"))
-        remotes::install_deps(dependencies = TRUE)
-      shell: Rscript {0}
-
-    - name: Set Python Path for R reticulate
-      run: |
-        library(reticulate)
-        use_python(Sys.which("python"), required = TRUE)
-      shell: Rscript {0}
-
-    - name: Restore R packages with renv
-      run: |
-        install.packages("renv")
-        renv::restore()
-      shell: Rscript {0}
-
-    # # Add a step to install MiKTeX for LaTeX on Windows
-    # - name: Install MiKTeX
-    #   run: |
-    #     choco install miktex
-    #     echo "C:\Program Files\MiKTeX\miktex\bin\x64" >> $GITHUB_PATH
-    #   shell: cmd
-    #
-    # - name: Check
-    #   run: rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "error")
-    #   shell: Rscript {0}
-
+      # No need to install MiKTeX as TinyTeX is already installed
+      - name: Check
+        run: rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "error")
+        shell: Rscript {0}
