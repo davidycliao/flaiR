@@ -108,7 +108,13 @@ jobs:
       - name: Install LaTeX
         run: |
           brew install --cask mactex-no-gui
-          sudo tlmgr update --self --all
+          eval "$(/usr/libexec/path_helper)"
+
+      - name: Update tlmgr
+        run: sudo tlmgr update --self --all
+        shell: /bin/bash -e {0}
+
+
 
       - name: Install R dependencies
         run: |
