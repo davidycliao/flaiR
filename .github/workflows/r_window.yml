@@ -139,11 +139,11 @@ jobs:
           remotes::install_deps(dependencies = TRUE)
         shell: Rscript {0}
 
-      - name: Set Python Path for R reticulate
+      - name: Use Python Virtual Environment in R
         run: |
           library(reticulate)
-          use_virtualenv("flair_env", required = TRUE)
-        shell: Rscript {0}
+          use_virtualenv("D:/a/flaiR/flaiR/flair_env", required = TRUE)
+        shell: C:\R\bin\Rscript.EXE {0}
 
       - name: Restore R packages with renv
         run: |
