@@ -103,8 +103,8 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v2
 
-      # - name: Install pandoc
-      #   run: choco install pandoc
+      - name: Install pandoc
+        run: choco install pandoc
 
       - name: Set up Python
         uses: actions/setup-python@v2
@@ -127,11 +127,11 @@ jobs:
         with:
           r-version: '4.0.5'
 
-      # - name: Install TinyTeX
-      #   run: |
-      #     install.packages('tinytex', repos = 'https://cran.rstudio.com/')
-      #     tinytex::install_tinytex()
-      #   shell: Rscript {0}
+      - name: Install TinyTeX
+        run: |
+          install.packages('tinytex', repos = 'https://cran.rstudio.com/')
+          tinytex::install_tinytex()
+        shell: Rscript {0}
 
       - name: Install R dependencies
         run: |
