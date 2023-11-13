@@ -58,6 +58,17 @@ jobs:
           source flair_env/bin/activate
           pip install flair
 
+      # After setting up R
+      - name: Restore R packages with renv
+        run: |
+          install.packages("renv")
+          renv::restore()
+        shell: Rscript {0}
+
+      # Optionally, add a step to install LaTeX if PDF documentation is needed
+      - name: Install LaTeX
+        run: brew install --cask mactex
+
       - name: Check R package
         run: rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "error")
         shell: Rscript {0}
