@@ -39,7 +39,7 @@ clear_flair_cache <- function(...) {
 }
 
 
-#' Show Flair Cache Preloaed flair's Directory
+#' @title  Show Flair Cache Preloaed flair's Directory
 #'
 #' @description This function lists the contents of the flair cache directory
 #' and returns them as a data frame.
@@ -88,58 +88,28 @@ show_flair_cache <- function() {
   }
 }
 
-
-#' @title Create or Use Python environment for Flair
-#'
-#' @description
-#' This function checks whether the Flair Python library is installed in the
-#' current Python environment. If it is not, it attempts to install it either
-#' in the current conda environment or creates a new one.
-#'
-#' @param env The name of the conda environment to be used or
-#' created (default is "r-reticulate").
-#'
-#' @return Nothing is returned. The function primarily ensures that the Python
-#' library Flair is installed and available.
-#' @export
-#' @importFrom reticulate import py_config use_condaenv
-#' @importFrom rstudioapi restartSession
-create_flair_env <- function(env = "r-reticulate") {
-  # check if flair is already installed in the current Python environment
-  if (reticulate::py_module_available("flair")) {
-    message("Environment creation stopped.", "\n", "Flair is already installed in ", reticulate::py_config()$python)
-    message(sprintf("Using Flair:  %-48s", reticulate::import("flair")$`__version__`))
-    return(invisible(NULL))
-  }
-  paths <- reticulate::conda_list()
-  env_path <- paths[grep("envs/", paths$python), "python"][1]
-  if (grepl("envs/", env_path)) {
-    message("you already created:", length(paths[grep("envs/", paths$python), "python"]))
-    message("you can run use_condaenv(",as.character(env_path),") to activate the enviroment in your R." )
-    reticulate::use_condaenv(env)
-  } else {
-    # No conda environment found or active, so create one
-    reticulate::conda_create(env)
-    message("No conda environment found. Creating a new environment named '", env, "'. ", "After restarting the R session, please run create_flair_env() again.")
-    rstudioapi::restartSession()
-  }
-}
-
-#' Check the Device for cccelerating PyTorch
+#' @title Check the Device for Accelerating PyTorch
 #'
 #' @description This function verifies if the specified device is available for PyTorch.
 #' If CUDA is not available, a message is shown. Additionally, if the system
-#' is running on a Mac M1, MPS will be used instead of CUDA.
+#' is running on a Mac M1, MPS will be used instead of CUDA. Checks if the specified device is compatible with the current system's
+#' hardware and operating system configuration, particularly for Mac systems
+#' with Apple M1/M2 silicon using Metal Performance Shaders (MPS).
 #'
-#' @note Flair NLP operates under the [PyTorch](https://pytorch.org) framework.
-#' As such, we can use the `$to` method to set the device for the Flair Python
-#' library. `flair_device("cpu")`  allows you to select whether to use the CPU,
-#' CUDA devices (like cuda:0, cuda:1, cuda:2), or specific MPS devices on Mac
-#' (such as mps:0, mps:1, mps:2). For information on Accelerated PyTorch
-#' training on Mac, please refer to https://developer.apple.com/metal/pytorch/.
-#' For more about CUDA, please visit: https://developer.nvidia.com/cuda-zone.
+#' @details
+#' If MPS is available and the system meets the requirements, a device of type
+#' MPS will be returned. Otherwise, a CPU device will be used. The requirements
+#' for using MPS are as follows:\\cr
+#' - Mac computers with Apple silicon or AMD GPUs\\cr
+#' - macOS 12.3 or later\\cr
+#' - Python 3.7 or later\\cr
+#' - Xcode command-line tools installed (`xcode-select --install`)\\cr
+#' More information at: \url{https://developer.apple.com/metal/pytorch/}.
 #'
-#' @param device Character. The device to be set for PyTorch.
+#' @param device A character string specifying the device type.
+#'
+#' @return A PyTorch device object.
+#'
 #' @importFrom reticulate import
 #' @keywords internal
 check_device <- function(device) {
@@ -156,13 +126,13 @@ check_device <- function(device) {
       message("MPS is used on Mac M1/M2.")
       return(pytorch$device(device))
     } else {
-      warning("MPS requires macOS 12.3 or higher. Falling back to CPU.",
-              "\nTo use MPS, ensure the following requirements are met:",
-              "\n- Mac computers with Apple silicon or AMD GPUs",
-              "\n- macOS 12.3 or later",
-              "\n- Python 3.7 or later",
-              "\n- Xcode command-line tools installed (xcode-select --install)",
-              "\nMore information: https://developer.apple.com/metal/pytorch/")
+      warning("MPS requires macOS 12.3 or higher. Falling back to CPU.\\cr
+         To use MPS, ensure the following requirements are met:\\cr
+         - Mac computers with Apple silicon or AMD GPUs\\cr
+         - macOS 12.3 or later\\cr
+         - Python 3.7 or later\\cr
+         - Xcode command-line tools installed (xcode-select --install)\\cr
+         More information: https://developer.apple.com/metal/pytorch/")
       message("Using CPU.")
       return(pytorch$device("cpu"))
     }
@@ -185,39 +155,26 @@ check_device <- function(device) {
   }
 }
 
-
-#' Check the Specified Batch Size
+#' @title Check the Specified Batch Size
 #'
 #' @description Validates if the given batch size is a positive integer.
 #'
 #' @param batch_size Integer. The batch size to be checked.
 #' @keywords internal
-
 check_batch_size <- function(batch_size) {
   if (!is.numeric(batch_size) || batch_size <= 0 || (batch_size %% 1 != 0)) {
     stop("Invalid batch size. It must be a positive integer.")
   }
 }
 
-#' Check the texts and document IDs
+
+#' @title Check the texts and document IDs
 #'
 #' @description Validates if the given texts and document IDs are not NULL or empty.
 #'
 #' @param texts List. A list of texts.
 #' @param doc_ids List. A list of document IDs.
 #' @keywords internal
-
-# check_texts_and_ids <- function(texts, doc_ids) {
-#   if (is.null(texts) || length(texts) == 0) {
-#     stop("The texts cannot be NULL or empty.")
-#   }
-#   if (is.null(doc_ids) || length(doc_ids) == 0) {
-#     stop("The doc_ids cannot be NULL or empty.")
-#   }
-#   if (length(texts) != length(doc_ids)) {
-#     stop("The lengths of texts and doc_ids do not match.")
-#   }
-# }
 check_texts_and_ids <- function(texts, doc_ids) {
   if (is.null(texts) || length(texts) == 0) {
     stop("The texts cannot be NULL or empty.")
@@ -229,15 +186,11 @@ check_texts_and_ids <- function(texts, doc_ids) {
   } else if (length(texts) != length(doc_ids)) {
     stop("The lengths of texts and doc_ids do not match.")
   }
-
   list(texts = texts, doc_ids = doc_ids)
 }
 
 
-
-
-
-#' Check the `show.text_id` parameter
+#' @title Check the `show.text_id` Parameter
 #'
 #' @description Validates if the given `show.text_id` is a logical value.
 #'
@@ -249,7 +202,8 @@ check_show.text_id <- function(show.text_id) {
   }
 }
 
-#' Perform Garbage Collection Based on Condition
+
+#' @title  Perform Garbage Collection Based on Condition
 #'
 #' @description This function checks the value of `gc.active` to determine whether
 #' or not to perform garbage collection. If `gc.active` is `TRUE`,
@@ -285,7 +239,9 @@ check_and_gc <- function(gc.active) {
 #' @param language The language to check.
 #' @param supported_lan_models A vector of supported languages.
 #'
-#' @return This function does not return anything, but stops execution if the check fails.
+#' @return This function does not return anything, but stops execution if the
+#' check fails.
+#'
 #' @examples
 #' # Assuming 'en' is a supported language and 'abc' is not:
 #' check_language_supported("en", c("en", "de", "fr"))
@@ -301,6 +257,7 @@ check_language_supported <- function(language, supported_lan_models) {
                  ".")
   )
 }
+
 
 #' @title Check Environment Pre-requisites
 #'
@@ -339,20 +296,21 @@ check_prerequisites <- function(...) {
   return("All pre-requisites met.")
 }
 
+
 #' @title Retrieve Flair Version
 #'
 #' @description Gets the version of the installed Flair module in the current
 #' Python environment.
 #'
 #' @keywords internal
-#' @return Character string representing the version of Flair.
-#' If Flair is not installed, this may return `NULL` or cause an error
-#' (based on `reticulate` behavior).
+#' @return Character string representing the version of Flair. If Flair is not
+#' installed, this may return `NULL` or cause an error.
 get_flair_version <- function(...) {
   flair <- reticulate::import("flair")
   # Assuming flair has an attribute `__version__` (this might not be true)
   return(flair$`__version__`)
 }
+
 
 #' @title Check Flair
 #'
@@ -365,6 +323,7 @@ get_flair_version <- function(...) {
 check_flair_installed <- function(...) {
   return(reticulate::py_module_available("flair"))
 }
+
 
 #' @title Check for Available Python Installation
 #'
@@ -393,5 +352,172 @@ check_python_installed <- function(...) {
   } else {
     # cat("Python is not installed on this system.\n")
     return(FALSE)
+  }
+}
+
+
+#' @title Install a Specific Python Package and Return Its Version
+#'
+#' @description This function checks for the Python interpreter's location (either
+#' specified by the user or automatically located), compares it with the current
+#' R session's Python setting, installs a specified Python package using the identified
+#' Python interpreter, and returns the package version and installation environment.
+#'
+#' @param package_name The name of the Python package to install.
+#' @param package_version The version of the Python package to install. If `NULL`,
+#'  the latest version is installed.
+#' @param python_path The path to the Python interpreter to be used for
+#' installation. If not provided, it defaults to the result of `Sys.which("python3")`.
+#' @return A list containing the package name, installed version, and the path
+#' to the Python interpreter used for installation.
+#'
+#' @examples
+#' \dontrun{
+#' install_python_package(package_name ="flair", package_version ="0.12")
+#' }
+#' @export
+install_python_package <- function(package_name, package_version = NULL, python_path = Sys.which("python3")) {
+  # Check if a path is given or found by Sys.which
+  if (python_path == "") {
+    stop("Python is not installed, not found in the system PATH, or an incorrect path was provided.")
+  } else {
+    message("Using Python at: ", python_path)
+  }
+
+
+  # Define the full package reference
+  if (is.null(package_version)) {
+    package_ref <- package_name
+    warning(paste("The version of the Python package is not defined. Flair will automatically install the current version of ", "package_name", sep = " " ))
+  } else {
+    package_ref <- paste(package_name, "==", package_version, sep = "")
+  }
+
+  # Find Python path
+  python_path <- Sys.which("python3")
+
+  # Check if Python is found
+  if (python_path == "") {
+    stop("Python is not installed or not found in the system PATH.")
+  } else {
+    message("Python found at: ", python_path)
+  }
+
+  # Check if Python location is the same as the current session
+  sys_py <- system2(python_path, "-c 'import sys; print(sys.executable)'", stdout = TRUE)
+  r_py <- Sys.getenv("RETICULATE_PYTHON")
+  if (r_py != "" && normalizePath(sys_py) != normalizePath(r_py)) {
+    warning("Python location is not the same as the current R session.")
+  } else {
+    message("Python location is consistent with the current R session.")
+  }
+
+  # Install the specified package
+  install_command <- paste(python_path, "-m pip install", package_ref)
+  update_pip_first <- paste(python_path, "-m pip install --upgrade pip")
+  system(update_pip_first)
+  system(install_command)
+
+  # Check if the package is installed and get the version
+  check_version_command <- paste(python_path, "-c 'import", package_name, "; print(", package_name, ".__version__)'", sep=" ")
+  package_version_installed <- system(check_version_command, intern = TRUE)
+
+  if (length(package_version_installed) > 0 && !startsWith(package_version_installed, "Traceback")) {
+    message("Package '", package_name, "' installed successfully, version: ", package_version_installed)
+    return(list(
+      package_name = package_name,
+      package_version = package_version_installed,
+      python_path = python_path
+    ))
+  } else {
+    stop("Failed to install the package or retrieve the version.")
+  }
+}
+
+
+# install_python_package <- function(package_name, package_version = NULL, python_path = Sys.which("python3")) {
+#   if (python_path == "") {
+#     stop("Python is not installed, not found in the system PATH, or an incorrect path was provided.")
+#   } else {
+#     message("Using Python at: ", python_path)
+#   }
+#
+#   if (is.null(package_version)) {
+#     package_ref <- package_name
+#     warning("The version of the Python package is not defined. The latest version of the package will be installed.")
+#   } else {
+#     package_ref <- paste(package_name, "==", package_version, sep = "")
+#   }
+#
+#   # Upgrade pip before installing the package
+#   update_pip_command <- paste(python_path, "-m pip install --upgrade pip")
+#   if (system(update_pip_command, intern = TRUE) != 0) {
+#     warning("Failed to upgrade pip. Please check your Python installation.")
+#   }
+#
+#   # Install the specified package
+#   install_command <- paste(python_path, "-m pip install", package_ref)
+#   if (system(install_command, intern = TRUE) != 0) {
+#     stop("Failed to install the package. Please check the command and try again.")
+#   }
+#
+#   # Check if the package is installed and get the version
+#   check_version_command <- paste(python_path, "-c 'import", package_name, "; print(", package_name, ".__version__)'")
+#   package_version_installed <- tryCatch({
+#     system(check_version_command, intern = TRUE)
+#   }, error = function(e) {
+#     NA
+#   })
+#
+#   if (is.na(package_version_installed)) {
+#     stop("Failed to install the package or retrieve the version.")
+#   }
+#
+#   message("Package '", package_name, "' installed successfully, version: ", package_version_installed)
+#   return(list(
+#     package_name = package_name,
+#     package_version = package_version_installed,
+#     python_path = python_path
+#   ))
+# }
+
+#' @title Uninstall a Python Package
+#'
+#' @description `uninstall_python_package` function uninstalls a specified Python
+#' package using the system's Python installation. It checks if Python is
+#' installed and accessible, then proceeds to uninstall the package. Finally,
+#' `uninstall_python_package` verifies that the package has been successfully uninstalled.
+#'
+#' @param package_name The name of the Python package to uninstall.
+#' @param python_path The path to the Python executable. If not provided, it uses the system's default Python path.
+#'
+#' @return Invisibly returns TRUE if the package is successfully uninstalled, otherwise it stops with an error message.
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' uninstall_python_package("numpy")
+#' }
+uninstall_python_package <- function(package_name, python_path = Sys.which("python3")) {
+  # Check if Python is installed or found in the system PATH
+  if (python_path == "") {
+    stop("Python is not installed, not found in the system PATH, or an incorrect path was provided.")
+  } else {
+    message("Using Python at: ", python_path)
+  }
+
+  # Uninstall the specified package
+  uninstall_command <- paste(python_path, "-m pip uninstall -y", package_name)
+  system(uninstall_command)
+
+  # Check if the package is still installed
+  check_uninstall_command <- paste(python_path, "-c 'import ", package_name, "'", sep="")
+  package_uninstall_check <- try(system(check_uninstall_command, intern = TRUE, ignore.stderr = TRUE), silent = TRUE)
+
+  if (inherits(package_uninstall_check, "try-error")) {
+    message("Package '", package_name, "' was successfully uninstalled.")
+    invisible(TRUE)
+  } else {
+    stop("Failed to uninstall the package. It may still be installed.")
   }
 }

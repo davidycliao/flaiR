@@ -56,9 +56,8 @@ get_pos <- function(texts, doc_ids = NULL, tagger = NULL, language = NULL,
   doc_ids <- texts_and_ids$doc_ids
 
   # Import the `Sentence` tokenizer and `Classifier` from Python's Flair
-  flair <- reticulate::import("flair")
-  Classifier <- flair$nn$Classifier
-  Sentence <- flair$data$Sentence
+  Classifier <- flair_nn()$Classifier
+  Sentence <- flair_data()$Sentence
 
   # If tagger is null, the `load_tagger_pos` default to using "pos-fast" in language.
   if (is.null(tagger)) {

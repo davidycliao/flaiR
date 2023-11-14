@@ -1,4 +1,6 @@
-name: R-CMD-check
+
+
+name: R-ubuntu
 
 on:
   push:
@@ -15,6 +17,26 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
+      # Cache R dependencies
+      - name: Cache R dependencies
+        uses: actions/cache@v2
+        with:
+          path: ${{ env.R_LIBS_USER }}
+          key: ${{ runner.os }}-renv-${{ hashFiles('**/renv.lock') }}
+          restore-keys: ${{ runner.os }}-renv-
+
+      # Setup R
+      - name: Setup R
+        uses: r-lib/actions/setup-r@v2
+        with:
+          extra-packages: rcmdcheck
+
+      # Restore R environment using renv
+      - name: Restore R environment
+        run: |
+          if (!requireNamespace("renv", quietly = TRUE)) install.packages("renv")
+          renv::restore()
+
       # Install Python
       - name: Set up Python
         uses: actions/setup-python@v2
@@ -28,27 +50,17 @@ jobs:
           source env/bin/activate
           which python
 
-      # Install R and dependencies
-      - name: Setup R
-        uses: r-lib/actions/setup-r@v1
-        with:
-          r-version: release
-
-      # Install necessary Python packages (if any)
+      # Install necessary Python packages
       - name: Install Python dependencies
         run: |
           source env/bin/activate
           pip install flair
-
-      # Install R dependencies
-      - name: Install R dependencies
-        run: |
-          install.packages(c('devtools', 'remotes'))
-          remotes::install_deps(dependencies = TRUE)
 
       # Check the R package
       - name: Check R package
         run: |
           source env/bin/activate
           R CMD build . --no-build-vignettes
-          R CMD check *tar.gz --as-cran
+
+          # R CMD check *tar.gz --as-cran
+

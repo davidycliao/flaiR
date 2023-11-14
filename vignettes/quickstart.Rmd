@@ -18,21 +18,38 @@ knitr::opts_chunk$set(
 ```
 
 ```{r include=FALSE}
-library(reticulate)
+# library(reticulate)
+# library(flaiR)
+# # reticulate::py_install("flair")
+# system(paste(reticulate::py_config()$python, "-m pip install flair"))
+system(paste(Sys.which("python3"), "-m pip install --upgrade pip"))
+system(paste(Sys.which("python3"), "-m pip install torch"))
+system(paste(Sys.which("python3"), "-m pip install flair"))
+Sys.setenv(RETICULATE_PYTHON = Sys.which("python3"))
 library(flaiR)
-reticulate::py_install("flair")
-system(paste(reticulate::py_config()$python, "-m pip install flair"))
 ```
 
 
 ## Why Write {flaiR} to Access fair NLP in Python?
 <div style="text-align: justify">
 
-In Python, Flair ( developed by [Zalando Research](https://engineering.zalando.com/posts/2018/11/zalando-research-releases-flair.html)) stands out as a notably feature-rich and user-friendly NLP framework. Flair provides intuitive interfaces with exceptional multilingual support, especially for various embedding frameworks like Glove, and transformer-based models such as BERT. It also comes equipped with pre-trained models and context-aware capabilities. In addition, Flair also establishes dependencies with primary NLP Python libraries (such as gensim, transformer, flair, and more); installing {`flaiR`} will subsequently install other related NLP packages in Python. By installing the {`flaiR`} package in R, users can seamlessly access the Python-based Flair library within R. This integration allows for the use of basic Python libraries, like [NumPy](https://numpy.org) and [Pandas](https://pandas.pydata.org), as well as modern NLP and deep learning frameworks such as [PyTorch](https://pytorch.org) and [Gensim](https://radimrehurek.com/gensim/intro.html), all through the reticulate interface in an R environment.
+In Python, Flair ( developed by [Zalando Research](https://engineering.zalando.com/posts/2018/11/zalando-research-releases-flair.html)) stands out as a notably feature-rich and user-friendly NLP framework. Flair NLP provides intuitive interfaces with exceptional multilingual support, especially for various embedding frameworks like Glove, and transformer-based models such as BERT. 
 
+
+<!-- Here are some key benefits and features of Flair that make it a valuable tool for social scientists: -->
+
+<!-- User-Friendliness -->
+<!-- Easy-to-Use API: Flair provides high-level APIs that allow users to accomplish complex NLP tasks, such as named entity recognition, sentiment analysis, and text classification, with just a few lines of code. -->
+<!-- Pretrained Models -->
+<!-- Pretrained Language Models: Flair leverages pretrained language models like BERT, GPT, XLNet, etc., which excel at various NLP tasks, saving users from having to train models from scratch. Researchers can also utilize advanced fine-tuning techniques created by scholars to adapt these models to specific tasks or datasets. -->
+<!-- Multilingual Support -->
+<!-- Multiple Languages: Social science researchers often need to handle data in multiple languages. Flair supports a wide range of languages, facilitating cross-linguistic research projects. -->
+<!-- Entity Recognition and POS Tagging: These common NLP tasks in social science research help researchers to quickly extract valuable information from text. -->
+<!-- For social science researchers, these features mean that they can devote more attention to the subject matter of their research, gaining access to the latest NLP techniques and deriving the data and insights they need with relative ease. -->
+
+Flair also comes equipped with pre-trained models and context-aware capabilities. In addition, Flair also establishes dependencies with primary NLP Python libraries (such as gensim, torch, transformer, and more); installing {`flaiR`} will subsequently install other related NLP packages in Python. By installing the {`flaiR`} package in R, users can seamlessly access the Python-based Flair library within R. This integration allows for the use of basic Python libraries, like [NumPy](https://numpy.org), as well as modern NLP and deep learning frameworks such as [PyTorch](https://pytorch.org), all through the reticulate interface in an R environment.
 
 </div>
-
 
 &nbsp;
 
@@ -42,7 +59,9 @@ In Python, Flair ( developed by [Zalando Research](https://engineering.zalando.c
 
 <div style="text-align: justify">
 
-`flaiR` is built on top of the reticulate package and incorporates key functions to access the core features of __FlairNLP__, returning data in a tidy and clean [`data.table`](https://cran.r-project.org/web/packages/data.table/index.html). The installation consists of two parts: first, install [Python 3.7](https://www.python.org/downloads/) or higher, and second, install [R](https://cran.r-project.org) (version 3.6.3 or higher) along with RStudio. ~~Additionally, you'll also need [`Anaconda`](Anaconda) to assist `reticulate` in setting up your Python environment, as well as enabling your RStudio to identify the environment.~~
+`flaiR` is built on top of the reticulate package and incorporates key functions to access the core features of __FlairNLP__, returning data in a tidy and clean [`data.table`](https://cran.r-project.org/web/packages/data.table/index.html). 
+
+The installation consists of two parts: firstly, install [Python 3.8](https://www.python.org/downloads/) or above (available here; opt for the stable version, which currently goes up to 3.11, and avoid pre-release versions). Secondly, install R (version 3.6.3 or higher), along with RStudio. Additionally, you'll also need Anaconda to assist pip in safely and stably collecting dependencies for setting up your Python environment.
 
 
 __System Requirement:__
@@ -51,15 +70,25 @@ __System Requirement:__
 
 - R (>= 3.6.3)
 
-- RStudio ___(recommended)___
+- RStudio 
 
-- Anaconda ___(optional)___
+- Anaconda ___(highly recommended)___
+
+When first installing and loading the {flaiR} package, it utilizes the system environment tool and undergoes three evaluation stages for the automatic installation of Flair. Initially, flaiR requires at least Python 3 to be installed on your device. If Python 3 is not present, you will not be able to successfully install flaiR in R. At this point, it is essential to check if the correct version of Python is installed. We recommend installing Python 3.8 or a slightly higher version, but avoid installing pre-release versions.
+
+Once this prerequisite is met, the installation process assesses whether the flair_env environment exists. This is to check if you are a new installer, in which case flaiR automatically creates an environment named flair_env through {reticulate}. If you already have `flair_env`, this step will be skipped when you reload {flaiR}.
+
+In terms of installation design, we have also accounted for situations where the installation of Python might be skipped, allowing for the automatic installation of flaiR in your R environment. This typically occurs if the installation fails. After a second attempt, if the installation still fails, the user will be prompted to install 'flair' manually."
+
+During this process, you will observe numerous messages related to the installation of the Python environment and the Python flair module. Notably, flair has numerous dependencies, including libraries related to transformers (like the Pytorch, gensim, flair, etc). Thus, the installation might take some time to complete. 
+
+There's also another scenario to consider. If {flaiR} is unable to automatically install Flair and PyTorch, it will attempt to force the installation again. However, if this attempt fails, you'll encounter the message: "Failed to install Flair. {flaiR} requires Flair NLP. Please ensure Flair NLP is installed in Python manually." If you're using an Apple operating environment, it's essential at this point to check the compatibility of your M1/M2 chip with Python and Torch.  If there are any issues with the installation, feel free to ask in the <u>[Discussion](https://github.com/davidycliao/flaiR/discussions)</u>.
 
 
-If you're using Python-based packages in R for the first time, such as {`flaiR`} or {`reticulate`}, you probably haven't installed a Conda environment yet. When loading flaiR in R, two main steps occur. First, __a [conda](https://docs.conda.io/projects/conda/en/4.6.0/_downloads/52a95608c49671267e40c689e0bc00ca/conda-cheatsheet.pdf) environment is created through {[reticulate](https://ugoproto.github.io/ugo_r_doc/pdf/reticulate.pdf)}__. During this process, you will observe numerous messages related to the installation of the Python environment and the Python flair module. Notably, flair has numerous dependencies, including libraries related to transformers (like the Pytorch, gensim, flair and HuggingFace, etc). Thus, the installation might take some time to complete. 
+&nbsp;
 
-When you copy the command below, you will generally be asked to upgrade the package. This is because this package operates on the {`reticulate`}, and when your packages in R are  outdated, RStudio would likely display __“These packages have more recent versions available.”__ to prompt you to update. We recommend that you update.
 
+When you copy the command below, you will generally be asked to upgrade the package. This is because this package operates on the {`reticulate`}, and when your packages in R are outdated, RStudio would likely display __“These packages have more recent versions available.”__ to prompt you to update. We recommend that you update.
 
 ```
 install.packages("remotes")
@@ -67,12 +96,17 @@ remotes::install_github("davidycliao/flaiR", force = TRUE)
 library(flaiR)
 ```
 
-Afterward, you might see the message __"Virtual environment 'r-reticulate' successfully created."__ Next, you will be prompted to confirm whether or not you want to use `r-reticulate`. Enter __"Yes,"__ and it will automatically install `flair` via your conda environment in Python.  If there are any issues with the installation, feel free to ask in the <u>[Discussion](https://github.com/davidycliao/flaiR/discussions)</u>.
+<!-- {`flaiR`} can be used alongside your existing Python environment on your system without the need to specifically install [Anaconda](https://github.com/conda-forge/miniforge). -->
+
+<!-- However, we recommend using Anaconda with `flaiR`. `flaiR` can seamlessly integrate and utilize Python environments within Anaconda. This means you can leverage environments managed by Anaconda for use with `flaiR`. -->
+
+<!-- Anaconda provides a virtual environment management tool that allows you to easily create, switch, and delete independent Python environments.  This is more flexible than using the pure Python `pip` package manager, especially when dealing with dependency issues. Additionally, Anaconda offers many pre-compiled binary packages that are typically easier to install and avoid compilation dependency problems. -->
 
 
 
 
 </div>
+
 
 __Installation Note__
 
@@ -90,7 +124,7 @@ We notice that Python 3.x and flair may fail to install Python dependencies on w
 -----
 
 
-## Class and Ojbect in R via flaiR
+## Class and Object in R via {flaiR}
 
 <div style="text-align: justify">
 
@@ -366,7 +400,7 @@ for (i in seq_along(sentence$tokens)) {
 
 -----
 
-## Expanded Feats for NLP Tasks in flaiR
+## Expanded Feats in flaiR
 
 <div style="text-align: justify">
 
@@ -420,7 +454,6 @@ head(results, n = 10)
 
 &nbsp;
 
-
 ### __Tagging Entities with Flair Models__
 
 <div style="text-align: justify">
@@ -451,7 +484,7 @@ head(results, n = 10)
 <div style="text-align: justify">
 
 
-Load the pretrained model "`sentiment`". The pre-trained models of "`sentiment`", "`sentiment-fast`", and "`de-offensive-language`" are currently available. For more pretrained models, see https://flairnlp.github.io/docs/tutorial-basics/tagging-sentiment.
+Load the pretrained model "`sentiment`". The pre-trained models of "`sentiment`", "`sentiment-fast`", and "`de-offensive-language`" are currently available. For more pre-trained models, see https://flairnlp.github.io/docs/tutorial-basics/tagging-sentiment.
 
 
 ```{r}
@@ -461,7 +494,6 @@ library(flaiR)
 ```{r}
 tagger_sent <- load_tagger_sentiments("sentiment")
 ```
-
 
 ```{r}
 results <- get_sentiments(texts, doc_ids, tagger_sent)
@@ -478,9 +510,10 @@ head(results, n = 10)
 ## How to Contribute
 
 <div style="text-align: justify">
+
 R developers who want to contribute to {`flaiR`} are welcome – {`flaiR`} is an open source project. I warmly invite R users who share similar interests to join in contributing to this package. Please feel free to shoot me an email to collaborate on the task. Contributions – whether they be comments, code suggestions, tutorial examples, or forking the repository – are greatly appreciated. Please note that the `flaiR` is released with the [Contributor Code of Conduct](https://github.com/davidycliao/flaiR/blob/master/CONDUCT.md). By contributing to this project, you agree to abide by its terms. 
 
-The primary communication channel for R users can be found [here](https://github.com/davidycliao/flaiR/discussions).Please feel free to share your insights on the [Discussion](https://github.com/davidycliao/flaiR/discussions) page and report any issues related to the R interface in the [Issue](https://github.com/davidycliao/flaiR/issues) section.
+The primary communication channel for R users can be found [here](https://github.com/davidycliao/flaiR/discussions). Please feel free to share your insights on the [Discussion](https://github.com/davidycliao/flaiR/discussions) page and report any issues related to the R interface in the [Issue](https://github.com/davidycliao/flaiR/issues) section.
 
 
 </div>

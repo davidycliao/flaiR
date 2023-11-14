@@ -18,13 +18,17 @@ knitr::opts_chunk$set(
 )
 ```
 
+
 ```{r, include = FALSE}
+system(paste(Sys.which("python3"), "-m pip install --upgrade pip"))
+system(paste(Sys.which("python3"), "-m pip install torch"))
+system(paste(Sys.which("python3"), "-m pip install flair"))
+Sys.setenv(RETICULATE_PYTHON = Sys.which("python3"))
 library(flaiR)
 library(reticulate)
 # system(paste(reticulate::py_config()$python, "-m pip install flair"))
 reticulate::py_install("flair")
 ```
-
 
 # Introduction 
 
@@ -45,7 +49,6 @@ Flair offers pre-trained models for various languages and tasks, providing a sol
 Object-Oriented Programming (OOP) is a programming paradigm that uses objects, which contain both data (attributes) and functions (methods), to design applications and software. The idea is to bind the data and the methods that operate on that data into one single unit, an object. Before the advent of R6, OOP was not very common in the early stages of R. To my knowledge, R6 is relatively rare; aside from {[mlr3](https://mlr3.mlr-org.com)}, which is written in R6, most packages are accomplished in [S4](http://adv-r.had.co.nz/OO-essentials.html#s3) and [S3](http://adv-r.had.co.nz/OO-essentials.html#s4) (to my personal experience), which, of course, may be greatly related to the habits and tasks of R users. However, the purpose of {`flaiR`} is to standardize wrapping the '{flair NLP}' Python functionality in R and to provide more convenient access for R users to utilize flair NLP features. Most usage of Flair NLP within the {flaiR} employs concepts of objects and classes, which are similar to [R6](https://r6.r-lib.org/articles/Introduction.html) or . 
 
 However, these features are packaged in {reticulate} from Python. In other words, some functionalities imported into R essentially belong to Python classes or modules. In the {`flairR`} architecture, we use the simplest [S3](http://adv-r.had.co.nz/OO-essentials.html#s3) method to wrap both modules and methods within those modules, allowing R users to conveniently access and use Python functionalities.
-
 
 In addition, tensors serve as a fundamental building block for creating and training neural networks and for conducting various numerical computations in Python. For all of Flair's NLP tasks in Python on PyTorch, there are numerous extensive functionalities for tensor operations, including element-wise operations, matrix multiplications, and reshaping. In this tutorial, we also cover how to work with tensors in R and how to convert tensors into matrices in the R environment. This is particularly important when using Flair word embeddings in R environment.
 
@@ -230,7 +233,7 @@ print(formatted_str)
 
 __In R__
 
-Below, we use data from the article ['The Temporal Focus of Campaign Communication'](https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&ved=2ahUKEwjz_bS3p5KCAxWEWEEAHcuVAi4QFnoECA8QAQ&url=https%3A%2F%2Fwww.journals.uchicago.edu%2Fdoi%2Ffull%2F10.1086%2F715165&usg=AOvVaw3f_J3sXTrym2ZR64pF3ZtN&opi=89978449) by [Stefan Muller](https://muellerstefan.net), published in _Journal of Politics_ in 2020, as an example.
+Below, we use data from the article [_The Temporal Focus of Campaign Communication_](https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&ved=2ahUKEwjz_bS3p5KCAxWEWEEAHcuVAi4QFnoECA8QAQ&url=https%3A%2F%2Fwww.journals.uchicago.edu%2Fdoi%2Ffull%2F10.1086%2F715165&usg=AOvVaw3f_J3sXTrym2ZR64pF3ZtN&opi=89978449) by [Stefan Muller](https://muellerstefan.net), published in _Journal of Politics_ in 2020, as an example.
 
 First, I vectorize the `cc_muller$text` using the Sentence function to transform it into a list object. Then, we reformat `cc_muller$class_pro_retro` as a factor. It's essential to note that R handles numerical values differently than Python. In R, numerical values are represented with a floating point, so it's advisable to convert them into factors or strings. Lastly, I employ the map function from the purrr package to assign labels to each sentence corpus using the $add_label method.
 
@@ -261,14 +264,14 @@ If you don't provide a dev set, Flair won't force you to carve out a portion of 
 In the "Corpus" function, there is a random selection of "dev." To ensure reproducibility, we need to set the seed in the Flair framework. We can accomplish this by calling the top-level module "flair" from via {flaiR} and using `$set_seed(1964L)` to set the seed.
 
 ```{r}
-flair <- flair()
+flair <- import_flair()
 flair$set_seed(1964L)
 ```
 
 ```{r}
 corpus <- Corpus(train=train, 
                  # dev=test,
-                test=test)
+                 test=test)
 sprintf("Corpus object sizes - Train: %d | Test: %d | Dev: %d", 
         length(corpus$train), 
         length(corpus$test),

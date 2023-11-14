@@ -120,6 +120,7 @@ highlight_text <- function(text, entities_mapping, font_family = "Arial") {
   return(HTML(justified_text))
 }
 
+
 #' @title Create Mapping for NER Highlighting
 #'
 #' @description This function generates a mapping list for Named Entity Recognition (NER)
@@ -158,7 +159,15 @@ highlight_text <- function(text, entities_mapping, font_family = "Arial") {
 #'
 #' @export
 map_entities <- function(df, entity = "entity", tag = "tag") {
-
+  ## Create Mapping for NER Highlighting
+  ## Args:
+  ##    df: A data frame containing at least two columns
+  ##    entity: A character vector of entities annotated by the model.
+  ##    tag: A character vector indicating the entity type of each word/entity.
+  ##
+  ## Returns:
+  ##    list:  A list with mapping settings for each entity type.
+  ##
   # Ensure 'entity' and 'tag' are valid column names in df
   if (!(entity %in% names(df)) || !(tag %in% names(df))) {
     stop("The specified entity or tag column names are not found in the data frame.")
