@@ -83,4 +83,3 @@
     packageStartupMessage(sprintf("\033[1m\033[34mflaiR\033[39m\033[22m: \033[1m\033[33mAn R Wrapper for Accessing Flair NLP\033[39m\033[22m %-5s", paste("\033[1m\033[33m",  get_flair_version(),"\033[39m\033[22m", sep = "")))
   }
 }
-
