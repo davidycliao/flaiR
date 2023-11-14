@@ -16,7 +16,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">flaiR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.0.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.0.6</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -75,23 +75,13 @@
   </div>
 </li>
 <li class="nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown--documents">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown--reference">
     <span class="fa fa-file-code-o"></span>
      
-    Documents
+    Reference
   </a>
-  <div class="dropdown-menu" aria-labelledby="dropdown--documents">
+  <div class="dropdown-menu" aria-labelledby="dropdown--reference">
     <a class="dropdown-item" href="../reference/index.html">All Function Reference</a>
-    <a class="dropdown-item" href="../reference/index.html#the-flair-module">The flair Module</a>
-    <a class="dropdown-item" href="../reference/index.html#the-flair-embeddings-module">The flair_embeddings Module</a>
-    <a class="dropdown-item" href="../reference/index.html#the-flair-data-module">The flair_data Module</a>
-    <a class="dropdown-item" href="../reference/index.html#the-flair-nn-module">The flair_nn Module</a>
-    <a class="dropdown-item" href="../reference/index.html#the-flair-trainers-module">The flair_trainers Module</a>
-    <a class="dropdown-item" href="../reference/index.html#the-flair-splitter-module">The flair_splitter Module</a>
-    <a class="dropdown-item" href="../reference/index.html#the-flair-models-module">The flair_models Module</a>
-    <a class="dropdown-item" href="../reference/index.html#the-flair-datasets-module">The flair_datasets Module</a>
-    <a class="dropdown-item" href="../articles/flair_models.html">The Pre-trianed Models for NLP Tasks</a>
-    <a class="dropdown-item" href="../articles/transformer_wordembeddings.html">The Wordembeddings in Flair</a>
   </div>
 </li>
 <li class="nav-item dropdown">
@@ -101,9 +91,9 @@
     News
   </a>
   <div class="dropdown-menu" aria-labelledby="dropdown--news">
-    <a class="dropdown-item" href="../news/index.html#flair-005-development-version">0.0.5</a>
-    <a class="dropdown-item" href="../news/index.html#flair-004-development-version">0.0.4</a>
-    <a class="dropdown-item" href="../news/index.html#flair-003-development-version">0.0.3</a>
+    <a class="dropdown-item" href="../news/index.html#flair-006-2023-10-29">0.0.6</a>
+    <a class="dropdown-item" href="../news/index.html#flair-005-2023-10-01">0.0.5</a>
+    <a class="dropdown-item" href="../news/index.html#flair-003-2023-09-10">0.0.3</a>
     <a class="dropdown-item" href="../news/index.html#flair-001-development-version">0.0.1</a>
   </div>
 </li>
@@ -128,6 +118,15 @@
       <small>Source: <a href="https://github.com/davidycliao/flaiR/blob/HEAD/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.0.6" id="flair-006-2023-10-29">flaiR 0.0.6 (2023-10-29)<a class="anchor" aria-label="anchor" href="#flair-006-2023-10-29"></a></h2>
+<div style="text-align: justify">
+<ul><li><p>The <strong>flair</strong> in {<code>flaiR</code>} was renamed from <code>flair()</code> to <code><a href="../reference/import_flair.html">import_flair()</a></code> to avoid overlapping with conventional practice <code>import flair</code> in Python.</p></li>
+<li><p><strong>install_python_package()</strong> and <strong>uninstall_python_package()</strong> are new functions to install and uninstall Python packages using pip in the environment used by your flaiR package.</p></li>
+<li><p><code>zzz.R</code> is a revised code that proceeds through three steps. First, when installing and loading the package, {flaiR} utilizes the system’s environment tool and undergoes three evaluation stages. Initially, {flaiR} requires at least Python 3 to be installed on your device. If Python 3 is not available, you will be unable to install {flaiR} successfully. Once this requirement is met, the system then checks for the appropriate versions of PyTorch and Flair. The primary focus here is on Flair. If it is not already installed, you will see a message indicating that ‘Flair is being installed from Python’. This process represents a new format for loading the Python environment used by your flaiR package.</p></li>
+<li><p>Add example datasets (<code>cc_muller</code> and <code>hatespeech_zh_tw</code>) for tutorials and documentation.</p></li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.0.5" id="flair-005-2023-10-01">flaiR 0.0.5 (2023-10-01)<a class="anchor" aria-label="anchor" href="#flair-005-2023-10-01"></a></h2>
 <div style="text-align: justify">

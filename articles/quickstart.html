@@ -41,7 +41,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">flaiR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.0.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.0.6</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -101,23 +101,13 @@
   </div>
 </li>
 <li class="nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown--documents">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown--reference">
     <span class="fa fa-file-code-o"></span>
      
-    Documents
+    Reference
   </a>
-  <div class="dropdown-menu" aria-labelledby="dropdown--documents">
+  <div class="dropdown-menu" aria-labelledby="dropdown--reference">
     <a class="dropdown-item" href="../reference/index.html">All Function Reference</a>
-    <a class="dropdown-item" href="../reference/index.html#the-flair-module">The flair Module</a>
-    <a class="dropdown-item" href="../reference/index.html#the-flair-embeddings-module">The flair_embeddings Module</a>
-    <a class="dropdown-item" href="../reference/index.html#the-flair-data-module">The flair_data Module</a>
-    <a class="dropdown-item" href="../reference/index.html#the-flair-nn-module">The flair_nn Module</a>
-    <a class="dropdown-item" href="../reference/index.html#the-flair-trainers-module">The flair_trainers Module</a>
-    <a class="dropdown-item" href="../reference/index.html#the-flair-splitter-module">The flair_splitter Module</a>
-    <a class="dropdown-item" href="../reference/index.html#the-flair-models-module">The flair_models Module</a>
-    <a class="dropdown-item" href="../reference/index.html#the-flair-datasets-module">The flair_datasets Module</a>
-    <a class="dropdown-item" href="../articles/flair_models.html">The Pre-trianed Models for NLP Tasks</a>
-    <a class="dropdown-item" href="../articles/transformer_wordembeddings.html">The Wordembeddings in Flair</a>
   </div>
 </li>
 <li class="nav-item dropdown">
@@ -127,9 +117,9 @@
     News
   </a>
   <div class="dropdown-menu" aria-labelledby="dropdown--news">
-    <a class="dropdown-item" href="../news/index.html#flair-005-development-version">0.0.5</a>
-    <a class="dropdown-item" href="../news/index.html#flair-004-development-version">0.0.4</a>
-    <a class="dropdown-item" href="../news/index.html#flair-003-development-version">0.0.3</a>
+    <a class="dropdown-item" href="../news/index.html#flair-006-2023-10-29">0.0.6</a>
+    <a class="dropdown-item" href="../news/index.html#flair-005-2023-10-01">0.0.5</a>
+    <a class="dropdown-item" href="../news/index.html#flair-003-2023-09-10">0.0.3</a>
     <a class="dropdown-item" href="../news/index.html#flair-001-development-version">0.0.1</a>
   </div>
 </li>
@@ -176,18 +166,28 @@ UCD<br><small class="dont-index">Source: <a href="https://github.com/davidycliao
 <div style="text-align: justify">
 <p>In Python, Flair ( developed by <a href="https://engineering.zalando.com/posts/2018/11/zalando-research-releases-flair.html" class="external-link">Zalando
 Research</a>) stands out as a notably feature-rich and user-friendly NLP
-framework. Flair provides intuitive interfaces with exceptional
+framework. Flair NLP provides intuitive interfaces with exceptional
 multilingual support, especially for various embedding frameworks like
-Glove, and transformer-based models such as BERT. It also comes equipped
-with pre-trained models and context-aware capabilities. In addition,
-Flair also establishes dependencies with primary NLP Python libraries
-(such as gensim, transformer, flair, and more); installing
-{<code>flaiR</code>} will subsequently install other related NLP
-packages in Python. By installing the {<code>flaiR</code>} package in R,
-users can seamlessly access the Python-based Flair library within R.
-This integration allows for the use of basic Python libraries, like <a href="https://numpy.org" class="external-link">NumPy</a> and <a href="https://pandas.pydata.org" class="external-link">Pandas</a>, as well as modern NLP and
-deep learning frameworks such as <a href="https://pytorch.org" class="external-link">PyTorch</a> and <a href="https://radimrehurek.com/gensim/intro.html" class="external-link">Gensim</a>, all
-through the reticulate interface in an R environment.</p>
+Glove, and transformer-based models such as BERT.</p>
+<!-- Here are some key benefits and features of Flair that make it a valuable tool for social scientists: -->
+<!-- User-Friendliness -->
+<!-- Easy-to-Use API: Flair provides high-level APIs that allow users to accomplish complex NLP tasks, such as named entity recognition, sentiment analysis, and text classification, with just a few lines of code. -->
+<!-- Pretrained Models -->
+<!-- Pretrained Language Models: Flair leverages pretrained language models like BERT, GPT, XLNet, etc., which excel at various NLP tasks, saving users from having to train models from scratch. Researchers can also utilize advanced fine-tuning techniques created by scholars to adapt these models to specific tasks or datasets. -->
+<!-- Multilingual Support -->
+<!-- Multiple Languages: Social science researchers often need to handle data in multiple languages. Flair supports a wide range of languages, facilitating cross-linguistic research projects. -->
+<!-- Entity Recognition and POS Tagging: These common NLP tasks in social science research help researchers to quickly extract valuable information from text. -->
+<!-- For social science researchers, these features mean that they can devote more attention to the subject matter of their research, gaining access to the latest NLP techniques and deriving the data and insights they need with relative ease. -->
+<p>Flair also comes equipped with pre-trained models and context-aware
+capabilities. In addition, Flair also establishes dependencies with
+primary NLP Python libraries (such as gensim, torch, transformer, and
+more); installing {<code>flaiR</code>} will subsequently install other
+related NLP packages in Python. By installing the {<code>flaiR</code>}
+package in R, users can seamlessly access the Python-based Flair library
+within R. This integration allows for the use of basic Python libraries,
+like <a href="https://numpy.org" class="external-link">NumPy</a>, as well as modern NLP and
+deep learning frameworks such as <a href="https://pytorch.org" class="external-link">PyTorch</a>, all through the reticulate
+interface in an R environment.</p>
 </div>
 <p> </p>
 <hr>
@@ -198,30 +198,54 @@ through the reticulate interface in an R environment.</p>
 <div style="text-align: justify">
 <p><code>flaiR</code> is built on top of the reticulate package and
 incorporates key functions to access the core features of
-<strong>FlairNLP</strong>, returning data in a tidy and clean <a href="https://cran.r-project.org/web/packages/data.table/index.html" class="external-link"><code>data.table</code></a>.
-The installation consists of two parts: first, install <a href="https://www.python.org/downloads/" class="external-link">Python 3.7</a> or higher, and
-second, install <a href="https://cran.r-project.org" class="external-link">R</a> (version
-3.6.3 or higher) along with RStudio. <del>Additionally, you’ll also need
-<a href="Anaconda"><code>Anaconda</code></a> to assist
-<code>reticulate</code> in setting up your Python environment, as well
-as enabling your RStudio to identify the environment.</del></p>
+<strong>FlairNLP</strong>, returning data in a tidy and clean <a href="https://cran.r-project.org/web/packages/data.table/index.html" class="external-link"><code>data.table</code></a>.</p>
+<p>The installation consists of two parts: firstly, install <a href="https://www.python.org/downloads/" class="external-link">Python 3.8</a> or above
+(available here; opt for the stable version, which currently goes up to
+3.11, and avoid pre-release versions). Secondly, install R (version
+3.6.3 or higher), along with RStudio. Additionally, you’ll also need
+Anaconda to assist pip in safely and stably collecting dependencies for
+setting up your Python environment.</p>
 <p><strong>System Requirement:</strong></p>
 <ul>
 <li><p>Python (&gt;= 3.7.0)</p></li>
 <li><p>R (&gt;= 3.6.3)</p></li>
-<li><p>RStudio <strong><em>(recommended)</em></strong></p></li>
-<li><p>Anaconda <strong><em>(optional)</em></strong></p></li>
+<li><p>RStudio</p></li>
+<li><p>Anaconda <strong><em>(highly recommended)</em></strong></p></li>
 </ul>
-<p>If you’re using Python-based packages in R for the first time, such
-as {<code>flaiR</code>} or {<code>reticulate</code>}, you probably
-haven’t installed a Conda environment yet. When loading flaiR in R, two
-main steps occur. First, <strong>a <a href="https://docs.conda.io/projects/conda/en/4.6.0/_downloads/52a95608c49671267e40c689e0bc00ca/conda-cheatsheet.pdf" class="external-link">conda</a>
-environment is created through {<a href="https://ugoproto.github.io/ugo_r_doc/pdf/reticulate.pdf" class="external-link">reticulate</a>}</strong>.
-During this process, you will observe numerous messages related to the
-installation of the Python environment and the Python flair module.
+<p>When first installing and loading the {flaiR} package, it utilizes
+the system environment tool and undergoes three evaluation stages for
+the automatic installation of Flair. Initially, flaiR requires at least
+Python 3 to be installed on your device. If Python 3 is not present, you
+will not be able to successfully install flaiR in R. At this point, it
+is essential to check if the correct version of Python is installed. We
+recommend installing Python 3.8 or a slightly higher version, but avoid
+installing pre-release versions.</p>
+<p>Once this prerequisite is met, the installation process assesses
+whether the flair_env environment exists. This is to check if you are a
+new installer, in which case flaiR automatically creates an environment
+named flair_env through {reticulate}. If you already have
+<code>flair_env</code>, this step will be skipped when you reload
+{flaiR}.</p>
+<p>In terms of installation design, we have also accounted for
+situations where the installation of Python might be skipped, allowing
+for the automatic installation of flaiR in your R environment. This
+typically occurs if the installation fails. After a second attempt, if
+the installation still fails, the user will be prompted to install
+‘flair’ manually.”</p>
+<p>During this process, you will observe numerous messages related to
+the installation of the Python environment and the Python flair module.
 Notably, flair has numerous dependencies, including libraries related to
-transformers (like the Pytorch, gensim, flair and HuggingFace, etc).
-Thus, the installation might take some time to complete.</p>
+transformers (like the Pytorch, gensim, flair, etc). Thus, the
+installation might take some time to complete.</p>
+<p>There’s also another scenario to consider. If {flaiR} is unable to
+automatically install Flair and PyTorch, it will attempt to force the
+installation again. However, if this attempt fails, you’ll encounter the
+message: “Failed to install Flair. {flaiR} requires Flair NLP. Please
+ensure Flair NLP is installed in Python manually.” If you’re using an
+Apple operating environment, it’s essential at this point to check the
+compatibility of your M1/M2 chip with Python and Torch. If there are any
+issues with the installation, feel free to ask in the <u><a href="https://github.com/davidycliao/flaiR/discussions" class="external-link">Discussion</a></u>.</p>
+<p> </p>
 <p>When you copy the command below, you will generally be asked to
 upgrade the package. This is because this package operates on the
 {<code>reticulate</code>}, and when your packages in R are outdated,
@@ -231,13 +255,9 @@ you update.</p>
 <pre><code><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span></span>
 <span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"davidycliao/flaiR"</span>, force <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">flaiR</span><span class="op">)</span></span></code></pre>
-<p>Afterward, you might see the message <strong>“Virtual environment
-‘r-reticulate’ successfully created.”</strong> Next, you will be
-prompted to confirm whether or not you want to use
-<code>r-reticulate</code>. Enter <strong>“Yes,”</strong> and it will
-automatically install <code>flair</code> via your conda environment in
-Python. If there are any issues with the installation, feel free to ask
-in the <u><a href="https://github.com/davidycliao/flaiR/discussions" class="external-link">Discussion</a></u>.</p>
+<!-- {`flaiR`} can be used alongside your existing Python environment on your system without the need to specifically install [Anaconda](https://github.com/conda-forge/miniforge). -->
+<!-- However, we recommend using Anaconda with `flaiR`. `flaiR` can seamlessly integrate and utilize Python environments within Anaconda. This means you can leverage environments managed by Anaconda for use with `flaiR`. -->
+<!-- Anaconda provides a virtual environment management tool that allows you to easily create, switch, and delete independent Python environments.  This is more flexible than using the pure Python `pip` package manager, especially when dealing with dependency issues. Additionally, Anaconda offers many pre-compiled binary packages that are typically easier to install and avoid compilation dependency problems. -->
 </div>
 <p><strong>Installation Note</strong></p>
 <div style="text-align: justify">
@@ -253,7 +273,7 @@ Updated:2023-10-24</a></em>).</li>
 <hr>
 </div>
 <div class="section level2">
-<h2 id="class-and-ojbect-in-r-via-flair">Class and Ojbect in R via flaiR<a class="anchor" aria-label="anchor" href="#class-and-ojbect-in-r-via-flair"></a>
+<h2 id="class-and-object-in-r-via-flair">Class and Object in R via {flaiR}<a class="anchor" aria-label="anchor" href="#class-and-object-in-r-via-flair"></a>
 </h2>
 <div style="text-align: justify">
 <p>For R users, {<code>flairR</code>} is built on top of {reticulate},
@@ -361,7 +381,7 @@ predict tags for the sentence object.</p>
 <span><span class="co"># load the NER tagger</span></span>
 <span><span class="va">Classifier</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_nn.html">flair_nn</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">Classifier</span></span>
 <span><span class="va">tagger</span> <span class="op">&lt;-</span> <span class="va">Classifier</span><span class="op">$</span><span class="fu">load</span><span class="op">(</span><span class="st">'ner'</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2023-10-26 15:51:07,671 SequenceTagger predicts: Dictionary with 20 tags: &lt;unk&gt;, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, &lt;START&gt;, &lt;STOP&gt;</span></span>
+<span><span class="co">#&gt; 2023-11-14 23:35:04,049 SequenceTagger predicts: Dictionary with 20 tags: &lt;unk&gt;, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, &lt;START&gt;, &lt;STOP&gt;</span></span>
 <span></span>
 <span><span class="co"># run NER over sentence</span></span>
 <span><span class="va">tagger</span><span class="op">$</span><span class="fu">predict</span><span class="op">(</span><span class="va">sentence</span><span class="op">)</span></span></code></pre></div>
@@ -400,7 +420,7 @@ Hugging Face.</p>
 <span><span class="co"># load the NER tagger</span></span>
 <span><span class="va">Classifier</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_nn.html">flair_nn</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">Classifier</span></span>
 <span><span class="va">tagger</span> <span class="op">&lt;-</span> <span class="va">Classifier</span><span class="op">$</span><span class="fu">load</span><span class="op">(</span><span class="st">'pos'</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2023-10-26 15:51:08,708 SequenceTagger predicts: Dictionary with 53 tags: &lt;unk&gt;, O, UH, ,, VBD, PRP, VB, PRP$, NN, RB, ., DT, JJ, VBP, VBG, IN, CD, NNS, NNP, WRB, VBZ, WDT, CC, TO, MD, VBN, WP, :, RP, EX, JJR, FW, XX, HYPH, POS, RBR, JJS, PDT, NNPS, RBS, AFX, WP$, -LRB-, -RRB-, ``, '', LS, $, SYM, ADD</span></span>
+<span><span class="co">#&gt; 2023-11-14 23:35:04,765 SequenceTagger predicts: Dictionary with 53 tags: &lt;unk&gt;, O, UH, ,, VBD, PRP, VB, PRP$, NN, RB, ., DT, JJ, VBP, VBG, IN, CD, NNS, NNP, WRB, VBZ, WDT, CC, TO, MD, VBN, WP, :, RP, EX, JJR, FW, XX, HYPH, POS, RBR, JJS, PDT, NNPS, RBS, AFX, WP$, -LRB-, -RRB-, ``, '', LS, $, SYM, ADD</span></span>
 <span></span>
 <span><span class="co"># run NER over sentence</span></span>
 <span><span class="va">tagger</span><span class="op">$</span><span class="fu">predict</span><span class="op">(</span><span class="va">sentence</span><span class="op">)</span></span></code></pre></div>
@@ -515,7 +535,7 @@ embedding for the entire sentence:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># initiate TransformerWordEmbeddings</span></span>
 <span><span class="va">embedding</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_embeddings.TransformerDocumentEmbeddings.html">flair_embeddings.TransformerDocumentEmbeddings</a></span><span class="op">(</span><span class="st">'bert-base-uncased'</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2023-10-26 15:51:15,040 Using long sentences for Document embeddings is only beneficial for cls_pooling types 'mean' and 'max</span></span>
+<span><span class="co">#&gt; 2023-11-14 23:35:10,254 Using long sentences for Document embeddings is only beneficial for cls_pooling types 'mean' and 'max</span></span>
 <span></span>
 <span><span class="co"># create a sentence</span></span>
 <span><span class="va">sentence</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_data.Sentence.html">flair_data.Sentence</a></span><span class="op">(</span><span class="st">'The grass is green .'</span><span class="op">)</span></span>
@@ -605,7 +625,7 @@ single PyTorch vector.</p>
 </div>
 </div>
 <div class="section level2">
-<h2 id="expanded-feats-for-nlp-tasks-in-flair">Expanded Feats for NLP Tasks in flaiR<a class="anchor" aria-label="anchor" href="#expanded-feats-for-nlp-tasks-in-flair"></a>
+<h2 id="expanded-feats-in-flair">Expanded Feats in flaiR<a class="anchor" aria-label="anchor" href="#expanded-feats-in-flair"></a>
 </h2>
 <div style="text-align: justify">
 <p>To enhance more efficient utilization in social science research,
@@ -689,7 +709,7 @@ pre-trained models, see <a href="https://flairnlp.github.io/docs/tutorial-basics
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">flaiR</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tagger_pos</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_tagger_pos.html">load_tagger_pos</a></span><span class="op">(</span><span class="st">"pos-fast"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2023-10-26 15:51:18,657 SequenceTagger predicts: Dictionary with 53 tags: &lt;unk&gt;, O, UH, ,, VBD, PRP, VB, PRP$, NN, RB, ., DT, JJ, VBP, VBG, IN, CD, NNS, NNP, WRB, VBZ, WDT, CC, TO, MD, VBN, WP, :, RP, EX, JJR, FW, XX, HYPH, POS, RBR, JJS, PDT, NNPS, RBS, AFX, WP$, -LRB-, -RRB-, ``, '', LS, $, SYM, ADD</span></span></code></pre></div>
+<span><span class="co">#&gt; 2023-11-14 23:35:13,330 SequenceTagger predicts: Dictionary with 53 tags: &lt;unk&gt;, O, UH, ,, VBD, PRP, VB, PRP$, NN, RB, ., DT, JJ, VBP, VBG, IN, CD, NNS, NNP, WRB, VBZ, WDT, CC, TO, MD, VBN, WP, :, RP, EX, JJR, FW, XX, HYPH, POS, RBR, JJS, PDT, NNPS, RBS, AFX, WP$, -LRB-, -RRB-, ``, '', LS, $, SYM, ADD</span></span></code></pre></div>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_pos.html">get_pos</a></span><span class="op">(</span><span class="va">texts</span>, <span class="va">doc_ids</span>, <span class="va">tagger_pos</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">results</span>, n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
@@ -718,7 +738,7 @@ models, see <a href="https://flairnlp.github.io/docs/tutorial-basics/tagging-ent
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">flaiR</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tagger_ner</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_tagger_ner.html">load_tagger_ner</a></span><span class="op">(</span><span class="st">"ner"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2023-10-26 15:51:21,168 SequenceTagger predicts: Dictionary with 20 tags: &lt;unk&gt;, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, &lt;START&gt;, &lt;STOP&gt;</span></span></code></pre></div>
+<span><span class="co">#&gt; 2023-11-14 23:35:14,620 SequenceTagger predicts: Dictionary with 20 tags: &lt;unk&gt;, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, &lt;START&gt;, &lt;STOP&gt;</span></span></code></pre></div>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_entities.html">get_entities</a></span><span class="op">(</span><span class="va">texts</span>, <span class="va">doc_ids</span>, <span class="va">tagger_ner</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">results</span>, n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
@@ -744,7 +764,7 @@ models, see <a href="https://flairnlp.github.io/docs/tutorial-basics/tagging-ent
 <p>Load the pretrained model “<code>sentiment</code>”. The pre-trained
 models of “<code>sentiment</code>”, “<code>sentiment-fast</code>”, and
 “<code>de-offensive-language</code>” are currently available. For more
-pretrained models, see <a href="https://flairnlp.github.io/docs/tutorial-basics/tagging-sentiment" class="external-link uri">https://flairnlp.github.io/docs/tutorial-basics/tagging-sentiment</a>.</p>
+pre-trained models, see <a href="https://flairnlp.github.io/docs/tutorial-basics/tagging-sentiment" class="external-link uri">https://flairnlp.github.io/docs/tutorial-basics/tagging-sentiment</a>.</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">flaiR</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
@@ -754,11 +774,11 @@ pretrained models, see <a href="https://flairnlp.github.io/docs/tutorial-basics/
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">results</span>, n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    doc_id sentiment     score</span></span>
 <span><span class="co">#&gt; 1:   doc1  POSITIVE 0.9970598</span></span>
-<span><span class="co">#&gt; 2:   doc2  NEGATIVE 0.8472336</span></span>
+<span><span class="co">#&gt; 2:   doc2  NEGATIVE 0.8472329</span></span>
 <span><span class="co">#&gt; 3:   doc3  POSITIVE 0.9928006</span></span>
-<span><span class="co">#&gt; 4:   doc4  POSITIVE 0.9901405</span></span>
+<span><span class="co">#&gt; 4:   doc4  POSITIVE 0.9901404</span></span>
 <span><span class="co">#&gt; 5:   doc5  POSITIVE 0.9952670</span></span>
-<span><span class="co">#&gt; 6:   doc6  POSITIVE 0.9291794</span></span></code></pre></div>
+<span><span class="co">#&gt; 6:   doc6  POSITIVE 0.9291795</span></span></code></pre></div>
 </div>
 <p> </p>
 <hr>
@@ -777,7 +797,7 @@ tutorial examples, or forking the repository – are greatly appreciated.
 Please note that the <code>flaiR</code> is released with the <a href="https://github.com/davidycliao/flaiR/blob/master/CONDUCT.md" class="external-link">Contributor
 Code of Conduct</a>. By contributing to this project, you agree to abide
 by its terms.</p>
-<p>The primary communication channel for R users can be found <a href="https://github.com/davidycliao/flaiR/discussions" class="external-link">here</a>.Please
+<p>The primary communication channel for R users can be found <a href="https://github.com/davidycliao/flaiR/discussions" class="external-link">here</a>. Please
 feel free to share your insights on the <a href="https://github.com/davidycliao/flaiR/discussions" class="external-link">Discussion</a>
 page and report any issues related to the R interface in the <a href="https://github.com/davidycliao/flaiR/issues" class="external-link">Issue</a>
 section.</p>

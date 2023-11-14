@@ -3,43 +3,71 @@
 processing and representation in the Flair library. This function
 gives access to various classes and utilities in the `flair.data` module,
 most notably:
-Sentence: Represents a sentence, which is a list of
-  Tokens. This class provides various utilities for sentence
-  manipulation, such as adding tokens, tagging with pre-trained models,
-  and obtaining embeddings.
-Token: Represents a word or a sub-word unit in a sentence.
-  It can carry various annotations such as named entity tags, part-of-speech
-  tags, and embeddings. Additionally, the token provides functionalities
-  to retrieve or check its annotations.
-Corpus: Represents a collection of sentences,
+BoundingBox(left, top, right, bottom): Bases: tuple (Python); list (R)
+left - str. Alias for field number 0.
+top - int Alias for field number 1
+right - int Alias for field number 2
+bottom - int Alias for field number 3
+
+Sentence(text, use_tokenizer=True, language_code=None,
+  start_position=0):A Sentence is a list of tokens and is used to
+  represent a sentence or text fragment. `Sentence` can be imported by
+  `flair_data()$Sentence` via flaiR.
+text Union[str, List[str], List[Token]] - The original string (sentence), or a pre-tokenized list of tokens.
+use_tokenizer Union[bool, Tokenizer] - Specify a custom tokenizer to split the text into tokens. The default is flair.tokenization.SegTokTokenizer. If use_tokenizer is set to False, flair.tokenization.SpaceTokenizer will be used instead. The tokenizer will be ignored if text refers to pre-tokenized tokens.
+language_code Optional[str] - Language of the sentence. If not provided, langdetect will be called when the language_code is accessed for the first time.
+start_position int - Start character offset of the sentence in the superordinate document.
+
+Span(tokens, tag=None, score=1.0): Bases: _PartOfSentence.
+  A Span is a slice of a Sentence, consisting of a list of Tokens.
+   `Span` can be imported by `flair_data()$Span`.
+Token(text, head_id=None, whitespace_after=1, start_position=0, sentence=None):
+  This class represents one word in a tokenized sentence.
+  Each token may have any number of tags. It may also point to its head in a
+  dependency tree. `Token` can be imported by `flair_data()$Token` via flaiR.
+Corpus(train=None, dev=None, test=None, name='corpus', sample_missing_splits=True): Represents a collection of sentences,
   facilitating operations like splitting into train/test/development
    sets and applying transformations. It is particularly useful
    for training and evaluating models on custom datasets.
-Additionally, the module offers utilities for reading data in the CoNLL
-format, a common format for NER, POS tagging, and more. It also contains
-the `Dictionary` class for item-index mapping, facilitating the conversion
-of text into machine-readable formats. This function provides a bridge
-to access these functionalities directly from R."><title>Import flair.data Module — flair_data • flaiR</title><!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png"><link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png"><link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png"><link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png"><link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png"><link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png"><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><link href="../deps/Source_Sans_Pro-0.4.7/font.css" rel="stylesheet"><link href="../deps/Source_Code_Pro-0.4.7/font.css" rel="stylesheet"><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Import flair.data Module — flair_data"><meta property="og:description" content="The `flair.data` module provides essential utilities for text data
+   `Corpus` can be imported by `flair_data()$Corpus` via flaiR.
+Dictionary: Represents a mapping between items and indices.
+  It is useful for converting text into machine-readable formats.
+
+"><title>Import flair.data Module — flair_data • flaiR</title><!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png"><link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png"><link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png"><link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png"><link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png"><link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png"><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><link href="../deps/Source_Sans_Pro-0.4.7/font.css" rel="stylesheet"><link href="../deps/Source_Code_Pro-0.4.7/font.css" rel="stylesheet"><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Import flair.data Module — flair_data"><meta property="og:description" content="The `flair.data` module provides essential utilities for text data
 processing and representation in the Flair library. This function
 gives access to various classes and utilities in the `flair.data` module,
 most notably:
-Sentence: Represents a sentence, which is a list of
-  Tokens. This class provides various utilities for sentence
-  manipulation, such as adding tokens, tagging with pre-trained models,
-  and obtaining embeddings.
-Token: Represents a word or a sub-word unit in a sentence.
-  It can carry various annotations such as named entity tags, part-of-speech
-  tags, and embeddings. Additionally, the token provides functionalities
-  to retrieve or check its annotations.
-Corpus: Represents a collection of sentences,
+BoundingBox(left, top, right, bottom): Bases: tuple (Python); list (R)
+left - str. Alias for field number 0.
+top - int Alias for field number 1
+right - int Alias for field number 2
+bottom - int Alias for field number 3
+
+Sentence(text, use_tokenizer=True, language_code=None,
+  start_position=0):A Sentence is a list of tokens and is used to
+  represent a sentence or text fragment. `Sentence` can be imported by
+  `flair_data()$Sentence` via flaiR.
+text Union[str, List[str], List[Token]] - The original string (sentence), or a pre-tokenized list of tokens.
+use_tokenizer Union[bool, Tokenizer] - Specify a custom tokenizer to split the text into tokens. The default is flair.tokenization.SegTokTokenizer. If use_tokenizer is set to False, flair.tokenization.SpaceTokenizer will be used instead. The tokenizer will be ignored if text refers to pre-tokenized tokens.
+language_code Optional[str] - Language of the sentence. If not provided, langdetect will be called when the language_code is accessed for the first time.
+start_position int - Start character offset of the sentence in the superordinate document.
+
+Span(tokens, tag=None, score=1.0): Bases: _PartOfSentence.
+  A Span is a slice of a Sentence, consisting of a list of Tokens.
+   `Span` can be imported by `flair_data()$Span`.
+Token(text, head_id=None, whitespace_after=1, start_position=0, sentence=None):
+  This class represents one word in a tokenized sentence.
+  Each token may have any number of tags. It may also point to its head in a
+  dependency tree. `Token` can be imported by `flair_data()$Token` via flaiR.
+Corpus(train=None, dev=None, test=None, name='corpus', sample_missing_splits=True): Represents a collection of sentences,
   facilitating operations like splitting into train/test/development
    sets and applying transformations. It is particularly useful
    for training and evaluating models on custom datasets.
-Additionally, the module offers utilities for reading data in the CoNLL
-format, a common format for NER, POS tagging, and more. It also contains
-the `Dictionary` class for item-index mapping, facilitating the conversion
-of text into machine-readable formats. This function provides a bridge
-to access these functionalities directly from R."><meta property="og:image" content="https://davidycliao.github.io/flaiR/logo.png"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
+   `Corpus` can be imported by `flair_data()$Corpus` via flaiR.
+Dictionary: Represents a mapping between items and indices.
+  It is useful for converting text into machine-readable formats.
+
+"><meta property="og:image" content="https://davidycliao.github.io/flaiR/logo.png"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]--><!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-3ZG40PPG98"></script><script>
@@ -56,7 +84,7 @@ to access these functionalities directly from R."><meta property="og:image" cont
     
     <a class="navbar-brand me-2" href="../index.html">flaiR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.0.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.0.6</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -115,23 +143,13 @@ to access these functionalities directly from R."><meta property="og:image" cont
   </div>
 </li>
 <li class="active nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown--documents">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown--reference">
     <span class="fa fa-file-code-o"></span>
      
-    Documents
+    Reference
   </a>
-  <div class="dropdown-menu" aria-labelledby="dropdown--documents">
+  <div class="dropdown-menu" aria-labelledby="dropdown--reference">
     <a class="dropdown-item" href="../reference/index.html">All Function Reference</a>
-    <a class="dropdown-item" href="../reference/index.html#the-flair-module">The flair Module</a>
-    <a class="dropdown-item" href="../reference/index.html#the-flair-embeddings-module">The flair_embeddings Module</a>
-    <a class="dropdown-item" href="../reference/index.html#the-flair-data-module">The flair_data Module</a>
-    <a class="dropdown-item" href="../reference/index.html#the-flair-nn-module">The flair_nn Module</a>
-    <a class="dropdown-item" href="../reference/index.html#the-flair-trainers-module">The flair_trainers Module</a>
-    <a class="dropdown-item" href="../reference/index.html#the-flair-splitter-module">The flair_splitter Module</a>
-    <a class="dropdown-item" href="../reference/index.html#the-flair-models-module">The flair_models Module</a>
-    <a class="dropdown-item" href="../reference/index.html#the-flair-datasets-module">The flair_datasets Module</a>
-    <a class="dropdown-item" href="../articles/flair_models.html">The Pre-trianed Models for NLP Tasks</a>
-    <a class="dropdown-item" href="../articles/transformer_wordembeddings.html">The Wordembeddings in Flair</a>
   </div>
 </li>
 <li class="nav-item dropdown">
@@ -141,9 +159,9 @@ to access these functionalities directly from R."><meta property="og:image" cont
     News
   </a>
   <div class="dropdown-menu" aria-labelledby="dropdown--news">
-    <a class="dropdown-item" href="../news/index.html#flair-005-development-version">0.0.5</a>
-    <a class="dropdown-item" href="../news/index.html#flair-004-development-version">0.0.4</a>
-    <a class="dropdown-item" href="../news/index.html#flair-003-development-version">0.0.3</a>
+    <a class="dropdown-item" href="../news/index.html#flair-006-2023-10-29">0.0.6</a>
+    <a class="dropdown-item" href="../news/index.html#flair-005-2023-10-01">0.0.5</a>
+    <a class="dropdown-item" href="../news/index.html#flair-003-2023-09-10">0.0.3</a>
     <a class="dropdown-item" href="../news/index.html#flair-001-development-version">0.0.1</a>
   </div>
 </li>
@@ -173,24 +191,34 @@ to access these functionalities directly from R."><meta property="og:image" cont
     <p>The `flair.data` module provides essential utilities for text data
 processing and representation in the Flair library. This function
 gives access to various classes and utilities in the `flair.data` module,
-most notably:</p><ul><li><p><strong>Sentence</strong>: Represents a sentence, which is a list of
-  Tokens. This class provides various utilities for sentence
-  manipulation, such as adding tokens, tagging with pre-trained models,
-  and obtaining embeddings.</p></li>
-<li><p><strong>Token</strong>: Represents a word or a sub-word unit in a sentence.
-  It can carry various annotations such as named entity tags, part-of-speech
-  tags, and embeddings. Additionally, the token provides functionalities
-  to retrieve or check its annotations.</p></li>
-<li><p><strong>Corpus</strong>: Represents a collection of sentences,
+most notably:</p><ul><li><p><strong>BoundingBox(left, top, right, bottom)</strong>: Bases: tuple (Python); list (R)</p><ul><li><p>left - str. Alias for field number 0.</p></li>
+<li><p>top - int Alias for field number 1</p></li>
+<li><p>right - int Alias for field number 2</p></li>
+<li><p>bottom - int Alias for field number 3</p></li>
+</ul></li>
+<li><p><strong>Sentence(text, use_tokenizer=True, language_code=None,
+  start_position=0)</strong>:A Sentence is a list of tokens and is used to
+  represent a sentence or text fragment. `Sentence` can be imported by
+  `flair_data()$Sentence` via flaiR.</p><ul><li><p>text <code>Union[str, List[str], List[Token]]</code> - The original string (sentence), or a pre-tokenized list of tokens.</p></li>
+<li><p>use_tokenizer <code>Union[bool, Tokenizer]</code> - Specify a custom tokenizer to split the text into tokens. The default is <code>flair.tokenization.SegTokTokenizer</code>. If <code>use_tokenizer</code> is set to <code>False</code>, <code>flair.tokenization.SpaceTokenizer</code> will be used instead. The tokenizer will be ignored if <code>text</code> refers to pre-tokenized tokens.</p></li>
+<li><p>language_code <code>Optional[str]</code> - Language of the sentence. If not provided, <code>langdetect</code> will be called when the <code>language_code</code> is accessed for the first time.</p></li>
+<li><p>start_position <code>int</code> - Start character offset of the sentence in the superordinate document.</p></li>
+</ul></li>
+<li><p><strong>Span(tokens, tag=None, score=1.0)</strong>: Bases: _PartOfSentence.
+  A Span is a slice of a Sentence, consisting of a list of Tokens.
+   `Span` can be imported by `flair_data()$Span`.</p></li>
+<li><p><strong>Token(text, head_id=None, whitespace_after=1, start_position=0, sentence=None)</strong>:
+  This class represents one word in a tokenized sentence.
+  Each token may have any number of tags. It may also point to its head in a
+  dependency tree. `Token` can be imported by `flair_data()$Token` via flaiR.</p></li>
+<li><p><strong>Corpus(train=None, dev=None, test=None, name='corpus', sample_missing_splits=True)</strong>: Represents a collection of sentences,
   facilitating operations like splitting into train/test/development
    sets and applying transformations. It is particularly useful
-   for training and evaluating models on custom datasets.</p></li>
-</ul><p>Additionally, the module offers utilities for reading data in the CoNLL
-format, a common format for NER, POS tagging, and more. It also contains
-the `Dictionary` class for item-index mapping, facilitating the conversion
-of text into machine-readable formats. This function provides a bridge
-to access these functionalities directly from R.</p>
-    </div>
+   for training and evaluating models on custom datasets.
+   `Corpus` can be imported by `flair_data()$Corpus` via flaiR.</p></li>
+<li><p><strong>Dictionary</strong>: Represents a mapping between items and indices.
+  It is useful for converting text into machine-readable formats.</p></li>
+</ul></div>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
@@ -201,7 +229,7 @@ to access these functionalities directly from R.</p>
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>A Python module (`flair.data`).</p>
+<p>A Python module (`flair.data`). To access the classes and utilities.</p>
     </div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
@@ -209,6 +237,10 @@ to access these functionalities directly from R.</p>
 from flair.data import Sentence
 </code></pre></div>
 
+    </div>
+    <div class="section level2">
+    <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
+    <div class="dont-index"><p>[flair.data](https://flairnlp.github.io/flair/master/api/flair.data.html#)</p></div>
     </div>
 
     <div class="section level2">
