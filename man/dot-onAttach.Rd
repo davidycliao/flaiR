@@ -26,3 +26,4 @@ The function performs the following steps:
         installation fails, it prompts the user to install 'flair' manually.
 }
 }
+\keyword{internal}

@@ -521,4 +521,3 @@ uninstall_python_package <- function(package_name, python_path = Sys.which("pyth
     stop("Failed to uninstall the package. It may still be installed.")
   }
 }
-

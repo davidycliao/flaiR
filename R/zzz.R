@@ -18,6 +18,7 @@
 #' }
 #' @importFrom reticulate py_module_available
 #' @importFrom reticulate py_install
+#' @keywords internal
 .onAttach <- function(...) {
 
   # Check operating system, mac by default
