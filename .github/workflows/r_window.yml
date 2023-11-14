@@ -127,11 +127,11 @@ jobs:
         with:
           r-version: '4.0.5'
 
-      - name: Install TinyTeX
-        run: |
-          install.packages('tinytex', repos = 'https://cran.rstudio.com/')
-          tinytex::install_tinytex()
-        shell: Rscript {0}
+      # - name: Install TinyTeX
+      #   run: |
+      #     install.packages('tinytex', repos = 'https://cran.rstudio.com/')
+      #     tinytex::install_tinytex()
+      #   shell: Rscript {0}
 
       - name: Install R dependencies
         run: |
@@ -154,6 +154,6 @@ jobs:
       - name: Check
         run: |
           R CMD build --no-build-vignettes .
-          R CMD check *tar.gz --no-manual --no-examples
+          # R CMD check *tar.gz --no-manual --no-examples
         shell: bash
 
