@@ -75,76 +75,6 @@
 #         shell: Rscript {0}
 
 
-# name: R-MacOS
-#
-# on:
-#   push:
-#     branches: [ "main" ]
-#   pull_request:
-#     branches: [ "main" ]
-#
-# permissions:
-#   contents: read
-#
-# jobs:
-#   build:
-#     runs-on: macos-latest
-#
-#     strategy:
-#       matrix:
-#         r-version: ['4.3.2', '4.2.0', '4.2.1'] # Ensure these versions are available
-#
-#     steps:
-#       - uses: actions/checkout@v3
-#
-#       - name: Install pandoc
-#         run: brew install pandoc
-#
-#       - name: Set up R ${{ matrix.r-version }}
-#         uses: r-lib/actions/setup-r@v2
-#         with:
-#           r-version: ${{ matrix.r-version }}
-#
-#       - name: Install LaTeX
-#         run: |
-#           brew install --cask mactex-no-gui
-#           eval "$(/usr/libexec/path_helper)"
-#
-#       # - name: Update tlmgr
-#       #   run: sudo tlmgr update --self --all
-#       #   shell: /bin/bash -e {0}
-#
-#       - name: Install R dependencies
-#         run: |
-#           Rscript -e "install.packages(c('remotes', 'rcmdcheck', 'reticulate', 'renv'))"
-#           Rscript -e "renv::restore()"
-#         shell: bash
-#
-#       # Set up Python environment
-#       - name: Set up Python
-#         uses: actions/setup-python@v2
-#         with:
-#           python-version: '3.10.x' # Python version specified
-#
-#       - name: Install Python virtualenv
-#         run: pip install virtualenv
-#
-#       - name: Create Python virtual environment
-#         run: virtualenv flair_env
-#
-#       - name: Install Python dependencies in virtual environment
-#         run: |
-#           source flair_env/bin/activate
-#           pip install flair
-#
-#       - name: Check
-#         run: |
-#           R CMD build --no-build-vignettes .
-#           R CMD check *tar.gz --no-manual --no-examples
-#         shell: bash
-
-
-
 name: R-MacOS
 
 on:
@@ -159,26 +89,57 @@ permissions:
 jobs:
   build:
     runs-on: macos-latest
+
     strategy:
       matrix:
-        r-version: ['4.0.0', '4.1.0', '4.1.1']
+        r-version: ['4.3.2', '4.2.0', '4.2.1'] # Ensure these versions are available
+
     steps:
       - uses: actions/checkout@v3
 
       - name: Install pandoc
-        run: |
-          brew install pandoc
+        run: brew install pandoc
+
       - name: Set up R ${{ matrix.r-version }}
-        uses: r-lib/actions/setup-r@v1
+        uses: r-lib/actions/setup-r@v2
         with:
           r-version: ${{ matrix.r-version }}
 
-      - name: Install dependencies
+      - name: Install LaTeX
         run: |
-          install.packages(c("remotes", "rcmdcheck", "purrr"))
-          remotes::install_deps(dependencies = TRUE)
-        shell: Rscript {0}
+          brew install --cask mactex-no-gui
+          eval "$(/usr/libexec/path_helper)"
+
+      # - name: Update tlmgr
+      #   run: sudo tlmgr update --self --all
+      #   shell: /bin/bash -e {0}
+
+      - name: Install R dependencies
+        run: |
+          Rscript -e "install.packages(c('remotes', 'rcmdcheck', 'reticulate', 'renv'))"
+          Rscript -e "renv::restore()"
+        shell: bash
+
+      # Set up Python environment
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.10.x' # Python version specified
+
+      - name: Install Python virtualenv
+        run: pip install virtualenv
+
+      - name: Create Python virtual environment
+        run: virtualenv flair_env
+
+      - name: Install Python dependencies in virtual environment
+        run: |
+          source flair_env/bin/activate
+          pip install flair
 
       - name: Check
-        run: rcmdcheck::rcmdcheck(args = "--no-manual --no-build-vignettes", error_on = "error")
-        shell: Rscript {0}
+        run: |
+          R CMD build --no-build-vignettes .
+          # R CMD check *tar.gz --no-manual --no-examples
+        shell: bash
+
