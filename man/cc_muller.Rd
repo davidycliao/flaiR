@@ -31,7 +31,6 @@ encompasses 5,858 annotated data entries from countries such as the United Kingd
 Ireland, Canada, Australia, New Zealand, and the United States. Its central objective
 is to compute the percentage of sentences or quasi-sentences referring to the past, present,
 or future. This differentiation is made based on two categories: "Prospective" and "Retrospective".
-The paper can be accessed at \url{https://www.journals.uchicago.edu/doi/10.1086/715165}.
 }
 \examples{
 \dontrun{
