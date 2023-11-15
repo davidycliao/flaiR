@@ -3,10 +3,10 @@ name: R-ubuntu
 on:
   push:
     branches:
-      - main
+      - master
   pull_request:
     branches:
-      - main
+      - master
 
 jobs:
   R-CMD-check:
@@ -19,7 +19,7 @@ jobs:
       - name: Cache R dependencies
         uses: actions/cache@v2
         with:
-          path: ${{ env.R_LIBS_USER }}
+          path: ~/R/library
           key: ${{ runner.os }}-r-${{ hashFiles('**/renv.lock') }}
           restore-keys: ${{ runner.os }}-r-
 
