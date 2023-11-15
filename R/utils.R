@@ -434,53 +434,6 @@ install_python_package <- function(package_name, package_version = NULL, python_
   }
 }
 
-
-# install_python_package <- function(package_name, package_version = NULL, python_path = Sys.which("python3")) {
-#   if (python_path == "") {
-#     stop("Python is not installed, not found in the system PATH, or an incorrect path was provided.")
-#   } else {
-#     message("Using Python at: ", python_path)
-#   }
-#
-#   if (is.null(package_version)) {
-#     package_ref <- package_name
-#     warning("The version of the Python package is not defined. The latest version of the package will be installed.")
-#   } else {
-#     package_ref <- paste(package_name, "==", package_version, sep = "")
-#   }
-#
-#   # Upgrade pip before installing the package
-#   update_pip_command <- paste(python_path, "-m pip install --upgrade pip")
-#   if (system(update_pip_command, intern = TRUE) != 0) {
-#     warning("Failed to upgrade pip. Please check your Python installation.")
-#   }
-#
-#   # Install the specified package
-#   install_command <- paste(python_path, "-m pip install", package_ref)
-#   if (system(install_command, intern = TRUE) != 0) {
-#     stop("Failed to install the package. Please check the command and try again.")
-#   }
-#
-#   # Check if the package is installed and get the version
-#   check_version_command <- paste(python_path, "-c 'import", package_name, "; print(", package_name, ".__version__)'")
-#   package_version_installed <- tryCatch({
-#     system(check_version_command, intern = TRUE)
-#   }, error = function(e) {
-#     NA
-#   })
-#
-#   if (is.na(package_version_installed)) {
-#     stop("Failed to install the package or retrieve the version.")
-#   }
-#
-#   message("Package '", package_name, "' installed successfully, version: ", package_version_installed)
-#   return(list(
-#     package_name = package_name,
-#     package_version = package_version_installed,
-#     python_path = python_path
-#   ))
-# }
-
 #' @title Uninstall a Python Package
 #'
 #' @description `uninstall_python_package` function uninstalls a specified Python
