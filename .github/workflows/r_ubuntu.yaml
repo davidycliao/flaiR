@@ -36,8 +36,8 @@ jobs:
       # Restore R environment using renv
       - name: Restore R environment
         run: |
-          if (!requireNamespace("renv", quietly = TRUE)) install.packages("renv")
-          renv::restore()
+          Rscript -e "if (!requireNamespace('renv', quietly = TRUE)) install.packages('renv')"
+          Rscript -e "renv::restore()"
 
       # Check the R package
       - name: Check R package
