@@ -23,7 +23,7 @@ jobs:
       - name: Cache R dependencies
         uses: actions/cache@v2
         with:
-          path: ~/R/library
+          path: ~/R/x86_64-pc-linux-gnu-library/ # Adjust the path as per your setup
           key: ${{ runner.os }}-r-${{ hashFiles('**/renv.lock') }}
           restore-keys: ${{ runner.os }}-r-
 
