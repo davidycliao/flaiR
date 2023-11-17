@@ -3,7 +3,7 @@
 \docType{data}
 \name{hatespeech_zh_tw}
 \alias{hatespeech_zh_tw}
-\title{Sampled Development Set from the Paper: "Political Hate Speech Detection and Lexicon Building: A Study in Taiwan" (IEEE Explore 2022)}
+\title{Political Hate Speech Detection and Lexicon Building: A Study in Taiwan (IEEE Explore 2022)}
 \format{
 A data frame with 2 variables:
 \describe{
@@ -18,7 +18,7 @@ Data provided by the authors Chih-Chien Wang, Min-Yuh Day, and Chun-Lian Wu. Ava
 data("hatespeech_zh_tw")
 }
 \description{
-This dataset is derived from the development set of "Political Hate Speech Detection and Lexicon Building: A Study in Taiwan." It contains 1,000 annotated data entries, of which 926 are labeled as '0' (not hate speech) and 74 as '1' (hate speech).
+This dataset is derived sample from the development set of "Political Hate Speech Detection and Lexicon Building: A Study in Taiwan." It contains 1,000 annotated data entries, of which 926 are labeled as '0' (not hate speech) and 74 as '1' (hate speech).
 
 The paper can be accessed at \url{https://ieeexplore.ieee.org/document/9738642}.
 }
