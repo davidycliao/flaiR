@@ -19,13 +19,13 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      # Cache R dependencies
-      - name: Cache R dependencies
-        uses: actions/cache@v2
-        with:
-          path: ~/R/x86_64-pc-linux-gnu-library/ # Adjust the path as per your setup
-          key: ${{ runner.os }}-r-${{ hashFiles('**/renv.lock') }}
-          restore-keys: ${{ runner.os }}-r-
+      # # Cache R dependencies
+      # - name: Cache R dependencies
+      #   uses: actions/cache@v2
+      #   with:
+      #     path: ~/R/x86_64-pc-linux-gnu-library/
+      #     key: ${{ runner.os }}-r-${{ hashFiles('**/renv.lock') }}
+      #     restore-keys: ${{ runner.os }}-r-
 
       # Setup R
       - name: Setup R
