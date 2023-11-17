@@ -105,7 +105,7 @@ NULL
 NULL
 
 
-#' @title Sampled Development Set from the Paper: "Political Hate Speech Detection and Lexicon Building: A Study in Taiwan" (IEEE Explore 2022)
+#' @title Sampled Development Set from Political Hate Speech Detection and Lexicon Building: A Study in Taiwan (IEEE Explore 2022)
 #'
 #' @description This dataset is derived from the development set of "Political Hate Speech Detection and Lexicon Building: A Study in Taiwan." It contains 1,000 annotated data entries, of which 926 are labeled as '0' (not hate speech) and 74 as '1' (hate speech).
 #'
