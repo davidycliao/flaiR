@@ -39,8 +39,10 @@ first is wrapper functions in {`flaiR`} built on top of {`reticulate`},
 which enables you to interact directly with Python modules in R and
 provides seamless support for documents and [tutorial (in
 progress)](https://davidycliao.github.io/flaiR/articles/tutorial.html)
-in the R community. `{flaiR}` enables R users to leverage Flair’s
-capabilities without the need to interact directly with Python.
+in the R community. The {flaiR} package enables R users to leverage
+Flair’s capabilities to train their own models using the Flair framework
+and state-of-the-art NLP models without the need to interact directly
+with Python.
 
 Secondly, to facilitate more efficient use for social science research,
 {`flairR`} expands {`flairNLP/flair`}’s core functionality for working
