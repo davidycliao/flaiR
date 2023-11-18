@@ -36,10 +36,10 @@ jobs:
         with:
           r-version: ${{ matrix.r-version }}
 
-      - name: Install LaTeX
-        run: |
-          brew install --cask mactex-no-gui
-          eval "$(/usr/libexec/path_helper)"
+      # - name: Install LaTeX
+      #   run: |
+      #     brew install --cask mactex-no-gui
+      #     eval "$(/usr/libexec/path_helper)"
 
       # - name: Update tlmgr
       #   run: sudo tlmgr update --self --all
