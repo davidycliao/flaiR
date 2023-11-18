@@ -179,12 +179,12 @@ Default is FALSE.</p></dd>
 
 <dt>device</dt>
 <dd><p>A character string specifying the computation device.</p><ul><li><p>"cuda" or "cuda:0" ("mps" or "mps:0" in Mac M1/M2 )Refers to the first GPU in the system. If
-      there's only one GPU, specifying "cuda" or "cuda:0" will allocate
-      computations to this GPU.</p></li>
+there's only one GPU, specifying "cuda" or "cuda:0" will allocate
+computations to this GPU.</p></li>
 <li><p>"cuda:1" ("mps:1")Refers to the second GPU in the system, allowing allocation
-      of specific computations to this GPU.</p></li>
+of specific computations to this GPU.</p></li>
 <li><p>"cuda:2" ("mps:2)Refers to the third GPU in the system, and so on for systems
-      with more GPUs.</p></li>
+with more GPUs.</p></li>
 </ul></dd>
 
 
@@ -200,24 +200,24 @@ progress updates. Default is TRUE.</p></dd>
 <p>A data.table containing the following columns:</p><dl><dt><code>doc_id</code></dt>
 <dd><p>The document identifier corresponding to each text.</p></dd>
 
-  <dt><code>token_id</code></dt>
+<dt><code>token_id</code></dt>
 <dd><p>The token number in the original text,
-  indicating the position of the token.</p></dd>
+indicating the position of the token.</p></dd>
 
-  <dt><code>text_id</code></dt>
+<dt><code>text_id</code></dt>
 <dd><p>The actual text input passed to the function (if show.text_id is TRUE).</p></dd>
 
-  <dt><code>token</code></dt>
+<dt><code>token</code></dt>
 <dd><p>The individual word or token from the text that was
-  POS tagged.</p></dd>
+POS tagged.</p></dd>
 
-  <dt><code>tag</code></dt>
+<dt><code>tag</code></dt>
 <dd><p>The part-of-speech tag assigned to the token by
-  the Flair library.</p></dd>
+the Flair library.</p></dd>
 
-  <dt><code>precision</code></dt>
+<dt><code>precision</code></dt>
 <dd><p>A confidence score (numeric) for the
-  assigned POS tag.</p></dd>
+assigned POS tag.</p></dd>
 
 
 </dl></div>

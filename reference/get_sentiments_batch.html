@@ -164,7 +164,7 @@ the function loads the default model based on the language.</p></dd>
 
 <dt>language</dt>
 <dd><p>A character string indicating the language of the texts.
- Currently supports "sentiment" (English), "sentiment-fast" (English), and
+Currently supports "sentiment" (English), "sentiment-fast" (English), and
 "de-offensive-language" (German)</p></dd>
 
 
@@ -191,12 +191,12 @@ Default is 5.</p></dd>
 It can be either "cpu" or a string representation of a GPU device number.
 For instance, "0" corresponds to the first GPU. If a GPU device number
 is provided, it will attempt to use that GPU. The default is "cpu".</p><ul><li><p>"cuda" or "cuda:0" ("mps" or "mps:0" in Mac M1/M2 )Refers to the first GPU in the system. If
-      there's only one GPU, specifying "cuda" or "cuda:0" will allocate
-      computations to this GPU.</p></li>
+there's only one GPU, specifying "cuda" or "cuda:0" will allocate
+computations to this GPU.</p></li>
 <li><p>"cuda:1" ("mps:1")Refers to the second GPU in the system, allowing allocation
-      of specific computations to this GPU.</p></li>
+of specific computations to this GPU.</p></li>
 <li><p>"cuda:2" ("mps:2)Refers to the third GPU in the system, and so on for systems
-      with more GPUs.</p></li>
+with more GPUs.</p></li>
 </ul></dd>
 
 
@@ -209,9 +209,7 @@ progress updates. Default is TRUE.</p></dd>
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>A <code>data.table</code> containing three columns:</p>
-<p></p>
-<ul><li><p><code>doc_id</code>: The document ID from the input.</p></li>
+<p>A <code>data.table</code> containing three columns:</p><ul><li><p><code>doc_id</code>: The document ID from the input.</p></li>
 <li><p><code>sentiment</code>: Predicted sentiment for the text.</p></li>
 <li><p><code>score</code>: Score for the sentiment prediction.</p></li>
 </ul></div>
