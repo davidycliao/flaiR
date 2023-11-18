@@ -69,6 +69,9 @@ jobs:
           source flair_env/bin/activate
           pip install flair
 
+      - name: Remove Python cache files
+        run: find . -name '*.pyc' -delete
+
       - name: Check
         run: |
           R CMD build --no-build-vignettes .
