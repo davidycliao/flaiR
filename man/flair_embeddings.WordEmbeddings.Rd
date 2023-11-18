@@ -7,13 +7,13 @@
 flair_embeddings.WordEmbeddings(embeddings = "glove")
 }
 \arguments{
-\item{embeddings}{The type of pre-trained embeddings to use. Defaults to "`glove`".}
+\item{embeddings}{The type of pre-trained embeddings to use. Defaults to "\code{glove}".}
 }
 \value{
 A Flair WordEmbeddings class.
 }
 \description{
-This function interfaces with Python via {reticulate} to create a `WordEmbeddings`
+This function interfaces with Python via {reticulate} to create a \code{WordEmbeddings}
 object using the Flair library. Users select which pre-trained embeddings to load
 by providing the appropriate ID string. Typically, a two-letter language code initializes
 an embedding (e.g., 'en' for English, 'de' for German). By default, this loads FastText embeddings
@@ -22,45 +22,45 @@ English offers more options like 'en-glove', 'en-extvec', etc.
 
 Supported embeddings include:
 \itemize{
-  \item 'en-glove' or 'glove': English GloVe embeddings
-  \item 'en-extvec' or 'extvec': English Komninos embeddings
-  \item 'en-crawl' or 'crawl': English FastText web crawl embeddings
-  \item 'en-twitter' or 'twitter': English Twitter embeddings
-  \item 'en-turian' or 'turian': English Turian embeddings (small)
-  \item 'en', 'en-news', or 'news': English FastText news and Wikipedia embeddings
-  \item 'de': German FastText embeddings
-  \item 'nl': Dutch FastText embeddings
-  \item 'fr': French FastText embeddings
-  \item 'it': Italian FastText embeddings
-  \item 'es': Spanish FastText embeddings
-  \item 'pt': Portuguese FastText embeddings
-  \item 'ro': Romanian FastText embeddings
-  \item 'ca': Catalan FastText embeddings
-  \item 'sv': Swedish FastText embeddings
-  \item 'da': Danish FastText embeddings
-  \item 'no': Norwegian FastText embeddings
-  \item 'fi': Finnish FastText embeddings
-  \item 'pl': Polish FastText embeddings
-  \item 'cz': Czech FastText embeddings
-  \item 'sk': Slovak FastText embeddings
-  \item 'sl': Slovenian FastText embeddings
-  \item 'sr': Serbian FastText embeddings
-  \item 'hr': Croatian FastText embeddings
-  \item 'bg': Bulgarian FastText embeddings
-  \item 'ru': Russian FastText embeddings
-  \item 'ar': Arabic FastText embeddings
-  \item 'he': Hebrew FastText embeddings
-  \item 'tr': Turkish FastText embeddings
-  \item 'fa': Persian FastText embeddings
-  \item 'ja': Japanese FastText embeddings
-  \item 'ko': Korean FastText embeddings
-  \item 'zh': Chinese FastText embeddings
-  \item 'hi': Hindi FastText embeddings
-  \item 'id': Indonesian FastText embeddings
-  \item 'eu': Basque FastText embeddings
+\item 'en-glove' or 'glove': English GloVe embeddings
+\item 'en-extvec' or 'extvec': English Komninos embeddings
+\item 'en-crawl' or 'crawl': English FastText web crawl embeddings
+\item 'en-twitter' or 'twitter': English Twitter embeddings
+\item 'en-turian' or 'turian': English Turian embeddings (small)
+\item 'en', 'en-news', or 'news': English FastText news and Wikipedia embeddings
+\item 'de': German FastText embeddings
+\item 'nl': Dutch FastText embeddings
+\item 'fr': French FastText embeddings
+\item 'it': Italian FastText embeddings
+\item 'es': Spanish FastText embeddings
+\item 'pt': Portuguese FastText embeddings
+\item 'ro': Romanian FastText embeddings
+\item 'ca': Catalan FastText embeddings
+\item 'sv': Swedish FastText embeddings
+\item 'da': Danish FastText embeddings
+\item 'no': Norwegian FastText embeddings
+\item 'fi': Finnish FastText embeddings
+\item 'pl': Polish FastText embeddings
+\item 'cz': Czech FastText embeddings
+\item 'sk': Slovak FastText embeddings
+\item 'sl': Slovenian FastText embeddings
+\item 'sr': Serbian FastText embeddings
+\item 'hr': Croatian FastText embeddings
+\item 'bg': Bulgarian FastText embeddings
+\item 'ru': Russian FastText embeddings
+\item 'ar': Arabic FastText embeddings
+\item 'he': Hebrew FastText embeddings
+\item 'tr': Turkish FastText embeddings
+\item 'fa': Persian FastText embeddings
+\item 'ja': Japanese FastText embeddings
+\item 'ko': Korean FastText embeddings
+\item 'zh': Chinese FastText embeddings
+\item 'hi': Hindi FastText embeddings
+\item 'id': Indonesian FastText embeddings
+\item 'eu': Basque FastText embeddings
 }
 
-For example, to load German FastText embeddings, use 'de' as the `embeddings` parameter.
+For example, to load German FastText embeddings, use 'de' as the \code{embeddings} parameter.
 }
 \examples{
 \dontrun{

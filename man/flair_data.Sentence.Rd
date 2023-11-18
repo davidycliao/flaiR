@@ -33,5 +33,5 @@ sentence = Sentence("The quick brown fox jumps over the lazy dog.")
 }
 }
 \seealso{
-[Flair's GitHub Repository about Senetence object.](https://flairnlp.github.io/docs/tutorial-basics/basic-types)
+\href{https://flairnlp.github.io/docs/tutorial-basics/basic-types}{Flair's GitHub Repository about Senetence object.}
 }

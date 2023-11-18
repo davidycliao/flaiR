@@ -7,23 +7,23 @@
 \format{
 A data frame with 12 variables:
 \describe{
-  \item{date}{Date of the speech, Date type}
-  \item{agenda}{Agenda or subject of the speech, character}
-  \item{speechnumber}{Unique identifier for each speech, numeric}
-  \item{speaker}{Name of the person giving the speech, character}
-  \item{party}{Political party of the speaker, character}
-  \item{party.facts.id}{ID for the party, usually a numeric or character}
-  \item{chair}{Person chairing the session, character}
-  \item{terms}{Terms or tags associated with the speech, character or list}
-  \item{text}{Actual text of the speech, character}
-  \item{parliament}{Which parliament session, character or numeric}
-  \item{iso3country}{ISO3 country code where the
-  parliament is located, character}
-  \item{year}{Year when the speech was made, numeric}
+\item{date}{Date of the speech, Date type}
+\item{agenda}{Agenda or subject of the speech, character}
+\item{speechnumber}{Unique identifier for each speech, numeric}
+\item{speaker}{Name of the person giving the speech, character}
+\item{party}{Political party of the speaker, character}
+\item{party.facts.id}{ID for the party, usually a numeric or character}
+\item{chair}{Person chairing the session, character}
+\item{terms}{Terms or tags associated with the speech, character or list}
+\item{text}{Actual text of the speech, character}
+\item{parliament}{Which parliament session, character or numeric}
+\item{iso3country}{ISO3 country code where the
+parliament is located, character}
+\item{year}{Year when the speech was made, numeric}
 }
 }
 \source{
-Data collected from `ParSpeechV2` the House of Commons for the
+Data collected from \code{ParSpeechV2} the House of Commons for the
 year 2010. The dataset is publicly available at
 \url{https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/L4OAKN}.
 }

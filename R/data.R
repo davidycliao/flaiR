@@ -71,7 +71,7 @@ NULL
 NULL
 
 
-#' @title Replication Data for: The Temporal Focus of Campaign Communication (2020 JOP)
+#' @title Training Data from: The Temporal Focus of Campaign Communication (2020 JOP)
 #'
 #' @description The replication data is sourced from "The Temporal Focus of Campaign
 #' Communication," authored by Stefan Müller, and was published in the Journal of Politics in 2022.
@@ -105,7 +105,11 @@ NULL
 NULL
 
 
+<<<<<<< Updated upstream
 #' @title Sampled Development Set from the Paper: "Political Hate Speech Detection and Lexicon Building: A Study in Taiwan" (IEEE Explore 2022)
+=======
+#' @title Training Data from "Political Hate Speech Detection and Lexicon Building: A Study in Taiwan" (IEEE Explore 2022)
+>>>>>>> Stashed changes
 #'
 #' @description This dataset is derived from the development set of "Political Hate Speech Detection and Lexicon Building: A Study in Taiwan." It contains 1,000 annotated data entries, of which 926 are labeled as '0' (not hate speech) and 74 as '1' (hate speech).
 #'
@@ -128,6 +132,40 @@ NULL
 #' @name hatespeech_zh_tw
 NULL
 
+
+#' @title "When Do Politicians Grandstand? Measuring Message Politics in Committee Hearings" (2021 JOP)
+#'
+#' @description
+#' This dataset is from Ju Yeon Park's paper published in the Journal of Politics in 2021,
+#' titled "When Do Politicians Grandstand? Measuring Message Politics in Committee Hearings".
+#' It contains the "Congressional Hearing Dataset: 105th through 114th Congresses",
+#' which is the replication dataset for the paper. The manuscript was accepted for publication
+#' in June 2019. Please cite her paper when using the data.
+#'
+#' @format
+#' A data frame with 3 variables:
+#' \describe{
+#'   \item{text}{Hearing text.}
+#'   \item{sentiment_score}{Grandstanding score.}
+#'   \item{rescaled_gs}{Label indicating whether the text is grandstanding speech:
+#'   '1' for grandstanding speech and '0' for non-grandstanding speech. This is a rescaled version
+#'   of the sentiment_score (gscore) from the original released data.}
+#'
+#' @source
+#' Data provided by the authors Ju Yeon Park and JOP's Dataverse at
+#' \url{https://dataverse.harvard.edu/file.xhtml?persistentId=doi:10.7910/DVN/GSMBFX/JIHIGH&version=1.0}.
+#'
+#' @examples
+#' \dontrun{
+#' data(grandstand_data)
+#' head(grandstand_data)
+#' }
+#'
+#' @usage
+#' data("grandstand_data")
+#' @docType data
+#' @name grandstand_data
+NULL
 
 
 

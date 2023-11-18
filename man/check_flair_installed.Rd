@@ -7,7 +7,7 @@
 check_flair_installed(...)
 }
 \value{
-Logical. `TRUE` if Flair is installed, otherwise `FALSE`.
+Logical. \code{TRUE} if Flair is installed, otherwise \code{FALSE}.
 }
 \description{
 Determines if the Flair Python module is available in the current Python

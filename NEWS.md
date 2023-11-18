@@ -4,6 +4,8 @@
 
 * The __flair__ in {`flaiR`} was renamed from `flair()` to `import_flair()` to avoid overlapping with conventional practice `import flair` in Python.
 
+* Add new training data from grandstanding training data from Ju Yeon Park's paper.
+
 * __install_python_package()__ and __uninstall_python_package()__ are new functions to install and uninstall Python packages using pip in the environment used by your flaiR package.
 
 * `zzz.R` is a revised code that proceeds through three steps. First, when installing and loading the package, {flaiR} utilizes the system's environment tool and undergoes three evaluation stages. Initially, {flaiR} requires at least Python 3 to be installed on your device. If Python 3 is not available, you will be unable to install {flaiR} successfully. Once this requirement is met, the system then checks for the appropriate versions of PyTorch and Flair. The primary focus here is on Flair. If it is not already installed, you will see a message indicating that 'Flair is being installed from Python'. This process represents a new format for loading the Python environment used by your flaiR package.

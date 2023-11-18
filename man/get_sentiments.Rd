@@ -26,7 +26,7 @@ the function loads the default model based on the language.}
 \item{...}{Additional arguments passed to next.}
 
 \item{language}{A character string indicating the language of the texts.
- Currently supports "sentiment" (English), "sentiment-fast" (English), and
+Currently supports "sentiment" (English), "sentiment-fast" (English), and
 "de-offensive-language" (German)}
 
 \item{show.text_id}{A logical value. If TRUE, includes the actual text from
@@ -39,11 +39,11 @@ Default is FALSE.}
 }
 \value{
 A \code{data.table} containing three columns:
-  \itemize{
-    \item \code{doc_id}: The document ID from the input.
-    \item \code{sentiment}: Predicted sentiment for the text.
-    \item \code{score}: Score for the sentiment prediction.
-  }
+\itemize{
+\item \code{doc_id}: The document ID from the input.
+\item \code{sentiment}: Predicted sentiment for the text.
+\item \code{score}: Score for the sentiment prediction.
+}
 }
 \description{
 This function takes in texts and their associated document IDs

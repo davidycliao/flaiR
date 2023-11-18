@@ -38,23 +38,23 @@ Default is FALSE.}
 \value{
 A data table with columns:
 \describe{
-  \item{doc_id}{The ID of the document from which the entity was extracted.}
-  \item{text_id}{If TRUE, the actual text from which the entity
-  was extracted.}
-  \item{entity}{The named entity that was extracted from the text.}
-  \item{tag}{The tag or category of the named entity. Common tags include:
-  PERSON (names of individuals),
-  ORG (organizations, institutions),
-  GPE (countries, cities, states),
-  LOCATION (mountain ranges, bodies of water),
-  DATE (dates or periods),
-  TIME (times of day),
-  MONEY (monetary values),
-  PERCENT (percentage values),
-  FACILITY (buildings, airports),
-  PRODUCT (objects, vehicles),
-  EVENT (named events like wars or sports events),
-  ART (titles of books)}}
+\item{doc_id}{The ID of the document from which the entity was extracted.}
+\item{text_id}{If TRUE, the actual text from which the entity
+was extracted.}
+\item{entity}{The named entity that was extracted from the text.}
+\item{tag}{The tag or category of the named entity. Common tags include:
+PERSON (names of individuals),
+ORG (organizations, institutions),
+GPE (countries, cities, states),
+LOCATION (mountain ranges, bodies of water),
+DATE (dates or periods),
+TIME (times of day),
+MONEY (monetary values),
+PERCENT (percentage values),
+FACILITY (buildings, airports),
+PRODUCT (objects, vehicles),
+EVENT (named events like wars or sports events),
+ART (titles of books)}}
 }
 \description{
 This function takes texts and their corresponding document IDs

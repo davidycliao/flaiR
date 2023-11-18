@@ -39,13 +39,13 @@ Default is FALSE.}
 
 \item{device}{A character string specifying the computation device.
 \itemize{
- \item{"cuda" or "cuda:0" ("mps" or "mps:0" in Mac M1/M2 )}{Refers to the first GPU in the system. If
-      there's only one GPU, specifying "cuda" or "cuda:0" will allocate
-      computations to this GPU.}
- \item{"cuda:1" ("mps:1")}{Refers to the second GPU in the system, allowing allocation
-      of specific computations to this GPU.}
- \item{"cuda:2" ("mps:2)}{Refers to the third GPU in the system, and so on for systems
-      with more GPUs.}
+\item{"cuda" or "cuda:0" ("mps" or "mps:0" in Mac M1/M2 )}{Refers to the first GPU in the system. If
+there's only one GPU, specifying "cuda" or "cuda:0" will allocate
+computations to this GPU.}
+\item{"cuda:1" ("mps:1")}{Refers to the second GPU in the system, allowing allocation
+of specific computations to this GPU.}
+\item{"cuda:2" ("mps:2)}{Refers to the third GPU in the system, and so on for systems
+with more GPUs.}
 }}
 
 \item{verbose}{A logical value. If TRUE, the function prints batch processing
@@ -54,16 +54,16 @@ progress updates. Default is TRUE.}
 \value{
 A data.table containing the following columns:
 \describe{
-  \item{\code{doc_id}}{The document identifier corresponding to each text.}
-  \item{\code{token_id}}{The token number in the original text,
-  indicating the position of the token.}
-  \item{\code{text_id}}{The actual text input passed to the function (if show.text_id is TRUE).}
-  \item{\code{token}}{The individual word or token from the text that was
-  POS tagged.}
-  \item{\code{tag}}{The part-of-speech tag assigned to the token by
-  the Flair library.}
-  \item{\code{precision}}{A confidence score (numeric) for the
-  assigned POS tag.}
+\item{\code{doc_id}}{The document identifier corresponding to each text.}
+\item{\code{token_id}}{The token number in the original text,
+indicating the position of the token.}
+\item{\code{text_id}}{The actual text input passed to the function (if show.text_id is TRUE).}
+\item{\code{token}}{The individual word or token from the text that was
+POS tagged.}
+\item{\code{tag}}{The part-of-speech tag assigned to the token by
+the Flair library.}
+\item{\code{precision}}{A confidence score (numeric) for the
+assigned POS tag.}
 }
 }
 \description{
