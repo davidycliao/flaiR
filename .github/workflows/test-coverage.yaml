@@ -105,8 +105,12 @@ jobs:
         renv::restore()
       shell: Rscript {0}
 
+    - name: Install covr package
+      run: Rscript -e 'install.packages("covr")'
+
     - name: Check renv status
       run: Rscript -e 'renv::status()'
+
 
     - name: Set Python Path for R reticulate
       run: |
