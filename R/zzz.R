@@ -113,6 +113,10 @@
   }
   reticulate::use_virtualenv(venv, required = TRUE)
 
+  # Print Python configuration information
+  packageStartupMessage("Current Python Configuration:")
+  print(reticulate::py_config())
+
   # Check and install 'flair' module
   if (!reticulate::py_module_available("flair")) {
     packageStartupMessage("Attempting to install the 'flair' Python module...")

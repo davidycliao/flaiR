@@ -96,7 +96,7 @@ test   <- text[!sample]
 
 ``` r
 corpus <- Corpus(train=train, test=test)
-#> 2023-11-18 17:01:15,956 No dev split found. Using 0% (i.e. 282 samples) of the train split as dev data
+#> 2023-11-18 17:03:36,994 No dev split found. Using 0% (i.e. 282 samples) of the train split as dev data
 ```
 
 **Step 3** Create Classifier Using Transformer
@@ -107,8 +107,8 @@ document_embeddings <- TransformerDocumentEmbeddings('distilbert-base-uncased', 
 
 ``` r
 label_dict <- corpus$make_label_dictionary(label_type="classification")
-#> 2023-11-18 17:01:17,400 Computing label dictionary. Progress:
-#> 2023-11-18 17:01:17,457 Dictionary created for label 'classification' with 2 values: 0 (seen 1335 times), 1 (seen 1199 times)
+#> 2023-11-18 17:03:38,503 Computing label dictionary. Progress:
+#> 2023-11-18 17:03:38,551 Dictionary created for label 'classification' with 2 values: 0 (seen 1318 times), 1 (seen 1216 times)
 classifier <- TextClassifier(document_embeddings,
                              label_dictionary=label_dict, 
                              label_type='classification')
@@ -174,7 +174,7 @@ remotes::install_github("davidycliao/flaiR", force = TRUE)
 
 ``` r
 library(flaiR)
-#> flaiR: An R Wrapper for Accessing Flair NLP 0.12
+#> flaiR: An R Wrapper for Accessing Flair NLP 0.13.0
 ```
 
 <br>
