@@ -44,7 +44,7 @@ are also made user-friendly with accessible tools. In addition, Flair
 NLP provides an easy framework for training language models and is
 compatible with HuggingFace.
 
-**Step 1. Split Data into Train and Test Sets with Senetence Object**
+**Step 1 Split Data into Train and Test Sets with Senetence Object**
 
 ``` r
 library(flaiR)
@@ -74,22 +74,22 @@ test   <- text[!sample]
 
 ``` r
 corpus <- Corpus(train=train, test=test)
-#> 2023-11-18 11:48:50,438 No dev split found. Using 0% (i.e. 282 samples) of the train split as dev data
+#> 2023-11-18 11:53:42,442 No dev split found. Using 0% (i.e. 282 samples) of the train split as dev data
 ```
 
-**Step 3. Create Classifier Using Transformer**
+**Step 3 Create Classifier Using Transformer**
 
 ``` r
 document_embeddings <- TransformerDocumentEmbeddings('distilbert-base-uncased', fine_tune=TRUE)
 label_dict <- corpus$make_label_dictionary(label_type="classification")
-#> 2023-11-18 11:48:51,733 Computing label dictionary. Progress:
-#> 2023-11-18 11:48:51,784 Dictionary created for label 'classification' with 2 values: 0 (seen 1336 times), 1 (seen 1198 times)
+#> 2023-11-18 11:53:44,066 Computing label dictionary. Progress:
+#> 2023-11-18 11:53:44,118 Dictionary created for label 'classification' with 2 values: 0 (seen 1324 times), 1 (seen 1210 times)
 classifier <- TextClassifier(document_embeddings,
                              label_dictionary=label_dict, 
                              label_type='classification')
 ```
 
-**Step 4. Start Training using the Classifier**
+**Step 4 Start Training using the Classifier**
 
 ``` r
 trainer <- ModelTrainer(classifier, corpus)
