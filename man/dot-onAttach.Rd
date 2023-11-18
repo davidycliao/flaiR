@@ -2,7 +2,7 @@
 % Please edit documentation in R/zzz.R
 \name{.onAttach}
 \alias{.onAttach}
-\title{Install Python Dependencies and Load the flaiR}
+\title{Install Python Dependencies and Load the flaiRnlp}
 \usage{
 .onAttach(...)
 }

@@ -1,4 +1,4 @@
-#' @title Install Python Dependencies and Load the flaiR
+#' @title Install Python Dependencies and Load the flaiRnlp
 #' @description .onAttach sets up a virtual environment, checks for Python availability,
 #' and ensures the 'flair' module is installed in flair_env in Python.
 #'
@@ -132,11 +132,8 @@
 #     packageStartupMessage(sprintf("\033[1m\033[34mflaiR\033[39m\033[22m: \033[1m\033[33mAn R Wrapper for Accessing Flair NLP\033[39m\033[22m %-5s", paste("\033[1m\033[33m",  get_flair_version(),"\033[39m\033[22m", sep = "")))
 #   }
 # }
-
-
 .onAttach <- function(...) {
-
-  # Determine Python command
+  # Determine Python
   python_cmd <- if (Sys.info()["sysname"] == "Windows") "python" else "python3"
   python_path <- Sys.which(python_cmd)
 
@@ -161,6 +158,7 @@
   if (!reticulate::virtualenv_exists(venv)) {
     tryCatch({
       reticulate::virtualenv_create(venv)
+      packageStartupMessage("Created 'flair_env' virtual environment for flair project.")
     }, error = function(e) {
       venv_created <- FALSE
       packageStartupMessage("Failed to create 'flair_env' for flair project. Attempting to load 'flair' in default Python environment.")
@@ -169,6 +167,8 @@
 
   if (venv_created) {
     reticulate::use_virtualenv(venv, required = TRUE)
+    packageStartupMessage("Initialized 'flair_env' virtual environment.")
+
   } else {
     tryCatch({
       # Print Python configuration information
