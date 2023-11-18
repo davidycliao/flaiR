@@ -44,15 +44,15 @@ jobs:
         echo "RETICULATE_PYTHON=$(pwd)/venv/bin/python" >> $GITHUB_ENV
       shell: bash
 
-    # - name: Run Test Coverage
-    #   run: |
-    #     Rscript -e 'reticulate::use_virtualenv(Sys.getenv("RETICULATE_PYTHON"), required = TRUE)'
-    #     Rscript -e 'covr::codecov(
-    #       quiet = FALSE,
-    #       clean = FALSE,
-    #       install_path = file.path(Sys.getenv("RUNNER_TEMP"), "package")
-    #     )'
-    #   shell: bash
+    - name: Run Test Coverage
+      run: |
+        Rscript -e 'reticulate::use_virtualenv(Sys.getenv("RETICULATE_PYTHON"), required = TRUE)'
+        Rscript -e 'covr::codecov(
+          quiet = FALSE,
+          clean = FALSE,
+          install_path = file.path(Sys.getenv("RUNNER_TEMP"), "package")
+        )'
+      shell: bash
 
     - name: Show testthat output
       if: always()
