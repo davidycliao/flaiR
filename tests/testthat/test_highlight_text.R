@@ -2,7 +2,7 @@
 test_that("highlight_text handles entities_mapping input correctly", {
   correct_structure <- list(
     list(
-      words = c("example"),
+      words = "example",
       background_color = "blue",
       font_color = "white",
       label = "example label",

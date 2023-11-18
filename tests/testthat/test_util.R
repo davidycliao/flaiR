@@ -107,7 +107,7 @@ test_that("check_texts_and_ids handles input correctly", {
   expect_equal(res$doc_ids, 1:2)
 
   # Check that the function stops if the lengths of texts and doc_ids do not match
-  expect_error(check_texts_and_ids(c("text1", "text2"), c("id1")), "The lengths of texts and doc_ids do not match.")
+  expect_error(check_texts_and_ids(c("text1", "text2"), "id1"), "The lengths of texts and doc_ids do not match.")
 
   # Check that the function returns correct output if inputs are valid
   expect_silent(res <- check_texts_and_ids(c("text1", "text2"), c("id1", "id2")))
