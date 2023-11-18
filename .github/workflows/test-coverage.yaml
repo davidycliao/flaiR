@@ -46,7 +46,8 @@ jobs:
 
     - name: Run Test Coverage
       run: |
-        Rscript -e 'reticulate::use_virtualenv(Sys.getenv("RETICULATE_PYTHON"), required = TRUE)'
+        # Rscript -e 'reticulate::use_virtualenv(Sys.getenv("RETICULATE_PYTHON"), required = TRUE)'
+        Rscript -e 'reticulate::use_virtualenv(flair_env, required = TRUE)'
         Rscript -e 'covr::codecov(
           quiet = FALSE,
           clean = FALSE,
