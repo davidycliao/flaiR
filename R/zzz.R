@@ -132,7 +132,7 @@
 #     packageStartupMessage(sprintf("\033[1m\033[34mflaiR\033[39m\033[22m: \033[1m\033[33mAn R Wrapper for Accessing Flair NLP\033[39m\033[22m %-5s", paste("\033[1m\033[33m",  get_flair_version(),"\033[39m\033[22m", sep = "")))
 #   }
 # }
-#
+
 
 .onAttach <- function(...) {
 
@@ -155,14 +155,37 @@
     stop(paste("Failed to get Python version with path:", python_path, "Error:", e$message))
   })
 
-  # 使用 reticulate 自动管理的环境
-  reticulate::use_python(python_path, required = TRUE)
+  # 创建并使用虚拟环境
+  venv <- "flair_env"
+  venv_created <- TRUE
+  if (!reticulate::virtualenv_exists(venv)) {
+    tryCatch({
+      reticulate::virtualenv_create(venv)
+    }, error = function(e) {
+      venv_created <- FALSE
+      packageStartupMessage("Failed to create 'flair_env' for flair project. Attempting to load 'flair' in default Python environment.")
+    })
+  }
 
-  # 安装 'flair' 模块
+  if (venv_created) {
+    reticulate::use_virtualenv(venv, required = TRUE)
+  } else {
+    tryCatch({
+      # Print Python configuration information
+      reticulate::use_python(python_path, required = TRUE)
+      packageStartupMessage("Current Python Configuration:")
+      print(reticulate::py_config())
+    }, error = function(e) {
+      packageStartupMessage("Failed to use the default Python environment. Please manually create a virtual environment using reticulate or Anaconda and install 'flair' within that environment.")
+      return(invisible(NULL)) # 退出 .onAttach，但不停止加载包
+    })
+  }
+
+  # Check and install 'flair' module
   if (!reticulate::py_module_available("flair")) {
     packageStartupMessage("Attempting to install the 'flair' Python module...")
     tryCatch({
-      reticulate::py_install("flair")
+      reticulate::py_install("flair", envname = venv)
     }, error = function(e) {
       stop("Failed to install 'flair'. Error: ", e$message)
     })
@@ -170,6 +193,48 @@
       stop("Installation of 'flair' failed. Please install it manually in the Python environment.")
     }
   } else {
-    packageStartupMessage(sprintf("\033[1m\033[34mflaiR\033[39m\033[22m: \033[1m\033[33mAn R Wrapper for Accessing Flair NLP\033[39m\033[22m %-5s", paste("\033[1m\033[33m", get_flair_version(), "\033[39m\033[22m", sep = "")))
+    packageStartupMessage(sprintf("\033[1m\033[34mflaiR\033[39m\033[22m: \033[1m\033[33mAn R Wrapper for Accessing Flair NLP\033[39m\033[22m %-5s", paste("\033[1m\033[33m",  get_flair_version(),"\033[39m\033[22m", sep = "")))
   }
 }
+
+
+
+# .onAttach <- function(...) {
+#
+#   # Determine Python command
+#   python_cmd <- if (Sys.info()["sysname"] == "Windows") "python" else "python3"
+#   python_path <- Sys.which(python_cmd)
+#
+#   # Check Python path
+#   if (python_path == "") {
+#     stop(paste("Cannot locate the", python_cmd, "executable. Ensure it's installed and in your system's PATH."))
+#   }
+#
+#   # Try to get Python version
+#   tryCatch({
+#     python_version <- system(paste(python_path, "--version"), intern = TRUE)
+#     if (!grepl("Python 3", python_version)) {
+#       stop("Python 3 is required, but a different version was found. Please install Python 3.")
+#     }
+#   }, error = function(e) {
+#     stop(paste("Failed to get Python version with path:", python_path, "Error:", e$message))
+#   })
+#
+#   # 使用 reticulate 自动管理的环境
+#   reticulate::use_python(python_path, required = TRUE)
+#
+#   # 安装 'flair' 模块
+#   if (!reticulate::py_module_available("flair")) {
+#     packageStartupMessage("Attempting to install the 'flair' Python module...")
+#     tryCatch({
+#       reticulate::py_install("flair")
+#     }, error = function(e) {
+#       stop("Failed to install 'flair'. Error: ", e$message)
+#     })
+#     if (!reticulate::py_module_available("flair")) {
+#       stop("Installation of 'flair' failed. Please install it manually in the Python environment.")
+#     }
+#   } else {
+#     packageStartupMessage(sprintf("\033[1m\033[34mflaiR\033[39m\033[22m: \033[1m\033[33mAn R Wrapper for Accessing Flair NLP\033[39m\033[22m %-5s", paste("\033[1m\033[33m", get_flair_version(), "\033[39m\033[22m", sep = "")))
+#   }
+# }
