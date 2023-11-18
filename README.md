@@ -26,13 +26,74 @@ state-of-the-art natural language processing models to analyze your
 text, such as named entity recognition, sentiment analysis,
 part-of-speech tagging, biomedical data, sense disambiguation, and
 classification, with support for a rapidly growing number of languages
-in the community. In addition, Flair NLP provides an easy framework for
-training language models and is compatible with HuggingFace. For a
-comprehensive understanding of the `{flairNLP/flair}` architecture, you
-can refer to the research article ‘[Contextual String Embeddings for
-Sequence Labeling](https://aclanthology.org/C18-1139.pdf)’ and the
-official [manual](https://flairnlp.github.io) written for its Python
+in the community. For a comprehensive understanding of the
+`{flairNLP/flair}` architecture, you can refer to the research article
+‘[Contextual String Embeddings for Sequence
+Labeling](https://aclanthology.org/C18-1139.pdf)’ and the official
+[manual](https://flairnlp.github.io) written for its Python
 implementation.
+
+Flair offers a simpler and more intuitive approach for training custom
+NLP models compared to using Transformer-based models directly. With
+Flair, data loading and preprocessing are streamlined, facilitating the
+easy integration of various pre-trained embeddings, including both
+traditional and Transformer-based types like BERT. The training process
+in Flair is condensed to just a few lines of code, with automatic
+handling of fundamental preprocessing steps. Evaluation and optimization
+are also made user-friendly with accessible tools. In addition, Flair
+NLP provides an easy framework for training language models and is
+compatible with HuggingFace.
+
+**Step 1. Split Data into Train and Test Sets with Senetence Object**
+
+``` r
+library(flaiR)
+# load data: grandstanding score dataset from Julia Park's paper
+data(gs_score) 
+Sentence <- flair_data()$Sentence
+Corpus <- flair_data()$Corpus
+TransformerDocumentEmbeddings <- flair_embeddings()$TransformerDocumentEmbeddings
+TextClassifier <- flair_models()$TextClassifier
+ModelTrainer <- flair_trainers()$ModelTrainer
+
+# split the data
+text <- lapply(gs_score$speech, Sentence)
+labels <- as.character(gs_score$rescaled_gs)
+
+for (i in 1:length(text)) {
+  text[[i]]$add_label("classification", labels[[i]])
+}
+
+set.seed(2046)
+sample <- sample(c(TRUE, FALSE), length(text), replace=TRUE, prob=c(0.8, 0.2))
+train  <- text[sample]
+test   <- text[!sample]
+```
+
+**Step 2 Preprocess Data and Corpus Object**
+
+``` r
+corpus <- Corpus(train=train, test=test)
+#> 2023-11-18 11:48:50,438 No dev split found. Using 0% (i.e. 282 samples) of the train split as dev data
+```
+
+**Step 3. Create Classifier Using Transformer**
+
+``` r
+document_embeddings <- TransformerDocumentEmbeddings('distilbert-base-uncased', fine_tune=TRUE)
+label_dict <- corpus$make_label_dictionary(label_type="classification")
+#> 2023-11-18 11:48:51,733 Computing label dictionary. Progress:
+#> 2023-11-18 11:48:51,784 Dictionary created for label 'classification' with 2 values: 0 (seen 1336 times), 1 (seen 1198 times)
+classifier <- TextClassifier(document_embeddings,
+                             label_dictionary=label_dict, 
+                             label_type='classification')
+```
+
+**Step 4. Start Training using the Classifier**
+
+``` r
+trainer <- ModelTrainer(classifier, corpus)
+```
 
 For R users, {`flairR`} primarily consists of two main components. The
 first is wrapper functions in {`flaiR`} built on top of {`reticulate`},
