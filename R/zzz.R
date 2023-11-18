@@ -85,57 +85,6 @@
 #   }
 # }
 #
-.onAttach <- function(...) {
-
-  # Determine Python command
-  python_cmd <- if (Sys.info()["sysname"] == "Windows") "python" else "python3"
-  python_path <- Sys.which(python_cmd)
-
-  # Check Python path
-  if (python_path == "") {
-    stop(paste("Cannot locate the", python_cmd, "executable. Ensure it's installed and in your system's PATH."))
-  }
-
-  # Try to get Python version
-  tryCatch({
-    python_version <- system(paste(python_path, "--version"), intern = TRUE)
-    if (!grepl("Python 3", python_version)) {
-      stop("Python 3 is required, but a different version was found. Please install Python 3.")
-    }
-  }, error = function(e) {
-    stop(paste("Failed to get Python version with path:", python_path, "Error:", e$message))
-  })
-
-  # Create and use virtual environment
-  venv <- "flair_env"
-  if (!reticulate::virtualenv_exists(venv)) {
-    reticulate::virtualenv_create(venv)
-  }
-  reticulate::use_virtualenv(venv, required = TRUE)
-
-  # Print Python configuration information
-  packageStartupMessage("Current Python Configuration:")
-  print(reticulate::py_config())
-
-  # Check and install 'flair' module
-  if (!reticulate::py_module_available("flair")) {
-    packageStartupMessage("Attempting to install the 'flair' Python module...")
-    tryCatch({
-      reticulate::py_install("flair", envname = venv)
-    }, error = function(e) {
-      stop("Failed to install 'flair'. Error: ", e$message)
-    })
-    if (!reticulate::py_module_available("flair")) {
-      stop("Installation of 'flair' failed. Please install it manually in the Python environment.")
-    }
-  } else {
-    packageStartupMessage(sprintf("\033[1m\033[34mflaiR\033[39m\033[22m: \033[1m\033[33mAn R Wrapper for Accessing Flair NLP\033[39m\033[22m %-5s", paste("\033[1m\033[33m",  get_flair_version(),"\033[39m\033[22m", sep = "")))
-  }
-}
-
-
-
-#
 # .onAttach <- function(...) {
 #
 #   # Determine Python command
@@ -157,33 +106,16 @@
 #     stop(paste("Failed to get Python version with path:", python_path, "Error:", e$message))
 #   })
 #
-#   # 检测 Conda
-#   if (!reticulate::conda_binary() %in% c("conda", "mamba")) {
-#     stop("Conda is not installed. Please install Conda or Mamba.")
+#   # Create and use virtual environment
+#   venv <- "flair_env"
+#   if (!reticulate::virtualenv_exists(venv)) {
+#     reticulate::virtualenv_create(venv)
 #   }
+#   reticulate::use_virtualenv(venv, required = TRUE)
 #
-#   # 创建 Conda 环境
-#   conda_env_name <- "flair_env"
-#   if (!reticulate::condaenv_exists(conda_env_name)) {
-#     reticulate::conda_create(envname = conda_env_name)
-#   }
-#
-#   # 激活 Conda 环境
-#   reticulate::use_condaenv(conda_env_name, required = TRUE)
-#
-#   # 安装 'flair' 模块
-#   if (!reticulate::py_module_available("flair", envname = conda_env_name)) {
-#     tryCatch({
-#       reticulate::py_install("flair", envname = conda_env_name)
-#     }, error = function(e) {
-#       stop("Failed to install 'flair'. Error: ", e$message)
-#     })
-#   }
-#
-#   # 打印 Python 配置信息
+#   # Print Python configuration information
 #   packageStartupMessage("Current Python Configuration:")
 #   print(reticulate::py_config())
-#
 #
 #   # Check and install 'flair' module
 #   if (!reticulate::py_module_available("flair")) {
@@ -201,3 +133,43 @@
 #   }
 # }
 #
+
+.onAttach <- function(...) {
+
+  # Determine Python command
+  python_cmd <- if (Sys.info()["sysname"] == "Windows") "python" else "python3"
+  python_path <- Sys.which(python_cmd)
+
+  # Check Python path
+  if (python_path == "") {
+    stop(paste("Cannot locate the", python_cmd, "executable. Ensure it's installed and in your system's PATH."))
+  }
+
+  # Try to get Python version
+  tryCatch({
+    python_version <- system(paste(python_path, "--version"), intern = TRUE)
+    if (!grepl("Python 3", python_version)) {
+      stop("Python 3 is required, but a different version was found. Please install Python 3.")
+    }
+  }, error = function(e) {
+    stop(paste("Failed to get Python version with path:", python_path, "Error:", e$message))
+  })
+
+  # 使用 reticulate 自动管理的环境
+  reticulate::use_python(python_path, required = TRUE)
+
+  # 安装 'flair' 模块
+  if (!reticulate::py_module_available("flair")) {
+    packageStartupMessage("Attempting to install the 'flair' Python module...")
+    tryCatch({
+      reticulate::py_install("flair")
+    }, error = function(e) {
+      stop("Failed to install 'flair'. Error: ", e$message)
+    })
+    if (!reticulate::py_module_available("flair")) {
+      stop("Installation of 'flair' failed. Please install it manually in the Python environment.")
+    }
+  } else {
+    packageStartupMessage(sprintf("\033[1m\033[34mflaiR\033[39m\033[22m: \033[1m\033[33mAn R Wrapper for Accessing Flair NLP\033[39m\033[22m %-5s", paste("\033[1m\033[33m", get_flair_version(), "\033[39m\033[22m", sep = "")))
+  }
+}
