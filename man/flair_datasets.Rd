@@ -10,7 +10,7 @@ flair_datasets()
 A Python Module(flair.datasets) from Flair, which can be utilized for NLP tasks.
 }
 \description{
-Utilizes the {reticulate} package to import the `flair.datasets`
+Utilizes the {reticulate} package to import the \code{flair.datasets}
 dataset from Flair's datasets in Python, enabling the use of this dataset in
 an R environment.
 }
@@ -31,5 +31,5 @@ corpus = UD_ENGLISH().downsample(0.1)
 }
 \seealso{
 \url{https://github.com/flairNLP/flair} for additional information on Flair's
- capabilities and datasets in NLP.
+capabilities and datasets in NLP.
 }

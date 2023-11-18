@@ -7,7 +7,7 @@
 #' @details
 #' The function performs the following steps:
 #' \itemize{
-#'   \item Checks if the virtual environment specified by \code{venv} exists.
+#'   \item Checks if the virtual environment specified by `venv` exists.
 #'         If not, it creates the environment.
 #'   \item Activates the virtual environment.
 #'   \item Checks for the availability of Python. If Python is not available,

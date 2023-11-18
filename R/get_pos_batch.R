@@ -32,15 +32,15 @@
 #'
 #' @return A data.table containing the following columns:
 #' \describe{
-#'   \item{\code{doc_id}}{The document identifier corresponding to each text.}
-#'   \item{\code{token_id}}{The token number in the original text,
+#'   \item{`doc_id`}{The document identifier corresponding to each text.}
+#'   \item{`token_id`}{The token number in the original text,
 #'   indicating the position of the token.}
-#'   \item{\code{text_id}}{The actual text input passed to the function (if show.text_id is TRUE).}
-#'   \item{\code{token}}{The individual word or token from the text that was
+#'   \item{`text_id`}{The actual text input passed to the function (if show.text_id is TRUE).}
+#'   \item{`token`}{The individual word or token from the text that was
 #'   POS tagged.}
-#'   \item{\code{tag}}{The part-of-speech tag assigned to the token by
+#'   \item{`tag`}{The part-of-speech tag assigned to the token by
 #'   the Flair library.}
-#'   \item{\code{precision}}{A confidence score (numeric) for the
+#'   \item{`precision`}{A confidence score (numeric) for the
 #'   assigned POS tag.}
 #' }
 #'

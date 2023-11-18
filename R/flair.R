@@ -11,53 +11,53 @@
 #' \describe{
 #'   \item{Environment and Configuration:}{
 #'     \itemize{
-#'       \item \code{os}: Pertains to operating system related functions, such as path
+#'       \item `os`: Pertains to operating system related functions, such as path
 #'             handling, file operations, and more.
-#'       \item \code{Path}: From pathlib, used for more convenient file path operations.
-#'       \item \code{set_seed}: Functions to set the random seed.
-#'       \item \code{hf_set_seed}: Functions to set the random seed.
-#'       \item \code{set_proxies}: Used to configure network proxies.
+#'       \item `Path`: From pathlib, used for more convenient file path operations.
+#'       \item `set_seed`: Functions to set the random seed.
+#'       \item `hf_set_seed`: Functions to set the random seed.
+#'       \item `set_proxies`: Used to configure network proxies.
 #'     }
 #'   }
 #'   \item{Data and Data Loading:}{
 #'     \itemize{
-#'       \item \code{data}: Functions related to data handling and operations.
-#'       \item \code{datasets}: Modules or methods to load and handle specific datasets.
-#'       \item \code{file_utils}: Utilities for file operations.
+#'       \item `data`: Functions related to data handling and operations.
+#'       \item `datasets`: Modules or methods to load and handle specific datasets.
+#'       \item `file_utils`: Utilities for file operations.
 #'     }
 #'   }
 #'   \item{Embeddings and Model Layers:}{
 #'     \itemize{
-#'       \item \code{embeddings}: About embeddings, including word embeddings,
+#'       \item `embeddings`: About embeddings, including word embeddings,
 #'             contextual embeddings, etc.
-#'       \item \code{nn}: Related to neural network layers or operations.
-#'       \item \code{models}: Different model architectures or structures.
+#'       \item `nn`: Related to neural network layers or operations.
+#'       \item `models`: Different model architectures or structures.
 #'     }
 #'   }
 #'   \item{Training and Optimization:}{
 #'     \itemize{
-#'       \item \code{trainers}: Related to training models.
-#'       \item \code{training_utils}: Utility functions for the training process.
-#'       \item \code{optim}: Optimization algorithms, like SGD, Adam.
+#'       \item `trainers`: Related to training models.
+#'       \item `training_utils`: Utility functions for the training process.
+#'       \item `optim`: Optimization algorithms, like SGD, Adam.
 #'     }
 #'   }
 #'   \item{Tokenization and Text Processing:}{
 #'     \itemize{
-#'       \item \code{tokenization}: To break text into tokens.
-#'       \item \code{splitter}: For splitting datasets or texts.
+#'       \item `tokenization`: To break text into tokens.
+#'       \item `splitter`: For splitting datasets or texts.
 #'     }
 #'   }
 #'   \item{Visualizations and Miscellaneous:}{
 #'     \itemize{
-#'       \item \code{visual}: Related to visualization.
-#'       \item \code{torch}: The main PyTorch library.
-#'       \item \code{cache_root}: Related to caching data or models.
+#'       \item `visual`: Related to visualization.
+#'       \item `torch`: The main PyTorch library.
+#'       \item `cache_root`: Related to caching data or models.
 #'     }
 #'   }
 #'}
 #' @return An object that represents the Flair module from Python.
 #'
-#' @details This function relies on the \code{reticulate} package to import and
+#' @details This function relies on the `reticulate` package to import and
 #' use the Flair module from Python. Ensure you have the Flair Python library
 #' installed in the Python environment being used.
 #'

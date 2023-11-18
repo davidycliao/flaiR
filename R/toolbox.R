@@ -53,11 +53,11 @@ embeddings_to_matrix <- function(embeddings, strategy = "average") {
 #' @param text A character string containing the text to highlight.
 #' @param entities_mapping A named list of lists, with each sub-list containing:
 #'   \itemize{
-#'     \item \code{words}: A character vector of words to highlight.
-#'     \item \code{background_color}: A character string specifying the CSS color for the highlight background.
-#'     \item \code{font_color}: A character string specifying the CSS color for the highlighted text.
-#'     \item \code{label}: A character string specifying a label to append after each highlighted word.
-#'     \item \code{label_color}: A character string specifying the CSS color for the label text.
+#'     \item `words`: A character vector of words to highlight.
+#'     \item `background_color`: A character string specifying the CSS color for the highlight background.
+#'     \item `font_color`: A character string specifying the CSS color for the highlighted text.
+#'     \item `label`: A character string specifying a label to append after each highlighted word.
+#'     \item `label_color`: A character string specifying the CSS color for the label text.
 #'   }
 #' @param font_family A character string specifying the CSS font family for
 #' the highlighted text and label. Default is "Arial".
@@ -130,8 +130,8 @@ highlight_text <- function(text, entities_mapping, font_family = "Arial") {
 #'
 #' @param df A data frame containing at least two columns:
 #'   \itemize{
-#'     \item \code{entity}: A character vector of words/entities to be highlighted.
-#'     \item \code{tag}: A character vector indicating the entity type of each word/entity.
+#'     \item `entity`: A character vector of words/entities to be highlighted.
+#'     \item `tag`: A character vector indicating the entity type of each word/entity.
 #'   }
 #' @param entity A character vector of entities annotated by the model.
 #' @param tag A character vector of tags corresponding to the annotated entities.
@@ -139,11 +139,11 @@ highlight_text <- function(text, entities_mapping, font_family = "Arial") {
 #' @return A list with mapping settings for each entity type, where each entity type
 #' is represented as a list containing:
 #'   \itemize{
-#'     \item \code{words}: A character vector of words to be highlighted.
-#'     \item \code{background_color}: A character string representing the background color for highlighting the words.
-#'     \item \code{font_color}: A character string representing the font color for the words.
-#'     \item \code{label}: A character string to label the entity type.
-#'     \item \code{label_color}: A character string representing the font color for the label.
+#'     \item `words`: A character vector of words to be highlighted.
+#'     \item `background_color`: A character string representing the background color for highlighting the words.
+#'     \item `font_color`: A character string representing the font color for the words.
+#'     \item `label`: A character string to label the entity type.
+#'     \item `label_color`: A character string representing the font color for the label.
 #'   }
 #'
 #' @examples

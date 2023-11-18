@@ -104,7 +104,7 @@ show_flair_cache <- function() {
 #' - macOS 12.3 or later\\cr
 #' - Python 3.7 or later\\cr
 #' - Xcode command-line tools installed (`xcode-select --install`)\\cr
-#' More information at: \url{https://developer.apple.com/metal/pytorch/}.
+#' More information at: <https://developer.apple.com/metal/pytorch/>.
 #'
 #' @param device A character string specifying the device type.
 #'

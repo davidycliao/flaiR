@@ -6,18 +6,18 @@
 #' Here are three primary methods available in this module:
 #'
 #' \itemize{
-#'   \item \strong{TextClassifier:} This method represents a neural network
+#'   \item **TextClassifier:** This method represents a neural network
 #'   model designed for text classification tasks. Given a piece of text,
 #'   it predicts a class label or category. For instance, it can be used
 #'   to classify movie reviews as positive or negative.
-#'   \item \strong{SequenceTagger:} Tailored for tasks like Named Entity
+#'   \item **SequenceTagger:** Tailored for tasks like Named Entity
 #'   Recognition (NER) and Part-of-Speech (POS) tagging, this method
 #'   annotates sequences of words. For NER, it could tag entities in a
 #'   sentence such as locations, persons, or organizations. For POS tagging,
 #'   it can label each word in a sentence with its grammatical role
 #'   like noun, verb, adjective, etc.
 #'
-#'   \item \strong{LanguageModel:} This method represents a model
+#'   \item **LanguageModel:** This method represents a model
 #'   trained to predict the next word in a sequence, making it powerful
 #'   for tasks like text generation and completion. It learns the
 #'   statistical properties and structure of the language, and can be
@@ -110,7 +110,7 @@ flair_models.TextClassifier <- function() {
 #' }
 #'
 #' @seealso
-#' \url{https://github.com/flairNLP/flair} for more information on Flair's
+#' <https://github.com/flairNLP/flair> for more information on Flair's
 #' capabilities in NLP and sequence tagging.
 #'
 #' @export

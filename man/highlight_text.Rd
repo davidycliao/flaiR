@@ -11,11 +11,11 @@ highlight_text(text, entities_mapping, font_family = "Arial")
 
 \item{entities_mapping}{A named list of lists, with each sub-list containing:
 \itemize{
-  \item \code{words}: A character vector of words to highlight.
-  \item \code{background_color}: A character string specifying the CSS color for the highlight background.
-  \item \code{font_color}: A character string specifying the CSS color for the highlighted text.
-  \item \code{label}: A character string specifying a label to append after each highlighted word.
-  \item \code{label_color}: A character string specifying the CSS color for the label text.
+\item \code{words}: A character vector of words to highlight.
+\item \code{background_color}: A character string specifying the CSS color for the highlight background.
+\item \code{font_color}: A character string specifying the CSS color for the highlighted text.
+\item \code{label}: A character string specifying a label to append after each highlighted word.
+\item \code{label_color}: A character string specifying the CSS color for the label text.
 }}
 
 \item{font_family}{A character string specifying the CSS font family for

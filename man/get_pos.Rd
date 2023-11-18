@@ -35,21 +35,21 @@ Default is FALSE.}
 \value{
 A data.table containing the following columns:
 \describe{
-  \item{\code{doc_id}}{The document identifier corresponding to each text.}
-  \item{\code{token_id}}{The token number in the original text,
-  indicating the position of the token.}
-  \item{\code{text_id}}{The actual text input passed to the function.}
-  \item{\code{token}}{The individual word or token from the text that was
-  POS tagged.}
-  \item{\code{tag}}{The part-of-speech tag assigned to the token by
-  the Flair library.}
-  \item{\code{precision}}{A confidence score (numeric) for the
-  assigned POS tag.}
+\item{\code{doc_id}}{The document identifier corresponding to each text.}
+\item{\code{token_id}}{The token number in the original text,
+indicating the position of the token.}
+\item{\code{text_id}}{The actual text input passed to the function.}
+\item{\code{token}}{The individual word or token from the text that was
+POS tagged.}
+\item{\code{tag}}{The part-of-speech tag assigned to the token by
+the Flair library.}
+\item{\code{precision}}{A confidence score (numeric) for the
+assigned POS tag.}
 }
 }
 \description{
 This function returns a data table of POS tags and other related
- data for the given texts.
+data for the given texts.
 }
 \examples{
 \dontrun{

@@ -13,11 +13,11 @@ install_python_package(
 \arguments{
 \item{package_name}{The name of the Python package to install.}
 
-\item{package_version}{The version of the Python package to install. If `NULL`,
+\item{package_version}{The version of the Python package to install. If \code{NULL},
 the latest version is installed.}
 
 \item{python_path}{The path to the Python interpreter to be used for
-installation. If not provided, it defaults to the result of `Sys.which("python3")`.}
+installation. If not provided, it defaults to the result of \code{Sys.which("python3")}.}
 }
 \value{
 A list containing the package name, installed version, and the path

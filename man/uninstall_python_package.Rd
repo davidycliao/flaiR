@@ -15,10 +15,10 @@ uninstall_python_package(package_name, python_path = Sys.which("python3"))
 Invisibly returns TRUE if the package is successfully uninstalled, otherwise it stops with an error message.
 }
 \description{
-`uninstall_python_package` function uninstalls a specified Python
+\code{uninstall_python_package} function uninstalls a specified Python
 package using the system's Python installation. It checks if Python is
 installed and accessible, then proceeds to uninstall the package. Finally,
-`uninstall_python_package` verifies that the package has been successfully uninstalled.
+\code{uninstall_python_package} verifies that the package has been successfully uninstalled.
 }
 \examples{
 \dontrun{

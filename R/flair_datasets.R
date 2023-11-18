@@ -19,7 +19,7 @@
 #' }
 #'
 #' @seealso
-#' \url{https://github.com/flairNLP/flair} for additional information on Flair's
+#' <https://github.com/flairNLP/flair> for additional information on Flair's
 #'  capabilities and datasets in NLP.
 #'
 #' @importFrom reticulate import

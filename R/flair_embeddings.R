@@ -1,7 +1,7 @@
 #' @title Initialization of Flair Embeddings Modules
 #'
 #' @description This function provides an interface for R users to access and utilize the
-#' \code{flair.embeddings} module from the Flair NLP library. Flair's embedding functionalities offer
+#' `flair.embeddings` module from the Flair NLP library. Flair's embedding functionalities offer
 #' various state-of-the-art embeddings crucial for natural language processing tasks. By using this function,
 #' R users can seamlessly incorporate these advanced embeddings into their NLP workflows without delving
 #' deep into Python. Essentially, this function acts as a bridge between R's ecosystem and Flair's rich
@@ -21,7 +21,7 @@
 #' Each embedding type offers unique features suitable for various NLP tasks. By understanding their differences and capabilities, R users can select
 #' the appropriate embeddings to enhance their NLP models.
 #'
-#' @return The \code{flair.embeddings} module from Flair.
+#' @return The `flair.embeddings` module from Flair.
 #'
 #' @examples
 #' \dontrun{
@@ -90,58 +90,58 @@ flair_embeddings <- function() {
 #' module.
 #'
 #' @details
-#' \strong{Multi-Language Embeddings:}
+#' **Multi-Language Embeddings:**
 #' \itemize{
-#'   \item \strong{multi-X}: Supports 300+ languages, sourced from the JW300 corpus.
+#'   \item **multi-X**: Supports 300+ languages, sourced from the JW300 corpus.
 #'   JW300 corpus, as proposed by Agić and Vulić (2019). The corpus is licensed under CC-BY-NC-SA.
-#'   \item \strong{multi-X-fast}: CPU-friendly version, trained on a mix of corpora in languages like English, German, French, Italian, Dutch, and Polish.
+#'   \item **multi-X-fast**: CPU-friendly version, trained on a mix of corpora in languages like English, German, French, Italian, Dutch, and Polish.
 #' }
 #'
-#' \strong{English Embeddings:}
+#' **English Embeddings:**
 #'
 #' \itemize{
-#'   \item \strong{'news-X'}: Trained with 1 billion word corpus
-#'   \item \strong{'news-X-fast'}: Trained with 1 billion word corpus, CPU-friendly.
-#'   \item \strong{'mix-X'}: Trained with mixed corpus (Web, Wikipedia, Subtitles)
-#'   \item \strong{'pubmed-X'}: Added by @jessepeng: Trained with 5% of PubMed
+#'   \item **'news-X'**: Trained with 1 billion word corpus
+#'   \item **'news-X-fast'**: Trained with 1 billion word corpus, CPU-friendly.
+#'   \item **'mix-X'**: Trained with mixed corpus (Web, Wikipedia, Subtitles)
+#'   \item **'pubmed-X'**: Added by @jessepeng: Trained with 5% of PubMed
 #'   abstracts until 2015 (1150 hidden states, 3 layers)
 #' }
 #'
-#' \strong{Specific Langauge Embeddings:}
+#' **Specific Langauge Embeddings:**
 #'
 #' \itemize{
-#'   \item \strong{'de-X'}: German. Trained with mixed corpus (Web, Wikipedia, Subtitles)
-#'   \item \strong{de-historic-ha-X}: German (historical). Added by
+#'   \item **'de-X'**: German. Trained with mixed corpus (Web, Wikipedia, Subtitles)
+#'   \item **de-historic-ha-X**: German (historical). Added by
 #'   @stefan-it: Historical German trained over Hamburger Anzeiger.
-#'   \item \strong{de-historic-wz-X}: German (historical). Added by
+#'   \item **de-historic-wz-X**: German (historical). Added by
 #'   @stefan-it: Historical German trained over Wiener Zeitung.
-#'   \item \strong{de-historic-rw-X}: German (historical). Added by
+#'   \item **de-historic-rw-X**: German (historical). Added by
 #'    @redewiedergabe: Historical German trained over 100 million tokens
-#'   \item \strong{de-impresso-hipe-v1-X}: In-domain data for the CLEF HIPE
+#'   \item **de-impresso-hipe-v1-X**: In-domain data for the CLEF HIPE
 #'   Shared task. In-domain data (Swiss and Luxembourgish newspapers) for
 #'   CLEF HIPE Shared task. More information on the shared task can be found
 #'   in this paper.
-#'   \item \strong{'no-X'}: Norwegian. Added by @stefan-it: Trained with
+#'   \item **'no-X'**: Norwegian. Added by @stefan-it: Trained with
 #'   Wikipedia/OPUS.
-#'   \item \strong{'nl-X'}: Dutch. Added by @stefan-it: Trained with Wikipedia/OPUS
-#'   \item \strong{'nl-v0-X'}: Dutch.Added by @stefan-it: LM embeddings (earlier version)
-#'   \item \strong{'ja-X'}: Japanese. Added by @frtacoa: Trained with 439M words
+#'   \item **'nl-X'**: Dutch. Added by @stefan-it: Trained with Wikipedia/OPUS
+#'   \item **'nl-v0-X'**: Dutch.Added by @stefan-it: LM embeddings (earlier version)
+#'   \item **'ja-X'**: Japanese. Added by @frtacoa: Trained with 439M words
 #'   of Japanese Web crawls (2048 hidden states, 2 layers)
-#'   \item \strong{'ja-X'}: Japanese. Added by @frtacoa: Trained with 439M words
+#'   \item **'ja-X'**: Japanese. Added by @frtacoa: Trained with 439M words
 #'   of Japanese Web crawls (2048 hidden states, 2 layers)
 #'
-#'   \item \strong{'fi-X'}: Finnish. Added by @stefan-it: Trained with Wikipedia/OPUS.
-#'   \item \strong{'fr-X'}: French. Added by @mhham: Trained with French Wikipedia
+#'   \item **'fi-X'**: Finnish. Added by @stefan-it: Trained with Wikipedia/OPUS.
+#'   \item **'fr-X'**: French. Added by @mhham: Trained with French Wikipedia
 #'   of Japanese Web crawls (2048 hidden states, 2 layers)
 #'
 #' }
 #'
-#' \strong{Domain-Specific Embeddings:}
+#' **Domain-Specific Embeddings:**
 #'
 #' \itemize{
-#'   \item \strong{'es-clinical-'}: Spanish (clinical). Added by @matirojasg:
+#'   \item **'es-clinical-'**: Spanish (clinical). Added by @matirojasg:
 #'   Trained with Wikipedia
-#'   \item \strong{'pubmed-X'}:English.  Added by @jessepeng: Trained with 5%
+#'   \item **'pubmed-X'**:English.  Added by @jessepeng: Trained with 5%
 #'   of PubMed abstracts until 2015 (1150 hidden states, 3 layers)
 #' }
 #'
@@ -149,7 +149,7 @@ flair_embeddings <- function() {
 #' name and details for your application. Replace '*X*' with either
 #' '*forward*' or '*backward*'. For a comprehensive list of embeddings,
 #' please refer to:
-#' \href{https://github.com/flairNLP/flair/blob/master/resources/docs/embeddings/FLAIR_EMBEDDINGS.md}{Flair Embeddings Documentation}.
+#' [Flair Embeddings Documentation](https://github.com/flairNLP/flair/blob/master/resources/docs/embeddings/FLAIR_EMBEDDINGS.md).
 
 #' @references
 #' FlairEmbeddings from the Flair Python library. Python example usage:
@@ -303,7 +303,7 @@ flair_embeddings.WordEmbeddings <- function(embeddings = "glove") {
 #' R users to leverage state-of-the-art NLP models.
 #'
 #' @seealso
-#' Flair's official GitHub repository: \url{https://github.com/flairNLP/flair}
+#' Flair's official GitHub repository: <https://github.com/flairNLP/flair>
 #'
 
 #' @examples
@@ -385,7 +385,7 @@ flair_embeddings.TransformerDocumentEmbeddings <- function(model = "bert-base-un
 #' R users to leverage state-of-the-art NLP models.
 #'
 #' @seealso
-#' Flair's official GitHub repository: \url{https://github.com/flairNLP/flair}
+#' Flair's official GitHub repository: <https://github.com/flairNLP/flair>
 #'
 #' @examples
 #' \dontrun{

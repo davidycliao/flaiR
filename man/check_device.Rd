@@ -23,10 +23,12 @@ with Apple M1/M2 silicon using Metal Performance Shaders (MPS).
 If MPS is available and the system meets the requirements, a device of type
 MPS will be returned. Otherwise, a CPU device will be used. The requirements
 for using MPS are as follows:\\cr
-- Mac computers with Apple silicon or AMD GPUs\\cr
-- macOS 12.3 or later\\cr
-- Python 3.7 or later\\cr
-- Xcode command-line tools installed (`xcode-select --install`)\\cr
+\itemize{
+\item Mac computers with Apple silicon or AMD GPUs\\cr
+\item macOS 12.3 or later\\cr
+\item Python 3.7 or later\\cr
+\item Xcode command-line tools installed (\code{xcode-select --install})\\cr
 More information at: \url{https://developer.apple.com/metal/pytorch/}.
+}
 }
 \keyword{internal}

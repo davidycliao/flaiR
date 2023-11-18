@@ -3,12 +3,12 @@
 \docType{data}
 \name{hatespeech_zh_tw}
 \alias{hatespeech_zh_tw}
-\title{Political Hate Speech Detection and Lexicon Building: A Study in Taiwan (IEEE Explore 2022)}
+\title{Training Data from :  Political Hate Speech Detection and Lexicon Building: A Study in Taiwan (IEEE Explore 2022)}
 \format{
 A data frame with 2 variables:
 \describe{
-  \item{text}{Content of the text.}
-  \item{label}{Label indicating whether the text is hate speech: '1' for hate speech and '0' for non-hate speech.}
+\item{text}{Content of the text.}
+\item{label}{Label indicating whether the text is hate speech: '1' for hate speech and '0' for non-hate speech.}
 }
 }
 \source{

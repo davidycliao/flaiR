@@ -21,7 +21,7 @@
 #' }
 #' @source Data collected from `ParSpeechV2` the House of Commons for the
 #' year 2010. The dataset is publicly available at
-#' \url{https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/L4OAKN}.
+#' <https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/L4OAKN>.
 #' @examples
 #' \dontrun{
 #' data(uk_immigration)
@@ -59,7 +59,7 @@ NULL
 #' }
 #' @source Data collected from `ParSpeechV2` the House of Commons for the
 #' year 2010. The dataset is publicly available at
-#' \url{https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/L4OAKN}.
+#' <https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/L4OAKN>.
 #' @examples
 #' \dontrun{
 #' data(de_immigration)
@@ -71,7 +71,7 @@ NULL
 NULL
 
 
-#' @title Replication Data for: The Temporal Focus of Campaign Communication (2020 JOP)
+#' @title Training Data from : The Temporal Focus of Campaign Communication (2020 JOP)
 #'
 #' @description The replication data is sourced from "The Temporal Focus of Campaign
 #' Communication," authored by Stefan Müller, and was published in the Journal of Politics in 2022.
@@ -93,7 +93,7 @@ NULL
 #' }
 #'
 #' @source Data provided by the author
-#' and \url{https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/7NP2XH}
+#' and <https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/7NP2XH>
 #' @examples
 #' \dontrun{
 #' data(cc_muller)
@@ -105,11 +105,11 @@ NULL
 NULL
 
 
-#' @title Political Hate Speech Detection and Lexicon Building: A Study in Taiwan (IEEE Explore 2022)
+#' @title Training Data from :  Political Hate Speech Detection and Lexicon Building: A Study in Taiwan (IEEE Explore 2022)
 #'
 #' @description This dataset is derived sample from the development set of "Political Hate Speech Detection and Lexicon Building: A Study in Taiwan." It contains 1,000 annotated data entries, of which 926 are labeled as '0' (not hate speech) and 74 as '1' (hate speech).
 #'
-#' The paper can be accessed at \url{https://ieeexplore.ieee.org/document/9738642}.
+#' The paper can be accessed at <https://ieeexplore.ieee.org/document/9738642>.
 #'
 #' @format A data frame with 2 variables:
 #' \describe{
@@ -117,7 +117,7 @@ NULL
 #'   \item{label}{Label indicating whether the text is hate speech: '1' for hate speech and '0' for non-hate speech.}
 #' }
 #'
-#' @source Data provided by the authors Chih-Chien Wang, Min-Yuh Day, and Chun-Lian Wu. Available at \url{https://ieeexplore.ieee.org/document/9738642}.
+#' @source Data provided by the authors Chih-Chien Wang, Min-Yuh Day, and Chun-Lian Wu. Available at <https://ieeexplore.ieee.org/document/9738642>.
 #' @examples
 #' \dontrun{
 #' data(hatespeech_zh_tw)
@@ -129,6 +129,37 @@ NULL
 NULL
 
 
+#' @title Training Data from : When Do Politicians Grandstand? Measuring Message Politics in Committee Hearings (2021 JOP)
+#'
+#' @description
+#' This dataset is from Ju Yeon Park's paper published in the Journal of Politics in 2021,
+#' titled "When Do Politicians Grandstand? Measuring Message Politics in Committee Hearings".
+#' It contains the "Congressional Hearing Dataset: 105th through 114th Congresses",
+#' which is the replication dataset for the paper. The manuscript was accepted for publication
+#' in June 2019. Please cite her paper when using the data.
+#'
+#' @format A data frame with 3 variables:
+#' \describe{
+#'   \item{text}{Hearing text.}
+#'   \item{sentiment_score}{Grandstanding score.}
+#'   \item{rescaled_gs}{Label indicating whether the text is grandstanding speech:
+#'   '1' for grandstanding speech and '0' for non-grandstanding speech. This is a rescaled version
+#'   of the sentiment_score (gscore) from the original released data.}
+#'}
+#'
+#' @source
+#' Data provided by the authors Ju Yeon Park and JOP's Dataverse at
+#' <https://dataverse.harvard.edu/file.xhtml?persistentId=doi:10.7910/DVN/GSMBFX/JIHIGH&version=1.0>.
+#'
+#' @examples
+#' \dontrun{
+#' data(gs_score)
+#' head(gs_score)
+#' }
+#' @docType data
+#' @usage data("gs_score")
+#' @name gs_score
+NULL
 
 
 

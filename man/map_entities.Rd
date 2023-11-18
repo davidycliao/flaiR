@@ -9,8 +9,8 @@ map_entities(df, entity = "entity", tag = "tag")
 \arguments{
 \item{df}{A data frame containing at least two columns:
 \itemize{
-  \item \code{entity}: A character vector of words/entities to be highlighted.
-  \item \code{tag}: A character vector indicating the entity type of each word/entity.
+\item \code{entity}: A character vector of words/entities to be highlighted.
+\item \code{tag}: A character vector indicating the entity type of each word/entity.
 }}
 
 \item{entity}{A character vector of entities annotated by the model.}
@@ -20,13 +20,13 @@ map_entities(df, entity = "entity", tag = "tag")
 \value{
 A list with mapping settings for each entity type, where each entity type
 is represented as a list containing:
-  \itemize{
-    \item \code{words}: A character vector of words to be highlighted.
-    \item \code{background_color}: A character string representing the background color for highlighting the words.
-    \item \code{font_color}: A character string representing the font color for the words.
-    \item \code{label}: A character string to label the entity type.
-    \item \code{label_color}: A character string representing the font color for the label.
-  }
+\itemize{
+\item \code{words}: A character vector of words to be highlighted.
+\item \code{background_color}: A character string representing the background color for highlighting the words.
+\item \code{font_color}: A character string representing the font color for the words.
+\item \code{label}: A character string to label the entity type.
+\item \code{label_color}: A character string representing the font color for the label.
+}
 }
 \description{
 This function generates a mapping list for Named Entity Recognition (NER)

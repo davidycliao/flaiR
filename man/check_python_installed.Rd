@@ -10,7 +10,7 @@ check_python_installed(...)
 \item{...}{any param to run.}
 }
 \value{
-Logical. `TRUE` if Python is installed, `FALSE` otherwise.
+Logical. \code{TRUE} if Python is installed, \code{FALSE} otherwise.
 Additionally, if installed, the path to the Python installation is printed.
 }
 \description{
