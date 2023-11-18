@@ -42,16 +42,24 @@ install.packages("remotes")
 Flair offers a simpler and more intuitive approach for training custom NLP models compared to using Transformer-based models directly. With Flair, data loading and preprocessing are streamlined, facilitating the easy integration of various pre-trained embeddings, including both traditional and Transformer-based types like BERT. The training process in Flair is condensed to just a few lines of code, with automatic handling of fundamental preprocessing steps.  Evaluation and optimization are also made user-friendly with accessible tools.  In addition, Flair NLP provides an easy framework for training language models and is compatible with HuggingFace.
 
 __Step 1 Split Data into Train and Test Sets with Senetence Object__
+
 ```{r}
+# load training data: grandstanding score from Julia Park's paper
 library(flaiR)
-# load data: grandstanding score dataset from Julia Park's paper
 data(gs_score) 
+```
+
+```{r}
+# load flair functions via flaiR
 Sentence <- flair_data()$Sentence
 Corpus <- flair_data()$Corpus
 TransformerDocumentEmbeddings <- flair_embeddings()$TransformerDocumentEmbeddings
 TextClassifier <- flair_models()$TextClassifier
 ModelTrainer <- flair_trainers()$ModelTrainer
 
+```
+
+```{r}
 # split the data
 text <- lapply(gs_score$speech, Sentence)
 labels <- as.character(gs_score$rescaled_gs)
@@ -74,6 +82,9 @@ corpus <- Corpus(train=train, test=test)
 __Step 3 Create Classifier Using Transformer__
 ```{r}
 document_embeddings <- TransformerDocumentEmbeddings('distilbert-base-uncased', fine_tune=TRUE)
+```
+
+```{r}
 label_dict <- corpus$make_label_dictionary(label_type="classification")
 classifier <- TextClassifier(document_embeddings,
                              label_dictionary=label_dict, 

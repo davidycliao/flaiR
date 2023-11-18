@@ -8,10 +8,10 @@
 A data frame with 3 variables:
 \describe{
 \item{text}{Hearing text.}
-\item{sentiment_score}{grandstanding score.}
+\item{sentimentit_score}{grandstanding score.}
 \item{rescaled_gs}{Label indicating whether the text is grandstanding speech:
 '1' for grandstanding speech and '0' for non-grandstanding speech. This is a rescaled version
-of the sentiment_score (grandstanding scores) from the original released data.}
+of the sentimentit_score (grandstanding scores) from the original released data.}
 }
 }
 \source{

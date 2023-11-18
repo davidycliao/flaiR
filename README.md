@@ -47,15 +47,21 @@ compatible with HuggingFace.
 **Step 1 Split Data into Train and Test Sets with Senetence Object**
 
 ``` r
+# load training data: grandstanding score from Julia Park's paper
 library(flaiR)
-# load data: grandstanding score dataset from Julia Park's paper
 data(gs_score) 
+```
+
+``` r
+# load flair functions via flaiR
 Sentence <- flair_data()$Sentence
 Corpus <- flair_data()$Corpus
 TransformerDocumentEmbeddings <- flair_embeddings()$TransformerDocumentEmbeddings
 TextClassifier <- flair_models()$TextClassifier
 ModelTrainer <- flair_trainers()$ModelTrainer
+```
 
+``` r
 # split the data
 text <- lapply(gs_score$speech, Sentence)
 labels <- as.character(gs_score$rescaled_gs)
@@ -74,16 +80,19 @@ test   <- text[!sample]
 
 ``` r
 corpus <- Corpus(train=train, test=test)
-#> 2023-11-18 11:53:42,442 No dev split found. Using 0% (i.e. 282 samples) of the train split as dev data
+#> 2023-11-18 13:36:58,197 No dev split found. Using 0% (i.e. 282 samples) of the train split as dev data
 ```
 
 **Step 3 Create Classifier Using Transformer**
 
 ``` r
 document_embeddings <- TransformerDocumentEmbeddings('distilbert-base-uncased', fine_tune=TRUE)
+```
+
+``` r
 label_dict <- corpus$make_label_dictionary(label_type="classification")
-#> 2023-11-18 11:53:44,066 Computing label dictionary. Progress:
-#> 2023-11-18 11:53:44,118 Dictionary created for label 'classification' with 2 values: 0 (seen 1324 times), 1 (seen 1210 times)
+#> 2023-11-18 13:36:59,538 Computing label dictionary. Progress:
+#> 2023-11-18 13:36:59,589 Dictionary created for label 'classification' with 2 values: 0 (seen 1340 times), 1 (seen 1194 times)
 classifier <- TextClassifier(document_embeddings,
                              label_dictionary=label_dict, 
                              label_type='classification')
