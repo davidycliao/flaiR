@@ -3,23 +3,27 @@ name: R-ubuntu
 on:
   push:
     branches:
-      - master
+      - main
   pull_request:
     branches:
-      - master
+      - main
 
 jobs:
   R-CMD-check:
     runs-on: ubuntu-20.04
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
 
-      # Cache R dependencies
+    strategy:
+      matrix:
+        r-version: ['4.3.2', '4.2.0', '4.2.1'] # Ensure these versions are available
+
+    steps:
+      - uses: actions/checkout@v3
+
+      # # Cache R dependencies
       - name: Cache R dependencies
         uses: actions/cache@v2
         with:
-          path: ~/R/library
+          path: ~/R/x86_64-pc-linux-gnu-library/
           key: ${{ runner.os }}-r-${{ hashFiles('**/renv.lock') }}
           restore-keys: ${{ runner.os }}-r-
 
@@ -32,8 +36,8 @@ jobs:
       # Restore R environment using renv
       - name: Restore R environment
         run: |
-          if (!requireNamespace("renv", quietly = TRUE)) install.packages("renv")
-          renv::restore()
+          Rscript -e "if (!requireNamespace('renv', quietly = TRUE)) install.packages('renv')"
+          Rscript -e "renv::restore()"
 
       # Check the R package
       - name: Check R package
