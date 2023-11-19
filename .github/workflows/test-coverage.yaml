@@ -18,6 +18,14 @@ jobs:
       with:
         r-version: '4.3.2'
 
+    - name: Install R dependencies
+      run: |
+        install.packages('renv')
+        renv::restore()
+        install.packages('covr')
+      shell: Rscript {0}
+
+
     - name: Restore R environment
       run: |
         Rscript -e "if (!requireNamespace('renv', quietly = TRUE)) install.packages('renv')"
