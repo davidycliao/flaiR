@@ -116,10 +116,9 @@ jobs:
     - name: Check renv status
       run: Rscript -e 'renv::status()'
 
-
     - name: Set Python Path for R reticulate
       run: |
-        echo "RETICULATE_PYTHON=$(pwd)/venv/bin/python" >> $GITHUB_ENV
+        echo "RETICULATE_PYTHON=$(pwd)/flair_env/bin/python" >> $GITHUB_ENV
       shell: bash
 
     - name: Run Test Coverage
