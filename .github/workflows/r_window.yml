@@ -54,21 +54,29 @@ jobs:
           remotes::install_deps(dependencies = TRUE)
         shell: Rscript {0}
 
-      - name: Use Python Virtual Environment in R
-        run: |
-          library(reticulate)
-          use_virtualenv("D:/a/flaiR/flaiR/flair_env", required = TRUE)
-        shell: C:\R\bin\Rscript.EXE {0}
+      - name: Install Python virtualenv
+        run: pip install virtualenv
+        shell: cmd
 
-      - name: Restore R packages with renv
-        run: |
-          install.packages("renv")
-          renv::restore()
-        shell: Rscript {0}
+      - name: Create Python virtual environment
+        run: virtualenv flair_env
+        shell: cmd
 
-      - name: Check
+      - name: Install Python dependencies in virtual environment
         run: |
+          flair_env\Scripts\activate
+          pip install flair
+        shell: cmd
+
+      - name: Remove Python cache files
+        run: del /s /q *.pyc
+        shell: cmd
+
+      - name: Check (with virtual environment)
+        run: |
+          flair_env\Scripts\activate
           R CMD build --no-build-vignettes .
           R CMD check *tar.gz --no-manual --no-examples
-        shell: bash
+        shell: cmd
+
 
