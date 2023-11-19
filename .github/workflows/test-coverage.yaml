@@ -122,6 +122,10 @@ jobs:
         echo "RETICULATE_PYTHON=$(pwd)/flair_env/bin/python" >> $GITHUB_ENV
       shell: bash
 
+    - name: Print RETICULATE_PYTHON value
+      run: echo "RETICULATE_PYTHON=$RETICULATE_PYTHON"
+      shell: bash
+
     - name: Run Test Coverage
       run: |
         Rscript -e 'reticulate::use_virtualenv(Sys.getenv("RETICULATE_PYTHON"), required = TRUE)'
