@@ -229,14 +229,14 @@
 <p><strong>Step 2</strong> Preprocess Data and Corpus Object</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">corpus</span> <span class="op">&lt;-</span> <span class="fu">Corpus</span><span class="op">(</span>train<span class="op">=</span><span class="va">train</span>, test<span class="op">=</span><span class="va">test</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2023-11-19 18:18:39,548 No dev split found. Using 0% (i.e. 282 samples) of the train split as dev data</span></span></code></pre></div>
+<span><span class="co">#&gt; 2023-11-19 22:16:33,208 No dev split found. Using 0% (i.e. 282 samples) of the train split as dev data</span></span></code></pre></div>
 <p><strong>Step 3</strong> Create Classifier Using Transformer</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">document_embeddings</span> <span class="op">&lt;-</span> <span class="fu">TransformerDocumentEmbeddings</span><span class="op">(</span><span class="st">'distilbert-base-uncased'</span>, fine_tune<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">label_dict</span> <span class="op">&lt;-</span> <span class="va">corpus</span><span class="op">$</span><span class="fu">make_label_dictionary</span><span class="op">(</span>label_type<span class="op">=</span><span class="st">"classification"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2023-11-19 18:18:41,346 Computing label dictionary. Progress:</span></span>
-<span><span class="co">#&gt; 2023-11-19 18:18:41,435 Dictionary created for label 'classification' with 2 values: 0 (seen 1339 times), 1 (seen 1195 times)</span></span>
+<span><span class="co">#&gt; 2023-11-19 22:16:35,354 Computing label dictionary. Progress:</span></span>
+<span><span class="co">#&gt; 2023-11-19 22:16:35,407 Dictionary created for label 'classification' with 2 values: 0 (seen 1323 times), 1 (seen 1211 times)</span></span>
 <span><span class="va">classifier</span> <span class="op">&lt;-</span> <span class="fu">TextClassifier</span><span class="op">(</span><span class="va">document_embeddings</span>,</span>
 <span>                             label_dictionary<span class="op">=</span><span class="va">label_dict</span>, </span>
 <span>                             label_type<span class="op">=</span><span class="st">'classification'</span><span class="op">)</span></span></code></pre></div>
@@ -285,13 +285,53 @@
 <p>Start the training process using the classifier, which learns from the data based on the grandstanding score.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">trainer</span> <span class="op">&lt;-</span> <span class="fu">ModelTrainer</span><span class="op">(</span><span class="va">classifier</span>, <span class="va">corpus</span><span class="op">)</span></span></code></pre></div>
+<p><strong>Step 5</strong> Evaluate the Model</p>
+<p>During and after the model training process, evaluating the performance of the trained model on the development set is straightforward and easy.</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># import the performance metrics</span></span>
+<span><span class="va">performance_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.table</a></span><span class="op">(</span>file <span class="op">=</span> <span class="st">"./vignettes/classifier/loss.tsv"</span>, header <span class="op">=</span> <span class="cn">TRUE</span>, sep <span class="op">=</span> <span class="st">"\t"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">performance_df</span><span class="op">)</span></span>
+<span><span class="co">#&gt;    EPOCH TIMESTAMP LEARNING_RATE TRAIN_LOSS DEV_LOSS DEV_PRECISION DEV_RECALL</span></span>
+<span><span class="co">#&gt; 1      1  00:25:18           0.1     0.9077   0.8829        0.4533     0.4533</span></span>
+<span><span class="co">#&gt; 2      2  00:25:29           0.1     0.8530   0.8783        0.4533     0.4533</span></span>
+<span><span class="co">#&gt; 3      3  00:25:39           0.1     0.8762   0.8698        0.4533     0.4533</span></span>
+<span><span class="co">#&gt; 4      4  00:25:49           0.1     0.8562   0.8514        0.4533     0.4533</span></span>
+<span><span class="co">#&gt; 5      5  00:25:59           0.1     0.8262   0.8394        0.4578     0.4578</span></span>
+<span><span class="co">#&gt; 6      6  00:26:09           0.1     0.8187   0.6970        0.5289     0.5289</span></span>
+<span><span class="co">#&gt; 7      7  00:26:19           0.1     0.8286   0.7403        0.5022     0.5022</span></span>
+<span><span class="co">#&gt; 8      8  00:26:29           0.1     0.7780   0.7568        0.4978     0.4978</span></span>
+<span><span class="co">#&gt; 9      9  00:26:39           0.1     0.7969   0.7746        0.4844     0.4844</span></span>
+<span><span class="co">#&gt; 10    10  00:26:49           0.1     0.7810   0.7909        0.4889     0.4889</span></span>
+<span><span class="co">#&gt;    DEV_F1 DEV_ACCURACY</span></span>
+<span><span class="co">#&gt; 1  0.4533       0.4533</span></span>
+<span><span class="co">#&gt; 2  0.4533       0.4533</span></span>
+<span><span class="co">#&gt; 3  0.4533       0.4533</span></span>
+<span><span class="co">#&gt; 4  0.4533       0.4533</span></span>
+<span><span class="co">#&gt; 5  0.4578       0.4578</span></span>
+<span><span class="co">#&gt; 6  0.5289       0.5289</span></span>
+<span><span class="co">#&gt; 7  0.5022       0.5022</span></span>
+<span><span class="co">#&gt; 8  0.4978       0.4978</span></span>
+<span><span class="co">#&gt; 9  0.4844       0.4844</span></span>
+<span><span class="co">#&gt; 10 0.4889       0.4889</span></span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">performance_df</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">EPOCH</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">TRAIN_LOSS</span>, color <span class="op">=</span> <span class="st">"Training Loss"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">DEV_LOSS</span>, color <span class="op">=</span> <span class="st">"Development Loss"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">DEV_ACCURACY</span>, color <span class="op">=</span> <span class="st">"Development Accuracy"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Training and Development Loss per Epoch"</span>,</span>
+<span>       x <span class="op">=</span> <span class="st">"Epoch / Grandstanding Classifer"</span>,</span>
+<span>       y <span class="op">=</span> <span class="st">""</span><span class="op">)</span>  <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_color_manual</a></span><span class="op">(</span><span class="st">""</span>, </span>
+<span>                     values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Training Loss"</span> <span class="op">=</span> <span class="st">"blue"</span>, <span class="st">"Development Loss"</span> <span class="op">=</span> <span class="st">"red"</span>, <span class="st">"Development Accuracy"</span> <span class="op">=</span> <span class="st">"Black"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-12-1.png" width="100%"></p>
 </div>
 </div>
 </div>
 <p><br></p>
 </div>
 <div class="section level2">
-<h2 id="contribution-and-open-source-support">Contribution and Open Source Support<a class="anchor" aria-label="anchor" href="#contribution-and-open-source-support"></a>
+<h2 id="contribution-and-open-source">Contribution and Open Source<a class="anchor" aria-label="anchor" href="#contribution-and-open-source"></a>
 </h2>
 <div style="text-align: justify">
 <p><code>{flaiR}</code> is maintained and developed by <a href="https://davidycliao.github.io" class="external-link">David Liao</a> and friends. R developers who want to contribute to {<code>flaiR</code>} are welcome – {<code>flaiR</code>} is an open source project. I warmly invite R users who share similar interests to join in contributing to this package. Please feel free to shoot me an email to collaborate on the task. Contributions – whether they be comments, code suggestions, tutorial examples, or forking the repository – are greatly appreciated. Please note that the <code>flaiR</code> is released with the <a href="https://github.com/davidycliao/flaiR/blob/master/CONDUCT.md" class="external-link">Contributor Code of Conduct</a>. By contributing to this project, you agree to abide by its terms.</p>
