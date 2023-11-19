@@ -72,7 +72,6 @@
 #         find /home/runner/work/_temp/package -name 'testthat.Rout*' -exec cat '{}' \; || true
 #       shell: bash
 
-
 name: R-Python Integration and Test Coverage
 
 on: [push, pull_request]
@@ -110,7 +109,7 @@ jobs:
       run: pip install virtualenv
 
     - name: Create Python virtual environment
-      run: virtualenv flair_env
+      run: python -m venv flair_env
 
     - name: Install Python dependencies in virtual environment
       run: |
@@ -126,10 +125,14 @@ jobs:
       run: echo "RETICULATE_PYTHON=$RETICULATE_PYTHON"
       shell: bash
 
+    - name: Check Python virtual environment
+      run: |
+        ls -l $(pwd)/flair_env/bin
+      shell: bash
+
     - name: Run Test Coverage
       run: |
-        # Rscript -e 'reticulate::use_virtualenv(Sys.getenv("RETICULATE_PYTHON"), required = TRUE)'
-        Rscript -e 'reticulate::use_virtualenv("/home/runner/work/flaiR/flaiR/flair_env/bin/python", required = TRUE)'
+        Rscript -e 'reticulate::use_virtualenv(Sys.getenv("RETICULATE_PYTHON"), required = TRUE)'
         Rscript -e 'covr::codecov(
           quiet = FALSE,
           clean = FALSE,
