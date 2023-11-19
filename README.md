@@ -35,7 +35,7 @@ implementation.
 
 <br>
 
-### Installation via <u>**`GitHub`**</u>
+## Installation via <u>**`GitHub`**</u>
 
 <div style="text-align: justify">
 
@@ -167,7 +167,7 @@ test   <- text[!sample]
 
 ``` r
 corpus <- Corpus(train=train, test=test)
-#> 2023-11-19 18:06:51,410 No dev split found. Using 0% (i.e. 282 samples) of the train split as dev data
+#> 2023-11-19 18:09:33,774 No dev split found. Using 0% (i.e. 282 samples) of the train split as dev data
 ```
 
 **Step 3** Create Classifier Using Transformer
@@ -178,8 +178,8 @@ document_embeddings <- TransformerDocumentEmbeddings('distilbert-base-uncased', 
 
 ``` r
 label_dict <- corpus$make_label_dictionary(label_type="classification")
-#> 2023-11-19 18:06:53,077 Computing label dictionary. Progress:
-#> 2023-11-19 18:06:53,129 Dictionary created for label 'classification' with 2 values: 0 (seen 1326 times), 1 (seen 1208 times)
+#> 2023-11-19 18:09:35,280 Computing label dictionary. Progress:
+#> 2023-11-19 18:09:35,328 Dictionary created for label 'classification' with 2 values: 0 (seen 1337 times), 1 (seen 1197 times)
 classifier <- TextClassifier(document_embeddings,
                              label_dictionary=label_dict, 
                              label_type='classification')
@@ -239,6 +239,8 @@ trainer <- ModelTrainer(classifier, corpus)
 ```
 
 </div>
+
+<br>
 
 ## Contribution and Open Source Support
 
