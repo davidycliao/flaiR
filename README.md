@@ -167,7 +167,7 @@ test   <- text[!sample]
 
 ``` r
 corpus <- Corpus(train=train, test=test)
-#> 2023-11-19 18:18:39,548 No dev split found. Using 0% (i.e. 282 samples) of the train split as dev data
+#> 2023-11-19 21:47:54,013 No dev split found. Using 0% (i.e. 282 samples) of the train split as dev data
 ```
 
 **Step 3** Create Classifier Using Transformer
@@ -178,8 +178,8 @@ document_embeddings <- TransformerDocumentEmbeddings('distilbert-base-uncased', 
 
 ``` r
 label_dict <- corpus$make_label_dictionary(label_type="classification")
-#> 2023-11-19 18:18:41,346 Computing label dictionary. Progress:
-#> 2023-11-19 18:18:41,435 Dictionary created for label 'classification' with 2 values: 0 (seen 1339 times), 1 (seen 1195 times)
+#> 2023-11-19 21:47:56,783 Computing label dictionary. Progress:
+#> 2023-11-19 21:47:56,837 Dictionary created for label 'classification' with 2 values: 0 (seen 1325 times), 1 (seen 1209 times)
 classifier <- TextClassifier(document_embeddings,
                              label_dictionary=label_dict, 
                              label_type='classification')
@@ -237,6 +237,54 @@ data based on the grandstanding score.
 ``` r
 trainer <- ModelTrainer(classifier, corpus)
 ```
+
+**Step 5** Evaluate the Model
+
+During and after training, it is easy to evaluate the performance of the
+trained model in development set during 模型訓練的過程.
+
+``` r
+# import the performance metrics
+performance_df <- read.table(file = "./vignettes/classifier/loss.tsv", header = TRUE, sep = "\t")
+print(performance_df)
+#>    EPOCH TIMESTAMP LEARNING_RATE TRAIN_LOSS DEV_LOSS DEV_PRECISION DEV_RECALL
+#> 1      1  00:25:18           0.1     0.9077   0.8829        0.4533     0.4533
+#> 2      2  00:25:29           0.1     0.8530   0.8783        0.4533     0.4533
+#> 3      3  00:25:39           0.1     0.8762   0.8698        0.4533     0.4533
+#> 4      4  00:25:49           0.1     0.8562   0.8514        0.4533     0.4533
+#> 5      5  00:25:59           0.1     0.8262   0.8394        0.4578     0.4578
+#> 6      6  00:26:09           0.1     0.8187   0.6970        0.5289     0.5289
+#> 7      7  00:26:19           0.1     0.8286   0.7403        0.5022     0.5022
+#> 8      8  00:26:29           0.1     0.7780   0.7568        0.4978     0.4978
+#> 9      9  00:26:39           0.1     0.7969   0.7746        0.4844     0.4844
+#> 10    10  00:26:49           0.1     0.7810   0.7909        0.4889     0.4889
+#>    DEV_F1 DEV_ACCURACY
+#> 1  0.4533       0.4533
+#> 2  0.4533       0.4533
+#> 3  0.4533       0.4533
+#> 4  0.4533       0.4533
+#> 5  0.4578       0.4578
+#> 6  0.5289       0.5289
+#> 7  0.5022       0.5022
+#> 8  0.4978       0.4978
+#> 9  0.4844       0.4844
+#> 10 0.4889       0.4889
+```
+
+``` r
+library(ggplot2)
+ggplot(performance_df, aes(x = EPOCH)) + 
+  geom_line(aes(y = TRAIN_LOSS, color = "Training Loss")) +
+  geom_line(aes(y = DEV_LOSS, color = "Development Loss")) +
+  geom_line(aes(y = DEV_ACCURACY, color = "Development Accuracy")) +
+  labs(title = "Training and Development Loss per Epoch",
+       x = "Epoch / Grandstanding Classifer",
+       y = "")  +
+  scale_color_manual("", 
+                     values = c("Training Loss" = "blue", "Development Loss" = "red", "Development Accuracy" = "Black"))
+```
+
+<img src="man/figures/README-unnamed-chunk-12-1.png" width="100%" />
 
 </div>
 

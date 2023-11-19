@@ -150,6 +150,29 @@ Start the training process using the classifier, which learns from the data base
 trainer <- ModelTrainer(classifier, corpus)
 ```
 
+__Step 5__ Evaluate the Model
+
+During and after the model training process, evaluating the performance of the trained model on the development set is straightforward.
+
+```{r}
+# import the performance metrics
+performance_df <- read.table(file = "./vignettes/classifier/loss.tsv", header = TRUE, sep = "\t")
+print(performance_df)
+```
+
+```{r}
+library(ggplot2)
+ggplot(performance_df, aes(x = EPOCH)) + 
+  geom_line(aes(y = TRAIN_LOSS, color = "Training Loss")) +
+  geom_line(aes(y = DEV_LOSS, color = "Development Loss")) +
+  geom_line(aes(y = DEV_ACCURACY, color = "Development Accuracy")) +
+  labs(title = "Training and Development Loss per Epoch",
+       x = "Epoch / Grandstanding Classifer",
+       y = "")  +
+  scale_color_manual("", 
+                     values = c("Training Loss" = "blue", "Development Loss" = "red", "Development Accuracy" = "Black"))
+```
+
 
 </div>
 
