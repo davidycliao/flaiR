@@ -113,10 +113,6 @@ jobs:
     - name: Install covr package
       run: Rscript -e 'install.packages("covr")'
 
-    # - name: Install testthat package
-    #   run: Rscript -e 'install.packages("testthat")'
-    #   shell: bash
-
     - name: Check renv status
       run: Rscript -e 'renv::status()'
 
