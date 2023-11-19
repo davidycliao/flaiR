@@ -36,15 +36,6 @@ jobs:
         with:
           r-version: ${{ matrix.r-version }}
 
-      # - name: Install LaTeX
-      #   run: |
-      #     brew install --cask mactex-no-gui
-      #     eval "$(/usr/libexec/path_helper)"
-
-      # - name: Update tlmgr
-      #   run: sudo tlmgr update --self --all
-      #   shell: /bin/bash -e {0}
-
       - name: Install R dependencies
         run: |
           Rscript -e "install.packages(c('remotes', 'rcmdcheck', 'reticulate', 'renv', 'knitr', 'rmarkdown', 'lsa', 'purrr', 'testthat'))"

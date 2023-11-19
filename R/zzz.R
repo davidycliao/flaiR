@@ -273,6 +273,7 @@
 .onAttach <- function(...) {
   # Specify Python path explicitly
   python_path <- Sys.which("python3")
+
   if (python_path == "") {
     stop("Cannot locate the Python 3 path. Ensure Python 3 is installed and in your system's path.")
   }
