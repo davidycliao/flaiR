@@ -184,10 +184,10 @@
 <p>For R users, {<code>flairR</code>} primarily consists of two main components. The first is wrapper functions in {<code>flaiR</code>} built on top of {<code>reticulate</code>}, which enables you to interact directly with Python modules in R and provides seamless support for documents and <a href="https://davidycliao.github.io/flaiR/articles/tutorial.html">tutorial (in progress)</a> in the R community. The {flaiR} package enables R users to leverage Flair’s capabilities to train their own models using the Flair framework and state-of-the-art NLP models without the need to interact directly with Python.</p>
 <p>Flair offers a simpler and more intuitive approach for training custom NLP models compared to using Transformer-based models directly. With Flair, data loading and preprocessing are streamlined, facilitating the easy integration of various pre-trained embeddings, including both traditional and Transformer-based types like BERT. The training process in Flair is condensed to just a few lines of code, with automatic handling of fundamental preprocessing steps. Evaluation and optimization are also made user-friendly with accessible tools. In addition, Flair NLP provides an easy framework for training language models and is compatible with HuggingFace.</p>
 <p>Secondly, to facilitate more efficient use for social science research, {<code>flairR</code>} expands {<code>flairNLP/flair</code>}’s core functionality for working with three major functions to extract features in a tidy and fast format– <a href="https://cran.r-project.org/web/packages/data.table/index.html" class="external-link">data.table</a> in R.</p>
-<div class="section level5">
-<h5 id="performing-nlp-tasks-in-r">
+<div class="section level4">
+<h4 id="performing-nlp-tasks-in-r">
 <strong>Performing NLP Tasks in R</strong><a class="anchor" aria-label="anchor" href="#performing-nlp-tasks-in-r"></a>
-</h5>
+</h4>
 <p>The expanded features (and examples) can be found:</p>
 <ul>
 <li><a href="https://davidycliao.github.io/flaiR/articles/get_pos.html"><strong>part-of-speech tagging</strong></a></li>
@@ -196,10 +196,10 @@
 </ul>
 <p>In addition, to handle the load on RAM when dealing with larger corpus, {<code>flairR</code>} supports batch processing to handle texts in batches, which is especially useful when dealing with large datasets, to optimize memory usage and performance. The implementation of batch processing can also utilize GPU acceleration for faster computations.</p>
 </div>
-<div class="section level5">
-<h5 id="training-models-with-huggingface-via-flair">
+<div class="section level4">
+<h4 id="training-models-with-huggingface-via-flair">
 <strong>Training Models with HuggingFace via flaiR</strong><a class="anchor" aria-label="anchor" href="#training-models-with-huggingface-via-flair"></a>
-</h5>
+</h4>
 <p>The following example offers a straightforward introduction on how to fully train your own model using the Flair framework and import a <code>BERT</code> model from <a href="https://github.com/huggingface" class="external-link">HuggingFace 🤗</a>. This example utilizes grandstanding score as training data from Julia Park’s paper (<em><a href="https://www.journals.uchicago.edu/doi/abs/10.1086/709147?journalCode=jop&amp;mobileUi=0" class="external-link">When Do Politicians Grandstand? Measuring Message Politics in Committee Hearings</a></em>) and trains the model using Transformer-based models via flair NLP through <code>{flaiR}</code>.</p>
 <p><strong>Step 1</strong> Split Data into Train and Test Sets with Senetence Object</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
@@ -229,14 +229,14 @@
 <p><strong>Step 2</strong> Preprocess Data and Corpus Object</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">corpus</span> <span class="op">&lt;-</span> <span class="fu">Corpus</span><span class="op">(</span>train<span class="op">=</span><span class="va">train</span>, test<span class="op">=</span><span class="va">test</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2023-11-19 18:16:52,603 No dev split found. Using 0% (i.e. 282 samples) of the train split as dev data</span></span></code></pre></div>
+<span><span class="co">#&gt; 2023-11-19 18:18:39,548 No dev split found. Using 0% (i.e. 282 samples) of the train split as dev data</span></span></code></pre></div>
 <p><strong>Step 3</strong> Create Classifier Using Transformer</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">document_embeddings</span> <span class="op">&lt;-</span> <span class="fu">TransformerDocumentEmbeddings</span><span class="op">(</span><span class="st">'distilbert-base-uncased'</span>, fine_tune<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">label_dict</span> <span class="op">&lt;-</span> <span class="va">corpus</span><span class="op">$</span><span class="fu">make_label_dictionary</span><span class="op">(</span>label_type<span class="op">=</span><span class="st">"classification"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2023-11-19 18:16:53,903 Computing label dictionary. Progress:</span></span>
-<span><span class="co">#&gt; 2023-11-19 18:16:53,950 Dictionary created for label 'classification' with 2 values: 0 (seen 1335 times), 1 (seen 1199 times)</span></span>
+<span><span class="co">#&gt; 2023-11-19 18:18:41,346 Computing label dictionary. Progress:</span></span>
+<span><span class="co">#&gt; 2023-11-19 18:18:41,435 Dictionary created for label 'classification' with 2 values: 0 (seen 1339 times), 1 (seen 1195 times)</span></span>
 <span><span class="va">classifier</span> <span class="op">&lt;-</span> <span class="fu">TextClassifier</span><span class="op">(</span><span class="va">document_embeddings</span>,</span>
 <span>                             label_dictionary<span class="op">=</span><span class="va">label_dict</span>, </span>
 <span>                             label_type<span class="op">=</span><span class="st">'classification'</span><span class="op">)</span></span></code></pre></div>
