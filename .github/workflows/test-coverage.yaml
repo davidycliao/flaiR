@@ -43,10 +43,9 @@ jobs:
         source flair_env/bin/activate
         pip install flair
 
-
     - name: Set Python Path for R reticulate
       run: |
-        echo "RETICULATE_PYTHON=$(pwd)/venv/bin/python" >> $GITHUB_ENV
+        echo "RETICULATE_PYTHON=$(pwd)/flair_env" >> $GITHUB_ENV
       shell: bash
 
     - name: Run Test Coverage

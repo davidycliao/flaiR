@@ -23,7 +23,7 @@ jobs:
 
     strategy:
       matrix:
-        r-version: ['4.3.2', '4.2.0', '4.2.1'] # Ensure these versions are available
+        r-version: ['4.3.2', '4.2.0', '4.2.1']
 
     steps:
       - uses: actions/checkout@v3
@@ -41,7 +41,6 @@ jobs:
           Rscript -e "install.packages(c('remotes', 'rcmdcheck', 'reticulate', 'renv', 'knitr', 'rmarkdown', 'lsa', 'purrr', 'testthat'))"
           Rscript -e "renv::restore()"
         shell: bash
-
 
       # Set up Python environment
       - name: Set up Python
