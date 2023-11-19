@@ -325,9 +325,9 @@
       packageStartupMessage("Failed to install Flair. {flaiR} requires Flair NLP. Please ensure Flair NLP is installed in Python manually.")
     }
   } else {
-    packageStartupMessage(sprintf("\033[1m\033[34mflaiR\033[39m\033[22m: \033[1m\033[33mAn R Wrapper for Accessing Flair NLP\033[39m\033[22m %-5s", ""))
-    packageStartupMessage(paste(flair_version[[1]], torch_version[[1]], sep = " | "))
-    packageStartupMessage("Flair NLP can be successfully imported in R via {flaiR} ! \U1F44F")
+    packageStartupMessage(sprintf("\033[1m\033[34mflaiR\033[39m\033[22m: \033[1m\033[33mAn R Wrapper for Accessing Flair NLP\033[39m\033[22m %-5s", paste("\033[1m\033[33m", get_flair_version(), "\033[39m\033[22m", sep = "")))
+    # packageStartupMessage(paste(flair_version[[1]], torch_version[[1]], sep = " | "))
+    # packageStartupMessage("Flair NLP can be successfully imported in R via {flaiR} ! \U1F44F")
   }
 
   # 3. Test the command manually
