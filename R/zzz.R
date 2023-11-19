@@ -255,7 +255,8 @@
   if (!reticulate::py_module_available("flair")) {
     packageStartupMessage("Attempting to install the 'flair' Python module...")
     tryCatch({
-      reticulate::py_install("flair", envname = venv)
+      # reticulate::py_install("flair", envname = venv)
+      system(paste(reticulate::py_config()$python, "-m pip install flair"))
     }, error = function(e) {
       packageStartupMessage("Failed to install 'flair'. Error: ", e$message)
       return(invisible(NULL))  # Exit .onAttach without stopping package loading
