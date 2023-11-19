@@ -111,6 +111,7 @@ jobs:
     - name: Install Python dependencies in virtual environment
       run: |
         source flair_env/bin/activate
+        pip install torch
         pip install flair
 
     - name: Set Python Path for R reticulate
