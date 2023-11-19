@@ -70,15 +70,14 @@ __System Requirement:__
 
 - R (>= 3.6.3)
 
-- RStudio 
+- RStudio __(The GUI interface allows users to adjust and manage the Python environment in R)__
 
 - Anaconda ___(highly recommended)___
 
 When first installing and loading the {flaiR} package, it utilizes the system environment tool and undergoes three evaluation stages for the automatic installation of Flair. Initially, flaiR requires at least Python 3 to be installed on your device. If Python 3 is not present, you will not be able to successfully install flaiR in R. At this point, it is essential to check if the correct version of Python is installed. We recommend installing Python 3.8 or a slightly higher version, but avoid installing pre-release versions.
 
-Once this prerequisite is met, the installation process assesses whether the flair_env environment exists. This is to check if you are a new installer, in which case flaiR automatically creates an environment named flair_env through {reticulate}. If you already have `flair_env`, this step will be skipped when you reload {flaiR}.
+The installation consists of two parts: First, install [Python 3.8](https://www.python.org/downloads/) or higher, and [R 3.6.3](https://www.r-project.org) or higher. Although we have tested it on Github Action with R 3.6.2, we strongly recommend installing [R 4.0.0 or above](https://github.com/davidycliao/flaiR/actions/runs/6416611291) to ensure compatibility between the R environment and Python. When first installed, {`flaiR`} automatically detects whether you have Python 3.8 or higher. If not, it will skip the automatic installation of Python and flair NLP. In this case, you will need to mannually install it yourself and reload {`flaiR`} again. If you have Python 3.8 or higher alreadt installed, the installer of {`flaiR`} will automatically install flair Python NLP in your global environment. If you are using {reticulate}, {flaiR} will typically assume the __r-reticulate__ environment by default. At the same time, you can use py_config() to check the location of your environment. Please note that flaiR will directly install flair NLP in the Python environment that your R is using. This environment can be adjusted through _RStudio_ by navigating to `Tools -> Global Options -> Python`. If there are any issues with the installation, feel free to ask in the <u>[Discussion](https://github.com/davidycliao/flaiR/discussions) 
 
-In terms of installation design, we have also accounted for situations where the installation of Python might be skipped, allowing for the automatic installation of flaiR in your R environment. This typically occurs if the installation fails. After a second attempt, if the installation still fails, the user will be prompted to install 'flair' manually."
 
 During this process, you will observe numerous messages related to the installation of the Python environment and the Python flair module. Notably, flair has numerous dependencies, including libraries related to transformers (like the Pytorch, gensim, flair, etc). Thus, the installation might take some time to complete. 
 
@@ -96,24 +95,15 @@ remotes::install_github("davidycliao/flaiR", force = TRUE)
 library(flaiR)
 ```
 
-<!-- {`flaiR`} can be used alongside your existing Python environment on your system without the need to specifically install [Anaconda](https://github.com/conda-forge/miniforge). -->
-
-<!-- However, we recommend using Anaconda with `flaiR`. `flaiR` can seamlessly integrate and utilize Python environments within Anaconda. This means you can leverage environments managed by Anaconda for use with `flaiR`. -->
-
-<!-- Anaconda provides a virtual environment management tool that allows you to easily create, switch, and delete independent Python environments.  This is more flexible than using the pure Python `pip` package manager, especially when dealing with dependency issues. Additionally, Anaconda offers many pre-compiled binary packages that are typically easier to install and avoid compilation dependency problems. -->
-
-
 
 
 </div>
 
 
-__Installation Note__
+<!-- __Installation Note__ -->
 
-<div style="text-align: justify">
+<!-- <div style="text-align: justify"> -->
 
-- 20 Oct 2023
-We notice that Python 3.x and flair may fail to install Python dependencies on windows-latest due to potential compatibility issues with the latest Python versions on Windows. To fix this, I recommend to use Python 3.9 (_[News Updated:2023-10-24](#news/index.html#flair-005-development-version)_).
 
 
 
