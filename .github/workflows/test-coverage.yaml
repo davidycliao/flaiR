@@ -105,10 +105,7 @@ jobs:
       with:
         python-version: '3.10.x'
 
-    - name: Install Python virtualenv
-      run: pip install virtualenv
-
-    - name: Create Python virtual environment
+    - name: Create Python virtual environment using venv
       run: python -m venv flair_env
 
     - name: Install Python dependencies in virtual environment
@@ -125,15 +122,14 @@ jobs:
       run: echo "RETICULATE_PYTHON=$RETICULATE_PYTHON"
       shell: bash
 
-    - name: Check Python virtual environment
+    - name: Check Python virtual environment structure
       run: |
         ls -l $(pwd)/flair_env/bin
       shell: bash
 
     - name: Run Test Coverage
       run: |
-        # Rscript -e 'reticulate::use_virtualenv(Sys.getenv("RETICULATE_PYTHON"), required = TRUE)'
-        Rscript -e 'reticulate::use_virtualenv("/home/runner/work/flaiR/flaiR/flair_env/bin/python", required = TRUE)'
+        Rscript -e 'reticulate::use_virtualenv(Sys.getenv("RETICULATE_PYTHON"), required = TRUE)'
         Rscript -e 'covr::codecov(
           quiet = FALSE,
           clean = FALSE,
