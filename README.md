@@ -167,7 +167,7 @@ test   <- text[!sample]
 
 ``` r
 corpus <- Corpus(train=train, test=test)
-#> 2023-11-19 21:47:54,013 No dev split found. Using 0% (i.e. 282 samples) of the train split as dev data
+#> 2023-11-19 22:02:44,476 No dev split found. Using 0% (i.e. 282 samples) of the train split as dev data
 ```
 
 **Step 3** Create Classifier Using Transformer
@@ -178,8 +178,8 @@ document_embeddings <- TransformerDocumentEmbeddings('distilbert-base-uncased', 
 
 ``` r
 label_dict <- corpus$make_label_dictionary(label_type="classification")
-#> 2023-11-19 21:47:56,783 Computing label dictionary. Progress:
-#> 2023-11-19 21:47:56,837 Dictionary created for label 'classification' with 2 values: 0 (seen 1325 times), 1 (seen 1209 times)
+#> 2023-11-19 22:02:46,018 Computing label dictionary. Progress:
+#> 2023-11-19 22:02:46,067 Dictionary created for label 'classification' with 2 values: 0 (seen 1327 times), 1 (seen 1207 times)
 classifier <- TextClassifier(document_embeddings,
                              label_dictionary=label_dict, 
                              label_type='classification')
@@ -240,8 +240,8 @@ trainer <- ModelTrainer(classifier, corpus)
 
 **Step 5** Evaluate the Model
 
-During and after training, it is easy to evaluate the performance of the
-trained model in development set during 模型訓練的過程.
+During and after the model training process, evaluating the performance
+of the trained model on the development set is straightforward and easy.
 
 ``` r
 # import the performance metrics
