@@ -167,7 +167,7 @@ test   <- text[!sample]
 
 ``` r
 corpus <- Corpus(train=train, test=test)
-#> 2023-11-19 22:02:44,476 No dev split found. Using 0% (i.e. 282 samples) of the train split as dev data
+#> 2023-11-19 22:16:33,208 No dev split found. Using 0% (i.e. 282 samples) of the train split as dev data
 ```
 
 **Step 3** Create Classifier Using Transformer
@@ -178,8 +178,8 @@ document_embeddings <- TransformerDocumentEmbeddings('distilbert-base-uncased', 
 
 ``` r
 label_dict <- corpus$make_label_dictionary(label_type="classification")
-#> 2023-11-19 22:02:46,018 Computing label dictionary. Progress:
-#> 2023-11-19 22:02:46,067 Dictionary created for label 'classification' with 2 values: 0 (seen 1327 times), 1 (seen 1207 times)
+#> 2023-11-19 22:16:35,354 Computing label dictionary. Progress:
+#> 2023-11-19 22:16:35,407 Dictionary created for label 'classification' with 2 values: 0 (seen 1323 times), 1 (seen 1211 times)
 classifier <- TextClassifier(document_embeddings,
                              label_dictionary=label_dict, 
                              label_type='classification')
@@ -290,7 +290,7 @@ ggplot(performance_df, aes(x = EPOCH)) +
 
 <br>
 
-## Contribution and Open Source Support
+## Contribution and Open Source
 
 <div style="text-align: justify">
 
