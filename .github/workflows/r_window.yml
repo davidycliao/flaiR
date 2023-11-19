@@ -69,6 +69,6 @@ jobs:
       - name: Check
         run: |
           R CMD build --no-build-vignettes .
-          # R CMD check *tar.gz --no-manual --no-examples
+          R CMD check *tar.gz --no-manual --no-examples
         shell: bash
 
