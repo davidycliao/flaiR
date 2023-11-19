@@ -72,7 +72,7 @@ Flair offers a simpler and more intuitive approach for training custom NLP model
 Secondly, to facilitate more efficient use for social science research, {`flairR`} expands {`flairNLP/flair`}'s core functionality for working with three major functions to extract features in a tidy and fast format-- [data.table](https://cran.r-project.org/web/packages/data.table/index.html) in R. 
 
 
-###### __Performing NLP Tasks in R__
+##### __Performing NLP Tasks in R__
 
 The expanded features (and examples) can be found: 
 
@@ -83,7 +83,7 @@ The expanded features (and examples) can be found:
 In addition, to handle the load on RAM when dealing with larger corpus, {`flairR`}  supports batch processing to handle texts in batches, which is especially useful when dealing with large datasets, to optimize memory usage and performance. The implementation of batch processing can also utilize GPU acceleration for faster computations.
 
 
-###### __Training Models with HuggingFace via flaiR__
+##### __Training Models with HuggingFace via flaiR__
 
 
 The following example offers a straightforward introduction on how to fully train your own model using the Flair framework and import a `BERT` model from [HuggingFace 🤗](https://github.com/huggingface). This example utilizes grandstanding score as training data from Julia Park's paper (_[When Do Politicians Grandstand? Measuring Message Politics in Committee Hearings](https://www.journals.uchicago.edu/doi/abs/10.1086/709147?journalCode=jop&mobileUi=0)_) and trains the model using Transformer-based models via flair NLP through `{flaiR}`.
@@ -138,7 +138,7 @@ classifier <- TextClassifier(document_embeddings,
                              label_type='classification')
 ```
 
-__Step__ 4 Start Training 
+__Step 4__ Start Training 
 
 specific computation devices on your local machine.
 ```{r}

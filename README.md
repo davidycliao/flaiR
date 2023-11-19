@@ -102,7 +102,7 @@ format–
 [data.table](https://cran.r-project.org/web/packages/data.table/index.html)
 in R.
 
-###### **Performing NLP Tasks in R**
+##### **Performing NLP Tasks in R**
 
 The expanded features (and examples) can be found:
 
@@ -119,7 +119,7 @@ is especially useful when dealing with large datasets, to optimize
 memory usage and performance. The implementation of batch processing can
 also utilize GPU acceleration for faster computations.
 
-###### **Training Models with HuggingFace via flaiR**
+##### **Training Models with HuggingFace via flaiR**
 
 The following example offers a straightforward introduction on how to
 fully train your own model using the Flair framework and import a `BERT`
@@ -167,7 +167,7 @@ test   <- text[!sample]
 
 ``` r
 corpus <- Corpus(train=train, test=test)
-#> 2023-11-19 18:09:33,774 No dev split found. Using 0% (i.e. 282 samples) of the train split as dev data
+#> 2023-11-19 18:11:33,878 No dev split found. Using 0% (i.e. 282 samples) of the train split as dev data
 ```
 
 **Step 3** Create Classifier Using Transformer
@@ -178,14 +178,14 @@ document_embeddings <- TransformerDocumentEmbeddings('distilbert-base-uncased', 
 
 ``` r
 label_dict <- corpus$make_label_dictionary(label_type="classification")
-#> 2023-11-19 18:09:35,280 Computing label dictionary. Progress:
-#> 2023-11-19 18:09:35,328 Dictionary created for label 'classification' with 2 values: 0 (seen 1337 times), 1 (seen 1197 times)
+#> 2023-11-19 18:11:35,501 Computing label dictionary. Progress:
+#> 2023-11-19 18:11:35,586 Dictionary created for label 'classification' with 2 values: 0 (seen 1320 times), 1 (seen 1214 times)
 classifier <- TextClassifier(document_embeddings,
                              label_dictionary=label_dict, 
                              label_type='classification')
 ```
 
-**Step** 4 Start Training
+**Step 4** Start Training
 
 specific computation devices on your local machine.
 
