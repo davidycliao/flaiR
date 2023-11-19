@@ -121,7 +121,6 @@ jobs:
         echo "RETICULATE_PYTHON=$(pwd)/venv/bin/python" >> $GITHUB_ENV
       shell: bash
 
-
     - name: Run Test Coverage
       run: |
         source venv/bin/activate
@@ -132,6 +131,14 @@ jobs:
           install_path = file.path(Sys.getenv("RUNNER_TEMP"), "flaiR")
         )'
       shell: bash
+      env:
+        pythonLocation: /opt/hostedtoolcache/Python/3.10.13/x64
+        LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.10.13/x64/lib
+        R_LIBS_USER: /home/runner/work/_temp/Library
+        TZ: UTC
+        _R_CHECK_SYSTEM_CLOCK_: FALSE
+        NOT_CRAN: true
+        RETICULATE_PYTHON: $(pwd)/venv/bin/python
 
     - name: Show testthat output
       if: always()
