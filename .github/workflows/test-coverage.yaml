@@ -119,7 +119,7 @@ jobs:
 
     - name: Set Python Path for R reticulate
       run: |
-        echo "RETICULATE_PYTHON=$(pwd)/venv" >> $GITHUB_ENV
+        echo "RETICULATE_PYTHON=$(pwd)/venv/bin/python" >> $GITHUB_ENV
       shell: bash
 
     - name: Run Test Coverage
@@ -132,7 +132,6 @@ jobs:
           install_path = file.path(Sys.getenv("RUNNER_TEMP"), "flaiR")
         )'
       shell: bash
-
 
     - name: Show testthat output
       if: always()
