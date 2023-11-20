@@ -161,7 +161,7 @@ UCD<br><small class="dont-index">Source: <a href="https://github.com/davidycliao
     
     
 <div class="section level2">
-<h2 id="why-write-flair-to-access-fair-nlp-in-python">Why Write {flaiR} to Access fair NLP in Python?<a class="anchor" aria-label="anchor" href="#why-write-flair-to-access-fair-nlp-in-python"></a>
+<h2 id="why-write-flair-to-access-fair-nlp-in-python">Why Write flaiR to Access fair NLP in Python?<a class="anchor" aria-label="anchor" href="#why-write-flair-to-access-fair-nlp-in-python"></a>
 </h2>
 <div style="text-align: justify">
 <p>In Python, Flair ( developed by <a href="https://engineering.zalando.com/posts/2018/11/zalando-research-releases-flair.html" class="external-link">Zalando
@@ -169,15 +169,6 @@ Research</a>) stands out as a notably feature-rich and user-friendly NLP
 framework. Flair NLP provides intuitive interfaces with exceptional
 multilingual support, especially for various embedding frameworks like
 Glove, and transformer-based models such as BERT.</p>
-<!-- Here are some key benefits and features of Flair that make it a valuable tool for social scientists: -->
-<!-- User-Friendliness -->
-<!-- Easy-to-Use API: Flair provides high-level APIs that allow users to accomplish complex NLP tasks, such as named entity recognition, sentiment analysis, and text classification, with just a few lines of code. -->
-<!-- Pretrained Models -->
-<!-- Pretrained Language Models: Flair leverages pretrained language models like BERT, GPT, XLNet, etc., which excel at various NLP tasks, saving users from having to train models from scratch. Researchers can also utilize advanced fine-tuning techniques created by scholars to adapt these models to specific tasks or datasets. -->
-<!-- Multilingual Support -->
-<!-- Multiple Languages: Social science researchers often need to handle data in multiple languages. Flair supports a wide range of languages, facilitating cross-linguistic research projects. -->
-<!-- Entity Recognition and POS Tagging: These common NLP tasks in social science research help researchers to quickly extract valuable information from text. -->
-<!-- For social science researchers, these features mean that they can devote more attention to the subject matter of their research, gaining access to the latest NLP techniques and deriving the data and insights they need with relative ease. -->
 <p>Flair also comes equipped with pre-trained models and context-aware
 capabilities. In addition, Flair also establishes dependencies with
 primary NLP Python libraries (such as gensim, torch, transformer, and
@@ -209,8 +200,8 @@ setting up your Python environment.</p>
 <ul>
 <li><p>Python (&gt;= 3.7.0)</p></li>
 <li><p>R (&gt;= 3.6.3)</p></li>
-<li><p>RStudio <strong>(The GUI interface allows users to adjust and
-manage the Python environment in R)</strong></p></li>
+<li><p>RStudio <strong><em>(The GUI interface allows users to adjust and
+manage the Python environment in R)</em></strong></p></li>
 <li><p>Anaconda <strong><em>(highly recommended)</em></strong></p></li>
 </ul>
 <p>When first installing and loading the {flaiR} package, it utilizes
@@ -379,7 +370,7 @@ predict tags for the sentence object.</p>
 <span><span class="co"># load the NER tagger</span></span>
 <span><span class="va">Classifier</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_nn.html">flair_nn</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">Classifier</span></span>
 <span><span class="va">tagger</span> <span class="op">&lt;-</span> <span class="va">Classifier</span><span class="op">$</span><span class="fu">load</span><span class="op">(</span><span class="st">'ner'</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2023-11-19 22:31:53,687 SequenceTagger predicts: Dictionary with 20 tags: &lt;unk&gt;, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, &lt;START&gt;, &lt;STOP&gt;</span></span>
+<span><span class="co">#&gt; 2023-11-20 00:45:09,261 SequenceTagger predicts: Dictionary with 20 tags: &lt;unk&gt;, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, &lt;START&gt;, &lt;STOP&gt;</span></span>
 <span></span>
 <span><span class="co"># run NER over sentence</span></span>
 <span><span class="va">tagger</span><span class="op">$</span><span class="fu">predict</span><span class="op">(</span><span class="va">sentence</span><span class="op">)</span></span></code></pre></div>
@@ -418,7 +409,7 @@ Hugging Face.</p>
 <span><span class="co"># load the NER tagger</span></span>
 <span><span class="va">Classifier</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_nn.html">flair_nn</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">Classifier</span></span>
 <span><span class="va">tagger</span> <span class="op">&lt;-</span> <span class="va">Classifier</span><span class="op">$</span><span class="fu">load</span><span class="op">(</span><span class="st">'pos'</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2023-11-19 22:31:54,208 SequenceTagger predicts: Dictionary with 53 tags: &lt;unk&gt;, O, UH, ,, VBD, PRP, VB, PRP$, NN, RB, ., DT, JJ, VBP, VBG, IN, CD, NNS, NNP, WRB, VBZ, WDT, CC, TO, MD, VBN, WP, :, RP, EX, JJR, FW, XX, HYPH, POS, RBR, JJS, PDT, NNPS, RBS, AFX, WP$, -LRB-, -RRB-, ``, '', LS, $, SYM, ADD</span></span>
+<span><span class="co">#&gt; 2023-11-20 00:45:10,014 SequenceTagger predicts: Dictionary with 53 tags: &lt;unk&gt;, O, UH, ,, VBD, PRP, VB, PRP$, NN, RB, ., DT, JJ, VBP, VBG, IN, CD, NNS, NNP, WRB, VBZ, WDT, CC, TO, MD, VBN, WP, :, RP, EX, JJR, FW, XX, HYPH, POS, RBR, JJS, PDT, NNPS, RBS, AFX, WP$, -LRB-, -RRB-, ``, '', LS, $, SYM, ADD</span></span>
 <span></span>
 <span><span class="co"># run NER over sentence</span></span>
 <span><span class="va">tagger</span><span class="op">$</span><span class="fu">predict</span><span class="op">(</span><span class="va">sentence</span><span class="op">)</span></span></code></pre></div>
@@ -533,7 +524,7 @@ embedding for the entire sentence:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># initiate TransformerWordEmbeddings</span></span>
 <span><span class="va">embedding</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_embeddings.TransformerDocumentEmbeddings.html">flair_embeddings.TransformerDocumentEmbeddings</a></span><span class="op">(</span><span class="st">'bert-base-uncased'</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2023-11-19 22:31:58,758 Using long sentences for Document embeddings is only beneficial for cls_pooling types 'mean' and 'max</span></span>
+<span><span class="co">#&gt; 2023-11-20 00:45:14,697 Using long sentences for Document embeddings is only beneficial for cls_pooling types 'mean' and 'max</span></span>
 <span></span>
 <span><span class="co"># create a sentence</span></span>
 <span><span class="va">sentence</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_data.Sentence.html">flair_data.Sentence</a></span><span class="op">(</span><span class="st">'The grass is green .'</span><span class="op">)</span></span>
@@ -707,7 +698,7 @@ pre-trained models, see <a href="https://flairnlp.github.io/docs/tutorial-basics
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">flaiR</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tagger_pos</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_tagger_pos.html">load_tagger_pos</a></span><span class="op">(</span><span class="st">"pos-fast"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2023-11-19 22:32:01,707 SequenceTagger predicts: Dictionary with 53 tags: &lt;unk&gt;, O, UH, ,, VBD, PRP, VB, PRP$, NN, RB, ., DT, JJ, VBP, VBG, IN, CD, NNS, NNP, WRB, VBZ, WDT, CC, TO, MD, VBN, WP, :, RP, EX, JJR, FW, XX, HYPH, POS, RBR, JJS, PDT, NNPS, RBS, AFX, WP$, -LRB-, -RRB-, ``, '', LS, $, SYM, ADD</span></span></code></pre></div>
+<span><span class="co">#&gt; 2023-11-20 00:45:18,000 SequenceTagger predicts: Dictionary with 53 tags: &lt;unk&gt;, O, UH, ,, VBD, PRP, VB, PRP$, NN, RB, ., DT, JJ, VBP, VBG, IN, CD, NNS, NNP, WRB, VBZ, WDT, CC, TO, MD, VBN, WP, :, RP, EX, JJR, FW, XX, HYPH, POS, RBR, JJS, PDT, NNPS, RBS, AFX, WP$, -LRB-, -RRB-, ``, '', LS, $, SYM, ADD</span></span></code></pre></div>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_pos.html">get_pos</a></span><span class="op">(</span><span class="va">texts</span>, <span class="va">doc_ids</span>, <span class="va">tagger_pos</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">results</span>, n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
@@ -736,7 +727,7 @@ models, see <a href="https://flairnlp.github.io/docs/tutorial-basics/tagging-ent
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">flaiR</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tagger_ner</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_tagger_ner.html">load_tagger_ner</a></span><span class="op">(</span><span class="st">"ner"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2023-11-19 22:32:02,948 SequenceTagger predicts: Dictionary with 20 tags: &lt;unk&gt;, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, &lt;START&gt;, &lt;STOP&gt;</span></span></code></pre></div>
+<span><span class="co">#&gt; 2023-11-20 00:45:19,465 SequenceTagger predicts: Dictionary with 20 tags: &lt;unk&gt;, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, &lt;START&gt;, &lt;STOP&gt;</span></span></code></pre></div>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_entities.html">get_entities</a></span><span class="op">(</span><span class="va">texts</span>, <span class="va">doc_ids</span>, <span class="va">tagger_ner</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">results</span>, n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>

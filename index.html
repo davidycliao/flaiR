@@ -201,7 +201,7 @@
 <strong>Training Models with HuggingFace via flaiR</strong><a class="anchor" aria-label="anchor" href="#training-models-with-huggingface-via-flair"></a>
 </h4>
 <p>The following example offers a straightforward introduction on how to fully train your own model using the Flair framework and import a <code>BERT</code> model from <a href="https://github.com/huggingface" class="external-link">HuggingFace 🤗</a>. This example utilizes grandstanding score as training data from Julia Park’s paper (<em><a href="https://www.journals.uchicago.edu/doi/abs/10.1086/709147?journalCode=jop&amp;mobileUi=0" class="external-link">When Do Politicians Grandstand? Measuring Message Politics in Committee Hearings</a></em>) and trains the model using Transformer-based models via flair NLP through <code>{flaiR}</code>.</p>
-<p><strong>Step 1</strong> Split Data into Train and Test Sets with Senetence Object</p>
+<p><u><strong>Step 1</strong></u> Split Data into Train and Test Sets with Senetence Object</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># load training data: grandstanding score from Julia Park's paper</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">flaiR</span><span class="op">)</span></span>
@@ -226,21 +226,21 @@
 <span><span class="va">sample</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">TRUE</span>, <span class="cn">FALSE</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">text</span><span class="op">)</span>, replace<span class="op">=</span><span class="cn">TRUE</span>, prob<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.8</span>, <span class="fl">0.2</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">train</span>  <span class="op">&lt;-</span> <span class="va">text</span><span class="op">[</span><span class="va">sample</span><span class="op">]</span></span>
 <span><span class="va">test</span>   <span class="op">&lt;-</span> <span class="va">text</span><span class="op">[</span><span class="op">!</span><span class="va">sample</span><span class="op">]</span></span></code></pre></div>
-<p><strong>Step 2</strong> Preprocess Data and Corpus Object</p>
+<p><u><strong>Step 2</strong></u> Preprocess Data and Corpus Object</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">corpus</span> <span class="op">&lt;-</span> <span class="fu">Corpus</span><span class="op">(</span>train<span class="op">=</span><span class="va">train</span>, test<span class="op">=</span><span class="va">test</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2023-11-19 22:16:33,208 No dev split found. Using 0% (i.e. 282 samples) of the train split as dev data</span></span></code></pre></div>
-<p><strong>Step 3</strong> Create Classifier Using Transformer</p>
+<span><span class="co">#&gt; 2023-11-20 00:35:09,228 No dev split found. Using 0% (i.e. 282 samples) of the train split as dev data</span></span></code></pre></div>
+<p><u><strong>Step 3</strong></u> Create Classifier Using Transformer</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">document_embeddings</span> <span class="op">&lt;-</span> <span class="fu">TransformerDocumentEmbeddings</span><span class="op">(</span><span class="st">'distilbert-base-uncased'</span>, fine_tune<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">label_dict</span> <span class="op">&lt;-</span> <span class="va">corpus</span><span class="op">$</span><span class="fu">make_label_dictionary</span><span class="op">(</span>label_type<span class="op">=</span><span class="st">"classification"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2023-11-19 22:16:35,354 Computing label dictionary. Progress:</span></span>
-<span><span class="co">#&gt; 2023-11-19 22:16:35,407 Dictionary created for label 'classification' with 2 values: 0 (seen 1323 times), 1 (seen 1211 times)</span></span>
+<span><span class="co">#&gt; 2023-11-20 00:35:10,469 Computing label dictionary. Progress:</span></span>
+<span><span class="co">#&gt; 2023-11-20 00:35:10,519 Dictionary created for label 'classification' with 2 values: 0 (seen 1342 times), 1 (seen 1192 times)</span></span>
 <span><span class="va">classifier</span> <span class="op">&lt;-</span> <span class="fu">TextClassifier</span><span class="op">(</span><span class="va">document_embeddings</span>,</span>
 <span>                             label_dictionary<span class="op">=</span><span class="va">label_dict</span>, </span>
 <span>                             label_type<span class="op">=</span><span class="st">'classification'</span><span class="op">)</span></span></code></pre></div>
-<p><strong>Step 4</strong> Start Training</p>
+<p><u><strong>Step 4</strong></u> Start Training</p>
 <p>specific computation devices on your local machine.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">classifier</span><span class="op">$</span><span class="fu">to</span><span class="op">(</span><span class="fu"><a href="reference/flair_device.html">flair_device</a></span><span class="op">(</span><span class="st">"mps"</span><span class="op">)</span><span class="op">)</span> </span>
@@ -285,10 +285,10 @@
 <p>Start the training process using the classifier, which learns from the data based on the grandstanding score.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">trainer</span> <span class="op">&lt;-</span> <span class="fu">ModelTrainer</span><span class="op">(</span><span class="va">classifier</span>, <span class="va">corpus</span><span class="op">)</span></span></code></pre></div>
-<p><strong>Step 5</strong> Evaluate the Model</p>
+<p><u><strong>Step 5</strong></u> Evaluate the Model</p>
 <p>During and after the model training process, evaluating the performance of the trained model on the development set is straightforward and easy.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># import the performance metrics</span></span>
+<code class="sourceCode R"><span><span class="co"># import the performance metrics generated during the training process</span></span>
 <span><span class="va">performance_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.table</a></span><span class="op">(</span>file <span class="op">=</span> <span class="st">"./vignettes/classifier/loss.tsv"</span>, header <span class="op">=</span> <span class="cn">TRUE</span>, sep <span class="op">=</span> <span class="st">"\t"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">performance_df</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    EPOCH TIMESTAMP LEARNING_RATE TRAIN_LOSS DEV_LOSS DEV_PRECISION DEV_RECALL</span></span>
