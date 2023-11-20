@@ -131,7 +131,8 @@ Hearings](https://www.journals.uchicago.edu/doi/abs/10.1086/709147?journalCode=j
 and trains the model using Transformer-based models via flair NLP
 through `{flaiR}`.
 
-**Step 1** Split Data into Train and Test Sets with Senetence Object
+<u>**Step 1**</u> Split Data into Train and Test Sets with Senetence
+Object
 
 ``` r
 # load training data: grandstanding score from Julia Park's paper
@@ -163,14 +164,14 @@ train  <- text[sample]
 test   <- text[!sample]
 ```
 
-**Step 2** Preprocess Data and Corpus Object
+<u>**Step 2**</u> Preprocess Data and Corpus Object
 
 ``` r
 corpus <- Corpus(train=train, test=test)
-#> 2023-11-19 22:16:33,208 No dev split found. Using 0% (i.e. 282 samples) of the train split as dev data
+#> 2023-11-20 00:35:09,228 No dev split found. Using 0% (i.e. 282 samples) of the train split as dev data
 ```
 
-**Step 3** Create Classifier Using Transformer
+<u>**Step 3**</u> Create Classifier Using Transformer
 
 ``` r
 document_embeddings <- TransformerDocumentEmbeddings('distilbert-base-uncased', fine_tune=TRUE)
@@ -178,14 +179,14 @@ document_embeddings <- TransformerDocumentEmbeddings('distilbert-base-uncased', 
 
 ``` r
 label_dict <- corpus$make_label_dictionary(label_type="classification")
-#> 2023-11-19 22:16:35,354 Computing label dictionary. Progress:
-#> 2023-11-19 22:16:35,407 Dictionary created for label 'classification' with 2 values: 0 (seen 1323 times), 1 (seen 1211 times)
+#> 2023-11-20 00:35:10,469 Computing label dictionary. Progress:
+#> 2023-11-20 00:35:10,519 Dictionary created for label 'classification' with 2 values: 0 (seen 1342 times), 1 (seen 1192 times)
 classifier <- TextClassifier(document_embeddings,
                              label_dictionary=label_dict, 
                              label_type='classification')
 ```
 
-**Step 4** Start Training
+<u>**Step 4**</u> Start Training
 
 specific computation devices on your local machine.
 
@@ -238,13 +239,13 @@ data based on the grandstanding score.
 trainer <- ModelTrainer(classifier, corpus)
 ```
 
-**Step 5** Evaluate the Model
+<u>**Step 5**</u> Evaluate the Model
 
 During and after the model training process, evaluating the performance
 of the trained model on the development set is straightforward and easy.
 
 ``` r
-# import the performance metrics
+# import the performance metrics generated during the training process
 performance_df <- read.table(file = "./vignettes/classifier/loss.tsv", header = TRUE, sep = "\t")
 print(performance_df)
 #>    EPOCH TIMESTAMP LEARNING_RATE TRAIN_LOSS DEV_LOSS DEV_PRECISION DEV_RECALL

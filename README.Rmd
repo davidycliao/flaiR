@@ -62,12 +62,10 @@ library(flaiR)
 #> flaiR: An R Wrapper for Accessing Flair NLP 0.13.0
 ```
 <br>
-
                  
 For R users, {`flairR`} primarily consists of two main components. The first is wrapper functions in {`flaiR`} built on top of {`reticulate`}, which enables you to interact directly with Python modules in R and provides seamless support for documents and [tutorial (in progress)](https://davidycliao.github.io/flaiR/articles/tutorial.html) in the R community. The {flaiR} package enables R users to leverage Flair's capabilities to train their own models using the Flair framework and state-of-the-art NLP models without the need to interact directly with Python.
 
 Flair offers a simpler and more intuitive approach for training custom NLP models compared to using Transformer-based models directly. With Flair, data loading and preprocessing are streamlined, facilitating the easy integration of various pre-trained embeddings, including both traditional and Transformer-based types like BERT. The training process in Flair is condensed to just a few lines of code, with automatic handling of fundamental preprocessing steps.  Evaluation and optimization are also made user-friendly with accessible tools.  In addition, Flair NLP provides an easy framework for training language models and is compatible with HuggingFace.
-
 
 Secondly, to facilitate more efficient use for social science research, {`flairR`} expands {`flairNLP/flair`}'s core functionality for working with three major functions to extract features in a tidy and fast format-- [data.table](https://cran.r-project.org/web/packages/data.table/index.html) in R. 
 
@@ -88,7 +86,7 @@ In addition, to handle the load on RAM when dealing with larger corpus, {`flairR
 
 The following example offers a straightforward introduction on how to fully train your own model using the Flair framework and import a `BERT` model from [HuggingFace 🤗](https://github.com/huggingface). This example utilizes grandstanding score as training data from Julia Park's paper (_[When Do Politicians Grandstand? Measuring Message Politics in Committee Hearings](https://www.journals.uchicago.edu/doi/abs/10.1086/709147?journalCode=jop&mobileUi=0)_) and trains the model using Transformer-based models via flair NLP through `{flaiR}`.
 
-__Step 1__ Split Data into Train and Test Sets with Senetence Object
+<u>__Step 1__</u> Split Data into Train and Test Sets with Senetence Object
 
 ```{r}
 # load training data: grandstanding score from Julia Park's paper
@@ -120,12 +118,12 @@ train  <- text[sample]
 test   <- text[!sample]
 ```
 
-__Step 2__ Preprocess Data and Corpus Object  
+<u>__Step 2__</u> Preprocess Data and Corpus Object  
 ```{r}
 corpus <- Corpus(train=train, test=test)
 ```
 
-__Step 3__ Create Classifier Using Transformer
+<u>__Step 3__</u> Create Classifier Using Transformer
 ```{r}
 document_embeddings <- TransformerDocumentEmbeddings('distilbert-base-uncased', fine_tune=TRUE)
 ```
@@ -137,7 +135,7 @@ classifier <- TextClassifier(document_embeddings,
                              label_type='classification')
 ```
 
-__Step 4__ Start Training 
+<u>__Step 4__</u> Start Training 
 
 specific computation devices on your local machine.
 ```{r}
@@ -145,16 +143,17 @@ classifier$to(flair_device("mps"))
 ```
 
 Start the training process using the classifier, which learns from the data based on the grandstanding score.
+
 ```{r eval=FALSE}
 trainer <- ModelTrainer(classifier, corpus)
 ```
 
-__Step 5__ Evaluate the Model
+<u>__Step 5__</u> Evaluate the Model
 
 During and after the model training process, evaluating the performance of the trained model on the development set is straightforward and easy.
 
 ```{r}
-# import the performance metrics
+# import the performance metrics generated during the training process
 performance_df <- read.table(file = "./vignettes/classifier/loss.tsv", header = TRUE, sep = "\t")
 print(performance_df)
 ```
