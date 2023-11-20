@@ -166,28 +166,62 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 <div style="text-align: justify">
 <p><code>{flaiR}</code> is an R wrapper for the <a href="https://github.com/flairnlp/flair" class="external-link">{flairNLP/flair}</a> library in Python, designed specifically for R users, especially those in the social sciences. It provides easy access to the main functionalities of <code>{flairNLP}</code>. Developed by Developed by <a href="https://engineering.zalando.com/posts/2018/11/zalando-research-releases-flair.html" class="external-link">Zalando Research</a> in Berlin, Flair NLP offers intuitive interfaces and exceptional multilingual support, particularly for various embedding frameworks and state-of-the-art natural language processing models to analyze your text, such as named entity recognition, sentiment analysis, part-of-speech tagging, biomedical data, sense disambiguation, and classification, with support for a rapidly growing number of languages in the community. For a comprehensive understanding of the <code>{flairNLP/flair}</code> architecture, you can refer to the research article ‘<a href="https://aclanthology.org/C18-1139.pdf" class="external-link">Contextual String Embeddings for Sequence Labeling</a>’ and the official <a href="https://flairnlp.github.io" class="external-link">manual</a> written for its Python implementation.</p>
+</div>
 <p><br></p>
+</div>
 <div class="section level2">
 <h2 id="installation-via-github">Installation via <u><strong><code>GitHub</code></strong></u>
 <a class="anchor" aria-label="anchor" href="#installation-via-github"></a>
 </h2>
 <div style="text-align: justify">
-<p>The installation consists of two parts: First, install <a href="https://www.python.org/downloads/" class="external-link">Python 3.8</a> or higher, and <a href="https://www.r-project.org" class="external-link">R 3.6.3</a> or higher. Although we have tested it on Github Action with R 3.6.2, we strongly recommend installing <a href="https://github.com/davidycliao/flaiR/actions/runs/6416611291" class="external-link">R 4.0.0 or above</a> to ensure compatibility between the R environment and Python. When first installed, {<code>flaiR</code>} automatically detects whether you have Python 3.8 or higher. If not, it will skip the automatic installation of Python and flair NLP. In this case, you will need to mannually install it yourself and reload {<code>flaiR</code>} again. If you have Python 3.8 or higher alreadt installed, the installer of {<code>flaiR</code>} will automatically install flair Python NLP in your global environment. If you are using {reticulate}, {flaiR} will typically assume the <strong>r-reticulate</strong> environment by default. At the same time, you can use py_config() to check the location of your environment. Please note that flaiR will directly install flair NLP in the Python environment that your R is using. This environment can be adjusted through <em>RStudio</em> by navigating to <code>Tools -&gt; Global Options -&gt; Python</code>. If there are any issues with the installation, feel free to ask in the <u><a href="https://github.com/davidycliao/flaiR/discussions" class="external-link">Discussion</a> </u>.</p>
-</div>
+<p>The installation consists of two parts: First, install <a href="https://www.python.org/downloads/" class="external-link">Python 3.8</a> or higher (avoid developmental versions and the very latest release for compatibility reasons). Secondly, install <a href="https://www.r-project.org" class="external-link">R 4.2.0</a> or higher.</p>
+<p><strong>System Requirement:</strong></p>
+<ul>
+<li><p>Python (&gt;= 3.10.x)</p></li>
+<li><p>R (&gt;= 4.2.0)</p></li>
+<li><p>RStudio <strong><em>(The GUI interface allows users to adjust and manage the Python environment in R)</em></strong></p></li>
+<li><p>Anaconda <strong><em>(highly recommended)</em></strong></p></li>
+</ul>
+<p>We have rigorously tested flaiR using CI/CD with GitHub Actions, conducting integration tests across <a href="https://github.com/davidycliao/flaiR/actions" class="external-link">various operating syste</a> These tests include combinations of R versions 4.2.1, 4.3.2, and 4.2.0 and Python 3.10.x. The testing also extends to environments with flair NLP and PyTorch, given that Flair NLP is built on Torch. For stable usage, we strongly recommend installing these specific versions.</p>
+<p>When first installed, {<code>flaiR</code>} automatically detects whether you have Python 3.8 or higher. If not, it will skip the automatic installation of Python and flair NLP. In this case, you will need to manually install it yourself and reload {<code>flaiR</code>} again. If you have correct Pythoninstalled, the {<code>flaiR</code>} will automatically install flair Python NLP in your global environment. If you are using {reticulate}, {flaiR} will typically assume the <strong>r-reticulate</strong> environment by default. At the same time, you can use <code>py_config()</code> to check the location of your environment. Please note that flaiR will directly install flair NLP in the Python environment that your R is using. This environment can be adjusted through <em>RStudio</em> by navigating to <strong><code>Tools -&gt; Global Options -&gt; Python</code></strong>. If there are any issues with the installation, feel free to ask in the <u><a href="https://github.com/davidycliao/flaiR/discussions" class="external-link">Discussion</a> </u>.</p>
+<p>First, understanding which Python environment your RStudio is using is very important. We advise you to confirm which Python environment RStudio is using. You can do this by checking with <code><a href="https://rstudio.github.io/reticulate/reference/py_config.html" class="external-link">reticulate::py_config()</a></code> or manually via <strong>Tools -&gt; Global Options -&gt; Python</strong>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"reticulate"</span><span class="op">)</span></span>
+<span><span class="fu">reticulate</span><span class="fu">::</span><span class="fu"><a href="https://rstudio.github.io/reticulate/reference/py_config.html" class="external-link">py_config</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p>At this stage, you’ll observe that RStudio has defaulted to using the ‘flair_env’ environment I have set up. Consequently, the Python Flair package will be installed within this environment. Should you wish to modify this setting, you have the option to either adjust it within RStudio’s settings or utilize the {reticulate} package to manage the Python environment in RStudio.</p>
+<pre class="shell"><code><span><span class="co">#&gt; python:         /Users/*********/.virtualenvs/flair_env/bin/python</span></span>
+<span><span class="co">#&gt; libpython:      /Users/*********/.pyenv/versions/3.10.13/lib/libpython3.10.dylib</span></span>
+<span><span class="co">#&gt; pythonhome:     /Users/*********/.virtualenvs/flair_env:/Users/*********/.virtualenvs/flair_env</span></span>
+<span><span class="co">#&gt; version:        3.10.13 (main, Oct 27 2023, 04:44:16) [Clang 15.0.0 (clang-1500.0.40.1)]</span></span>
+<span><span class="co">#&gt; numpy:          /Users/*********/.virtualenvs/flair_env/lib/python3.10/site-packages/numpy</span></span>
+<span><span class="co">#&gt; numpy_version:  1.26.2</span></span>
+<span><span class="co">#&gt; flair:          /Users/*********/.virtualenvs/flair_env/lib/python3.10/site-packages/flair</span></span>
+<span></span>
+<span><span class="co">#&gt; NOTE: Python version was forced by use_python() function</span></span></code></pre>
+<p>Now, you can confidently install flaiR in your R environment.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span></span>
 <span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"davidycliao/flaiR"</span>, force <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<p>You will notice the following message, indicating a successful installation. This means that your RStudio has successfully detected the correct Python and has installed Flair in your Python environment</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">flaiR</span><span class="op">)</span></span>
 <span><span class="co">#&gt; flaiR: An R Wrapper for Accessing Flair NLP 0.13.0</span></span></code></pre></div>
 <p><br></p>
+</div>
+</div>
+<div class="section level2">
+<h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
+</h2>
+<div style="text-align: justify">
 <p>For R users, {<code>flairR</code>} primarily consists of two main components. The first is wrapper functions in {<code>flaiR</code>} built on top of {<code>reticulate</code>}, which enables you to interact directly with Python modules in R and provides seamless support for documents and <a href="https://davidycliao.github.io/flaiR/articles/tutorial.html">tutorial (in progress)</a> in the R community. The {flaiR} package enables R users to leverage Flair’s capabilities to train their own models using the Flair framework and state-of-the-art NLP models without the need to interact directly with Python.</p>
 <p>Flair offers a simpler and more intuitive approach for training custom NLP models compared to using Transformer-based models directly. With Flair, data loading and preprocessing are streamlined, facilitating the easy integration of various pre-trained embeddings, including both traditional and Transformer-based types like BERT. The training process in Flair is condensed to just a few lines of code, with automatic handling of fundamental preprocessing steps. Evaluation and optimization are also made user-friendly with accessible tools. In addition, Flair NLP provides an easy framework for training language models and is compatible with HuggingFace.</p>
 <p>Secondly, to facilitate more efficient use for social science research, {<code>flairR</code>} expands {<code>flairNLP/flair</code>}’s core functionality for working with three major functions to extract features in a tidy and fast format– <a href="https://cran.r-project.org/web/packages/data.table/index.html" class="external-link">data.table</a> in R.</p>
+</div>
 <div class="section level4">
 <h4 id="performing-nlp-tasks-in-r">
 <strong>Performing NLP Tasks in R</strong><a class="anchor" aria-label="anchor" href="#performing-nlp-tasks-in-r"></a>
 </h4>
+<div style="text-align: justify">
 <p>The expanded features (and examples) can be found:</p>
 <ul>
 <li><a href="https://davidycliao.github.io/flaiR/articles/get_pos.html"><strong>part-of-speech tagging</strong></a></li>
@@ -196,24 +230,26 @@
 </ul>
 <p>In addition, to handle the load on RAM when dealing with larger corpus, {<code>flairR</code>} supports batch processing to handle texts in batches, which is especially useful when dealing with large datasets, to optimize memory usage and performance. The implementation of batch processing can also utilize GPU acceleration for faster computations.</p>
 </div>
+</div>
 <div class="section level4">
 <h4 id="training-models-with-huggingface-via-flair">
 <strong>Training Models with HuggingFace via flaiR</strong><a class="anchor" aria-label="anchor" href="#training-models-with-huggingface-via-flair"></a>
 </h4>
+<div style="text-align: justify">
 <p>The following example offers a straightforward introduction on how to fully train your own model using the Flair framework and import a <code>BERT</code> model from <a href="https://github.com/huggingface" class="external-link">HuggingFace 🤗</a>. This example utilizes grandstanding score as training data from Julia Park’s paper (<em><a href="https://www.journals.uchicago.edu/doi/abs/10.1086/709147?journalCode=jop&amp;mobileUi=0" class="external-link">When Do Politicians Grandstand? Measuring Message Politics in Committee Hearings</a></em>) and trains the model using Transformer-based models via flair NLP through <code>{flaiR}</code>.</p>
 <p><u><strong>Step 1</strong></u> Split Data into Train and Test Sets with Senetence Object</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># load training data: grandstanding score from Julia Park's paper</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">flaiR</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">gs_score</span><span class="op">)</span> </span></code></pre></div>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># load flair functions via flaiR</span></span>
 <span><span class="va">Sentence</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/flair_data.html">flair_data</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">Sentence</span></span>
 <span><span class="va">Corpus</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/flair_data.html">flair_data</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">Corpus</span></span>
 <span><span class="va">TransformerDocumentEmbeddings</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/flair_embeddings.html">flair_embeddings</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">TransformerDocumentEmbeddings</span></span>
 <span><span class="va">TextClassifier</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/flair_models.html">flair_models</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">TextClassifier</span></span>
 <span><span class="va">ModelTrainer</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/flair_trainers.html">flair_trainers</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">ModelTrainer</span></span></code></pre></div>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># split the data</span></span>
 <span><span class="va">text</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">gs_score</span><span class="op">$</span><span class="va">speech</span>, <span class="va">Sentence</span><span class="op">)</span></span>
 <span><span class="va">labels</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">gs_score</span><span class="op">$</span><span class="va">rescaled_gs</span><span class="op">)</span></span>
@@ -227,22 +263,22 @@
 <span><span class="va">train</span>  <span class="op">&lt;-</span> <span class="va">text</span><span class="op">[</span><span class="va">sample</span><span class="op">]</span></span>
 <span><span class="va">test</span>   <span class="op">&lt;-</span> <span class="va">text</span><span class="op">[</span><span class="op">!</span><span class="va">sample</span><span class="op">]</span></span></code></pre></div>
 <p><u><strong>Step 2</strong></u> Preprocess Data and Corpus Object</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">corpus</span> <span class="op">&lt;-</span> <span class="fu">Corpus</span><span class="op">(</span>train<span class="op">=</span><span class="va">train</span>, test<span class="op">=</span><span class="va">test</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2023-11-20 00:35:09,228 No dev split found. Using 0% (i.e. 282 samples) of the train split as dev data</span></span></code></pre></div>
-<p><u><strong>Step 3</strong></u> Create Classifier Using Transformer</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">document_embeddings</span> <span class="op">&lt;-</span> <span class="fu">TransformerDocumentEmbeddings</span><span class="op">(</span><span class="st">'distilbert-base-uncased'</span>, fine_tune<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">corpus</span> <span class="op">&lt;-</span> <span class="fu">Corpus</span><span class="op">(</span>train<span class="op">=</span><span class="va">train</span>, test<span class="op">=</span><span class="va">test</span><span class="op">)</span></span>
+<span><span class="co">#&gt; 2023-11-20 12:06:18,983 No dev split found. Using 0% (i.e. 282 samples) of the train split as dev data</span></span></code></pre></div>
+<p><u><strong>Step 3</strong></u> Create Classifier Using Transformer</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">document_embeddings</span> <span class="op">&lt;-</span> <span class="fu">TransformerDocumentEmbeddings</span><span class="op">(</span><span class="st">'distilbert-base-uncased'</span>, fine_tune<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">label_dict</span> <span class="op">&lt;-</span> <span class="va">corpus</span><span class="op">$</span><span class="fu">make_label_dictionary</span><span class="op">(</span>label_type<span class="op">=</span><span class="st">"classification"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2023-11-20 00:35:10,469 Computing label dictionary. Progress:</span></span>
-<span><span class="co">#&gt; 2023-11-20 00:35:10,519 Dictionary created for label 'classification' with 2 values: 0 (seen 1342 times), 1 (seen 1192 times)</span></span>
+<span><span class="co">#&gt; 2023-11-20 12:06:20,477 Computing label dictionary. Progress:</span></span>
+<span><span class="co">#&gt; 2023-11-20 12:06:20,524 Dictionary created for label 'classification' with 2 values: 0 (seen 1341 times), 1 (seen 1193 times)</span></span>
 <span><span class="va">classifier</span> <span class="op">&lt;-</span> <span class="fu">TextClassifier</span><span class="op">(</span><span class="va">document_embeddings</span>,</span>
 <span>                             label_dictionary<span class="op">=</span><span class="va">label_dict</span>, </span>
 <span>                             label_type<span class="op">=</span><span class="st">'classification'</span><span class="op">)</span></span></code></pre></div>
 <p><u><strong>Step 4</strong></u> Start Training</p>
 <p>specific computation devices on your local machine.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">classifier</span><span class="op">$</span><span class="fu">to</span><span class="op">(</span><span class="fu"><a href="reference/flair_device.html">flair_device</a></span><span class="op">(</span><span class="st">"mps"</span><span class="op">)</span><span class="op">)</span> </span>
 <span><span class="co">#&gt; TextClassifier(</span></span>
 <span><span class="co">#&gt;   (embeddings): TransformerDocumentEmbeddings(</span></span>
@@ -283,37 +319,29 @@
 <span><span class="co">#&gt;   (loss_function): CrossEntropyLoss()</span></span>
 <span><span class="co">#&gt; )</span></span></code></pre></div>
 <p>Start the training process using the classifier, which learns from the data based on the grandstanding score.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">trainer</span> <span class="op">&lt;-</span> <span class="fu">ModelTrainer</span><span class="op">(</span><span class="va">classifier</span>, <span class="va">corpus</span><span class="op">)</span></span></code></pre></div>
 <p><u><strong>Step 5</strong></u> Evaluate the Model</p>
 <p>During and after the model training process, evaluating the performance of the trained model on the development set is straightforward and easy.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># import the performance metrics generated during the training process</span></span>
 <span><span class="va">performance_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.table</a></span><span class="op">(</span>file <span class="op">=</span> <span class="st">"./vignettes/classifier/loss.tsv"</span>, header <span class="op">=</span> <span class="cn">TRUE</span>, sep <span class="op">=</span> <span class="st">"\t"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">performance_df</span><span class="op">)</span></span>
-<span><span class="co">#&gt;    EPOCH TIMESTAMP LEARNING_RATE TRAIN_LOSS DEV_LOSS DEV_PRECISION DEV_RECALL</span></span>
-<span><span class="co">#&gt; 1      1  00:25:18           0.1     0.9077   0.8829        0.4533     0.4533</span></span>
-<span><span class="co">#&gt; 2      2  00:25:29           0.1     0.8530   0.8783        0.4533     0.4533</span></span>
-<span><span class="co">#&gt; 3      3  00:25:39           0.1     0.8762   0.8698        0.4533     0.4533</span></span>
-<span><span class="co">#&gt; 4      4  00:25:49           0.1     0.8562   0.8514        0.4533     0.4533</span></span>
-<span><span class="co">#&gt; 5      5  00:25:59           0.1     0.8262   0.8394        0.4578     0.4578</span></span>
-<span><span class="co">#&gt; 6      6  00:26:09           0.1     0.8187   0.6970        0.5289     0.5289</span></span>
-<span><span class="co">#&gt; 7      7  00:26:19           0.1     0.8286   0.7403        0.5022     0.5022</span></span>
-<span><span class="co">#&gt; 8      8  00:26:29           0.1     0.7780   0.7568        0.4978     0.4978</span></span>
-<span><span class="co">#&gt; 9      9  00:26:39           0.1     0.7969   0.7746        0.4844     0.4844</span></span>
-<span><span class="co">#&gt; 10    10  00:26:49           0.1     0.7810   0.7909        0.4889     0.4889</span></span>
-<span><span class="co">#&gt;    DEV_F1 DEV_ACCURACY</span></span>
-<span><span class="co">#&gt; 1  0.4533       0.4533</span></span>
-<span><span class="co">#&gt; 2  0.4533       0.4533</span></span>
-<span><span class="co">#&gt; 3  0.4533       0.4533</span></span>
-<span><span class="co">#&gt; 4  0.4533       0.4533</span></span>
-<span><span class="co">#&gt; 5  0.4578       0.4578</span></span>
-<span><span class="co">#&gt; 6  0.5289       0.5289</span></span>
-<span><span class="co">#&gt; 7  0.5022       0.5022</span></span>
-<span><span class="co">#&gt; 8  0.4978       0.4978</span></span>
-<span><span class="co">#&gt; 9  0.4844       0.4844</span></span>
-<span><span class="co">#&gt; 10 0.4889       0.4889</span></span></code></pre></div>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">performance_df</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   EPOCH TIMESTAMP LEARNING_RATE TRAIN_LOSS DEV_LOSS DEV_PRECISION DEV_RECALL</span></span>
+<span><span class="co">#&gt; 1     1  00:25:18           0.1     0.9077   0.8829        0.4533     0.4533</span></span>
+<span><span class="co">#&gt; 2     2  00:25:29           0.1     0.8530   0.8783        0.4533     0.4533</span></span>
+<span><span class="co">#&gt; 3     3  00:25:39           0.1     0.8762   0.8698        0.4533     0.4533</span></span>
+<span><span class="co">#&gt; 4     4  00:25:49           0.1     0.8562   0.8514        0.4533     0.4533</span></span>
+<span><span class="co">#&gt; 5     5  00:25:59           0.1     0.8262   0.8394        0.4578     0.4578</span></span>
+<span><span class="co">#&gt; 6     6  00:26:09           0.1     0.8187   0.6970        0.5289     0.5289</span></span>
+<span><span class="co">#&gt;   DEV_F1 DEV_ACCURACY</span></span>
+<span><span class="co">#&gt; 1 0.4533       0.4533</span></span>
+<span><span class="co">#&gt; 2 0.4533       0.4533</span></span>
+<span><span class="co">#&gt; 3 0.4533       0.4533</span></span>
+<span><span class="co">#&gt; 4 0.4533       0.4533</span></span>
+<span><span class="co">#&gt; 5 0.4578       0.4578</span></span>
+<span><span class="co">#&gt; 6 0.5289       0.5289</span></span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">performance_df</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">EPOCH</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">TRAIN_LOSS</span>, color <span class="op">=</span> <span class="st">"Training Loss"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
@@ -326,9 +354,8 @@
 <span>                     values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Training Loss"</span> <span class="op">=</span> <span class="st">"blue"</span>, <span class="st">"Development Loss"</span> <span class="op">=</span> <span class="st">"red"</span>, <span class="st">"Development Accuracy"</span> <span class="op">=</span> <span class="st">"Black"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-12-1.png" width="100%"></p>
 </div>
-</div>
-</div>
 <p><br></p>
+</div>
 </div>
 <div class="section level2">
 <h2 id="contribution-and-open-source">Contribution and Open Source<a class="anchor" aria-label="anchor" href="#contribution-and-open-source"></a>
