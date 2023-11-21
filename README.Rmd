@@ -38,39 +38,88 @@ install.packages("remotes")
 
 
 `{flaiR}` is an R wrapper for the [{flairNLP/flair}](https://github.com/flairnlp/flair) library in Python, designed specifically for R users, especially those in the social sciences. It provides easy access to the main functionalities of `{flairNLP}`. Developed by Developed by [Zalando Research](https://engineering.zalando.com/posts/2018/11/zalando-research-releases-flair.html) in Berlin, Flair NLP offers intuitive interfaces and exceptional multilingual support, particularly for various embedding frameworks and state-of-the-art natural language processing models to analyze your text, such as named entity recognition, sentiment analysis, part-of-speech tagging, biomedical data, sense disambiguation, and classification, with support for a rapidly growing number of languages in the community. For a comprehensive understanding of the `{flairNLP/flair}` architecture, you can refer to the research article '[Contextual String Embeddings for Sequence Labeling](https://aclanthology.org/C18-1139.pdf)' and the official [manual](https://flairnlp.github.io) written for its Python implementation. 
+</div>
 
-
+  
 <br>
-
 
 
 ## Installation via  <u>__`GitHub`__</u>
 
 <div style="text-align: justify">
 
-The installation consists of two parts: First, install [Python 3.8](https://www.python.org/downloads/) or higher, and [R 3.6.3](https://www.r-project.org) or higher. Although we have tested it on Github Action with R 3.6.2, we strongly recommend installing [R 4.0.0 or above](https://github.com/davidycliao/flaiR/actions/runs/6416611291) to ensure compatibility between the R environment and Python. When first installed, {`flaiR`} automatically detects whether you have Python 3.8 or higher. If not, it will skip the automatic installation of Python and flair NLP. In this case, you will need to mannually install it yourself and reload {`flaiR`} again. If you have Python 3.8 or higher alreadt installed, the installer of {`flaiR`} will automatically install flair Python NLP in your global environment. If you are using {reticulate}, {flaiR} will typically assume the __r-reticulate__ environment by default. At the same time, you can use py_config() to check the location of your environment. Please note that flaiR will directly install flair NLP in the Python environment that your R is using. This environment can be adjusted through _RStudio_ by navigating to `Tools -> Global Options -> Python`. If there are any issues with the installation, feel free to ask in the <u>[Discussion](https://github.com/davidycliao/flaiR/discussions) </u>.
 
-</div>
+The installation consists of two parts: First, install [Python 3.8](https://www.python.org/downloads/) or higher (avoid developmental versions and the very latest release for compatibility reasons).  Secondly, install [R 4.2.0](https://www.r-project.org) or higher.
 
+__System Requirement:__
+
+- Python (>= 3.10.x)
+
+- R (>= 4.2.0)
+
+- RStudio ___(The GUI interface allows users to adjust and manage the Python environment in R)___
+
+- Anaconda ___(highly recommended)___
+
+We have tested flaiR using CI/CD with GitHub Actions, conducting integration tests across [various operating syste](https://github.com/davidycliao/flaiR/actions) These tests include intergration between R versions 4.2.1, 4.3.2, and 4.2.0 and Python 3.10.x. The testing also covers environments with flair NLP and PyTorch (given that [Flair NLP](https://flairnlp.github.io) is built on [Torch](https://pytorch.org)). For stable usage, we strongly recommend installing these specific versions.
+
+When first installed, {`flaiR`} automatically detects whether you have Python 3.8 or higher. If not, it will skip the automatic installation of Python and flair NLP. In this case, you will need to manually install it yourself and reload {`flaiR`} again. If you have correct Pythoninstalled, the {`flaiR`} will automatically install flair Python NLP in your global environment. If you are using {reticulate}, {flaiR} will typically assume the __r-reticulate__ environment by default. At the same time, you can use `py_config()` to check the location of your environment. Please note that flaiR will directly install flair NLP in the Python environment that your R is using. This environment can be adjusted through _RStudio_ by navigating to __`Tools -> Global Options -> Python`__. If there are any issues with the installation, feel free to ask in the <u>[Discussion](https://github.com/davidycliao/flaiR/discussions) </u>.
+
+
+First, understanding which Python environment your RStudio is using is very important. We advise you to confirm which Python environment RStudio is using. You can do this by checking with `reticulate::py_config()` or manually via __Tools -> Global Options -> Python__. 
+
+```r
+install.packages("reticulate")
+reticulate::py_config()
+```
+
+At this stage, you'll observe that RStudio has defaulted to using the 'flair_env' environment I have set up. Consequently, the Python Flair package will be installed within this environment. Should you wish to modify this setting, you have the option to either adjust it within RStudio's settings or utilize the {reticulate} package to manage the Python environment in RStudio.
+
+```shell
+#> python:         /Users/*********/.virtualenvs/flair_env/bin/python
+#> libpython:      /Users/*********/.pyenv/versions/3.10.13/lib/libpython3.10.dylib
+#> pythonhome:     /Users/*********/.virtualenvs/flair_env:/Users/*********/.virtualenvs/flair_env
+#> version:        3.10.13 (main, Oct 27 2023, 04:44:16) [Clang 15.0.0 (clang-1500.0.40.1)]
+#> numpy:          /Users/*********/.virtualenvs/flair_env/lib/python3.10/site-packages/numpy
+#> numpy_version:  1.26.2
+#> flair:          /Users/*********/.virtualenvs/flair_env/lib/python3.10/site-packages/flair
+
+#> NOTE: Python version was forced by use_python() function
+```
+
+Now, you can confidently install flaiR in your R environment.
 ```r
 install.packages("remotes")
 remotes::install_github("davidycliao/flaiR", force = TRUE)
 ```
 
+You will notice the following message, indicating a successful installation. This means that your RStudio has successfully detected the correct Python and has installed Flair in your Python environment
+
 ```r
 library(flaiR)
 #> flaiR: An R Wrapper for Accessing Flair NLP 0.13.0
 ```
+
 <br>
-                 
+
+</div>
+
+## Introduction
+  
+<div style="text-align: justify">
+           
 For R users, {`flairR`} primarily consists of two main components. The first is wrapper functions in {`flaiR`} built on top of {`reticulate`}, which enables you to interact directly with Python modules in R and provides seamless support for documents and [tutorial (in progress)](https://davidycliao.github.io/flaiR/articles/tutorial.html) in the R community. The {flaiR} package enables R users to leverage Flair's capabilities to train their own models using the Flair framework and state-of-the-art NLP models without the need to interact directly with Python.
 
 Flair offers a simpler and more intuitive approach for training custom NLP models compared to using Transformer-based models directly. With Flair, data loading and preprocessing are streamlined, facilitating the easy integration of various pre-trained embeddings, including both traditional and Transformer-based types like BERT. The training process in Flair is condensed to just a few lines of code, with automatic handling of fundamental preprocessing steps.  Evaluation and optimization are also made user-friendly with accessible tools.  In addition, Flair NLP provides an easy framework for training language models and is compatible with HuggingFace.
 
 Secondly, to facilitate more efficient use for social science research, {`flairR`} expands {`flairNLP/flair`}'s core functionality for working with three major functions to extract features in a tidy and fast format-- [data.table](https://cran.r-project.org/web/packages/data.table/index.html) in R. 
 
+</div>
 
 #### __Performing NLP Tasks in R__
+
+<div style="text-align: justify">
+
 
 The expanded features (and examples) can be found: 
 
@@ -80,13 +129,74 @@ The expanded features (and examples) can be found:
 
 In addition, to handle the load on RAM when dealing with larger corpus, {`flairR`}  supports batch processing to handle texts in batches, which is especially useful when dealing with large datasets, to optimize memory usage and performance. The implementation of batch processing can also utilize GPU acceleration for faster computations.
 
+</div>
+
+
+#### __Apply a Transformer Model from HuggingFace__
+
+Use the policy agenda classifier trained by the Manifesto Project. You can find more details on [Manifesto Project HugginFace](https://huggingface.co/manifesto-project/manifestoberta-xlm-roberta-56policy-topics-context-2023-1-1).
+
+
+<!-- ```{r} -->
+<!-- # Load pre-trained model  -->
+<!-- library(flaiR) -->
+<!-- TransformerDocumentEmbeddings <- flair_embeddings()$TransformerDocumentEmbeddings -->
+<!-- Sentence <- flair_data()$Sentence -->
+
+<!-- manifesto_tranformer = 'manifesto-project/manifestoberta-xlm-roberta-56policy-topics-sentence-2023-1-1' -->
+
+<!-- classifier <- TransformerDocumentEmbeddings(manifesto_tranformer) -->
+
+<!-- sentence <-  Sentence("your text here") -->
+<!-- names(sentence$get_label) -->
+<!-- sentence$get_each_embedding()[[1]] -->
+<!-- classifier$embed(sentence) -->
+<!-- library(reticulate) -->
+<!-- torch <- import("torch") -->
+<!-- probabilities = torch$softmax(sentence$get_each_embedding()[[1]], dim=1)$tolist()[0] -->
+
+<!-- torch$softmax(sentence$get_each_embedding()[[1]], dim=1L)$tolist()[0] -->
+
+
+
+<!-- sentence$embedding$softmax() -->
+<!-- # Correct model name without file path -->
+<!-- model_name = 'manifesto-project/manifestoberta-xlm-roberta-56policy-topics-context-2023-1-1' -->
+
+<!-- # Load the model -->
+<!-- document_embeddings  <- TransformerDocumentEmbeddings(model_name) -->
+
+<!-- # Example usage -->
+<!-- sentence = Sentence("Your text to classify.") -->
+<!-- document_embeddings.embed(sentence) -->
+
+<!-- sentence$labels() -->
+
+<!-- # Access the embedding -->
+<!-- print(sentence.embedding) -->
+
+
+
+<!-- # Create a sentence to classify -->
+<!-- sentence <-  Sentence("your text here") -->
+
+<!-- # Predict using the model -->
+<!-- sentence$score() -->
+<!-- print(sentence$embedding) -->
+
+<!-- classifier$ek(sentence, verbose = TRUE) -->
+
+
+<!-- ``` -->
+
 
 #### __Training Models with HuggingFace via flaiR__
 
+<div style="text-align: justify">
 
 The following example offers a straightforward introduction on how to fully train your own model using the Flair framework and import a `BERT` model from [HuggingFace 🤗](https://github.com/huggingface). This example utilizes grandstanding score as training data from Julia Park's paper (_[When Do Politicians Grandstand? Measuring Message Politics in Committee Hearings](https://www.journals.uchicago.edu/doi/abs/10.1086/709147?journalCode=jop&mobileUi=0)_) and trains the model using Transformer-based models via flair NLP through `{flaiR}`.
 
-<u>__Step 1__</u> Split Data into Train and Test Sets with Senetence Object
+<u>__Step 1__</u> Split Data into Train and Test Sets with `flair` Sentence Object
 
 ```{r}
 # load training data: grandstanding score from Julia Park's paper
@@ -128,6 +238,7 @@ corpus <- Corpus(train=train, test=test)
 document_embeddings <- TransformerDocumentEmbeddings('distilbert-base-uncased', fine_tune=TRUE)
 ```
 
+
 ```{r}
 label_dict <- corpus$make_label_dictionary(label_type="classification")
 classifier <- TextClassifier(document_embeddings,
@@ -155,7 +266,7 @@ During and after the model training process, evaluating the performance of the t
 ```{r}
 # import the performance metrics generated during the training process
 performance_df <- read.table(file = "./vignettes/classifier/loss.tsv", header = TRUE, sep = "\t")
-print(performance_df)
+head(performance_df)
 ```
 
 ```{r}

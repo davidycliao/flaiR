@@ -33,6 +33,8 @@ Labeling](https://aclanthology.org/C18-1139.pdf)’ and the official
 [manual](https://flairnlp.github.io) written for its Python
 implementation.
 
+</div>
+
 <br>
 
 ## Installation via <u>**`GitHub`**</u>
@@ -40,32 +42,85 @@ implementation.
 <div style="text-align: justify">
 
 The installation consists of two parts: First, install [Python
-3.8](https://www.python.org/downloads/) or higher, and [R
-3.6.3](https://www.r-project.org) or higher. Although we have tested it
-on Github Action with R 3.6.2, we strongly recommend installing [R 4.0.0
-or above](https://github.com/davidycliao/flaiR/actions/runs/6416611291)
-to ensure compatibility between the R environment and Python. When first
-installed, {`flaiR`} automatically detects whether you have Python 3.8
-or higher. If not, it will skip the automatic installation of Python and
-flair NLP. In this case, you will need to mannually install it yourself
-and reload {`flaiR`} again. If you have Python 3.8 or higher alreadt
-installed, the installer of {`flaiR`} will automatically install flair
-Python NLP in your global environment. If you are using {reticulate},
-{flaiR} will typically assume the **r-reticulate** environment by
-default. At the same time, you can use py_config() to check the location
-of your environment. Please note that flaiR will directly install flair
-NLP in the Python environment that your R is using. This environment can
-be adjusted through *RStudio* by navigating to
-`Tools -> Global Options -> Python`. If there are any issues with the
-installation, feel free to ask in the
+3.8](https://www.python.org/downloads/) or higher (avoid developmental
+versions and the very latest release for compatibility reasons).
+Secondly, install [R 4.2.0](https://www.r-project.org) or higher.
+
+**System Requirement:**
+
+- Python (\>= 3.10.x)
+
+- R (\>= 4.2.0)
+
+- RStudio ***(The GUI interface allows users to adjust and manage the
+  Python environment in R)***
+
+- Anaconda ***(highly recommended)***
+
+We have tested flaiR using CI/CD with GitHub Actions, conducting
+integration tests across [various operating
+syste](https://github.com/davidycliao/flaiR/actions) These tests include
+intergration between R versions 4.2.1, 4.3.2, and 4.2.0 and Python
+3.10.x. The testing also covers environments with flair NLP and PyTorch
+(given that [Flair NLP](https://flairnlp.github.io) is built on
+[Torch](https://pytorch.org)). For stable usage, we strongly recommend
+installing these specific versions.
+
+When first installed, {`flaiR`} automatically detects whether you have
+Python 3.8 or higher. If not, it will skip the automatic installation of
+Python and flair NLP. In this case, you will need to manually install it
+yourself and reload {`flaiR`} again. If you have correct
+Pythoninstalled, the {`flaiR`} will automatically install flair Python
+NLP in your global environment. If you are using {reticulate}, {flaiR}
+will typically assume the **r-reticulate** environment by default. At
+the same time, you can use `py_config()` to check the location of your
+environment. Please note that flaiR will directly install flair NLP in
+the Python environment that your R is using. This environment can be
+adjusted through *RStudio* by navigating to
+**`Tools -> Global Options -> Python`**. If there are any issues with
+the installation, feel free to ask in the
 <u>[Discussion](https://github.com/davidycliao/flaiR/discussions) </u>.
 
-</div>
+First, understanding which Python environment your RStudio is using is
+very important. We advise you to confirm which Python environment
+RStudio is using. You can do this by checking with
+`reticulate::py_config()` or manually via **Tools -\> Global Options -\>
+Python**.
+
+``` r
+install.packages("reticulate")
+reticulate::py_config()
+```
+
+At this stage, you’ll observe that RStudio has defaulted to using the
+‘flair_env’ environment I have set up. Consequently, the Python Flair
+package will be installed within this environment. Should you wish to
+modify this setting, you have the option to either adjust it within
+RStudio’s settings or utilize the {reticulate} package to manage the
+Python environment in RStudio.
+
+``` shell
+#> python:         /Users/*********/.virtualenvs/flair_env/bin/python
+#> libpython:      /Users/*********/.pyenv/versions/3.10.13/lib/libpython3.10.dylib
+#> pythonhome:     /Users/*********/.virtualenvs/flair_env:/Users/*********/.virtualenvs/flair_env
+#> version:        3.10.13 (main, Oct 27 2023, 04:44:16) [Clang 15.0.0 (clang-1500.0.40.1)]
+#> numpy:          /Users/*********/.virtualenvs/flair_env/lib/python3.10/site-packages/numpy
+#> numpy_version:  1.26.2
+#> flair:          /Users/*********/.virtualenvs/flair_env/lib/python3.10/site-packages/flair
+
+#> NOTE: Python version was forced by use_python() function
+```
+
+Now, you can confidently install flaiR in your R environment.
 
 ``` r
 install.packages("remotes")
 remotes::install_github("davidycliao/flaiR", force = TRUE)
 ```
+
+You will notice the following message, indicating a successful
+installation. This means that your RStudio has successfully detected the
+correct Python and has installed Flair in your Python environment
 
 ``` r
 library(flaiR)
@@ -73,6 +128,12 @@ library(flaiR)
 ```
 
 <br>
+
+</div>
+
+## Introduction
+
+<div style="text-align: justify">
 
 For R users, {`flairR`} primarily consists of two main components. The
 first is wrapper functions in {`flaiR`} built on top of {`reticulate`},
@@ -102,7 +163,11 @@ format–
 [data.table](https://cran.r-project.org/web/packages/data.table/index.html)
 in R.
 
+</div>
+
 #### **Performing NLP Tasks in R**
+
+<div style="text-align: justify">
 
 The expanded features (and examples) can be found:
 
@@ -119,7 +184,51 @@ is especially useful when dealing with large datasets, to optimize
 memory usage and performance. The implementation of batch processing can
 also utilize GPU acceleration for faster computations.
 
+</div>
+
+#### **Apply a Transformer Model from HuggingFace**
+
+Use the policy agenda classifier trained by the Manifesto Project. You
+can find more details on [Manifesto Project
+HugginFace](https://huggingface.co/manifesto-project/manifestoberta-xlm-roberta-56policy-topics-context-2023-1-1).
+
+<!-- ```{r} -->
+<!-- # Load pre-trained model  -->
+<!-- library(flaiR) -->
+<!-- TransformerDocumentEmbeddings <- flair_embeddings()$TransformerDocumentEmbeddings -->
+<!-- Sentence <- flair_data()$Sentence -->
+<!-- manifesto_tranformer = 'manifesto-project/manifestoberta-xlm-roberta-56policy-topics-sentence-2023-1-1' -->
+<!-- classifier <- TransformerDocumentEmbeddings(manifesto_tranformer) -->
+<!-- sentence <-  Sentence("your text here") -->
+<!-- names(sentence$get_label) -->
+<!-- sentence$get_each_embedding()[[1]] -->
+<!-- classifier$embed(sentence) -->
+<!-- library(reticulate) -->
+<!-- torch <- import("torch") -->
+<!-- probabilities = torch$softmax(sentence$get_each_embedding()[[1]], dim=1)$tolist()[0] -->
+<!-- torch$softmax(sentence$get_each_embedding()[[1]], dim=1L)$tolist()[0] -->
+<!-- sentence$embedding$softmax() -->
+<!-- # Correct model name without file path -->
+<!-- model_name = 'manifesto-project/manifestoberta-xlm-roberta-56policy-topics-context-2023-1-1' -->
+<!-- # Load the model -->
+<!-- document_embeddings  <- TransformerDocumentEmbeddings(model_name) -->
+<!-- # Example usage -->
+<!-- sentence = Sentence("Your text to classify.") -->
+<!-- document_embeddings.embed(sentence) -->
+<!-- sentence$labels() -->
+<!-- # Access the embedding -->
+<!-- print(sentence.embedding) -->
+<!-- # Create a sentence to classify -->
+<!-- sentence <-  Sentence("your text here") -->
+<!-- # Predict using the model -->
+<!-- sentence$score() -->
+<!-- print(sentence$embedding) -->
+<!-- classifier$ek(sentence, verbose = TRUE) -->
+<!-- ``` -->
+
 #### **Training Models with HuggingFace via flaiR**
+
+<div style="text-align: justify">
 
 The following example offers a straightforward introduction on how to
 fully train your own model using the Flair framework and import a `BERT`
@@ -131,8 +240,8 @@ Hearings](https://www.journals.uchicago.edu/doi/abs/10.1086/709147?journalCode=j
 and trains the model using Transformer-based models via flair NLP
 through `{flaiR}`.
 
-<u>**Step 1**</u> Split Data into Train and Test Sets with Senetence
-Object
+<u>**Step 1**</u> Split Data into Train and Test Sets with `flair`
+Sentence Object
 
 ``` r
 # load training data: grandstanding score from Julia Park's paper
@@ -168,7 +277,7 @@ test   <- text[!sample]
 
 ``` r
 corpus <- Corpus(train=train, test=test)
-#> 2023-11-20 00:35:09,228 No dev split found. Using 0% (i.e. 282 samples) of the train split as dev data
+#> 2023-11-21 10:35:09,058 No dev split found. Using 0% (i.e. 282 samples) of the train split as dev data
 ```
 
 <u>**Step 3**</u> Create Classifier Using Transformer
@@ -179,8 +288,8 @@ document_embeddings <- TransformerDocumentEmbeddings('distilbert-base-uncased', 
 
 ``` r
 label_dict <- corpus$make_label_dictionary(label_type="classification")
-#> 2023-11-20 00:35:10,469 Computing label dictionary. Progress:
-#> 2023-11-20 00:35:10,519 Dictionary created for label 'classification' with 2 values: 0 (seen 1342 times), 1 (seen 1192 times)
+#> 2023-11-21 10:35:11,217 Computing label dictionary. Progress:
+#> 2023-11-21 10:35:11,269 Dictionary created for label 'classification' with 2 values: 0 (seen 1337 times), 1 (seen 1197 times)
 classifier <- TextClassifier(document_embeddings,
                              label_dictionary=label_dict, 
                              label_type='classification')
@@ -247,29 +356,21 @@ of the trained model on the development set is straightforward and easy.
 ``` r
 # import the performance metrics generated during the training process
 performance_df <- read.table(file = "./vignettes/classifier/loss.tsv", header = TRUE, sep = "\t")
-print(performance_df)
-#>    EPOCH TIMESTAMP LEARNING_RATE TRAIN_LOSS DEV_LOSS DEV_PRECISION DEV_RECALL
-#> 1      1  00:25:18           0.1     0.9077   0.8829        0.4533     0.4533
-#> 2      2  00:25:29           0.1     0.8530   0.8783        0.4533     0.4533
-#> 3      3  00:25:39           0.1     0.8762   0.8698        0.4533     0.4533
-#> 4      4  00:25:49           0.1     0.8562   0.8514        0.4533     0.4533
-#> 5      5  00:25:59           0.1     0.8262   0.8394        0.4578     0.4578
-#> 6      6  00:26:09           0.1     0.8187   0.6970        0.5289     0.5289
-#> 7      7  00:26:19           0.1     0.8286   0.7403        0.5022     0.5022
-#> 8      8  00:26:29           0.1     0.7780   0.7568        0.4978     0.4978
-#> 9      9  00:26:39           0.1     0.7969   0.7746        0.4844     0.4844
-#> 10    10  00:26:49           0.1     0.7810   0.7909        0.4889     0.4889
-#>    DEV_F1 DEV_ACCURACY
-#> 1  0.4533       0.4533
-#> 2  0.4533       0.4533
-#> 3  0.4533       0.4533
-#> 4  0.4533       0.4533
-#> 5  0.4578       0.4578
-#> 6  0.5289       0.5289
-#> 7  0.5022       0.5022
-#> 8  0.4978       0.4978
-#> 9  0.4844       0.4844
-#> 10 0.4889       0.4889
+head(performance_df)
+#>   EPOCH TIMESTAMP LEARNING_RATE TRAIN_LOSS DEV_LOSS DEV_PRECISION DEV_RECALL
+#> 1     1  00:25:18           0.1     0.9077   0.8829        0.4533     0.4533
+#> 2     2  00:25:29           0.1     0.8530   0.8783        0.4533     0.4533
+#> 3     3  00:25:39           0.1     0.8762   0.8698        0.4533     0.4533
+#> 4     4  00:25:49           0.1     0.8562   0.8514        0.4533     0.4533
+#> 5     5  00:25:59           0.1     0.8262   0.8394        0.4578     0.4578
+#> 6     6  00:26:09           0.1     0.8187   0.6970        0.5289     0.5289
+#>   DEV_F1 DEV_ACCURACY
+#> 1 0.4533       0.4533
+#> 2 0.4533       0.4533
+#> 3 0.4533       0.4533
+#> 4 0.4533       0.4533
+#> 5 0.4578       0.4578
+#> 6 0.5289       0.5289
 ```
 
 ``` r
