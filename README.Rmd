@@ -132,24 +132,26 @@ In addition, to handle the load on RAM when dealing with larger corpus, {`flairR
 </div>
 
 
-#### __Apply a Transformer Model from HuggingFace__
+<!-- #### __Apply a Transformer Model from HuggingFace__ -->
 
-Use the policy agenda classifier trained by the Manifesto Project. You can find more details on [Manifesto Project HugginFace](https://huggingface.co/manifesto-project/manifestoberta-xlm-roberta-56policy-topics-context-2023-1-1).
+<!-- Use the policy agenda classifier trained by the Manifesto Project. You can find more details on [Manifesto Project HugginFace](https://huggingface.co/manifesto-project/manifestoberta-xlm-roberta-56policy-topics-context-2023-1-1). -->
 
 
 <!-- ```{r} -->
-<!-- # Load pre-trained model  -->
+<!-- # Load pre-trained model -->
 <!-- library(flaiR) -->
 <!-- TransformerDocumentEmbeddings <- flair_embeddings()$TransformerDocumentEmbeddings -->
 <!-- Sentence <- flair_data()$Sentence -->
 
 <!-- manifesto_tranformer = 'manifesto-project/manifestoberta-xlm-roberta-56policy-topics-sentence-2023-1-1' -->
 
+
 <!-- classifier <- TransformerDocumentEmbeddings(manifesto_tranformer) -->
 
 <!-- sentence <-  Sentence("your text here") -->
 <!-- names(sentence$get_label) -->
-<!-- sentence$get_each_embedding()[[1]] -->
+<!-- length(sentence$get_embedding()) -->
+<!-- sentence$get_embedding() -->
 <!-- classifier$embed(sentence) -->
 <!-- library(reticulate) -->
 <!-- torch <- import("torch") -->
@@ -279,7 +281,9 @@ ggplot(performance_df, aes(x = EPOCH)) +
        x = "Epoch / Grandstanding Classifer",
        y = "")  +
   scale_color_manual("", 
-                     values = c("Training Loss" = "blue", "Development Loss" = "red", "Development Accuracy" = "Black"))
+                     values = c("Training Loss" = "blue",
+                                "Development Loss" = "red",
+                                "Development Accuracy" = "Black"))
 ```
 
 </div>

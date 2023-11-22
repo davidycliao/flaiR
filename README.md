@@ -186,14 +186,10 @@ also utilize GPU acceleration for faster computations.
 
 </div>
 
-#### **Apply a Transformer Model from HuggingFace**
-
-Use the policy agenda classifier trained by the Manifesto Project. You
-can find more details on [Manifesto Project
-HugginFace](https://huggingface.co/manifesto-project/manifestoberta-xlm-roberta-56policy-topics-context-2023-1-1).
-
+<!-- #### __Apply a Transformer Model from HuggingFace__ -->
+<!-- Use the policy agenda classifier trained by the Manifesto Project. You can find more details on [Manifesto Project HugginFace](https://huggingface.co/manifesto-project/manifestoberta-xlm-roberta-56policy-topics-context-2023-1-1). -->
 <!-- ```{r} -->
-<!-- # Load pre-trained model  -->
+<!-- # Load pre-trained model -->
 <!-- library(flaiR) -->
 <!-- TransformerDocumentEmbeddings <- flair_embeddings()$TransformerDocumentEmbeddings -->
 <!-- Sentence <- flair_data()$Sentence -->
@@ -201,7 +197,8 @@ HugginFace](https://huggingface.co/manifesto-project/manifestoberta-xlm-roberta-
 <!-- classifier <- TransformerDocumentEmbeddings(manifesto_tranformer) -->
 <!-- sentence <-  Sentence("your text here") -->
 <!-- names(sentence$get_label) -->
-<!-- sentence$get_each_embedding()[[1]] -->
+<!-- length(sentence$get_embedding()) -->
+<!-- sentence$get_embedding() -->
 <!-- classifier$embed(sentence) -->
 <!-- library(reticulate) -->
 <!-- torch <- import("torch") -->
@@ -277,7 +274,7 @@ test   <- text[!sample]
 
 ``` r
 corpus <- Corpus(train=train, test=test)
-#> 2023-11-21 10:35:09,058 No dev split found. Using 0% (i.e. 282 samples) of the train split as dev data
+#> 2023-11-22 05:03:31,474 No dev split found. Using 0% (i.e. 282 samples) of the train split as dev data
 ```
 
 <u>**Step 3**</u> Create Classifier Using Transformer
@@ -288,8 +285,8 @@ document_embeddings <- TransformerDocumentEmbeddings('distilbert-base-uncased', 
 
 ``` r
 label_dict <- corpus$make_label_dictionary(label_type="classification")
-#> 2023-11-21 10:35:11,217 Computing label dictionary. Progress:
-#> 2023-11-21 10:35:11,269 Dictionary created for label 'classification' with 2 values: 0 (seen 1337 times), 1 (seen 1197 times)
+#> 2023-11-22 05:03:34,016 Computing label dictionary. Progress:
+#> 2023-11-22 05:03:34,099 Dictionary created for label 'classification' with 2 values: 0 (seen 1334 times), 1 (seen 1200 times)
 classifier <- TextClassifier(document_embeddings,
                              label_dictionary=label_dict, 
                              label_type='classification')
@@ -383,7 +380,9 @@ ggplot(performance_df, aes(x = EPOCH)) +
        x = "Epoch / Grandstanding Classifer",
        y = "")  +
   scale_color_manual("", 
-                     values = c("Training Loss" = "blue", "Development Loss" = "red", "Development Accuracy" = "Black"))
+                     values = c("Training Loss" = "blue",
+                                "Development Loss" = "red",
+                                "Development Accuracy" = "Black"))
 ```
 
 <img src="man/figures/README-unnamed-chunk-12-1.png" width="100%" />
