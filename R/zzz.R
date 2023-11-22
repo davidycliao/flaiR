@@ -82,7 +82,7 @@
       paste(python_path, "-m pip install flair")
     )
 
-    vapply(commands, system)
+    command_statuses <- vapply(commands, system, FUN.VALUE = integer(1))
     flair_check_again <- check_flair_version()
 
     if (isFALSE(flair_check_again[[2]])) {
