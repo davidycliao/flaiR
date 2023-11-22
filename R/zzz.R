@@ -61,7 +61,8 @@
 
   # Check if flair is installed
   check_flair_version <- function() {
-    flair_version_command <- paste(python_path, "-c 'import flair; print(flair.__version__)'")
+    # flair_version_command <- paste(python_path, "-c 'import flair; print(flair.__version__)'")
+    flair_version_command <- paste(python_path, "-c \"import flair; print(flair.__version__)\"")
     result <- system(flair_version_command, intern = TRUE)
     if (length(result) == 0 || result[1] == "ERROR" || is.na(result[1])) {
       return(list(paste("flair", paste0("\033[31m", "\u2717", "\033[39m"), sep = " "), FALSE))
