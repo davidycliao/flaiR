@@ -21,10 +21,10 @@
 #' @keywords internal
 .onAttach <- function(...) {
   # Specify Python path explicitly
-  python_path <- Sys.which("python3")
-  if (python_path == "") {
-    stop("Cannot locate the Python 3 path. Ensure Python 3 is installed and in your system's path.")
-  }
+  # python_path <- Sys.which("python3")
+  # if (python_path == "") {
+  #   stop("Cannot locate the Python 3 path. Ensure Python 3 is installed and in your system's path.")
+  # }
 
   # Determine Python command
   python_cmd <- if (Sys.info()["sysname"] == "Windows") "python" else "python3"
@@ -45,7 +45,7 @@
     }
   }, error = function(e) {
     packageStartupMessage(paste("Failed to get Python version with path:", python_path, "Error:", e$message, ". flaiR functionality requiring Python will not be available."))
-    return(invisible(NULL))  # Exit .onAttach without stopping package loading
+    return(invisible(NULL))   # Exit .onAttach without stopping package loading
   })
 
   # Check if PyTorch is installed
@@ -57,7 +57,7 @@
       return(list(paste("PyTorch", paste0("\033[31m", "\u2717", "\033[39m"), sep = " "), FALSE))
     }
     # Return flair version
-    return(list(paste("PyTorch", paste0("\033[32m", "\u2713", "\033[39m") ,result[1], sep = " "), TRUE))
+    return(list(paste("PyTorch", paste0("\033[32m", "\u2713", "\033[39m") ,result[1], sep = " "), TRUE, result[1]))
   }
 
   # Check if flair is installed
@@ -69,7 +69,7 @@
       return(list(paste("flair", paste0("\033[31m", "\u2717", "\033[39m"), sep = " "), FALSE))
     }
     # Return flair version
-    return(list(paste("flair", paste0("\033[32m", "\u2713", "\033[39m") ,result[1], sep = " "), TRUE))
+    return(list(paste("flair", paste0("\033[32m", "\u2713", "\033[39m"),result[1], sep = " "), TRUE, result[1]))
   }
 
   flair_version <- check_flair_version()
@@ -85,12 +85,12 @@
     )
 
     command_statuses <- vapply(commands, system, FUN.VALUE = integer(1))
-    # flair_check_again <- check_flair_version()
 
+    flair_check_again <- check_flair_version()
     if (isFALSE(flair_check_again[[2]])) {
       packageStartupMessage("Failed to install Flair. {flaiR} requires Flair NLP. Please ensure Flair NLP is installed in Python manually.")
     }
   } else {
-    packageStartupMessage(sprintf("\033[1m\033[34mflaiR\033[39m\033[22m: \033[1m\033[33mAn R Wrapper for Accessing Flair NLP\033[39m\033[22m %-5s", paste("\033[1m\033[33m", get_flair_version(), "\033[39m\033[22m", sep = "")))
+    packageStartupMessage(sprintf("\033[1m\033[34mflaiR\033[39m\033[22m: \033[1m\033[33mAn R Wrapper for Accessing Flair NLP\033[39m\033[22m %-5s", paste("\033[1m\033[33m", flair_version[[3]], "\033[39m\033[22m", sep = "")))
   }
 }
