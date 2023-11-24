@@ -21,10 +21,10 @@
 #' @keywords internal
 .onAttach <- function(...) {
   # Specify Python path explicitly
-  # python_path <- Sys.which("python3")
-  # if (python_path == "") {
-  #   stop("Cannot locate the Python 3 path. Ensure Python 3 is installed and in your system's path.")
-  # }
+  python_path <- Sys.which("python3")
+  if (python_path == "") {
+    stop("Cannot locate the Python 3 path. Ensure Python 3 is installed and in your system's path.")
+  }
 
   # Determine Python command
   python_cmd <- if (Sys.info()["sysname"] == "Windows") "python" else "python3"
@@ -50,7 +50,8 @@
 
   # Check if PyTorch is installed
   check_torch_version <- function() {
-    torch_version_command <- paste(python_path, "-c 'import torch; print(torch.__version__)'")
+    # torch_version_command <- paste(python_path, "-c 'import torch; print(torch.__version__)'")
+    torch_version_command <- paste(python_path, "-c \"import torch; print(torch.__version__)\"")
     result <- system(torch_version_command, intern = TRUE)
     if (length(result) == 0 || result[1] == "ERROR" || is.na(result[1])) {
       return(list(paste("PyTorch", paste0("\033[31m", "\u2717", "\033[39m"), sep = " "), FALSE))
@@ -84,7 +85,7 @@
     )
 
     command_statuses <- vapply(commands, system, FUN.VALUE = integer(1))
-    flair_check_again <- check_flair_version()
+    # flair_check_again <- check_flair_version()
 
     if (isFALSE(flair_check_again[[2]])) {
       packageStartupMessage("Failed to install Flair. {flaiR} requires Flair NLP. Please ensure Flair NLP is installed in Python manually.")
