@@ -162,5 +162,24 @@ NULL
 NULL
 
 
+#' @title Sampled Grandstanding Text
+#'
+#' @format A data frame with 3 variables:
+#' \describe{
+#'   \item{Type}{Grandstanding types}
+#'   \item{Statement}{Grandstanding texts}
+#'}
+#'
+#' @examples
+#' \dontrun{
+#' data(statements)
+#' head(statements)
+#' }
+#' @docType data
+#' @usage data("statements")
+#' @name statements
+NULL
+
+
 
 

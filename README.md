@@ -156,72 +156,7 @@ are also made user-friendly with accessible tools. In addition, Flair
 NLP provides an easy framework for training language models and is
 compatible with HuggingFace.
 
-Secondly, to facilitate more efficient use for social science research,
-{`flairR`} expands {`flairNLP/flair`}’s core functionality for working
-with three major functions to extract features in a tidy and fast
-format–
-[data.table](https://cran.r-project.org/web/packages/data.table/index.html)
-in R.
-
 </div>
-
-#### **Performing NLP Tasks in R**
-
-<div style="text-align: justify">
-
-The expanded features (and examples) can be found:
-
-- [**part-of-speech
-  tagging**](https://davidycliao.github.io/flaiR/articles/get_pos.html)
-- [**named entity
-  recognition**](https://davidycliao.github.io/flaiR/articles/get_entities.html)
-- [**transformer-based sentiment
-  analysis**](https://davidycliao.github.io/flaiR/articles/get_sentiments.html)
-
-In addition, to handle the load on RAM when dealing with larger corpus,
-{`flairR`} supports batch processing to handle texts in batches, which
-is especially useful when dealing with large datasets, to optimize
-memory usage and performance. The implementation of batch processing can
-also utilize GPU acceleration for faster computations.
-
-</div>
-
-<!-- #### __Apply a Transformer Model from HuggingFace__ -->
-<!-- Use the policy agenda classifier trained by the Manifesto Project. You can find more details on [Manifesto Project HugginFace](https://huggingface.co/manifesto-project/manifestoberta-xlm-roberta-56policy-topics-context-2023-1-1). -->
-<!-- ```{r} -->
-<!-- # Load pre-trained model -->
-<!-- library(flaiR) -->
-<!-- TransformerDocumentEmbeddings <- flair_embeddings()$TransformerDocumentEmbeddings -->
-<!-- Sentence <- flair_data()$Sentence -->
-<!-- manifesto_tranformer = 'manifesto-project/manifestoberta-xlm-roberta-56policy-topics-sentence-2023-1-1' -->
-<!-- classifier <- TransformerDocumentEmbeddings(manifesto_tranformer) -->
-<!-- sentence <-  Sentence("your text here") -->
-<!-- names(sentence$get_label) -->
-<!-- length(sentence$get_embedding()) -->
-<!-- sentence$get_embedding() -->
-<!-- classifier$embed(sentence) -->
-<!-- library(reticulate) -->
-<!-- torch <- import("torch") -->
-<!-- probabilities = torch$softmax(sentence$get_each_embedding()[[1]], dim=1)$tolist()[0] -->
-<!-- torch$softmax(sentence$get_each_embedding()[[1]], dim=1L)$tolist()[0] -->
-<!-- sentence$embedding$softmax() -->
-<!-- # Correct model name without file path -->
-<!-- model_name = 'manifesto-project/manifestoberta-xlm-roberta-56policy-topics-context-2023-1-1' -->
-<!-- # Load the model -->
-<!-- document_embeddings  <- TransformerDocumentEmbeddings(model_name) -->
-<!-- # Example usage -->
-<!-- sentence = Sentence("Your text to classify.") -->
-<!-- document_embeddings.embed(sentence) -->
-<!-- sentence$labels() -->
-<!-- # Access the embedding -->
-<!-- print(sentence.embedding) -->
-<!-- # Create a sentence to classify -->
-<!-- sentence <-  Sentence("your text here") -->
-<!-- # Predict using the model -->
-<!-- sentence$score() -->
-<!-- print(sentence$embedding) -->
-<!-- classifier$ek(sentence, verbose = TRUE) -->
-<!-- ``` -->
 
 #### **Training Models with HuggingFace via flaiR**
 
@@ -274,7 +209,7 @@ test   <- text[!sample]
 
 ``` r
 corpus <- Corpus(train=train, test=test)
-#> 2023-11-22 05:03:31,474 No dev split found. Using 0% (i.e. 282 samples) of the train split as dev data
+#> 2023-11-28 13:14:49,956 No dev split found. Using 0% (i.e. 282 samples) of the train split as dev data
 ```
 
 <u>**Step 3**</u> Create Classifier Using Transformer
@@ -283,10 +218,37 @@ corpus <- Corpus(train=train, test=test)
 document_embeddings <- TransformerDocumentEmbeddings('distilbert-base-uncased', fine_tune=TRUE)
 ```
 
+`$make_label_dictionary` function is used to create a label dictionary
+for the classification task. The label dictionary is a mapping from
+label to index, which is used to map the labels to a tensor of label
+indices. expcept classifcation task, flair also supports other label
+types for training custom model, such as `ner`, `pos` and `sentiment`.
+
 ``` r
 label_dict <- corpus$make_label_dictionary(label_type="classification")
-#> 2023-11-22 05:03:34,016 Computing label dictionary. Progress:
-#> 2023-11-22 05:03:34,099 Dictionary created for label 'classification' with 2 values: 0 (seen 1334 times), 1 (seen 1200 times)
+#> 2023-11-28 13:14:51,649 Computing label dictionary. Progress:
+#> 2023-11-28 13:14:51,698 Dictionary created for label 'classification' with 2 values: 0 (seen 1332 times), 1 (seen 1202 times)
+```
+
+`$item2idx` method to check the mapping from label to index. This is
+very important to make sure the labels are mapped correctly to the
+indices and tensors.
+
+``` r
+label_dict$item2idx
+#> $`b'0'`
+#> [1] 0
+#> 
+#> $`b'1'`
+#> [1] 1
+```
+
+`TextClassifier` is used to create a text classifier. The classifier
+takes the document embeddings (importing from `'distilbert-base-uncased`
+from HugginFace) and the label dictionary as input. The label type is
+also specified as classification.
+
+``` r
 classifier <- TextClassifier(document_embeddings,
                              label_dictionary=label_dict, 
                              label_type='classification')
@@ -294,10 +256,12 @@ classifier <- TextClassifier(document_embeddings,
 
 <u>**Step 4**</u> Start Training
 
-specific computation devices on your local machine.
+specific computation devices on your local machine. If you have a GPU,
+you can use `flair_gpu` to specify the GPU device. If you don’t have a
+GPU, you can use `flaiR::flair_device` to specify the CPU device.
 
 ``` r
-classifier$to(flair_device("mps")) 
+classifier$to(flair_device("cpu")) 
 #> TextClassifier(
 #>   (embeddings): TransformerDocumentEmbeddings(
 #>     (model): DistilBertModel(
@@ -338,11 +302,20 @@ classifier$to(flair_device("mps"))
 #> )
 ```
 
-Start the training process using the classifier, which learns from the
-data based on the grandstanding score.
+`ModelTrainer` is used to train the model, which learns from the data
+based on the grandstanding score.
 
 ``` r
 trainer <- ModelTrainer(classifier, corpus)
+```
+
+``` r
+trainer$train('grand_standing_model',          # output directory
+              learning_rate=0.02,              # learning rate: if batch_growth_annealing activates,lr should starts a bit higher.
+              mini_batch_size=8L,              # batch size
+              anneal_with_restarts = TRUE,
+              save_final_model=TRUE,
+              max_epochs=3L)                   # Maximum number of epochs
 ```
 
 <u>**Step 5**</u> Evaluate the Model
@@ -352,22 +325,22 @@ of the trained model on the development set is straightforward and easy.
 
 ``` r
 # import the performance metrics generated during the training process
-performance_df <- read.table(file = "./vignettes/classifier/loss.tsv", header = TRUE, sep = "\t")
+performance_df <- read.table(file = "grand_standing/loss.tsv", header = TRUE, sep = "\t")
 head(performance_df)
 #>   EPOCH TIMESTAMP LEARNING_RATE TRAIN_LOSS DEV_LOSS DEV_PRECISION DEV_RECALL
-#> 1     1  00:25:18           0.1     0.9077   0.8829        0.4533     0.4533
-#> 2     2  00:25:29           0.1     0.8530   0.8783        0.4533     0.4533
-#> 3     3  00:25:39           0.1     0.8762   0.8698        0.4533     0.4533
-#> 4     4  00:25:49           0.1     0.8562   0.8514        0.4533     0.4533
-#> 5     5  00:25:59           0.1     0.8262   0.8394        0.4578     0.4578
-#> 6     6  00:26:09           0.1     0.8187   0.6970        0.5289     0.5289
+#> 1     1  13:07:11          0.02     0.6071   0.6314        0.7250     0.7250
+#> 2     2  13:11:19          0.02     0.4509   0.6139        0.7393     0.7393
+#> 3     3  13:21:47          0.02     0.3294   0.6228        0.7464     0.7464
+#> 4     4  13:25:03          0.02     0.2513   0.6628        0.7393     0.7393
+#> 5     5  13:28:10          0.02     0.1109   0.6920        0.7429     0.7429
+#> 6     6  13:31:16          0.02     0.0553   0.7023        0.7429     0.7429
 #>   DEV_F1 DEV_ACCURACY
-#> 1 0.4533       0.4533
-#> 2 0.4533       0.4533
-#> 3 0.4533       0.4533
-#> 4 0.4533       0.4533
-#> 5 0.4578       0.4578
-#> 6 0.5289       0.5289
+#> 1 0.7250       0.7250
+#> 2 0.7393       0.7393
+#> 3 0.7464       0.7464
+#> 4 0.7393       0.7393
+#> 5 0.7429       0.7429
+#> 6 0.7429       0.7429
 ```
 
 ``` r
@@ -375,21 +348,158 @@ library(ggplot2)
 ggplot(performance_df, aes(x = EPOCH)) + 
   geom_line(aes(y = TRAIN_LOSS, color = "Training Loss")) +
   geom_line(aes(y = DEV_LOSS, color = "Development Loss")) +
-  geom_line(aes(y = DEV_ACCURACY, color = "Development Accuracy")) +
+  geom_line(aes(y = DEV_RECALL, color = "Development Recall")) +
+  geom_line(aes(y = DEV_F1, color = "Development F1")) +
+
   labs(title = "Training and Development Loss per Epoch",
-       x = "Epoch / Grandstanding Classifer",
+       x = "Epoch / Grandstanding Classifier",
        y = "")  +
   scale_color_manual("", 
                      values = c("Training Loss" = "blue",
                                 "Development Loss" = "red",
-                                "Development Accuracy" = "Black"))
+                                "Development F1" = "green"))+
+  theme_minimal() 
 ```
 
-<img src="man/figures/README-unnamed-chunk-12-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-15-1.png" width="100%" />
+
+<u>**Step 6**</u> Apply the Trained Model on Unseen Data for Prediction
+
+We use the statement in the dataset as an example.
+
+``` r
+# load the trained model
+data(statements)
+Sentence <- flair_data()$Sentence
+
+text <- statements[1, "Statement"]
+sentence <- Sentence(text)
+```
+
+`lassifier$predict function is used to predict the label of the sentence. The function returns a sentence object with the predicted label.`
+
+``` r
+classifier$predict(sentence)
+print(sentence)
+#> Sentence[55]: "Ladies and gentlemen, I stand before you today not just as a legislator, but as a defender of our very way of life! We are facing a crisis of monumental proportions, and if we don't act now, the very fabric of our society will unravel before our eyes!" → 1 (0.7514)
+```
+
+`sentence$labels` is a list of labels, each of which has a value and a
+score. The value is the label itself, and the score is the probability
+of the label. The label with the highest score is the predicted label.
+
+``` r
+sentence$labels[[1]]$value
+#> [1] "1"
+```
+
+``` r
+sentence$labels[[1]]$score
+#> [1] 0.751438
+```
+
+<u>**Step 7**</u> Reload the Model with the Best Performance
+
+When you train the model with `save_final_model=TRUE`, the model with
+the best performance on the development set will be saved in the output
+directory. You can reload the model with the best performance using the
+`load` function.
+
+``` r
+Sentence <- flair_data()$Sentence
+TextClassifier <- flair_models()$TextClassifier
+classifier <- TextClassifier$load('grand_standing/best-model.pt')
+```
+
+We can create a function to classify the text using the specified Flair
+classifier.
+
+``` r
+classify_text <- function(text, classifier) {
+  # Classifies the given text using the specified Flair classifier.
+  #
+  # Args:
+  # text (str): The text to be classified.
+  # classifier (TextClassifier): The Flair classifier to use for prediction.
+  #
+  # Returns:
+  #   list: A list containing the predicted class label and score as strings.  
+  sentence <- Sentence(text)
+  classifier$predict(sentence)
+  return(list (labels  = sentence$labels[[1]]$value, score  = as.character(sentence$labels[[1]]$score)))
+  }
+```
+
+Before performing classication tast, let’s quickly check the dataset.
+
+``` r
+data(statements)
+print(statements)
+#>                                        Type
+#> 1                Dramatic Appeal to Emotion
+#> 2      Exaggerated Praise for a Local Issue
+#> 3 Over-Simplified Solution to Complex Issue
+#> 4             Personal Anecdote Over Policy
+#> 5               Blaming Political Opponents
+#>                                                                                                                                                                                                                                                     Statement
+#> 1 Ladies and gentlemen, I stand before you today not just as a legislator, but as a defender of our very way of life! We are facing a crisis of monumental proportions, and if we don't act now, the very fabric of our society will unravel before our eyes!
+#> 2                  I want to bring attention to the extraordinary achievement of the Smallville High School baseball team. Their victory is not just a win for Smallville, but a symbol of hope for our nation! This is what true American spirit looks like!
+#> 3                                               The solution to our nation's economic struggles is simple: cut taxes. That's it. Cut them. The economy will skyrocket like never before. Why complicate things when the answer is right there in front of us?
+#> 4                        I remember, back in my hometown, old Mr. Jenkins used to say, 'If it ain't broke, don't fix it.' That's exactly how I feel about our current healthcare system. We don't need reform; we just need good, old-fashioned common sense.
+#> 5                                                     Every problem we face today can be traced back to the disastrous policies of the other party. They are the reason we are in this mess, and until we recognize that, we cannot move forward as a nation.
+```
+
+Let’s apply the function to the dataset.
+
+``` r
+for (i in seq_along(statements$Statement) ) {
+  out_come <- classify_text(statements$Statement[[i]], classifier)
+  statements[i, 'predicted_labels'] <- out_come[[1]]
+  statements[i, 'prop_score'] <- out_come[[2]]
+}
+```
+
+``` r
+statements[c("Type", "predicted_labels", "prop_score")]
+#>                                        Type predicted_labels        prop_score
+#> 1                Dramatic Appeal to Emotion                1 0.998062312602997
+#> 2      Exaggerated Praise for a Local Issue                1 0.985962450504303
+#> 3 Over-Simplified Solution to Complex Issue                1 0.967254757881165
+#> 4             Personal Anecdote Over Policy                1 0.998513281345367
+#> 5               Blaming Political Opponents                1 0.999097466468811
+```
 
 </div>
 
 <br>
+
+Secondly, to facilitate more efficient use for social science research,
+{`flairR`} expands {`flairNLP/flair`}’s core functionality for working
+with three major functions to extract features in a tidy and fast
+format–
+[data.table](https://cran.r-project.org/web/packages/data.table/index.html)
+in R.
+
+#### **Performing NLP Tasks in R**
+
+<div style="text-align: justify">
+
+The expanded features (and examples) can be found:
+
+- [**part-of-speech
+  tagging**](https://davidycliao.github.io/flaiR/articles/get_pos.html)
+- [**named entity
+  recognition**](https://davidycliao.github.io/flaiR/articles/get_entities.html)
+- [**transformer-based sentiment
+  analysis**](https://davidycliao.github.io/flaiR/articles/get_sentiments.html)
+
+In addition, to handle the load on RAM when dealing with larger corpus,
+{`flairR`} supports batch processing to handle texts in batches, which
+is especially useful when dealing with large datasets, to optimize
+memory usage and performance. The implementation of batch processing can
+also utilize GPU acceleration for faster computations.
+
+</div>
 
 ## Contribution and Open Source
 
