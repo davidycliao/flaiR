@@ -52,10 +52,10 @@ Secondly, install [R 4.2.0](https://www.r-project.org) or higher.
 
 - R (\>= 4.2.0)
 
-- RStudio ***(The GUI interface allows users to adjust and manage the
-  Python environment in R)***
+- RStudio *(The GUI interface allows users to adjust and manage the
+  Python environment in R)*
 
-- Anaconda ***(highly recommended)***
+- Anaconda or miniconda *(highly recommended)*
 
 We have tested flaiR using CI/CD with GitHub Actions, conducting
 integration tests across [various operating
@@ -69,11 +69,11 @@ installing these specific versions.
 When first installed, {`flaiR`} automatically detects whether you have
 Python 3.8 or higher. If not, it will skip the automatic installation of
 Python and flair NLP. In this case, you will need to manually install it
-yourself and reload {`flaiR`} again. If you have correct
-Pythoninstalled, the {`flaiR`} will automatically install flair Python
-NLP in your global environment. If you are using {reticulate}, {flaiR}
-will typically assume the **r-reticulate** environment by default. At
-the same time, you can use `py_config()` to check the location of your
+yourself and reload {`flaiR`} again. If you have correct Python
+installed, the {`flaiR`} will automatically install flair Python NLP in
+your global environment. If you are using {reticulate}, {flaiR} will
+typically assume the **r-reticulate** environment by default. At the
+same time, you can use `py_config()` to check the location of your
 environment. Please note that flaiR will directly install flair NLP in
 the Python environment that your R is using. This environment can be
 adjusted through *RStudio* by navigating to
@@ -93,11 +93,11 @@ reticulate::py_config()
 ```
 
 At this stage, you’ll observe that RStudio has defaulted to using the
-‘flair_env’ environment I have set up. Consequently, the Python Flair
-package will be installed within this environment. Should you wish to
-modify this setting, you have the option to either adjust it within
-RStudio’s settings or utilize the {reticulate} package to manage the
-Python environment in RStudio.
+‘flair_env’ environment (my personal environment) I have set up. Then,
+the Python Flair package will be installed within this environment.
+Should you wish to modify this setting, you have the option to either
+adjust it within RStudio’s settings or use the {reticulate} package to
+manage the Python environment in R
 
 ``` shell
 #> python:         /Users/*********/.virtualenvs/flair_env/bin/python
@@ -209,7 +209,7 @@ test   <- text[!sample]
 
 ``` r
 corpus <- Corpus(train=train, test=test)
-#> 2023-11-29 02:00:49,314 No dev split found. Using 0% (i.e. 282 samples) of the train split as dev data
+#> 2023-11-29 09:32:41,983 No dev split found. Using 0% (i.e. 282 samples) of the train split as dev data
 ```
 
 <u>**Step 3**</u> Create Classifier Using Transformer
@@ -227,8 +227,8 @@ other label types for training custom model, such as `ner`, `pos` and
 
 ``` r
 label_dict <- corpus$make_label_dictionary(label_type="classification")
-#> 2023-11-29 02:00:50,782 Computing label dictionary. Progress:
-#> 2023-11-29 02:00:50,832 Dictionary created for label 'classification' with 2 values: 0 (seen 1322 times), 1 (seen 1212 times)
+#> 2023-11-29 09:32:43,454 Computing label dictionary. Progress:
+#> 2023-11-29 09:32:43,504 Dictionary created for label 'classification' with 2 values: 0 (seen 1321 times), 1 (seen 1213 times)
 ```
 
 Alternatively, you can also create a label dictionary manually. The
@@ -273,9 +273,9 @@ print(label_dict$item2idx)
 ```
 
 `TextClassifier` is used to create a text classifier. The classifier
-takes the document embeddings (importing from `'distilbert-base-uncased`
-from HugginFace) and the label dictionary as input. The label type is
-also specified as classification.
+takes the document embeddings (importing from
+`'distilbert-base-uncased'` from HugginFace) and the label dictionary as
+input. The label type is also specified as classification.
 
 ``` r
 classifier <- TextClassifier(document_embeddings,
@@ -380,7 +380,7 @@ ggplot(performance_df, aes(x = EPOCH)) +
   geom_line(aes(y = DEV_RECALL, color = "Development Recall")) +
   geom_line(aes(y = DEV_F1, color = "Development F1")) +
   labs(title = "Training and Development Loss per Epoch",
-       x = "Epoch / Grandstanding Classifier",
+       x = "Epochs / Grandstanding Classifier",
        y = "") +
   scale_color_manual("", 
                      values = c("Training Loss" = "blue",
@@ -428,7 +428,7 @@ sentence <- Sentence(text)
 ``` r
 classifier$predict(sentence)
 print(sentence)
-#> Sentence[55]: "Ladies and gentlemen, I stand before you today not just as a legislator, but as a defender of our very way of life! We are facing a crisis of monumental proportions, and if we don't act now, the very fabric of our society will unravel before our eyes!" → 1 (0.6983)
+#> Sentence[55]: "Ladies and gentlemen, I stand before you today not just as a legislator, but as a defender of our very way of life! We are facing a crisis of monumental proportions, and if we don't act now, the very fabric of our society will unravel before our eyes!" → 1 (0.6431)
 ```
 
 `sentence$labels` is a list of labels, each of which has a value and a
@@ -442,7 +442,7 @@ sentence$labels[[1]]$value
 
 ``` r
 sentence$labels[[1]]$score
-#> [1] 0.6983153
+#> [1] 0.6430542
 ```
 
 <u>**Step 7**</u> Reload the Model with the Best Performance
@@ -477,7 +477,8 @@ classify_text <- function(text, classifier) {
   }
 ```
 
-Before performing classication tast, let’s quickly check the dataset.
+Before performing classification task, let’s quickly check the exmaple
+dataset.
 
 ``` r
 data(statements)
@@ -531,14 +532,126 @@ in R.
 
 <div style="text-align: justify">
 
-The expanded features (and examples) can be found:
+Flair NLP also provides a set of functions to perform NLP tasks, such as
+named entity recognition, sentiment analysis, and part-of-speech
+tagging.
 
-- [**part-of-speech
-  tagging**](https://davidycliao.github.io/flaiR/articles/get_pos.html)
+First, we load the data and the model and perform NER task on the text
+below.
+
+> *Yesterday, Dr. Jane Smith spoke at the United Nations in New York.
+> She discussed climate change and its impact on global economies. The
+> event was attended by representatives from various countries including
+> France and Japan. Dr. Smith mentioned that by 2050, the world could
+> see a rise in sea level by approximately 2 feet. The World Health
+> Organization (WHO) has pledged \$50 million to combat the health
+> effects of global warming. In an interview with The New York Times,
+> Dr. Smith emphasized the urgent need for action. Later that day, she
+> flew back to London, arriving at 10:00 PM GMT.*
+
+``` r
+Classifier <- flair_nn()$Classifier
+Sentence <- flair_data()$Sentence
+
+# load the model flair NLP already trained for us
+tagger <- Classifier$load('ner')
+#> 2023-11-29 09:32:46,364 SequenceTagger predicts: Dictionary with 20 tags: <unk>, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, <START>, <STOP>
+
+# make a sentence object
+text <- "Yesterday, Dr. Jane Smith spoke at the United Nations in New York. She discussed climate change and its impact on global economies. The event was attended by representatives from various countries including France and Japan. Dr. Smith mentioned that by 2050, the world could see a rise in sea level by approximately 2 feet. The World Health Organization (WHO) has pledged $50 million to combat the health effects of global warming. In an interview with The New York Times, Dr. Smith emphasized the urgent need for action. Later that day, she flew back to London, arriving at 10:00 PM GMT."
+sentence <- Sentence(text)
+
+# predict NER tags
+tagger$predict(sentence)
+
+# print sentence with predicted tags
+print(sentence)
+#> Sentence[115]: "Yesterday, Dr. Jane Smith spoke at the United Nations in New York. She discussed climate change and its impact on global economies. The event was attended by representatives from various countries including France and Japan. Dr. Smith mentioned that by 2050, the world could see a rise in sea level by approximately 2 feet. The World Health Organization (WHO) has pledged $50 million to combat the health effects of global warming. In an interview with The New York Times, Dr. Smith emphasized the urgent need for action. Later that day, she flew back to London, arriving at 10:00 PM GMT." → ["Jane Smith"/PER, "United Nations"/ORG, "New York"/LOC, "France"/LOC, "Japan"/LOC, "Smith"/PER, "World Health Organization"/ORG, "WHO"/ORG, "The New York Times"/ORG, "Smith"/PER, "London"/LOC, "GMT"/MISC]
+```
+
+Alternatively, the expanded features in `flaiR` can be used to perform
+and extract features from the sentence object in a tidy format.
+
 - [**named entity
   recognition**](https://davidycliao.github.io/flaiR/articles/get_entities.html)
 - [**transformer-based sentiment
   analysis**](https://davidycliao.github.io/flaiR/articles/get_sentiments.html)
+- [**part-of-speech
+  tagging**](https://davidycliao.github.io/flaiR/articles/get_pos.html)
+
+For example, we can use the `get_entities` function and
+`load_tagger_ner("ner")`in flaiR to extract the named entities from the
+sentence object in a tidy format.
+
+``` r
+tagger_ner <- load_tagger_ner("ner")
+#> 2023-11-29 09:32:49,075 SequenceTagger predicts: Dictionary with 20 tags: <unk>, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, <START>, <STOP>
+results <- get_entities(text = text, 
+                        doc_ids = "example text",
+                        tagger_ner)
+print(results)
+#>           doc_id                    entity  tag
+#>  1: example text                Jane Smith  PER
+#>  2: example text            United Nations  ORG
+#>  3: example text                  New York  LOC
+#>  4: example text                    France  LOC
+#>  5: example text                     Japan  LOC
+#>  6: example text                     Smith  PER
+#>  7: example text World Health Organization  ORG
+#>  8: example text                       WHO  ORG
+#>  9: example text        The New York Times  ORG
+#> 10: example text                     Smith  PER
+#> 11: example text                    London  LOC
+#> 12: example text                       GMT MISC
+```
+
+In most cases, we need to extract the named entities from a large
+corpus. For example, we can use Stefan’s data from ***The Temporal Focus
+of Campaign Communication*** (JOP 2022) as an example.
+
+``` r
+library(flaiR)
+data(cc_muller)
+examples <- head(cc_muller, 10)
+examples[c("text", "countryname")]
+#> # A tibble: 10 × 2
+#>    text                                                              countryname
+#>    <chr>                                                             <chr>      
+#>  1 And to boost the housing we need, we will start to build a new g… United Kin…
+#>  2 In many cases, their value to society in economic, social and en… Ireland    
+#>  3 However, requests for Standing Order 31 adjournments of Dáil bus… Ireland    
+#>  4 We will work with the Pig Industry Stakeholder group to enhance … Ireland    
+#>  5 The legacy of the Celtic Tiger includes 'ghost' housing estates,… Ireland    
+#>  6 We must not allow ISIS to hold a safe haven from which it can pu… Canada     
+#>  7 The declaration of the G20 as the premier forum for internationa… Australia  
+#>  8 This funding represents the next instalment (Round Five, Phase O… Australia  
+#>  9 We'll provide free after-school care and holiday programmes for … New Zealand
+#> 10 This will properly manage the adverse environmental effects of a… New Zealand
+```
+
+``` r
+tagger_ner <- load_tagger_ner("ner")
+#> 2023-11-29 09:32:51,701 SequenceTagger predicts: Dictionary with 20 tags: <unk>, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, <START>, <STOP>
+results <- get_entities(text = examples$text, 
+                        doc_ids = examples$countryname,
+                        tagger_ner)
+print(results)
+#>             doc_id                   entity  tag
+#>  1: United Kingdom                     <NA> <NA>
+#>  2:        Ireland                     <NA> <NA>
+#>  3:        Ireland                     Dáil  ORG
+#>  4:        Ireland        Order of Business  ORG
+#>  5:        Ireland          Standing Orders MISC
+#>  6:        Ireland Pig Industry Stakeholder  ORG
+#>  7:        Ireland             Celtic Tiger  ORG
+#>  8:         Canada                     ISIS  ORG
+#>  9:      Australia                      G20  ORG
+#> 10:      Australia               Round Five MISC
+#> 11:      Australia                Phase One MISC
+#> 12:      Australia    Rudd Labor Government  ORG
+#> 13:    New Zealand                    OSCAR  ORG
+#> 14:    New Zealand  Exclusive Economic Zone MISC
+```
 
 In addition, to handle the load on RAM when dealing with larger corpus,
 {`flairR`} supports batch processing to handle texts in batches, which
