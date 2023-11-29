@@ -37,7 +37,7 @@ install.packages("remotes")
 <div style="text-align: justify">
 
 
-`{flaiR}` is an R wrapper for the [{flairNLP/flair}](https://github.com/flairnlp/flair) library in Python, designed specifically for R users, especially those in the social sciences. It provides easy access to the main functionalities of `{flairNLP}`. Developed by Developed by [Zalando Research](https://engineering.zalando.com/posts/2018/11/zalando-research-releases-flair.html) in Berlin, Flair NLP offers intuitive interfaces and exceptional multilingual support, particularly for various embedding frameworks and state-of-the-art natural language processing models to analyze your text, such as named entity recognition, sentiment analysis, part-of-speech tagging, biomedical data, sense disambiguation, and classification, with support for a rapidly growing number of languages in the community. For a comprehensive understanding of the `{flairNLP/flair}` architecture, you can refer to the research article '[Contextual String Embeddings for Sequence Labeling](https://aclanthology.org/C18-1139.pdf)' and the official [manual](https://flairnlp.github.io) written for its Python implementation. 
+`{flaiR}` is an R wrapper for the [{flairNLP/flair}](https://github.com/flairnlp/flair) library in Python, designed specifically for R users, especially those in the social sciences. It provides easy access to the main functionalities of `{flairNLP}`. Developed by Developed by [Zalando Research](https://engineering.zalando.com/posts/2018/11/zalando-research-releases-flair.html) in Berlin, Flair NLP offers intuitive interfaces and exceptional __multilingual support__, particularly for various embedding frameworks, transformers and state-of-the-art natural language processing tasks to analyze your text, such as named entity recognition, sentiment analysis, part-of-speech tagging, biomedical data, sense disambiguation, and classification, with support for a rapidly growing number of languages in the community. For a comprehensive understanding of the `{flairNLP/flair}` architecture, you can refer to the research article '[Contextual String Embeddings for Sequence Labeling](https://aclanthology.org/C18-1139.pdf)' and the official [manual](https://flairnlp.github.io) written for its Python implementation. 
 </div>
 
   
@@ -47,7 +47,6 @@ install.packages("remotes")
 ## Installation via  <u>__`GitHub`__</u>
 
 <div style="text-align: justify">
-
 
 The installation consists of two parts: First, install [Python 3.8](https://www.python.org/downloads/) or higher (avoid developmental versions and the very latest release for compatibility reasons).  Secondly, install [R 4.2.0](https://www.r-project.org) or higher.
 
@@ -65,14 +64,12 @@ We have tested flaiR using CI/CD with GitHub Actions, conducting integration tes
 
 When first installed, {`flaiR`} automatically detects whether you have Python 3.8 or higher. If not, it will skip the automatic installation of Python and flair NLP. In this case, you will need to manually install it yourself and reload {`flaiR`} again. If you have correct Pythoninstalled, the {`flaiR`} will automatically install flair Python NLP in your global environment. If you are using {reticulate}, {flaiR} will typically assume the __r-reticulate__ environment by default. At the same time, you can use `py_config()` to check the location of your environment. Please note that flaiR will directly install flair NLP in the Python environment that your R is using. This environment can be adjusted through _RStudio_ by navigating to __`Tools -> Global Options -> Python`__. If there are any issues with the installation, feel free to ask in the <u>[Discussion](https://github.com/davidycliao/flaiR/discussions) </u>.
 
-
 First, understanding which Python environment your RStudio is using is very important. We advise you to confirm which Python environment RStudio is using. You can do this by checking with `reticulate::py_config()` or manually via __Tools -> Global Options -> Python__. 
 
 ```r
 install.packages("reticulate")
 reticulate::py_config()
 ```
-
 At this stage, you'll observe that RStudio has defaulted to using the 'flair_env' environment I have set up. Consequently, the Python Flair package will be installed within this environment. Should you wish to modify this setting, you have the option to either adjust it within RStudio's settings or utilize the {reticulate} package to manage the Python environment in RStudio.
 
 ```shell
@@ -223,7 +220,7 @@ trainer$train('grand_standing_model',          # output directory
               mini_batch_size=8L,              # batch size
               anneal_with_restarts = TRUE,
               save_final_model=TRUE,
-              max_epochs=10L)                   # Maximum number of epochs
+              max_epochs=10L)                  # Maximum number of epochs
 ```
 
 <u>__Step 5__</u> Evaluate the Model
@@ -243,10 +240,9 @@ ggplot(performance_df, aes(x = EPOCH)) +
   geom_line(aes(y = DEV_LOSS, color = "Development Loss")) +
   geom_line(aes(y = DEV_RECALL, color = "Development Recall")) +
   geom_line(aes(y = DEV_F1, color = "Development F1")) +
-
   labs(title = "Training and Development Loss per Epoch",
        x = "Epoch / Grandstanding Classifier",
-       y = "")  +
+       y = "") +
   scale_color_manual("", 
                      values = c("Training Loss" = "blue",
                                 "Development Loss" = "red",

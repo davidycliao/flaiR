@@ -21,9 +21,9 @@ sciences. It provides easy access to the main functionalities of
 `{flairNLP}`. Developed by Developed by [Zalando
 Research](https://engineering.zalando.com/posts/2018/11/zalando-research-releases-flair.html)
 in Berlin, Flair NLP offers intuitive interfaces and exceptional
-multilingual support, particularly for various embedding frameworks and
-state-of-the-art natural language processing models to analyze your
-text, such as named entity recognition, sentiment analysis,
+**multilingual support**, particularly for various embedding frameworks,
+transformers and state-of-the-art natural language processing tasks to
+analyze your text, such as named entity recognition, sentiment analysis,
 part-of-speech tagging, biomedical data, sense disambiguation, and
 classification, with support for a rapidly growing number of languages
 in the community. For a comprehensive understanding of the
@@ -209,7 +209,7 @@ test   <- text[!sample]
 
 ``` r
 corpus <- Corpus(train=train, test=test)
-#> 2023-11-29 01:38:38,003 No dev split found. Using 0% (i.e. 282 samples) of the train split as dev data
+#> 2023-11-29 02:00:49,314 No dev split found. Using 0% (i.e. 282 samples) of the train split as dev data
 ```
 
 <u>**Step 3**</u> Create Classifier Using Transformer
@@ -227,8 +227,8 @@ other label types for training custom model, such as `ner`, `pos` and
 
 ``` r
 label_dict <- corpus$make_label_dictionary(label_type="classification")
-#> 2023-11-29 01:38:39,627 Computing label dictionary. Progress:
-#> 2023-11-29 01:38:39,681 Dictionary created for label 'classification' with 2 values: 0 (seen 1339 times), 1 (seen 1195 times)
+#> 2023-11-29 02:00:50,782 Computing label dictionary. Progress:
+#> 2023-11-29 02:00:50,832 Dictionary created for label 'classification' with 2 values: 0 (seen 1322 times), 1 (seen 1212 times)
 ```
 
 Alternatively, you can also create a label dictionary manually. The
@@ -344,7 +344,7 @@ trainer$train('grand_standing_model',          # output directory
               mini_batch_size=8L,              # batch size
               anneal_with_restarts = TRUE,
               save_final_model=TRUE,
-              max_epochs=10L)                   # Maximum number of epochs
+              max_epochs=10L)                  # Maximum number of epochs
 ```
 
 <u>**Step 5**</u> Evaluate the Model
@@ -379,10 +379,9 @@ ggplot(performance_df, aes(x = EPOCH)) +
   geom_line(aes(y = DEV_LOSS, color = "Development Loss")) +
   geom_line(aes(y = DEV_RECALL, color = "Development Recall")) +
   geom_line(aes(y = DEV_F1, color = "Development F1")) +
-
   labs(title = "Training and Development Loss per Epoch",
        x = "Epoch / Grandstanding Classifier",
-       y = "")  +
+       y = "") +
   scale_color_manual("", 
                      values = c("Training Loss" = "blue",
                                 "Development Loss" = "red",
@@ -429,7 +428,7 @@ sentence <- Sentence(text)
 ``` r
 classifier$predict(sentence)
 print(sentence)
-#> Sentence[55]: "Ladies and gentlemen, I stand before you today not just as a legislator, but as a defender of our very way of life! We are facing a crisis of monumental proportions, and if we don't act now, the very fabric of our society will unravel before our eyes!" → 1 (0.532)
+#> Sentence[55]: "Ladies and gentlemen, I stand before you today not just as a legislator, but as a defender of our very way of life! We are facing a crisis of monumental proportions, and if we don't act now, the very fabric of our society will unravel before our eyes!" → 1 (0.6983)
 ```
 
 `sentence$labels` is a list of labels, each of which has a value and a
@@ -443,7 +442,7 @@ sentence$labels[[1]]$value
 
 ``` r
 sentence$labels[[1]]$score
-#> [1] 0.5320091
+#> [1] 0.6983153
 ```
 
 <u>**Step 7**</u> Reload the Model with the Best Performance
