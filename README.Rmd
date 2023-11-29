@@ -164,16 +164,36 @@ corpus <- Corpus(train=train, test=test)
 document_embeddings <- TransformerDocumentEmbeddings('distilbert-base-uncased', fine_tune=TRUE)
 ```
 
-`$make_label_dictionary` function is used to create a label dictionary for the classification task. The label dictionary is a mapping from label to index, which is used to map the labels to a tensor of label indices. expcept classifcation task, flair also supports other label types for training custom model, such as `ner`, `pos` and `sentiment`.
+First, `$make_label_dictionary` function is used to automatically create a label dictionary for the classification task. The label dictionary is a mapping from label to index, which is used to map the labels to a tensor of label indices. expcept classifcation task, flair also supports other label types for training custom model, such as `ner`, `pos` and `sentiment`.
 
 ```{r}
 label_dict <- corpus$make_label_dictionary(label_type="classification")
 ```
 
-`$item2idx` method to check the mapping from label to index. This is very important to make sure the labels are mapped correctly to the indices and tensors.
+Alternatively, you can also create a label dictionary manually. The following code creates a label dictionary with two labels, `0` and `1`, and maps them to the indices `0` and `1` respectively. 
+
 ```{r}
-label_dict$item2idx
+Dictionary <- flair_data()$Dictionary
+
+# mannually create  label_dict with two labels, 0 and 1
+label_dict <- Dictionary(add_unk=FALSE)
+
+# you can specify the order of labels. Please note the label should be a list and character (string) type.
+specific_order_labels <- list('0', '1')
+
+for (label in seq_along(specific_order_labels)) {
+  label_dict$add_item(as.character(specific_order_labels [[label]]))
+}
 ```
+
+Then, we can use the `$item2idx` method to check the mapping from label to index. This is very important to make sure the labels are mapped correctly to the indices and tensors.
+```{r}
+print(label_dict$idx2item)
+```
+```{r}
+print(label_dict$item2idx)
+```
+
 
 `TextClassifier` is used to create a text classifier. The classifier takes the document embeddings (importing from `'distilbert-base-uncased` from HugginFace)  and the label dictionary as input. The label type is also specified as classification.
 ```{r}
@@ -232,6 +252,25 @@ ggplot(performance_df, aes(x = EPOCH)) +
                                 "Development F1" = "green"))+
   theme_minimal() 
 
+```
+
+The overall performance of the model on the test set is also straightforward and easy to evaluate. You can find the performance metrics in the `model/training.log` file.
+
+```
+Results:
+- F-score (micro) 0.7443
+- F-score (macro) 0.7438
+- Accuracy 0.7443
+
+By class:
+              precision    recall  f1-score   support
+
+           1     0.6781    0.8519    0.7551       324
+           0     0.8362    0.6516    0.7324       376
+
+    accuracy                         0.7443       700
+   macro avg     0.7572    0.7517    0.7438       700
+weighted avg     0.7630    0.7443    0.7429       700
 ```
 
 <u>__Step 6__</u> Apply the Trained Model on Unseen Data for Prediction

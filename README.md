@@ -209,7 +209,7 @@ test   <- text[!sample]
 
 ``` r
 corpus <- Corpus(train=train, test=test)
-#> 2023-11-28 13:14:49,956 No dev split found. Using 0% (i.e. 282 samples) of the train split as dev data
+#> 2023-11-29 01:24:26,047 No dev split found. Using 0% (i.e. 282 samples) of the train split as dev data
 ```
 
 <u>**Step 3**</u> Create Classifier Using Transformer
@@ -218,24 +218,52 @@ corpus <- Corpus(train=train, test=test)
 document_embeddings <- TransformerDocumentEmbeddings('distilbert-base-uncased', fine_tune=TRUE)
 ```
 
-`$make_label_dictionary` function is used to create a label dictionary
-for the classification task. The label dictionary is a mapping from
-label to index, which is used to map the labels to a tensor of label
-indices. expcept classifcation task, flair also supports other label
-types for training custom model, such as `ner`, `pos` and `sentiment`.
+First, `$make_label_dictionary` function is used to automatically create
+a label dictionary for the classification task. The label dictionary is
+a mapping from label to index, which is used to map the labels to a
+tensor of label indices. expcept classifcation task, flair also supports
+other label types for training custom model, such as `ner`, `pos` and
+`sentiment`.
 
 ``` r
 label_dict <- corpus$make_label_dictionary(label_type="classification")
-#> 2023-11-28 13:14:51,649 Computing label dictionary. Progress:
-#> 2023-11-28 13:14:51,698 Dictionary created for label 'classification' with 2 values: 0 (seen 1332 times), 1 (seen 1202 times)
+#> 2023-11-29 01:24:27,775 Computing label dictionary. Progress:
+#> 2023-11-29 01:24:27,844 Dictionary created for label 'classification' with 2 values: 0 (seen 1329 times), 1 (seen 1205 times)
 ```
 
-`$item2idx` method to check the mapping from label to index. This is
-very important to make sure the labels are mapped correctly to the
-indices and tensors.
+Alternatively, you can also create a label dictionary manually. The
+following code creates a label dictionary with two labels, `0` and `1`,
+and maps them to the indices `0` and `1` respectively.
 
 ``` r
-label_dict$item2idx
+Dictionary <- flair_data()$Dictionary
+
+# mannually create  label_dict with two labels, 0 and 1
+label_dict <- Dictionary(add_unk=FALSE)
+
+# you can specify the order of labels. Please note the label should be a list and character (string) type.
+specific_order_labels <- list('0', '1')
+
+for (label in seq_along(specific_order_labels)) {
+  label_dict$add_item(as.character(specific_order_labels [[label]]))
+}
+```
+
+Then, we can use the `$item2idx` method to check the mapping from label
+to index. This is very important to make sure the labels are mapped
+correctly to the indices and tensors.
+
+``` r
+print(label_dict$idx2item)
+#> [[1]]
+#> b'0'
+#> 
+#> [[2]]
+#> b'1'
+```
+
+``` r
+print(label_dict$item2idx)
 #> $`b'0'`
 #> [1] 0
 #> 
@@ -361,7 +389,26 @@ ggplot(performance_df, aes(x = EPOCH)) +
   theme_minimal() 
 ```
 
-<img src="man/figures/README-unnamed-chunk-15-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-17-1.png" width="100%" />
+
+The overall performance of the model on the test set is also
+straightforward and easy to evaluate. You can find the performance
+metrics in the `model/training.log` file.
+
+    Results:
+    - F-score (micro) 0.7443
+    - F-score (macro) 0.7438
+    - Accuracy 0.7443
+
+    By class:
+                  precision    recall  f1-score   support
+
+               1     0.6781    0.8519    0.7551       324
+               0     0.8362    0.6516    0.7324       376
+
+        accuracy                         0.7443       700
+       macro avg     0.7572    0.7517    0.7438       700
+    weighted avg     0.7630    0.7443    0.7429       700
 
 <u>**Step 6**</u> Apply the Trained Model on Unseen Data for Prediction
 
@@ -381,7 +428,7 @@ sentence <- Sentence(text)
 ``` r
 classifier$predict(sentence)
 print(sentence)
-#> Sentence[55]: "Ladies and gentlemen, I stand before you today not just as a legislator, but as a defender of our very way of life! We are facing a crisis of monumental proportions, and if we don't act now, the very fabric of our society will unravel before our eyes!" → 1 (0.7514)
+#> Sentence[55]: "Ladies and gentlemen, I stand before you today not just as a legislator, but as a defender of our very way of life! We are facing a crisis of monumental proportions, and if we don't act now, the very fabric of our society will unravel before our eyes!" → 0 (0.7921)
 ```
 
 `sentence$labels` is a list of labels, each of which has a value and a
@@ -390,12 +437,12 @@ of the label. The label with the highest score is the predicted label.
 
 ``` r
 sentence$labels[[1]]$value
-#> [1] "1"
+#> [1] "0"
 ```
 
 ``` r
 sentence$labels[[1]]$score
-#> [1] 0.751438
+#> [1] 0.7920771
 ```
 
 <u>**Step 7**</u> Reload the Model with the Best Performance
