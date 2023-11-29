@@ -212,7 +212,7 @@ test   <- text[!sample]
 
 ``` r
 corpus <- Corpus(train=train, test=test)
-#> 2023-11-29 12:12:38,286 No dev split found. Using 0% (i.e. 282 samples) of the train split as dev data
+#> 2023-11-29 12:28:25,704 No dev split found. Using 0% (i.e. 282 samples) of the train split as dev data
 ```
 
 <u>**Step 3**</u> Create Classifier Using Transformer
@@ -230,8 +230,8 @@ other label types for training custom model, such as `ner`, `pos` and
 
 ``` r
 label_dict <- corpus$make_label_dictionary(label_type="classification")
-#> 2023-11-29 12:12:39,847 Computing label dictionary. Progress:
-#> 2023-11-29 12:12:39,897 Dictionary created for label 'classification' with 2 values: 0 (seen 1340 times), 1 (seen 1194 times)
+#> 2023-11-29 12:28:27,310 Computing label dictionary. Progress:
+#> 2023-11-29 12:28:27,361 Dictionary created for label 'classification' with 2 values: 0 (seen 1322 times), 1 (seen 1212 times)
 ```
 
 Alternatively, you can also create a label dictionary manually. The
@@ -431,7 +431,7 @@ sentence <- Sentence(text)
 ``` r
 classifier$predict(sentence)
 print(sentence)
-#> Sentence[55]: "Ladies and gentlemen, I stand before you today not just as a legislator, but as a defender of our very way of life! We are facing a crisis of monumental proportions, and if we don't act now, the very fabric of our society will unravel before our eyes!" → 0 (0.6306)
+#> Sentence[55]: "Ladies and gentlemen, I stand before you today not just as a legislator, but as a defender of our very way of life! We are facing a crisis of monumental proportions, and if we don't act now, the very fabric of our society will unravel before our eyes!" → 1 (0.5151)
 ```
 
 `sentence$labels` is a list of labels, each of which has a value and a
@@ -440,12 +440,12 @@ of the label. The label with the highest score is the predicted label.
 
 ``` r
 sentence$labels[[1]]$value
-#> [1] "0"
+#> [1] "1"
 ```
 
 ``` r
 sentence$labels[[1]]$score
-#> [1] 0.6305758
+#> [1] 0.5150982
 ```
 
 <u>**Step 7**</u> Reload the Model with the Best Performance
@@ -524,13 +524,6 @@ statements[c("Type", "predicted_labels", "prop_score")]
 
 <br>
 
-Secondly, to facilitate more efficient use for social science research,
-{`flairR`} expands {`flairNLP/flair`}’s core functionality for working
-with three major functions to extract features in a tidy and fast
-format–
-[data.table](https://cran.r-project.org/web/packages/data.table/index.html)
-in R.
-
 #### **Performing NLP Tasks in R**
 
 <div style="text-align: justify">
@@ -558,7 +551,7 @@ Sentence <- flair_data()$Sentence
 
 # load the model flair NLP already trained for us
 tagger <- Classifier$load('ner')
-#> 2023-11-29 12:12:42,493 SequenceTagger predicts: Dictionary with 20 tags: <unk>, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, <START>, <STOP>
+#> 2023-11-29 12:28:30,624 SequenceTagger predicts: Dictionary with 20 tags: <unk>, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, <START>, <STOP>
 
 # make a sentence object
 text <- "Yesterday, Dr. Jane Smith spoke at the United Nations in New York. She discussed climate change and its impact on global economies. The event was attended by representatives from various countries including France and Japan. Dr. Smith mentioned that by 2050, the world could see a rise in sea level by approximately 2 feet. The World Health Organization (WHO) has pledged $50 million to combat the health effects of global warming. In an interview with The New York Times, Dr. Smith emphasized the urgent need for action. Later that day, she flew back to London, arriving at 10:00 PM GMT."
@@ -572,8 +565,15 @@ print(sentence)
 #> Sentence[115]: "Yesterday, Dr. Jane Smith spoke at the United Nations in New York. She discussed climate change and its impact on global economies. The event was attended by representatives from various countries including France and Japan. Dr. Smith mentioned that by 2050, the world could see a rise in sea level by approximately 2 feet. The World Health Organization (WHO) has pledged $50 million to combat the health effects of global warming. In an interview with The New York Times, Dr. Smith emphasized the urgent need for action. Later that day, she flew back to London, arriving at 10:00 PM GMT." → ["Jane Smith"/PER, "United Nations"/ORG, "New York"/LOC, "France"/LOC, "Japan"/LOC, "Smith"/PER, "World Health Organization"/ORG, "WHO"/ORG, "The New York Times"/ORG, "Smith"/PER, "London"/LOC, "GMT"/MISC]
 ```
 
-Alternatively, the expanded features in `flaiR` can be used to perform
-and extract features from the sentence object in a tidy format.
+Alternatively, to facilitate more efficient use for social science
+research, {`flairR`} expands {`flairNLP/flair`}’s core functionality for
+working with three major functions to extract features in a tidy and
+fast format–
+[data.table](https://cran.r-project.org/web/packages/data.table/index.html)
+in R.
+
+The expanded features in `flaiR` can be used to perform and extract
+features from the sentence object in a tidy format.
 
 - [**named entity
   recognition**](https://davidycliao.github.io/flaiR/articles/get_entities.html)
@@ -588,7 +588,7 @@ sentence object in a tidy format.
 
 ``` r
 tagger_ner <- load_tagger_ner("ner")
-#> 2023-11-29 12:12:45,252 SequenceTagger predicts: Dictionary with 20 tags: <unk>, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, <START>, <STOP>
+#> 2023-11-29 12:28:33,472 SequenceTagger predicts: Dictionary with 20 tags: <unk>, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, <START>, <STOP>
 results <- get_entities(text = text, 
                         doc_ids = "example text",
                         tagger_ner)
@@ -634,7 +634,7 @@ examples[c("text", "countryname")]
 
 ``` r
 tagger_ner <- load_tagger_ner("ner")
-#> 2023-11-29 12:12:48,077 SequenceTagger predicts: Dictionary with 20 tags: <unk>, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, <START>, <STOP>
+#> 2023-11-29 12:28:36,082 SequenceTagger predicts: Dictionary with 20 tags: <unk>, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, <START>, <STOP>
 results <- get_entities(text = examples$text, 
                         doc_ids = examples$countryname,
                         tagger_ner)

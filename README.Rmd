@@ -349,8 +349,6 @@ statements[c("Type", "predicted_labels", "prop_score")]
 
 <br>
 
-Secondly, to facilitate more efficient use for social science research, {`flairR`} expands {`flairNLP/flair`}'s core functionality for working with three major functions to extract features in a tidy and fast format-- [data.table](https://cran.r-project.org/web/packages/data.table/index.html) in R. 
-
 #### __Performing NLP Tasks in R__
 
 <div style="text-align: justify">
@@ -378,7 +376,11 @@ tagger$predict(sentence)
 # print sentence with predicted tags
 print(sentence)
 ```
-Alternatively, the expanded features in `flaiR` can be used to perform and extract features from the sentence object in a tidy format. 
+
+
+Alternatively, to facilitate more efficient use for social science research, {`flairR`} expands {`flairNLP/flair`}'s core functionality for working with three major functions to extract features in a tidy and fast format-- [data.table](https://cran.r-project.org/web/packages/data.table/index.html) in R. 
+
+The expanded features in `flaiR` can be used to perform and extract features from the sentence object in a tidy format. 
 
 - [**named entity recognition**](https://davidycliao.github.io/flaiR/articles/get_entities.html)
 - [**transformer-based sentiment analysis**](https://davidycliao.github.io/flaiR/articles/get_sentiments.html)
@@ -402,6 +404,7 @@ data(cc_muller)
 examples <- head(cc_muller, 10)
 examples[c("text", "countryname")]
 ```
+
 ```{r}
 tagger_ner <- load_tagger_ner("ner")
 results <- get_entities(text = examples$text, 
