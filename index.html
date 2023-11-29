@@ -183,7 +183,7 @@
 <li><p>Anaconda <strong><em>(highly recommended)</em></strong></p></li>
 </ul>
 <p>We have tested flaiR using CI/CD with GitHub Actions, conducting integration tests across <a href="https://github.com/davidycliao/flaiR/actions" class="external-link">various operating syste</a> These tests include intergration between R versions 4.2.1, 4.3.2, and 4.2.0 and Python 3.10.x. The testing also covers environments with flair NLP and PyTorch (given that <a href="https://flairnlp.github.io" class="external-link">Flair NLP</a> is built on <a href="https://pytorch.org" class="external-link">Torch</a>). For stable usage, we strongly recommend installing these specific versions.</p>
-<p>When first installed, {<code>flaiR</code>} automatically detects whether you have Python 3.8 or higher. If not, it will skip the automatic installation of Python and flair NLP. In this case, you will need to manually install it yourself and reload {<code>flaiR</code>} again. If you have correct Pythoninstalled, the {<code>flaiR</code>} will automatically install flair Python NLP in your global environment. If you are using {reticulate}, {flaiR} will typically assume the <strong>r-reticulate</strong> environment by default. At the same time, you can use <code>py_config()</code> to check the location of your environment. Please note that flaiR will directly install flair NLP in the Python environment that your R is using. This environment can be adjusted through <em>RStudio</em> by navigating to <strong><code>Tools -&gt; Global Options -&gt; Python</code></strong>. If there are any issues with the installation, feel free to ask in the <u><a href="https://github.com/davidycliao/flaiR/discussions" class="external-link">Discussion</a> </u>.</p>
+<p>When first installed, {<code>flaiR</code>} automatically detects whether you have Python 3.8 or higher. If not, it will skip the automatic installation of Python and flair NLP. In this case, you will need to manually install it yourself and reload {<code>flaiR</code>} again. If you have correct Pythoninstalled, the {<code>flaiR</code>} will automatically install flair Python NLP in your global environment. If you are using {reticulate}, {flaiR} will typically assume the <strong>r-reticulate</strong> environment by default. At the same time, you can use <code><a href="https://rstudio.github.io/reticulate/reference/py_config.html" class="external-link">py_config()</a></code> to check the location of your environment. Please note that flaiR will directly install flair NLP in the Python environment that your R is using. This environment can be adjusted through <em>RStudio</em> by navigating to <strong><code>Tools -&gt; Global Options -&gt; Python</code></strong>. If there are any issues with the installation, feel free to ask in the <u><a href="https://github.com/davidycliao/flaiR/discussions" class="external-link">Discussion</a> </u>.</p>
 <p>First, understanding which Python environment your RStudio is using is very important. We advise you to confirm which Python environment RStudio is using. You can do this by checking with <code><a href="https://rstudio.github.io/reticulate/reference/py_config.html" class="external-link">reticulate::py_config()</a></code> or manually via <strong>Tools -&gt; Global Options -&gt; Python</strong>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"reticulate"</span><span class="op">)</span></span>
@@ -250,31 +250,52 @@
 <p><u><strong>Step 2</strong></u> Preprocess Data and Corpus Object</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">corpus</span> <span class="op">&lt;-</span> <span class="fu">Corpus</span><span class="op">(</span>train<span class="op">=</span><span class="va">train</span>, test<span class="op">=</span><span class="va">test</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2023-11-28 15:45:25,437 No dev split found. Using 0% (i.e. 282 samples) of the train split as dev data</span></span></code></pre></div>
+<span><span class="co">#&gt; 2023-11-29 01:27:24,365 No dev split found. Using 0% (i.e. 282 samples) of the train split as dev data</span></span></code></pre></div>
 <p><u><strong>Step 3</strong></u> Create Classifier Using Transformer</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">document_embeddings</span> <span class="op">&lt;-</span> <span class="fu">TransformerDocumentEmbeddings</span><span class="op">(</span><span class="st">'distilbert-base-uncased'</span>, fine_tune<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<p><code>$make_label_dictionary</code> function is used to create a label dictionary for the classification task. The label dictionary is a mapping from label to index, which is used to map the labels to a tensor of label indices. expcept classifcation task, flair also supports other label types for training custom model, such as <code>ner</code>, <code>pos</code> and <code>sentiment</code>.</p>
+<p>First, <code>$make_label_dictionary</code> function is used to automatically create a label dictionary for the classification task. The label dictionary is a mapping from label to index, which is used to map the labels to a tensor of label indices. expcept classifcation task, flair also supports other label types for training custom model, such as <code>ner</code>, <code>pos</code> and <code>sentiment</code>.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">label_dict</span> <span class="op">&lt;-</span> <span class="va">corpus</span><span class="op">$</span><span class="fu">make_label_dictionary</span><span class="op">(</span>label_type<span class="op">=</span><span class="st">"classification"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2023-11-28 15:45:27,011 Computing label dictionary. Progress:</span></span>
-<span><span class="co">#&gt; 2023-11-28 15:45:27,061 Dictionary created for label 'classification' with 2 values: 0 (seen 1325 times), 1 (seen 1209 times)</span></span></code></pre></div>
-<p><code>$item2idx</code> method to check the mapping from label to index. This is very important to make sure the labels are mapped correctly to the indices and tensors.</p>
+<span><span class="co">#&gt; 2023-11-29 01:27:35,371 Computing label dictionary. Progress:</span></span>
+<span><span class="co">#&gt; 2023-11-29 01:27:35,423 Dictionary created for label 'classification' with 2 values: 0 (seen 1338 times), 1 (seen 1196 times)</span></span></code></pre></div>
+<p>Alternatively, you can also create a label dictionary manually. The following code creates a label dictionary with two labels, <code>0</code> and <code>1</code>, and maps them to the indices <code>0</code> and <code>1</code> respectively.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">label_dict</span><span class="op">$</span><span class="va">item2idx</span></span>
+<code class="sourceCode R"><span><span class="co"># load Dictionary object from flair_data</span></span>
+<span><span class="va">Dictionary</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/flair_data.html">flair_data</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">Dictionary</span></span>
+<span></span>
+<span><span class="co"># manually create label_dict with two labels, 0 and 1</span></span>
+<span><span class="va">label_dict</span> <span class="op">&lt;-</span> <span class="fu">Dictionary</span><span class="op">(</span>add_unk<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># you can specify the order of labels. Please note the label should be a list and character (string) type.</span></span>
+<span><span class="va">specific_order_labels</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">'0'</span>, <span class="st">'1'</span><span class="op">)</span></span>
+<span></span>
+<span><span class="kw">for</span> <span class="op">(</span><span class="va">label</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">specific_order_labels</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">label_dict</span><span class="op">$</span><span class="fu">add_item</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">specific_order_labels</span> <span class="op">[[</span><span class="va">label</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
+<p>Then, we can use the <code>$item2idx</code> method to check the mapping from label to index. This is very important to make sure the labels are mapped correctly to the indices and tensors.</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">label_dict</span><span class="op">$</span><span class="va">idx2item</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [[1]]</span></span>
+<span><span class="co">#&gt; b'0'</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[2]]</span></span>
+<span><span class="co">#&gt; b'1'</span></span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">label_dict</span><span class="op">$</span><span class="va">item2idx</span><span class="op">)</span></span>
 <span><span class="co">#&gt; $`b'0'`</span></span>
 <span><span class="co">#&gt; [1] 0</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $`b'1'`</span></span>
 <span><span class="co">#&gt; [1] 1</span></span></code></pre></div>
 <p><code>TextClassifier</code> is used to create a text classifier. The classifier takes the document embeddings (importing from <code>'distilbert-base-uncased</code> from HugginFace) and the label dictionary as input. The label type is also specified as classification.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">classifier</span> <span class="op">&lt;-</span> <span class="fu">TextClassifier</span><span class="op">(</span><span class="va">document_embeddings</span>,</span>
 <span>                             label_dictionary<span class="op">=</span><span class="va">label_dict</span>, </span>
 <span>                             label_type<span class="op">=</span><span class="st">'classification'</span><span class="op">)</span></span></code></pre></div>
 <p><u><strong>Step 4</strong></u> Start Training</p>
 <p>specific computation devices on your local machine. If you have a GPU, you can use <code>flair_gpu</code> to specify the GPU device. If you don’t have a GPU, you can use <code><a href="reference/flair_device.html">flaiR::flair_device</a></code> to specify the CPU device.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">classifier</span><span class="op">$</span><span class="fu">to</span><span class="op">(</span><span class="fu"><a href="reference/flair_device.html">flair_device</a></span><span class="op">(</span><span class="st">"cpu"</span><span class="op">)</span><span class="op">)</span> </span>
 <span><span class="co">#&gt; TextClassifier(</span></span>
 <span><span class="co">#&gt;   (embeddings): TransformerDocumentEmbeddings(</span></span>
@@ -315,9 +336,9 @@
 <span><span class="co">#&gt;   (loss_function): CrossEntropyLoss()</span></span>
 <span><span class="co">#&gt; )</span></span></code></pre></div>
 <p><code>ModelTrainer</code> is used to train the model, which learns from the data based on the grandstanding score.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">trainer</span> <span class="op">&lt;-</span> <span class="fu">ModelTrainer</span><span class="op">(</span><span class="va">classifier</span>, <span class="va">corpus</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">trainer</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="st">'grand_standing_model'</span>,          <span class="co"># output directory</span></span>
 <span>              learning_rate<span class="op">=</span><span class="fl">0.02</span>,              <span class="co"># learning rate: if batch_growth_annealing activates,lr should starts a bit higher.</span></span>
 <span>              mini_batch_size<span class="op">=</span><span class="fl">8L</span>,              <span class="co"># batch size</span></span>
@@ -326,7 +347,7 @@
 <span>              max_epochs<span class="op">=</span><span class="fl">3L</span><span class="op">)</span>                   <span class="co"># Maximum number of epochs</span></span></code></pre></div>
 <p><u><strong>Step 5</strong></u> Evaluate the Model</p>
 <p>During and after the model training process, evaluating the performance of the trained model on the development set is straightforward and easy.</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># import the performance metrics generated during the training process</span></span>
 <span><span class="va">performance_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.table</a></span><span class="op">(</span>file <span class="op">=</span> <span class="st">"grand_standing/loss.tsv"</span>, header <span class="op">=</span> <span class="cn">TRUE</span>, sep <span class="op">=</span> <span class="st">"\t"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">performance_df</span><span class="op">)</span></span>
@@ -344,7 +365,7 @@
 <span><span class="co">#&gt; 4 0.7393       0.7393</span></span>
 <span><span class="co">#&gt; 5 0.7429       0.7429</span></span>
 <span><span class="co">#&gt; 6 0.7429       0.7429</span></span></code></pre></div>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">performance_df</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">EPOCH</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">TRAIN_LOSS</span>, color <span class="op">=</span> <span class="st">"Training Loss"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
@@ -360,25 +381,25 @@
 <span>                                <span class="st">"Development Loss"</span> <span class="op">=</span> <span class="st">"red"</span>,</span>
 <span>                                <span class="st">"Development F1"</span> <span class="op">=</span> <span class="st">"green"</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_minimal</a></span><span class="op">(</span><span class="op">)</span> </span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-15-1.png" width="100%"></p>
+<p><img src="reference/figures/README-unnamed-chunk-17-1.png" width="100%"></p>
 <p>The overall performance of the model on the test set is also straightforward and easy to evaluate. You can find the performance metrics in the <code>model/training.log</code> file.</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a>Results<span class="sc">:</span></span>
-<span id="cb18-2"><a href="#cb18-2" tabindex="-1"></a><span class="sc">-</span> F<span class="sc">-</span><span class="fu">score</span> (micro) <span class="fl">0.7443</span></span>
-<span id="cb18-3"><a href="#cb18-3" tabindex="-1"></a><span class="sc">-</span> F<span class="sc">-</span><span class="fu">score</span> (macro) <span class="fl">0.7438</span></span>
-<span id="cb18-4"><a href="#cb18-4" tabindex="-1"></a><span class="sc">-</span> Accuracy <span class="fl">0.7443</span></span>
-<span id="cb18-5"><a href="#cb18-5" tabindex="-1"></a></span>
-<span id="cb18-6"><a href="#cb18-6" tabindex="-1"></a>By class<span class="sc">:</span></span>
-<span id="cb18-7"><a href="#cb18-7" tabindex="-1"></a>              precision    recall  f1<span class="sc">-</span>score   support</span>
-<span id="cb18-8"><a href="#cb18-8" tabindex="-1"></a></span>
-<span id="cb18-9"><a href="#cb18-9" tabindex="-1"></a>           <span class="dv">1</span>     <span class="fl">0.6781</span>    <span class="fl">0.8519</span>    <span class="fl">0.7551</span>       <span class="dv">324</span></span>
-<span id="cb18-10"><a href="#cb18-10" tabindex="-1"></a>           <span class="dv">0</span>     <span class="fl">0.8362</span>    <span class="fl">0.6516</span>    <span class="fl">0.7324</span>       <span class="dv">376</span></span>
-<span id="cb18-11"><a href="#cb18-11" tabindex="-1"></a></span>
-<span id="cb18-12"><a href="#cb18-12" tabindex="-1"></a>    accuracy                         <span class="fl">0.7443</span>       <span class="dv">700</span></span>
-<span id="cb18-13"><a href="#cb18-13" tabindex="-1"></a>   macro avg     <span class="fl">0.7572</span>    <span class="fl">0.7517</span>    <span class="fl">0.7438</span>       <span class="dv">700</span></span>
-<span id="cb18-14"><a href="#cb18-14" tabindex="-1"></a>weighted avg     <span class="fl">0.7630</span>    <span class="fl">0.7443</span>    <span class="fl">0.7429</span>       <span class="dv">700</span></span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a>Results<span class="sc">:</span></span>
+<span id="cb20-2"><a href="#cb20-2" tabindex="-1"></a><span class="sc">-</span> F<span class="sc">-</span><span class="fu">score</span> (micro) <span class="fl">0.7443</span></span>
+<span id="cb20-3"><a href="#cb20-3" tabindex="-1"></a><span class="sc">-</span> F<span class="sc">-</span><span class="fu">score</span> (macro) <span class="fl">0.7438</span></span>
+<span id="cb20-4"><a href="#cb20-4" tabindex="-1"></a><span class="sc">-</span> Accuracy <span class="fl">0.7443</span></span>
+<span id="cb20-5"><a href="#cb20-5" tabindex="-1"></a></span>
+<span id="cb20-6"><a href="#cb20-6" tabindex="-1"></a>By class<span class="sc">:</span></span>
+<span id="cb20-7"><a href="#cb20-7" tabindex="-1"></a>              precision    recall  f1<span class="sc">-</span>score   support</span>
+<span id="cb20-8"><a href="#cb20-8" tabindex="-1"></a></span>
+<span id="cb20-9"><a href="#cb20-9" tabindex="-1"></a>           <span class="dv">1</span>     <span class="fl">0.6781</span>    <span class="fl">0.8519</span>    <span class="fl">0.7551</span>       <span class="dv">324</span></span>
+<span id="cb20-10"><a href="#cb20-10" tabindex="-1"></a>           <span class="dv">0</span>     <span class="fl">0.8362</span>    <span class="fl">0.6516</span>    <span class="fl">0.7324</span>       <span class="dv">376</span></span>
+<span id="cb20-11"><a href="#cb20-11" tabindex="-1"></a></span>
+<span id="cb20-12"><a href="#cb20-12" tabindex="-1"></a>    accuracy                         <span class="fl">0.7443</span>       <span class="dv">700</span></span>
+<span id="cb20-13"><a href="#cb20-13" tabindex="-1"></a>   macro avg     <span class="fl">0.7572</span>    <span class="fl">0.7517</span>    <span class="fl">0.7438</span>       <span class="dv">700</span></span>
+<span id="cb20-14"><a href="#cb20-14" tabindex="-1"></a>weighted avg     <span class="fl">0.7630</span>    <span class="fl">0.7443</span>    <span class="fl">0.7429</span>       <span class="dv">700</span></span></code></pre></div>
 <p><u><strong>Step 6</strong></u> Apply the Trained Model on Unseen Data for Prediction</p>
 <p>We use the statement in the dataset as an example.</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># load the trained model</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">statements</span><span class="op">)</span></span>
 <span><span class="va">Sentence</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/flair_data.html">flair_data</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">Sentence</span></span>
@@ -386,25 +407,25 @@
 <span><span class="va">text</span> <span class="op">&lt;-</span> <span class="va">statements</span><span class="op">[</span><span class="fl">1</span>, <span class="st">"Statement"</span><span class="op">]</span></span>
 <span><span class="va">sentence</span> <span class="op">&lt;-</span> <span class="fu">Sentence</span><span class="op">(</span><span class="va">text</span><span class="op">)</span></span></code></pre></div>
 <p><code>lassifier$predict function is used to predict the label of the sentence. The function returns a sentence object with the predicted label.</code></p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">classifier</span><span class="op">$</span><span class="fu">predict</span><span class="op">(</span><span class="va">sentence</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">sentence</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Sentence[55]: "Ladies and gentlemen, I stand before you today not just as a legislator, but as a defender of our very way of life! We are facing a crisis of monumental proportions, and if we don't act now, the very fabric of our society will unravel before our eyes!" → 0 (0.6865)</span></span></code></pre></div>
+<span><span class="co">#&gt; Sentence[55]: "Ladies and gentlemen, I stand before you today not just as a legislator, but as a defender of our very way of life! We are facing a crisis of monumental proportions, and if we don't act now, the very fabric of our society will unravel before our eyes!" → 0 (0.5323)</span></span></code></pre></div>
 <p><code>sentence$labels</code> is a list of labels, each of which has a value and a score. The value is the label itself, and the score is the probability of the label. The label with the highest score is the predicted label.</p>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sentence</span><span class="op">$</span><span class="va">labels</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">value</span></span>
 <span><span class="co">#&gt; [1] "0"</span></span></code></pre></div>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sentence</span><span class="op">$</span><span class="va">labels</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">score</span></span>
-<span><span class="co">#&gt; [1] 0.6864765</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] 0.5323154</span></span></code></pre></div>
 <p><u><strong>Step 7</strong></u> Reload the Model with the Best Performance</p>
 <p>When you train the model with <code>save_final_model=TRUE</code>, the model with the best performance on the development set will be saved in the output directory. You can reload the model with the best performance using the <code>load</code> function.</p>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">Sentence</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/flair_data.html">flair_data</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">Sentence</span></span>
 <span><span class="va">TextClassifier</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/flair_models.html">flair_models</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">TextClassifier</span></span>
 <span><span class="va">classifier</span> <span class="op">&lt;-</span> <span class="va">TextClassifier</span><span class="op">$</span><span class="fu">load</span><span class="op">(</span><span class="st">'grand_standing/best-model.pt'</span><span class="op">)</span></span></code></pre></div>
 <p>We can create a function to classify the text using the specified Flair classifier.</p>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">classify_text</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">text</span>, <span class="va">classifier</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="co"># Classifies the given text using the specified Flair classifier.</span></span>
 <span>  <span class="co">#</span></span>
@@ -419,7 +440,7 @@
 <span>  <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span> <span class="op">(</span>labels  <span class="op">=</span> <span class="va">sentence</span><span class="op">$</span><span class="va">labels</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">value</span>, score  <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">sentence</span><span class="op">$</span><span class="va">labels</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">score</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="op">}</span></span></code></pre></div>
 <p>Before performing classication tast, let’s quickly check the dataset.</p>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">statements</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">statements</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                                        Type</span></span>
@@ -435,13 +456,13 @@
 <span><span class="co">#&gt; 4                        I remember, back in my hometown, old Mr. Jenkins used to say, 'If it ain't broke, don't fix it.' That's exactly how I feel about our current healthcare system. We don't need reform; we just need good, old-fashioned common sense.</span></span>
 <span><span class="co">#&gt; 5                                                     Every problem we face today can be traced back to the disastrous policies of the other party. They are the reason we are in this mess, and until we recognize that, we cannot move forward as a nation.</span></span></code></pre></div>
 <p>Let’s apply the function to the dataset.</p>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">statements</span><span class="op">$</span><span class="va">Statement</span><span class="op">)</span> <span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">out_come</span> <span class="op">&lt;-</span> <span class="fu">classify_text</span><span class="op">(</span><span class="va">statements</span><span class="op">$</span><span class="va">Statement</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span>, <span class="va">classifier</span><span class="op">)</span></span>
 <span>  <span class="va">statements</span><span class="op">[</span><span class="va">i</span>, <span class="st">'predicted_labels'</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">out_come</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
 <span>  <span class="va">statements</span><span class="op">[</span><span class="va">i</span>, <span class="st">'prop_score'</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">out_come</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span></span>
 <span><span class="op">}</span></span></code></pre></div>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">statements</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Type"</span>, <span class="st">"predicted_labels"</span>, <span class="st">"prop_score"</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="co">#&gt;                                        Type predicted_labels        prop_score</span></span>
 <span><span class="co">#&gt; 1                Dramatic Appeal to Emotion                1 0.998062312602997</span></span>
