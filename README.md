@@ -124,7 +124,7 @@ remotes::install_github("davidycliao/flaiR", force = TRUE)
 
 You will notice the following message, indicating a successful
 installation. This means that your RStudio has successfully detected the
-correct Python and has installed Flair in your Python environment
+correct Python and has installed Flair in your Python environment.
 
 ``` r
 library(flaiR)
@@ -176,8 +176,7 @@ Hearings](https://www.journals.uchicago.edu/doi/abs/10.1086/709147?journalCode=j
 and trains the model using Transformer-based models via flair NLP
 through `{flaiR}`.
 
-<u>**Step 1**</u> Split Data into Train and Test Sets with `flair`
-Sentence Object
+<u>**Step 1**</u> Load Necessary Modules from Flair
 
 ``` r
 # load training data: grandstanding score from Julia Park's paper
@@ -185,14 +184,28 @@ library(flaiR)
 data(gs_score) 
 ```
 
+Load necessary classes from `flair` package.
+
 ``` r
-# load flair functions via flaiR
+# Sentence is a class for holding a text sentence
 Sentence <- flair_data()$Sentence
+
+# Corpus is a class for text corpora
 Corpus <- flair_data()$Corpus
+
+# TransformerDocumentEmbeddings is a class for loading transformer 
 TransformerDocumentEmbeddings <- flair_embeddings()$TransformerDocumentEmbeddings
+
+# TextClassifier is a class for text classification
 TextClassifier <- flair_models()$TextClassifier
+
+# ModelTrainer is a class for training and evaluating models
 ModelTrainer <- flair_trainers()$ModelTrainer
 ```
+
+<u>**Step 2**</u> Split and Preprocess Data with Corpus Object
+
+Split data into train and test sets using basic R functions.
 
 ``` r
 # split the data
@@ -202,21 +215,47 @@ labels <- as.character(gs_score$rescaled_gs)
 for (i in 1:length(text)) {
   text[[i]]$add_label("classification", labels[[i]])
 }
+```
 
+``` r
 set.seed(2046)
 sample <- sample(c(TRUE, FALSE), length(text), replace=TRUE, prob=c(0.8, 0.2))
 train  <- text[sample]
 test   <- text[!sample]
 ```
 
-<u>**Step 2**</u> Preprocess Data and Corpus Object
+If you do not provide a development split (dev split) while using Flair,
+it will automatically split the training data into training and
+development datasets. The test set is used for training the model and
+evaluating its final performance, whereas the development set (dev set)
+is used for adjusting model parameters and preventing overfitting, or in
+other words, for early stopping of the model.
 
 ``` r
 corpus <- Corpus(train=train, test=test)
-#> 2023-11-29 14:20:23,215 No dev split found. Using 0% (i.e. 282 samples) of the train split as dev data
+#> 2023-11-29 17:07:26,611 No dev split found. Using 0% (i.e. 282 samples) of the train split as dev data
 ```
 
-<u>**Step 3**</u> Create Classifier Using Transformer
+Alternatively, you can also create dev sets splitting test set. The
+following code splits the data into train, test, and dev sets with a
+ratio of 8:1:1.
+
+``` r
+set.seed(2046)
+sample <- sample(c(TRUE, FALSE), length(text), replace=TRUE, prob=c(0.8, 0.2))
+train  <- text[sample]
+test   <- text[!sample]
+
+test_id <- sample(c(TRUE, FALSE), length(test), replace=TRUE, prob=c(0.5, 0.5))
+test   <- test[sample]
+dev   <- test[!sample]
+```
+
+``` r
+corpus <- Corpus(train=train, test=test, dev=dev)
+```
+
+<u>**Step 3**</u> Load Transformer Embeddings
 
 ``` r
 document_embeddings <- TransformerDocumentEmbeddings('distilbert-base-uncased', fine_tune=TRUE)
@@ -231,13 +270,13 @@ other label types for training custom model, such as `ner`, `pos` and
 
 ``` r
 label_dict <- corpus$make_label_dictionary(label_type="classification")
-#> 2023-11-29 14:20:24,755 Computing label dictionary. Progress:
-#> 2023-11-29 14:20:24,807 Dictionary created for label 'classification' with 2 values: 0 (seen 1322 times), 1 (seen 1212 times)
+#> 2023-11-29 17:07:28,097 Computing label dictionary. Progress:
+#> 2023-11-29 17:07:28,151 Dictionary created for label 'classification' with 2 values: 0 (seen 1480 times), 1 (seen 1336 times)
 ```
 
-Alternatively, you can also create a label dictionary manually. The
-following code creates a label dictionary with two labels, `0` and `1`,
-and maps them to the indices `0` and `1` respectively.
+Besides, you can also create a label dictionary manually. The following
+code creates a label dictionary with two labels, `0` and `1`, and maps
+them to the indices `0` and `1` respectively.
 
 ``` r
 # load Dictionary object from flair_data
@@ -393,7 +432,7 @@ ggplot(performance_df, aes(x = EPOCH)) +
   theme_minimal() 
 ```
 
-<img src="man/figures/README-unnamed-chunk-17-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-20-1.png" width="100%" />
 
 The overall performance of the model on the test set is also
 straightforward and easy to evaluate. You can find the performance
@@ -432,7 +471,7 @@ sentence <- Sentence(text)
 ``` r
 classifier$predict(sentence)
 print(sentence)
-#> Sentence[55]: "Ladies and gentlemen, I stand before you today not just as a legislator, but as a defender of our very way of life! We are facing a crisis of monumental proportions, and if we don't act now, the very fabric of our society will unravel before our eyes!" → 0 (0.8148)
+#> Sentence[55]: "Ladies and gentlemen, I stand before you today not just as a legislator, but as a defender of our very way of life! We are facing a crisis of monumental proportions, and if we don't act now, the very fabric of our society will unravel before our eyes!" → 0 (0.7247)
 ```
 
 `sentence$labels` is a list of labels, each of which has a value and a
@@ -446,7 +485,7 @@ sentence$labels[[1]]$value
 
 ``` r
 sentence$labels[[1]]$score
-#> [1] 0.8148448
+#> [1] 0.7246658
 ```
 
 <u>**Step 7**</u> Reload the Model with the Best Performance
@@ -552,7 +591,7 @@ Sentence <- flair_data()$Sentence
 
 # load the model flair NLP already trained for us
 tagger <- Classifier$load('ner')
-#> 2023-11-29 14:20:27,218 SequenceTagger predicts: Dictionary with 20 tags: <unk>, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, <START>, <STOP>
+#> 2023-11-29 17:07:30,508 SequenceTagger predicts: Dictionary with 20 tags: <unk>, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, <START>, <STOP>
 
 # make a sentence object
 text <- "Yesterday, Dr. Jane Smith spoke at the United Nations in New York. She discussed climate change and its impact on global economies. The event was attended by representatives from various countries including France and Japan. Dr. Smith mentioned that by 2050, the world could see a rise in sea level by approximately 2 feet. The World Health Organization (WHO) has pledged $50 million to combat the health effects of global warming. In an interview with The New York Times, Dr. Smith emphasized the urgent need for action. Later that day, she flew back to London, arriving at 10:00 PM GMT."
@@ -589,7 +628,7 @@ sentence object in a tidy format.
 
 ``` r
 tagger_ner <- load_tagger_ner("ner")
-#> 2023-11-29 14:20:29,932 SequenceTagger predicts: Dictionary with 20 tags: <unk>, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, <START>, <STOP>
+#> 2023-11-29 17:07:33,281 SequenceTagger predicts: Dictionary with 20 tags: <unk>, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, <START>, <STOP>
 results <- get_entities(text = text, 
                         doc_ids = "example text",
                         tagger_ner)
@@ -635,7 +674,7 @@ examples[c("text", "countryname")]
 
 ``` r
 tagger_ner <- load_tagger_ner("ner")
-#> 2023-11-29 14:20:32,912 SequenceTagger predicts: Dictionary with 20 tags: <unk>, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, <START>, <STOP>
+#> 2023-11-29 17:07:36,005 SequenceTagger predicts: Dictionary with 20 tags: <unk>, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, <START>, <STOP>
 results <- get_entities(text = examples$text, 
                         doc_ids = examples$countryname,
                         tagger_ner)
