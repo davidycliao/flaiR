@@ -16,12 +16,12 @@
 {flaiR} is an R wrapper for the {flairNLP/flair} Python library,
 specifically tailored for R users, particularly in political science and
 the social sciences. flaiR provides easy access to the main
-functionalities of `{Flair NLP}`. Developed by Developed by [Zalando
+functionalities of Flair NLP. Developed by Developed by [Zalando
 Research](https://engineering.zalando.com/posts/2018/11/zalando-research-releases-flair.html)
 in Berlin, flair NLP is a straightforward framework for state-of-the-art
 Natural Language Processing (NLP) and is compatible with Hugging Face.
-Flair offers intuitive interfaces and exceptional **multilingual
-support**, particularly for various embedding models, transformers and
+Flair offers intuitive interfaces and exceptional multilingual support,
+particularly for various embedding models, transformers and
 state-of-the-art NLP tasks to analyze texts, such as named entity
 recognition, sentiment analysis, part-of-speech tagging, with support
 for a rapidly growing number of language models in the community.
@@ -32,8 +32,9 @@ Research](https://engineering.zalando.com/posts/2018/11/zalando-research-release
 you can refer to the research article ‘[Contextual String Embeddings for
 Sequence Labeling](https://aclanthology.org/C18-1139.pdf)’ and the
 official [manual](https://flairnlp.github.io) written for its Python
-implementation. The community support for more languages is rapidly
-expanding. This unofficial platform provides R users with documentation,
+implementation.
+
+{flaiR} unofficial platform provides R users with documentation,
 examples, and tutorials for using Flair NLP. The goal is to make it
 easier for R users to access the powerful NLP tools provided by Flair
 NLP.
@@ -212,7 +213,7 @@ test   <- text[!sample]
 
 ``` r
 corpus <- Corpus(train=train, test=test)
-#> 2023-11-29 12:28:25,704 No dev split found. Using 0% (i.e. 282 samples) of the train split as dev data
+#> 2023-11-29 14:20:23,215 No dev split found. Using 0% (i.e. 282 samples) of the train split as dev data
 ```
 
 <u>**Step 3**</u> Create Classifier Using Transformer
@@ -230,8 +231,8 @@ other label types for training custom model, such as `ner`, `pos` and
 
 ``` r
 label_dict <- corpus$make_label_dictionary(label_type="classification")
-#> 2023-11-29 12:28:27,310 Computing label dictionary. Progress:
-#> 2023-11-29 12:28:27,361 Dictionary created for label 'classification' with 2 values: 0 (seen 1322 times), 1 (seen 1212 times)
+#> 2023-11-29 14:20:24,755 Computing label dictionary. Progress:
+#> 2023-11-29 14:20:24,807 Dictionary created for label 'classification' with 2 values: 0 (seen 1322 times), 1 (seen 1212 times)
 ```
 
 Alternatively, you can also create a label dictionary manually. The
@@ -431,7 +432,7 @@ sentence <- Sentence(text)
 ``` r
 classifier$predict(sentence)
 print(sentence)
-#> Sentence[55]: "Ladies and gentlemen, I stand before you today not just as a legislator, but as a defender of our very way of life! We are facing a crisis of monumental proportions, and if we don't act now, the very fabric of our society will unravel before our eyes!" → 1 (0.5151)
+#> Sentence[55]: "Ladies and gentlemen, I stand before you today not just as a legislator, but as a defender of our very way of life! We are facing a crisis of monumental proportions, and if we don't act now, the very fabric of our society will unravel before our eyes!" → 0 (0.8148)
 ```
 
 `sentence$labels` is a list of labels, each of which has a value and a
@@ -440,12 +441,12 @@ of the label. The label with the highest score is the predicted label.
 
 ``` r
 sentence$labels[[1]]$value
-#> [1] "1"
+#> [1] "0"
 ```
 
 ``` r
 sentence$labels[[1]]$score
-#> [1] 0.5150982
+#> [1] 0.8148448
 ```
 
 <u>**Step 7**</u> Reload the Model with the Best Performance
@@ -551,7 +552,7 @@ Sentence <- flair_data()$Sentence
 
 # load the model flair NLP already trained for us
 tagger <- Classifier$load('ner')
-#> 2023-11-29 12:28:30,624 SequenceTagger predicts: Dictionary with 20 tags: <unk>, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, <START>, <STOP>
+#> 2023-11-29 14:20:27,218 SequenceTagger predicts: Dictionary with 20 tags: <unk>, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, <START>, <STOP>
 
 # make a sentence object
 text <- "Yesterday, Dr. Jane Smith spoke at the United Nations in New York. She discussed climate change and its impact on global economies. The event was attended by representatives from various countries including France and Japan. Dr. Smith mentioned that by 2050, the world could see a rise in sea level by approximately 2 feet. The World Health Organization (WHO) has pledged $50 million to combat the health effects of global warming. In an interview with The New York Times, Dr. Smith emphasized the urgent need for action. Later that day, she flew back to London, arriving at 10:00 PM GMT."
@@ -588,7 +589,7 @@ sentence object in a tidy format.
 
 ``` r
 tagger_ner <- load_tagger_ner("ner")
-#> 2023-11-29 12:28:33,472 SequenceTagger predicts: Dictionary with 20 tags: <unk>, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, <START>, <STOP>
+#> 2023-11-29 14:20:29,932 SequenceTagger predicts: Dictionary with 20 tags: <unk>, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, <START>, <STOP>
 results <- get_entities(text = text, 
                         doc_ids = "example text",
                         tagger_ner)
@@ -634,7 +635,7 @@ examples[c("text", "countryname")]
 
 ``` r
 tagger_ner <- load_tagger_ner("ner")
-#> 2023-11-29 12:28:36,082 SequenceTagger predicts: Dictionary with 20 tags: <unk>, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, <START>, <STOP>
+#> 2023-11-29 14:20:32,912 SequenceTagger predicts: Dictionary with 20 tags: <unk>, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, <START>, <STOP>
 results <- get_entities(text = examples$text, 
                         doc_ids = examples$countryname,
                         tagger_ner)
