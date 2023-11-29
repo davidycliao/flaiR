@@ -209,7 +209,7 @@ test   <- text[!sample]
 
 ``` r
 corpus <- Corpus(train=train, test=test)
-#> 2023-11-29 01:35:32,964 No dev split found. Using 0% (i.e. 282 samples) of the train split as dev data
+#> 2023-11-29 01:38:38,003 No dev split found. Using 0% (i.e. 282 samples) of the train split as dev data
 ```
 
 <u>**Step 3**</u> Create Classifier Using Transformer
@@ -227,8 +227,8 @@ other label types for training custom model, such as `ner`, `pos` and
 
 ``` r
 label_dict <- corpus$make_label_dictionary(label_type="classification")
-#> 2023-11-29 01:35:34,687 Computing label dictionary. Progress:
-#> 2023-11-29 01:35:34,740 Dictionary created for label 'classification' with 2 values: 0 (seen 1340 times), 1 (seen 1194 times)
+#> 2023-11-29 01:38:39,627 Computing label dictionary. Progress:
+#> 2023-11-29 01:38:39,681 Dictionary created for label 'classification' with 2 values: 0 (seen 1339 times), 1 (seen 1195 times)
 ```
 
 Alternatively, you can also create a label dictionary manually. The
@@ -344,7 +344,7 @@ trainer$train('grand_standing_model',          # output directory
               mini_batch_size=8L,              # batch size
               anneal_with_restarts = TRUE,
               save_final_model=TRUE,
-              max_epochs=3L)                   # Maximum number of epochs
+              max_epochs=10L)                   # Maximum number of epochs
 ```
 
 <u>**Step 5**</u> Evaluate the Model
@@ -429,7 +429,7 @@ sentence <- Sentence(text)
 ``` r
 classifier$predict(sentence)
 print(sentence)
-#> Sentence[55]: "Ladies and gentlemen, I stand before you today not just as a legislator, but as a defender of our very way of life! We are facing a crisis of monumental proportions, and if we don't act now, the very fabric of our society will unravel before our eyes!" → 1 (0.6846)
+#> Sentence[55]: "Ladies and gentlemen, I stand before you today not just as a legislator, but as a defender of our very way of life! We are facing a crisis of monumental proportions, and if we don't act now, the very fabric of our society will unravel before our eyes!" → 1 (0.532)
 ```
 
 `sentence$labels` is a list of labels, each of which has a value and a
@@ -443,7 +443,7 @@ sentence$labels[[1]]$value
 
 ``` r
 sentence$labels[[1]]$score
-#> [1] 0.6846188
+#> [1] 0.5320091
 ```
 
 <u>**Step 7**</u> Reload the Model with the Best Performance
