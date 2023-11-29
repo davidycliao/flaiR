@@ -250,15 +250,15 @@
 <p><u><strong>Step 2</strong></u> Preprocess Data and Corpus Object</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">corpus</span> <span class="op">&lt;-</span> <span class="fu">Corpus</span><span class="op">(</span>train<span class="op">=</span><span class="va">train</span>, test<span class="op">=</span><span class="va">test</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2023-11-28 13:14:49,956 No dev split found. Using 0% (i.e. 282 samples) of the train split as dev data</span></span></code></pre></div>
+<span><span class="co">#&gt; 2023-11-28 15:45:25,437 No dev split found. Using 0% (i.e. 282 samples) of the train split as dev data</span></span></code></pre></div>
 <p><u><strong>Step 3</strong></u> Create Classifier Using Transformer</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">document_embeddings</span> <span class="op">&lt;-</span> <span class="fu">TransformerDocumentEmbeddings</span><span class="op">(</span><span class="st">'distilbert-base-uncased'</span>, fine_tune<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p><code>$make_label_dictionary</code> function is used to create a label dictionary for the classification task. The label dictionary is a mapping from label to index, which is used to map the labels to a tensor of label indices. expcept classifcation task, flair also supports other label types for training custom model, such as <code>ner</code>, <code>pos</code> and <code>sentiment</code>.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">label_dict</span> <span class="op">&lt;-</span> <span class="va">corpus</span><span class="op">$</span><span class="fu">make_label_dictionary</span><span class="op">(</span>label_type<span class="op">=</span><span class="st">"classification"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2023-11-28 13:14:51,649 Computing label dictionary. Progress:</span></span>
-<span><span class="co">#&gt; 2023-11-28 13:14:51,698 Dictionary created for label 'classification' with 2 values: 0 (seen 1332 times), 1 (seen 1202 times)</span></span></code></pre></div>
+<span><span class="co">#&gt; 2023-11-28 15:45:27,011 Computing label dictionary. Progress:</span></span>
+<span><span class="co">#&gt; 2023-11-28 15:45:27,061 Dictionary created for label 'classification' with 2 values: 0 (seen 1325 times), 1 (seen 1209 times)</span></span></code></pre></div>
 <p><code>$item2idx</code> method to check the mapping from label to index. This is very important to make sure the labels are mapped correctly to the indices and tensors.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">label_dict</span><span class="op">$</span><span class="va">item2idx</span></span>
@@ -346,24 +346,39 @@
 <span><span class="co">#&gt; 6 0.7429       0.7429</span></span></code></pre></div>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
-<span><span class="fu">ggplot</span><span class="op">(</span><span class="va">performance_df</span>, <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">EPOCH</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu">geom_line</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>y <span class="op">=</span> <span class="va">TRAIN_LOSS</span>, color <span class="op">=</span> <span class="st">"Training Loss"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">geom_line</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>y <span class="op">=</span> <span class="va">DEV_LOSS</span>, color <span class="op">=</span> <span class="st">"Development Loss"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">geom_line</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>y <span class="op">=</span> <span class="va">DEV_RECALL</span>, color <span class="op">=</span> <span class="st">"Development Recall"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">geom_line</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>y <span class="op">=</span> <span class="va">DEV_F1</span>, color <span class="op">=</span> <span class="st">"Development F1"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">performance_df</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">EPOCH</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">TRAIN_LOSS</span>, color <span class="op">=</span> <span class="st">"Training Loss"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">DEV_LOSS</span>, color <span class="op">=</span> <span class="st">"Development Loss"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">DEV_RECALL</span>, color <span class="op">=</span> <span class="st">"Development Recall"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">DEV_F1</span>, color <span class="op">=</span> <span class="st">"Development F1"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span></span>
-<span>  <span class="fu">labs</span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Training and Development Loss per Epoch"</span>,</span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Training and Development Loss per Epoch"</span>,</span>
 <span>       x <span class="op">=</span> <span class="st">"Epoch / Grandstanding Classifier"</span>,</span>
 <span>       y <span class="op">=</span> <span class="st">""</span><span class="op">)</span>  <span class="op">+</span></span>
-<span>  <span class="fu">scale_color_manual</span><span class="op">(</span><span class="st">""</span>, </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_color_manual</a></span><span class="op">(</span><span class="st">""</span>, </span>
 <span>                     values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Training Loss"</span> <span class="op">=</span> <span class="st">"blue"</span>,</span>
 <span>                                <span class="st">"Development Loss"</span> <span class="op">=</span> <span class="st">"red"</span>,</span>
 <span>                                <span class="st">"Development F1"</span> <span class="op">=</span> <span class="st">"green"</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
-<span>  <span class="fu">theme_minimal</span><span class="op">(</span><span class="op">)</span> </span></code></pre></div>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_minimal</a></span><span class="op">(</span><span class="op">)</span> </span></code></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-15-1.png" width="100%"></p>
+<p>The overall performance of the model on the test set is also straightforward and easy to evaluate. You can find the performance metrics in the <code>model/training.log</code> file.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a>Results<span class="sc">:</span></span>
+<span id="cb18-2"><a href="#cb18-2" tabindex="-1"></a><span class="sc">-</span> F<span class="sc">-</span><span class="fu">score</span> (micro) <span class="fl">0.7443</span></span>
+<span id="cb18-3"><a href="#cb18-3" tabindex="-1"></a><span class="sc">-</span> F<span class="sc">-</span><span class="fu">score</span> (macro) <span class="fl">0.7438</span></span>
+<span id="cb18-4"><a href="#cb18-4" tabindex="-1"></a><span class="sc">-</span> Accuracy <span class="fl">0.7443</span></span>
+<span id="cb18-5"><a href="#cb18-5" tabindex="-1"></a></span>
+<span id="cb18-6"><a href="#cb18-6" tabindex="-1"></a>By class<span class="sc">:</span></span>
+<span id="cb18-7"><a href="#cb18-7" tabindex="-1"></a>              precision    recall  f1<span class="sc">-</span>score   support</span>
+<span id="cb18-8"><a href="#cb18-8" tabindex="-1"></a></span>
+<span id="cb18-9"><a href="#cb18-9" tabindex="-1"></a>           <span class="dv">1</span>     <span class="fl">0.6781</span>    <span class="fl">0.8519</span>    <span class="fl">0.7551</span>       <span class="dv">324</span></span>
+<span id="cb18-10"><a href="#cb18-10" tabindex="-1"></a>           <span class="dv">0</span>     <span class="fl">0.8362</span>    <span class="fl">0.6516</span>    <span class="fl">0.7324</span>       <span class="dv">376</span></span>
+<span id="cb18-11"><a href="#cb18-11" tabindex="-1"></a></span>
+<span id="cb18-12"><a href="#cb18-12" tabindex="-1"></a>    accuracy                         <span class="fl">0.7443</span>       <span class="dv">700</span></span>
+<span id="cb18-13"><a href="#cb18-13" tabindex="-1"></a>   macro avg     <span class="fl">0.7572</span>    <span class="fl">0.7517</span>    <span class="fl">0.7438</span>       <span class="dv">700</span></span>
+<span id="cb18-14"><a href="#cb18-14" tabindex="-1"></a>weighted avg     <span class="fl">0.7630</span>    <span class="fl">0.7443</span>    <span class="fl">0.7429</span>       <span class="dv">700</span></span></code></pre></div>
 <p><u><strong>Step 6</strong></u> Apply the Trained Model on Unseen Data for Prediction</p>
 <p>We use the statement in the dataset as an example.</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># load the trained model</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">statements</span><span class="op">)</span></span>
 <span><span class="va">Sentence</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/flair_data.html">flair_data</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">Sentence</span></span>
@@ -371,25 +386,25 @@
 <span><span class="va">text</span> <span class="op">&lt;-</span> <span class="va">statements</span><span class="op">[</span><span class="fl">1</span>, <span class="st">"Statement"</span><span class="op">]</span></span>
 <span><span class="va">sentence</span> <span class="op">&lt;-</span> <span class="fu">Sentence</span><span class="op">(</span><span class="va">text</span><span class="op">)</span></span></code></pre></div>
 <p><code>lassifier$predict function is used to predict the label of the sentence. The function returns a sentence object with the predicted label.</code></p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">classifier</span><span class="op">$</span><span class="fu">predict</span><span class="op">(</span><span class="va">sentence</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">sentence</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Sentence[55]: "Ladies and gentlemen, I stand before you today not just as a legislator, but as a defender of our very way of life! We are facing a crisis of monumental proportions, and if we don't act now, the very fabric of our society will unravel before our eyes!" → 1 (0.7514)</span></span></code></pre></div>
+<span><span class="co">#&gt; Sentence[55]: "Ladies and gentlemen, I stand before you today not just as a legislator, but as a defender of our very way of life! We are facing a crisis of monumental proportions, and if we don't act now, the very fabric of our society will unravel before our eyes!" → 0 (0.6865)</span></span></code></pre></div>
 <p><code>sentence$labels</code> is a list of labels, each of which has a value and a score. The value is the label itself, and the score is the probability of the label. The label with the highest score is the predicted label.</p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">sentence</span><span class="op">$</span><span class="va">labels</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">value</span></span>
-<span><span class="co">#&gt; [1] "1"</span></span></code></pre></div>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">sentence</span><span class="op">$</span><span class="va">labels</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">value</span></span>
+<span><span class="co">#&gt; [1] "0"</span></span></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sentence</span><span class="op">$</span><span class="va">labels</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">score</span></span>
-<span><span class="co">#&gt; [1] 0.751438</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] 0.6864765</span></span></code></pre></div>
 <p><u><strong>Step 7</strong></u> Reload the Model with the Best Performance</p>
 <p>When you train the model with <code>save_final_model=TRUE</code>, the model with the best performance on the development set will be saved in the output directory. You can reload the model with the best performance using the <code>load</code> function.</p>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">Sentence</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/flair_data.html">flair_data</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">Sentence</span></span>
 <span><span class="va">TextClassifier</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/flair_models.html">flair_models</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">TextClassifier</span></span>
 <span><span class="va">classifier</span> <span class="op">&lt;-</span> <span class="va">TextClassifier</span><span class="op">$</span><span class="fu">load</span><span class="op">(</span><span class="st">'grand_standing/best-model.pt'</span><span class="op">)</span></span></code></pre></div>
 <p>We can create a function to classify the text using the specified Flair classifier.</p>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">classify_text</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">text</span>, <span class="va">classifier</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="co"># Classifies the given text using the specified Flair classifier.</span></span>
 <span>  <span class="co">#</span></span>
@@ -404,7 +419,7 @@
 <span>  <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span> <span class="op">(</span>labels  <span class="op">=</span> <span class="va">sentence</span><span class="op">$</span><span class="va">labels</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">value</span>, score  <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">sentence</span><span class="op">$</span><span class="va">labels</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">score</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="op">}</span></span></code></pre></div>
 <p>Before performing classication tast, let’s quickly check the dataset.</p>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">statements</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">statements</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                                        Type</span></span>
@@ -420,13 +435,13 @@
 <span><span class="co">#&gt; 4                        I remember, back in my hometown, old Mr. Jenkins used to say, 'If it ain't broke, don't fix it.' That's exactly how I feel about our current healthcare system. We don't need reform; we just need good, old-fashioned common sense.</span></span>
 <span><span class="co">#&gt; 5                                                     Every problem we face today can be traced back to the disastrous policies of the other party. They are the reason we are in this mess, and until we recognize that, we cannot move forward as a nation.</span></span></code></pre></div>
 <p>Let’s apply the function to the dataset.</p>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">statements</span><span class="op">$</span><span class="va">Statement</span><span class="op">)</span> <span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">out_come</span> <span class="op">&lt;-</span> <span class="fu">classify_text</span><span class="op">(</span><span class="va">statements</span><span class="op">$</span><span class="va">Statement</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span>, <span class="va">classifier</span><span class="op">)</span></span>
 <span>  <span class="va">statements</span><span class="op">[</span><span class="va">i</span>, <span class="st">'predicted_labels'</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">out_come</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
 <span>  <span class="va">statements</span><span class="op">[</span><span class="va">i</span>, <span class="st">'prop_score'</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">out_come</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span></span>
 <span><span class="op">}</span></span></code></pre></div>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">statements</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Type"</span>, <span class="st">"predicted_labels"</span>, <span class="st">"prop_score"</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="co">#&gt;                                        Type predicted_labels        prop_score</span></span>
 <span><span class="co">#&gt; 1                Dramatic Appeal to Emotion                1 0.998062312602997</span></span>
