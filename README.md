@@ -11,29 +11,32 @@
 [![CodeFactor](https://www.codefactor.io/repository/github/davidycliao/flair/badge)](https://www.codefactor.io/repository/github/davidycliao/flair)
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-
 <div style="text-align: justify">
-
-`{flaiR}` is an R wrapper for the
-[{flairNLP/flair}](https://github.com/flairnlp/flair) library in Python,
-designed specifically for R users, especially those in the social
-sciences. It provides easy access to the main functionalities of
-`{flairNLP}`. Developed by Developed by [Zalando
+&#10;
+{flaiR} is an R wrapper for the {flairNLP/flair} Python library,
+specifically tailored for R users, particularly in political science and
+the social sciences. flaiR provides easy access to the main
+functionalities of `{Flair NLP}`. Developed by Developed by [Zalando
 Research](https://engineering.zalando.com/posts/2018/11/zalando-research-releases-flair.html)
-in Berlin, Flair NLP offers intuitive interfaces and exceptional
-**multilingual support**, particularly for various embedding frameworks,
-transformers and state-of-the-art natural language processing tasks to
-analyze your text, such as named entity recognition, sentiment analysis,
-part-of-speech tagging, biomedical data, sense disambiguation, and
-classification, with support for a rapidly growing number of languages
-in the community. For a comprehensive understanding of the
-`{flairNLP/flair}` architecture, you can refer to the research article
-‘[Contextual String Embeddings for Sequence
-Labeling](https://aclanthology.org/C18-1139.pdf)’ and the official
-[manual](https://flairnlp.github.io) written for its Python
-implementation.
+in Berlin, flair NLP is a straightforward framework for state-of-the-art
+Natural Language Processing (NLP) and is compatible with Hugging Face.
+Flair offers intuitive interfaces and exceptional **multilingual
+support**, particularly for various embedding models, transformers and
+state-of-the-art NLP tasks to analyze texts, such as named entity
+recognition, sentiment analysis, part-of-speech tagging, with support
+for a rapidly growing number of language models in the community.
 
-</div>
+For a comprehensive understanding of the `{flairNLP/flair}` architecture
+and NLP tagging models by [Zalando
+Research](https://engineering.zalando.com/posts/2018/11/zalando-research-releases-flair.html),
+you can refer to the research article ‘[Contextual String Embeddings for
+Sequence Labeling](https://aclanthology.org/C18-1139.pdf)’ and the
+official [manual](https://flairnlp.github.io) written for its Python
+implementation. The community support for more languages is rapidly
+expanding. This unofficial platform provides R users with documentation,
+examples, and tutorials for using Flair NLP. The goal is to make it
+easier for R users to access the powerful NLP tools provided by Flair
+NLP.
 
 <br>
 
@@ -209,7 +212,7 @@ test   <- text[!sample]
 
 ``` r
 corpus <- Corpus(train=train, test=test)
-#> 2023-11-29 09:32:41,983 No dev split found. Using 0% (i.e. 282 samples) of the train split as dev data
+#> 2023-11-29 12:12:38,286 No dev split found. Using 0% (i.e. 282 samples) of the train split as dev data
 ```
 
 <u>**Step 3**</u> Create Classifier Using Transformer
@@ -227,8 +230,8 @@ other label types for training custom model, such as `ner`, `pos` and
 
 ``` r
 label_dict <- corpus$make_label_dictionary(label_type="classification")
-#> 2023-11-29 09:32:43,454 Computing label dictionary. Progress:
-#> 2023-11-29 09:32:43,504 Dictionary created for label 'classification' with 2 values: 0 (seen 1321 times), 1 (seen 1213 times)
+#> 2023-11-29 12:12:39,847 Computing label dictionary. Progress:
+#> 2023-11-29 12:12:39,897 Dictionary created for label 'classification' with 2 values: 0 (seen 1340 times), 1 (seen 1194 times)
 ```
 
 Alternatively, you can also create a label dictionary manually. The
@@ -428,7 +431,7 @@ sentence <- Sentence(text)
 ``` r
 classifier$predict(sentence)
 print(sentence)
-#> Sentence[55]: "Ladies and gentlemen, I stand before you today not just as a legislator, but as a defender of our very way of life! We are facing a crisis of monumental proportions, and if we don't act now, the very fabric of our society will unravel before our eyes!" → 1 (0.6431)
+#> Sentence[55]: "Ladies and gentlemen, I stand before you today not just as a legislator, but as a defender of our very way of life! We are facing a crisis of monumental proportions, and if we don't act now, the very fabric of our society will unravel before our eyes!" → 0 (0.6306)
 ```
 
 `sentence$labels` is a list of labels, each of which has a value and a
@@ -437,12 +440,12 @@ of the label. The label with the highest score is the predicted label.
 
 ``` r
 sentence$labels[[1]]$value
-#> [1] "1"
+#> [1] "0"
 ```
 
 ``` r
 sentence$labels[[1]]$score
-#> [1] 0.6430542
+#> [1] 0.6305758
 ```
 
 <u>**Step 7**</u> Reload the Model with the Best Performance
@@ -536,7 +539,7 @@ Flair NLP also provides a set of functions to perform NLP tasks, such as
 named entity recognition, sentiment analysis, and part-of-speech
 tagging.
 
-First, we load the data and the model and perform NER task on the text
+First, we load the data and the model to perform NER task on the text
 below.
 
 > *Yesterday, Dr. Jane Smith spoke at the United Nations in New York.
@@ -555,7 +558,7 @@ Sentence <- flair_data()$Sentence
 
 # load the model flair NLP already trained for us
 tagger <- Classifier$load('ner')
-#> 2023-11-29 09:32:46,364 SequenceTagger predicts: Dictionary with 20 tags: <unk>, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, <START>, <STOP>
+#> 2023-11-29 12:12:42,493 SequenceTagger predicts: Dictionary with 20 tags: <unk>, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, <START>, <STOP>
 
 # make a sentence object
 text <- "Yesterday, Dr. Jane Smith spoke at the United Nations in New York. She discussed climate change and its impact on global economies. The event was attended by representatives from various countries including France and Japan. Dr. Smith mentioned that by 2050, the world could see a rise in sea level by approximately 2 feet. The World Health Organization (WHO) has pledged $50 million to combat the health effects of global warming. In an interview with The New York Times, Dr. Smith emphasized the urgent need for action. Later that day, she flew back to London, arriving at 10:00 PM GMT."
@@ -585,7 +588,7 @@ sentence object in a tidy format.
 
 ``` r
 tagger_ner <- load_tagger_ner("ner")
-#> 2023-11-29 09:32:49,075 SequenceTagger predicts: Dictionary with 20 tags: <unk>, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, <START>, <STOP>
+#> 2023-11-29 12:12:45,252 SequenceTagger predicts: Dictionary with 20 tags: <unk>, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, <START>, <STOP>
 results <- get_entities(text = text, 
                         doc_ids = "example text",
                         tagger_ner)
@@ -631,7 +634,7 @@ examples[c("text", "countryname")]
 
 ``` r
 tagger_ner <- load_tagger_ner("ner")
-#> 2023-11-29 09:32:51,701 SequenceTagger predicts: Dictionary with 20 tags: <unk>, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, <START>, <STOP>
+#> 2023-11-29 12:12:48,077 SequenceTagger predicts: Dictionary with 20 tags: <unk>, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, <START>, <STOP>
 results <- get_entities(text = examples$text, 
                         doc_ids = examples$countryname,
                         tagger_ner)
