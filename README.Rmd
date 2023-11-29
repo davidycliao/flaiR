@@ -173,9 +173,10 @@ label_dict <- corpus$make_label_dictionary(label_type="classification")
 Alternatively, you can also create a label dictionary manually. The following code creates a label dictionary with two labels, `0` and `1`, and maps them to the indices `0` and `1` respectively. 
 
 ```{r}
+# load Dictionary object from flair_data
 Dictionary <- flair_data()$Dictionary
 
-# mannually create  label_dict with two labels, 0 and 1
+# manually create label_dict with two labels, 0 and 1
 label_dict <- Dictionary(add_unk=FALSE)
 
 # you can specify the order of labels. Please note the label should be a list and character (string) type.

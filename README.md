@@ -209,7 +209,7 @@ test   <- text[!sample]
 
 ``` r
 corpus <- Corpus(train=train, test=test)
-#> 2023-11-29 01:24:26,047 No dev split found. Using 0% (i.e. 282 samples) of the train split as dev data
+#> 2023-11-29 01:35:32,964 No dev split found. Using 0% (i.e. 282 samples) of the train split as dev data
 ```
 
 <u>**Step 3**</u> Create Classifier Using Transformer
@@ -227,8 +227,8 @@ other label types for training custom model, such as `ner`, `pos` and
 
 ``` r
 label_dict <- corpus$make_label_dictionary(label_type="classification")
-#> 2023-11-29 01:24:27,775 Computing label dictionary. Progress:
-#> 2023-11-29 01:24:27,844 Dictionary created for label 'classification' with 2 values: 0 (seen 1329 times), 1 (seen 1205 times)
+#> 2023-11-29 01:35:34,687 Computing label dictionary. Progress:
+#> 2023-11-29 01:35:34,740 Dictionary created for label 'classification' with 2 values: 0 (seen 1340 times), 1 (seen 1194 times)
 ```
 
 Alternatively, you can also create a label dictionary manually. The
@@ -236,9 +236,10 @@ following code creates a label dictionary with two labels, `0` and `1`,
 and maps them to the indices `0` and `1` respectively.
 
 ``` r
+# load Dictionary object from flair_data
 Dictionary <- flair_data()$Dictionary
 
-# mannually create  label_dict with two labels, 0 and 1
+# manually create label_dict with two labels, 0 and 1
 label_dict <- Dictionary(add_unk=FALSE)
 
 # you can specify the order of labels. Please note the label should be a list and character (string) type.
@@ -428,7 +429,7 @@ sentence <- Sentence(text)
 ``` r
 classifier$predict(sentence)
 print(sentence)
-#> Sentence[55]: "Ladies and gentlemen, I stand before you today not just as a legislator, but as a defender of our very way of life! We are facing a crisis of monumental proportions, and if we don't act now, the very fabric of our society will unravel before our eyes!" → 0 (0.7921)
+#> Sentence[55]: "Ladies and gentlemen, I stand before you today not just as a legislator, but as a defender of our very way of life! We are facing a crisis of monumental proportions, and if we don't act now, the very fabric of our society will unravel before our eyes!" → 1 (0.6846)
 ```
 
 `sentence$labels` is a list of labels, each of which has a value and a
@@ -437,12 +438,12 @@ of the label. The label with the highest score is the predicted label.
 
 ``` r
 sentence$labels[[1]]$value
-#> [1] "0"
+#> [1] "1"
 ```
 
 ``` r
 sentence$labels[[1]]$score
-#> [1] 0.7920771
+#> [1] 0.6846188
 ```
 
 <u>**Step 7**</u> Reload the Model with the Best Performance
