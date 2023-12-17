@@ -108,6 +108,7 @@
   </a>
   <div class="dropdown-menu" aria-labelledby="dropdown--reference">
     <a class="dropdown-item" href="../reference/index.html">All Function Reference</a>
+    <a class="dropdown-item" href="../articles/flair_models.html">Flair NLP Pre-Trained Models</a>
   </div>
 </li>
 <li class="nav-item dropdown">
@@ -621,7 +622,7 @@ We can accomplish this by calling the top-level module “flair” from via
 <code class="sourceCode R"><span><span class="va">corpus</span> <span class="op">&lt;-</span> <span class="fu">Corpus</span><span class="op">(</span>train<span class="op">=</span><span class="va">train</span>, </span>
 <span>                 <span class="co"># dev=test,</span></span>
 <span>                 test<span class="op">=</span><span class="va">test</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:33:00,593 No dev split found. Using 0% (i.e. 471 samples) of the train split as dev data</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:15:48,711 No dev split found. Using 0% (i.e. 471 samples) of the train split as dev data</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"Corpus object sizes - Train: %d | Test: %d | Dev: %d"</span>, </span>
 <span>        <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">corpus</span><span class="op">$</span><span class="va">train</span><span class="op">)</span>, </span>
 <span>        <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">corpus</span><span class="op">$</span><span class="va">test</span><span class="op">)</span>,</span>
@@ -659,7 +660,7 @@ predict tags for the sentence object.</p>
 <span><span class="co"># load the NER tagger</span></span>
 <span><span class="va">Classifier</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_nn.html">flair_nn</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">Classifier</span></span>
 <span><span class="va">tagger</span> <span class="op">&lt;-</span> <span class="va">Classifier</span><span class="op">$</span><span class="fu">load</span><span class="op">(</span><span class="st">'ner'</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:33:02,456 SequenceTagger predicts: Dictionary with 20 tags: &lt;unk&gt;, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, &lt;START&gt;, &lt;STOP&gt;</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:15:50,732 SequenceTagger predicts: Dictionary with 20 tags: &lt;unk&gt;, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, &lt;START&gt;, &lt;STOP&gt;</span></span>
 <span></span>
 <span><span class="co"># run NER over sentence</span></span>
 <span><span class="va">tagger</span><span class="op">$</span><span class="fu">predict</span><span class="op">(</span><span class="va">sentence</span><span class="op">)</span></span></code></pre></div>
@@ -698,7 +699,7 @@ Hugging Face.</p>
 <span><span class="co"># load the NER tagger</span></span>
 <span><span class="va">Classifier</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_nn.html">flair_nn</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">Classifier</span></span>
 <span><span class="va">tagger</span> <span class="op">&lt;-</span> <span class="va">Classifier</span><span class="op">$</span><span class="fu">load</span><span class="op">(</span><span class="st">'pos'</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:33:03,495 SequenceTagger predicts: Dictionary with 53 tags: &lt;unk&gt;, O, UH, ,, VBD, PRP, VB, PRP$, NN, RB, ., DT, JJ, VBP, VBG, IN, CD, NNS, NNP, WRB, VBZ, WDT, CC, TO, MD, VBN, WP, :, RP, EX, JJR, FW, XX, HYPH, POS, RBR, JJS, PDT, NNPS, RBS, AFX, WP$, -LRB-, -RRB-, ``, '', LS, $, SYM, ADD</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:15:51,726 SequenceTagger predicts: Dictionary with 53 tags: &lt;unk&gt;, O, UH, ,, VBD, PRP, VB, PRP$, NN, RB, ., DT, JJ, VBP, VBG, IN, CD, NNS, NNP, WRB, VBZ, WDT, CC, TO, MD, VBN, WP, :, RP, EX, JJR, FW, XX, HYPH, POS, RBR, JJS, PDT, NNPS, RBS, AFX, WP$, -LRB-, -RRB-, ``, '', LS, $, SYM, ADD</span></span>
 <span></span>
 <span><span class="co"># run NER over sentence</span></span>
 <span><span class="va">tagger</span><span class="op">$</span><span class="fu">predict</span><span class="op">(</span><span class="va">sentence</span><span class="op">)</span></span></code></pre></div>
@@ -1242,15 +1243,15 @@ couldn’t be easier:</p>
 <div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># downsize to 0.05</span></span>
 <span><span class="va">corpus</span> <span class="op">=</span> <span class="fu">IMDB</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:33:16,641 Reading data from /Users/yenchiehliao/.flair/datasets/imdb_v4-rebalanced</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:33:16,642 Train: /Users/yenchiehliao/.flair/datasets/imdb_v4-rebalanced/train.txt</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:33:16,642 Dev: None</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:33:16,642 Test: None</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:33:17,543 No test split found. Using 0% (i.e. 5000 samples) of the train split as test data</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:33:17,565 No dev split found. Using 0% (i.e. 4500 samples) of the train split as dev data</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:33:17,565 Initialized corpus /Users/yenchiehliao/.flair/datasets/imdb_v4-rebalanced (label type name is 'sentiment')</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:16:04,578 Reading data from /Users/yenchiehliao/.flair/datasets/imdb_v4-rebalanced</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:16:04,578 Train: /Users/yenchiehliao/.flair/datasets/imdb_v4-rebalanced/train.txt</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:16:04,578 Dev: None</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:16:04,578 Test: None</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:16:05,371 No test split found. Using 0% (i.e. 5000 samples) of the train split as test data</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:16:05,387 No dev split found. Using 0% (i.e. 4500 samples) of the train split as dev data</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:16:05,387 Initialized corpus /Users/yenchiehliao/.flair/datasets/imdb_v4-rebalanced (label type name is 'sentiment')</span></span>
 <span><span class="va">corpus</span><span class="op">$</span><span class="fu">downsample</span><span class="op">(</span><span class="fl">0.05</span><span class="op">)</span></span>
-<span><span class="co">#&gt; &lt;flair.datasets.document_classification.IMDB object at 0x2eecd9930&gt;</span></span></code></pre></div>
+<span><span class="co">#&gt; &lt;flair.datasets.document_classification.IMDB object at 0x2ec33eb90&gt;</span></span></code></pre></div>
 <p>Print the sizes in the corpus object as follows - test: %d | train:
 %d | dev: %d”</p>
 <div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
@@ -1263,8 +1264,8 @@ couldn’t be easier:</p>
 <div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">lbl_type</span> <span class="op">=</span> <span class="st">'sentiment'</span></span>
 <span><span class="va">label_dict</span> <span class="op">=</span> <span class="va">corpus</span><span class="op">$</span><span class="fu">make_label_dictionary</span><span class="op">(</span>label_type<span class="op">=</span><span class="va">lbl_type</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:33:17,722 Computing label dictionary. Progress:</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:33:23,569 Dictionary created for label 'sentiment' with 2 values: POSITIVE (seen 1014 times), NEGATIVE (seen 1011 times)</span></span></code></pre></div>
+<span><span class="co">#&gt; 2023-12-17 14:16:05,542 Computing label dictionary. Progress:</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:16:10,367 Dictionary created for label 'sentiment' with 2 values: POSITIVE (seen 1014 times), NEGATIVE (seen 1011 times)</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level3">
@@ -1346,8 +1347,8 @@ the way they are stored in memory.</strong></p>
 <span>              <span class="co"># specifies how embeddings are stored in RAM, ie."cpu", "cuda", "gpu", "mps".</span></span>
 <span>              <span class="co"># embeddings_storage_mode = "mps",</span></span>
 <span>              max_epochs<span class="op">=</span><span class="fl">10L</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:33:26,211 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:33:26,212 Model: "TextClassifier(</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:16:13,169 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:16:13,170 Model: "TextClassifier(</span></span>
 <span><span class="co">#&gt;   (embeddings): DocumentPoolEmbeddings(</span></span>
 <span><span class="co">#&gt;     fine_tune_mode=none, pooling=mean</span></span>
 <span><span class="co">#&gt;     (embeddings): StackedEmbeddings(</span></span>
@@ -1365,186 +1366,186 @@ the way they are stored in memory.</strong></p>
 <span><span class="co">#&gt;   (weights): None</span></span>
 <span><span class="co">#&gt;   (weight_tensor) None</span></span>
 <span><span class="co">#&gt; )"</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:33:26,212 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:33:26,212 Corpus: 2025 train + 225 dev + 250 test sentences</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:33:26,212 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:33:26,212 Train:  2025 sentences</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:33:26,212         (train_with_dev=False, train_with_test=False)</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:33:26,212 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:33:26,212 Training Params:</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:33:26,213  - learning_rate: "0.1" </span></span>
-<span><span class="co">#&gt; 2023-12-16 18:33:26,213  - mini_batch_size: "32"</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:33:26,213  - max_epochs: "10"</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:33:26,213  - shuffle: "True"</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:33:26,213 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:33:26,213 Plugins:</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:33:26,213  - AnnealOnPlateau | patience: '3', anneal_factor: '0.5', min_learning_rate: '0.0001'</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:33:26,213 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:33:26,213 Final evaluation on model from best epoch (best-model.pt)</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:33:26,213  - metric: "('micro avg', 'f1-score')"</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:33:26,213 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:33:26,213 Computation:</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:33:26,213  - compute on device: cpu</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:33:26,213  - embedding storage: cpu</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:33:26,214 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:33:26,214 Model training base path: "classifier"</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:33:26,214 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:33:26,214 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:33:27,346 epoch 1 - iter 6/64 - loss 0.88400855 - time (sec): 1.13 - samples/sec: 169.57 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:33:28,370 epoch 1 - iter 12/64 - loss 0.88396302 - time (sec): 2.16 - samples/sec: 178.11 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:33:29,770 epoch 1 - iter 18/64 - loss 0.90135088 - time (sec): 3.56 - samples/sec: 161.98 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:33:30,851 epoch 1 - iter 24/64 - loss 0.91910574 - time (sec): 4.64 - samples/sec: 165.61 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:33:31,897 epoch 1 - iter 30/64 - loss 0.92947888 - time (sec): 5.68 - samples/sec: 168.91 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:33:33,001 epoch 1 - iter 36/64 - loss 0.91739042 - time (sec): 6.79 - samples/sec: 169.73 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:33:34,285 epoch 1 - iter 42/64 - loss 0.91689622 - time (sec): 8.07 - samples/sec: 166.53 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:33:35,344 epoch 1 - iter 48/64 - loss 0.91121411 - time (sec): 9.13 - samples/sec: 168.24 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:33:36,445 epoch 1 - iter 54/64 - loss 0.90482956 - time (sec): 10.23 - samples/sec: 168.91 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:33:37,549 epoch 1 - iter 60/64 - loss 0.90788143 - time (sec): 11.34 - samples/sec: 169.38 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:33:38,234 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:33:38,234 EPOCH 1 done: loss 0.9077 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:33:39,985 DEV : loss 0.8828572034835815 - f1-score (micro avg)  0.4533</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:33:40,624  - 0 epochs without improvement</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:33:40,625 saving best model</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:33:41,201 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:33:42,596 epoch 2 - iter 6/64 - loss 0.88782200 - time (sec): 1.39 - samples/sec: 137.69 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:33:43,613 epoch 2 - iter 12/64 - loss 0.89557258 - time (sec): 2.41 - samples/sec: 159.29 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:33:44,714 epoch 2 - iter 18/64 - loss 0.88284143 - time (sec): 3.51 - samples/sec: 163.99 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:33:45,812 epoch 2 - iter 24/64 - loss 0.86361855 - time (sec): 4.61 - samples/sec: 166.58 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:33:46,917 epoch 2 - iter 30/64 - loss 0.86423665 - time (sec): 5.72 - samples/sec: 167.98 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:33:48,197 epoch 2 - iter 36/64 - loss 0.85561348 - time (sec): 7.00 - samples/sec: 164.69 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:33:49,253 epoch 2 - iter 42/64 - loss 0.85215194 - time (sec): 8.05 - samples/sec: 166.93 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:33:50,342 epoch 2 - iter 48/64 - loss 0.85517522 - time (sec): 9.14 - samples/sec: 168.05 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:33:51,745 epoch 2 - iter 54/64 - loss 0.84677640 - time (sec): 10.54 - samples/sec: 163.90 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:33:52,847 epoch 2 - iter 60/64 - loss 0.85021446 - time (sec): 11.65 - samples/sec: 164.87 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:33:53,304 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:33:53,305 EPOCH 2 done: loss 0.8530 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:33:55,005 DEV : loss 0.8783490061759949 - f1-score (micro avg)  0.4533</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:33:55,892  - 0 epochs without improvement</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:33:55,893 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:33:57,041 epoch 3 - iter 6/64 - loss 0.87799916 - time (sec): 1.15 - samples/sec: 167.20 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:33:58,173 epoch 3 - iter 12/64 - loss 0.89608843 - time (sec): 2.28 - samples/sec: 168.40 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:33:59,268 epoch 3 - iter 18/64 - loss 0.90057748 - time (sec): 3.37 - samples/sec: 170.70 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:34:00,581 epoch 3 - iter 24/64 - loss 0.89696234 - time (sec): 4.69 - samples/sec: 163.84 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:34:01,676 epoch 3 - iter 30/64 - loss 0.89147007 - time (sec): 5.78 - samples/sec: 166.02 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:34:02,792 epoch 3 - iter 36/64 - loss 0.89204659 - time (sec): 6.90 - samples/sec: 166.98 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:34:03,836 epoch 3 - iter 42/64 - loss 0.87829229 - time (sec): 7.94 - samples/sec: 169.21 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:34:05,126 epoch 3 - iter 48/64 - loss 0.87632222 - time (sec): 9.23 - samples/sec: 166.36 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:34:06,209 epoch 3 - iter 54/64 - loss 0.87269292 - time (sec): 10.32 - samples/sec: 167.51 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:34:07,276 epoch 3 - iter 60/64 - loss 0.87970024 - time (sec): 11.38 - samples/sec: 168.68 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:34:07,989 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:34:07,989 EPOCH 3 done: loss 0.8762 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:34:09,474 DEV : loss 0.8697565793991089 - f1-score (micro avg)  0.4533</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:34:10,399  - 0 epochs without improvement</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:34:10,400 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:34:11,557 epoch 4 - iter 6/64 - loss 0.88036998 - time (sec): 1.16 - samples/sec: 165.95 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:34:12,917 epoch 4 - iter 12/64 - loss 0.84520512 - time (sec): 2.52 - samples/sec: 152.61 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:34:14,004 epoch 4 - iter 18/64 - loss 0.84692961 - time (sec): 3.60 - samples/sec: 159.84 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:34:15,074 epoch 4 - iter 24/64 - loss 0.84134499 - time (sec): 4.67 - samples/sec: 164.32 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:34:16,126 epoch 4 - iter 30/64 - loss 0.85828587 - time (sec): 5.73 - samples/sec: 167.68 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:34:17,193 epoch 4 - iter 36/64 - loss 0.85654225 - time (sec): 6.79 - samples/sec: 169.59 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:34:18,540 epoch 4 - iter 42/64 - loss 0.84629689 - time (sec): 8.14 - samples/sec: 165.12 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:34:19,638 epoch 4 - iter 48/64 - loss 0.84268748 - time (sec): 9.24 - samples/sec: 166.27 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:34:20,686 epoch 4 - iter 54/64 - loss 0.84196810 - time (sec): 10.29 - samples/sec: 168.00 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:34:22,027 epoch 4 - iter 60/64 - loss 0.85795100 - time (sec): 11.63 - samples/sec: 165.14 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:34:22,484 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:34:22,484 EPOCH 4 done: loss 0.8562 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:34:24,233 DEV : loss 0.8513666391372681 - f1-score (micro avg)  0.4533</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:34:24,872  - 0 epochs without improvement</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:34:24,873 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:34:26,042 epoch 5 - iter 6/64 - loss 0.87054925 - time (sec): 1.17 - samples/sec: 164.25 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:34:27,316 epoch 5 - iter 12/64 - loss 0.88675048 - time (sec): 2.44 - samples/sec: 157.17 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:34:28,434 epoch 5 - iter 18/64 - loss 0.85735505 - time (sec): 3.56 - samples/sec: 161.76 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:34:29,512 epoch 5 - iter 24/64 - loss 0.86416615 - time (sec): 4.64 - samples/sec: 165.54 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:34:30,589 epoch 5 - iter 30/64 - loss 0.85780198 - time (sec): 5.72 - samples/sec: 167.95 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:34:31,916 epoch 5 - iter 36/64 - loss 0.85106002 - time (sec): 7.04 - samples/sec: 163.57 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:34:33,010 epoch 5 - iter 42/64 - loss 0.84119070 - time (sec): 8.14 - samples/sec: 165.16 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:34:34,173 epoch 5 - iter 48/64 - loss 0.84184100 - time (sec): 9.30 - samples/sec: 165.16 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:34:35,297 epoch 5 - iter 54/64 - loss 0.83640844 - time (sec): 10.42 - samples/sec: 165.77 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:34:36,668 epoch 5 - iter 60/64 - loss 0.83129187 - time (sec): 11.80 - samples/sec: 162.78 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:34:37,157 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:34:37,157 EPOCH 5 done: loss 0.8262 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:34:38,923 DEV : loss 0.8393897414207458 - f1-score (micro avg)  0.4578</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:34:39,839  - 0 epochs without improvement</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:34:39,840 saving best model</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:34:40,304 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:34:41,491 epoch 6 - iter 6/64 - loss 0.90684560 - time (sec): 1.19 - samples/sec: 161.82 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:34:42,655 epoch 6 - iter 12/64 - loss 0.86297455 - time (sec): 2.35 - samples/sec: 163.34 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:34:43,819 epoch 6 - iter 18/64 - loss 0.84712324 - time (sec): 3.51 - samples/sec: 163.89 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:34:44,928 epoch 6 - iter 24/64 - loss 0.84480650 - time (sec): 4.62 - samples/sec: 166.12 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:34:46,208 epoch 6 - iter 30/64 - loss 0.84118373 - time (sec): 5.90 - samples/sec: 162.61 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:34:47,343 epoch 6 - iter 36/64 - loss 0.84887512 - time (sec): 7.04 - samples/sec: 163.66 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:34:48,668 epoch 6 - iter 42/64 - loss 0.85247641 - time (sec): 8.36 - samples/sec: 160.69 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:34:50,054 epoch 6 - iter 48/64 - loss 0.83503058 - time (sec): 9.75 - samples/sec: 157.55 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:34:51,666 epoch 6 - iter 54/64 - loss 0.83527769 - time (sec): 11.36 - samples/sec: 152.10 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:34:53,321 epoch 6 - iter 60/64 - loss 0.82645011 - time (sec): 13.02 - samples/sec: 147.50 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:34:54,087 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:34:54,087 EPOCH 6 done: loss 0.8187 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:34:55,732 DEV : loss 0.697002649307251 - f1-score (micro avg)  0.5289</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:34:56,678  - 0 epochs without improvement</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:34:56,679 saving best model</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:34:57,155 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:34:58,610 epoch 7 - iter 6/64 - loss 0.92862150 - time (sec): 1.45 - samples/sec: 132.01 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:34:59,648 epoch 7 - iter 12/64 - loss 0.88754721 - time (sec): 2.49 - samples/sec: 154.11 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:35:00,819 epoch 7 - iter 18/64 - loss 0.87636076 - time (sec): 3.66 - samples/sec: 157.26 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:35:02,197 epoch 7 - iter 24/64 - loss 0.86338259 - time (sec): 5.04 - samples/sec: 152.34 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:35:03,351 epoch 7 - iter 30/64 - loss 0.86797423 - time (sec): 6.19 - samples/sec: 154.97 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:35:04,467 epoch 7 - iter 36/64 - loss 0.85439281 - time (sec): 7.31 - samples/sec: 157.58 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:35:05,567 epoch 7 - iter 42/64 - loss 0.85024860 - time (sec): 8.41 - samples/sec: 159.80 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:35:06,829 epoch 7 - iter 48/64 - loss 0.83954957 - time (sec): 9.67 - samples/sec: 158.80 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:35:07,947 epoch 7 - iter 54/64 - loss 0.83340724 - time (sec): 10.79 - samples/sec: 160.14 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:35:09,013 epoch 7 - iter 60/64 - loss 0.83293155 - time (sec): 11.86 - samples/sec: 161.92 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:35:09,680 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:35:09,680 EPOCH 7 done: loss 0.8286 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:35:11,190 DEV : loss 0.7402542233467102 - f1-score (micro avg)  0.5022</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:35:12,150  - 1 epochs without improvement</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:35:12,151 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:35:13,353 epoch 8 - iter 6/64 - loss 0.72758570 - time (sec): 1.20 - samples/sec: 159.79 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:35:14,508 epoch 8 - iter 12/64 - loss 0.77498165 - time (sec): 2.36 - samples/sec: 162.96 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:35:15,841 epoch 8 - iter 18/64 - loss 0.78188934 - time (sec): 3.69 - samples/sec: 156.12 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:35:17,002 epoch 8 - iter 24/64 - loss 0.79232205 - time (sec): 4.85 - samples/sec: 158.33 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:35:18,121 epoch 8 - iter 30/64 - loss 0.78611903 - time (sec): 5.97 - samples/sec: 160.83 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:35:19,235 epoch 8 - iter 36/64 - loss 0.77288217 - time (sec): 7.08 - samples/sec: 162.64 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:35:20,569 epoch 8 - iter 42/64 - loss 0.77235644 - time (sec): 8.42 - samples/sec: 159.68 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:35:21,605 epoch 8 - iter 48/64 - loss 0.78255222 - time (sec): 9.45 - samples/sec: 162.48 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:35:22,719 epoch 8 - iter 54/64 - loss 0.78456129 - time (sec): 10.57 - samples/sec: 163.52 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:35:23,876 epoch 8 - iter 60/64 - loss 0.77978850 - time (sec): 11.72 - samples/sec: 163.75 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:35:24,539 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:35:24,539 EPOCH 8 done: loss 0.7780 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:35:26,042 DEV : loss 0.7568300366401672 - f1-score (micro avg)  0.4978</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:35:26,975  - 2 epochs without improvement</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:35:26,976 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:35:28,326 epoch 9 - iter 6/64 - loss 0.83446981 - time (sec): 1.35 - samples/sec: 142.24 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:35:29,445 epoch 9 - iter 12/64 - loss 0.83481617 - time (sec): 2.47 - samples/sec: 155.57 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:35:30,487 epoch 9 - iter 18/64 - loss 0.84183356 - time (sec): 3.51 - samples/sec: 164.06 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:35:31,573 epoch 9 - iter 24/64 - loss 0.82389081 - time (sec): 4.60 - samples/sec: 167.09 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:35:32,946 epoch 9 - iter 30/64 - loss 0.81802387 - time (sec): 5.97 - samples/sec: 160.80 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:35:34,065 epoch 9 - iter 36/64 - loss 0.81533981 - time (sec): 7.09 - samples/sec: 162.51 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:35:35,116 epoch 9 - iter 42/64 - loss 0.80514485 - time (sec): 8.14 - samples/sec: 165.12 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:35:36,264 epoch 9 - iter 48/64 - loss 0.81017195 - time (sec): 9.29 - samples/sec: 165.38 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:35:37,347 epoch 9 - iter 54/64 - loss 0.80359553 - time (sec): 10.37 - samples/sec: 166.62 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:35:38,422 epoch 9 - iter 60/64 - loss 0.79928778 - time (sec): 11.45 - samples/sec: 167.75 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:35:39,165 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:35:39,166 EPOCH 9 done: loss 0.7969 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:35:40,876 DEV : loss 0.7745500206947327 - f1-score (micro avg)  0.4844</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:35:41,519  - 3 epochs without improvement</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:35:41,520 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:35:42,980 epoch 10 - iter 6/64 - loss 0.74788894 - time (sec): 1.46 - samples/sec: 131.49 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:35:44,015 epoch 10 - iter 12/64 - loss 0.76720373 - time (sec): 2.49 - samples/sec: 153.94 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:35:45,129 epoch 10 - iter 18/64 - loss 0.79161676 - time (sec): 3.61 - samples/sec: 159.59 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:35:46,488 epoch 10 - iter 24/64 - loss 0.78399789 - time (sec): 4.97 - samples/sec: 154.61 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:35:47,559 epoch 10 - iter 30/64 - loss 0.78045449 - time (sec): 6.04 - samples/sec: 158.97 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:35:48,608 epoch 10 - iter 36/64 - loss 0.78069342 - time (sec): 7.09 - samples/sec: 162.54 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:35:49,743 epoch 10 - iter 42/64 - loss 0.76349049 - time (sec): 8.22 - samples/sec: 163.45 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:35:51,107 epoch 10 - iter 48/64 - loss 0.76165402 - time (sec): 9.59 - samples/sec: 160.22 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:35:52,180 epoch 10 - iter 54/64 - loss 0.77187297 - time (sec): 10.66 - samples/sec: 162.10 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:35:53,268 epoch 10 - iter 60/64 - loss 0.77289468 - time (sec): 11.75 - samples/sec: 163.43 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:35:53,992 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:35:53,993 EPOCH 10 done: loss 0.7810 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:35:55,495 DEV : loss 0.7909061908721924 - f1-score (micro avg)  0.4889</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:35:56,433  - 4 epochs without improvement (above 'patience')-&gt; annealing learning_rate to [0.05]</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:35:56,908 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:35:56,909 Loading model from best epoch ...</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:35:58,808 </span></span>
+<span><span class="co">#&gt; 2023-12-17 14:16:13,170 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:16:13,170 Corpus: 2025 train + 225 dev + 250 test sentences</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:16:13,170 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:16:13,170 Train:  2025 sentences</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:16:13,170         (train_with_dev=False, train_with_test=False)</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:16:13,170 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:16:13,170 Training Params:</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:16:13,170  - learning_rate: "0.1" </span></span>
+<span><span class="co">#&gt; 2023-12-17 14:16:13,170  - mini_batch_size: "32"</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:16:13,170  - max_epochs: "10"</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:16:13,170  - shuffle: "True"</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:16:13,171 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:16:13,171 Plugins:</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:16:13,171  - AnnealOnPlateau | patience: '3', anneal_factor: '0.5', min_learning_rate: '0.0001'</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:16:13,171 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:16:13,171 Final evaluation on model from best epoch (best-model.pt)</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:16:13,171  - metric: "('micro avg', 'f1-score')"</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:16:13,171 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:16:13,171 Computation:</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:16:13,171  - compute on device: cpu</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:16:13,171  - embedding storage: cpu</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:16:13,171 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:16:13,171 Model training base path: "classifier"</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:16:13,171 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:16:13,171 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:16:14,233 epoch 1 - iter 6/64 - loss 0.88400855 - time (sec): 1.06 - samples/sec: 180.96 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:16:15,166 epoch 1 - iter 12/64 - loss 0.88396302 - time (sec): 1.99 - samples/sec: 192.52 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:16:16,226 epoch 1 - iter 18/64 - loss 0.90135088 - time (sec): 3.05 - samples/sec: 188.57 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:16:17,426 epoch 1 - iter 24/64 - loss 0.91910574 - time (sec): 4.25 - samples/sec: 180.53 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:16:18,360 epoch 1 - iter 30/64 - loss 0.92947888 - time (sec): 5.19 - samples/sec: 185.02 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:16:19,322 epoch 1 - iter 36/64 - loss 0.91739042 - time (sec): 6.15 - samples/sec: 187.31 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:16:20,279 epoch 1 - iter 42/64 - loss 0.91689622 - time (sec): 7.11 - samples/sec: 189.10 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:16:21,461 epoch 1 - iter 48/64 - loss 0.91121411 - time (sec): 8.29 - samples/sec: 185.30 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:16:22,476 epoch 1 - iter 54/64 - loss 0.90482956 - time (sec): 9.30 - samples/sec: 185.72 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:16:23,480 epoch 1 - iter 60/64 - loss 0.90788143 - time (sec): 10.31 - samples/sec: 186.25 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:16:24,125 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:16:24,125 EPOCH 1 done: loss 0.9077 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:16:25,430 DEV : loss 0.8828572034835815 - f1-score (micro avg)  0.4533</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:16:26,278  - 0 epochs without improvement</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:16:26,279 saving best model</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:16:26,789 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:16:27,806 epoch 2 - iter 6/64 - loss 0.88782200 - time (sec): 1.02 - samples/sec: 188.85 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:16:28,972 epoch 2 - iter 12/64 - loss 0.89557258 - time (sec): 2.18 - samples/sec: 175.95 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:16:29,952 epoch 2 - iter 18/64 - loss 0.88284143 - time (sec): 3.16 - samples/sec: 182.16 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:16:30,948 epoch 2 - iter 24/64 - loss 0.86361855 - time (sec): 4.16 - samples/sec: 184.70 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:16:31,945 epoch 2 - iter 30/64 - loss 0.86423665 - time (sec): 5.16 - samples/sec: 186.22 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:16:33,143 epoch 2 - iter 36/64 - loss 0.85561348 - time (sec): 6.35 - samples/sec: 181.31 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:16:34,094 epoch 2 - iter 42/64 - loss 0.85215194 - time (sec): 7.30 - samples/sec: 183.99 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:16:35,068 epoch 2 - iter 48/64 - loss 0.85517522 - time (sec): 8.28 - samples/sec: 185.55 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:16:36,368 epoch 2 - iter 54/64 - loss 0.84677640 - time (sec): 9.58 - samples/sec: 180.40 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:16:37,372 epoch 2 - iter 60/64 - loss 0.85021446 - time (sec): 10.58 - samples/sec: 181.43 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:16:37,763 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:16:37,764 EPOCH 2 done: loss 0.8530 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:16:39,291 DEV : loss 0.8783490061759949 - f1-score (micro avg)  0.4533</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:16:40,109  - 0 epochs without improvement</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:16:40,109 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:16:41,169 epoch 3 - iter 6/64 - loss 0.87799916 - time (sec): 1.06 - samples/sec: 181.18 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:16:42,185 epoch 3 - iter 12/64 - loss 0.89608843 - time (sec): 2.07 - samples/sec: 185.08 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:16:43,174 epoch 3 - iter 18/64 - loss 0.90057748 - time (sec): 3.06 - samples/sec: 187.98 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:16:44,401 epoch 3 - iter 24/64 - loss 0.89696234 - time (sec): 4.29 - samples/sec: 178.97 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:16:45,407 epoch 3 - iter 30/64 - loss 0.89147007 - time (sec): 5.30 - samples/sec: 181.23 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:16:46,399 epoch 3 - iter 36/64 - loss 0.89204659 - time (sec): 6.29 - samples/sec: 183.16 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:16:47,365 epoch 3 - iter 42/64 - loss 0.87829229 - time (sec): 7.26 - samples/sec: 185.25 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:16:48,567 epoch 3 - iter 48/64 - loss 0.87632222 - time (sec): 8.46 - samples/sec: 181.61 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:16:49,529 epoch 3 - iter 54/64 - loss 0.87269292 - time (sec): 9.42 - samples/sec: 183.46 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:16:50,490 epoch 3 - iter 60/64 - loss 0.87970024 - time (sec): 10.38 - samples/sec: 184.97 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:16:51,159 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:16:51,159 EPOCH 3 done: loss 0.8762 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:16:52,456 DEV : loss 0.8697565793991089 - f1-score (micro avg)  0.4533</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:16:53,309  - 0 epochs without improvement</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:16:53,310 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:16:54,377 epoch 4 - iter 6/64 - loss 0.88036998 - time (sec): 1.07 - samples/sec: 179.91 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:16:55,632 epoch 4 - iter 12/64 - loss 0.84520512 - time (sec): 2.32 - samples/sec: 165.40 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:16:56,626 epoch 4 - iter 18/64 - loss 0.84692961 - time (sec): 3.32 - samples/sec: 173.69 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:16:57,584 epoch 4 - iter 24/64 - loss 0.84134499 - time (sec): 4.27 - samples/sec: 179.69 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:16:58,534 epoch 4 - iter 30/64 - loss 0.85828587 - time (sec): 5.22 - samples/sec: 183.75 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:16:59,493 epoch 4 - iter 36/64 - loss 0.85654225 - time (sec): 6.18 - samples/sec: 186.31 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:17:00,750 epoch 4 - iter 42/64 - loss 0.84629689 - time (sec): 7.44 - samples/sec: 180.65 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:17:01,744 epoch 4 - iter 48/64 - loss 0.84268748 - time (sec): 8.43 - samples/sec: 182.13 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:17:02,688 epoch 4 - iter 54/64 - loss 0.84196810 - time (sec): 9.38 - samples/sec: 184.27 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:17:03,696 epoch 4 - iter 60/64 - loss 0.85795100 - time (sec): 10.39 - samples/sec: 184.87 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:17:04,336 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:17:04,336 EPOCH 4 done: loss 0.8562 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:17:05,892 DEV : loss 0.8513666391372681 - f1-score (micro avg)  0.4533</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:17:06,431  - 0 epochs without improvement</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:17:06,432 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:17:07,520 epoch 5 - iter 6/64 - loss 0.87054925 - time (sec): 1.09 - samples/sec: 176.56 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:17:08,461 epoch 5 - iter 12/64 - loss 0.88675048 - time (sec): 2.03 - samples/sec: 189.26 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:17:09,694 epoch 5 - iter 18/64 - loss 0.85735505 - time (sec): 3.26 - samples/sec: 176.57 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:17:10,664 epoch 5 - iter 24/64 - loss 0.86416615 - time (sec): 4.23 - samples/sec: 181.47 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:17:11,635 epoch 5 - iter 30/64 - loss 0.85780198 - time (sec): 5.20 - samples/sec: 184.51 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:17:12,849 epoch 5 - iter 36/64 - loss 0.85106002 - time (sec): 6.42 - samples/sec: 179.53 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:17:13,826 epoch 5 - iter 42/64 - loss 0.84119070 - time (sec): 7.39 - samples/sec: 181.76 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:17:14,862 epoch 5 - iter 48/64 - loss 0.84184100 - time (sec): 8.43 - samples/sec: 182.22 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:17:15,830 epoch 5 - iter 54/64 - loss 0.83640844 - time (sec): 9.40 - samples/sec: 183.87 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:17:17,070 epoch 5 - iter 60/64 - loss 0.83129187 - time (sec): 10.64 - samples/sec: 180.49 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:17:17,476 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:17:17,476 EPOCH 5 done: loss 0.8262 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:17:19,035 DEV : loss 0.8393897414207458 - f1-score (micro avg)  0.4578</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:17:19,578  - 0 epochs without improvement</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:17:19,579 saving best model</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:17:19,948 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:17:21,252 epoch 6 - iter 6/64 - loss 0.90684560 - time (sec): 1.30 - samples/sec: 147.27 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:17:22,278 epoch 6 - iter 12/64 - loss 0.86297455 - time (sec): 2.33 - samples/sec: 164.83 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:17:23,304 epoch 6 - iter 18/64 - loss 0.84712324 - time (sec): 3.36 - samples/sec: 171.65 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:17:24,277 epoch 6 - iter 24/64 - loss 0.84480650 - time (sec): 4.33 - samples/sec: 177.41 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:17:25,467 epoch 6 - iter 30/64 - loss 0.84118373 - time (sec): 5.52 - samples/sec: 173.95 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:17:26,478 epoch 6 - iter 36/64 - loss 0.84887512 - time (sec): 6.53 - samples/sec: 176.43 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:17:27,422 epoch 6 - iter 42/64 - loss 0.85247641 - time (sec): 7.47 - samples/sec: 179.83 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:17:28,463 epoch 6 - iter 48/64 - loss 0.83503058 - time (sec): 8.51 - samples/sec: 180.39 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:17:29,746 epoch 6 - iter 54/64 - loss 0.83527769 - time (sec): 9.80 - samples/sec: 176.36 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:17:30,710 epoch 6 - iter 60/64 - loss 0.82645011 - time (sec): 10.76 - samples/sec: 178.41 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:17:31,087 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:17:31,088 EPOCH 6 done: loss 0.8187 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:17:32,621 DEV : loss 0.697002649307251 - f1-score (micro avg)  0.5289</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:17:33,165  - 0 epochs without improvement</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:17:33,166 saving best model</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:17:33,532 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:17:34,858 epoch 7 - iter 6/64 - loss 0.92862150 - time (sec): 1.33 - samples/sec: 144.86 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:17:35,828 epoch 7 - iter 12/64 - loss 0.88754721 - time (sec): 2.30 - samples/sec: 167.30 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:17:36,863 epoch 7 - iter 18/64 - loss 0.87636076 - time (sec): 3.33 - samples/sec: 172.96 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:17:38,160 epoch 7 - iter 24/64 - loss 0.86338259 - time (sec): 4.63 - samples/sec: 165.95 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:17:39,170 epoch 7 - iter 30/64 - loss 0.86797423 - time (sec): 5.64 - samples/sec: 170.31 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:17:40,161 epoch 7 - iter 36/64 - loss 0.85439281 - time (sec): 6.63 - samples/sec: 173.80 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:17:41,144 epoch 7 - iter 42/64 - loss 0.85024860 - time (sec): 7.61 - samples/sec: 176.57 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:17:42,098 epoch 7 - iter 48/64 - loss 0.83954957 - time (sec): 8.56 - samples/sec: 179.34 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:17:43,340 epoch 7 - iter 54/64 - loss 0.83340724 - time (sec): 9.81 - samples/sec: 176.20 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:17:44,299 epoch 7 - iter 60/64 - loss 0.83293155 - time (sec): 10.77 - samples/sec: 178.33 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:17:44,916 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:17:44,917 EPOCH 7 done: loss 0.8286 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:17:46,199 DEV : loss 0.7402542233467102 - f1-score (micro avg)  0.5022</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:17:46,750  - 1 epochs without improvement</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:17:46,751 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:17:48,159 epoch 8 - iter 6/64 - loss 0.72758570 - time (sec): 1.41 - samples/sec: 136.37 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:17:49,156 epoch 8 - iter 12/64 - loss 0.77498165 - time (sec): 2.41 - samples/sec: 159.65 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:17:50,118 epoch 8 - iter 18/64 - loss 0.78188934 - time (sec): 3.37 - samples/sec: 171.08 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:17:51,373 epoch 8 - iter 24/64 - loss 0.79232205 - time (sec): 4.62 - samples/sec: 166.18 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:17:52,336 epoch 8 - iter 30/64 - loss 0.78611903 - time (sec): 5.58 - samples/sec: 171.90 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:17:53,335 epoch 8 - iter 36/64 - loss 0.77288217 - time (sec): 6.58 - samples/sec: 174.98 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:17:54,551 epoch 8 - iter 42/64 - loss 0.77235644 - time (sec): 7.80 - samples/sec: 172.30 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:17:55,480 epoch 8 - iter 48/64 - loss 0.78255222 - time (sec): 8.73 - samples/sec: 175.96 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:17:56,479 epoch 8 - iter 54/64 - loss 0.78456129 - time (sec): 9.73 - samples/sec: 177.63 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:17:57,514 epoch 8 - iter 60/64 - loss 0.77978850 - time (sec): 10.76 - samples/sec: 178.38 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:17:58,107 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:17:58,108 EPOCH 8 done: loss 0.7780 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:17:59,402 DEV : loss 0.7568300366401672 - f1-score (micro avg)  0.4978</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:18:00,240  - 2 epochs without improvement</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:18:00,240 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:18:01,260 epoch 9 - iter 6/64 - loss 0.83446981 - time (sec): 1.02 - samples/sec: 188.40 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:18:02,531 epoch 9 - iter 12/64 - loss 0.83481617 - time (sec): 2.29 - samples/sec: 167.63 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:18:03,463 epoch 9 - iter 18/64 - loss 0.84183356 - time (sec): 3.22 - samples/sec: 178.74 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:18:04,448 epoch 9 - iter 24/64 - loss 0.82389081 - time (sec): 4.21 - samples/sec: 182.53 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:18:05,455 epoch 9 - iter 30/64 - loss 0.81802387 - time (sec): 5.21 - samples/sec: 184.11 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:18:06,427 epoch 9 - iter 36/64 - loss 0.81533981 - time (sec): 6.19 - samples/sec: 186.22 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:18:07,620 epoch 9 - iter 42/64 - loss 0.80514485 - time (sec): 7.38 - samples/sec: 182.14 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:18:08,675 epoch 9 - iter 48/64 - loss 0.81017195 - time (sec): 8.43 - samples/sec: 182.11 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:18:09,632 epoch 9 - iter 54/64 - loss 0.80359553 - time (sec): 9.39 - samples/sec: 184.01 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:18:10,595 epoch 9 - iter 60/64 - loss 0.79928778 - time (sec): 10.35 - samples/sec: 185.43 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:18:11,283 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:18:11,283 EPOCH 9 done: loss 0.7969 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:18:12,807 DEV : loss 0.7745500206947327 - f1-score (micro avg)  0.4844</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:18:13,349  - 3 epochs without improvement</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:18:13,350 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:18:14,746 epoch 10 - iter 6/64 - loss 0.74788894 - time (sec): 1.40 - samples/sec: 137.58 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:18:15,680 epoch 10 - iter 12/64 - loss 0.76720373 - time (sec): 2.33 - samples/sec: 164.78 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:18:16,698 epoch 10 - iter 18/64 - loss 0.79161676 - time (sec): 3.35 - samples/sec: 172.04 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:18:17,725 epoch 10 - iter 24/64 - loss 0.78399789 - time (sec): 4.38 - samples/sec: 175.53 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:18:18,926 epoch 10 - iter 30/64 - loss 0.78045449 - time (sec): 5.58 - samples/sec: 172.17 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:18:19,867 epoch 10 - iter 36/64 - loss 0.78069342 - time (sec): 6.52 - samples/sec: 176.77 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:18:20,880 epoch 10 - iter 42/64 - loss 0.76349049 - time (sec): 7.53 - samples/sec: 178.48 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:18:21,892 epoch 10 - iter 48/64 - loss 0.76165402 - time (sec): 8.54 - samples/sec: 179.81 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:18:23,094 epoch 10 - iter 54/64 - loss 0.77187297 - time (sec): 9.74 - samples/sec: 177.33 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:18:24,082 epoch 10 - iter 60/64 - loss 0.77289468 - time (sec): 10.73 - samples/sec: 178.90 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:18:24,745 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:18:24,745 EPOCH 10 done: loss 0.7810 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:18:26,039 DEV : loss 0.7909061908721924 - f1-score (micro avg)  0.4889</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:18:26,913  - 4 epochs without improvement (above 'patience')-&gt; annealing learning_rate to [0.05]</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:18:27,278 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:18:27,279 Loading model from best epoch ...</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:18:28,824 </span></span>
 <span><span class="co">#&gt; Results:</span></span>
 <span><span class="co">#&gt; - F-score (micro) 0.592</span></span>
 <span><span class="co">#&gt; - F-score (macro) 0.5066</span></span>
@@ -1560,7 +1561,7 @@ the way they are stored in memory.</strong></p>
 <span><span class="co">#&gt;    macro avg     0.7200    0.5793    0.5066       250</span></span>
 <span><span class="co">#&gt; weighted avg     0.7149    0.5920    0.5132       250</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; 2023-12-16 18:35:58,809 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:18:28,825 ----------------------------------------------------------------------------------------------------</span></span>
 <span><span class="co">#&gt; $test_score</span></span>
 <span><span class="co">#&gt; [1] 0.592</span></span></code></pre></div>
 </div>
@@ -1635,18 +1636,18 @@ demonstration</p>
 <code class="sourceCode R"><span><span class="co"># load the IMDB file and downsize it to 0.1</span></span>
 <span><span class="va">IMDB</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_datasets.html">flair_datasets</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">IMDB</span></span>
 <span><span class="va">corpus</span> <span class="op">&lt;-</span> <span class="fu">IMDB</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">downsample</span><span class="op">(</span><span class="fl">0.1</span><span class="op">)</span> </span>
-<span><span class="co">#&gt; 2023-12-16 18:35:59,400 Reading data from /Users/yenchiehliao/.flair/datasets/imdb_v4-rebalanced</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:35:59,400 Train: /Users/yenchiehliao/.flair/datasets/imdb_v4-rebalanced/train.txt</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:35:59,400 Dev: None</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:35:59,400 Test: None</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:36:00,298 No test split found. Using 0% (i.e. 5000 samples) of the train split as test data</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:36:00,319 No dev split found. Using 0% (i.e. 4500 samples) of the train split as dev data</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:36:00,319 Initialized corpus /Users/yenchiehliao/.flair/datasets/imdb_v4-rebalanced (label type name is 'sentiment')</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:18:29,427 Reading data from /Users/yenchiehliao/.flair/datasets/imdb_v4-rebalanced</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:18:29,427 Train: /Users/yenchiehliao/.flair/datasets/imdb_v4-rebalanced/train.txt</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:18:29,427 Dev: None</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:18:29,427 Test: None</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:18:30,200 No test split found. Using 0% (i.e. 5000 samples) of the train split as test data</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:18:30,216 No dev split found. Using 0% (i.e. 4500 samples) of the train split as dev data</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:18:30,216 Initialized corpus /Users/yenchiehliao/.flair/datasets/imdb_v4-rebalanced (label type name is 'sentiment')</span></span>
 <span><span class="co"># create the label dictionary</span></span>
 <span><span class="va">lbl_type</span> <span class="op">&lt;-</span> <span class="st">'sentiment'</span></span>
 <span><span class="va">label_dict</span> <span class="op">&lt;-</span> <span class="va">corpus</span><span class="op">$</span><span class="fu">make_label_dictionary</span><span class="op">(</span>label_type<span class="op">=</span><span class="va">lbl_type</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:36:00,345 Computing label dictionary. Progress:</span></span>
-<span><span class="co">#&gt; 2023-12-16 18:36:11,962 Dictionary created for label 'sentiment' with 2 values: POSITIVE (seen 2056 times), NEGATIVE (seen 1994 times)</span></span></code></pre></div>
+<span><span class="co">#&gt; 2023-12-17 14:18:30,236 Computing label dictionary. Progress:</span></span>
+<span><span class="co">#&gt; 2023-12-17 14:18:40,080 Dictionary created for label 'sentiment' with 2 values: POSITIVE (seen 2056 times), NEGATIVE (seen 1994 times)</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level3">
