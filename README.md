@@ -39,6 +39,8 @@ examples, and tutorials for using Flair NLP. The goal is to make it
 easier for R users to access the powerful NLP tools provided by Flair
 NLP.
 
+## Tutorial Updates
+
 <br>
 
 ## Installation via <u>**`GitHub`**</u>
@@ -233,7 +235,7 @@ other words, for early stopping of the model.
 
 ``` r
 corpus <- Corpus(train=train, test=test)
-#> 2023-11-29 17:07:26,611 No dev split found. Using 0% (i.e. 282 samples) of the train split as dev data
+#> 2023-12-19 17:06:22,210 No dev split found. Using 0% (i.e. 282 samples) of the train split as dev data
 ```
 
 Alternatively, you can also create dev sets splitting test set. The
@@ -270,8 +272,8 @@ other label types for training custom model, such as `ner`, `pos` and
 
 ``` r
 label_dict <- corpus$make_label_dictionary(label_type="classification")
-#> 2023-11-29 17:07:28,097 Computing label dictionary. Progress:
-#> 2023-11-29 17:07:28,151 Dictionary created for label 'classification' with 2 values: 0 (seen 1480 times), 1 (seen 1336 times)
+#> 2023-12-19 17:06:24,754 Computing label dictionary. Progress:
+#> 2023-12-19 17:06:24,813 Dictionary created for label 'classification' with 2 values: 0 (seen 1480 times), 1 (seen 1336 times)
 ```
 
 Besides, you can also create a label dictionary manually. The following
@@ -471,7 +473,7 @@ sentence <- Sentence(text)
 ``` r
 classifier$predict(sentence)
 print(sentence)
-#> Sentence[55]: "Ladies and gentlemen, I stand before you today not just as a legislator, but as a defender of our very way of life! We are facing a crisis of monumental proportions, and if we don't act now, the very fabric of our society will unravel before our eyes!" → 0 (0.7247)
+#> Sentence[55]: "Ladies and gentlemen, I stand before you today not just as a legislator, but as a defender of our very way of life! We are facing a crisis of monumental proportions, and if we don't act now, the very fabric of our society will unravel before our eyes!" → 1 (0.8233)
 ```
 
 `sentence$labels` is a list of labels, each of which has a value and a
@@ -480,12 +482,12 @@ of the label. The label with the highest score is the predicted label.
 
 ``` r
 sentence$labels[[1]]$value
-#> [1] "0"
+#> [1] "1"
 ```
 
 ``` r
 sentence$labels[[1]]$score
-#> [1] 0.7246658
+#> [1] 0.8232907
 ```
 
 <u>**Step 7**</u> Reload the Model with the Best Performance
@@ -591,7 +593,7 @@ Sentence <- flair_data()$Sentence
 
 # load the model flair NLP already trained for us
 tagger <- Classifier$load('ner')
-#> 2023-11-29 17:07:30,508 SequenceTagger predicts: Dictionary with 20 tags: <unk>, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, <START>, <STOP>
+#> 2023-12-19 17:06:29,680 SequenceTagger predicts: Dictionary with 20 tags: <unk>, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, <START>, <STOP>
 
 # make a sentence object
 text <- "Yesterday, Dr. Jane Smith spoke at the United Nations in New York. She discussed climate change and its impact on global economies. The event was attended by representatives from various countries including France and Japan. Dr. Smith mentioned that by 2050, the world could see a rise in sea level by approximately 2 feet. The World Health Organization (WHO) has pledged $50 million to combat the health effects of global warming. In an interview with The New York Times, Dr. Smith emphasized the urgent need for action. Later that day, she flew back to London, arriving at 10:00 PM GMT."
@@ -628,7 +630,7 @@ sentence object in a tidy format.
 
 ``` r
 tagger_ner <- load_tagger_ner("ner")
-#> 2023-11-29 17:07:33,281 SequenceTagger predicts: Dictionary with 20 tags: <unk>, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, <START>, <STOP>
+#> 2023-12-19 17:06:33,159 SequenceTagger predicts: Dictionary with 20 tags: <unk>, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, <START>, <STOP>
 results <- get_entities(text = text, 
                         doc_ids = "example text",
                         tagger_ner)
@@ -674,7 +676,7 @@ examples[c("text", "countryname")]
 
 ``` r
 tagger_ner <- load_tagger_ner("ner")
-#> 2023-11-29 17:07:36,005 SequenceTagger predicts: Dictionary with 20 tags: <unk>, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, <START>, <STOP>
+#> 2023-12-19 17:06:36,707 SequenceTagger predicts: Dictionary with 20 tags: <unk>, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, <START>, <STOP>
 results <- get_entities(text = examples$text, 
                         doc_ids = examples$countryname,
                         tagger_ner)
@@ -709,14 +711,15 @@ also utilize GPU acceleration for faster computations.
 <div style="text-align: justify">
 
 `{flaiR}` is maintained and developed by [David
-Liao](https://davidycliao.github.io) and friends. R developers who want
-to contribute to {`flaiR`} are welcome – {`flaiR`} is an open source
-project. I warmly invite R users who share similar interests to join in
-contributing to this package. Please feel free to shoot me an email to
-collaborate on the task. Contributions – whether they be comments, code
-suggestions, tutorial examples, or forking the repository – are greatly
-appreciated. Please note that the `flaiR` is released with the
-[Contributor Code of
+Liao](https://davidycliao.github.io) and friends in [Connected_Politics
+Lab](https://www.ucd.ie/connected_politics/) in UCD. R developers who
+want to contribute to {`flaiR`} are welcome – {`flaiR`} is an open
+source project. I warmly invite R users who share similar interests to
+join in contributing to this package. Please feel free to shoot me an
+email to collaborate on the task. Contributions – whether they be
+comments, code suggestions, tutorial examples, or forking the repository
+– are greatly appreciated. Please note that the `flaiR` is released with
+the [Contributor Code of
 Conduct](https://github.com/davidycliao/flaiR/blob/master/CONDUCT.md).
 By contributing to this project, you agree to abide by its terms.
 

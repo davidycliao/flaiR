@@ -30,7 +30,7 @@ library(reticulate)
 library(flaiR)
 reticulate::py_install("flair")
 system(paste(reticulate::py_config()$python, "-m pip install flair"))
-options(repos = c(CRAN = "https://cloud.r-project.org/"))
+# options(repos = c(CRAN = "https://cloud.r-project.org/"))
 install.packages("remotes")
 ```
 
@@ -42,6 +42,12 @@ install.packages("remotes")
 For a comprehensive understanding of the `{flairNLP/flair}` architecture and NLP tagging models by [Zalando Research](https://engineering.zalando.com/posts/2018/11/zalando-research-releases-flair.html), you can refer to the research article '[Contextual String Embeddings for Sequence Labeling](https://aclanthology.org/C18-1139.pdf)' and the official [manual](https://flairnlp.github.io) written for its Python implementation. 
 
 {flaiR} unofficial platform provides R users with documentation, examples, and tutorials for using Flair NLP. The goal is to make it easier for R users to access the powerful NLP tools provided by Flair NLP.
+
+
+## Tutorial Updates
+
+
+
   
 <br>
 
@@ -225,6 +231,7 @@ Then, we can use the `$item2idx` method to check the mapping from label to index
 ```{r}
 print(label_dict$idx2item)
 ```
+
 ```{r}
 print(label_dict$item2idx)
 ```
@@ -460,7 +467,7 @@ In addition, to handle the load on RAM when dealing with larger corpus, {`flairR
 
 <div style="text-align: justify">
 
-`{flaiR}` is maintained and developed by [David Liao](https://davidycliao.github.io) and friends. R developers who want to contribute to {`flaiR`} are welcome – {`flaiR`} is an open source project. I warmly invite R users who share similar interests to join in contributing to this package. Please feel free to shoot me an email to collaborate on the task. Contributions – whether they be comments, code suggestions, tutorial examples, or forking the repository – are greatly appreciated. Please note that the `flaiR` is released with the [Contributor Code of Conduct](https://github.com/davidycliao/flaiR/blob/master/CONDUCT.md). By contributing to this project, you agree to abide by its terms. 
+`{flaiR}` is maintained and developed by [David Liao](https://davidycliao.github.io) and friends in [Connected_Politics Lab](https://www.ucd.ie/connected_politics/) in UCD. R developers who want to contribute to {`flaiR`} are welcome – {`flaiR`} is an open source project. I warmly invite R users who share similar interests to join in contributing to this package. Please feel free to shoot me an email to collaborate on the task. Contributions – whether they be comments, code suggestions, tutorial examples, or forking the repository – are greatly appreciated. Please note that the `flaiR` is released with the [Contributor Code of Conduct](https://github.com/davidycliao/flaiR/blob/master/CONDUCT.md). By contributing to this project, you agree to abide by its terms. 
 
 The primary communication channel for R users can be found [here](https://github.com/davidycliao/flaiR/discussions). Please feel free to share your insights on the [Discussion](https://github.com/davidycliao/flaiR/discussions) page and report any issues related to the R interface in the [Issue](https://github.com/davidycliao/flaiR/issues) section. If the issue pertains to the actual implementation of Flair in Python, please submit a pull request to the offical [flair NLP](https://github.com/flairnlp/flair). 
 
