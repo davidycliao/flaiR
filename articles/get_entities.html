@@ -108,7 +108,6 @@
   </a>
   <div class="dropdown-menu" aria-labelledby="dropdown--reference">
     <a class="dropdown-item" href="../reference/index.html">All Function Reference</a>
-    <a class="dropdown-item" href="../articles/flair_models.html">Flair NLP Pre-Trained Models</a>
   </div>
 </li>
 <li class="nav-item dropdown">
@@ -177,7 +176,7 @@ once you’ve downloaded it and it hasn’t been manually removed, executing
 the command again will not trigger a download.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tagger_ner</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_tagger_ner.html">load_tagger_ner</a></span><span class="op">(</span><span class="st">"ner"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2023-12-17 14:11:07,621 SequenceTagger predicts: Dictionary with 20 tags: &lt;unk&gt;, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, &lt;START&gt;, &lt;STOP&gt;</span></span></code></pre></div>
+<span><span class="co">#&gt; 2024-01-09 20:53:12,462 SequenceTagger predicts: Dictionary with 20 tags: &lt;unk&gt;, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, &lt;START&gt;, &lt;STOP&gt;</span></span></code></pre></div>
 <p>Flair NLP operates under the <a href="https://pytorch.org" class="external-link">PyTorch</a> framework. As such, we can use
 the <code>$to</code> method to set the device for the Flair Python
 library. The flair_device(“cpu”) allows you to select whether to use the
@@ -369,7 +368,7 @@ requirements of your entity extraction task.</p>
 <span><span class="co">#&gt; Processing batch 2 out of 2...</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">batch_process_time</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;  29.454   3.124  39.080</span></span></code></pre></div>
+<span><span class="co">#&gt;  27.282   0.279  27.558</span></span></code></pre></div>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">batch_process_results</span><span class="op">)</span></span>
 <span><span class="co">#&gt;               doc_id                          entity  tag text_id</span></span>
