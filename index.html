@@ -396,19 +396,19 @@
 <span><span class="co">#&gt; 6 0.7429       0.7429</span></span></code></pre></div>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
-<span><span class="fu">ggplot</span><span class="op">(</span><span class="va">performance_df</span>, <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">EPOCH</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu">geom_line</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>y <span class="op">=</span> <span class="va">TRAIN_LOSS</span>, color <span class="op">=</span> <span class="st">"Training Loss"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">geom_line</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>y <span class="op">=</span> <span class="va">DEV_LOSS</span>, color <span class="op">=</span> <span class="st">"Development Loss"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">geom_line</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>y <span class="op">=</span> <span class="va">DEV_RECALL</span>, color <span class="op">=</span> <span class="st">"Development Recall"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">geom_line</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>y <span class="op">=</span> <span class="va">DEV_F1</span>, color <span class="op">=</span> <span class="st">"Development F1"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">labs</span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Training and Development Loss per Epoch"</span>,</span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">performance_df</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">EPOCH</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">TRAIN_LOSS</span>, color <span class="op">=</span> <span class="st">"Training Loss"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">DEV_LOSS</span>, color <span class="op">=</span> <span class="st">"Development Loss"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">DEV_RECALL</span>, color <span class="op">=</span> <span class="st">"Development Recall"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">DEV_F1</span>, color <span class="op">=</span> <span class="st">"Development F1"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Training and Development Loss per Epoch"</span>,</span>
 <span>       x <span class="op">=</span> <span class="st">"Epochs / Grandstanding Classifier"</span>,</span>
 <span>       y <span class="op">=</span> <span class="st">""</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">scale_color_manual</span><span class="op">(</span><span class="st">""</span>, </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_color_manual</a></span><span class="op">(</span><span class="st">""</span>, </span>
 <span>                     values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Training Loss"</span> <span class="op">=</span> <span class="st">"blue"</span>,</span>
 <span>                                <span class="st">"Development Loss"</span> <span class="op">=</span> <span class="st">"red"</span>,</span>
 <span>                                <span class="st">"Development F1"</span> <span class="op">=</span> <span class="st">"green"</span><span class="op">)</span><span class="op">)</span><span class="op">+</span></span>
-<span>  <span class="fu">theme_minimal</span><span class="op">(</span><span class="op">)</span> </span></code></pre></div>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_minimal</a></span><span class="op">(</span><span class="op">)</span> </span></code></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-20-1.png" width="100%"></p>
 <p>The overall performance of the model on the test set is also straightforward and easy to evaluate. You can find the performance metrics in the <code>model/training.log</code> file.</p>
 <div class="sourceCode" id="cb23"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" tabindex="-1"></a>Results<span class="sc">:</span></span>
@@ -650,6 +650,8 @@
 <li>
 <a href="https://davidycliao.github.io" class="external-link">David Liao</a> <br><small class="roles"> Maintainer, author </small>  </li>
 <li>Paula Montano <br><small class="roles"> Contributor, author </small>  </li>
+<li>
+<a href="https://samiradiebire.github.io" class="external-link">Samira Diebire</a> <br><small class="roles"> Contributor, author </small>  </li>
 <li>Akbik Alan <br><small class="roles"> Author, contributor </small>  </li>
 <li>Blythe Duncan <br><small class="roles"> Author, contributor </small>  </li>
 <li>Vollgraf Roland <br><small class="roles"> Author, contributor </small>  </li>
@@ -666,7 +668,7 @@
   <footer><div class="container">
   <div class="pkgdown-footer-left">
   <p></p>
-<p>Developed by <a href="https://davidycliao.github.io" class="external-link">David Liao</a>, Paula Montano, Akbik Alan, Blythe Duncan, Vollgraf Roland.</p>
+<p>Developed by <a href="https://davidycliao.github.io" class="external-link">David Liao</a>, Paula Montano, <a href="https://samiradiebire.github.io" class="external-link">Samira Diebire</a>, Akbik Alan, Blythe Duncan, Vollgraf Roland.</p>
 </div>
 
 <div class="pkgdown-footer-right">
