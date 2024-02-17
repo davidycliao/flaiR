@@ -1,21 +1,3 @@
-renv::use(
-  "Matrix@1.6-3",
-  "Rcpp@1.0.11",
-  "RcppTOML@0.2.2",
-  "attempt@0.3.1",
-  "curl@5.1.0",
-  "here@1.0.1",
-  "jsonlite@1.8.7",
-  "lattice@0.22-5",
-  "png@0.1-8",
-  "rappdirs@0.3.3",
-  "renv@1.0.3",
-  "reticulate@1.34.0",
-  "rlang@1.1.2",
-  "rprojroot@2.0.4",
-  "withr@2.5.2"
-)
-
 #' @title Clear Flair Cache
 #'
 #' @description
