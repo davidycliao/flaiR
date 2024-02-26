@@ -10,9 +10,9 @@ load_tagger_sentiments(language = NULL)
 \item{language}{A character string specifying the language model to load.
 Supported models include:
 \itemize{
-  \item "sentiment" - Sentiment analysis model
-  \item "sentiment-fast" - Faster sentiment analysis model
-  \item "de-offensive-language" - German offensive language detection model
+\item "sentiment" - Sentiment analysis model
+\item "sentiment-fast" - Faster sentiment analysis model
+\item "de-offensive-language" - German offensive language detection model
 } If not provided, the function will default to the "sentiment" model.}
 }
 \value{

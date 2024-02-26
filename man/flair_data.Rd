@@ -7,32 +7,50 @@
 flair_data()
 }
 \value{
-A Python module (`flair.data`).
+A Python module (\code{flair.data}). To access the classes and utilities.
 }
 \description{
-The `flair.data` module provides essential utilities for text data
+The \code{flair.data} module provides essential utilities for text data
 processing and representation in the Flair library. This function
-gives access to various classes and utilities in the `flair.data` module,
+gives access to various classes and utilities in the \code{flair.data} module,
 most notably:
 \itemize{
-  \item \strong{Sentence}: Represents a sentence, which is a list of
-  Tokens. This class provides various utilities for sentence
-  manipulation, such as adding tokens, tagging with pre-trained models,
-  and obtaining embeddings.
-  \item \strong{Token}: Represents a word or a sub-word unit in a sentence.
-  It can carry various annotations such as named entity tags, part-of-speech
-  tags, and embeddings. Additionally, the token provides functionalities
-  to retrieve or check its annotations.
-  \item \strong{Corpus}: Represents a collection of sentences,
-  facilitating operations like splitting into train/test/development
-   sets and applying transformations. It is particularly useful
-   for training and evaluating models on custom datasets.
+\item \strong{BoundingBox(left, top, right, bottom)}: Bases: tuple (Python); list (R)
+\itemize{
+\item left - str. Alias for field number 0.
+\item top - int Alias for field number 1
+\item right - int Alias for field number 2
+\item bottom - int Alias for field number 3
 }
-Additionally, the module offers utilities for reading data in the CoNLL
-format, a common format for NER, POS tagging, and more. It also contains
-the `Dictionary` class for item-index mapping, facilitating the conversion
-of text into machine-readable formats. This function provides a bridge
-to access these functionalities directly from R.
+
+\item \strong{Sentence(text, use_tokenizer=True, language_code=None,
+start_position=0)}:A Sentence is a list of tokens and is used to
+represent a sentence or text fragment. \code{Sentence} can be imported by
+\code{flair_data()$Sentence} via {flaiR}.
+\itemize{
+\item text \code{Union[str, List[str], List[Token]]} - The original string (sentence), or a pre-tokenized list of tokens.
+\item use_tokenizer \code{Union[bool, Tokenizer]} - Specify a custom tokenizer to split the text into tokens. The default is \code{flair.tokenization.SegTokTokenizer}. If \code{use_tokenizer} is set to \code{False}, \code{flair.tokenization.SpaceTokenizer} will be used instead. The tokenizer will be ignored if \code{text} refers to pre-tokenized tokens.
+\item language_code \code{Optional[str]} - Language of the sentence. If not provided, \code{langdetect} will be called when the \code{language_code} is accessed for the first time.
+\item start_position \code{int} - Start character offset of the sentence in the superordinate document.
+}
+\item \strong{Span(tokens, tag=None, score=1.0)}: Bases: _PartOfSentence.
+A Span is a slice of a Sentence, consisting of a list of Tokens.
+\code{Span} can be imported by \code{flair_data()$Span}.
+
+\item \strong{Token(text, head_id=None, whitespace_after=1, start_position=0, sentence=None)}:
+This class represents one word in a tokenized sentence.
+Each token may have any number of tags. It may also point to its head in a
+dependency tree. \code{Token} can be imported by \code{flair_data()$Token} via {flaiR}.
+
+\item \strong{Corpus(train=None, dev=None, test=None, name='corpus', sample_missing_splits=True)}: Represents a collection of sentences,
+facilitating operations like splitting into train/test/development
+sets and applying transformations. It is particularly useful
+for training and evaluating models on custom datasets.
+\code{Corpus} can be imported by \code{flair_data()$Corpus} via {flaiR}.
+
+\item \strong{Dictionary}: Represents a mapping between items and indices.
+It is useful for converting text into machine-readable formats.
+}
 }
 \examples{
 \dontrun{
@@ -47,4 +65,7 @@ Python reference:
 \preformatted{
 from flair.data import Sentence
 }
+}
+\seealso{
+\href{https://flairnlp.github.io/flair/master/api/flair.data.html#}{flair.data}
 }

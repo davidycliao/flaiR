@@ -7,16 +7,16 @@
 flair_splitter()
 }
 \value{
-A Python module (`flair.splitter`).
+A Python module (\code{flair.splitter}).
 }
 \description{
 A function to interface with the Python \code{flair.splitter} module. This function provides access to various
 sentence splitting strategies implemented in the Flair library:
 \itemize{
-  \item \code{NoSentenceSplitter}: Treats the entire text as a single sentence without splitting it.
-  \item \code{SegtokSentenceSplitter}: Uses the \code{segtok} library to split text into sentences.
-  \item \code{SpacySentenceSplitter}: Uses the \code{spaCy} library for sentence splitting.
-  \item \code{TagSentenceSplitter}: Assumes specific tags in the text to indicate sentence boundaries.
+\item \code{NoSentenceSplitter}: Treats the entire text as a single sentence without splitting it.
+\item \code{SegtokSentenceSplitter}: Uses the \code{segtok} library to split text into sentences.
+\item \code{SpacySentenceSplitter}: Uses the \code{spaCy} library for sentence splitting.
+\item \code{TagSentenceSplitter}: Assumes specific tags in the text to indicate sentence boundaries.
 }
 }
 \examples{
@@ -28,10 +28,11 @@ sentences <- splitter$split(text)
 
 }
 \references{
-Python reference for `SegtokSentenceSplitter`:
+Python reference for \code{SegtokSentenceSplitter}:
 \preformatted{
 from flair.splitter import *
 }
-Additional references for the other classes can be found within the Flair library documentation.
+Additional references for the other classes can be found within the Flair
+library documentation.
 \href{https://github.com/flairNLP/flair/blob/master/flair/splitter.py}{Flair GitHub}
 }

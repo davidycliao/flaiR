@@ -8,21 +8,21 @@ load_tagger_ner(language = NULL)
 }
 \arguments{
 \item{language}{A character string indicating the desired language for the NER tagger.
-If `NULL`, the function will default to the 'pos-fast' model.
+If \code{NULL}, the function will default to the 'pos-fast' model.
 Supported languages and their models include:
 \itemize{
-  \item `"en"` - English NER tagging (`ner`)
-  \item `"de"` - German NER tagging (`de-ner`)
-  \item `"fr"` - French NER tagging (`fr-ner`)
-  \item `"nl"` - Dutch NER tagging (`nl-ner`)
-  \item `"da"` - Danish NER tagging (`da-ner`)
-  \item `"ar"` - Arabic NER tagging (`ar-ner`)
-  \item `"ner-fast"` - English NER fast model (`ner-fast`)
-  \item `"ner-large"` - English NER large mode (`ner-large`)
-  \item `"de-ner-legal"` - NER (legal text) (`de-ner-legal`)
-  \item `"nl"` - Dutch NER tagging (`nl-ner`)
-  \item `"da"` - Danish NER tagging (`da-ner`)
-  \item `"ar"` - Arabic NER tagging (`ar-ner`)
+\item \code{"en"} - English NER tagging (\code{ner})
+\item \code{"de"} - German NER tagging (\code{de-ner})
+\item \code{"fr"} - French NER tagging (\code{fr-ner})
+\item \code{"nl"} - Dutch NER tagging (\code{nl-ner})
+\item \code{"da"} - Danish NER tagging (\code{da-ner})
+\item \code{"ar"} - Arabic NER tagging (\code{ar-ner})
+\item \code{"ner-fast"} - English NER fast model (\code{ner-fast})
+\item \code{"ner-large"} - English NER large mode (\code{ner-large})
+\item \code{"de-ner-legal"} - NER (legal text) (\code{de-ner-legal})
+\item \code{"nl"} - Dutch NER tagging (\code{nl-ner})
+\item \code{"da"} - Danish NER tagging (\code{da-ner})
+\item \code{"ar"} - Arabic NER tagging (\code{ar-ner})
 }}
 }
 \value{

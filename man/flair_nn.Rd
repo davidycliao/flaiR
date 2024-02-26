@@ -7,25 +7,25 @@
 flair_nn()
 }
 \value{
-A reference to Flair's neural network module (`flair.nn`).
+A reference to Flair's neural network module (\code{flair.nn}).
 }
 \description{
-This function provides an interface to the `flair.nn` module from the Flair library.
+This function provides an interface to the \code{flair.nn} module from the Flair library.
 
-The `flair.nn` module encompasses various sub-modules such as:
+The \code{flair.nn} module encompasses various sub-modules such as:
 \itemize{
-  \item decoder
-  \item distance
-  \item dropout
-  \item loss
-  \item model
-  \item multitask
-  \item recurrent
-  \item Model
-  \item Classifier
-  \item PrototypicalDecoder
-  \item LockedDropout
-  \item WordDropout
+\item decoder
+\item distance
+\item dropout
+\item loss
+\item model
+\item multitask
+\item recurrent
+\item Model
+\item Classifier
+\item PrototypicalDecoder
+\item LockedDropout
+\item WordDropout
 }
 }
 \examples{

@@ -2,13 +2,28 @@
 % Please edit documentation in R/zzz.R
 \name{.onAttach}
 \alias{.onAttach}
-\title{.onAttach Function for the flaiR Package}
+\title{Install Python Dependencies and Load the flaiRnlp}
 \usage{
 .onAttach(...)
 }
+\arguments{
+\item{...}{A character string specifying the name of the virtual environment.}
+}
 \description{
-This function is called when the flaiR package is loaded. \
-It provides messages detailing the versions of Python and Flair being used, a
-s well as other package details.
+.onAttach sets up a virtual environment, checks for Python availability,
+and ensures the 'flair' module is installed in flair_env in Python.
+}
+\details{
+The function performs the following steps:
+\itemize{
+\item Checks if the virtual environment specified by \code{venv} exists.
+If not, it creates the environment.
+\item Activates the virtual environment.
+\item Checks for the availability of Python. If Python is not available,
+it displays an error message.
+\item Checks if the 'flair' Python module is available in the virtual
+environment. If not, it attempts to install 'flair'. If the
+installation fails, it prompts the user to install 'flair' manually.
+}
 }
 \keyword{internal}

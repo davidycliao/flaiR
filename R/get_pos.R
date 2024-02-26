@@ -17,15 +17,15 @@
 #' Default is FALSE.
 #' @return A data.table containing the following columns:
 #' \describe{
-#'   \item{\code{doc_id}}{The document identifier corresponding to each text.}
-#'   \item{\code{token_id}}{The token number in the original text,
+#'   \item{`doc_id`}{The document identifier corresponding to each text.}
+#'   \item{`token_id`}{The token number in the original text,
 #'   indicating the position of the token.}
-#'   \item{\code{text_id}}{The actual text input passed to the function.}
-#'   \item{\code{token}}{The individual word or token from the text that was
+#'   \item{`text_id`}{The actual text input passed to the function.}
+#'   \item{`token`}{The individual word or token from the text that was
 #'   POS tagged.}
-#'   \item{\code{tag}}{The part-of-speech tag assigned to the token by
+#'   \item{`tag`}{The part-of-speech tag assigned to the token by
 #'   the Flair library.}
-#'   \item{\code{precision}}{A confidence score (numeric) for the
+#'   \item{`precision`}{A confidence score (numeric) for the
 #'   assigned POS tag.}
 #' }
 #'
@@ -56,9 +56,8 @@ get_pos <- function(texts, doc_ids = NULL, tagger = NULL, language = NULL,
   doc_ids <- texts_and_ids$doc_ids
 
   # Import the `Sentence` tokenizer and `Classifier` from Python's Flair
-  flair <- reticulate::import("flair")
-  Classifier <- flair$nn$Classifier
-  Sentence <- flair$data$Sentence
+  Classifier <- flair_nn()$Classifier
+  Sentence <- flair_data()$Sentence
 
   # If tagger is null, the `load_tagger_pos` default to using "pos-fast" in language.
   if (is.null(tagger)) {

@@ -20,14 +20,14 @@ embedding capabilities.
 \details{
 This function allows R users to access the following Flair embeddings modules:
 \describe{
-  \item{FlairEmbeddings}{Contextual string embeddings capturing latent syntactic-semantic information beyond standard word embeddings.}
-  \item{WordEmbeddings}{Classic word embeddings like GloVe or FastText.}
-  \item{TransformerWordEmbeddings}{Word embeddings from transformer models such as BERT, RoBERTa, etc.}
-  \item{TransformerDocumentEmbeddings}{Transformer-based embeddings for entire documents or sentences.}
-  \item{StackedEmbeddings}{Combines multiple embeddings for a richer representation.}
-  \item{DocumentPoolEmbeddings}{Provides a single embedding vector for an entire document based on the chosen operation mode (mean, max, etc.).}
-  \item{BytePairEmbeddings}{Embeddings based on the Byte-Pair Encoding (BPE) mechanism used in subword tokenization.}
-  \item{ELMoEmbeddings}{Deep contextual embeddings derived from the internal state of a pretrained bidirectional LSTM.}
+\item{FlairEmbeddings}{Contextual string embeddings capturing latent syntactic-semantic information beyond standard word embeddings.}
+\item{WordEmbeddings}{Classic word embeddings like GloVe or FastText.}
+\item{TransformerWordEmbeddings}{Word embeddings from transformer models such as BERT, RoBERTa, etc.}
+\item{TransformerDocumentEmbeddings}{Transformer-based embeddings for entire documents or sentences.}
+\item{StackedEmbeddings}{Combines multiple embeddings for a richer representation.}
+\item{DocumentPoolEmbeddings}{Provides a single embedding vector for an entire document based on the chosen operation mode (mean, max, etc.).}
+\item{BytePairEmbeddings}{Embeddings based on the Byte-Pair Encoding (BPE) mechanism used in subword tokenization.}
+\item{ELMoEmbeddings}{Deep contextual embeddings derived from the internal state of a pretrained bidirectional LSTM.}
 }
 Each embedding type offers unique features suitable for various NLP tasks. By understanding their differences and capabilities, R users can select
 the appropriate embeddings to enhance their NLP models.
@@ -73,7 +73,7 @@ stacked_embeddings <- StackedEmbeddings(
 }
 
 \dontrun{
-# Example 6: Initialize DocumentPoolEmbeddings
+# Initialize DocumentPoolEmbeddings
 DocumentPoolEmbeddings <- flair_embeddings()$DocumentPoolEmbeddings
 WordEmbeddings <- flair_embeddings()$WordEmbeddings
 doc_embeddings <- DocumentPoolEmbeddings(list(WordEmbeddings('glove')))

@@ -3,17 +3,17 @@
 \docType{data}
 \name{cc_muller}
 \alias{cc_muller}
-\title{Replication Data for: The Temporal Focus of Campaign Communication (2020 JOP)}
+\title{Training Data from : The Temporal Focus of Campaign Communication (2020 JOP)}
 \format{
 A data frame with 7 variables:
 \describe{
-  \item{text}{Content of the text.}
-  \item{sentence_id}{Unique identifier for each sentence.}
-  \item{countryname}{Country's name.}
-  \item{party}{Associated political party of the text.}
-  \item{date}{Date of the record.}
-  \item{class}{Type or classification.}
-  \item{class_pro_retro}{Classification as either 'Prospective' or 'Retrospective'.}
+\item{text}{Content of the text.}
+\item{sentence_id}{Unique identifier for each sentence.}
+\item{countryname}{Country's name.}
+\item{party}{Associated political party of the text.}
+\item{date}{Date of the record.}
+\item{class}{Type or classification.}
+\item{class_pro_retro}{Classification as either 'Prospective' or 'Retrospective'.}
 }
 }
 \source{
@@ -31,7 +31,6 @@ encompasses 5,858 annotated data entries from countries such as the United Kingd
 Ireland, Canada, Australia, New Zealand, and the United States. Its central objective
 is to compute the percentage of sentences or quasi-sentences referring to the past, present,
 or future. This differentiation is made based on two categories: "Prospective" and "Retrospective".
-The paper can be accessed \href{https://www.journals.uchicago.edu/doi/abs/10.1086/715165?journalCode=jop}{here}.
 }
 \examples{
 \dontrun{

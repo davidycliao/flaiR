@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{check_show.text_id}
 \alias{check_show.text_id}
-\title{Check the `show.text_id` parameter}
+\title{Check the \code{show.text_id} Parameter}
 \usage{
 check_show.text_id(show.text_id)
 }
@@ -10,6 +10,6 @@ check_show.text_id(show.text_id)
 \item{show.text_id}{Logical. The parameter to be checked.}
 }
 \description{
-Validates if the given `show.text_id` is a logical value.
+Validates if the given \code{show.text_id} is a logical value.
 }
 \keyword{internal}

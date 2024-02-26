@@ -32,7 +32,7 @@ are used.}
 This determines how subtokens (word pieces) are pooled into one embedding
 for the original token. Options are 'first' (use first subtoken),
 'last' (use last subtoken), 'first_last' (concatenate first and last subtokens),
- and 'mean' (average all subtokens).}
+and 'mean' (average all subtokens).}
 
 \item{fine_tune}{Logical. Indicates if fine-tuning should be done. Defaults
 to FALSE.}
@@ -54,7 +54,7 @@ A Flair TransformerWordEmbeddings in Python class.
 }
 \description{
 This function interfaces with Python via {reticulate} to
-create a `flair_embeddings.TransformerDocumentEmbeddings` object from
+create a \code{flair_embeddings.TransformerDocumentEmbeddings} object from
 the flair.embeddings module.
 }
 \details{
@@ -77,5 +77,5 @@ embedding = TransformerDocumentEmbeddings('bert-base-uncased')
 }
 }
 \seealso{
-\link[flair]{https://github.com/flairNLP/flair} Flair's official GitHub repository.
+Flair's official GitHub repository: \url{https://github.com/flairNLP/flair}
 }

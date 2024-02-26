@@ -12,12 +12,12 @@ activate garbage collection.}
 }
 \value{
 A message indicating that garbage collection was performed
-if `gc.active` was `TRUE`. Otherwise, no action is taken or message is
+if \code{gc.active} was \code{TRUE}. Otherwise, no action is taken or message is
 displayed.
 }
 \description{
-This function checks the value of `gc.active` to determine whether
-or not to perform garbage collection. If `gc.active` is `TRUE`,
+This function checks the value of \code{gc.active} to determine whether
+or not to perform garbage collection. If \code{gc.active} is \code{TRUE},
 the function will perform garbage collection and then send a
 message indicating the completion of this process.
 }

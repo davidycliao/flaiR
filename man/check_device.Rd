@@ -2,25 +2,33 @@
 % Please edit documentation in R/utils.R
 \name{check_device}
 \alias{check_device}
-\title{Check the Device for cccelerating PyTorch}
+\title{Check the Device for Accelerating PyTorch}
 \usage{
 check_device(device)
 }
 \arguments{
-\item{device}{Character. The device to be set for PyTorch.}
+\item{device}{A character string specifying the device type.}
+}
+\value{
+A PyTorch device object.
 }
 \description{
 This function verifies if the specified device is available for PyTorch.
 If CUDA is not available, a message is shown. Additionally, if the system
-is running on a Mac M1, MPS will be used instead of CUDA.
+is running on a Mac M1, MPS will be used instead of CUDA. Checks if the specified device is compatible with the current system's
+hardware and operating system configuration, particularly for Mac systems
+with Apple M1/M2 silicon using Metal Performance Shaders (MPS).
 }
-\note{
-Flair NLP operates under the [PyTorch](https://pytorch.org) framework.
-As such, we can use the `$to` method to set the device for the Flair Python
-library. `flair_device("cpu")`  allows you to select whether to use the CPU,
-CUDA devices (like cuda:0, cuda:1, cuda:2), or specific MPS devices on Mac
-(such as mps:0, mps:1, mps:2). For information on Accelerated PyTorch
-training on Mac, please refer to https://developer.apple.com/metal/pytorch/.
-For more about CUDA, please visit: https://developer.nvidia.com/cuda-zone.
+\details{
+If MPS is available and the system meets the requirements, a device of type
+MPS will be returned. Otherwise, a CPU device will be used. The requirements
+for using MPS are as follows:\\cr
+\itemize{
+\item Mac computers with Apple silicon or AMD GPUs\\cr
+\item macOS 12.3 or later\\cr
+\item Python 3.7 or later\\cr
+\item Xcode command-line tools installed (\code{xcode-select --install})\\cr
+More information at: \url{https://developer.apple.com/metal/pytorch/}.
+}
 }
 \keyword{internal}

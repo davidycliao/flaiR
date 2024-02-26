@@ -38,11 +38,11 @@
 #' @param verbose A logical value. If TRUE, the function prints batch processing
 #' progress updates. Default is TRUE.
 #'
-#' @return A \code{data.table} containing three columns:
+#' @return A `data.table` containing three columns:
 #'   \itemize{
-#'     \item \code{doc_id}: The document ID from the input.
-#'     \item \code{sentiment}: Predicted sentiment for the text.
-#'     \item \code{score}: Score for the sentiment prediction.
+#'     \item `doc_id`: The document ID from the input.
+#'     \item `sentiment`: Predicted sentiment for the text.
+#'     \item `score`: Score for the sentiment prediction.
 #'   }
 #'
 #' @examples

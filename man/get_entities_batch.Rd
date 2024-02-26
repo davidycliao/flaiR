@@ -36,13 +36,13 @@ It can be either "cpu" or a string representation of a GPU device number.
 For instance, "0" corresponds to the first GPU. If a GPU device number
 is provided, it will attempt to use that GPU. The default is "cpu".
 \itemize{
- \item{"cuda" or "cuda:0" ("mps" or "mps:0" in Mac M1/M2 )}{Refers to the first GPU in the system. If
-      there's only one GPU, specifying "cuda" or "cuda:0" will allocate
-      computations to this GPU.}
- \item{"cuda:1" ("mps:1")}{Refers to the second GPU in the system, allowing allocation
-      of specific computations to this GPU.}
- \item{"cuda:2" ("mps:2)}{Refers to the third GPU in the system, and so on for systems
-      with more GPUs.}
+\item{"cuda" or "cuda:0" ("mps" or "mps:0" in Mac M1/M2 )}{Refers to the first GPU in the system. If
+there's only one GPU, specifying "cuda" or "cuda:0" will allocate
+computations to this GPU.}
+\item{"cuda:1" ("mps:1")}{Refers to the second GPU in the system, allowing allocation
+of specific computations to this GPU.}
+\item{"cuda:2" ("mps:2)}{Refers to the third GPU in the system, and so on for systems
+with more GPUs.}
 }}
 
 \item{verbose}{A logical value. If TRUE, the function prints batch processing

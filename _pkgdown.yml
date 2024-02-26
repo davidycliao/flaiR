@@ -23,7 +23,7 @@ reference:
   desc: <div class="text-justify">This is a very high-level overview of flair. Accessing whole flair module. The flair library is a powerful NLP (Natural Language Processing) tool based on PyTorch. Its primary focus is to provide state-of-the-art models for NLP tasks while keeping the API simple and easy to use.</div>
 
 - contents:
-  - flair
+  - import_flair
 
 - title: The flair_embeddings Module  (Python)
   desc: <div class="text-justify">Accessing flair.embeddings module from flair. `flair.embeddings` is a module from the Flair NLP library, which provides several state-of-the-art embeddings (vector representations) for natural language processing (NLP) tasks. Embeddings are crucial in NLP because they allow models to understand the semantic content of words, capturing relationships between words, similarities, and much more. The Flair library provides a rich set of embeddings, which can be either standalone or combined to enhance performance on various tasks.</div>
@@ -71,7 +71,7 @@ reference:
   - flair_datasets
 
 - title: Expanded Feats in flaiR
-  desc: <div class="text-justify">To facilitate more efficient use for social science research, {flairR} extend {flairNLP/flair}’s core functionality for working with three major functions to extract features in a tidy and fast format– data.table in R.</div>
+  desc: <div class="text-justify">Extended functionality for working with three major functions to extract features in data.table.</div>
 - contents:
   - load_tagger_ner
   - load_tagger_pos
@@ -83,29 +83,34 @@ reference:
   - get_sentiments
   - get_sentiments_batch
 
-- title: flairR Toolbox
-  desc: <div class="text-justify"> {flairR}'s Funtions</div>
+- title: Toolbox
+  desc: <div class="text-justify"> flairR utilities</div>
 - contents:
   - flair_device
   - highlight_text
   - map_entities
   - embeddings_to_matrix
   - clear_flair_cache
-  - create_flair_env
   - show_flair_cache
+  - uninstall_python_package
+  - install_python_package
 
 
-- title: flairR Tutorial Dataset
-  desc: <div class="text-justify"> {flairR}'s Funtions</div>
+- title: Training Dataset
+  desc: <div class="text-justify"> Training dataset for tutorial</div>
 - contents:
+  - cc_muller
+  - gs_score
+  - hatespeech_zh_tw
   - de_immigration
   - uk_immigration
-  - cc_muller
-  - hatespeech_zh_tw
+  - statements
 
 authors:
   David Liao:
     href: https://davidycliao.github.io
+  Samira Diebire:
+    href: https://samiradiebire.github.io
 
 template:
   package: tidytemplate
@@ -172,40 +177,40 @@ navbar:
       href:
 
   - icon: fa-file-code-o
-    text: Documents
+    text: Reference
     menu:
     - text: "All Function Reference"
       href: reference/index.html
-    - text: "The flair Module"
-      href: reference/index.html#the-flair-module
-    - text: "The flair_embeddings Module"
-      href: reference/index.html#the-flair-embeddings-module
-    - text: "The flair_data Module"
-      href: reference/index.html#the-flair-data-module
-    - text: "The flair_nn Module"
-      href: reference/index.html#the-flair-nn-module
-    - text: "The flair_trainers Module"
-      href: reference/index.html#the-flair-trainers-module
-    - text: "The flair_splitter Module"
-      href: reference/index.html#the-flair-splitter-module
-    - text: "The flair_models Module"
-      href: reference/index.html#the-flair-models-module
-    - text: "The flair_datasets Module"
-      href: reference/index.html#the-flair-datasets-module
-    - text: "The Pre-trianed Models for NLP Tasks"
-      href: articles/flair_models.html
-    - text: "The Wordembeddings in Flair"
-      href: articles/transformer_wordembeddings.html
+    # - text: "The flair Module"
+    #   href: reference/index.html#the-flair-module
+    # - text: "The flair_embeddings Module"
+    #   href: reference/index.html#the-flair-embeddings-module
+    # - text: "The flair_data Module"
+    #   href: reference/index.html#the-flair-data-module
+    # - text: "The flair_nn Module"
+    #   href: reference/index.html#the-flair-nn-module
+    # - text: "The flair_trainers Module"
+    #   href: reference/index.html#the-flair-trainers-module
+    # - text: "The flair_splitter Module"
+    #   href: reference/index.html#the-flair-splitter-module
+    # - text: "The flair_models Module"
+    #   href: reference/index.html#the-flair-models-module
+    # - text: "The flair_datasets Module"
+    #   href: reference/index.html#the-flair-datasets-module
+    # - text: "The Pre-trianed Models for NLP Tasks"
+    #   href: articles/flair_models.html
+    # - text: "The Wordembeddings in Flair"
+    #   href: articles/transformer_wordembeddings.html
 
   - icon: fa-newspaper-o
     text: News
     menu:
+    - text: "0.0.6"
+      href: news/index.html#flair-006-2023-10-29
     - text: "0.0.5"
-      href: news/index.html#flair-005-development-version
-    - text: "0.0.4"
-      href: news/index.html#flair-004-development-version
+      href: news/index.html#flair-005-2023-10-01
     - text: "0.0.3"
-      href: news/index.html#flair-003-development-version
+      href: news/index.html#flair-003-2023-09-10
     - text: "0.0.1"
       href: news/index.html#flair-001-development-version
 

@@ -7,9 +7,8 @@
 get_flair_version(...)
 }
 \value{
-Character string representing the version of Flair.
-If Flair is not installed, this may return `NULL` or cause an error
-(based on `reticulate` behavior).
+Character string representing the version of Flair. If Flair is not
+installed, this may return \code{NULL} or cause an error.
 }
 \description{
 Gets the version of the installed Flair module in the current
