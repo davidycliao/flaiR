@@ -57,9 +57,8 @@ jobs:
       - name: Install Python dependencies in virtual environment
         run: |
           source flair_env/bin/activate
-          pip install scipy==1.9.0
-          pip install gensim torch flair
-        shell: bash
+          pip install flair
+
       - name: Remove Python cache files
         run: find . -name '*.pyc' -delete
 
