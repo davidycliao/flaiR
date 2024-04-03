@@ -57,7 +57,7 @@ jobs:
       - name: Install Python dependencies in virtual environment
         run: |
           source flair_env/bin/activate
-          pip install flair
+          pip install flair==0.13.1
 
       - name: Remove Python cache files
         run: find . -name '*.pyc' -delete
