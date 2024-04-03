@@ -54,17 +54,10 @@ jobs:
       - name: Create Python virtual environment
         run: virtualenv flair_env
 
-      # - name: Install Python dependencies in virtual environment
-      #   run: |
-      #     source flair_env/bin/activate
-      #     pip install flair
-      - name: Install Python dependencies
+      - name: Install Python dependencies in virtual environment
         run: |
-          python -m pip install --upgrade pip
-          pip install virtualenv
-          virtualenv flair_env
           source flair_env/bin/activate
-          pip install --upgrade scipy gensim torch flair
+          pip install scipy gensim torch flair
         shell: bash
       - name: Remove Python cache files
         run: find . -name '*.pyc' -delete
