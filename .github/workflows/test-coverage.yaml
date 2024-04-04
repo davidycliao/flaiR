@@ -40,8 +40,9 @@ jobs:
     - name: Install Python dependencies in virtual environment
       run: |
         source flair_env/bin/activate
-        pip install torch
+        pip install scipy==1.12.0  # test
         pip install flair
+        pip install torch
 
     - name: Set Python Path for R reticulate
       run: |
