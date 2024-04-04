@@ -36,11 +36,16 @@ jobs:
         with:
           r-version: ${{ matrix.r-version }}
 
+      # - name: Install R dependencies
+      #   run: |
+      #     Rscript -e "install.packages(c('remotes', 'rcmdcheck', 'reticulate', 'renv', 'knitr', 'rmarkdown', 'lsa', 'purrr', 'testthat'))"
+      #     Rscript -e "renv::restore()"
+      #   shell: bash
       - name: Install R dependencies
         run: |
-          Rscript -e "install.packages(c('remotes', 'rcmdcheck', 'reticulate', 'renv', 'knitr', 'rmarkdown', 'lsa', 'purrr', 'testthat'))"
+          Rscript -e "install.packages(c('remotes', 'rcmdcheck', 'reticulate', 'renv', 'knitr', 'rmarkdown', 'lsa', 'purrr', 'testthat', 'htmltools'))"
+          Rscript -e "remotes::install_version('htmltools', version = '0.5.8')"
           Rscript -e "renv::restore()"
-        shell: bash
 
       # Set up Python environment
       - name: Set up Python
