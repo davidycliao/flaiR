@@ -45,9 +45,10 @@ jobs:
 
       - name: Install R dependencies
         run: |
-          Rscript -e "install.packages(c('remotes', 'rcmdcheck', 'reticulate', 'renv', 'knitr', 'rmarkdown', 'lsa', 'purrr', 'testthat', 'htmltools'))"
+          Rscript -e "install.packages(c('remotes', 'rcmdcheck', 'reticulate', 'renv', 'knitr', 'rmarkdown', 'lsa', 'purrr', 'testthat', 'htmltools'), repos='https://cran.r-project.org')"
           Rscript -e "remotes::install_version('htmltools', version = '0.5.8')"
           Rscript -e "renv::restore()"
+
 
       - name: Set up Python
         uses: actions/setup-python@v2
