@@ -16,6 +16,7 @@ output: github_document
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 
+
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -36,18 +37,8 @@ install.packages("remotes")
 
 <div style="text-align: justify">
 
-
 __flaiR__ is an R wrapper for accessing the [flairNLP/flair](flairNLP/flair) Python library, specifically designed for R users in social and political science. flaiR provides convenient access to the main functionalities of flairNLP for training word embedding-based deep learning models and fine-tune state-of-the-art transformers hosted on Hugging Face. This is the third-party package in R maintained by [David Liao](https://davidycliao.github.io), [Stefan Müller](https://muellerstefan.net) from [Next Generation Energy Systems](https://www.nexsys-energy.ie)  and friends at [Text and Policy Research Group](https://text-and-policy.com) and [Connected_Politics Lab](https://www.ucd.ie/connected_politics/) in UCD. 
 
-## [R Tutorial and Documentation](https://github.com/davidycliao/flaiR)
-
-
-<!-- For a comprehensive understanding of the `{flairNLP/flair}` architecture and NLP tagging models by [Zalando Research](https://engineering.zalando.com/posts/2018/11/zalando-research-releases-flair.html), you can refer to the research article '[Contextual String Embeddings for Sequence Labeling](https://aclanthology.org/C18-1139.pdf)' and the official [manual](https://flairnlp.github.io) written for its Python implementation.  -->
-
-<!-- __flaiR__ primarily consists of two main components. The first is wrapper functions in flaiR, built on top of reticulate, which enables R users to interact with Flair NLP modules to fine-tune state-of-the-art models hosted on Hugging Face and model made by our our research team. We also document relevant and important tutorials (in progress) for R users at [flaiR Tutorial](https://davidycliao.github.io/flaiR/articles/tutorial.html). -->
-
-
-<br>
 
 
 
@@ -67,7 +58,172 @@ __flaiR__ runs the Flair NLP backend in Python, thus requiring Python installati
 | Ubuntu  | Latest                     | 3.9            |
 
 
-_[Anaconda](https://github.com/anaconda) or [miniconda](https://github.com/conda/conda) (highly recommended) is the best way to manage your working environment. In RStudio, the Python (conda) environment can easily be managed by the reticulate R package, or manually via Tools -> Global Options -> Python._
+_[Anaconda](https://github.com/anaconda) or [miniconda](https://github.com/conda/conda) (highly recommended) is the best way to manage your working environment. In RStudio, the Python (conda) environment can easily be managed by the reticulate R package, or manually changed configuration via Tools -> Global Options -> Python in Rstudio._
+
+
+## Tutorial for Finetune Transformers with FlaiR
+
+<div style="text-align: justify">
+
+We use Stefan's data from _The Temporal Focus of Campaign Communication (JOP 2022)_ as an example. First, suppose we have a dataset of 1000 entries called `cc_muller_old.` Additionally, we have another 1000 entries in a dataset called `cc_muller_new`. The both subset from `data(cc_muller)` We will fine-tune a transformer model with each dataset respectively, and then continue with another round of fine-tuning using the new data.
+
+```{r}
+library(flaiR)
+```
+
+### Fine-tuning a New Model
+
+<u>__Step 1__</u> Load Necessary Modules from Flair
+
+Load necessary classes from `flair` package.
+```{r}
+# Sentence is a class for holding a text sentence
+Sentence <- flair_data()$Sentence
+
+# Corpus is a class for text corpora
+Corpus <- flair_data()$Corpus
+
+# TransformerDocumentEmbeddings is a class for loading transformer 
+TransformerDocumentEmbeddings <- flair_embeddings()$TransformerDocumentEmbeddings
+
+# TextClassifier is a class for text classification
+TextClassifier <- flair_models()$TextClassifier
+
+# ModelTrainer is a class for training and evaluating models
+ModelTrainer <- flair_trainers()$ModelTrainer
+```
+
+We use purrr to help us split sentences using Sentence from `flair_data()`, then use map2 to add labels, and finally use `Corpus` to segment the data.
+
+```{r}
+library(purrr)
+
+data(cc_muller)
+cc_muller_old <- cc_muller[1:1000,]
+
+old_text <- map(cc_muller_old$text, Sentence)
+old_labels <- as.character(cc_muller_old$class)
+
+old_text <- map2(old_text, old_labels, ~ {
+   
+  .x$add_label("classification", .y)
+  .x
+})
+```
+
+```{r}
+print(length(old_text))
+```
+
+```{r}
+set.seed(2046)
+sample <- sample(c(TRUE, FALSE), length(old_text), replace=TRUE, prob=c(0.8, 0.2))
+old_train  <- old_text[sample]
+old_test   <- old_text[!sample]
+
+test_id <- sample(c(TRUE, FALSE), length(old_test), replace=TRUE, prob=c(0.5, 0.5))
+old_test   <- old_test[test_id]
+old_dev   <- old_test[!test_id]
+```
+
+If you do not provide a development split (dev split) while using Flair, it will automatically split the training data into training and development datasets. The test set is used for training the model and evaluating its final performance, whereas the development set (dev set) is used for adjusting model parameters and preventing overfitting, or in other words, for early stopping of the model.
+
+```{r}
+old_corpus <- Corpus(train = old_train, test = old_test)
+```
+
+<u>__Step 3__</u> Load `distilbert` Transformer  
+
+```{r}
+document_embeddings <- TransformerDocumentEmbeddings('distilbert-base-uncased', fine_tune=TRUE)
+```
+
+First, `$make_label_dictionary` function is used to automatically create a label dictionary for the classification task. The label dictionary is a mapping from label to index, which is used to map the labels to a tensor of label indices. expcept classifcation task, flair also supports other label types for training custom model, such as `ner`, `pos` and `sentiment`. From the cc_muller dataset: Future (seen 423 times), Present (seen 262 times), Past (seen 131 times)
+
+```{r}
+old_label_dict <- old_corpus$make_label_dictionary(label_type="classification")
+```
+
+`TextClassifier` is used to create a text classifier. The classifier takes the document embeddings (importing from `'distilbert-base-uncased'` from HugginFace)  and the label dictionary as input. The label type is also specified as classification.
+
+```{r}
+old_classifier <- TextClassifier(document_embeddings,
+                                 label_dictionary = old_label_dict, 
+                                 label_type='classification')
+```
+
+<u>__Step 4__</u> Start Training 
+
+specific computation devices on your local machine. If you have a GPU, you can use `flair_gpu` to specify the GPU device. If you don't have a GPU, you can use `flaiR::flair_device` to specify the CPU device. 
+
+```{r}
+old_classifier$to(flair_device("cpu")) 
+```
+
+`ModelTrainer` is used to train the model, which learns from the data based on the grandstanding score.
+
+```{r eval=TRUE}
+old_trainer <- ModelTrainer(old_classifier, old_corpus)
+```
+
+```{r eval=TRUE}
+old_trainer$train("muller-campaign-communication",  
+                  learning_rate=0.02,              
+                  mini_batch_size=8L,              
+                  anneal_with_restarts = TRUE,
+                  save_final_model=TRUE,
+                  max_epochs=1L)   
+```
+
+
+
+### Continue Fine-tuning `muller-campaign-communication` Model with `Additional 2000 Pieces`
+
+Now, we can continue to fine-tune the already fine-tuned model with an additional 2000 pieces of data. First, we need to create a new corpus with cc_muller_new. The steps are the same as before.
+
+```{r} 
+library(purrr)
+cc_muller_new <- cc_muller[1001:3000,]
+new_text <- map(cc_muller_new$text, Sentence)
+new_labels <- as.character(cc_muller_new$class)
+
+new_text <- map2(new_text, new_labels, ~ {
+  .x$add_label("classification", .y)
+  .x
+})
+```
+
+
+```{r}
+set.seed(2046)
+new_corpus <- Corpus(train=new_text, test=old_test)
+```
+
+Load the model (`old_model`) we have already trained and let's fine-tune it using the new data.
+
+```{r}
+old_model <- TextClassifier$load("muller-campaign-communication/best-model.pt")
+new_trainer <- ModelTrainer(old_model, new_corpus)
+```
+
+```{r eval=TRUE}
+new_trainer$train("new-muller-campaign-communication",
+                  learning_rate=0.002, 
+                  mini_batch_size=8L,  
+                  max_epochs=1L)      
+```
+
+
+More R tutorial and documentation see  [here ](https://github.com/davidycliao/flaiR).
+
+</div>
+
+
+
+
+
+<br>
+
 
 
 <br>
