@@ -199,67 +199,32 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - uses: actions/cache@v2
+        with:
+          path: |
+            ~/.cache/pip
+            ~/R/Library
+          key: ${{ runner.os }}-pip-r-${{ hashFiles('**/requirements.txt', '**/DESCRIPTION') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-r-
+
       - uses: r-lib/actions/setup-pandoc@v2
         if: matrix.config.os == 'windows-latest'
 
-      - name: Setup Python
-        uses: actions/setup-python@v2
+      - uses: actions/setup-python@v2
         with:
-          python-version: '3.9'  # Ensure Python 3.x is being used
-
-      - name: Check Python Version
-        run: |
-          python --version
+          python-version: '3.x'  # This will use the latest version of Python 3
 
       - name: Install Python dependencies
         run: |
           python -m pip install --upgrade pip
           pip install flair
 
-      - name: Setup Python (Only on ubuntu-latest)
-        if: matrix.config.os == 'ubuntu-latest'
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.10.13'
-
-      - name: Install Python venv and dependencies (Only on ubuntu-latest)
-        if: matrix.config.os == 'ubuntu-latest'
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y python3-venv
-          python -m venv ~/.venv
-          echo "RETICULATE_PYTHON=~/.venv/bin/python" >> $GITHUB_ENV
-          source ~/.venv/bin/activate
-
       - uses: r-lib/actions/setup-r@v2
         with:
           r-version: ${{ matrix.config.r }}
           http-user-agent: ${{ matrix.config.http-user-agent }}
           use-public-rspm: true
-
-      - name: Install reticulate (Only on ubuntu-latest)
-        if: matrix.config.os == 'ubuntu-latest'
-        run: |
-          Rscript -e "install.packages('reticulate', repos = 'https://cloud.r-project.org/')"
-
-      - name: Install Pandoc (Only on Windows)
-        if: matrix.config.os == 'windows-latest'
-        run: |
-          choco install pandoc
-
-      - name: Install Python dependencies (Only on Windows)
-        if: matrix.config.os == 'windows-latest'
-        run: |
-          python -m pip install --upgrade pip
-          pip install scipy==1.12.0  # test
-          pip install flair
-
-      - name: Install Python dependencies (Only on macOS)
-        if: matrix.config.os == 'macos-latest'
-        run: |
-          python -m pip install --upgrade pip
-          pip install scipy==1.12.0  # test
-          pip install flair
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
@@ -268,3 +233,18 @@ jobs:
       - uses: r-lib/actions/check-r-package@v2
         with:
           upload-snapshots: true
+
+      - name: Clean up disk space
+        if: matrix.config.os == 'ubuntu-latest'
+        run: |
+          sudo apt-get clean
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /opt/ghc
+
+      # Additional cleanup for macOS and Windows if needed
+      - name: Clean up disk space (Only on macOS and Windows)
+        if: matrix.config.os == 'macos-latest' || matrix.config.os == 'windows-latest'
+        run: |
+          sudo rm -rf /Applications/Xcode.app
+          echo "Cleanup done."
+
