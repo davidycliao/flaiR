@@ -24,13 +24,18 @@ convenient access to the main functionalities of flairNLP for training
 word embedding-based deep learning models and fine-tune state-of-the-art
 transformers hosted on Hugging Face.
 
-## Installation via <u>**`GitHub`**</u>
+### Installation via <u>**`GitHub`**</u>
+
+``` r
+install.packages("remotes")
+remotes::install_github("davidycliao/flaiR", force = TRUE)
+```
 
 ``` r
 library(flaiR)
 ```
 
-## Requirements
+### Requirements
 
 <div style="text-align: justify">
 
@@ -52,16 +57,11 @@ these specific versions.
 | Ubuntu  | 4.3.2, 4.2.0, 4.2.1 | 3.10.x         |
 | Ubuntu  | Latest              | 3.9            |
 
-*[Anaconda](https://github.com/anaconda) or
-[miniconda](https://github.com/conda/conda) (highly recommended) is the
-best way to manage your working environment. In RStudio, the Python
-(conda) environment can easily be managed by the reticulate R package,
-or manually changed configuration via Tools -\> Global Options -\>
-Python in Rstudio.*
+<!-- __Note__: [Anaconda](https://github.com/anaconda) or [miniconda](https://github.com/conda/conda) (highly recommended) is the best way to manage your working environment. In RStudio, the Python (conda) environment can easily be managed by the reticulate R package, or manually changed configuration via Tools -> Global Options -> Python in Rstudio. -->
 
 <br>
 
-## Contribution and Open Source
+### Contribution and Open Source
 
 <div style="text-align: justify">
 
