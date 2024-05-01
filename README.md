@@ -24,6 +24,8 @@ convenient access to the main functionalities of flairNLP for training
 word embedding-based deep learning models and fine-tune state-of-the-art
 transformers hosted on Hugging Face.
 
+<br>
+
 ### Installation via <u>**`GitHub`**</u>
 
 ``` r
@@ -34,6 +36,8 @@ remotes::install_github("davidycliao/flaiR", force = TRUE)
 ``` r
 library(flaiR)
 ```
+
+<br>
 
 ### Requirements
 
