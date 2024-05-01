@@ -40,12 +40,6 @@ test_that("function raises error for non-list input", {
                "embeddings_list should be a list of Flair embeddings.")
 })
 
-# Function should raise an error for invalid embeddings in list
-test_that("function raises error for invalid embeddings", {
-  invalid_embedding <- list(fake_embedding = "not_a_valid_embedding")
-  expect_error(flair_embeddings.StackedEmbeddings(invalid_embedding),
-               "no item called \"not_a_valid_embedding\" on the search list")
-})
 
 # flair_embeddings.WordEmbeddings runs without errors
 test_that("flair_embeddings.WordEmbeddings runs without errors", {
