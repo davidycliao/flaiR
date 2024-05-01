@@ -15,8 +15,6 @@ output: github_document
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-
-
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -38,8 +36,6 @@ install.packages("remotes")
 <div style="text-align: justify">
 
 __flaiR__ is an R wrapper for accessing the [flairNLP/flair](flairNLP/flair) Python library, specifically designed for R users in social and political science. flaiR provides convenient access to the main functionalities of flairNLP for training word embedding-based deep learning models and fine-tune state-of-the-art transformers hosted on Hugging Face. This is the third-party package in R maintained by [David Liao](https://davidycliao.github.io), [Stefan Müller](https://muellerstefan.net) from [Next Generation Energy Systems](https://www.nexsys-energy.ie)  and friends at [Text and Policy Research Group](https://text-and-policy.com) and [Connected_Politics Lab](https://www.ucd.ie/connected_politics/) in UCD. 
-
-
 
 
 ## Installation via  <u>__`GitHub`__</u>
@@ -65,7 +61,8 @@ _[Anaconda](https://github.com/anaconda) or [miniconda](https://github.com/conda
 
 <div style="text-align: justify">
 
-We use Stefan's data from _The Temporal Focus of Campaign Communication (JOP 2022)_ as an example. First, suppose we have a dataset of 1000 entries called `cc_muller_old.` Additionally, we have another 1000 entries in a dataset called `cc_muller_new`. The both subset from `data(cc_muller)` We will fine-tune a transformer model with each dataset respectively, and then continue with another round of fine-tuning using the new data.
+We use Stefan's data from \textit{The Temporal Focus of Campaign Communication (JOP 2022)} as an example. Let's assume we receive the data for training from different times. First, suppose you have a dataset of 1000 entries called \texttt{cc\_muller\_old}. Additionally, we have another 1000 entries in a dataset called \texttt{cc\_muller\_new}. Both subsets are from \texttt{data(cc\_muller)}. We will show how to fine-tune a transformer model with \texttt{cc\_muller\_old}, and then continue with another round of fine-tuning using \texttt{cc\_muller\_new}.
+
 
 ```{r}
 library(flaiR)
@@ -154,16 +151,10 @@ old_classifier <- TextClassifier(document_embeddings,
 
 <u>__Step 4__</u> Start Training 
 
-specific computation devices on your local machine. If you have a GPU, you can use `flair_gpu` to specify the GPU device. If you don't have a GPU, you can use `flaiR::flair_device` to specify the CPU device. 
-
-```{r}
-old_classifier$to(flair_device("cpu")) 
-```
-
-`ModelTrainer` is used to train the model, which learns from the data based on the grandstanding score.
+`ModelTrainer` is used to train the model.
 
 ```{r eval=TRUE}
-old_trainer <- ModelTrainer(old_classifier, old_corpus)
+old_trainer <- ModelTrainer(model = old_classifier, corpus = old_corpus)
 ```
 
 ```{r eval=TRUE}
@@ -179,7 +170,7 @@ old_trainer$train("muller-campaign-communication",
 
 ### Continue Fine-tuning `muller-campaign-communication` Model with `Additional 2000 Pieces`
 
-Now, we can continue to fine-tune the already fine-tuned model with an additional 2000 pieces of data. First, we need to create a new corpus with cc_muller_new. The steps are the same as before.
+Now, we can continue to fine-tune the already fine-tuned model with an additional 2000 pieces of data. First, let's say we have another 2000 entries called cc_muller_new. We can fine-tune the previous model with these 2000 entries. The steps are the same as before. For this case, we don't need to split the dataset again. We can use the entire 2000 entries as the training set and use the old_test set to evaluate how well our refined model performs.
 
 ```{r} 
 library(purrr)
@@ -195,11 +186,10 @@ new_text <- map2(new_text, new_labels, ~ {
 
 
 ```{r}
-set.seed(2046)
 new_corpus <- Corpus(train=new_text, test=old_test)
 ```
 
-Load the model (`old_model`) we have already trained and let's fine-tune it using the new data.
+Load the model (`old_model`) we have already finetuned from previous stage and let's fine-tune it with the new data, `new_corpus`. 
 
 ```{r}
 old_model <- TextClassifier$load("muller-campaign-communication/best-model.pt")
@@ -210,11 +200,11 @@ new_trainer <- ModelTrainer(old_model, new_corpus)
 new_trainer$train("new-muller-campaign-communication",
                   learning_rate=0.002, 
                   mini_batch_size=8L,  
-                  max_epochs=1L)      
+                  max_epochs=1L)    
 ```
 
 
-More R tutorial and documentation see  [here ](https://github.com/davidycliao/flaiR).
+More R tutorial and documentation see [here](https://github.com/davidycliao/flaiR).
 
 </div>
 

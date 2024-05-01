@@ -58,13 +58,12 @@ Python in Rstudio.*
 
 <div style="text-align: justify">
 
-We use Stefan’s data from *The Temporal Focus of Campaign Communication
-(JOP 2022)* as an example. First, suppose we have a dataset of 1000
-entries called `cc_muller_old.` Additionally, we have another 1000
-entries in a dataset called `cc_muller_new`. The both subset from
-`data(cc_muller)` We will fine-tune a transformer model with each
-dataset respectively, and then continue with another round of
-fine-tuning using the new data.
+We use Stefan’s data from as an example. Let’s assume we receive the
+data for training from different times. First, suppose you have a
+dataset of 1000 entries called . Additionally, we have another 1000
+entries in a dataset called . Both subsets are from . We will show how
+to fine-tune a transformer model with , and then continue with another
+round of fine-tuning using .
 
 ``` r
 library(flaiR)
@@ -156,8 +155,8 @@ Present (seen 262 times), Past (seen 131 times)
 
 ``` r
 old_label_dict <- old_corpus$make_label_dictionary(label_type="classification")
-#> 2024-05-01 12:39:39,356 Computing label dictionary. Progress:
-#> 2024-05-01 12:39:39,402 Dictionary created for label 'classification' with 4 values: Future (seen 391 times), Present (seen 226 times), Past (seen 106 times)
+#> 2024-05-01 21:22:38,318 Computing label dictionary. Progress:
+#> 2024-05-01 21:22:38,388 Dictionary created for label 'classification' with 4 values: Future (seen 382 times), Present (seen 229 times), Past (seen 112 times)
 ```
 
 `TextClassifier` is used to create a text classifier. The classifier
@@ -173,57 +172,10 @@ old_classifier <- TextClassifier(document_embeddings,
 
 <u>**Step 4**</u> Start Training
 
-specific computation devices on your local machine. If you have a GPU,
-you can use `flair_gpu` to specify the GPU device. If you don’t have a
-GPU, you can use `flaiR::flair_device` to specify the CPU device.
+`ModelTrainer` is used to train the model.
 
 ``` r
-old_classifier$to(flair_device("cpu")) 
-#> TextClassifier(
-#>   (embeddings): TransformerDocumentEmbeddings(
-#>     (model): DistilBertModel(
-#>       (embeddings): Embeddings(
-#>         (word_embeddings): Embedding(30523, 768)
-#>         (position_embeddings): Embedding(512, 768)
-#>         (LayerNorm): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
-#>         (dropout): Dropout(p=0.1, inplace=False)
-#>       )
-#>       (transformer): Transformer(
-#>         (layer): ModuleList(
-#>           (0-5): 6 x TransformerBlock(
-#>             (attention): MultiHeadSelfAttention(
-#>               (dropout): Dropout(p=0.1, inplace=False)
-#>               (q_lin): Linear(in_features=768, out_features=768, bias=True)
-#>               (k_lin): Linear(in_features=768, out_features=768, bias=True)
-#>               (v_lin): Linear(in_features=768, out_features=768, bias=True)
-#>               (out_lin): Linear(in_features=768, out_features=768, bias=True)
-#>             )
-#>             (sa_layer_norm): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
-#>             (ffn): FFN(
-#>               (dropout): Dropout(p=0.1, inplace=False)
-#>               (lin1): Linear(in_features=768, out_features=3072, bias=True)
-#>               (lin2): Linear(in_features=3072, out_features=768, bias=True)
-#>               (activation): GELUActivation()
-#>             )
-#>             (output_layer_norm): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
-#>           )
-#>         )
-#>       )
-#>     )
-#>   )
-#>   (decoder): Linear(in_features=768, out_features=4, bias=True)
-#>   (dropout): Dropout(p=0.0, inplace=False)
-#>   (locked_dropout): LockedDropout(p=0.0)
-#>   (word_dropout): WordDropout(p=0.0)
-#>   (loss_function): CrossEntropyLoss()
-#> )
-```
-
-`ModelTrainer` is used to train the model, which learns from the data
-based on the grandstanding score.
-
-``` r
-old_trainer <- ModelTrainer(old_classifier, old_corpus)
+old_trainer <- ModelTrainer(model = old_classifier, corpus = old_corpus)
 ```
 
 ``` r
@@ -233,8 +185,8 @@ old_trainer$train("muller-campaign-communication",
                   anneal_with_restarts = TRUE,
                   save_final_model=TRUE,
                   max_epochs=1L)   
-#> 2024-05-01 12:39:39,466 ----------------------------------------------------------------------------------------------------
-#> 2024-05-01 12:39:39,467 Model: "TextClassifier(
+#> 2024-05-01 21:22:38,446 ----------------------------------------------------------------------------------------------------
+#> 2024-05-01 21:22:38,447 Model: "TextClassifier(
 #>   (embeddings): TransformerDocumentEmbeddings(
 #>     (model): DistilBertModel(
 #>       (embeddings): Embeddings(
@@ -274,80 +226,84 @@ old_trainer$train("muller-campaign-communication",
 #>   (weights): None
 #>   (weight_tensor) None
 #> )"
-#> 2024-05-01 12:39:39,467 ----------------------------------------------------------------------------------------------------
-#> 2024-05-01 12:39:39,467 Corpus: "Corpus: 723 train + 80 dev + 85 test sentences"
-#> 2024-05-01 12:39:39,467 ----------------------------------------------------------------------------------------------------
-#> 2024-05-01 12:39:39,467 Parameters:
-#> 2024-05-01 12:39:39,467  - learning_rate: "0.020000"
-#> 2024-05-01 12:39:39,467  - mini_batch_size: "8"
-#> 2024-05-01 12:39:39,467  - patience: "3"
-#> 2024-05-01 12:39:39,467  - anneal_factor: "0.5"
-#> 2024-05-01 12:39:39,467  - max_epochs: "1"
-#> 2024-05-01 12:39:39,468  - shuffle: "True"
-#> 2024-05-01 12:39:39,468  - train_with_dev: "False"
-#> 2024-05-01 12:39:39,468  - batch_growth_annealing: "False"
-#> 2024-05-01 12:39:39,468 ----------------------------------------------------------------------------------------------------
-#> 2024-05-01 12:39:39,468 Model training base path: "muller-campaign-communication"
-#> 2024-05-01 12:39:39,468 ----------------------------------------------------------------------------------------------------
-#> 2024-05-01 12:39:39,468 Device: cpu
-#> 2024-05-01 12:39:39,468 ----------------------------------------------------------------------------------------------------
-#> 2024-05-01 12:39:39,468 Embeddings storage mode: cpu
-#> 2024-05-01 12:39:39,468 ----------------------------------------------------------------------------------------------------
-#> 2024-05-01 12:39:42,547 epoch 1 - iter 9/91 - loss 1.20670470 - time (sec): 3.08 - samples/sec: 23.38 - lr: 0.020000
-#> 2024-05-01 12:39:45,791 epoch 1 - iter 18/91 - loss 1.05274305 - time (sec): 6.32 - samples/sec: 22.78 - lr: 0.020000
-#> 2024-05-01 12:39:48,543 epoch 1 - iter 27/91 - loss 0.92276317 - time (sec): 9.07 - samples/sec: 23.80 - lr: 0.020000
-#> 2024-05-01 12:39:51,253 epoch 1 - iter 36/91 - loss 0.85964204 - time (sec): 11.78 - samples/sec: 24.44 - lr: 0.020000
-#> 2024-05-01 12:39:54,803 epoch 1 - iter 45/91 - loss 0.77357004 - time (sec): 15.33 - samples/sec: 23.48 - lr: 0.020000
-#> 2024-05-01 12:39:57,653 epoch 1 - iter 54/91 - loss 0.74820041 - time (sec): 18.18 - samples/sec: 23.76 - lr: 0.020000
-#> 2024-05-01 12:40:00,599 epoch 1 - iter 63/91 - loss 0.76554066 - time (sec): 21.13 - samples/sec: 23.85 - lr: 0.020000
-#> 2024-05-01 12:40:03,366 epoch 1 - iter 72/91 - loss 0.75452504 - time (sec): 23.90 - samples/sec: 24.10 - lr: 0.020000
-#> 2024-05-01 12:40:06,259 epoch 1 - iter 81/91 - loss 0.72694120 - time (sec): 26.79 - samples/sec: 24.19 - lr: 0.020000
-#> 2024-05-01 12:40:08,930 epoch 1 - iter 90/91 - loss 0.71362353 - time (sec): 29.46 - samples/sec: 24.44 - lr: 0.020000
-#> 2024-05-01 12:40:09,057 ----------------------------------------------------------------------------------------------------
-#> 2024-05-01 12:40:09,057 EPOCH 1 done: loss 0.7118 - lr 0.020000
-#> 2024-05-01 12:40:09,995 Evaluating as a multi-label problem: False
-#> 2024-05-01 12:40:10,003 DEV : loss 0.7796289324760437 - f1-score (micro avg)  0.7625
-#> 2024-05-01 12:40:10,005 BAD EPOCHS (no improvement): 0
-#> 2024-05-01 12:40:10,005 saving best model
-#> 2024-05-01 12:40:11,845 ----------------------------------------------------------------------------------------------------
-#> 2024-05-01 12:40:15,597 Evaluating as a multi-label problem: False
-#> 2024-05-01 12:40:15,604 0.8235   0.8235  0.8235  0.8235
-#> 2024-05-01 12:40:15,604 
+#> 2024-05-01 21:22:38,447 ----------------------------------------------------------------------------------------------------
+#> 2024-05-01 21:22:38,447 Corpus: "Corpus: 723 train + 80 dev + 85 test sentences"
+#> 2024-05-01 21:22:38,447 ----------------------------------------------------------------------------------------------------
+#> 2024-05-01 21:22:38,447 Parameters:
+#> 2024-05-01 21:22:38,447  - learning_rate: "0.020000"
+#> 2024-05-01 21:22:38,447  - mini_batch_size: "8"
+#> 2024-05-01 21:22:38,447  - patience: "3"
+#> 2024-05-01 21:22:38,447  - anneal_factor: "0.5"
+#> 2024-05-01 21:22:38,448  - max_epochs: "1"
+#> 2024-05-01 21:22:38,448  - shuffle: "True"
+#> 2024-05-01 21:22:38,448  - train_with_dev: "False"
+#> 2024-05-01 21:22:38,448  - batch_growth_annealing: "False"
+#> 2024-05-01 21:22:38,448 ----------------------------------------------------------------------------------------------------
+#> 2024-05-01 21:22:38,448 Model training base path: "muller-campaign-communication"
+#> 2024-05-01 21:22:38,448 ----------------------------------------------------------------------------------------------------
+#> 2024-05-01 21:22:38,448 Device: cpu
+#> 2024-05-01 21:22:38,448 ----------------------------------------------------------------------------------------------------
+#> 2024-05-01 21:22:38,448 Embeddings storage mode: cpu
+#> 2024-05-01 21:22:38,448 ----------------------------------------------------------------------------------------------------
+#> 2024-05-01 21:22:41,476 epoch 1 - iter 9/91 - loss 1.21330055 - time (sec): 3.03 - samples/sec: 23.78 - lr: 0.020000
+#> 2024-05-01 21:22:44,195 epoch 1 - iter 18/91 - loss 1.07116950 - time (sec): 5.75 - samples/sec: 25.06 - lr: 0.020000
+#> 2024-05-01 21:22:46,945 epoch 1 - iter 27/91 - loss 0.96526070 - time (sec): 8.50 - samples/sec: 25.42 - lr: 0.020000
+#> 2024-05-01 21:22:49,583 epoch 1 - iter 36/91 - loss 0.87220202 - time (sec): 11.13 - samples/sec: 25.86 - lr: 0.020000
+#> 2024-05-01 21:22:52,731 epoch 1 - iter 45/91 - loss 0.79436234 - time (sec): 14.28 - samples/sec: 25.21 - lr: 0.020000
+#> 2024-05-01 21:22:55,439 epoch 1 - iter 54/91 - loss 0.76495454 - time (sec): 16.99 - samples/sec: 25.43 - lr: 0.020000
+#> 2024-05-01 21:22:58,153 epoch 1 - iter 63/91 - loss 0.78872882 - time (sec): 19.71 - samples/sec: 25.58 - lr: 0.020000
+#> 2024-05-01 21:23:00,801 epoch 1 - iter 72/91 - loss 0.76249154 - time (sec): 22.35 - samples/sec: 25.77 - lr: 0.020000
+#> 2024-05-01 21:23:03,595 epoch 1 - iter 81/91 - loss 0.74236398 - time (sec): 25.15 - samples/sec: 25.77 - lr: 0.020000
+#> 2024-05-01 21:23:06,279 epoch 1 - iter 90/91 - loss 0.71218656 - time (sec): 27.83 - samples/sec: 25.87 - lr: 0.020000
+#> 2024-05-01 21:23:06,425 ----------------------------------------------------------------------------------------------------
+#> 2024-05-01 21:23:06,425 EPOCH 1 done: loss 0.7095 - lr 0.020000
+#> 2024-05-01 21:23:07,405 Evaluating as a multi-label problem: False
+#> 2024-05-01 21:23:07,413 DEV : loss 0.8366082906723022 - f1-score (micro avg)  0.7625
+#> 2024-05-01 21:23:07,416 BAD EPOCHS (no improvement): 0
+#> 2024-05-01 21:23:07,416 saving best model
+#> 2024-05-01 21:23:09,393 ----------------------------------------------------------------------------------------------------
+#> 2024-05-01 21:23:12,913 Evaluating as a multi-label problem: False
+#> 2024-05-01 21:23:12,919 0.7882   0.7882  0.7882  0.7882
+#> 2024-05-01 21:23:12,919 
 #> Results:
-#> - F-score (micro) 0.8235
-#> - F-score (macro) 0.8211
-#> - Accuracy 0.8235
+#> - F-score (micro) 0.7882
+#> - F-score (macro) 0.7789
+#> - Accuracy 0.7882
 #> 
 #> By class:
 #>               precision    recall  f1-score   support
 #> 
-#>       Future     0.7959    0.9070    0.8478        43
-#>      Present     0.8000    0.7407    0.7692        27
-#>         Past     1.0000    0.7333    0.8462        15
+#>       Future     0.7321    0.9535    0.8283        43
+#>      Present     0.8750    0.5185    0.6512        27
+#>         Past     0.9231    0.8000    0.8571        15
 #> 
-#>     accuracy                         0.8235        85
-#>    macro avg     0.8653    0.7937    0.8211        85
-#> weighted avg     0.8332    0.8235    0.8226        85
+#>     accuracy                         0.7882        85
+#>    macro avg     0.8434    0.7573    0.7789        85
+#> weighted avg     0.8112    0.7882    0.7771        85
 #> 
-#> 2024-05-01 12:40:15,604 ----------------------------------------------------------------------------------------------------
+#> 2024-05-01 21:23:12,920 ----------------------------------------------------------------------------------------------------
 #> $test_score
-#> [1] 0.8235294
+#> [1] 0.7882353
 #> 
 #> $dev_score_history
 #> [1] 0.7625
 #> 
 #> $train_loss_history
-#> [1] 0.7117981
+#> [1] 0.7094883
 #> 
 #> $dev_loss_history
-#> [1] 0.7796289
+#> [1] 0.8366083
 ```
 
 ### Continue Fine-tuning `muller-campaign-communication` Model with `Additional 2000 Pieces`
 
 Now, we can continue to fine-tune the already fine-tuned model with an
-additional 2000 pieces of data. First, we need to create a new corpus
-with cc_muller_new. The steps are the same as before.
+additional 2000 pieces of data. First, let’s say we have another 2000
+entries called cc_muller_new. We can fine-tune the previous model with
+these 2000 entries. The steps are the same as before. For this case, we
+don’t need to split the dataset again. We can use the entire 2000
+entries as the training set and use the old_test set to evaluate how
+well our refined model performs.
 
 ``` r
 library(purrr)
@@ -362,12 +318,11 @@ new_text <- map2(new_text, new_labels, ~ {
 ```
 
 ``` r
-set.seed(2046)
 new_corpus <- Corpus(train=new_text, test=old_test)
 ```
 
-Load the model (`old_model`) we have already trained and let’s fine-tune
-it using the new data.
+Load the model (`old_model`) we have already finetuned from previous
+stage and let’s fine-tune it with the new data, `new_corpus`.
 
 ``` r
 old_model <- TextClassifier$load("muller-campaign-communication/best-model.pt")
@@ -378,9 +333,9 @@ new_trainer <- ModelTrainer(old_model, new_corpus)
 new_trainer$train("new-muller-campaign-communication",
                   learning_rate=0.002, 
                   mini_batch_size=8L,  
-                  max_epochs=1L)      
-#> 2024-05-01 12:40:19,100 ----------------------------------------------------------------------------------------------------
-#> 2024-05-01 12:40:19,100 Model: "TextClassifier(
+                  max_epochs=1L)    
+#> 2024-05-01 21:23:16,705 ----------------------------------------------------------------------------------------------------
+#> 2024-05-01 21:23:16,706 Model: "TextClassifier(
 #>   (embeddings): TransformerDocumentEmbeddings(
 #>     (model): DistilBertModel(
 #>       (embeddings): Embeddings(
@@ -420,73 +375,73 @@ new_trainer$train("new-muller-campaign-communication",
 #>   (weights): None
 #>   (weight_tensor) None
 #> )"
-#> 2024-05-01 12:40:19,100 ----------------------------------------------------------------------------------------------------
-#> 2024-05-01 12:40:19,101 Corpus: "Corpus: 1800 train + 200 dev + 85 test sentences"
-#> 2024-05-01 12:40:19,101 ----------------------------------------------------------------------------------------------------
-#> 2024-05-01 12:40:19,101 Parameters:
-#> 2024-05-01 12:40:19,101  - learning_rate: "0.002000"
-#> 2024-05-01 12:40:19,101  - mini_batch_size: "8"
-#> 2024-05-01 12:40:19,101  - patience: "3"
-#> 2024-05-01 12:40:19,101  - anneal_factor: "0.5"
-#> 2024-05-01 12:40:19,101  - max_epochs: "1"
-#> 2024-05-01 12:40:19,101  - shuffle: "True"
-#> 2024-05-01 12:40:19,101  - train_with_dev: "False"
-#> 2024-05-01 12:40:19,101  - batch_growth_annealing: "False"
-#> 2024-05-01 12:40:19,101 ----------------------------------------------------------------------------------------------------
-#> 2024-05-01 12:40:19,101 Model training base path: "new-muller-campaign-communication"
-#> 2024-05-01 12:40:19,101 ----------------------------------------------------------------------------------------------------
-#> 2024-05-01 12:40:19,101 Device: cpu
-#> 2024-05-01 12:40:19,101 ----------------------------------------------------------------------------------------------------
-#> 2024-05-01 12:40:19,101 Embeddings storage mode: cpu
-#> 2024-05-01 12:40:19,101 ----------------------------------------------------------------------------------------------------
-#> 2024-05-01 12:40:25,272 epoch 1 - iter 22/225 - loss 0.53992593 - time (sec): 6.17 - samples/sec: 28.52 - lr: 0.002000
-#> 2024-05-01 12:40:32,060 epoch 1 - iter 44/225 - loss 0.49158928 - time (sec): 12.96 - samples/sec: 27.16 - lr: 0.002000
-#> 2024-05-01 12:40:40,011 epoch 1 - iter 66/225 - loss 0.49081571 - time (sec): 20.91 - samples/sec: 25.25 - lr: 0.002000
-#> 2024-05-01 12:40:47,672 epoch 1 - iter 88/225 - loss 0.49611578 - time (sec): 28.57 - samples/sec: 24.64 - lr: 0.002000
-#> 2024-05-01 12:40:56,037 epoch 1 - iter 110/225 - loss 0.46774886 - time (sec): 36.94 - samples/sec: 23.83 - lr: 0.002000
-#> 2024-05-01 12:41:04,182 epoch 1 - iter 132/225 - loss 0.46582140 - time (sec): 45.08 - samples/sec: 23.42 - lr: 0.002000
-#> 2024-05-01 12:41:11,599 epoch 1 - iter 154/225 - loss 0.43794946 - time (sec): 52.50 - samples/sec: 23.47 - lr: 0.002000
-#> 2024-05-01 12:41:20,457 epoch 1 - iter 176/225 - loss 0.41281759 - time (sec): 61.36 - samples/sec: 22.95 - lr: 0.002000
-#> 2024-05-01 12:41:28,038 epoch 1 - iter 198/225 - loss 0.41347671 - time (sec): 68.94 - samples/sec: 22.98 - lr: 0.002000
-#> 2024-05-01 12:41:37,951 epoch 1 - iter 220/225 - loss 0.40589899 - time (sec): 78.85 - samples/sec: 22.32 - lr: 0.002000
-#> 2024-05-01 12:41:39,935 ----------------------------------------------------------------------------------------------------
-#> 2024-05-01 12:41:39,936 EPOCH 1 done: loss 0.4046 - lr 0.002000
-#> 2024-05-01 12:41:42,519 Evaluating as a multi-label problem: False
-#> 2024-05-01 12:41:42,528 DEV : loss 0.46994879841804504 - f1-score (micro avg)  0.845
-#> 2024-05-01 12:41:42,535 BAD EPOCHS (no improvement): 0
-#> 2024-05-01 12:41:42,535 saving best model
-#> 2024-05-01 12:41:44,283 ----------------------------------------------------------------------------------------------------
-#> 2024-05-01 12:41:48,039 Evaluating as a multi-label problem: False
-#> 2024-05-01 12:41:48,046 0.8588   0.8588  0.8588  0.8588
-#> 2024-05-01 12:41:48,046 
+#> 2024-05-01 21:23:16,706 ----------------------------------------------------------------------------------------------------
+#> 2024-05-01 21:23:16,706 Corpus: "Corpus: 1800 train + 200 dev + 85 test sentences"
+#> 2024-05-01 21:23:16,706 ----------------------------------------------------------------------------------------------------
+#> 2024-05-01 21:23:16,706 Parameters:
+#> 2024-05-01 21:23:16,706  - learning_rate: "0.002000"
+#> 2024-05-01 21:23:16,706  - mini_batch_size: "8"
+#> 2024-05-01 21:23:16,706  - patience: "3"
+#> 2024-05-01 21:23:16,706  - anneal_factor: "0.5"
+#> 2024-05-01 21:23:16,707  - max_epochs: "1"
+#> 2024-05-01 21:23:16,707  - shuffle: "True"
+#> 2024-05-01 21:23:16,707  - train_with_dev: "False"
+#> 2024-05-01 21:23:16,707  - batch_growth_annealing: "False"
+#> 2024-05-01 21:23:16,707 ----------------------------------------------------------------------------------------------------
+#> 2024-05-01 21:23:16,707 Model training base path: "new-muller-campaign-communication"
+#> 2024-05-01 21:23:16,707 ----------------------------------------------------------------------------------------------------
+#> 2024-05-01 21:23:16,707 Device: cpu
+#> 2024-05-01 21:23:16,707 ----------------------------------------------------------------------------------------------------
+#> 2024-05-01 21:23:16,707 Embeddings storage mode: cpu
+#> 2024-05-01 21:23:16,707 ----------------------------------------------------------------------------------------------------
+#> 2024-05-01 21:23:22,887 epoch 1 - iter 22/225 - loss 0.51337095 - time (sec): 6.18 - samples/sec: 28.48 - lr: 0.002000
+#> 2024-05-01 21:23:29,332 epoch 1 - iter 44/225 - loss 0.46051266 - time (sec): 12.62 - samples/sec: 27.88 - lr: 0.002000
+#> 2024-05-01 21:23:36,203 epoch 1 - iter 66/225 - loss 0.47663777 - time (sec): 19.50 - samples/sec: 27.08 - lr: 0.002000
+#> 2024-05-01 21:23:42,697 epoch 1 - iter 88/225 - loss 0.47514490 - time (sec): 25.99 - samples/sec: 27.09 - lr: 0.002000
+#> 2024-05-01 21:23:49,746 epoch 1 - iter 110/225 - loss 0.45787836 - time (sec): 33.04 - samples/sec: 26.63 - lr: 0.002000
+#> 2024-05-01 21:23:56,748 epoch 1 - iter 132/225 - loss 0.45039044 - time (sec): 40.04 - samples/sec: 26.37 - lr: 0.002000
+#> 2024-05-01 21:24:03,990 epoch 1 - iter 154/225 - loss 0.43331979 - time (sec): 47.28 - samples/sec: 26.06 - lr: 0.002000
+#> 2024-05-01 21:24:12,961 epoch 1 - iter 176/225 - loss 0.42440802 - time (sec): 56.25 - samples/sec: 25.03 - lr: 0.002000
+#> 2024-05-01 21:24:20,592 epoch 1 - iter 198/225 - loss 0.42189943 - time (sec): 63.88 - samples/sec: 24.79 - lr: 0.002000
+#> 2024-05-01 21:24:30,214 epoch 1 - iter 220/225 - loss 0.41358232 - time (sec): 73.51 - samples/sec: 23.94 - lr: 0.002000
+#> 2024-05-01 21:24:31,796 ----------------------------------------------------------------------------------------------------
+#> 2024-05-01 21:24:31,796 EPOCH 1 done: loss 0.4092 - lr 0.002000
+#> 2024-05-01 21:24:34,438 Evaluating as a multi-label problem: False
+#> 2024-05-01 21:24:34,445 DEV : loss 0.37292125821113586 - f1-score (micro avg)  0.87
+#> 2024-05-01 21:24:34,448 BAD EPOCHS (no improvement): 0
+#> 2024-05-01 21:24:34,449 saving best model
+#> 2024-05-01 21:24:36,200 ----------------------------------------------------------------------------------------------------
+#> 2024-05-01 21:24:40,425 Evaluating as a multi-label problem: False
+#> 2024-05-01 21:24:40,431 0.8706   0.8706  0.8706  0.8706
+#> 2024-05-01 21:24:40,431 
 #> Results:
-#> - F-score (micro) 0.8588
-#> - F-score (macro) 0.8599
-#> - Accuracy 0.8588
+#> - F-score (micro) 0.8706
+#> - F-score (macro) 0.8779
+#> - Accuracy 0.8706
 #> 
 #> By class:
 #>               precision    recall  f1-score   support
 #> 
 #>       Future     0.8837    0.8837    0.8837        43
-#>      Present     0.7667    0.8519    0.8070        27
-#>         Past     1.0000    0.8000    0.8889        15
+#>      Present     0.7931    0.8519    0.8214        27
+#>         Past     1.0000    0.8667    0.9286        15
 #> 
-#>     accuracy                         0.8588        85
-#>    macro avg     0.8835    0.8452    0.8599        85
-#> weighted avg     0.8671    0.8588    0.8603        85
+#>     accuracy                         0.8706        85
+#>    macro avg     0.8923    0.8674    0.8779        85
+#> weighted avg     0.8755    0.8706    0.8718        85
 #> 
-#> 2024-05-01 12:41:48,046 ----------------------------------------------------------------------------------------------------
+#> 2024-05-01 21:24:40,431 ----------------------------------------------------------------------------------------------------
 #> $test_score
-#> [1] 0.8588235
+#> [1] 0.8705882
 #> 
 #> $dev_score_history
-#> [1] 0.845
+#> [1] 0.87
 #> 
 #> $train_loss_history
-#> [1] 0.4045972
+#> [1] 0.409207
 #> 
 #> $dev_loss_history
-#> [1] 0.4699488
+#> [1] 0.3729213
 ```
 
 More R tutorial and documentation see
