@@ -163,23 +163,23 @@ UCD<br><small class="dont-index">Source: <a href="https://github.com/davidycliao
     
     
 <div class="section level2">
-<h2 id="why-write-flair-to-access-fair-nlp-in-python">Why Write flaiR to Access fair NLP in Python?<a class="anchor" aria-label="anchor" href="#why-write-flair-to-access-fair-nlp-in-python"></a>
+<h2 id="flair-in-r">flaiR in R<a class="anchor" aria-label="anchor" href="#flair-in-r"></a>
 </h2>
 <div style="text-align: justify">
 <p>In Python, Flair ( developed by <a href="https://engineering.zalando.com/posts/2018/11/zalando-research-releases-flair.html" class="external-link">Zalando
 Research</a>) stands out as a notably feature-rich and user-friendly NLP
 framework. Flair NLP provides intuitive interfaces with exceptional
-multilingual support, especially for various embedding frameworks like
-Glove, and transformer-based models such as BERT.</p>
+multilingual embeddings, especially for various embedding frameworks
+like Glove and transformer-based models.</p>
 </div>
 <p> </p>
 <hr>
 </div>
 <div class="section level2">
-<h2 id="install-flair-with-using-remotes">Install <code>flaiR</code> with Using <a href="https://github.com/r-lib/remotes" class="external-link"><code>remotes</code></a><a class="anchor" aria-label="anchor" href="#install-flair-with-using-remotes"></a>
+<h2 id="install-flair-with-using-remotes">Install <strong>flaiR</strong> with Using <a href="https://github.com/r-lib/remotes" class="external-link"><code>remotes</code></a><a class="anchor" aria-label="anchor" href="#install-flair-with-using-remotes"></a>
 </h2>
 <div style="text-align: justify">
-<p><code>flaiR</code> is built on top of the reticulate package and
+<p><strong>flaiR</strong> is built on top of the reticulate package and
 incorporates key functions to access the core features of
 <strong>FlairNLP</strong>, returning data in a tidy and clean <a href="https://cran.r-project.org/web/packages/data.table/index.html" class="external-link"><code>data.table</code></a>.</p>
 <p>The installation consists of two parts: firstly, install <a href="https://www.python.org/downloads/" class="external-link">Python 3.8</a> or above
@@ -248,23 +248,21 @@ you update.</p>
 <span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"davidycliao/flaiR"</span>, force <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">flaiR</span><span class="op">)</span></span></code></pre>
 </div>
-<!-- __Installation Note__ -->
-<!-- <div style="text-align: justify"> -->
-<!-- </div> -->
 <p> </p>
 <hr>
 </div>
 <div class="section level2">
-<h2 id="class-and-object-in-r-via-flair">Class and Object in R via {flaiR}<a class="anchor" aria-label="anchor" href="#class-and-object-in-r-via-flair"></a>
+<h2 id="class-and-object-in-flair">Class and Object in flaiR<a class="anchor" aria-label="anchor" href="#class-and-object-in-flair"></a>
 </h2>
 <div style="text-align: justify">
-<p>For R users, {<code>flairR</code>} is built on top of {reticulate},
+<p>For R users, <strong>flairR</strong> is built on top of {reticulate},
 enabling you to interact directly with Python modules in R and providing
 seamless support for documents in the R community.</p>
-<p>In the {<code>flairR</code>} architecture, we use the simplest S3
-method to wrap both modules and methods within those modules, allowing R
-users to conveniently access and use Python functionalities. Here are
-the main modules and methods (functions) wrapped in {flairR}:</p>
+<p>In the <strong>flairR</strong> architecture, we use the simplest S3
+method to wrap both functions and methods within those modules, allowing
+R users to conveniently access and use Python functionalities. Here are
+the main modules and methods (functions) wrapped in
+<strong>flairR</strong>:</p>
 </div>
 <table class="table">
 <colgroup>
@@ -363,7 +361,7 @@ predict tags for the sentence object.</p>
 <span><span class="co"># load the NER tagger</span></span>
 <span><span class="va">Classifier</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_nn.html">flair_nn</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">Classifier</span></span>
 <span><span class="va">tagger</span> <span class="op">&lt;-</span> <span class="va">Classifier</span><span class="op">$</span><span class="fu">load</span><span class="op">(</span><span class="st">'ner'</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2024-05-03 09:36:55,169 SequenceTagger predicts: Dictionary with 20 tags: &lt;unk&gt;, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, &lt;START&gt;, &lt;STOP&gt;</span></span>
+<span><span class="co">#&gt; 2024-05-04 12:15:11,854 SequenceTagger predicts: Dictionary with 20 tags: &lt;unk&gt;, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, &lt;START&gt;, &lt;STOP&gt;</span></span>
 <span></span>
 <span><span class="co"># run NER over sentence</span></span>
 <span><span class="va">tagger</span><span class="op">$</span><span class="fu">predict</span><span class="op">(</span><span class="va">sentence</span><span class="op">)</span></span></code></pre></div>
@@ -402,7 +400,7 @@ Hugging Face.</p>
 <span><span class="co"># load the NER tagger</span></span>
 <span><span class="va">Classifier</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_nn.html">flair_nn</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">Classifier</span></span>
 <span><span class="va">tagger</span> <span class="op">&lt;-</span> <span class="va">Classifier</span><span class="op">$</span><span class="fu">load</span><span class="op">(</span><span class="st">'pos'</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2024-05-03 09:36:56,114 SequenceTagger predicts: Dictionary with 53 tags: &lt;unk&gt;, O, UH, ,, VBD, PRP, VB, PRP$, NN, RB, ., DT, JJ, VBP, VBG, IN, CD, NNS, NNP, WRB, VBZ, WDT, CC, TO, MD, VBN, WP, :, RP, EX, JJR, FW, XX, HYPH, POS, RBR, JJS, PDT, NNPS, RBS, AFX, WP$, -LRB-, -RRB-, ``, '', LS, $, SYM, ADD</span></span>
+<span><span class="co">#&gt; 2024-05-04 12:15:12,720 SequenceTagger predicts: Dictionary with 53 tags: &lt;unk&gt;, O, UH, ,, VBD, PRP, VB, PRP$, NN, RB, ., DT, JJ, VBP, VBG, IN, CD, NNS, NNP, WRB, VBZ, WDT, CC, TO, MD, VBN, WP, :, RP, EX, JJR, FW, XX, HYPH, POS, RBR, JJS, PDT, NNPS, RBS, AFX, WP$, -LRB-, -RRB-, ``, '', LS, $, SYM, ADD</span></span>
 <span></span>
 <span><span class="co"># run NER over sentence</span></span>
 <span><span class="va">tagger</span><span class="op">$</span><span class="fu">predict</span><span class="op">(</span><span class="va">sentence</span><span class="op">)</span></span></code></pre></div>
@@ -432,9 +430,9 @@ Hugging Face.</p>
 </h3>
 <div style="text-align: justify">
 <p>Let’s run sentiment analysis over the same sentence to determine
-whether it is POSITIVE or NEGATIVE.</p>
-<p>You can do this with essentially the same code as above. Just instead
-of loading the ‘ner’ model, you now load the ‘sentiment’ model:</p>
+whether it is POSITIVE or NEGATIVE. You can do this with essentially the
+same code as above. Just instead of loading the <code>ner</code> model,
+you now load the <code>sentiment</code> model:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># attach flaiR in R</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">flaiR</span><span class="op">)</span></span>
@@ -460,7 +458,7 @@ of loading the ‘ner’ model, you now load the ‘sentiment’ model:</p>
 <h3 id="embeddings">
 <strong>Embeddings</strong><a class="anchor" aria-label="anchor" href="#embeddings"></a>
 </h3>
-<p><strong>Embeddings Words with Transformers</strong></p>
+<p><strong>Embedding from Transformers</strong></p>
 <div style="text-align: justify">
 <p>Let’s use a standard BERT model (bert-base-uncased) to embed the
 sentence “the grass is green”. Simply instantate
@@ -517,7 +515,7 @@ embedding for the entire sentence:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># initiate TransformerWordEmbeddings</span></span>
 <span><span class="va">embedding</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_embeddings.TransformerDocumentEmbeddings.html">flair_embeddings.TransformerDocumentEmbeddings</a></span><span class="op">(</span><span class="st">'bert-base-uncased'</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2024-05-03 09:37:02,232 Using long sentences for Document embeddings is only beneficial for cls_pooling types 'mean' and 'max</span></span>
+<span><span class="co">#&gt; 2024-05-04 12:15:18,208 Using long sentences for Document embeddings is only beneficial for cls_pooling types 'mean' and 'max</span></span>
 <span></span>
 <span><span class="co"># create a sentence</span></span>
 <span><span class="va">sentence</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_data.Sentence.html">flair_data.Sentence</a></span><span class="op">(</span><span class="st">'The grass is green .'</span><span class="op">)</span></span>
@@ -691,7 +689,7 @@ pre-trained models, see <a href="https://flairnlp.github.io/docs/tutorial-basics
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">flaiR</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tagger_pos</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_tagger_pos.html">load_tagger_pos</a></span><span class="op">(</span><span class="st">"pos-fast"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2024-05-03 09:37:06,604 SequenceTagger predicts: Dictionary with 53 tags: &lt;unk&gt;, O, UH, ,, VBD, PRP, VB, PRP$, NN, RB, ., DT, JJ, VBP, VBG, IN, CD, NNS, NNP, WRB, VBZ, WDT, CC, TO, MD, VBN, WP, :, RP, EX, JJR, FW, XX, HYPH, POS, RBR, JJS, PDT, NNPS, RBS, AFX, WP$, -LRB-, -RRB-, ``, '', LS, $, SYM, ADD</span></span></code></pre></div>
+<span><span class="co">#&gt; 2024-05-04 12:15:22,589 SequenceTagger predicts: Dictionary with 53 tags: &lt;unk&gt;, O, UH, ,, VBD, PRP, VB, PRP$, NN, RB, ., DT, JJ, VBP, VBG, IN, CD, NNS, NNP, WRB, VBZ, WDT, CC, TO, MD, VBN, WP, :, RP, EX, JJR, FW, XX, HYPH, POS, RBR, JJS, PDT, NNPS, RBS, AFX, WP$, -LRB-, -RRB-, ``, '', LS, $, SYM, ADD</span></span></code></pre></div>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_pos.html">get_pos</a></span><span class="op">(</span><span class="va">texts</span>, <span class="va">doc_ids</span>, <span class="va">tagger_pos</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">results</span>, n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
@@ -721,7 +719,7 @@ models, see <a href="https://flairnlp.github.io/docs/tutorial-basics/tagging-ent
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">flaiR</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tagger_ner</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_tagger_ner.html">load_tagger_ner</a></span><span class="op">(</span><span class="st">"ner"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2024-05-03 09:37:09,146 SequenceTagger predicts: Dictionary with 20 tags: &lt;unk&gt;, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, &lt;START&gt;, &lt;STOP&gt;</span></span></code></pre></div>
+<span><span class="co">#&gt; 2024-05-04 12:15:24,393 SequenceTagger predicts: Dictionary with 20 tags: &lt;unk&gt;, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, &lt;START&gt;, &lt;STOP&gt;</span></span></code></pre></div>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_entities.html">get_entities</a></span><span class="op">(</span><span class="va">texts</span>, <span class="va">doc_ids</span>, <span class="va">tagger_ner</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">results</span>, n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
