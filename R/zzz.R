@@ -75,9 +75,9 @@
     commands <- c(
       paste(python_path, "-m pip install --upgrade pip"),
       paste(python_path, "-m pip install torch"),
-      paste(python_path, "-m pip install flair")
+      paste(python_path, "-m pip install flair"),
+      paste(python_path, "-m pip install scipy==1.12.0")
     )
-
     command_statuses <- vapply(commands, system, FUN.VALUE = integer(1))
 
     flair_check_again <- check_flair_version()
