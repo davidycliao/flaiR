@@ -22,11 +22,12 @@ Research Group](https://text-and-policy.com) and [Connected_Politics
 Lab](https://www.ucd.ie/connected_politics/) in UCD. flaiR provides
 convenient access to the main functionalities of flairNLP for training
 word embedding-based deep learning models and fine-tune state-of-the-art
-transformers hosted on Hugging Face.
+transformers hosted on Hugging Face. Our team trains and fine-tunes the
+models with Flair in [our projects]().
 
 <br>
 
-### Installation via <u>**`GitHub`**</u>
+## Installation via <u>**`GitHub`**</u>
 
 ``` r
 install.packages("remotes")
@@ -39,7 +40,7 @@ library(flaiR)
 
 <br>
 
-### Requirements
+## Requirements
 
 <div style="text-align: justify">
 
@@ -62,10 +63,14 @@ these specific versions.
 | Ubuntu  | Latest              | 3.9            |
 
 <!-- __Note__: [Anaconda](https://github.com/anaconda) or [miniconda](https://github.com/conda/conda) (highly recommended) is the best way to manage your working environment. In RStudio, the Python (conda) environment can easily be managed by the reticulate R package, or manually changed configuration via Tools -> Global Options -> Python in Rstudio. -->
+<!-- <br> -->
+<!-- ## Tutorial Examples -->
+<!-- - [Training RNNs](https://davidycliao.github.io/flaiR/articles/tutorial.html#training-rnns) -->
+<!-- - [Finetune Transformers (_The Temporal Focus of Campaign Communication_)](https://davidycliao.github.io/flaiR/articles/tutorial.html#finetune-transformers) -->
 
 <br>
 
-### Contribution and Open Source
+## Contribution and Open Source
 
 <div style="text-align: justify">
 

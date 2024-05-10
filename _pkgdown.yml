@@ -11,22 +11,58 @@ home:
     href: https://text-and-policy.com
   - text: "The Connected_Politics Lab @ UCD"
     href: https://www.ucd.ie/connected_politics/
-  - text: "LACAN: Legislators, Accountability and Collective Agency"
-    href: https://projectlacan.wordpress.com/team/
   - text: "ParlSpeech: Legislative Speeches in the Key Parliamentary Democracies"
     href: https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/L4OAKN
   - text: "ParlEE: Sentence-level Speeches of Six EU Legislative Chambers"
     href: https://pureportal.strath.ac.uk/en/datasets/parlee-plenary-speeches-v2-data-set-annotated-full-text-of-151-mi
 
 reference:
-- title: The flair Module (Python)
-  desc: <div class="text-justify">This is a very high-level overview of flair. Accessing whole flair module. The flair library is a powerful NLP (Natural Language Processing) tool based on PyTorch. Its primary focus is to provide state-of-the-art models for NLP tasks while keeping the API simple and easy to use.</div>
-
+- title: flair
+  desc: <div class="text-justify"></div>
 - contents:
   - import_flair
 
-- title: The flair_embeddings Module  (Python)
-  desc: <div class="text-justify">Accessing flair.embeddings module from flair. `flair.embeddings` is a module from the Flair NLP library, which provides several state-of-the-art embeddings (vector representations) for natural language processing (NLP) tasks. Embeddings are crucial in NLP because they allow models to understand the semantic content of words, capturing relationships between words, similarities, and much more. The Flair library provides a rich set of embeddings, which can be either standalone or combined to enhance performance on various tasks.</div>
+- title: flair_data
+  desc: <div class="text-justify">Accessing flair.data module from flair. </div>
+- contents:
+  - flair_data
+#   - flair_data()$BoundingBox
+#   - flair_data()$Dictionary
+#   - flair_data()$Label
+#   - flair_data()$DataPoint
+#   - flair_data()$Token
+#   - flair_data()$Span
+#   - flair_data()$Relation
+#   - flair_data()$Sentence
+#   - flair_data()$DataPair
+#   - flair_data()$Image
+#   - flair_data()$Corpus
+#   - flair_data()$MultiCorpus
+#   - flair_data()$FlairDataset
+#   - flair_data()$ConcatFlairDataset
+#   - flair_data()$iob2()
+#   - flair_data()$randomly_split_into_two_datasets()
+#   - flair_data()$get_spans_from_bio()
+
+
+- title: flair_datasets
+  desc: <div class="text-justify">Accessing flair.datasets module from flair.</div>
+- contents:
+  - flair_datasets
+  - flair_data.Sentence
+#   - flair_datasets()$base
+#   - flair_datasets()$biomedical
+#   - flair_datasets()$document_classification
+#   - flair_datasets()$entity_linking
+#   - flair_datasets()$ocr
+#   - flair_datasets()$relation_extraction
+#   - flair_datasets()$sequence_labeling
+#   - flair_datasets()$text_image
+#   - flair_datasets()$text_text
+#   - flair_datasets()$treebanks
+
+- title: flair_embeddings
+  desc: <div class="text-justify">Accessing flair.embeddings module from flair. </div>
 - contents:
   - flair_embeddings
   - flair_embeddings.FlairEmbeddings
@@ -34,43 +70,139 @@ reference:
   - flair_embeddings.TransformerWordEmbeddings
   - flair_embeddings.WordEmbeddings
   - flair_embeddings.StackedEmbeddings
+#   - flair_embeddings()$base
+#     + flair_embeddings()$Embeddings
+#     + flair_embeddings()$ScalarMix
+#     + flair_embeddings()$DocumentEmbeddings
+#     + flair_embeddings()$TokenEmbeddings
+#     + flair_embeddings()$register_embeddings()
+#     + flair_embeddings()$load_embeddings()
+#   - flair_embeddings()$document
+#     + flair_embeddings()$DocumentPoolEmbeddings
+#     + flair_embeddings()$DocumentRNNEmbeddings
+#     + flair_embeddings()$DocumentLSTMEmbeddings
+#     + flair_embeddings()$DocumentGRUEmbeddings
+#     + flair_embeddings()$DocumentCNNEmbeddings
+#     + flair_embeddings()$DocumentMeanEmbeddings
+#     + flair_embeddings()$DocumentLMEmbeddings
+#     + flair_embeddings()$SentenceTransformerDocumentEmbeddings
+#     + flair_embeddings()$DocumentCNNEmbeddings()
+#   - flair_embeddings()$image
+#     + flair_embeddings()$ImageEmbeddings
+#     + flair_embeddings()$IdentityImageEmbeddings
+#     + flair_embeddings()$PrecomputedImageEmbeddings
+#     + flair_embeddings()$NetworkImageEmbeddings
+#     + flair_embeddings()$ConvTransformNetworkImageEmbeddings
+#   - flair_embeddings.legacy
+#     + flair_embeddings()$ELMoEmbeddings
+#     + flair_embeddings()$CharLMEmbeddings
+#     + flair_embeddings()$DocumentMeanEmbeddings
+#     + flair_embeddings()$DocumentLSTMEmbeddings
+#   - flair_embeddings()$token
+#     + flair_embeddings()$WordEmbeddings
+#     + flair_embeddings()$TransformerWordEmbeddings
+#     + flair_embeddings()$StackedEmbeddings
+#     + flair_embeddings()$CharacterEmbeddings
+#     + flair_embeddings()$FlairEmbeddings
+#     + flair_embeddings()$PooledFlairEmbeddings
+#     + flair_embeddings()$FastTextEmbeddings
+#     + flair_embeddings()$OneHotEmbeddings
+#     + flair_embeddings()$HashEmbeddings
+#     + flair_embeddings()$MuseCrosslingualEmbeddings
+#     + flair_embeddings()$BytePairEmbeddings
+#     + flair_embeddings()$NILCEmbeddings
+#   - flair_embeddings()$transformer
+#     + flair_embeddings()$transformer$pad_sequence_embeddings
+#     + flair_embeddings()$transformer$truncate_hidden_states
+#     + flair_embeddings()$transformer$combine_strided_tensors
+#     + flair_embeddings()$transformer$fill_masked_elements
+#     + flair_embeddings()$transformer$insert_missing_embeddings
+#     + flair_embeddings()$transformer$insert_missing_embeddings
+#     + flair_embeddings()$transformer$fill_mean_token_embeddings
+#     + flair_embeddings()$transformer$document_mean_pooling
+#     + flair_embeddings()$transformer$document_max_pooling
+#     + flair_embeddings()$transformer$remove_special_markup
+#     + flair_embeddings()$transformer$TransformerBaseEmbeddings
+#     + flair_embeddings()$transformer$TransformerOnnxEmbeddings
+#     + flair_embeddings()$transformer$TransformerJitEmbeddings
+#     + flair_embeddings()$transformer$TransformerJitWordEmbeddings
+#     + flair_embeddings()$transformer$TransformerJitDocumentEmbeddings
+#     + flair_embeddings()$transformer$TransformerOnnxWordEmbeddings
+#     + flair_embeddings()$transformer$TransformerOnnxDocumentEmbeddings
+#     + flair_embeddings()$transformer$TransformerEmbeddings
 
-- title: The flair_data Module (Python)
-  desc: <div class="text-justify">Accessing flair.data module from flair. `flair.data` is a foundational module in the Flair library that provides data structures and utilities for handling and processing linguistic data. This module is central to the library, ensuring that data is structured correctly before it's processed by models or embeddings.</div>
-- contents:
-  - flair_data
-  - flair_data.Sentence
-
-- title: The flair_nn Module  (Python)
-  desc: <div class="text-justify">Accessing flair.nn module from flair. The flair.nn module in the Flair library is focused on neural network architectures and components. This module offers several classes and functionalities that are essential for building, training, and deploying neural network models in the Flair ecosystem.</div>
+- title: flair_nn
+  desc: <div class="text-justify">Accessing flair.nn module from flair.</div>
 - contents:
   - flair_nn
   - flair_nn.Classifier
+#   - flair_nn()$LockedDropout
+#   - flair_nn()$WordDropout
+#   - flair_nn()$Classifier
+#   - flair_nn()$DefaultClassifier
+#   - flair_nn()$Model
+#   - flair_nn()$PrototypicalDecoder
+#   - flair_nn()$LabelVerbalizerDecoder
 
-- title: The flair_trainers Module  (Python)
-  desc: <div class="text-justify">Accessing flair.trainers module from flair. `flair.trainers` module in the Flair library is dedicated to training routines for various machine learning models. This module handles the optimization process, scheduling, and many other functionalities required to train models effectively and efficiently.</div>
+- title: flair_trainers
+  desc: <div class="text-justify">Accessing flair.trainers module from flair.</div>
 - contents:
   - flair_trainers
+#   - flair_trainers()$ModelTrainer
+#   - flair_trainers()$LanguageModelTrainer
+#   - flair_trainers()$TextCorpus
 
-- title: The flair_splitter Module (Python)
+# - title: flair_tokenization Module
+#   desc: <div class="text-justify">Tokenizers are used to represent algorithms and models to split plain text into individual tokens or words. All subclasses should overwrite tokenize(), which splits the given plain text into tokens. Moreover, subclasses may overwrite name(), returning a unique identifier representing the tokenizer’s configuration.</div>
+#   - flair_tokenization()$Tokenizer
+#   - flair_tokenization()$SpaceTokenizer
+#   - flair_tokenization()$SegtokTokenizer
+#   - flair_tokenization()$SpacyTokenizer
+#   - flair_tokenization()$JapaneseTokenizer
+#   - flair_tokenization()$SciSpacyTokenizer
+#   - flair_tokenization()$TokenizerWrapper
+#   - flair_tokenization()$SciSpacyTokenizer
+
+- title: flair_splitter
   desc: Accessing flair.splitter module from flair.
 - contents:
   - flair_splitter
   - flair_splitter.SegtokSentenceSplitter
+#   - flair_splitter()$SentenceSplitter
+#   - flair_splitter()$SegtokSentenceSplitter
+#   - flair_splitter()$SpacySentenceSplitter
+#   - flair_splitter()$SciSpacySentenceSplitter
+#   - flair_splitter()$SciSpacySentenceSplitter
+#   - flair_splitter()$TagSentenceSplitter
+#   - flair_splitter()$NewlineSentenceSplitter
+#   - flair_splitter()$NoSentenceSplitter
 
-- title: The flair_models Module  (Python)
-  desc: <div class="text-justify">Accessing flair.models module from flair. The flair.models module is a part of the Flair NLP library that contains model architectures and pre-trained models for various NLP tasks. </div>
+- title: flair_models
+  desc: <div class="text-justify">Accessing flair.models module from flair. </div>
 - contents:
   - flair_models
   - flair_models.TextClassifier
   - flair_models.Sequencetagger
+#   - flair_models()$SpanClassifier
+#   - flair_models()$LanguageModel
+#   - flair_models()$Lemmatizer
+#   - flair_models()$TextPairClassifier
+#   - flair_models()$TextPairRegressor
+#   - flair_models()$RelationClassifier
+#   - flair_models()$RelationExtractor
+#   - flair_models()$RegexpTagger
+#   - flair_models()$SequenceTagger
+#   - flair_models()$TokenClassifier
+#   - flair_models()$WordTagger
+#   - flair_models()$FewshotClassifier
+#   - flair_models()$TARSClassifier
+#   - flair_models()$TARSTagger
+#   - flair_models()$TextClassifier
+#   - flair_models()$TextRegressor
+#   - flair_models()$ClusteringModel
+#   - flair_models()$MultitaskModel
 
-- title: The flair_datasets Module  (Python)
-  desc: <div class="text-justify">Accessing flair.datasets module from flair. The flair.datasets module is an integral part of the Flair library, focusing on the provision and handling of datasets for various natural language processing tasks.</div>
-- contents:
-  - flair_datasets
-
-- title: Expanded Feats in flaiR
+- title: Expanded Feats
   desc: <div class="text-justify">Extended functionality for working with three major functions to extract features in data.table.</div>
 - contents:
   - load_tagger_ner
@@ -95,7 +227,6 @@ reference:
   - uninstall_python_package
   - install_python_package
 
-
 - title: Training Dataset
   desc: <div class="text-justify"> Training dataset for tutorial</div>
 - contents:
@@ -109,8 +240,8 @@ reference:
 authors:
   David Liao:
     href: https://davidycliao.github.io
-  Samira Diebire:
-    href: https://samiradiebire.github.io
+  Stefan Müller:
+    href: https://muellerstefan.net
 
 template:
   package: tidytemplate
@@ -133,21 +264,16 @@ navbar:
   - icon: fa-rocket
     text: Quick Start
     menu:
-    - text: "Why {flaiR}"
-      href: articles/quickstart.html#why-write-{flaiR}-to-access-fair-nlp-in-python
-    - text: "Install flaiR via GitHub"
-      href: articles/quickstart.html#install-flair-with-using-remotes
-    - text: "Class and Ojbect in R"
-      href: articles/quickstart.html#class-and-ojbect-in-r-via-flair
-    - text: "FlaiR Embeddings"
-      href: articles/quickstart.html#embeddings
-    - text: "Feats in flaiR"
-      href: articles/quickstart.html#expanded-feats-for-nlp-tasks-in-flair
-    - text: "How to Contribute"
-      href: articles/quickstart.html#how-to-contribute
+    - text: "NLP Tasks"
+      href: articles/quickstart.html#nlp-tasks
+    - text: "Class and Ojbect"
+      href: articles/quickstart.html#class-and-ojbect
+    - text: "More Details about Installation"
+      href: articles/quickstart.html#more-details-about-installation
+
 
   - icon: fa-project-diagram
-    text: Tutorials
+    text: Tutorial
     menu:
     - text: "Introduction"
       href: articles/tutorial.html#introduction
@@ -155,12 +281,16 @@ navbar:
       href: articles/tutorial.html#sentence-and-token
     - text: "Sequence Taggings"
       href: articles/tutorial.html#sequence-taggings
+    - text: "Performing NER Tasks"
+      href: articles/tutorial.html#performing-ner-tasks
     - text: "Flair Embeddings"
       href: articles/tutorial.html#flair-embedding
-    - text: "Training a Binary Classifier in flaiR"
-      href: articles/tutorial.html#training-a-binary-classifier-in-flair
-    - text: "Training a RNN with FlaiR"
-      href: articles/tutorial.html#training-a-rnn-with-flair
+    - text: "Training a Binary Classifier"
+      href: articles/tutorial.html#training-a-binary-classifier
+    - text: "Training RNNs"
+      href: articles/tutorial.html#training-rnns
+    - text: "Finetune Transformers "
+      href: articles/tutorial.html#finetune-transformers
 
   - icon: fa-newspaper-o
     text: Expanded Feats
@@ -173,8 +303,7 @@ navbar:
       href: articles/get_sentiments.html
     - text: "The Coloring Entities"
       href: articles/highlight_text.html
-    - text: "Visualizing the Sentiments (in progress)"
-      href:
+
 
   - icon: fa-file-code-o
     text: Reference
