@@ -1,8 +1,8 @@
 ---
 title: "Quick Start"
-author: 
-  - name: "David (Yen-Chieh) Liao"
-    affiliation: "Postdoc at Text & Policy Research Group and SPIRe in UCD"
+# author: 
+#   - name: "David (Yen-Chieh) Liao"
+#     affiliation: "Postdoc at Text & Policy Research Group and SPIRe in UCD"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Quick Start}
@@ -30,363 +30,17 @@ library(flaiR)
 ```
 
 
-## Why Write flaiR to Access fair NLP in Python?
 <div style="text-align: justify">
 
-In Python, Flair ( developed by [Zalando Research](https://engineering.zalando.com/posts/2018/11/zalando-research-releases-flair.html)) stands out as a notably feature-rich and user-friendly NLP framework. Flair NLP provides intuitive interfaces with exceptional multilingual support, especially for various embedding frameworks like Glove, and transformer-based models such as BERT. 
-
-Flair also comes equipped with pre-trained models and context-aware capabilities. In addition, Flair also establishes dependencies with primary NLP Python libraries (such as gensim, torch, transformer, and more); installing {`flaiR`} will subsequently install other related NLP packages in Python. By installing the {`flaiR`} package in R, users can seamlessly access the Python-based Flair library within R. This integration allows for the use of basic Python libraries, like [NumPy](https://numpy.org), as well as modern NLP and deep learning frameworks such as [PyTorch](https://pytorch.org), all through the reticulate interface in an R environment.
-
+Flair is a Python library developed by [Zalando Research](https://engineering.zalando.com/posts/2018/11/zalando-research-releases-flair.html) that stands out as a notably user-friendly NLP framework. Flair NLP provides intuitive interfaces with exceptional multilingual embeddings, especially for various multilingual embedding frameworks like GloVe and transformer-based models on Hugging Face.
 </div>
 
-&nbsp;
-
------
-
-## Install `flaiR` with Using [`remotes`](https://github.com/r-lib/remotes)
-
+## NLP Tasks
 <div style="text-align: justify">
 
-`flaiR` is built on top of the reticulate package and incorporates key functions to access the core features of __FlairNLP__, returning data in a tidy and clean [`data.table`](https://cran.r-project.org/web/packages/data.table/index.html). 
+For R users, flairR extends FlairNLP with three NLP task functions to extract features in a neat format with [data.table](https://cran.r-project.org/web/packages/data.table/index.html). Through these featured functions, you don't have to write loops to format parsed output on your own. The main features include part-of-speech tagging, named entity recognition and sentiment analysis. Additionally, to handle the load on RAM when dealing with larger corpora, flairR supports batch processing to handle texts in batches, which is especially useful when dealing with large datasets, to optimize memory usage and performance.
 
-The installation consists of two parts: firstly, install [Python 3.8](https://www.python.org/downloads/) or above (available here; opt for the stable version, which currently goes up to 3.11, and avoid pre-release versions). Secondly, install R (version 3.6.3 or higher), along with RStudio. Additionally, you'll also need Anaconda to assist pip in safely and stably collecting dependencies for setting up your Python environment.
-
-
-__System Requirement:__
-
-- Python (>= 3.10.x)
-
-- R (>= 4.2.0)
-
-- RStudio ___(The GUI interface allows users to adjust and manage the Python environment in R)___
-
-- Anaconda ___(highly recommended)___
-
-When first installing and loading the {flaiR} package, it utilizes the system environment tool and undergoes three evaluation stages for the automatic installation of Flair. Initially, flaiR requires at least Python 3 to be installed on your device. If Python 3 is not present, you will not be able to successfully install flaiR in R. At this point, it is essential to check if the correct version of Python is installed. We recommend installing Python 3.8 or a slightly higher version, but avoid installing pre-release versions.
-
-The installation consists of two parts: First, install [Python 3.8](https://www.python.org/downloads/) or higher, and [R 3.6.3](https://www.r-project.org) or higher. Although we have tested it on Github Action with R 3.6.2, we strongly recommend installing [R 4.0.0 or above](https://github.com/davidycliao/flaiR/actions/runs/6416611291) to ensure compatibility between the R environment and Python. When first installed, {`flaiR`} automatically detects whether you have Python 3.8 or higher. If not, it will skip the automatic installation of Python and flair NLP. In this case, you will need to mannually install it yourself and reload {`flaiR`} again. If you have Python 3.8 or higher alreadt installed, the installer of {`flaiR`} will automatically install flair Python NLP in your global environment. If you are using {reticulate}, {flaiR} will typically assume the __r-reticulate__ environment by default. At the same time, you can use py_config() to check the location of your environment. Please note that flaiR will directly install flair NLP in the Python environment that your R is using. This environment can be adjusted through _RStudio_ by navigating to `Tools -> Global Options -> Python`. If there are any issues with the installation, feel free to ask in the <u>[Discussion](https://github.com/davidycliao/flaiR/discussions) 
-
-
-During this process, you will observe numerous messages related to the installation of the Python environment and the Python flair module. Notably, flair has numerous dependencies, including libraries related to transformers (like the torch, tokeniser, transformers, gensim, flair, etc). Thus, the installation might take some time to complete. 
-
-There's also another scenario to consider. If {flaiR} is unable to automatically install Flair and PyTorch, it will attempt to force the installation again. However, if this attempt fails, you'll encounter the message: "Failed to install Flair. {flaiR} requires Flair NLP. Please ensure Flair NLP is installed in Python manually." If you're using an Apple operating environment, it's essential at this point to check the compatibility of your M1/M2 chip with Python and Torch.  If there are any issues with the installation, feel free to ask in the <u>[Discussion](https://github.com/davidycliao/flaiR/discussions)</u>.
-
-
-&nbsp;
-
-
-When you copy the command below, you will generally be asked to upgrade the package. This is because this package operates on the {`reticulate`}, and when your packages in R are outdated, RStudio would likely display __“These packages have more recent versions available.”__ to prompt you to update. We recommend that you update.
-
-```
-install.packages("remotes")
-remotes::install_github("davidycliao/flaiR", force = TRUE)
-library(flaiR)
-```
-
-
-
-</div>
-
-
-<!-- __Installation Note__ -->
-
-<!-- <div style="text-align: justify"> -->
-
-
-
-
-<!-- </div> -->
-
-&nbsp;
-
------
-
-
-## Class and Object in R via {flaiR}
-
-<div style="text-align: justify">
-
-For R users, {`flairR`} is built on top of {reticulate}, enabling you to interact directly with Python modules in R and providing seamless support for documents in the R community. 
-
-In the {`flairR`} architecture, we use the simplest S3 method to wrap both modules and methods within those modules, allowing R users to conveniently access and use Python functionalities. Here are the main modules and methods (functions) wrapped in {flairR}:
-
-
-
-</div>
-
-| **Wrapped Functions**                             | Corresponding Code Practice in Python                     | 
-|---------------------------------------------------|-----------------------------------------------------------|
-| `flair_datasets()`                                | from flair.datasets import *                              |
-| `flair_data.Sentence()`                           | from flair.data import Sentence                           |
-| `flair_nn()`                                      | from flair_nn import *                                    |
-| `flair_nn.Classifier()`                           | from flair.embeddings import Classifier                   |
-| `flair_embeddings()`                              | from flair.nn import *                                    |
-| `flair_embeddings.FlairEmbeddings()`              | from flair.embeddings import FlairEmbeddings              |
-| `flair_embeddings.TransformerWordEmbeddings()`    | from flair.embeddings import TransformerWordEmbeddings    |
-| `flair_embeddings.WordEmbeddings()`               | from flair.embeddings import WordEmbeddings               |
-| `flair_embeddings.TransformerDocumentEmbeddings()`| from flair.embeddings import TransformerDocumentEmbeddings|
-| `flair_splitter()`                                | import flair.splitter                                     |
-| `flair_splitter.SegtokSentenceSplitter()`         | from flair.models import  SegtokSentenceSplitter          |
-| `flair_models.Sequencetagger()`                   | from flair.models import SequenceTagger                   |
-| `flair_trainers()`                                | import flair.trainers                                     |
-| `flair_models()`                                  | import flair.models                                       |
-| `flair_models.TextClassifier()`                   | from flair.models import TextClassifier                   |
- 
- 
- 
-
-__Please note that the following basic examples are derived from the official [Flair NLP](https://flairnlp.github.io/docs/intro) Python documentation and tutorial.__
-
-&nbsp;
-
-
-### __Tag Entities in Text__ 
-
-<div style="text-align: justify">
-
-Let's run named entity recognition over the following example sentence: "I love Berlin and New York. To do this, all you need is to make a Sentence for this text, load a pre-trained model and use it to predict tags for the sentence object.
-
-```{r}
-# attach flaiR in R
-library(flaiR)
-
-# make a sentence
-
-Sentence <- flair_data()$Sentence
-sentence <- Sentence('I love Berlin and New York.')
-
-# load the NER tagger
-Classifier <- flair_nn()$Classifier
-tagger <- Classifier$load('ner')
-
-# run NER over sentence
-tagger$predict(sentence)
-```
-
-This should print:
-```{r}
-# print the sentence with all annotations
-print(sentence)
-```
-
-Use a for loop to print out each POS tag. It's important to note that Python is indexed from 0. Therefore, in an R environment, we must use `seq_along(sentence$get_labels()) - 1`.
-
-```{r}
-for (i in seq_along(sentence$get_labels())) {
-      print(sentence$get_labels()[[i]])
-  }
-```
-
-</div>
-
-&nbsp;
-
-### __Tag Part-of-Speech in Text__ 
-
-<div style="text-align: justify">
-
-We use flair/pos-english for POS tagging in the standard models on Hugging Face.
-```{r}
-# attach flaiR in R
-library(flaiR)
-
-# make a sentence
-Sentence <- flair_data()$Sentence
-sentence <- Sentence('I love Berlin and New York.')
-
-# load the NER tagger
-Classifier <- flair_nn()$Classifier
-tagger <- Classifier$load('pos')
-
-# run NER over sentence
-tagger$predict(sentence)
-```
-
-This should print:
-
-```{r}
-# print the sentence with all annotations
-print(sentence)
-```
-
-Use a for loop to print out each pos tag.
-```{r}
-for (i in seq_along(sentence$get_labels())) {
-      print(sentence$get_labels()[[i]])
-  }
-```
-
-</div>
-
-&nbsp;
-
-### __Detect Sentiment__
-
-<div style="text-align: justify">
-
-Let's run sentiment analysis over the same sentence to determine whether it is POSITIVE or NEGATIVE.
-
-You can do this with essentially the same code as above. Just instead of loading the 'ner' model, you now load the 'sentiment' model:
-
-```{r}
-# attach flaiR in R
-library(flaiR)
-
-# make a sentence
-Sentence <- flair_data()$Sentence
-sentence <- Sentence('I love Berlin and New York.')
-
-# load the flair_nn.classifier_load tagger
-Classifier <- flair_nn()$Classifier
-tagger <- Classifier$load('sentiment')
-
-# run sentiment analysis over sentence
-tagger$predict(sentence)
-```
-
-```{r}
-# print the sentence with all annotations
-print(sentence)
-```
-
-</div>
-
-&nbsp;
-
-
-### __Embeddings__
-
-__Embeddings Words with Transformers__
-
-<div style="text-align: justify">
-
-Let's use a standard BERT model (bert-base-uncased) to embed the sentence "the grass is green".
-Simply instantate `flair_embeddings.TransformerWordEmbeddings()`and use `$embed()` over the sentence object:
-
-```{r}
-# attach flaiR in R
-library(flaiR)
-
-# initiate TransformerWordEmbeddings
-TransformerWordEmbeddings <- flair_embeddings()$TransformerWordEmbeddings
-embedding <- TransformerWordEmbeddings('bert-base-uncased')
-
-# create a sentence
-sentence <- flair_data.Sentence('The grass is green .')
-
-# embed words in sentence
-embedding$embed(sentence)
-```
-
-This will cause each word in the sentence to be embedded. You can iterate through the words and get each embedding like this:
-```{r}
-for (i in seq_along(sentence$tokens)) {
-  cat("Token: ",  reticulate::py_str(sentence$tokens[[i]]), "\n")
-  # Access the embedding of the token, converting it to an R object, 
-  # and print the first 15 elements of the vector.
-  token_embedding <- sentence$tokens[[1]]$embedding
-  print(head(token_embedding, 15))
-}
-```
-
-</div>
-
-&nbsp;
-
-__Embeddings Documents with Transformers__
-
-<div style="text-align: justify">
-
-Sometimes you want to have an embedding for a whole document, not only individual words. In this case, use one of the DocumentEmbeddings classes in Flair. Let's again use a standard BERT model to get an embedding for the entire sentence:
-
-```{r}
-# initiate TransformerWordEmbeddings
-embedding <- flair_embeddings.TransformerDocumentEmbeddings('bert-base-uncased')
-
-# create a sentence
-sentence <- flair_data.Sentence('The grass is green .')
-
-# embed words in sentence
-embedding$embed(sentence)
-```
-
-Use the `$embedding` method to extract the entire embedding from the sentence and print the embedding as follows:
-
-```{r}
-print(head(sentence$embedding, n = 20))
-```
-
-</div>
-
-&nbsp;
-
-__How to Stack Embeddings__
-
-<div style="text-align: justify">
-
-
-Flair allows you to combine embeddings into "embedding stacks". When not fine-tuning, using combinations of embeddings often gives best results!
-
-Use the `StackedEmbeddings` class and instantiate it by passing a list of embeddings that you wish to combine. For instance, lets combine classic `GloVe` embeddings with `forward` and `backward` Flair embeddings.
-
-First, instantiate the two embeddings you wish to combine:
-
-```{r}
-# init standard GloVe embedding
-glove_embedding <- flair_embeddings.WordEmbeddings('glove')
-
-# init Flair forward and backwards embeddings
-flair_embedding_forward <- flair_embeddings.FlairEmbeddings('news-forward')
-flair_embedding_backward <- flair_embeddings.FlairEmbeddings('news-backward')
-```
-
-Now, instantiate the `StackedEmbeddings` class and pass a list containing these two embeddings. Both R and Python have list functionality. Let's create a StackedEmbedding object that combines the GloVe and forward/backward Flair embeddings.
-```{r}
-stacked_embeddings <- flair_embeddings()$StackedEmbeddings(
-  list(glove_embedding,
-       flair_embedding_forward, 
-       flair_embedding_backward))
-```
-
-
-Next, use the `$embed()` method to transform text into vectors for your sentences.
-```{r}
-# make a sentence
-sentence <- flair_data.Sentence('I love Berlin and New York.')
-
-# just embed a sentence using the StackedEmbedding as you would with any single embedding.
-stacked_embeddings$embed(sentence)
-```
-
-
-Words are now embedded using a concatenation of three different embeddings. This means that the resulting embedding vector is still a single PyTorch vector.
-
-
-```{r}
-for (i in seq_along(sentence$tokens)) {
-  cat("Token: ",  reticulate::py_str(sentence$tokens[[i]]), "\n")
-  # Access the embedding of the token, converting it to an R object, 
-  # and print the first 15 elements of the vector.
-  token_embedding <- sentence$tokens[[1]]$embedding
-  print(head(token_embedding, 15))
-}
-```
-
-</div>
-
-&nbsp;
-
------
-
-## Expanded Feats in flaiR
-
-<div style="text-align: justify">
-
-
-To enhance more efficient utilization in social science research, {flairR} extends FlairNLP with three principal functions to extract features in a neat format with [data.table](https://cran.r-project.org/web/packages/data.table/index.html). Through these featured functions, you don't have to write loops to format parsed output on your own; {`flairR`} will automatically do it for you in a neat format. The main features include [**part-of-speech tagging**](https://davidycliao.github.io/flaiR/articles/get_pos.html), [**transformer-based sentiment analysis**](https://davidycliao.github.io/flaiR/articles/get_entities.html), and [**named entity recognition**](https://davidycliao.github.io/flaiR/articles/get_sentiments.html). In addition, to handle the load on RAM when dealing with larger corpus, {`flairR`}  supports batch processing to handle texts in batches, which is especially useful when dealing with large datasets, to optimize memory usage and performance.
-
-
-| **Core  Featured Function in flaiR**                    | Loader                     | Supported Models from Flair NLP                                                                                                        |
+| **Core  Featured Functions**                    | Loader                     | Supported Models from Flair NLP                                                                                                        |
 |----------------------------------------------|----------------------------|--------------------------------------------------------------------------------------------------------------------------|
 | `get_entities()`, `get_entities_batch()`     | `load_tagger_ner()`        | `en` (English), `fr` (French), `da` (Danish), `nl` (Dutch), and more.                                                    |
 | `get_pos()`, `get_pos_batch()`               | `load_tagger_pos()`        | `pos` (English POS), `fr-pos` (French POS), `de-pos` (German POS), `nl-pos` (Dutch POS), and more.                       |
@@ -397,105 +51,58 @@ To enhance more efficient utilization in social science research, {flairR} exten
 &nbsp;
 
 
-### __Tagging Parts-of-Speech with Flair Models__
+## Training and Fine-tuning
 
 <div style="text-align: justify">
 
-
-You can load the pre-trained model `"pos-fast"`. For more pre-trained models, see https://flairnlp.github.io/docs/tutorial-basics/part-of-speech-tagging#-in-english.
-
-```{r}
-texts <- c("UCD is one of the best universities in Ireland.",
-           "UCD has a good campus but is very far from my apartment in Dublin.",
-           "Essex is famous for social science research.",
-           "Essex is not in the Russell Group, but it is famous for political science research and in 1994 Group.",
-           "TCD is the oldest university in Ireland.",
-           "TCD is similar to Oxford.")
-
-doc_ids <- c("doc1", "doc2", "doc3", "doc4", "doc5", "doc6")
-```
-
-```{r}
-library(flaiR)
-```
-
-```{r}
-tagger_pos <- load_tagger_pos("pos-fast")
-```
-
-```{r}
-results <- get_pos(texts, doc_ids, tagger_pos)
-head(results, n = 10)
-```
+In __flairR__, we use the simplest __S3__ method to wrap major modules. All modules will work like [R6](https://bookdown.dongzhuoer.com/hadley/adv-r/s3-r6) in the R environment when loaded from Flair NLP. In Python, both functions and methods (sometimes referred to as functions in R) within a class can be accessed using the `$` operator. For example, `from flair.trainers import ModelTrainer` in Python is equivalent to `ModelTrainer <- flair_trainers()$ModelTrainer` in  R environment with __flairR__.
 
 </div>
 
-&nbsp;
-
-### __Tagging Entities with Flair Models__
-
-<div style="text-align: justify">
-
-Load the pretrained model `ner`. For more pretrained models, see https://flairnlp.github.io/docs/tutorial-basics/tagging-entities.
-
-
-```{r}
-library(flaiR)
-```
-
-```{r}
-tagger_ner <- load_tagger_ner("ner")
-```
-
-```{r}
-results <- get_entities(texts, doc_ids, tagger_ner)
-head(results, n = 10)
-```
-
-</div>
-
-&nbsp;
-
-
-### __Tagging Sentiment__
-
-<div style="text-align: justify">
-
-
-Load the pretrained model "`sentiment`". The pre-trained models of "`sentiment`", "`sentiment-fast`", and "`de-offensive-language`" are currently available. For more pre-trained models, see https://flairnlp.github.io/docs/tutorial-basics/tagging-sentiment.
-
-
-```{r}
-library(flaiR)
-```
-
-```{r}
-tagger_sent <- load_tagger_sentiments("sentiment")
-```
-
-```{r}
-results <- get_sentiments(texts, doc_ids, tagger_sent)
-head(results, n = 10)
-```
-
-</div>
+| **Wrapped Flair NLP Modules with S3**             | Corresponding Code Practices When Loading Modules from FlairNLP  | 
+|---------------------------------------------------|------------------------------------------------------------------|
+| `flair_datasets()`                                | from flair.datasets import *                                     |
+| `flair_nn()`                                      | from flair.nn import *                                           |
+| `flair_splitter()`                                | from flair.splitter import *                                     |
+| `flair_trainers()`                                | from flair.trainers import *                                     |
+| `flair_models()`                                  | from flair.models import *                                       |
+ 
 
 &nbsp;
 
 -----
 
-
-## How to Contribute
+## More Details about Installation
 
 <div style="text-align: justify">
 
-R developers who want to contribute to {`flaiR`} are welcome – {`flaiR`} is an open source project. I warmly invite R users who share similar interests to join in contributing to this package. Please feel free to shoot me an email to collaborate on the task. Contributions – whether they be comments, code suggestions, tutorial examples, or forking the repository – are greatly appreciated. Please note that the `flaiR` is released with the [Contributor Code of Conduct](https://github.com/davidycliao/flaiR/blob/master/CONDUCT.md). By contributing to this project, you agree to abide by its terms. 
+The installation consists of two parts: First, install [Python 3.8](https://www.python.org/downloads/) or higher, and [R 3.6.3](https://www.r-project.org) or higher. Although we have tested it on Github Action with R 3.6.2, we strongly recommend installing [R 4.0.0 or above](https://github.com/davidycliao/flaiR/actions/runs/6416611291) to ensure compatibility between the R environment and Python. When first installed, __flaiR__ automatically detects whether you have Python 3.8 or higher. If not, it will skip the automatic installation of Python and flair NLP. In this case, you will need to mannually install it yourself and reload __flaiR__ again. If you have Python 3.8 or higher alreadt installed, the installer of __flaiR__ will automatically install flair Python NLP in your global environment. If you are using {reticulate}, {flaiR} will typically assume the __r-reticulate__ environment by default. At the same time, you can use py_config() to check the location of your environment. Please note that flaiR will directly install flair NLP in the Python environment that your R is using. This environment can be adjusted through _RStudio_ by navigating to `Tools -> Global Options -> Python`. If there are any issues with the installation, feel free to ask in the <u>[Discussion](https://github.com/davidycliao/flaiR/discussions).
 
-The primary communication channel for R users can be found [here](https://github.com/davidycliao/flaiR/discussions). Please feel free to share your insights on the [Discussion](https://github.com/davidycliao/flaiR/discussions) page and report any issues related to the R interface in the [Issue](https://github.com/davidycliao/flaiR/issues) section.
+For stable usage, we strongly recommend installing these specific versions.
 
+| OS      | R Versions                 | Python Version |
+|---------|----------------------------|----------------|
+| Mac     | 4.3.2, 4.2.0, 4.2.1        | 3.10.x         |
+| Mac     | Latest                     | 3.9            |
+| Windows | 4.0.5                      | 3.10.x         |
+| Windows | Latest                     | 3.9            |
+| Ubuntu  | 4.3.2, 4.2.0, 4.2.1        | 3.10.x         |
+| Ubuntu  | Latest                     | 3.9            |
+
+
+
+During this process, you will observe numerous messages related to the installation of the Python environment and the Python flair module. Notably, flair has numerous dependencies, including libraries related to transformers (like the torch, tokeniser, transformers, gensim, flair, etc). Thus, the installation might take some time to complete. 
+
+There's also another scenario to consider. If __flaiR__ is unable to automatically install Flair and PyTorch, it will attempt to force the installation again. However, if this attempt fails, you'll encounter the message: "Failed to install Flair. __flaiR__ requires Flair NLP. Please ensure Flair NLP is installed in Python manually." If you're using an Apple operating environment, it's essential at this point to check the compatibility of your M1/M2 chip with Python and Torch.  If there are any issues with the installation, feel free to ask in the <u>[Discussion](https://github.com/davidycliao/flaiR/discussions)</u>.
+
+
+```
+install.packages("remotes")
+remotes::install_github("davidycliao/flaiR", force = TRUE)
+library(flaiR)
+```
 
 </div>
-
 
 
 
