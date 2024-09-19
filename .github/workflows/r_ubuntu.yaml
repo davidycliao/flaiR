@@ -36,8 +36,8 @@ jobs:
           Rscript -e "if (!requireNamespace('renv', quietly = TRUE)) install.packages('renv')"
           Rscript -e "renv::restore()"
 
-      - name: Install testthat package
-        run: Rscript -e 'install.packages("testthat")'
+      - name: Install additional R packages
+        run: Rscript -e 'install.packages(c("knitr", "rmarkdown", "lsa", "purrr", "ggplot2"))'
         shell: bash
 
       - name: Set up Python
@@ -61,10 +61,17 @@ jobs:
       - name: Remove Python cache files
         run: find . -name '*.pyc' -delete
 
+      - name: Check R environment status
+        run: Rscript -e "renv::status()"
+      
+      - name: Synchronize R environment
+        run: Rscript -e "renv::sync()"
+
       - name: Check R package (with virtual environment)
         run: |
           source flair_env/bin/activate
           R CMD build . --no-build-vignettes
           R CMD check *tar.gz --no-build-vignettes --no-manual --no-examples
         shell: bash
+
 
