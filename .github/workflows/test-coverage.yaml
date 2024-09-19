@@ -1,5 +1,7 @@
 # Workflow derived from https://github.com/r-lib/actions/tree/v2/examples
 # Need help debugging build failures? Start at https://github.com/r-lib/actions#where-to-find-help
+# Workflow derived from https://github.com/r-lib/actions/tree/v2/examples
+# Need help debugging build failures? Start at https://github.com/r-lib/actions#where-to-find-help
 
 name: R-Python Integration and Test Coverage
 
@@ -27,7 +29,7 @@ jobs:
 
     - name: Install testthat package
       run: Rscript -e 'install.packages("testthat")'
-      shell: bash
+      shell: Rscript {0}
 
     - name: Set up Python
       uses: actions/setup-python@v2
@@ -40,7 +42,7 @@ jobs:
     - name: Install Python dependencies in virtual environment
       run: |
         source flair_env/bin/activate
-        pip install scipy==1.12.0  # test
+        pip install scipy==1.12.0
         pip install flair
         pip install torch
 
@@ -58,20 +60,36 @@ jobs:
         ls -l $(pwd)/flair_env/bin
       shell: bash
 
+    - name: Run R tests with detailed logging
+      run: |
+        source flair_env/bin/activate
+        Rscript -e 'reticulate::use_virtualenv("$(pwd)/flair_env", required = TRUE)'
+        Rscript -e 'testthat::test_dir("tests/testthat")'
+      shell: bash
+
+    - name: Check renv status (debug step)
+      run: Rscript -e 'renv::status()'
+      shell: Rscript {0}
+
     - name: Run Test Coverage
       run: |
         source flair_env/bin/activate
-        Rscript -e 'reticulate::use_virtualenv("/home/runner/work/flaiR/flaiR/flair_env", required = TRUE)'
-        Rscript -e 'covr::codecov(
-          quiet = FALSE,
-          clean = FALSE,
-          install_path = file.path(Sys.getenv("RUNNER_TEMP"), "flaiR")
-        )'
+        Rscript -e 'reticulate::use_virtualenv("$(pwd)/flair_env", required = TRUE)'
+        Rscript -e 'covr::codecov(quiet = FALSE, clean = FALSE, install_path = file.path(Sys.getenv("RUNNER_TEMP"), "flaiR"))'
       shell: bash
-
 
     - name: Show testthat output
       if: always()
       run: |
         find /home/runner/work/_temp/package -name 'testthat.Rout*' -exec cat '{}' \; || true
       shell: bash
+
+env:
+  R_LIBS_USER: /home/runner/work/_temp/Library
+  TZ: UTC
+  _R_CHECK_SYSTEM_CLOCK_: FALSE
+  NOT_CRAN: true
+  pythonLocation: /opt/hostedtoolcache/Python/3.10.15/x64
+  LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.10.15/x64/lib
+  RETICULATE_PYTHON: /home/runner/work/flaiR/flaiR/flair_env/bin/python
+
