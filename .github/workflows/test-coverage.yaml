@@ -2,7 +2,6 @@
 # Need help debugging build failures? Start at https://github.com/r-lib/actions#where-to-find-help
 # Workflow derived from https://github.com/r-lib/actions/tree/v2/examples
 # Need help debugging build failures? Start at https://github.com/r-lib/actions#where-to-find-help
-
 name: R-Python Integration and Test Coverage
 
 on: [push, pull_request]
@@ -23,11 +22,16 @@ jobs:
     - name: Install R dependencies and Restore R environment
       run: |
         install.packages('renv')
-        renv::restore()  # Automatically installs all packages from renv.lock
+        renv::restore()
+      shell: Rscript {0}
+
+    - name: Check installed packages
+      run: installed.packages()
       shell: Rscript {0}
 
     - name: Install testthat (if needed)
-      run: Rscript -e 'if(!requireNamespace("testthat", quietly = TRUE)) install.packages("testthat")'
+      run: |
+        if(!requireNamespace("testthat", quietly = TRUE)) install.packages("testthat")
       shell: Rscript {0}
 
     - name: Set up Python
@@ -65,7 +69,7 @@ jobs:
       shell: bash
 
     - name: Check renv status (debug step)
-      run: Rscript -e 'renv::status()'
+      run: renv::status()
       shell: Rscript {0}
 
     - name: Run Test Coverage
@@ -89,4 +93,3 @@ env:
   pythonLocation: /opt/hostedtoolcache/Python/3.10.15/x64
   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.10.15/x64/lib
   RETICULATE_PYTHON: /home/runner/work/flaiR/flaiR/flair_env/bin/python
-
