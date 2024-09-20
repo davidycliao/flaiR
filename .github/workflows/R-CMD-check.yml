@@ -9,9 +9,7 @@ on:
 jobs:
   R-CMD-check:
     runs-on: ${{ matrix.config.os }}
-
     name: ${{ matrix.config.os }} (${{ matrix.config.r }})
-
     strategy:
       fail-fast: false
       matrix:
@@ -39,7 +37,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v2
         with:
-          python-version: '3.9'  # Ensure Python 3.x is being used
+          python-version: '3.9'
 
       - name: Check Python Version
         run: python --version
@@ -49,17 +47,16 @@ jobs:
           python -m pip install --upgrade pip
           pip install flair
 
-      # Install R dependencies after Python
       - name: Install R dependencies
         run: |
-          install.packages('remotes', repos = 'https://cloud.r-project.org')
+          install.packages('remotes')
           remotes::install_github("davidycliao/flaiR", force = TRUE)
+        shell: Rscript {0}
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
           extra-packages: rcmdcheck
 
-      # Specific steps for ubuntu-latest
       - name: Setup Python (Only on ubuntu-latest)
         if: matrix.config.os == 'ubuntu-latest'
         uses: actions/setup-python@v2
