@@ -14,8 +14,9 @@
 <div style="text-align: justify">
 
 **flaiR** is an R package for accessing the
-[flairNLP/flair](flairNLP/flair) Python library, maintained by [David
-Liao](https://davidycliao.github.io), [Stefan
+[flairNLP/flair](flairNLP/flair) Python library, maintained by
+[Yen-Chieh (David ) Liao](https://davidycliao.github.io) ([CAIG,
+University of Birmingham]()) and [Stefan
 Müller](https://muellerstefan.net) from [Next Generation Energy
 Systems](https://www.nexsys-energy.ie) and [Text and Policy Research
 Group](https://text-and-policy.com) in UCD. flaiR provides convenient
