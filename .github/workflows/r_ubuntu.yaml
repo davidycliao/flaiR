@@ -123,10 +123,12 @@ jobs:
         shell: Rscript {0}
 
       - name: Install additional R packages
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Use the default GitHub token for authentication
         run: |
           install.packages(c("knitr", "rmarkdown", "lsa", "purrr", "ggplot2"))
           install.packages('remotes')
-          remotes::install_github("davidycliao/flaiR", auth_token = NULL, force = TRUE)
+          remotes::install_github("davidycliao/flaiR", auth_token = Sys.getenv("GITHUB_TOKEN"), force = TRUE)
         shell: Rscript {0}
 
       - name: Set up Python
