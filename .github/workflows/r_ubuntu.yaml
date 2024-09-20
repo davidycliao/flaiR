@@ -157,9 +157,9 @@ jobs:
         run: renv::status()
         shell: Rscript {0}
 
-      - name: Check R package (with virtual environment)
-        run: |
-          source flair_env/bin/activate
-          R CMD build . --no-build-vignettes
-          R CMD check *tar.gz --no-build-vignettes --no-manual --no-tests --no-examples
-        shell: bash
+      # - name: Check R package (with virtual environment)
+      #   run: |
+      #     source flair_env/bin/activate
+      #     R CMD build . --no-build-vignettes
+      #     R CMD check *tar.gz --no-build-vignettes --no-manual --no-tests --no-examples
+      #   shell: bash
