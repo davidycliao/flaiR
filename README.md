@@ -11,19 +11,21 @@
 [![CodeFactor](https://www.codefactor.io/repository/github/davidycliao/flair/badge)](https://www.codefactor.io/repository/github/davidycliao/flair)
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
+
 <div style="text-align: justify">
 
 **flaiR** is an R package for accessing the
 [flairNLP/flair](flairNLP/flair) Python library, maintained by [David
 Liao](https://davidycliao.github.io), [Stefan
 Müller](https://muellerstefan.net) from [Next Generation Energy
-Systems](https://www.nexsys-energy.ie) and friends at [Text and Policy
-Research Group](https://text-and-policy.com) and [Connected_Politics
-Lab](https://www.ucd.ie/connected_politics/) in UCD. flaiR provides
-convenient access to the main functionalities of flairNLP for training
-word embedding-based deep learning models and fine-tune state-of-the-art
+Systems](https://www.nexsys-energy.ie) and [Text and Policy Research
+Group](https://text-and-policy.com) in UCD. flaiR provides convenient
+access to the main functionalities of flairNLP for training word
+embedding-based deep learning models and fine-tune state-of-the-art
 transformers hosted on Hugging Face. Our team trains and fine-tunes the
 models with Flair in [our projects]().
+
+</div>
 
 <br>
 
@@ -62,13 +64,9 @@ these specific versions.
 | Ubuntu  | 4.3.2, 4.2.0, 4.2.1 | 3.10.x         |
 | Ubuntu  | Latest              | 3.9            |
 
-<!-- __Note__: [Anaconda](https://github.com/anaconda) or [miniconda](https://github.com/conda/conda) (highly recommended) is the best way to manage your working environment. In RStudio, the Python (conda) environment can easily be managed by the reticulate R package, or manually changed configuration via Tools -> Global Options -> Python in Rstudio. -->
-<!-- <br> -->
-<!-- ## Tutorial Examples -->
-<!-- - [Training RNNs](https://davidycliao.github.io/flaiR/articles/tutorial.html#training-rnns) -->
-<!-- - [Finetune Transformers (_The Temporal Focus of Campaign Communication_)](https://davidycliao.github.io/flaiR/articles/tutorial.html#finetune-transformers) -->
-
 <br>
+
+</div>
 
 ## Contribution and Open Source
 
