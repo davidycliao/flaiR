@@ -23,12 +23,11 @@ jobs:
     - name: Install R dependencies and Restore R environment
       run: |
         install.packages('renv')
-        renv::restore()
-        renv::install('covr')
+        renv::restore()  # Automatically installs all packages from renv.lock
       shell: Rscript {0}
 
-    - name: Install testthat package
-      run: Rscript -e 'install.packages("testthat")'
+    - name: Install testthat (if needed)
+      run: Rscript -e 'if(!requireNamespace("testthat", quietly = TRUE)) install.packages("testthat")'
       shell: Rscript {0}
 
     - name: Set up Python
@@ -42,9 +41,8 @@ jobs:
     - name: Install Python dependencies in virtual environment
       run: |
         source flair_env/bin/activate
-        pip install scipy==1.12.0
-        pip install flair
-        pip install torch
+        pip install scipy==1.12.0 flair torch
+      shell: bash
 
     - name: Set Python Path for R reticulate
       run: |
@@ -56,8 +54,7 @@ jobs:
       shell: bash
 
     - name: Check Python virtual environment structure
-      run: |
-        ls -l $(pwd)/flair_env/bin
+      run: ls -l $(pwd)/flair_env/bin
       shell: bash
 
     - name: Run R tests with detailed logging
