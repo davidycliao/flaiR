@@ -75,7 +75,6 @@
 #         shell: bash
 #
 #
-
 name: R-ubuntu
 
 on:
@@ -124,6 +123,8 @@ jobs:
         shell: Rscript {0}
 
       - name: Install additional R packages
+        env:
+          GITHUB_PAT: ${{ secrets.GITHUB_PAT }}  # Use the secret PAT
         run: |
           install.packages(c("knitr", "rmarkdown", "lsa", "purrr", "ggplot2"))
           install.packages('remotes')
