@@ -5,7 +5,6 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="description" content="flaiR">
 <title>WordEmbeddings Supported in Flair NLP • flaiR</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
@@ -17,15 +16,10 @@
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/Source_Sans_Pro-0.4.9/font.css" rel="stylesheet">
 <link href="../deps/Source_Code_Pro-0.4.9/font.css" rel="stylesheet">
-<!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.11/clipboard.min.js" integrity="sha512-7O5pXpc0oCRrxk8RUfDYFgn0nO1t+jLuIOQdOMRp4APB7uZ4vSjspzp5y6YDtDs4VzUSTbWzBFZ/LKJhnyFOKw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="WordEmbeddings Supported in Flair NLP">
-<meta property="og:description" content="flaiR">
-<meta property="og:image" content="https://davidycliao.github.io/flaiR/logo.png">
-<!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
-<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-<![endif]--><!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-3ZG40PPG98"></script><script>
+<link href="../deps/font-awesome-6.4.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="WordEmbeddings Supported in Flair NLP">
+<!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-3ZG40PPG98"></script><script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
@@ -35,109 +29,74 @@
 </head>
 <body>
     <a href="#container" class="visually-hidden-focusable">Skip to content</a>
-    
 
-    <nav class="navbar fixed-top navbar-inverse navbar-expand-lg bg-none" data-bs-theme="inverse"><div class="container">
-    
+
+    <nav class="navbar navbar-expand-lg fixed-top bg-none" data-bs-theme="inverse" aria-label="Site navigation"><div class="container">
+
     <a class="navbar-brand me-2" href="../index.html">flaiR</a>
 
     <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.0.6</small>
 
-    
+
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
-<li class="nav-item">
-  <a class="nav-link" href="../index.html">
-    <span class="fa fa-home"></span>
-     
-  </a>
+<li class="nav-item"><a class="nav-link" href="../index.html"><span class="fa fa-home"></span></a></li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-quick-start" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true"><span class="fa fa-rocket"></span> Quick Start</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-quick-start">
+<li><a class="dropdown-item" href="../articles/quickstart.html#nlp-tasks">NLP Tasks</a></li>
+    <li><a class="dropdown-item" href="../articles/quickstart.html#class-and-ojbect">Class and Ojbect</a></li>
+    <li><a class="dropdown-item" href="../articles/quickstart.html#more-details-about-installation">More Details about Installation</a></li>
+  </ul>
 </li>
 <li class="nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown--quick-start">
-    <span class="fa fa-rocket"></span>
-     
-    Quick Start
-  </a>
-  <div class="dropdown-menu" aria-labelledby="dropdown--quick-start">
-    <a class="dropdown-item" href="../articles/quickstart.html#nlp-tasks">NLP Tasks</a>
-    <a class="dropdown-item" href="../articles/quickstart.html#class-and-ojbect">Class and Ojbect</a>
-    <a class="dropdown-item" href="../articles/quickstart.html#more-details-about-installation">More Details about Installation</a>
-  </div>
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-tutorial" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true"><span class="fa fa-project-diagram"></span> Tutorial</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-tutorial">
+<li><a class="dropdown-item" href="../articles/tutorial.html#introduction">Introduction</a></li>
+    <li><a class="dropdown-item" href="../articles/tutorial.html#sentence-and-token">Sentence and Token</a></li>
+    <li><a class="dropdown-item" href="../articles/tutorial.html#sequence-taggings">Sequence Taggings</a></li>
+    <li><a class="dropdown-item" href="../articles/tutorial.html#performing-ner-tasks">Performing NER Tasks</a></li>
+    <li><a class="dropdown-item" href="../articles/tutorial.html#flair-embedding">Flair Embeddings</a></li>
+    <li><a class="dropdown-item" href="../articles/tutorial.html#training-a-binary-classifier">Training a Binary Classifier</a></li>
+    <li><a class="dropdown-item" href="../articles/tutorial.html#training-rnns">Training RNNs</a></li>
+    <li><a class="dropdown-item" href="../articles/tutorial.html#finetune-transformers">Finetune Transformers </a></li>
+  </ul>
 </li>
 <li class="nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown--tutorial">
-    <span class="fa fa-project-diagram"></span>
-     
-    Tutorial
-  </a>
-  <div class="dropdown-menu" aria-labelledby="dropdown--tutorial">
-    <a class="dropdown-item" href="../articles/tutorial.html#introduction">Introduction</a>
-    <a class="dropdown-item" href="../articles/tutorial.html#sentence-and-token">Sentence and Token</a>
-    <a class="dropdown-item" href="../articles/tutorial.html#sequence-taggings">Sequence Taggings</a>
-    <a class="dropdown-item" href="../articles/tutorial.html#performing-ner-tasks">Performing NER Tasks</a>
-    <a class="dropdown-item" href="../articles/tutorial.html#flair-embedding">Flair Embeddings</a>
-    <a class="dropdown-item" href="../articles/tutorial.html#training-a-binary-classifier">Training a Binary Classifier</a>
-    <a class="dropdown-item" href="../articles/tutorial.html#training-rnns">Training RNNs</a>
-    <a class="dropdown-item" href="../articles/tutorial.html#finetune-transformers">Finetune Transformers </a>
-  </div>
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-expanded-feats" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true"><span class="fa fa-newspaper-o"></span> Expanded Feats</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-expanded-feats">
+<li><a class="dropdown-item" href="../articles/get_pos.html">Part-of-speech Tagging</a></li>
+    <li><a class="dropdown-item" href="../articles/get_entities.html">Named Entity Recognition</a></li>
+    <li><a class="dropdown-item" href="../articles/get_sentiments.html">Tagging Sentiment</a></li>
+    <li><a class="dropdown-item" href="../articles/highlight_text.html">The Coloring Entities</a></li>
+  </ul>
 </li>
 <li class="nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown--expanded-feats">
-    <span class="fa fa-newspaper-o"></span>
-     
-    Expanded Feats
-  </a>
-  <div class="dropdown-menu" aria-labelledby="dropdown--expanded-feats">
-    <a class="dropdown-item" href="../articles/get_pos.html">Part-of-speech Tagging</a>
-    <a class="dropdown-item" href="../articles/get_entities.html">Named Entity Recognition</a>
-    <a class="dropdown-item" href="../articles/get_sentiments.html">Tagging Sentiment</a>
-    <a class="dropdown-item" href="../articles/highlight_text.html">The Coloring Entities</a>
-  </div>
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-reference" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true"><span class="fa fa-file-code-o"></span> Reference</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-reference">
+<li><a class="dropdown-item" href="../reference/index.html">All Function Reference</a></li>
+  </ul>
 </li>
 <li class="nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown--reference">
-    <span class="fa fa-file-code-o"></span>
-     
-    Reference
-  </a>
-  <div class="dropdown-menu" aria-labelledby="dropdown--reference">
-    <a class="dropdown-item" href="../reference/index.html">All Function Reference</a>
-  </div>
-</li>
-<li class="nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown--news">
-    <span class="fa fa-newspaper-o"></span>
-     
-    News
-  </a>
-  <div class="dropdown-menu" aria-labelledby="dropdown--news">
-    <a class="dropdown-item" href="../news/index.html#flair-006-2023-10-29">0.0.6</a>
-    <a class="dropdown-item" href="../news/index.html#flair-005-2023-10-01">0.0.5</a>
-    <a class="dropdown-item" href="../news/index.html#flair-003-2023-09-10">0.0.3</a>
-    <a class="dropdown-item" href="../news/index.html#flair-001-development-version">0.0.1</a>
-  </div>
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-news" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true"><span class="fa fa-newspaper-o"></span> News</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-news">
+<li><a class="dropdown-item" href="../news/index.html#flair-006-2023-10-29">0.0.6</a></li>
+    <li><a class="dropdown-item" href="../news/index.html#flair-005-2023-10-01">0.0.5</a></li>
+    <li><a class="dropdown-item" href="../news/index.html#flair-003-2023-09-10">0.0.3</a></li>
+    <li><a class="dropdown-item" href="../news/index.html#flair-001-development-version">0.0.1</a></li>
+  </ul>
 </li>
       </ul>
-<form class="form-inline my-2 my-lg-0" role="search">
-        <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off">
-</form>
-
-      <ul class="navbar-nav">
-<li class="nav-item">
-  <a class="external-link nav-link" href="https://github.com/davidycliao/flaiR">
-    <span class="fa fa-github fa-lg"></span>
-     
-    GitHub
-  </a>
-</li>
+<ul class="navbar-nav">
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/davidycliao/flaiR"><span class="fa fa-github fa-lg"></span> GitHub</a></li>
       </ul>
 </div>
 
-    
+
   </div>
 </nav><div class="container template-article" id="container">
 
@@ -277,7 +236,7 @@ number of ‘syllables’ (one of ) and a number of dimensions (one of 50,
 embeddings for English:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">flaiR</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## <span style="color: #0000BB; font-weight: bold;">flaiR</span>: <span style="color: #BBBB00; font-weight: bold;">An R Wrapper for Accessing Flair NLP</span> <span style="color: #BBBB00; font-weight: bold;">0.13.1</span></span></span></code></pre>
+<pre><code><span><span class="co">## <span style="color: #0000BB; font-weight: bold;">flaiR</span>: <span style="color: #BBBB00; font-weight: bold;">An R Wrapper for Accessing Flair NLP</span> <span style="color: #BBBB00; font-weight: bold;">0.14.0</span></span></span></code></pre>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># initialize embedding</span></span>
 <span><span class="va">BytePairEmbeddings</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_embeddings.html">flair_embeddings</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">BytePairEmbeddings</span></span>
@@ -980,159 +939,159 @@ fine-tuned if you use it in a training routine.</p>
 <div class="sourceCode" id="cb56"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">sentence</span><span class="op">[</span><span class="fl">0</span><span class="op">]</span><span class="op">$</span><span class="va">embedding</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## tensor([-6.5871e-01,  1.0410e-01,  3.4632e-01, -3.3775e-01, -2.1013e-01,</span></span>
-<span><span class="co">##         -1.3036e-02,  5.1998e-01,  1.6574e+00, -5.2520e-02, -4.8633e-02,</span></span>
-<span><span class="co">##         -7.8968e-01, -9.5547e-01, -1.9723e-01,  9.4999e-01, -1.0336e+00,</span></span>
-<span><span class="co">##          8.6669e-02,  9.8104e-02,  5.6511e-02,  3.1075e-02,  2.4157e-01,</span></span>
-<span><span class="co">##         -1.1427e-01, -2.3692e-01, -2.0700e-01,  7.7985e-01,  2.5460e-01,</span></span>
-<span><span class="co">##         -5.0830e-03, -2.4110e-01,  2.2436e-01, -7.3249e-02, -8.1094e-01,</span></span>
+<span><span class="co">##         -1.3036e-02,  5.1998e-01,  1.6574e+00, -5.2519e-02, -4.8634e-02,</span></span>
+<span><span class="co">##         -7.8968e-01, -9.5546e-01, -1.9723e-01,  9.4999e-01, -1.0336e+00,</span></span>
+<span><span class="co">##          8.6670e-02,  9.8104e-02,  5.6512e-02,  3.1074e-02,  2.4157e-01,</span></span>
+<span><span class="co">##         -1.1427e-01, -2.3692e-01, -2.0700e-01,  7.7984e-01,  2.5460e-01,</span></span>
+<span><span class="co">##         -5.0826e-03, -2.4110e-01,  2.2436e-01, -7.3250e-02, -8.1094e-01,</span></span>
 <span><span class="co">##         -1.8778e-01,  2.1219e-01, -5.9514e-01,  6.3128e-02, -4.8880e-01,</span></span>
-<span><span class="co">##         -3.2299e-02, -1.9123e-02, -1.0991e-01, -1.5603e-02,  4.3068e-01,</span></span>
+<span><span class="co">##         -3.2300e-02, -1.9124e-02, -1.0991e-01, -1.5604e-02,  4.3068e-01,</span></span>
 <span><span class="co">##         -1.7968e-01, -5.4499e-01,  7.0608e-01, -4.0512e-01,  1.7761e-01,</span></span>
 <span><span class="co">##         -8.5820e-01,  2.3438e-02, -1.4981e-01, -9.0368e-01, -2.1097e-01,</span></span>
 <span><span class="co">##         -3.3535e-01,  1.4919e-01, -7.4523e-03,  1.0239e+00, -6.1777e-02,</span></span>
-<span><span class="co">##          3.3913e-01,  8.5811e-02,  6.9401e-01, -7.7483e-02,  3.1484e-01,</span></span>
-<span><span class="co">##         -4.3921e-01,  1.2933e+00,  5.7991e-03, -7.0992e-01,  2.7525e-01,</span></span>
-<span><span class="co">##          8.8792e-01,  2.6313e-03,  1.3640e+00,  5.6886e-01, -2.4904e-01,</span></span>
-<span><span class="co">##         -4.5158e-02, -1.7575e-01, -3.4729e-01,  5.8363e-02, -2.0346e-01,</span></span>
-<span><span class="co">##         -1.2505e+00, -3.0592e-01, -3.6105e-02, -2.4066e-01, -5.1250e-01,</span></span>
+<span><span class="co">##          3.3913e-01,  8.5811e-02,  6.9401e-01, -7.7482e-02,  3.1483e-01,</span></span>
+<span><span class="co">##         -4.3921e-01,  1.2933e+00,  5.8008e-03, -7.0992e-01,  2.7525e-01,</span></span>
+<span><span class="co">##          8.8792e-01,  2.6305e-03,  1.3640e+00,  5.6886e-01, -2.4904e-01,</span></span>
+<span><span class="co">##         -4.5158e-02, -1.7575e-01, -3.4730e-01,  5.8363e-02, -2.0346e-01,</span></span>
+<span><span class="co">##         -1.2505e+00, -3.0592e-01, -3.6104e-02, -2.4066e-01, -5.1250e-01,</span></span>
 <span><span class="co">##          2.6930e-01,  1.4068e-01,  3.4056e-01,  7.3297e-01,  2.6848e-01,</span></span>
 <span><span class="co">##          2.4303e-01, -9.4885e-01, -9.0367e-01, -1.3184e-01,  6.7348e-01,</span></span>
-<span><span class="co">##         -3.2995e-02,  4.7660e-01, -7.1618e-03, -3.4141e-01,  6.8473e-01,</span></span>
+<span><span class="co">##         -3.2995e-02,  4.7660e-01, -7.1619e-03, -3.4141e-01,  6.8473e-01,</span></span>
 <span><span class="co">##         -4.4869e-01, -4.9831e-01, -8.0143e-01,  1.4073e+00,  5.3251e-01,</span></span>
-<span><span class="co">##          2.4643e-01, -4.2529e-01,  9.1615e-02,  6.4496e-01,  1.7931e-01,</span></span>
+<span><span class="co">##          2.4643e-01, -4.2528e-01,  9.1615e-02,  6.4495e-01,  1.7931e-01,</span></span>
 <span><span class="co">##         -2.1473e-01,  1.5447e-01, -3.2978e-01,  1.0799e-01, -1.9402e+00,</span></span>
 <span><span class="co">##         -5.0380e-01, -2.7636e-01, -1.1228e-01,  1.1576e-01,  2.5885e-01,</span></span>
 <span><span class="co">##         -1.7916e-01,  6.6166e-01, -9.6098e-01, -5.1242e-01, -3.5424e-01,</span></span>
 <span><span class="co">##          2.1383e-01,  6.6456e-01,  2.5498e-01,  3.7250e-01, -1.1821e+00,</span></span>
-<span><span class="co">##         -4.9551e-01, -2.0858e-01,  1.1511e+00, -1.0366e-02, -1.0682e+00,</span></span>
-<span><span class="co">##          3.7277e-01,  6.4048e-01,  2.3308e-01, -9.3824e-01,  9.5015e-02,</span></span>
-<span><span class="co">##          5.7904e-01,  6.3969e-01,  8.2359e-02, -1.4075e-01,  3.0107e-01,</span></span>
-<span><span class="co">##          3.5822e-03, -4.4684e-01, -2.6913e+00, -3.3933e-01,  2.8731e-03,</span></span>
+<span><span class="co">##         -4.9551e-01, -2.0858e-01,  1.1511e+00, -1.0365e-02, -1.0682e+00,</span></span>
+<span><span class="co">##          3.7277e-01,  6.4048e-01,  2.3308e-01, -9.3824e-01,  9.5013e-02,</span></span>
+<span><span class="co">##          5.7904e-01,  6.3969e-01,  8.2360e-02, -1.4075e-01,  3.0107e-01,</span></span>
+<span><span class="co">##          3.5823e-03, -4.4684e-01, -2.6913e+00, -3.3933e-01,  2.8729e-03,</span></span>
 <span><span class="co">##         -1.3639e-01, -7.1054e-01, -1.1048e+00,  2.2374e-01,  1.1830e-01,</span></span>
 <span><span class="co">##          4.8416e-01, -2.9110e-01, -6.7650e-01,  2.3202e-01, -1.0123e-01,</span></span>
-<span><span class="co">##         -1.9174e-01,  4.9960e-02,  5.2067e-01,  1.3272e+00,  6.8250e-01,</span></span>
+<span><span class="co">##         -1.9174e-01,  4.9959e-02,  5.2067e-01,  1.3272e+00,  6.8250e-01,</span></span>
 <span><span class="co">##          5.5332e-01, -1.0886e+00,  4.5160e-01, -1.5010e-01, -9.8074e-01,</span></span>
-<span><span class="co">##          8.5111e-02,  1.6498e-01,  6.6032e-01,  1.0814e-02,  1.8952e-01,</span></span>
-<span><span class="co">##         -5.6607e-01, -1.3743e-02,  9.1171e-01,  2.7812e-01,  2.9551e-01,</span></span>
+<span><span class="co">##          8.5111e-02,  1.6498e-01,  6.6032e-01,  1.0815e-02,  1.8952e-01,</span></span>
+<span><span class="co">##         -5.6608e-01, -1.3743e-02,  9.1170e-01,  2.7812e-01,  2.9551e-01,</span></span>
 <span><span class="co">##         -3.5637e-01,  3.2030e-01,  5.6738e-01, -1.5707e-01,  3.5326e-01,</span></span>
 <span><span class="co">##         -4.7747e-01,  7.8646e-01,  1.3765e-01,  2.2440e-01,  4.2422e-01,</span></span>
-<span><span class="co">##         -2.6504e-01,  2.2015e-02, -6.7154e-01, -8.7999e-02,  1.4284e-01,</span></span>
-<span><span class="co">##          4.0983e-01,  1.0933e-02, -1.0704e+00, -1.9350e-01,  6.0051e-01,</span></span>
-<span><span class="co">##          5.0545e-02,  1.1434e-02, -8.0243e-01, -6.6871e-01,  5.3953e-01,</span></span>
+<span><span class="co">##         -2.6504e-01,  2.2016e-02, -6.7154e-01, -8.7999e-02,  1.4284e-01,</span></span>
+<span><span class="co">##          4.0983e-01,  1.0931e-02, -1.0704e+00, -1.9350e-01,  6.0051e-01,</span></span>
+<span><span class="co">##          5.0544e-02,  1.1433e-02, -8.0243e-01, -6.6871e-01,  5.3953e-01,</span></span>
 <span><span class="co">##         -5.9856e-01, -1.6915e-01, -3.5307e-01,  4.4568e-01, -7.2761e-01,</span></span>
 <span><span class="co">##          1.1629e+00, -3.1553e-01, -7.9747e-01, -2.0582e-01,  3.7320e-01,</span></span>
 <span><span class="co">##          5.9379e-01, -3.1898e-01, -1.6932e-01, -6.2492e-01,  5.7047e-01,</span></span>
 <span><span class="co">##         -2.9779e-01, -5.9106e-01,  8.5436e-02, -2.1839e-01, -2.2214e-01,</span></span>
-<span><span class="co">##          7.9233e-01,  8.0536e-01, -5.9785e-01,  4.0474e-01,  3.9266e-01,</span></span>
-<span><span class="co">##          5.8169e-01, -5.2506e-01,  6.9786e-01,  1.1163e-01,  8.7435e-02,</span></span>
-<span><span class="co">##          1.7549e-01,  9.1438e-02,  5.8816e-01,  6.4338e-01, -2.7138e-01,</span></span>
-<span><span class="co">##         -5.3449e-01, -1.0168e+00, -5.1338e-02,  3.0099e-01, -7.6696e-02,</span></span>
+<span><span class="co">##          7.9233e-01,  8.0536e-01, -5.9784e-01,  4.0474e-01,  3.9265e-01,</span></span>
+<span><span class="co">##          5.8169e-01, -5.2506e-01,  6.9786e-01,  1.1163e-01,  8.7434e-02,</span></span>
+<span><span class="co">##          1.7549e-01,  9.1439e-02,  5.8816e-01,  6.4338e-01, -2.7138e-01,</span></span>
+<span><span class="co">##         -5.3449e-01, -1.0168e+00, -5.1335e-02,  3.0099e-01, -7.6696e-02,</span></span>
 <span><span class="co">##         -2.1126e-01,  5.8143e-01,  1.3599e-01,  6.2759e-01, -6.2810e-01,</span></span>
 <span><span class="co">##          5.9966e-01,  3.5836e-01, -3.0706e-02,  1.5563e-01, -1.4016e-01,</span></span>
-<span><span class="co">##         -2.0155e-01, -1.3755e+00, -9.1876e-02, -6.9892e-01,  7.9438e-02,</span></span>
+<span><span class="co">##         -2.0155e-01, -1.3755e+00, -9.1877e-02, -6.9892e-01,  7.9439e-02,</span></span>
 <span><span class="co">##         -4.2926e-01,  3.7988e-01,  7.6741e-01,  5.3094e-01,  8.5981e-01,</span></span>
-<span><span class="co">##          4.4185e-02, -6.3507e-01,  3.9587e-01, -3.6635e-01, -7.0770e-01,</span></span>
-<span><span class="co">##          8.3622e-04, -3.0055e-01,  2.1360e-01, -4.1649e-01,  6.9457e-01,</span></span>
-<span><span class="co">##         -6.2715e-01, -5.1101e-01,  3.0331e-01, -2.3804e+00, -1.0566e-02,</span></span>
-<span><span class="co">##         -9.4488e-01,  4.3317e-02,  2.4188e-01,  1.9204e-02,  1.5718e-03,</span></span>
-<span><span class="co">##         -3.0374e-01,  3.1933e-01, -7.4432e-01,  1.4599e-01, -5.2102e-01,</span></span>
+<span><span class="co">##          4.4184e-02, -6.3507e-01,  3.9587e-01, -3.6635e-01, -7.0770e-01,</span></span>
+<span><span class="co">##          8.3651e-04, -3.0055e-01,  2.1360e-01, -4.1649e-01,  6.9457e-01,</span></span>
+<span><span class="co">##         -6.2715e-01, -5.1101e-01,  3.0331e-01, -2.3804e+00, -1.0567e-02,</span></span>
+<span><span class="co">##         -9.4488e-01,  4.3318e-02,  2.4188e-01,  1.9204e-02,  1.5705e-03,</span></span>
+<span><span class="co">##         -3.0374e-01,  3.1933e-01, -7.4432e-01,  1.4599e-01, -5.2101e-01,</span></span>
 <span><span class="co">##         -5.2269e-01,  1.3274e-01, -2.8936e-01,  4.1706e-02,  2.6143e-01,</span></span>
-<span><span class="co">##         -4.4796e-01,  7.3136e-01,  6.3893e-02,  4.7398e-01, -5.1062e-01,</span></span>
+<span><span class="co">##         -4.4796e-01,  7.3136e-01,  6.3894e-02,  4.7398e-01, -5.1062e-01,</span></span>
 <span><span class="co">##         -1.3705e-01,  2.0763e-01, -3.9115e-01,  2.8822e-01, -3.5283e-01,</span></span>
 <span><span class="co">##          3.4881e-02, -3.3602e-01,  1.7210e-01,  1.3537e-02, -5.3036e-01,</span></span>
 <span><span class="co">##          1.2847e-01, -4.5576e-01, -3.7251e-01, -3.2254e+00, -3.1650e-01,</span></span>
 <span><span class="co">##         -2.6144e-01, -9.4983e-02,  2.7650e-02, -2.3750e-01,  3.1001e-01,</span></span>
-<span><span class="co">##          1.1428e-01, -1.2870e-01, -4.7496e-01,  4.4594e-01, -3.6138e-01,</span></span>
-<span><span class="co">##         -3.1009e-01, -9.9613e-02,  5.3968e-01,  1.2840e-02,  1.4507e-01,</span></span>
+<span><span class="co">##          1.1428e-01, -1.2870e-01, -4.7496e-01,  4.4594e-01, -3.6137e-01,</span></span>
+<span><span class="co">##         -3.1009e-01, -9.9612e-02,  5.3967e-01,  1.2840e-02,  1.4507e-01,</span></span>
 <span><span class="co">##         -2.5181e-01,  1.9310e-01,  4.1073e-01,  5.9776e-01, -2.5585e-01,</span></span>
-<span><span class="co">##          5.7185e-02, -5.1505e-01, -6.8708e-02,  4.7767e-01, -1.2078e-01,</span></span>
+<span><span class="co">##          5.7184e-02, -5.1505e-01, -6.8709e-02,  4.7767e-01, -1.2078e-01,</span></span>
 <span><span class="co">##         -5.0894e-01, -9.2884e-01,  7.8471e-01,  2.0216e-01,  4.3242e-01,</span></span>
-<span><span class="co">##          3.2803e-01, -1.0122e-01,  3.3530e-01, -1.2183e-01, -5.5060e-01,</span></span>
-<span><span class="co">##          3.5427e-01,  7.4557e-02, -3.1411e-01, -1.7512e-01,  2.2485e-01,</span></span>
-<span><span class="co">##          4.2295e-01,  7.7110e-02,  1.8063e+00,  7.6629e-03, -1.1082e-02,</span></span>
-<span><span class="co">##         -2.8603e-02,  7.7143e-02,  8.2344e-02,  8.0271e-02, -1.1858e+00,</span></span>
+<span><span class="co">##          3.2803e-01, -1.0122e-01,  3.3529e-01, -1.2183e-01, -5.5060e-01,</span></span>
+<span><span class="co">##          3.5427e-01,  7.4559e-02, -3.1411e-01, -1.7512e-01,  2.2485e-01,</span></span>
+<span><span class="co">##          4.2295e-01,  7.7110e-02,  1.8063e+00,  7.6644e-03, -1.1082e-02,</span></span>
+<span><span class="co">##         -2.8605e-02,  7.7144e-02,  8.2345e-02,  8.0270e-02, -1.1858e+00,</span></span>
 <span><span class="co">##          2.0523e-01,  3.4053e-01,  2.0424e-01, -2.0574e-02,  3.0466e-01,</span></span>
 <span><span class="co">##         -2.1858e-01,  6.3737e-01, -5.6264e-01,  1.4153e-01,  2.4319e-01,</span></span>
-<span><span class="co">##         -5.6688e-01,  7.2374e-02, -2.9329e-01,  4.6561e-02,  1.8977e-01,</span></span>
+<span><span class="co">##         -5.6688e-01,  7.2375e-02, -2.9329e-01,  4.6562e-02,  1.8977e-01,</span></span>
 <span><span class="co">##          2.4977e-01,  9.1892e-01,  1.1346e-01,  3.8588e-01, -3.5543e-01,</span></span>
 <span><span class="co">##         -1.3380e+00, -8.5645e-01, -5.5443e-01, -7.2317e-01, -2.9225e-01,</span></span>
-<span><span class="co">##         -1.4389e-01,  6.9715e-01, -5.9852e-01, -6.8932e-01, -6.0952e-01,</span></span>
-<span><span class="co">##          1.8234e-01, -7.5842e-02,  3.6445e-01, -3.8286e-01,  2.6545e-01,</span></span>
+<span><span class="co">##         -1.4389e-01,  6.9714e-01, -5.9852e-01, -6.8932e-01, -6.0952e-01,</span></span>
+<span><span class="co">##          1.8234e-01, -7.5840e-02,  3.6445e-01, -3.8286e-01,  2.6545e-01,</span></span>
 <span><span class="co">##         -2.6569e-01, -4.9999e-01, -3.8354e-01, -2.2809e-01,  8.8314e-01,</span></span>
-<span><span class="co">##          2.9041e-01,  5.4803e-01, -1.0668e+00,  4.7406e-01,  7.8804e-02,</span></span>
-<span><span class="co">##         -1.1559e+00, -3.0649e-01,  6.0479e-02, -7.1279e-01, -4.3336e-01,</span></span>
-<span><span class="co">##         -8.2427e-04, -1.0236e-01,  3.5497e-01,  1.8665e-01,  1.2045e-01,</span></span>
+<span><span class="co">##          2.9041e-01,  5.4803e-01, -1.0668e+00,  4.7405e-01,  7.8804e-02,</span></span>
+<span><span class="co">##         -1.1559e+00, -3.0649e-01,  6.0480e-02, -7.1279e-01, -4.3335e-01,</span></span>
+<span><span class="co">##         -8.2446e-04, -1.0236e-01,  3.5497e-01,  1.8665e-01,  1.2045e-01,</span></span>
 <span><span class="co">##          1.2071e-01,  6.2911e-01,  3.1421e-01, -2.1635e-01, -8.9416e-01,</span></span>
-<span><span class="co">##          6.6361e-01, -9.2981e-01,  6.9193e-01, -2.5403e-01, -2.5835e-02,</span></span>
+<span><span class="co">##          6.6360e-01, -9.2980e-01,  6.9193e-01, -2.5403e-01, -2.5836e-02,</span></span>
 <span><span class="co">##          1.2342e+00, -6.5908e-01,  7.5741e-01,  2.9014e-01,  3.0760e-01,</span></span>
 <span><span class="co">##         -1.0249e+00, -2.7089e-01,  4.6132e-01,  6.1510e-02,  2.5385e-01,</span></span>
 <span><span class="co">##         -5.2075e-01, -3.5107e-01,  3.3694e-01, -2.5047e-01, -2.7855e-01,</span></span>
-<span><span class="co">##          2.0280e-01, -1.5703e-01,  4.1619e-02,  1.4451e-01, -1.6666e-01,</span></span>
+<span><span class="co">##          2.0280e-01, -1.5703e-01,  4.1618e-02,  1.4451e-01, -1.6666e-01,</span></span>
 <span><span class="co">##         -3.0519e-01, -9.4271e-02, -1.7083e-01,  5.2454e-01,  2.4524e-01,</span></span>
-<span><span class="co">##          2.0731e-01,  3.7948e-01,  9.7359e-02, -3.2452e-02,  5.5792e-01,</span></span>
-<span><span class="co">##         -2.4703e-01,  5.2864e-01,  5.6343e-01, -1.9198e-01, -8.3370e-02,</span></span>
-<span><span class="co">##         -6.5377e-01, -5.4104e-01,  1.8289e-01, -4.9146e-01,  6.6422e-01,</span></span>
-<span><span class="co">##         -5.2808e-01, -1.4797e-01, -4.5527e-02, -3.9593e-01,  1.2841e-01,</span></span>
-<span><span class="co">##         -7.8591e-01, -3.7563e-02,  6.1912e-01,  3.2458e-01,  3.7858e-01,</span></span>
+<span><span class="co">##          2.0731e-01,  3.7948e-01,  9.7359e-02, -3.2451e-02,  5.5792e-01,</span></span>
+<span><span class="co">##         -2.4703e-01,  5.2864e-01,  5.6343e-01, -1.9198e-01, -8.3369e-02,</span></span>
+<span><span class="co">##         -6.5377e-01, -5.4104e-01,  1.8289e-01, -4.9146e-01,  6.6423e-01,</span></span>
+<span><span class="co">##         -5.2809e-01, -1.4797e-01, -4.5526e-02, -3.9593e-01,  1.2841e-01,</span></span>
+<span><span class="co">##         -7.8591e-01, -3.7564e-02,  6.1912e-01,  3.2458e-01,  3.7858e-01,</span></span>
 <span><span class="co">##          1.8744e-01, -5.0738e-01,  8.0222e-02, -3.1468e-02, -1.5145e-01,</span></span>
-<span><span class="co">##          1.6657e-01, -5.2251e-01, -2.5940e-01, -3.8505e-01, -7.4940e-02,</span></span>
-<span><span class="co">##          3.9530e-01, -2.1742e-01, -1.7113e-01, -5.2492e-01, -7.7780e-02,</span></span>
+<span><span class="co">##          1.6657e-01, -5.2251e-01, -2.5940e-01, -3.8505e-01, -7.4942e-02,</span></span>
+<span><span class="co">##          3.9530e-01, -2.1742e-01, -1.7113e-01, -5.2492e-01, -7.7781e-02,</span></span>
 <span><span class="co">##         -6.9759e-01,  2.2570e-01, -1.2935e-01,  3.0750e-01, -1.3554e-01,</span></span>
-<span><span class="co">##          6.0183e-02, -1.1479e-01,  4.7263e-01,  3.7957e-01,  8.9523e-01,</span></span>
+<span><span class="co">##          6.0182e-02, -1.1479e-01,  4.7263e-01,  3.7957e-01,  8.9523e-01,</span></span>
 <span><span class="co">##         -3.6411e-01, -6.6355e-01, -7.6647e-01, -1.4479e+00, -5.2238e-01,</span></span>
 <span><span class="co">##          2.3336e-02, -4.5736e-01,  5.9981e-01,  6.8700e-01,  4.2190e-02,</span></span>
-<span><span class="co">##          1.5894e-01,  2.0744e-02,  9.2333e-02, -7.2747e-01,  1.2388e-01,</span></span>
+<span><span class="co">##          1.5894e-01,  2.0743e-02,  9.2333e-02, -7.2747e-01,  1.2388e-01,</span></span>
 <span><span class="co">##         -4.7257e-01, -2.9889e-01,  4.8955e-01, -9.1618e-01, -1.9497e-01,</span></span>
-<span><span class="co">##         -1.4157e-01, -1.7472e-01,  4.9251e-02, -2.2263e-01,  6.1700e-01,</span></span>
+<span><span class="co">##         -1.4157e-01, -1.7472e-01,  4.9250e-02, -2.2264e-01,  6.1700e-01,</span></span>
 <span><span class="co">##         -2.4691e-01,  6.0937e-01,  3.6134e-01,  4.3398e-01, -2.7615e-01,</span></span>
-<span><span class="co">##         -2.6582e-01, -1.3132e-01, -4.4157e-02,  5.3686e-01,  1.2956e-01,</span></span>
-<span><span class="co">##         -6.4218e-01, -1.5820e-01, -1.0249e+00, -9.3591e-03, -3.5060e-01,</span></span>
-<span><span class="co">##          3.6650e-01,  4.9503e-01,  7.4325e-01,  9.6526e-02,  4.3141e-01,</span></span>
-<span><span class="co">##          3.9511e-02, -7.0727e-02,  6.2696e-01,  1.3066e-01,  1.0243e-01,</span></span>
+<span><span class="co">##         -2.6582e-01, -1.3132e-01, -4.4155e-02,  5.3686e-01,  1.2956e-01,</span></span>
+<span><span class="co">##         -6.4218e-01, -1.5820e-01, -1.0249e+00, -9.3587e-03, -3.5060e-01,</span></span>
+<span><span class="co">##          3.6650e-01,  4.9503e-01,  7.4325e-01,  9.6525e-02,  4.3141e-01,</span></span>
+<span><span class="co">##          3.9512e-02, -7.0727e-02,  6.2696e-01,  1.3066e-01,  1.0243e-01,</span></span>
 <span><span class="co">##          3.3839e-01,  1.9224e-01,  4.8800e-01, -2.1052e-01,  3.9523e-02,</span></span>
-<span><span class="co">##          7.7568e-01, -1.2005e-01, -1.1262e-01,  8.7001e-02,  2.7273e-01,</span></span>
-<span><span class="co">##         -4.6831e-02, -2.4966e-01, -3.2083e-01, -2.6389e-01,  1.6225e-01,</span></span>
+<span><span class="co">##          7.7567e-01, -1.2005e-01, -1.1262e-01,  8.7001e-02,  2.7273e-01,</span></span>
+<span><span class="co">##         -4.6830e-02, -2.4966e-01, -3.2083e-01, -2.6389e-01,  1.6225e-01,</span></span>
 <span><span class="co">##          2.8800e-01, -1.0799e-01, -1.0841e-01,  6.6873e-01,  3.4369e-01,</span></span>
-<span><span class="co">##          5.8675e-01,  9.2084e-01, -1.8131e-01,  5.6371e-02, -5.7125e-01,</span></span>
-<span><span class="co">##          3.1048e-01,  3.1630e-02,  1.2097e+00,  4.4492e-01, -2.3792e-01,</span></span>
+<span><span class="co">##          5.8675e-01,  9.2084e-01, -1.8131e-01,  5.6373e-02, -5.7125e-01,</span></span>
+<span><span class="co">##          3.1048e-01,  3.1629e-02,  1.2097e+00,  4.4492e-01, -2.3792e-01,</span></span>
 <span><span class="co">##         -9.9342e-02, -5.0657e-01, -3.1333e-02,  1.5045e-01,  3.1493e-01,</span></span>
-<span><span class="co">##         -4.1287e-01, -1.8618e-01, -4.2639e-02,  1.8266e+00,  4.8565e-01,</span></span>
-<span><span class="co">##          6.3892e-01, -2.9108e-01, -3.2557e-01,  1.1088e-01, -1.3213e+00,</span></span>
+<span><span class="co">##         -4.1287e-01, -1.8618e-01, -4.2638e-02,  1.8266e+00,  4.8565e-01,</span></span>
+<span><span class="co">##          6.3892e-01, -2.9107e-01, -3.2557e-01,  1.1089e-01, -1.3212e+00,</span></span>
 <span><span class="co">##          7.1113e-01,  2.3618e-01,  2.1473e-01,  1.6360e-01, -5.2535e-01,</span></span>
 <span><span class="co">##          3.4322e-01,  9.0777e-01,  1.8697e-01, -3.0532e-01,  2.7574e-01,</span></span>
-<span><span class="co">##          5.1451e-01, -2.6733e-01,  2.4208e-01, -3.3235e-01,  6.3521e-01,</span></span>
-<span><span class="co">##          2.5884e-01, -5.7923e-01,  3.0204e-01,  4.1746e-02,  4.7538e-02,</span></span>
+<span><span class="co">##          5.1451e-01, -2.6733e-01,  2.4208e-01, -3.3234e-01,  6.3520e-01,</span></span>
+<span><span class="co">##          2.5884e-01, -5.7923e-01,  3.0204e-01,  4.1746e-02,  4.7539e-02,</span></span>
 <span><span class="co">##         -6.7038e-01,  4.6699e-01, -1.6951e-01, -1.5161e-01, -1.2805e-01,</span></span>
-<span><span class="co">##         -4.3990e-01,  1.0177e+00, -3.8138e-01,  4.3114e-01, -7.5445e-03,</span></span>
-<span><span class="co">##          2.7385e-01,  4.6314e-01, -8.6564e-02, -7.9458e-01,  1.4370e-02,</span></span>
-<span><span class="co">##          2.6016e-01,  9.2569e-03,  9.3968e-01,  7.9679e-01,  3.3145e-03,</span></span>
+<span><span class="co">##         -4.3990e-01,  1.0177e+00, -3.8138e-01,  4.3114e-01, -7.5435e-03,</span></span>
+<span><span class="co">##          2.7385e-01,  4.6314e-01, -8.6565e-02, -7.9458e-01,  1.4370e-02,</span></span>
+<span><span class="co">##          2.6016e-01,  9.2556e-03,  9.3968e-01,  7.9679e-01,  3.3140e-03,</span></span>
 <span><span class="co">##         -5.6733e-01,  2.9052e-01, -9.5894e-02,  1.8630e-01,  1.4475e-01,</span></span>
 <span><span class="co">##          1.8935e-01,  5.1735e-01, -1.2187e+00, -1.3298e-01, -4.3538e-01,</span></span>
 <span><span class="co">##         -6.5398e-01, -2.9286e-01,  1.3199e-01,  3.9075e-01,  9.0172e-01,</span></span>
-<span><span class="co">##          9.9439e-01,  6.2783e-01, -1.6103e-01,  1.4153e-03, -9.1476e-01,</span></span>
+<span><span class="co">##          9.9439e-01,  6.2783e-01, -1.6103e-01,  1.4158e-03, -9.1476e-01,</span></span>
 <span><span class="co">##          7.7760e-01,  1.2264e+00,  8.1482e-02,  6.6732e-01, -7.4576e-01,</span></span>
 <span><span class="co">##         -1.0470e-01, -6.7781e-01,  8.0405e-01,  3.6676e-02,  3.6362e-01,</span></span>
-<span><span class="co">##          4.4962e-01,  8.9600e-01, -1.8275e+00,  6.7828e-01, -9.4115e-03,</span></span>
-<span><span class="co">##          3.8665e-01, -2.2150e-02,  7.4756e-02,  3.7438e-01, -1.2696e-01,</span></span>
-<span><span class="co">##         -5.3397e-01, -3.5782e-01,  3.0400e-01,  7.7663e-01, -1.9122e-01,</span></span>
-<span><span class="co">##         -1.3041e-01, -2.1522e-01,  1.1086e+00,  1.0237e+00, -4.7554e-02,</span></span>
-<span><span class="co">##         -3.9538e-01,  1.1568e+00, -4.2549e-01, -2.5641e-02,  2.1993e-01,</span></span>
+<span><span class="co">##          4.4962e-01,  8.9600e-01, -1.8276e+00,  6.7828e-01, -9.4125e-03,</span></span>
+<span><span class="co">##          3.8665e-01, -2.2149e-02,  7.4756e-02,  3.7438e-01, -1.2696e-01,</span></span>
+<span><span class="co">##         -5.3396e-01, -3.5782e-01,  3.0400e-01,  7.7663e-01, -1.9122e-01,</span></span>
+<span><span class="co">##         -1.3041e-01, -2.1522e-01,  1.1086e+00,  1.0237e+00, -4.7552e-02,</span></span>
+<span><span class="co">##         -3.9538e-01,  1.1568e+00, -4.2549e-01, -2.5640e-02,  2.1993e-01,</span></span>
 <span><span class="co">##         -4.7488e-01, -7.7624e-02, -5.5211e-01, -5.3169e-01, -5.3790e-02,</span></span>
-<span><span class="co">##         -6.0536e-01,  4.2789e-01, -3.8606e-01,  9.8630e-01,  4.3331e-01,</span></span>
-<span><span class="co">##          4.8414e-01, -1.3519e-01, -6.5505e-01, -2.2913e-01, -3.1254e-01,</span></span>
-<span><span class="co">##          1.2920e-01, -7.7762e-02, -3.1123e-01,  8.2576e-01,  8.6486e-01,</span></span>
+<span><span class="co">##         -6.0535e-01,  4.2789e-01, -3.8606e-01,  9.8630e-01,  4.3330e-01,</span></span>
+<span><span class="co">##          4.8414e-01, -1.3518e-01, -6.5505e-01, -2.2913e-01, -3.1254e-01,</span></span>
+<span><span class="co">##          1.2920e-01, -7.7763e-02, -3.1123e-01,  8.2576e-01,  8.6486e-01,</span></span>
 <span><span class="co">##         -3.4766e-01, -3.8491e-01,  3.5732e-02,  3.7518e-01, -3.7511e-01,</span></span>
 <span><span class="co">##          5.2371e-01, -7.9721e-01,  3.3401e-01,  8.3976e-01, -3.2525e-01,</span></span>
 <span><span class="co">##         -3.0268e-01, -1.3558e-01,  2.2812e-01,  1.5632e-01,  3.1584e-01,</span></span>
 <span><span class="co">##          9.3902e-02, -3.8647e-01, -1.0177e-01, -2.8833e-01,  3.6028e-01,</span></span>
 <span><span class="co">##          2.2565e-01, -1.5595e-01, -4.4974e-01, -5.0904e-01,  4.5058e-01,</span></span>
-<span><span class="co">##          7.9031e-01,  2.7041e-01, -3.6712e-01, -3.9090e-01,  2.3358e-01,</span></span>
-<span><span class="co">##          1.2162e+00, -1.1371e+00, -8.2702e-01, -9.2750e-02,  5.8958e-01,</span></span>
-<span><span class="co">##          4.4429e-02, -2.3344e-01, -5.6492e-01,  4.9407e-01, -4.0302e-01,</span></span>
-<span><span class="co">##          5.0950e-01, -1.6740e-01, -4.0176e+00, -8.2092e-01, -3.9132e-01,</span></span>
-<span><span class="co">##         -2.9754e-01, -2.6798e-01, -2.5174e-01,  6.6283e-01, -5.7532e-02,</span></span>
-<span><span class="co">##          7.7359e-01,  2.5238e-01,  2.5733e-02,  1.7694e-01,  9.4648e-02,</span></span>
-<span><span class="co">##          2.6886e-01,  9.3711e-01, -8.3929e-02])</span></span></code></pre>
+<span><span class="co">##          7.9030e-01,  2.7041e-01, -3.6712e-01, -3.9090e-01,  2.3358e-01,</span></span>
+<span><span class="co">##          1.2162e+00, -1.1371e+00, -8.2702e-01, -9.2747e-02,  5.8958e-01,</span></span>
+<span><span class="co">##          4.4429e-02, -2.3344e-01, -5.6492e-01,  4.9406e-01, -4.0302e-01,</span></span>
+<span><span class="co">##          5.0951e-01, -1.6740e-01, -4.0176e+00, -8.2092e-01, -3.9132e-01,</span></span>
+<span><span class="co">##         -2.9754e-01, -2.6797e-01, -2.5174e-01,  6.6282e-01, -5.7532e-02,</span></span>
+<span><span class="co">##          7.7360e-01,  2.5238e-01,  2.5732e-02,  1.7694e-01,  9.4647e-02,</span></span>
+<span><span class="co">##          2.6885e-01,  9.3711e-01, -8.3929e-02])</span></span></code></pre>
 <!-- ```python -->
 <!-- tensor([-0.0323, -0.3904, -1.1946,  ...,  0.1305, -0.1365, -0.4323], -->
 <!--        device='cuda:0', grad_fn=<CatBackward>) -->
@@ -1500,7 +1459,7 @@ over crawls, instantiate as follows:</p>
 </div>
 </div>
 </div>
-  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
 </div>
 
@@ -1513,7 +1472,7 @@ over crawls, instantiate as follows:</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
 </div>
 
   </div></footer>
