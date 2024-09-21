@@ -49,20 +49,23 @@ library(flaiR)
 **flaiR** runs the Flair NLP backend in Python, thus requiring Python
 installation. We have extensively tested flaiR using CI/CD with GitHub
 Actions, conducting integration tests across various operating systems.
-These tests includes integration between R versions 4.2.1, 4.3.2, and
+These tests includes integration between R versions~~4.2.1~~, 4.3.2, and
 4.2.0, along with Python 3.9 and 3.10.x. Additionally, the testing
 includes environments with PyTorch, Flair NLP, and their dependencies in
 both R and Python. For stable usage, we strongly recommend installing
 these specific versions.
 
-| OS      | R Versions              | Python Version |
-|---------|-------------------------|----------------|
-| Mac     | 4.3.2, 4.2.0, ~~4.2.1~~ | 3.10.x         |
-| Mac     | Latest                  | 3.9            |
-| Windows | 4.0.5                   | 3.10.x         |
-| Windows | Latest                  | 3.9            |
-| Ubuntu  | 4.3.2, 4.2.0, 4.2.1     | 3.10.x         |
-| Ubuntu  | Latest                  | 3.9            |
+| OS      | R Versions                | Python Version |
+|---------|---------------------------|----------------|
+| Mac     | 4.3.2, 4.2.0, ~~4.2.1~~\* | 3.10.x         |
+| Mac     | Latest                    | 3.9            |
+| Windows | 4.0.5                     | 3.10.x         |
+| Windows | Latest                    | 3.9            |
+| Ubuntu  | 4.3.2, 4.2.0, 4.2.1       | 3.10.x         |
+| Ubuntu  | Latest                    | 3.9            |
+
+\*: *On R 4.2.1, especially on M1/M2, compatibility issues with gfortran
+may arise.*
 
 <br>
 
