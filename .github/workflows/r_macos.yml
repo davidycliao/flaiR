@@ -5,7 +5,6 @@
 #
 # See https://github.com/r-lib/actions/tree/master/examples#readme for
 # additional example workflows available for the R community.
-
 name: R-MacOS
 
 on:
@@ -41,6 +40,8 @@ jobs:
       - name: Install gfortran and configure Makevars
         run: |
           brew install gcc
+          mkdir -p ~/.R
+          touch ~/.R/Makevars
           echo "FC=$(brew --prefix)/bin/gfortran" >> ~/.R/Makevars
           echo "F77=$(brew --prefix)/bin/gfortran" >> ~/.R/Makevars
           echo "FLIBS=-L$(brew --prefix)/lib/gcc/current -lgfortran -lquadmath -lm" >> ~/.R/Makevars
