@@ -23,7 +23,7 @@ jobs:
 
     strategy:
       matrix:
-        r-version: ['4.3.2', '4.2.0', '4.2.1']
+        r-version: ['4.4.0', '4.3.2', '4.2.1']
 
     steps:
       - uses: actions/checkout@v3
@@ -44,8 +44,11 @@ jobs:
       - name: Install R dependencies
         run: |
           Rscript -e "install.packages(c('remotes', 'rcmdcheck', 'reticulate', 'renv', 'knitr', 'rmarkdown', 'lsa', 'purrr', 'testthat', 'htmltools'), repos='https://cran.r-project.org')"
+          Rscript -e "if (getRversion() >= '4.4.0') remotes::install_version('Matrix', version = '1.5.3')"
           Rscript -e "remotes::install_version('htmltools', version = '0.5.8')"
           Rscript -e "renv::restore()"
+
+
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
