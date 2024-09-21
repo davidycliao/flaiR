@@ -235,7 +235,7 @@ number of ‘syllables’ (one of ) and a number of dimensions (one of 50,
 100, 200 or 300). The following initializes and uses byte pair
 embeddings for English:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">flaiR</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://davidycliao.github.io/flaiR">flaiR</a></span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #0000BB; font-weight: bold;">flaiR</span>: <span style="color: #BBBB00; font-weight: bold;">An R Wrapper for Accessing Flair NLP</span> <span style="color: #BBBB00; font-weight: bold;">0.14.0</span></span></span></code></pre>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># initialize embedding</span></span>
@@ -269,7 +269,7 @@ Research</a>.</strong> In Flair, the use of embedding is very quite
 straightforward. Here’s an example code snippet of how to use Flair’s
 contextual string embeddings:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">flaiR</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://davidycliao.github.io/flaiR">flaiR</a></span><span class="op">)</span></span>
 <span><span class="va">FlairEmbeddings</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_embeddings.html">flair_embeddings</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">FlairEmbeddings</span></span>
 <span><span class="co"># init embedding</span></span>
 <span><span class="va">flair_embedding_forward</span> <span class="op">&lt;-</span> <span class="fu">FlairEmbeddings</span><span class="op">(</span><span class="st">'news-forward'</span><span class="op">)</span></span>
@@ -673,7 +673,7 @@ architectures like BERT or XLNet from <a href="https://github.com/huggingface" c
 <div style="text-align: justify">
 <p>For instance, to load a standard BERT transformer model, do:</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">flaiR</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://davidycliao.github.io/flaiR">flaiR</a></span><span class="op">)</span></span>
 <span><span class="co"># initiate embedding and load BERT model from HugginFaces</span></span>
 <span><span class="va">TransformerWordEmbeddings</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_embeddings.html">flair_embeddings</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">TransformerWordEmbeddings</span></span>
 <span><span class="va">embedding</span> <span class="op">&lt;-</span> <span class="fu">TransformerWordEmbeddings</span><span class="op">(</span><span class="st">'bert-base-uncased'</span><span class="op">)</span></span>
@@ -1121,7 +1121,7 @@ embeddings.</p>
 string identifier of the embedding you wish to load. So, if you want to
 use GloVe embeddings, pass the string ‘glove’ to the constructor:</p>
 <div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">flaiR</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://davidycliao.github.io/flaiR">flaiR</a></span><span class="op">)</span></span>
 <span><span class="co"># initiate embedding with glove</span></span>
 <span><span class="va">WordEmbeddings</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_embeddings.html">flair_embeddings</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">WordEmbeddings</span></span>
 <span><span class="va">glove_embedding</span> <span class="op">&lt;-</span>  <span class="fu">WordEmbeddings</span><span class="op">(</span><span class="st">'glove'</span><span class="op">)</span></span></code></pre></div>
@@ -1130,7 +1130,7 @@ use GloVe embeddings, pass the string ‘glove’ to the constructor:</p>
 this method since some embedding types make use of batching to increase
 speed.</p>
 <div class="sourceCode" id="cb59"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">flaiR</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://davidycliao.github.io/flaiR">flaiR</a></span><span class="op">)</span></span>
 <span><span class="co"># initiate a sentence object</span></span>
 <span><span class="va">Sentence</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_data.html">flair_data</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">Sentence</span></span>
 <span></span>

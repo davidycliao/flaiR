@@ -122,14 +122,14 @@
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span></span>
 <span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"davidycliao/flaiR"</span>, force <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">flaiR</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://davidycliao.github.io/flaiR">flaiR</a></span><span class="op">)</span></span></code></pre></div>
 <p><br></p>
 </div>
 <div class="section level2">
 <h2 id="requirements">Requirements<a class="anchor" aria-label="anchor" href="#requirements"></a>
 </h2>
 <div style="text-align: justify">
-<p><strong>flaiR</strong> runs the Flair NLP backend in Python, thus requiring Python installation. We have extensively tested flaiR using CI/CD with GitHub Actions, conducting integration tests across various operating systems. These tests includes integration between R versions 4.2.1, 4.3.2, and 4.2.0, along with Python 3.9 and 3.10.x. Additionally, the testing includes environments with PyTorch, Flair NLP, and their dependencies in both R and Python. For stable usage, we strongly recommend installing these specific versions.</p>
+<p><strong>flaiR</strong> runs the Flair NLP backend in Python, thus requiring Python installation. We have extensively tested flaiR using CI/CD with GitHub Actions, conducting integration tests across various operating systems. These tests includes integration between R versions<del>4.2.1</del>, 4.3.2, and 4.2.0, along with Python 3.9 and 3.10.x. Additionally, the testing includes environments with PyTorch, Flair NLP, and their dependencies in both R and Python. For stable usage, we strongly recommend installing these specific versions.</p>
 <table class="table">
 <thead><tr>
 <th>OS</th>
@@ -139,7 +139,7 @@
 <tbody>
 <tr>
 <td>Mac</td>
-<td>4.3.2, 4.2.0, 4.2.1</td>
+<td>4.3.2, 4.2.0, <del>4.2.1</del>*</td>
 <td>3.10.x</td>
 </tr>
 <tr>
@@ -169,6 +169,7 @@
 </tr>
 </tbody>
 </table>
+<p>*: <em>On R 4.2.1, especially on M1/M2, compatibility issues with gfortran may arise.</em></p>
 <p><br></p>
 </div>
 </div>
@@ -224,6 +225,7 @@
 <li>Akbik Alan <br><small class="roles"> Author, contributor </small>  </li>
 <li>Blythe Duncan <br><small class="roles"> Author, contributor </small>  </li>
 <li>Vollgraf Roland <br><small class="roles"> Author, contributor </small>  </li>
+<li><a href="authors.html">More about authors...</a></li>
 </ul>
 </div>
 
