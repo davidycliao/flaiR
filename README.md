@@ -55,14 +55,14 @@ includes environments with PyTorch, Flair NLP, and their dependencies in
 both R and Python. For stable usage, we strongly recommend installing
 these specific versions.
 
-| OS      | R Versions          | Python Version |
-|---------|---------------------|----------------|
-| Mac     | 4.3.2, 4.2.0, 4.2.1 | 3.10.x         |
-| Mac     | Latest              | 3.9            |
-| Windows | 4.0.5               | 3.10.x         |
-| Windows | Latest              | 3.9            |
-| Ubuntu  | 4.3.2, 4.2.0, 4.2.1 | 3.10.x         |
-| Ubuntu  | Latest              | 3.9            |
+| OS      | R Versions              | Python Version |
+|---------|-------------------------|----------------|
+| Mac     | 4.3.2, 4.2.0, ~~4.2.1~~ | 3.10.x         |
+| Mac     | Latest                  | 3.9            |
+| Windows | 4.0.5                   | 3.10.x         |
+| Windows | Latest                  | 3.9            |
+| Ubuntu  | 4.3.2, 4.2.0, 4.2.1     | 3.10.x         |
+| Ubuntu  | Latest                  | 3.9            |
 
 <br>
 
