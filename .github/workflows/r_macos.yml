@@ -47,8 +47,8 @@ jobs:
         run: |
           Rscript -e "install.packages(c('remotes', 'rcmdcheck', 'reticulate', 'renv', 'knitr', 'rmarkdown', 'lsa', 'purrr', 'testthat', 'htmltools'), repos='https://cran.r-project.org')"
           Rscript -e "remotes::install_version('htmltools', version = '0.5.8')"
+          remotes::install_version("Matrix", version = "1.5-1") # Use a compatible Matrix version
           Rscript -e "renv::restore()"
-
 
       - name: Set up Python
         uses: actions/setup-python@v2
