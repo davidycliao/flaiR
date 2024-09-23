@@ -15,13 +15,13 @@
 
 **flaiR** is an R package for accessing the
 [flairNLP/flair](flairNLP/flair) Python library, maintained by
-[Yen-Chieh (David ) Liao](https://davidycliao.github.io) ([CAIG,
-University of Birmingham]()) and [Stefan
-Müller](https://muellerstefan.net) from [Next Generation Energy
-Systems](https://www.nexsys-energy.ie) and [Text and Policy Research
-Group](https://text-and-policy.com) in UCD. flaiR provides convenient
-access to the main functionalities of flairNLP for training word
-embedding-based deep learning models and fine-tune state-of-the-art
+[Yen-ChiehLiao](https://davidycliao.github.io) ([CAIG, University of
+Birmingham](https://www.birmingham.ac.uk/research/centres-institutes/centre-for-artificial-intelligence-in-government))
+and [Stefan Müller](https://muellerstefan.net) from [Next Generation
+Energy Systems](https://www.nexsys-energy.ie) and [Text and Policy
+Research Group](https://text-and-policy.com) in UCD. flaiR provides
+convenient access to the main functionalities of flairNLP for training
+word embedding-based deep learning models and fine-tune state-of-the-art
 transformers hosted on Hugging Face. Our team trains and fine-tunes the
 models with Flair in [our projects]().
 
@@ -49,8 +49,8 @@ library(flaiR)
 **flaiR** runs the Flair NLP backend in Python, thus requiring Python
 installation. We have extensively tested flaiR using CI/CD with GitHub
 Actions, conducting integration tests across various operating systems.
-These tests includes integration between R versions~~4.2.1~~, 4.3.2, and
-4.2.0, along with Python 3.9 and 3.10.x. Additionally, the testing
+These tests includes integration between R versions ~~4.2.1~~, 4.3.2,
+and 4.2.0, along with Python 3.9 and 3.10.x. Additionally, the testing
 includes environments with PyTorch, Flair NLP, and their dependencies in
 both R and Python. For stable usage, we strongly recommend installing
 these specific versions.
@@ -64,8 +64,8 @@ these specific versions.
 | Ubuntu  | 4.3.2, 4.2.0, 4.2.1       | 3.10.x         |
 | Ubuntu  | Latest                    | 3.9            |
 
-\*: *On R 4.2.1, especially on M1/M2, compatibility issues with gfortran
-may arise.*
+\*: *On R 4.2.1, especially on Mac M1/M2, compatibility issues with
+`gfortran` may occur.*
 
 <br>
 
