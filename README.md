@@ -38,6 +38,7 @@ remotes::install_github("davidycliao/flaiR", force = TRUE)
 
 ``` r
 library(flaiR)
+#> [1m[34mflaiR[39m[22m: [1m[33mAn R Wrapper for Accessing Flair NLP[39m[22m [1m[33m0.14.0[39m[22m
 ```
 
 <br>
@@ -70,6 +71,13 @@ these specific versions.
 <br>
 
 </div>
+
+## Updates and News
+
+- [Tutorial for embeddings in
+  flaiR](https://davidycliao.github.io/flaiR/articles/tutorial.html#embedding)
+
+<br>
 
 ## Contribution and Open Source
 

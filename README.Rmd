@@ -25,7 +25,7 @@ knitr::opts_chunk$set(
 
 ```{r include=FALSE}
 library(reticulate)
-library(flaiR)
+# library(flaiR)
 reticulate::py_install("flair")
 system(paste(reticulate::py_config()$python, "-m pip install flair"))
 # options(repos = c(CRAN = "https://cloud.r-project.org/"))
@@ -75,7 +75,16 @@ __flaiR__ runs the Flair NLP backend in Python, thus requiring Python installati
 
 <br>
 
+
+
 </div>
+
+## Updates and News
+
+- [Tutorial for embeddings in flaiR](https://davidycliao.github.io/flaiR/articles/tutorial.html#embedding)
+
+
+<br>
 
 
 ## Contribution and Open Source
@@ -91,8 +100,5 @@ The primary communication channel for R users can be found [here](https://github
 </div>
 
 <br>
-
-
-
 
 
