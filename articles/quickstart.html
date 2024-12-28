@@ -114,102 +114,7 @@ embeddings, especially for various multilingual embedding frameworks
 like GloVe and transformer-based models on Hugging Face.</p>
 </div>
 <div class="section level2">
-<h2 id="nlp-tasks">NLP Tasks<a class="anchor" aria-label="anchor" href="#nlp-tasks"></a>
-</h2>
-<div style="text-align: justify">
-<p>For R users, flairR extends FlairNLP with three NLP task functions to
-extract features in a neat format with <a href="https://cran.r-project.org/web/packages/data.table/index.html" class="external-link">data.table</a>.
-Through these featured functions, you don’t have to write loops to
-format parsed output on your own. The main features include
-part-of-speech tagging, named entity recognition and sentiment analysis.
-Additionally, to handle the load on RAM when dealing with larger
-corpora, flairR supports batch processing to handle texts in batches,
-which is especially useful when dealing with large datasets, to optimize
-memory usage and performance.</p>
-<table class="table">
-<colgroup>
-<col width="17%">
-<col width="15%">
-<col width="66%">
-</colgroup>
-<thead><tr class="header">
-<th><strong>Featured Functions</strong></th>
-<th>Loader</th>
-<th>Supported Models from Flair NLP</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td><code><a href="../reference/get_entities.html">get_entities()</a></code></td>
-<td><code><a href="../reference/load_tagger_ner.html">load_tagger_ner()</a></code></td>
-<td>
-<code>en</code> (English), <code>fr</code> (French), <code>da</code>
-(Danish), <code>nl</code> (Dutch), and more on Flair NLP on
-HuggingFace.</td>
-</tr>
-<tr class="even">
-<td><code><a href="../reference/get_pos.html">get_pos()</a></code></td>
-<td><code><a href="../reference/load_tagger_pos.html">load_tagger_pos()</a></code></td>
-<td>
-<code>pos</code> (English POS), <code>fr-pos</code> (French POS),
-<code>de-pos</code> (German POS), <code>nl-pos</code> (Dutch POS), and
-more on Flair NLP on HuggingFace.</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p> </p>
-</div>
-<div class="section level2">
-<h2 id="training-and-fine-tuning">Training and Fine-tuning<a class="anchor" aria-label="anchor" href="#training-and-fine-tuning"></a>
-</h2>
-<div style="text-align: justify">
-<p>In <strong>flairR</strong>, we use the simplest <strong>S3</strong>
-method to wrap major modules. All modules will work like <a href="https://bookdown.dongzhuoer.com/hadley/adv-r/s3-r6" class="external-link">R6</a> in the
-R environment when loaded from Flair NLP. In Python, both functions and
-methods (sometimes referred to as functions in R) within a class can be
-accessed using the <code>$</code> operator. For example,
-<code>from flair.trainers import ModelTrainer</code> in Python is
-equivalent to
-<code>ModelTrainer &lt;- flair_trainers()$ModelTrainer</code> in R
-environment with <strong>flairR</strong>.</p>
-</div>
-<table class="table">
-<colgroup>
-<col width="43%">
-<col width="56%">
-</colgroup>
-<thead><tr class="header">
-<th><strong>Wrapped Flair NLP Modules with S3</strong></th>
-<th>Corresponding Code Practices When Loading Modules from FlairNLP</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td><code><a href="../reference/flair_datasets.html">flair_datasets()</a></code></td>
-<td>from flair.datasets import *</td>
-</tr>
-<tr class="even">
-<td><code><a href="../reference/flair_nn.html">flair_nn()</a></code></td>
-<td>from flair.nn import *</td>
-</tr>
-<tr class="odd">
-<td><code><a href="../reference/flair_splitter.html">flair_splitter()</a></code></td>
-<td>from flair.splitter import *</td>
-</tr>
-<tr class="even">
-<td><code><a href="../reference/flair_trainers.html">flair_trainers()</a></code></td>
-<td>from flair.trainers import *</td>
-</tr>
-<tr class="odd">
-<td><code><a href="../reference/flair_models.html">flair_models()</a></code></td>
-<td>from flair.models import *</td>
-</tr>
-</tbody>
-</table>
-<p> </p>
-<hr>
-</div>
-<div class="section level2">
-<h2 id="more-details-about-installation">More Details about Installation<a class="anchor" aria-label="anchor" href="#more-details-about-installation"></a>
+<h2 id="flair-installation">FlaiR Installation<a class="anchor" aria-label="anchor" href="#flair-installation"></a>
 </h2>
 <div class="section level3">
 <h3 id="system-requirements">System Requirements<a class="anchor" aria-label="anchor" href="#system-requirements"></a>
@@ -357,8 +262,105 @@ versions:</p>
 forum</a>
 </li>
 </ul>
-<!-- <div style="text-align: justify"> --><!-- The installation consists of two parts: First, install [Python 3.8](https://www.python.org/downloads/) or higher, and [R 3.6.3](https://www.r-project.org) or higher. Although we have tested it on Github Action with R 3.6.2, we strongly recommend installing [R 4.0.0 or above](https://github.com/davidycliao/flaiR/actions/runs/6416611291) to ensure compatibility between the R environment and Python. When first installed, __flaiR__ automatically detects whether you have Python 3.8 or higher. If not, it will skip the automatic installation of Python and flair NLP. In this case, you will need to mannually install it yourself and reload __flaiR__ again. If you have Python 3.8 or higher alreadt installed, the installer of __flaiR__ will automatically install flair Python NLP in your global environment. If you are using {reticulate}, {flaiR} will typically assume the __r-reticulate__ environment by default. At the same time, you can use py_config() to check the location of your environment. Please note that flaiR will directly install flair NLP in the Python environment that your R is using. This environment can be adjusted through _RStudio_ by navigating to `Tools -> Global Options -> Python`. If there are any issues with the installation, feel free to ask in the <u>[Discussion](https://github.com/davidycliao/flaiR/discussions). --><!-- For stable usage, we strongly recommend installing these specific versions. --><!-- | OS      | R Versions                 | Python Version | --><!-- |---------|----------------------------|----------------| --><!-- | Mac     | 4.3.2, 4.2.0, 4.2.1        | 3.10.x         | --><!-- | Mac     | Latest                     | 3.9            | --><!-- | Windows | 4.0.5                      | 3.10.x         | --><!-- | Windows | Latest                     | 3.9            | --><!-- | Ubuntu  | 4.3.2, 4.2.0, 4.2.1        | 3.10.x         | --><!-- | Ubuntu  | Latest                     | 3.9            | --><!-- During this process, you will observe numerous messages related to the installation of the Python environment and the Python flair module. Notably, flair has numerous dependencies, including libraries related to transformers (like the torch, tokeniser, transformers, gensim, flair, etc). Thus, the installation might take some time to complete.  --><!-- There's also another scenario to consider. If __flaiR__ is unable to automatically install Flair and PyTorch, it will attempt to force the installation again. However, if this attempt fails, you'll encounter the message: "Failed to install Flair. __flaiR__ requires Flair NLP. Please ensure Flair NLP is installed in Python manually." If you're using an Apple operating environment, it's essential at this point to check the compatibility of your M1/M2 chip with Python and Torch.  If there are any issues with the installation, feel free to ask in the <u>[Discussion](https://github.com/davidycliao/flaiR/discussions)</u>. --><!-- ``` --><!-- install.packages("remotes") --><!-- remotes::install_github("davidycliao/flaiR", force = TRUE) --><!-- library(flaiR) --><!-- ``` --><!-- </div> -->
+<p> </p>
+<hr>
 </div>
+</div>
+<div class="section level2">
+<h2 id="nlp-tasks">NLP Tasks<a class="anchor" aria-label="anchor" href="#nlp-tasks"></a>
+</h2>
+<div style="text-align: justify">
+<p>For R users, flairR extends FlairNLP with three NLP task functions to
+extract features in a neat format with <a href="https://cran.r-project.org/web/packages/data.table/index.html" class="external-link">data.table</a>.
+Through these featured functions, you don’t have to write loops to
+format parsed output on your own. The main features include
+part-of-speech tagging, named entity recognition and sentiment analysis.
+Additionally, to handle the load on RAM when dealing with larger
+corpora, flairR supports batch processing to handle texts in batches,
+which is especially useful when dealing with large datasets, to optimize
+memory usage and performance.</p>
+<table class="table">
+<colgroup>
+<col width="17%">
+<col width="15%">
+<col width="66%">
+</colgroup>
+<thead><tr class="header">
+<th><strong>Featured Functions</strong></th>
+<th>Loader</th>
+<th>Supported Models from Flair NLP</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td><code><a href="../reference/get_entities.html">get_entities()</a></code></td>
+<td><code><a href="../reference/load_tagger_ner.html">load_tagger_ner()</a></code></td>
+<td>
+<code>en</code> (English), <code>fr</code> (French), <code>da</code>
+(Danish), <code>nl</code> (Dutch), and more on Flair NLP on
+HuggingFace.</td>
+</tr>
+<tr class="even">
+<td><code><a href="../reference/get_pos.html">get_pos()</a></code></td>
+<td><code><a href="../reference/load_tagger_pos.html">load_tagger_pos()</a></code></td>
+<td>
+<code>pos</code> (English POS), <code>fr-pos</code> (French POS),
+<code>de-pos</code> (German POS), <code>nl-pos</code> (Dutch POS), and
+more on Flair NLP on HuggingFace.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p> </p>
+</div>
+<div class="section level2">
+<h2 id="training-and-fine-tuning">Training and Fine-tuning<a class="anchor" aria-label="anchor" href="#training-and-fine-tuning"></a>
+</h2>
+<div style="text-align: justify">
+<p>In <strong>flairR</strong>, we use the simplest <strong>S3</strong>
+method to wrap major modules. All modules will work like <a href="https://bookdown.dongzhuoer.com/hadley/adv-r/s3-r6" class="external-link">R6</a> in the
+R environment when loaded from Flair NLP. In Python, both functions and
+methods (sometimes referred to as functions in R) within a class can be
+accessed using the <code>$</code> operator. For example,
+<code>from flair.trainers import ModelTrainer</code> in Python is
+equivalent to
+<code>ModelTrainer &lt;- flair_trainers()$ModelTrainer</code> in R
+environment with <strong>flairR</strong>.</p>
+</div>
+<table class="table">
+<colgroup>
+<col width="43%">
+<col width="56%">
+</colgroup>
+<thead><tr class="header">
+<th><strong>Wrapped Flair NLP Modules with S3</strong></th>
+<th>Corresponding Code Practices When Loading Modules from FlairNLP</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td><code><a href="../reference/flair_datasets.html">flair_datasets()</a></code></td>
+<td>from flair.datasets import *</td>
+</tr>
+<tr class="even">
+<td><code><a href="../reference/flair_nn.html">flair_nn()</a></code></td>
+<td>from flair.nn import *</td>
+</tr>
+<tr class="odd">
+<td><code><a href="../reference/flair_splitter.html">flair_splitter()</a></code></td>
+<td>from flair.splitter import *</td>
+</tr>
+<tr class="even">
+<td><code><a href="../reference/flair_trainers.html">flair_trainers()</a></code></td>
+<td>from flair.trainers import *</td>
+</tr>
+<tr class="odd">
+<td><code><a href="../reference/flair_models.html">flair_models()</a></code></td>
+<td>from flair.models import *</td>
+</tr>
+</tbody>
+</table>
+<p> </p>
+<hr>
+<!-- <div style="text-align: justify"> --><!-- The installation consists of two parts: First, install [Python 3.8](https://www.python.org/downloads/) or higher, and [R 3.6.3](https://www.r-project.org) or higher. Although we have tested it on Github Action with R 3.6.2, we strongly recommend installing [R 4.0.0 or above](https://github.com/davidycliao/flaiR/actions/runs/6416611291) to ensure compatibility between the R environment and Python. When first installed, __flaiR__ automatically detects whether you have Python 3.8 or higher. If not, it will skip the automatic installation of Python and flair NLP. In this case, you will need to mannually install it yourself and reload __flaiR__ again. If you have Python 3.8 or higher alreadt installed, the installer of __flaiR__ will automatically install flair Python NLP in your global environment. If you are using {reticulate}, {flaiR} will typically assume the __r-reticulate__ environment by default. At the same time, you can use py_config() to check the location of your environment. Please note that flaiR will directly install flair NLP in the Python environment that your R is using. This environment can be adjusted through _RStudio_ by navigating to `Tools -> Global Options -> Python`. If there are any issues with the installation, feel free to ask in the <u>[Discussion](https://github.com/davidycliao/flaiR/discussions). --><!-- For stable usage, we strongly recommend installing these specific versions. --><!-- | OS      | R Versions                 | Python Version | --><!-- |---------|----------------------------|----------------| --><!-- | Mac     | 4.3.2, 4.2.0, 4.2.1        | 3.10.x         | --><!-- | Mac     | Latest                     | 3.9            | --><!-- | Windows | 4.0.5                      | 3.10.x         | --><!-- | Windows | Latest                     | 3.9            | --><!-- | Ubuntu  | 4.3.2, 4.2.0, 4.2.1        | 3.10.x         | --><!-- | Ubuntu  | Latest                     | 3.9            | --><!-- During this process, you will observe numerous messages related to the installation of the Python environment and the Python flair module. Notably, flair has numerous dependencies, including libraries related to transformers (like the torch, tokeniser, transformers, gensim, flair, etc). Thus, the installation might take some time to complete.  --><!-- There's also another scenario to consider. If __flaiR__ is unable to automatically install Flair and PyTorch, it will attempt to force the installation again. However, if this attempt fails, you'll encounter the message: "Failed to install Flair. __flaiR__ requires Flair NLP. Please ensure Flair NLP is installed in Python manually." If you're using an Apple operating environment, it's essential at this point to check the compatibility of your M1/M2 chip with Python and Torch.  If there are any issues with the installation, feel free to ask in the <u>[Discussion](https://github.com/davidycliao/flaiR/discussions)</u>. --><!-- ``` --><!-- install.packages("remotes") --><!-- remotes::install_github("davidycliao/flaiR", force = TRUE) --><!-- library(flaiR) --><!-- ``` --><!-- </div> -->
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
