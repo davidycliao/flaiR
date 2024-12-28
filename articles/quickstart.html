@@ -48,9 +48,9 @@
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-quick-start" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true"><span class="fa fa-rocket"></span> Quick Start</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-quick-start">
-<li><a class="dropdown-item" href="../articles/quickstart.html#nlp-tasks">NLP Tasks</a></li>
-    <li><a class="dropdown-item" href="../articles/quickstart.html#class-and-ojbect">Class and Ojbect</a></li>
-    <li><a class="dropdown-item" href="../articles/quickstart.html#more-details-about-installation">More Details about Installation</a></li>
+<li><a class="dropdown-item" href="../articles/quickstart.html#flair-installation">flaiR Installation</a></li>
+    <li><a class="dropdown-item" href="../articles/quickstart.html#nlp-tasks">NLP Tasks</a></li>
+    <li><a class="dropdown-item" href="../articles/quickstart.html#training-and-fine-tuning">Training and Finetuning</a></li>
   </ul>
 </li>
 <li class="nav-item dropdown">
@@ -76,7 +76,8 @@
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-news" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true"><span class="fa fa-newspaper-o"></span> News</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-news">
-<li><a class="dropdown-item" href="../news/index.html#flair-006-2023-10-29">0.0.6</a></li>
+<li><a class="dropdown-item" href="../news/index.html#flair-007-2024-12-26">0.0.7</a></li>
+    <li><a class="dropdown-item" href="../news/index.html#flair-006-2023-10-29">0.0.6</a></li>
     <li><a class="dropdown-item" href="../news/index.html#flair-005-2023-10-01">0.0.5</a></li>
     <li><a class="dropdown-item" href="../news/index.html#flair-003-2023-09-10">0.0.3</a></li>
     <li><a class="dropdown-item" href="../news/index.html#flair-001-development-version">0.0.1</a></li>
@@ -119,12 +120,12 @@ like GloVe and transformer-based models on Hugging Face.</p>
 <div class="section level3">
 <h3 id="system-requirements">System Requirements<a class="anchor" aria-label="anchor" href="#system-requirements"></a>
 </h3>
-<p><strong><code>Required Software</code></strong></p>
+<p><u><strong>Required Software</strong></u></p>
 <ul>
 <li>Python &gt;= 3.10</li>
 <li>R &gt;= 4.2.0</li>
 </ul>
-<p><strong><code>R Version Dependencies</code></strong></p>
+<p><u><strong>R Version Dependencies</strong></u></p>
 <p>Due to Matrix package dependencies, different R versions require
 specific Matrix package versions:</p>
 <ul>
@@ -136,46 +137,56 @@ specific Matrix package versions:</p>
 <div class="section level3">
 <h3 id="installation-steps">Installation Steps<a class="anchor" aria-label="anchor" href="#installation-steps"></a>
 </h3>
-<p><strong>For macOS Users</strong></p>
+<p><u><strong>For macOS Users</strong></u></p>
 <p>Due to Matrix package compilation requirements on macOS, additional
 setup is needed:</p>
-<ol style="list-style-type: decimal">
+<ul>
 <li>Install system dependencies:</li>
-</ol>
+</ul>
 <div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="ex">brew</span> install gcc</span>
 <span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="ex">brew</span> install pandoc</span></code></pre></div>
-<ol start="2" style="list-style-type: decimal">
+<ul>
 <li>Configure R compiler settings:</li>
-</ol>
+</ul>
 <div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> ~/.R</span>
 <span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="fu">touch</span> ~/.R/Makevars</span>
 <span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"FC=</span><span class="va">$(</span><span class="ex">brew</span> <span class="at">--prefix</span><span class="va">)</span><span class="st">/bin/gfortran"</span> <span class="op">&gt;&gt;</span> ~/.R/Makevars</span>
 <span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"F77=</span><span class="va">$(</span><span class="ex">brew</span> <span class="at">--prefix</span><span class="va">)</span><span class="st">/bin/gfortran"</span> <span class="op">&gt;&gt;</span> ~/.R/Makevars</span>
 <span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"FLIBS=-L</span><span class="va">$(</span><span class="ex">brew</span> <span class="at">--prefix</span><span class="va">)</span><span class="st">/lib/gcc/current -lgfortran -lquadmath -lm"</span> <span class="op">&gt;&gt;</span> ~/.R/Makevars</span></code></pre></div>
-<p><strong>R Package Installation</strong></p>
-<ol style="list-style-type: decimal">
+<p><u><strong>R Package Installation</strong></u></p>
+<ul>
 <li>Install devtools if not already installed:</li>
-</ol>
+</ul>
 <pre><code><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span></span></code></pre>
-<ol start="2" style="list-style-type: decimal">
+<ul>
 <li>For macOS users, install correct Matrix version first:</li>
-</ol>
+</ul>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/numeric_version.html" class="external-link">getRversion</a></span><span class="op">(</span><span class="op">)</span> <span class="op">&gt;=</span> <span class="st">"4.4.0"</span><span class="op">)</span> <span class="op">{</span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"Matrix"</span><span class="op">)</span></span>
-<span><span class="op">}</span> <span class="kw">else</span> <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/numeric_version.html" class="external-link">getRversion</a></span><span class="op">(</span><span class="op">)</span> <span class="op">&gt;=</span> <span class="st">"4.3.0"</span><span class="op">)</span> <span class="op">{</span></span>
-<span>    <span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_version.html" class="external-link">install_version</a></span><span class="op">(</span><span class="st">"Matrix"</span>, version <span class="op">=</span> <span class="st">"1.5-1"</span><span class="op">)</span></span>
-<span><span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
-<span>    <span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_version.html" class="external-link">install_version</a></span><span class="op">(</span><span class="st">"Matrix"</span>, version <span class="op">=</span> <span class="st">"1.4-1"</span><span class="op">)</span></span>
-<span><span class="op">}</span></span></code></pre></div>
-<ol start="3" style="list-style-type: decimal">
+<code class="sourceCode R"><span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/numeric_version.html" class="external-link">getRversion</a></span><span class="op">(</span><span class="op">)</span> <span class="op">&gt;=</span> <span class="st">"4.4.0"</span><span class="op">)</span> <span class="op">{</span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"Matrix"</span><span class="op">)</span></span>
+<span>  <span class="op">}</span> <span class="kw">else</span> <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/numeric_version.html" class="external-link">getRversion</a></span><span class="op">(</span><span class="op">)</span> <span class="op">&gt;=</span> <span class="st">"4.3.0"</span><span class="op">)</span> <span class="op">{</span></span>
+<span>      <span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_version.html" class="external-link">install_version</a></span><span class="op">(</span><span class="st">"Matrix"</span>, version <span class="op">=</span> <span class="st">"1.5-1"</span><span class="op">)</span></span>
+<span>  <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
+<span>      <span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_version.html" class="external-link">install_version</a></span><span class="op">(</span><span class="st">"Matrix"</span>, version <span class="op">=</span> <span class="st">"1.4-1"</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span></code></pre></div>
+<ul>
 <li>Install flaiR:</li>
-</ol>
-<pre><code><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"davidycliao/flaiR"</span><span class="op">)</span></span></code></pre>
+</ul>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span></span>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"davidycliao/flaiR"</span>, force <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="python-environment-setup">Python Environment Setup<a class="anchor" aria-label="anchor" href="#python-environment-setup"></a>
 </h3>
+<p><u><strong>Python Dependencies</strong></u></p>
+<p>Those Python packages below will be installed automatically through
+the flaiR R package.</p>
+<ul>
+<li>flair</li>
+<li>scipy==1.12.0</li>
+<li>gensim==4.3.2</li>
+</ul>
 <div style="text-align: justify">
 <p>When first installed, flaiR automatically detects whether you have
 Python 3.10 or higher. If Python is not detected, you will need to
@@ -187,28 +198,18 @@ your current Python configuration. The Python environment can be
 adjusted through RStudio by navigating to <em>Tools -&gt; Global Options
 -&gt; Python</em>.</p>
 </div>
-<p><strong><code>Python Dependencies</code></strong></p>
-<ul>
-<li>flair</li>
-<li>scipy==1.12.0</li>
-<li>gensim==4.3.2 (will be installed automatically via flaiR)</li>
-</ul>
 </div>
 <div class="section level3">
 <h3 id="troubleshooting">Troubleshooting<a class="anchor" aria-label="anchor" href="#troubleshooting"></a>
 </h3>
 <p>If you encounter installation issues:</p>
 <div style="text-align: justify">
-<p>Verify your R and Python versions meet the requirements For macOS
-users, ensure you’ve completed the macOS-specific setup steps Check if
-the correct Matrix version is installed for your R version Visit our
-Discussion page for help</p>
-</div>
-<p>Note: While we maintain compatibility with earlier versions, we
-strongly recommend using R 4.2.0 or above to ensure optimal
-compatibility between the R environment and Python.</p>
+<p>While we maintain compatibility with earlier versions, we strongly
+recommend using R 4.2.0 or above to ensure optimal compatibility between
+the R environment and Python.</p>
 <p>For stable usage, we strongly recommend installing these specific
 versions:</p>
+</div>
 <table class="table">
 <thead><tr class="header">
 <th>OS</th>
@@ -360,7 +361,6 @@ environment with <strong>flairR</strong>.</p>
 </table>
 <p> </p>
 <hr>
-<!-- <div style="text-align: justify"> --><!-- The installation consists of two parts: First, install [Python 3.8](https://www.python.org/downloads/) or higher, and [R 3.6.3](https://www.r-project.org) or higher. Although we have tested it on Github Action with R 3.6.2, we strongly recommend installing [R 4.0.0 or above](https://github.com/davidycliao/flaiR/actions/runs/6416611291) to ensure compatibility between the R environment and Python. When first installed, __flaiR__ automatically detects whether you have Python 3.8 or higher. If not, it will skip the automatic installation of Python and flair NLP. In this case, you will need to mannually install it yourself and reload __flaiR__ again. If you have Python 3.8 or higher alreadt installed, the installer of __flaiR__ will automatically install flair Python NLP in your global environment. If you are using {reticulate}, {flaiR} will typically assume the __r-reticulate__ environment by default. At the same time, you can use py_config() to check the location of your environment. Please note that flaiR will directly install flair NLP in the Python environment that your R is using. This environment can be adjusted through _RStudio_ by navigating to `Tools -> Global Options -> Python`. If there are any issues with the installation, feel free to ask in the <u>[Discussion](https://github.com/davidycliao/flaiR/discussions). --><!-- For stable usage, we strongly recommend installing these specific versions. --><!-- | OS      | R Versions                 | Python Version | --><!-- |---------|----------------------------|----------------| --><!-- | Mac     | 4.3.2, 4.2.0, 4.2.1        | 3.10.x         | --><!-- | Mac     | Latest                     | 3.9            | --><!-- | Windows | 4.0.5                      | 3.10.x         | --><!-- | Windows | Latest                     | 3.9            | --><!-- | Ubuntu  | 4.3.2, 4.2.0, 4.2.1        | 3.10.x         | --><!-- | Ubuntu  | Latest                     | 3.9            | --><!-- During this process, you will observe numerous messages related to the installation of the Python environment and the Python flair module. Notably, flair has numerous dependencies, including libraries related to transformers (like the torch, tokeniser, transformers, gensim, flair, etc). Thus, the installation might take some time to complete.  --><!-- There's also another scenario to consider. If __flaiR__ is unable to automatically install Flair and PyTorch, it will attempt to force the installation again. However, if this attempt fails, you'll encounter the message: "Failed to install Flair. __flaiR__ requires Flair NLP. Please ensure Flair NLP is installed in Python manually." If you're using an Apple operating environment, it's essential at this point to check the compatibility of your M1/M2 chip with Python and Torch.  If there are any issues with the installation, feel free to ask in the <u>[Discussion](https://github.com/davidycliao/flaiR/discussions)</u>. --><!-- ``` --><!-- install.packages("remotes") --><!-- remotes::install_github("davidycliao/flaiR", force = TRUE) --><!-- library(flaiR) --><!-- ``` --><!-- </div> -->
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
