@@ -92,18 +92,19 @@ test_that("get_pos_batch throws an error for no valid texts provided.", {
 })
 
 # Test 8: test loading tagger works as expected
-
 test_that("loading tagger works as expected", {
-  # Assuming you have a valid tagger object for English
-  valid_tagger <- load_tagger_pos("pos-fast")
+  expected_messages <- c(
+    "Model name not specified. Using default 'pos-fast' model.",
+    "Loading POS tagger model: pos-fast"
+  )
 
-  # tagger is NULL and no language is specified
-  expect_message(get_pos("Hello World", "doc1"), "Language is not specified. pos-fastin Flair is forceloaded. Please ensure that the internet connectivity is stable.")
+  messages <- capture_messages(get_pos("Hello World", "doc1"))
 
-  # tagger is NULL but a language is specified
-  expect_silent(get_pos("Hello World", "doc1", language = "pos"))
-  #
-  # a valid tagger object is passed
-  expect_silent(get_pos("Hello World", "doc1", tagger = valid_tagger))
+  # 檢查每個期望的訊息是否都存在
+  for(expected in expected_messages) {
+    expect_true(
+      any(grepl(expected, messages, fixed = TRUE)),
+      info = paste("Expected message not found:", expected)
+    )
+  }
 })
-

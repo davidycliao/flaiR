@@ -15,7 +15,7 @@
 
 **flaiR** is an R package for accessing the
 [flairNLP/flair](flairNLP/flair) Python library, maintained by
-[Yen-ChiehLiao](https://davidycliao.github.io) ([University of
+[Yen-Chieh Liao](https://davidycliao.github.io) ([University of
 Birmingham](https://www.birmingham.ac.uk/research/centres-institutes/centre-for-artificial-intelligence-in-government))
 and [Stefan Müller](https://muellerstefan.net) from [Next Generation
 Energy Systems](https://www.nexsys-energy.ie) and [Text and Policy
@@ -38,7 +38,10 @@ remotes::install_github("davidycliao/flaiR", force = TRUE)
 
 ``` r
 library(flaiR)
-#> [1m[34mflaiR[39m[22m: [1m[33mAn R Wrapper for Accessing Flair NLP[39m[22m [1m[33m0.14.0[39m[22m
+```
+
+``` r
+#> flaiR: An R Wrapper for Accessing Flair NLP 0.13.1
 ```
 
 <br>
@@ -76,6 +79,9 @@ these specific versions.
 
 - [Tutorial for embeddings in
   flaiR](https://davidycliao.github.io/flaiR/articles/tutorial.html#embedding)
+
+- [Extending conText’s Embedding
+  Regression](https://davidycliao.github.io/flaiR/articles/tutorial.html#extending-contexts-embedding-regression)
 
 <br>
 
