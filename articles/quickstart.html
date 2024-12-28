@@ -120,95 +120,110 @@ like GloVe and transformer-based models on Hugging Face.</p>
 <div class="section level3">
 <h3 id="system-requirements">System Requirements<a class="anchor" aria-label="anchor" href="#system-requirements"></a>
 </h3>
-<p><u><strong>Required Software</strong></u></p>
+<p><u><strong>Required Software</strong></u> - Python &gt;= 3.10 - R
+&gt;= 4.2.0 - Rstudio</p>
+</div>
+<div class="section level3">
+<h3 id="installation-by-operating-system">Installation by Operating System<a class="anchor" aria-label="anchor" href="#installation-by-operating-system"></a>
+</h3>
+<div class="section level4">
+<h4 id="macos-terminal-installation">macOS Terminal Installation<a class="anchor" aria-label="anchor" href="#macos-terminal-installation"></a>
+</h4>
+<p>Install Python 3.10 or higher.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="ex">brew</span> install python@3.10</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="co"># Verify Python installation</span></span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="ex">python3</span> <span class="at">--version</span></span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a><span class="co"># Install R</span></span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a><span class="ex">brew</span> install R</span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a><span class="co"># Verify R installation</span></span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a><span class="ex">R</span> <span class="at">--version</span></span>
+<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a><span class="co"># Install RStudio</span></span>
+<span id="cb1-13"><a href="#cb1-13" tabindex="-1"></a><span class="ex">brew</span> install <span class="at">--cask</span> rstudio</span></code></pre></div>
+</div>
+<div class="section level4">
+<h4 id="powershell-installation-for-windows">PowerShell Installation for Windows<a class="anchor" aria-label="anchor" href="#powershell-installation-for-windows"></a>
+</h4>
+<p>Install Python 3.10 or higher.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="co"># Download Python installer from python.org and run:</span></span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="co"># https://www.python.org/downloads/</span></span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a><span class="co"># Verify Python installation</span></span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a><span class="ex">python</span> <span class="at">--version</span></span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a><span class="co"># Install R</span></span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a><span class="co"># Download R installer from CRAN and run:</span></span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a><span class="co"># https://cran.r-project.org/bin/windows/base/</span></span>
+<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a><span class="co"># Verify R installation</span></span>
+<span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a><span class="ex">R</span> <span class="at">--version</span></span></code></pre></div>
+</div>
+</div>
+<div class="section level3">
+<h3 id="r-package-installation">R Package Installation<a class="anchor" aria-label="anchor" href="#r-package-installation"></a>
+</h3>
+<p>The faiR Will:</p>
 <ul>
-<li>Python &gt;= 3.10</li>
-<li>R &gt;= 4.2.0</li>
+<li>Automatically check Python environment</li>
+<li>Install required Python packages (flair and its dependencies)</li>
+<li>Configure the Python-R connection</li>
 </ul>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span></span>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"davidycliao/flaiR"</span>, force <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p><u><strong>R Version Dependencies</strong></u></p>
-<p>Due to Matrix package dependencies, different R versions require
-specific Matrix package versions:</p>
+<p>The Matrix R package corresponds to different R versions:</p>
 <ul>
 <li>R 4.4.0+: Latest Matrix package version</li>
 <li>R 4.3.x: Matrix 1.5-1</li>
 <li>R 4.2.x: Matrix 1.4-1</li>
 </ul>
+<div style="text-align: justify">
+<p>Installation should work automatically as RStudio and R handle the
+dependencies. However, if you encounter Matrix package compilation
+errors, you might need the following setup:</p>
 </div>
-<div class="section level3">
-<h3 id="installation-steps">Installation Steps<a class="anchor" aria-label="anchor" href="#installation-steps"></a>
-</h3>
-<p><u><strong>For macOS Users</strong></u></p>
-<p>Due to Matrix package compilation requirements on macOS, additional
-setup is needed:</p>
 <ul>
-<li>Install system dependencies:</li>
+<li>Install compiler tools (if needed) in the Terminal:</li>
 </ul>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="ex">brew</span> install gcc</span>
-<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="ex">brew</span> install pandoc</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="ex">brew</span> install gcc</span></code></pre></div>
 <ul>
 <li>Configure R compiler settings:</li>
 </ul>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> ~/.R</span>
-<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="fu">touch</span> ~/.R/Makevars</span>
-<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"FC=</span><span class="va">$(</span><span class="ex">brew</span> <span class="at">--prefix</span><span class="va">)</span><span class="st">/bin/gfortran"</span> <span class="op">&gt;&gt;</span> ~/.R/Makevars</span>
-<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"F77=</span><span class="va">$(</span><span class="ex">brew</span> <span class="at">--prefix</span><span class="va">)</span><span class="st">/bin/gfortran"</span> <span class="op">&gt;&gt;</span> ~/.R/Makevars</span>
-<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"FLIBS=-L</span><span class="va">$(</span><span class="ex">brew</span> <span class="at">--prefix</span><span class="va">)</span><span class="st">/lib/gcc/current -lgfortran -lquadmath -lm"</span> <span class="op">&gt;&gt;</span> ~/.R/Makevars</span></code></pre></div>
-<p><u><strong>R Package Installation</strong></u></p>
-<ul>
-<li>Install devtools if not already installed:</li>
-</ul>
-<pre><code><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span></span></code></pre>
-<ul>
-<li>For macOS users, install correct Matrix version first:</li>
-</ul>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/numeric_version.html" class="external-link">getRversion</a></span><span class="op">(</span><span class="op">)</span> <span class="op">&gt;=</span> <span class="st">"4.4.0"</span><span class="op">)</span> <span class="op">{</span></span>
-<span>      <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"Matrix"</span><span class="op">)</span></span>
-<span>  <span class="op">}</span> <span class="kw">else</span> <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/numeric_version.html" class="external-link">getRversion</a></span><span class="op">(</span><span class="op">)</span> <span class="op">&gt;=</span> <span class="st">"4.3.0"</span><span class="op">)</span> <span class="op">{</span></span>
-<span>      <span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_version.html" class="external-link">install_version</a></span><span class="op">(</span><span class="st">"Matrix"</span>, version <span class="op">=</span> <span class="st">"1.5-1"</span><span class="op">)</span></span>
-<span>  <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
-<span>      <span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_version.html" class="external-link">install_version</a></span><span class="op">(</span><span class="st">"Matrix"</span>, version <span class="op">=</span> <span class="st">"1.4-1"</span><span class="op">)</span></span>
-<span>  <span class="op">}</span></span></code></pre></div>
-<ul>
-<li>Install flaiR:</li>
-</ul>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span></span>
-<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"davidycliao/flaiR"</span>, force <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-</div>
-<div class="section level3">
-<h3 id="python-environment-setup">Python Environment Setup<a class="anchor" aria-label="anchor" href="#python-environment-setup"></a>
-</h3>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> ~/.R</span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="fu">touch</span> ~/.R/Makevars</span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"FC=</span><span class="va">$(</span><span class="ex">brew</span> <span class="at">--prefix</span><span class="va">)</span><span class="st">/bin/gfortran"</span> <span class="op">&gt;&gt;</span> ~/.R/Makevars</span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"F77=</span><span class="va">$(</span><span class="ex">brew</span> <span class="at">--prefix</span><span class="va">)</span><span class="st">/bin/gfortran"</span> <span class="op">&gt;&gt;</span> ~/.R/Makevars</span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"FLIBS=-L</span><span class="va">$(</span><span class="ex">brew</span> <span class="at">--prefix</span><span class="va">)</span><span class="st">/lib/gcc/current -lgfortran -lquadmath -lm"</span> <span class="op">&gt;&gt;</span> ~/.R/Makevars</span></code></pre></div>
 <p><u><strong>Python Dependencies</strong></u></p>
-<p>Those Python packages below will be installed automatically through
-the flaiR R package.</p>
+<p>The following Python packages will be installed automatically by
+flaiR:</p>
 <ul>
 <li>flair</li>
 <li>scipy==1.12.0</li>
 <li>gensim==4.3.2</li>
 </ul>
-<div style="text-align: justify">
-<p>When first installed, flaiR automatically detects whether you have
-Python 3.10 or higher. If Python is not detected, you will need to
-manually install it. The required Python packages (flair and its
-dependencies) will be automatically installed in your Python
-environment. By default, flaiR will use the r-reticulate environment if
-you’re using {reticulate}. You can use reticulate::py_config() to check
-your current Python configuration. The Python environment can be
-adjusted through RStudio by navigating to <em>Tools -&gt; Global Options
--&gt; Python</em>.</p>
-</div>
+<p>flaiR will automatically detect and configure your Python
+environment:</p>
+<ol style="list-style-type: decimal">
+<li>Checks for Python 3.10 or higher</li>
+<li>Installs required Python packages</li>
+<li>Configures R-Python interface using reticulate</li>
+</ol>
+<p>Note: You can manage Python settings in RStudio through
+<code>Tools -&gt; Global Options -&gt; Python</code>. To check your
+Python configuration, use:</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">reticulate</span><span class="fu">::</span><span class="fu"><a href="https://rstudio.github.io/reticulate/reference/py_config.html" class="external-link">py_config</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p><em>Note: Most users won’t need these additional steps as RStudio and
+R handle the dependencies automatically.</em></p>
 </div>
 <div class="section level3">
-<h3 id="troubleshooting">Troubleshooting<a class="anchor" aria-label="anchor" href="#troubleshooting"></a>
+<h3 id="recommended-configurations">Recommended Configurations<a class="anchor" aria-label="anchor" href="#recommended-configurations"></a>
 </h3>
-<p>If you encounter installation issues:</p>
-<div style="text-align: justify">
-<p>While we maintain compatibility with earlier versions, we strongly
-recommend using R 4.2.0 or above to ensure optimal compatibility between
-the R environment and Python.</p>
-<p>For stable usage, we strongly recommend installing these specific
-versions:</p>
 </div>
 <table class="table">
 <thead><tr class="header">
@@ -249,11 +264,11 @@ versions:</p>
 </tr>
 </tbody>
 </table>
-<p>*: <em>On R 4.2.1, especially on Mac M1/M2, compatibility issues with
-<code>gfortran</code> may occur.</em></p>
+<p><strong>Note:</strong> For Mac M1/M2 users, avoid R 4.2.1 due to
+potential gfortran compatibility issues.</p>
 </div>
 <div class="section level3">
-<h3 id="getting-help">Getting Help<a class="anchor" aria-label="anchor" href="#getting-help"></a>
+<h3 id="troubleshooting">Troubleshooting<a class="anchor" aria-label="anchor" href="#troubleshooting"></a>
 </h3>
 <p>If you encounter any problems or have questions:</p>
 <ul>
@@ -266,6 +281,7 @@ forum</a>
 <p> </p>
 <hr>
 </div>
+</main>
 </div>
 <div class="section level2">
 <h2 id="nlp-tasks">NLP Tasks<a class="anchor" aria-label="anchor" href="#nlp-tasks"></a>
@@ -362,13 +378,13 @@ environment with <strong>flairR</strong>.</p>
 <p> </p>
 <hr>
 </div>
-  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+  <aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
 </div>
 
 
 
-   </div>
+   
   <footer><div class="container">
   <div class="pkgdown-footer-left">
   <p>Developed by <a href="https://davidycliao.github.io" class="external-link">Yen-Chieh Liao</a>, <a href="https://muellerstefan.net" class="external-link">Stefan Müller</a>, Akbik Alan, Blythe Duncan, Vollgraf Roland.</p>
