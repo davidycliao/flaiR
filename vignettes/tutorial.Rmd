@@ -29,17 +29,20 @@ library(reticulate)
 reticulate::py_install("flair")
 ```
 
-# The Overview
+
+# Flair NLP and flaiR for Social Science
 
 <div style="text-align: justify;">
 
-**Flair NLP** is an open-source library for Natural Language Processing (NLP) developed by [Zalando Research](https://github.com/zalandoresearch/). Known for its state-of-the-art solutions, such as contextual string embeddings for NLP tasks like Named Entity Recognition (NER), Part-of-Speech tagging (POS), and more, it has garnered the attention of the NLP community for its ease of use and powerful functionalities.
+Flair NLP is an open-source Natural Language Processing (NLP) library developed by [Zalando Research](https://github.com/zalandoresearch/). Known for its state-of-the-art solutions, it excels in contextual string embeddings, Named Entity Recognition (NER), and Part-of-Speech tagging (POS). Flair offers robust text analysis tools through multiple embedding approaches, including Flair contextual string embeddings, transformer-based embeddings from Hugging Face, and traditional models like GloVe and fasttext. Additionally, it provides pre-trained models for various languages and seamless integration with fine-tuned transformers hosted on Hugging Face. 
 
-In addition, Flair NLP offers pre-trained models for various languages and tasks, and is compatible with fine-tuned transformers hosted on Hugging Face.
+flaiR bridges these powerful NLP features from Python to the R environment, making advanced text analysis accessible for social science researcher by combining Flair's ease of use with R's familiar interface for integration with popular R packages such as [quanteda](https://quanteda.io) and more.
 
 </div>
 
-- [**Sentence and Token Object**](#tutorial.html#sentence-and-token)
+# The Overview
+
+- [**Sentence and Token Object in FlaiR**](#tutorial.html#sentence-and-token)
 
 - [**Sequence Taggings**](#tutorial.html#sequence-taggings)
 
@@ -55,13 +58,16 @@ In addition, Flair NLP offers pre-trained models for various languages and tasks
 
 - [**Extending conText's Embedding Regression**](#tutorial.html#extending-contexts-embedding-regression)
 
-------------------------------------------------------------------------
+&nbsp;
+
+-----
+
 
 # Sentence and Token
 
 Sentence and Token are fundamental classes.
 
-## **Sentence**
+## Sentence
 
 <div style="text-align: justify;">
 
@@ -85,7 +91,7 @@ print(sentence)
 ```
 
 
-## **Token**
+## Token
 
 <div style="text-align: justify;">
 
@@ -183,7 +189,7 @@ print(sentence)
 [^1]: Flair is built on PyTorch, which is a library in Python.
 
 
-## **Corpus**
+## Corpus
 
 The Corpus object in Flair is a fundamental data structure that represents a dataset containing text samples, usually comprising of a training set, a development set (or validation set), and a test set. It's designed to work smoothly with Flair's models for tasks like named entity recognition, text classification, and more.
 
@@ -288,7 +294,10 @@ In the later sections, there will be more similar processing using the `Corpus`.
 
 </div>
 
-------------------------------------------------------------------------
+&nbsp;
+
+-----
+
 
 # Sequence Taggings
 
@@ -551,7 +560,9 @@ head(results, n = 10)
 ```
 
 
-------------------------------------------------------------------------
+&nbsp;
+
+-----
 
 # Embedding
 
@@ -1022,14 +1033,14 @@ figure
 ```
 
 
-------------------------------------------------------------------------
+&nbsp;
+
+-----
 
 
 # Training a Binary Classifier
 
-
 In this section, we'll train a sentiment analysis model that can categorize text as either positive or negative. This case study is adapted from pages 116 to 130 of Tadej Magajna's book, '[Natural Language Processing with Flair](https://www.packtpub.com/product/natural-language-processing-with-flair/9781801072311)'. The process for training text classifiers in Flair mirrors the process followed for sequence labeling models. Specifically, the steps to train text classifiers are:
-
 
 - Load a tagged corpus and compute the label dictionary map.
 - Prepare the document embeddings.
@@ -1043,7 +1054,6 @@ In this section, we'll train a sentiment analysis model that can categorize text
 Training text classification models requires a set of text documents (typically, sentences or paragraphs) where each document is associated with one or more classification labels. To train our sentiment analysis text classification model, we will be using the famous Internet Movie Database (IMDb) dataset, which contains 50,000 movie reviews from IMDB, where each review is labeled as either positive or negative. References to this dataset are already baked into Flair, so loading the dataset couldn't be easier:
 
 </div>
-
 
 ```{r}
 library(flaiR)
@@ -1081,7 +1091,6 @@ label_dict = corpus$make_label_dictionary(label_type=lbl_type)
 flaiR covers all the different types of document embeddings that we can use. Here, we simply use `DocumentPoolEmbeddings`. They require no training prior to training the classification model itself:
 
 </div>
-
 
 ```{r}
 DocumentPoolEmbeddings <- flair_embeddings()$DocumentPoolEmbeddings
@@ -1195,7 +1204,10 @@ print(sentence$labels)
 ```
 
 
-------------------------------------------------------------------------
+&nbsp;
+
+-----
+
 
 # Training RNNs
 
@@ -1310,7 +1322,6 @@ We use data from *The Temporal Focus of Campaign Communication (2020 JOP)* as an
 ```{r}
 library(flaiR)
 ```
-
 
 
 ## Fine-tuning a Transformers Model
@@ -1499,7 +1510,10 @@ More R tutorial and documentation see [here](https://github.com/davidycliao/flai
 
 
 
-------------------------------------------------------------------------
+&nbsp;
+
+-----
+
 
 # Extending conText's Embedding Regression
 
@@ -1972,16 +1986,17 @@ bt_model <- conText(formula = immigration ~ party + gender,
 
 While this tutorial doesn't determine a definitive best approach, it's important to understand the key distinctions between word embedding methods. BERT, FastText, Flair Stacked Embeddings, and GloVe can be categorized into two groups: dynamic and static embeddings.
 
-Dynamic embeddings, such as BERT and Flair, adapt their word representations based on context using high-dimensional vector spaces (BERT uses 768 dimensions in its base model). BERT employs self-attention mechanisms and subword tokenization, while Flair uses character-level modeling. Both effectively handle out-of-vocabulary words through these mechanisms.
+Dynamic embeddings, particularly BERT and Flair, adapt their word representations based on context using high-dimensional vector spaces (BERT uses 768 dimensions in its base model). BERT employs self-attention mechanisms and subword tokenization, while Flair uses character-level modeling. Both effectively handle out-of-vocabulary words through these mechanisms.
 
-However, it's worth noting that in their case study, where they provide selected words, in our case study we directly extract individual word vectors from BERT and Flair (forward/backward) embeddings using those selected words. This approach doesn't truly achieve the intended contextual modeling. A more meaningful approach would be to extract embeddings at the quasi-sentence or paragraph level. Alternatively, pooling the entire document before extracting embeddings could be more valuable.
+However, there is a notable difference between their case study and here. While they provide selected words, we directly extract individual word vectors from BERT and Flair (forward/backward) embeddings using the same set of words. This doesn't truly utilize BERT and Flair embeddings' capability of modeling context. A more meaningful approach would be to extract embeddings at the quasi-sentence or paragraph level, or alternatively, to pool the entire document before extracting embeddings.
 
-These context-based approaches differ significantly from GloVe's methodology, which relies on pre-computed global word-word co-occurrence statistics to generate static word vectors.
+These context-based approaches stand in stark contrast to GloVe's methodology, which relies on pre-computed global word-word co-occurrence statistics to generate static word vectors.
 
 </div>
 
 
 ```{r echo=FALSE, message = TRUE, warning = TRUE, out.width="95%"}
+
 st <- as.data.frame(st_model@normed_coefficients)
 st["model"] <- "Flair Stacked Embeddings"
 ft <- as.data.frame(ft_model@normed_coefficients)
@@ -2008,6 +2023,21 @@ ggplot(merged_df, aes(x = coefficient, y = normed.estimate)) +
  ) +
  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
  facet_wrap(~model, nrow = 2, ncol = 2, scales = "free_y")
+```
+
+&nbsp;
+
+-----
+
+# Cite
+
+```
+@Manual{,
+  title = {Flair NLP and flaiR for Social Science},
+  author = {Yen-Chieh Liao, Sohini Timbadia and Stefan Müller},
+  year = {2024},
+  url = {https://davidycliao.github.io/flaiR/articles/tutorial.html}
+}
 ```
 
 
