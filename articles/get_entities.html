@@ -35,7 +35,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">flaiR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.0.6</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.0.7</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -64,15 +64,7 @@
     <li><a class="dropdown-item" href="../articles/tutorial.html#training-a-binary-classifier">Training a Binary Classifier</a></li>
     <li><a class="dropdown-item" href="../articles/tutorial.html#training-rnns">Training RNNs</a></li>
     <li><a class="dropdown-item" href="../articles/tutorial.html#finetune-transformers">Finetune Transformers </a></li>
-  </ul>
-</li>
-<li class="nav-item dropdown">
-  <button class="nav-link dropdown-toggle" type="button" id="dropdown-expanded-feats" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true"><span class="fa fa-newspaper-o"></span> Expanded Feats</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-expanded-feats">
-<li><a class="dropdown-item" href="../articles/get_pos.html">Part-of-speech Tagging</a></li>
-    <li><a class="dropdown-item" href="../articles/get_entities.html">Named Entity Recognition</a></li>
-    <li><a class="dropdown-item" href="../articles/get_sentiments.html">Tagging Sentiment</a></li>
-    <li><a class="dropdown-item" href="../articles/highlight_text.html">The Coloring Entities</a></li>
+    <li><a class="dropdown-item" href="../articles/tutorial.html#extending-contexts-embedding-regression">Extending conText</a></li>
   </ul>
 </li>
 <li class="nav-item dropdown">
@@ -122,6 +114,7 @@ UCD<br><small class="dont-index">Source: <a href="https://github.com/davidycliao
 </h2>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://davidycliao.github.io/flaiR">flaiR</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #0000BB; font-weight: bold;">flaiR</span>: <span style="color: #BBBB00; font-weight: bold;">An R Wrapper for Accessing Flair NLP</span> <span style="color: #BBBB00; font-weight: bold;">0.15.0</span></span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"uk_immigration"</span><span class="op">)</span></span>
 <span><span class="va">uk_immigration</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">uk_immigration</span>, <span class="fl">10</span><span class="op">)</span></span></code></pre></div>
 <div style="text-align: justify">
@@ -133,7 +126,25 @@ once you’ve downloaded it and it hasn’t been manually removed, executing
 the command again will not trigger a download.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tagger_ner</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_tagger_ner.html">load_tagger_ner</a></span><span class="op">(</span><span class="st">"ner"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2024-11-28 20:51:59,752 SequenceTagger predicts: Dictionary with 20 tags: &lt;unk&gt;, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, &lt;START&gt;, &lt;STOP&gt;</span></span></code></pre></div>
+<span><span class="co">#&gt; 2024-12-28 07:53:33,888 SequenceTagger predicts: Dictionary with 20 tags: &lt;unk&gt;, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, &lt;START&gt;, &lt;STOP&gt;</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; NER Tagger Dictionary:</span></span>
+<span><span class="co">#&gt; ========================================</span></span>
+<span><span class="co">#&gt; Total tags: 20</span></span>
+<span><span class="co">#&gt; Model: ner</span></span>
+<span><span class="co">#&gt; ----------------------------------------</span></span>
+<span><span class="co">#&gt; Special        : &lt;unk&gt;, O, &lt;START&gt;, &lt;STOP&gt;</span></span>
+<span><span class="co">#&gt; Organization   : S-ORG, B-ORG, E-ORG, I-ORG</span></span>
+<span><span class="co">#&gt; Location       : S-LOC, B-LOC, E-LOC, I-LOC</span></span>
+<span><span class="co">#&gt; Misc           : S-MISC, B-MISC, I-MISC, E-MISC</span></span>
+<span><span class="co">#&gt; ----------------------------------------</span></span>
+<span><span class="co">#&gt; Tag scheme: BIOES</span></span>
+<span><span class="co">#&gt; B-: Beginning of multi-token entity</span></span>
+<span><span class="co">#&gt; I-: Inside of multi-token entity</span></span>
+<span><span class="co">#&gt; O: Outside (not part of any entity)</span></span>
+<span><span class="co">#&gt; E-: End of multi-token entity</span></span>
+<span><span class="co">#&gt; S-: Single token entity</span></span>
+<span><span class="co">#&gt; ========================================</span></span></code></pre></div>
 <p>Flair NLP operates under the <a href="https://pytorch.org" class="external-link">PyTorch</a> framework. As such, we can use
 the <code>$to</code> method to set the device for the Flair Python
 library. The flair_device(“cpu”) allows you to select whether to use the
@@ -181,208 +192,116 @@ the show.text_id set to FALSE by default.</p>
 <span>                        <span class="va">tagger_ner</span>,</span>
 <span>                        show.text_id <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span>                        <span class="op">)</span></span>
+<span><span class="co">#&gt; CPU is used.</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">results</span><span class="op">)</span></span>
-<span><span class="co">#&gt;               doc_id                          entity    tag</span></span>
-<span><span class="co">#&gt;               &lt;char&gt;                          &lt;char&gt; &lt;char&gt;</span></span>
-<span><span class="co">#&gt;  1: Philip Hollobone                    Conservative    ORG</span></span>
-<span><span class="co">#&gt;  2: Philip Hollobone Liberal Democrat Front Benchers    ORG</span></span>
-<span><span class="co">#&gt;  3: Philip Hollobone                    Back Benches   MISC</span></span>
-<span><span class="co">#&gt;  4: Philip Hollobone                       Kettering    LOC</span></span>
-<span><span class="co">#&gt;  5: Philip Hollobone                            Sikh   MISC</span></span>
-<span><span class="co">#&gt;  6: Philip Hollobone                       Kettering    LOC</span></span>
-<span><span class="co">#&gt;  7: Philip Hollobone                       Kettering    LOC</span></span>
-<span><span class="co">#&gt;  8: Philip Hollobone                         British   MISC</span></span>
-<span><span class="co">#&gt;  9: Philip Hollobone                  United Kingdom    LOC</span></span>
-<span><span class="co">#&gt; 10: Philip Hollobone                          Norman   MISC</span></span>
-<span><span class="co">#&gt; 11: Philip Hollobone                  United Kingdom    LOC</span></span>
-<span><span class="co">#&gt; 12:  Stewart Jackson                          Friend    PER</span></span>
-<span><span class="co">#&gt; 13:  Stewart Jackson        Archbishop of Canterbury    ORG</span></span>
-<span><span class="co">#&gt; 14:  Stewart Jackson                           Carey    PER</span></span>
-<span><span class="co">#&gt; 15: Philip Hollobone                          Friend    PER</span></span>
-<span><span class="co">#&gt; 16: Philip Hollobone                  United Kingdom    LOC</span></span>
-<span><span class="co">#&gt; 17: Philip Hollobone                              UK    LOC</span></span>
-<span><span class="co">#&gt; 18: Philip Hollobone                          Europe    LOC</span></span>
-<span><span class="co">#&gt; 19: Philip Hollobone                           Malta    LOC</span></span>
-<span><span class="co">#&gt; 20:  Stewart Jackson                         Barking    LOC</span></span>
-<span><span class="co">#&gt; 21:  Stewart Jackson                        Dagenham    LOC</span></span>
-<span><span class="co">#&gt; 22:  Stewart Jackson                British National    ORG</span></span>
-<span><span class="co">#&gt; 23:  Stewart Jackson                    Conservative    ORG</span></span>
-<span><span class="co">#&gt; 24:  Stewart Jackson                          Friend    PER</span></span>
-<span><span class="co">#&gt; 25:  Stewart Jackson                      Folkestone    LOC</span></span>
-<span><span class="co">#&gt; 26:  Stewart Jackson                           Hythe    LOC</span></span>
-<span><span class="co">#&gt; 27:  Stewart Jackson                          Howard    PER</span></span>
-<span><span class="co">#&gt; 28: Philip Hollobone                          Friend    PER</span></span>
-<span><span class="co">#&gt; 29: Philip Hollobone                         Shipley    PER</span></span>
-<span><span class="co">#&gt; 30: Philip Hollobone                   Philip Davies    PER</span></span>
-<span><span class="co">#&gt; 31: Philip Hollobone                        Solihull    LOC</span></span>
-<span><span class="co">#&gt; 32: Philip Hollobone                     Lorely Burt    ORG</span></span>
-<span><span class="co">#&gt; 33: Philip Hollobone                    Peterborough    LOC</span></span>
-<span><span class="co">#&gt; 34: Philip Hollobone                         Jackson    PER</span></span>
-<span><span class="co">#&gt; 35: Philip Hollobone                          Friend    PER</span></span>
-<span><span class="co">#&gt; 36:    Philip Davies                          Friend    PER</span></span>
-<span><span class="co">#&gt; 37:    Philip Davies                      Government    ORG</span></span>
-<span><span class="co">#&gt; 38: Philip Hollobone                       Kettering    LOC</span></span>
-<span><span class="co">#&gt; 39: Philip Hollobone                      Government    ORG</span></span>
-<span><span class="co">#&gt; 40: Philip Hollobone                       Kettering    LOC</span></span>
-<span><span class="co">#&gt; 41: Philip Hollobone                       Kettering    LOC</span></span>
-<span><span class="co">#&gt; 42: Philip Hollobone               Migrationwatch UK    ORG</span></span>
-<span><span class="co">#&gt; 43: Philip Hollobone                      Carshalton    LOC</span></span>
-<span><span class="co">#&gt; 44: Philip Hollobone                      Wallington    LOC</span></span>
-<span><span class="co">#&gt; 45: Philip Hollobone                       Tom Brake    PER</span></span>
-<span><span class="co">#&gt; 46: Philip Hollobone                            &lt;NA&gt;   &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 47:      Phil Woolas                       Gentleman    PER</span></span>
-<span><span class="co">#&gt; 48:      Phil Woolas                      Carshalton    LOC</span></span>
-<span><span class="co">#&gt; 49:      Phil Woolas                      Wallington    LOC</span></span>
-<span><span class="co">#&gt; 50:      Phil Woolas                       Tom Brake    PER</span></span>
-<span><span class="co">#&gt;               doc_id                          entity    tag</span></span></code></pre></div>
+<span><span class="co">#&gt;               doc_id                          entity    tag     score</span></span>
+<span><span class="co">#&gt;               &lt;char&gt;                          &lt;char&gt; &lt;char&gt;     &lt;num&gt;</span></span>
+<span><span class="co">#&gt;  1: Philip Hollobone                    Conservative    ORG 0.8859213</span></span>
+<span><span class="co">#&gt;  2: Philip Hollobone Liberal Democrat Front Benchers    ORG 0.8763848</span></span>
+<span><span class="co">#&gt;  3: Philip Hollobone                    Back Benches   MISC 0.6690819</span></span>
+<span><span class="co">#&gt;  4: Philip Hollobone                       Kettering    LOC 0.9954862</span></span>
+<span><span class="co">#&gt;  5: Philip Hollobone                            Sikh   MISC 0.9793689</span></span>
+<span><span class="co">#&gt;  6: Philip Hollobone                       Kettering    LOC 0.9897405</span></span>
+<span><span class="co">#&gt;  7: Philip Hollobone                       Kettering    LOC 0.9996628</span></span>
+<span><span class="co">#&gt;  8: Philip Hollobone                         British   MISC 0.9981788</span></span>
+<span><span class="co">#&gt;  9: Philip Hollobone                  United Kingdom    LOC 0.9996577</span></span>
+<span><span class="co">#&gt; 10: Philip Hollobone                          Norman   MISC 0.5811836</span></span>
+<span><span class="co">#&gt; 11: Philip Hollobone                  United Kingdom    LOC 0.9984347</span></span>
+<span><span class="co">#&gt; 12:  Stewart Jackson                          Friend    PER 0.9976345</span></span>
+<span><span class="co">#&gt; 13:  Stewart Jackson        Archbishop of Canterbury    ORG 0.8969201</span></span>
+<span><span class="co">#&gt; 14:  Stewart Jackson                           Carey    PER 0.7896900</span></span>
+<span><span class="co">#&gt; 15: Philip Hollobone                          Friend    PER 0.9855295</span></span>
+<span><span class="co">#&gt; 16: Philip Hollobone                  United Kingdom    LOC 0.9995942</span></span>
+<span><span class="co">#&gt; 17: Philip Hollobone                              UK    LOC 0.9997838</span></span>
+<span><span class="co">#&gt; 18: Philip Hollobone                          Europe    LOC 0.9985267</span></span>
+<span><span class="co">#&gt; 19: Philip Hollobone                           Malta    LOC 0.9988698</span></span>
+<span><span class="co">#&gt; 20:  Stewart Jackson                         Barking    LOC 0.9599221</span></span>
+<span><span class="co">#&gt; 21:  Stewart Jackson                        Dagenham    LOC 0.9974368</span></span>
+<span><span class="co">#&gt; 22:  Stewart Jackson                British National    ORG 0.7943376</span></span>
+<span><span class="co">#&gt; 23:  Stewart Jackson                    Conservative    ORG 0.7200112</span></span>
+<span><span class="co">#&gt; 24:  Stewart Jackson                          Friend    PER 0.4620062</span></span>
+<span><span class="co">#&gt; 25:  Stewart Jackson                      Folkestone    LOC 0.9539062</span></span>
+<span><span class="co">#&gt; 26:  Stewart Jackson                           Hythe    LOC 0.9608995</span></span>
+<span><span class="co">#&gt; 27:  Stewart Jackson                          Howard    PER 0.6288104</span></span>
+<span><span class="co">#&gt; 28: Philip Hollobone                          Friend    PER 0.5505443</span></span>
+<span><span class="co">#&gt; 29: Philip Hollobone                         Shipley    PER 0.7618954</span></span>
+<span><span class="co">#&gt; 30: Philip Hollobone                   Philip Davies    PER 0.9927122</span></span>
+<span><span class="co">#&gt; 31: Philip Hollobone                        Solihull    LOC 0.7976709</span></span>
+<span><span class="co">#&gt; 32: Philip Hollobone                     Lorely Burt    ORG 0.4404825</span></span>
+<span><span class="co">#&gt; 33: Philip Hollobone                    Peterborough    LOC 0.8994867</span></span>
+<span><span class="co">#&gt; 34: Philip Hollobone                         Jackson    PER 0.7303541</span></span>
+<span><span class="co">#&gt; 35: Philip Hollobone                          Friend    PER 0.8150941</span></span>
+<span><span class="co">#&gt; 36:    Philip Davies                          Friend    PER 0.9993548</span></span>
+<span><span class="co">#&gt; 37:    Philip Davies                      Government    ORG 0.9265220</span></span>
+<span><span class="co">#&gt; 38: Philip Hollobone                       Kettering    LOC 0.9998320</span></span>
+<span><span class="co">#&gt; 39: Philip Hollobone                      Government    ORG 0.6939982</span></span>
+<span><span class="co">#&gt; 40: Philip Hollobone                       Kettering    LOC 0.9997701</span></span>
+<span><span class="co">#&gt; 41: Philip Hollobone                       Kettering    LOC 0.9998716</span></span>
+<span><span class="co">#&gt; 42: Philip Hollobone               Migrationwatch UK    ORG 0.8362680</span></span>
+<span><span class="co">#&gt; 43: Philip Hollobone                      Carshalton    LOC 0.9742303</span></span>
+<span><span class="co">#&gt; 44: Philip Hollobone                      Wallington    LOC 0.9953349</span></span>
+<span><span class="co">#&gt; 45: Philip Hollobone                       Tom Brake    PER 0.8853880</span></span>
+<span><span class="co">#&gt; 46: Philip Hollobone                            &lt;NA&gt;   &lt;NA&gt;        NA</span></span>
+<span><span class="co">#&gt; 47:      Phil Woolas                       Gentleman    PER 0.9247789</span></span>
+<span><span class="co">#&gt; 48:      Phil Woolas                      Carshalton    LOC 0.9746085</span></span>
+<span><span class="co">#&gt; 49:      Phil Woolas                      Wallington    LOC 0.9838362</span></span>
+<span><span class="co">#&gt; 50:      Phil Woolas                       Tom Brake    PER 0.9667032</span></span>
+<span><span class="co">#&gt;               doc_id                          entity    tag     score</span></span></code></pre></div>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">results</span><span class="op">)</span></span>
-<span><span class="co">#&gt;               doc_id                          entity    tag</span></span>
-<span><span class="co">#&gt;               &lt;char&gt;                          &lt;char&gt; &lt;char&gt;</span></span>
-<span><span class="co">#&gt;  1: Philip Hollobone                    Conservative    ORG</span></span>
-<span><span class="co">#&gt;  2: Philip Hollobone Liberal Democrat Front Benchers    ORG</span></span>
-<span><span class="co">#&gt;  3: Philip Hollobone                    Back Benches   MISC</span></span>
-<span><span class="co">#&gt;  4: Philip Hollobone                       Kettering    LOC</span></span>
-<span><span class="co">#&gt;  5: Philip Hollobone                            Sikh   MISC</span></span>
-<span><span class="co">#&gt;  6: Philip Hollobone                       Kettering    LOC</span></span>
-<span><span class="co">#&gt;  7: Philip Hollobone                       Kettering    LOC</span></span>
-<span><span class="co">#&gt;  8: Philip Hollobone                         British   MISC</span></span>
-<span><span class="co">#&gt;  9: Philip Hollobone                  United Kingdom    LOC</span></span>
-<span><span class="co">#&gt; 10: Philip Hollobone                          Norman   MISC</span></span>
-<span><span class="co">#&gt; 11: Philip Hollobone                  United Kingdom    LOC</span></span>
-<span><span class="co">#&gt; 12:  Stewart Jackson                          Friend    PER</span></span>
-<span><span class="co">#&gt; 13:  Stewart Jackson        Archbishop of Canterbury    ORG</span></span>
-<span><span class="co">#&gt; 14:  Stewart Jackson                           Carey    PER</span></span>
-<span><span class="co">#&gt; 15: Philip Hollobone                          Friend    PER</span></span>
-<span><span class="co">#&gt; 16: Philip Hollobone                  United Kingdom    LOC</span></span>
-<span><span class="co">#&gt; 17: Philip Hollobone                              UK    LOC</span></span>
-<span><span class="co">#&gt; 18: Philip Hollobone                          Europe    LOC</span></span>
-<span><span class="co">#&gt; 19: Philip Hollobone                           Malta    LOC</span></span>
-<span><span class="co">#&gt; 20:  Stewart Jackson                         Barking    LOC</span></span>
-<span><span class="co">#&gt; 21:  Stewart Jackson                        Dagenham    LOC</span></span>
-<span><span class="co">#&gt; 22:  Stewart Jackson                British National    ORG</span></span>
-<span><span class="co">#&gt; 23:  Stewart Jackson                    Conservative    ORG</span></span>
-<span><span class="co">#&gt; 24:  Stewart Jackson                          Friend    PER</span></span>
-<span><span class="co">#&gt; 25:  Stewart Jackson                      Folkestone    LOC</span></span>
-<span><span class="co">#&gt; 26:  Stewart Jackson                           Hythe    LOC</span></span>
-<span><span class="co">#&gt; 27:  Stewart Jackson                          Howard    PER</span></span>
-<span><span class="co">#&gt; 28: Philip Hollobone                          Friend    PER</span></span>
-<span><span class="co">#&gt; 29: Philip Hollobone                         Shipley    PER</span></span>
-<span><span class="co">#&gt; 30: Philip Hollobone                   Philip Davies    PER</span></span>
-<span><span class="co">#&gt; 31: Philip Hollobone                        Solihull    LOC</span></span>
-<span><span class="co">#&gt; 32: Philip Hollobone                     Lorely Burt    ORG</span></span>
-<span><span class="co">#&gt; 33: Philip Hollobone                    Peterborough    LOC</span></span>
-<span><span class="co">#&gt; 34: Philip Hollobone                         Jackson    PER</span></span>
-<span><span class="co">#&gt; 35: Philip Hollobone                          Friend    PER</span></span>
-<span><span class="co">#&gt; 36:    Philip Davies                          Friend    PER</span></span>
-<span><span class="co">#&gt; 37:    Philip Davies                      Government    ORG</span></span>
-<span><span class="co">#&gt; 38: Philip Hollobone                       Kettering    LOC</span></span>
-<span><span class="co">#&gt; 39: Philip Hollobone                      Government    ORG</span></span>
-<span><span class="co">#&gt; 40: Philip Hollobone                       Kettering    LOC</span></span>
-<span><span class="co">#&gt; 41: Philip Hollobone                       Kettering    LOC</span></span>
-<span><span class="co">#&gt; 42: Philip Hollobone               Migrationwatch UK    ORG</span></span>
-<span><span class="co">#&gt; 43: Philip Hollobone                      Carshalton    LOC</span></span>
-<span><span class="co">#&gt; 44: Philip Hollobone                      Wallington    LOC</span></span>
-<span><span class="co">#&gt; 45: Philip Hollobone                       Tom Brake    PER</span></span>
-<span><span class="co">#&gt; 46: Philip Hollobone                            &lt;NA&gt;   &lt;NA&gt;</span></span>
-<span><span class="co">#&gt; 47:      Phil Woolas                       Gentleman    PER</span></span>
-<span><span class="co">#&gt; 48:      Phil Woolas                      Carshalton    LOC</span></span>
-<span><span class="co">#&gt; 49:      Phil Woolas                      Wallington    LOC</span></span>
-<span><span class="co">#&gt; 50:      Phil Woolas                       Tom Brake    PER</span></span>
-<span><span class="co">#&gt;               doc_id                          entity    tag</span></span></code></pre></div>
-</div>
-<div class="section level2">
-<h2 id="batch-processing">Batch Processing<a class="anchor" aria-label="anchor" href="#batch-processing"></a>
-</h2>
-<div style="text-align: justify">
-<p>Processing texts individually can be both inefficient and
-memory-intensive. On the other hand, processing all the texts
-simultaneously could surpass memory constraints, especially if each
-document in the dataset is sizable. Parsing the documents in smaller
-batches may provide an optimal compromise between these two scenarios.
-Batch processing can enhance efficiency and aid in memory
-management.</p>
-<p>By default, the batch_size parameter is set to 5. You can consider
-starting with this default value and then experimenting with different
-batch sizes to find the one that works best for your specific use case.
-You can monitor memory usage and processing time to help you make a
-decision. If you have access to a GPU, you might also try larger batch
-sizes to take advantage of GPU parallelism. However, be cautious not to
-set the batch size too large, as it can lead to out-of-memory errors.
-Ultimately, the choice of batch size should be based on a balance
-between memory constraints, processing efficiency, and the specific
-requirements of your entity extraction task.</p>
-</div>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">batch_process_time</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span><span class="op">{</span></span>
-<span>    <span class="va">batch_process_results</span>  <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_entities_batch.html">get_entities_batch</a></span><span class="op">(</span><span class="va">uk_immigration</span><span class="op">$</span><span class="va">text</span>,</span>
-<span>                                                 <span class="va">uk_immigration</span><span class="op">$</span><span class="va">speaker</span>, </span>
-<span>                                                 <span class="va">tagger_ner</span>, </span>
-<span>                                                 show.text_id <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>                                                 batch_size <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/gc.html" class="external-link">gc</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="op">}</span><span class="op">)</span></span>
-<span><span class="co">#&gt; CPU is used.</span></span>
-<span><span class="co">#&gt; Processing batch 1 out of 2...</span></span>
-<span><span class="co">#&gt; Processing batch 2 out of 2...</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">batch_process_time</span><span class="op">)</span></span>
-<span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;  24.507   0.298  25.071</span></span></code></pre></div>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">batch_process_results</span><span class="op">)</span></span>
-<span><span class="co">#&gt;               doc_id                          entity    tag text_id</span></span>
-<span><span class="co">#&gt;               &lt;char&gt;                          &lt;char&gt; &lt;char&gt;  &lt;lgcl&gt;</span></span>
-<span><span class="co">#&gt;  1: Philip Hollobone                    Conservative    ORG      NA</span></span>
-<span><span class="co">#&gt;  2: Philip Hollobone Liberal Democrat Front Benchers    ORG      NA</span></span>
-<span><span class="co">#&gt;  3: Philip Hollobone                    Back Benches   MISC      NA</span></span>
-<span><span class="co">#&gt;  4: Philip Hollobone                       Kettering    LOC      NA</span></span>
-<span><span class="co">#&gt;  5: Philip Hollobone                            Sikh   MISC      NA</span></span>
-<span><span class="co">#&gt;  6: Philip Hollobone                       Kettering    LOC      NA</span></span>
-<span><span class="co">#&gt;  7: Philip Hollobone                       Kettering    LOC      NA</span></span>
-<span><span class="co">#&gt;  8: Philip Hollobone                         British   MISC      NA</span></span>
-<span><span class="co">#&gt;  9: Philip Hollobone                  United Kingdom    LOC      NA</span></span>
-<span><span class="co">#&gt; 10: Philip Hollobone                          Norman   MISC      NA</span></span>
-<span><span class="co">#&gt; 11: Philip Hollobone                  United Kingdom    LOC      NA</span></span>
-<span><span class="co">#&gt; 12:  Stewart Jackson                          Friend    PER      NA</span></span>
-<span><span class="co">#&gt; 13:  Stewart Jackson        Archbishop of Canterbury    ORG      NA</span></span>
-<span><span class="co">#&gt; 14:  Stewart Jackson                           Carey    PER      NA</span></span>
-<span><span class="co">#&gt; 15: Philip Hollobone                          Friend    PER      NA</span></span>
-<span><span class="co">#&gt; 16: Philip Hollobone                  United Kingdom    LOC      NA</span></span>
-<span><span class="co">#&gt; 17: Philip Hollobone                              UK    LOC      NA</span></span>
-<span><span class="co">#&gt; 18: Philip Hollobone                          Europe    LOC      NA</span></span>
-<span><span class="co">#&gt; 19: Philip Hollobone                           Malta    LOC      NA</span></span>
-<span><span class="co">#&gt; 20:  Stewart Jackson                         Barking    LOC      NA</span></span>
-<span><span class="co">#&gt; 21:  Stewart Jackson                        Dagenham    LOC      NA</span></span>
-<span><span class="co">#&gt; 22:  Stewart Jackson                British National    ORG      NA</span></span>
-<span><span class="co">#&gt; 23:  Stewart Jackson                    Conservative    ORG      NA</span></span>
-<span><span class="co">#&gt; 24:  Stewart Jackson                          Friend    PER      NA</span></span>
-<span><span class="co">#&gt; 25:  Stewart Jackson                      Folkestone    LOC      NA</span></span>
-<span><span class="co">#&gt; 26:  Stewart Jackson                           Hythe    LOC      NA</span></span>
-<span><span class="co">#&gt; 27:  Stewart Jackson                          Howard    PER      NA</span></span>
-<span><span class="co">#&gt; 28: Philip Hollobone                          Friend    PER      NA</span></span>
-<span><span class="co">#&gt; 29: Philip Hollobone                         Shipley    PER      NA</span></span>
-<span><span class="co">#&gt; 30: Philip Hollobone                   Philip Davies    PER      NA</span></span>
-<span><span class="co">#&gt; 31: Philip Hollobone                        Solihull    LOC      NA</span></span>
-<span><span class="co">#&gt; 32: Philip Hollobone                     Lorely Burt    ORG      NA</span></span>
-<span><span class="co">#&gt; 33: Philip Hollobone                    Peterborough    LOC      NA</span></span>
-<span><span class="co">#&gt; 34: Philip Hollobone                         Jackson    PER      NA</span></span>
-<span><span class="co">#&gt; 35: Philip Hollobone                          Friend    PER      NA</span></span>
-<span><span class="co">#&gt; 36:    Philip Davies                          Friend    PER      NA</span></span>
-<span><span class="co">#&gt; 37:    Philip Davies                      Government    ORG      NA</span></span>
-<span><span class="co">#&gt; 38: Philip Hollobone                       Kettering    LOC      NA</span></span>
-<span><span class="co">#&gt; 39: Philip Hollobone                      Government    ORG      NA</span></span>
-<span><span class="co">#&gt; 40: Philip Hollobone                       Kettering    LOC      NA</span></span>
-<span><span class="co">#&gt; 41: Philip Hollobone                       Kettering    LOC      NA</span></span>
-<span><span class="co">#&gt; 42: Philip Hollobone               Migrationwatch UK    ORG      NA</span></span>
-<span><span class="co">#&gt; 43: Philip Hollobone                      Carshalton    LOC      NA</span></span>
-<span><span class="co">#&gt; 44: Philip Hollobone                      Wallington    LOC      NA</span></span>
-<span><span class="co">#&gt; 45: Philip Hollobone                       Tom Brake    PER      NA</span></span>
-<span><span class="co">#&gt; 46: Philip Hollobone                            &lt;NA&gt;   &lt;NA&gt;      NA</span></span>
-<span><span class="co">#&gt; 47:      Phil Woolas                       Gentleman    PER      NA</span></span>
-<span><span class="co">#&gt; 48:      Phil Woolas                      Carshalton    LOC      NA</span></span>
-<span><span class="co">#&gt; 49:      Phil Woolas                      Wallington    LOC      NA</span></span>
-<span><span class="co">#&gt; 50:      Phil Woolas                       Tom Brake    PER      NA</span></span>
-<span><span class="co">#&gt;               doc_id                          entity    tag text_id</span></span></code></pre></div>
+<span><span class="co">#&gt;               doc_id                          entity    tag     score</span></span>
+<span><span class="co">#&gt;               &lt;char&gt;                          &lt;char&gt; &lt;char&gt;     &lt;num&gt;</span></span>
+<span><span class="co">#&gt;  1: Philip Hollobone                    Conservative    ORG 0.8859213</span></span>
+<span><span class="co">#&gt;  2: Philip Hollobone Liberal Democrat Front Benchers    ORG 0.8763848</span></span>
+<span><span class="co">#&gt;  3: Philip Hollobone                    Back Benches   MISC 0.6690819</span></span>
+<span><span class="co">#&gt;  4: Philip Hollobone                       Kettering    LOC 0.9954862</span></span>
+<span><span class="co">#&gt;  5: Philip Hollobone                            Sikh   MISC 0.9793689</span></span>
+<span><span class="co">#&gt;  6: Philip Hollobone                       Kettering    LOC 0.9897405</span></span>
+<span><span class="co">#&gt;  7: Philip Hollobone                       Kettering    LOC 0.9996628</span></span>
+<span><span class="co">#&gt;  8: Philip Hollobone                         British   MISC 0.9981788</span></span>
+<span><span class="co">#&gt;  9: Philip Hollobone                  United Kingdom    LOC 0.9996577</span></span>
+<span><span class="co">#&gt; 10: Philip Hollobone                          Norman   MISC 0.5811836</span></span>
+<span><span class="co">#&gt; 11: Philip Hollobone                  United Kingdom    LOC 0.9984347</span></span>
+<span><span class="co">#&gt; 12:  Stewart Jackson                          Friend    PER 0.9976345</span></span>
+<span><span class="co">#&gt; 13:  Stewart Jackson        Archbishop of Canterbury    ORG 0.8969201</span></span>
+<span><span class="co">#&gt; 14:  Stewart Jackson                           Carey    PER 0.7896900</span></span>
+<span><span class="co">#&gt; 15: Philip Hollobone                          Friend    PER 0.9855295</span></span>
+<span><span class="co">#&gt; 16: Philip Hollobone                  United Kingdom    LOC 0.9995942</span></span>
+<span><span class="co">#&gt; 17: Philip Hollobone                              UK    LOC 0.9997838</span></span>
+<span><span class="co">#&gt; 18: Philip Hollobone                          Europe    LOC 0.9985267</span></span>
+<span><span class="co">#&gt; 19: Philip Hollobone                           Malta    LOC 0.9988698</span></span>
+<span><span class="co">#&gt; 20:  Stewart Jackson                         Barking    LOC 0.9599221</span></span>
+<span><span class="co">#&gt; 21:  Stewart Jackson                        Dagenham    LOC 0.9974368</span></span>
+<span><span class="co">#&gt; 22:  Stewart Jackson                British National    ORG 0.7943376</span></span>
+<span><span class="co">#&gt; 23:  Stewart Jackson                    Conservative    ORG 0.7200112</span></span>
+<span><span class="co">#&gt; 24:  Stewart Jackson                          Friend    PER 0.4620062</span></span>
+<span><span class="co">#&gt; 25:  Stewart Jackson                      Folkestone    LOC 0.9539062</span></span>
+<span><span class="co">#&gt; 26:  Stewart Jackson                           Hythe    LOC 0.9608995</span></span>
+<span><span class="co">#&gt; 27:  Stewart Jackson                          Howard    PER 0.6288104</span></span>
+<span><span class="co">#&gt; 28: Philip Hollobone                          Friend    PER 0.5505443</span></span>
+<span><span class="co">#&gt; 29: Philip Hollobone                         Shipley    PER 0.7618954</span></span>
+<span><span class="co">#&gt; 30: Philip Hollobone                   Philip Davies    PER 0.9927122</span></span>
+<span><span class="co">#&gt; 31: Philip Hollobone                        Solihull    LOC 0.7976709</span></span>
+<span><span class="co">#&gt; 32: Philip Hollobone                     Lorely Burt    ORG 0.4404825</span></span>
+<span><span class="co">#&gt; 33: Philip Hollobone                    Peterborough    LOC 0.8994867</span></span>
+<span><span class="co">#&gt; 34: Philip Hollobone                         Jackson    PER 0.7303541</span></span>
+<span><span class="co">#&gt; 35: Philip Hollobone                          Friend    PER 0.8150941</span></span>
+<span><span class="co">#&gt; 36:    Philip Davies                          Friend    PER 0.9993548</span></span>
+<span><span class="co">#&gt; 37:    Philip Davies                      Government    ORG 0.9265220</span></span>
+<span><span class="co">#&gt; 38: Philip Hollobone                       Kettering    LOC 0.9998320</span></span>
+<span><span class="co">#&gt; 39: Philip Hollobone                      Government    ORG 0.6939982</span></span>
+<span><span class="co">#&gt; 40: Philip Hollobone                       Kettering    LOC 0.9997701</span></span>
+<span><span class="co">#&gt; 41: Philip Hollobone                       Kettering    LOC 0.9998716</span></span>
+<span><span class="co">#&gt; 42: Philip Hollobone               Migrationwatch UK    ORG 0.8362680</span></span>
+<span><span class="co">#&gt; 43: Philip Hollobone                      Carshalton    LOC 0.9742303</span></span>
+<span><span class="co">#&gt; 44: Philip Hollobone                      Wallington    LOC 0.9953349</span></span>
+<span><span class="co">#&gt; 45: Philip Hollobone                       Tom Brake    PER 0.8853880</span></span>
+<span><span class="co">#&gt; 46: Philip Hollobone                            &lt;NA&gt;   &lt;NA&gt;        NA</span></span>
+<span><span class="co">#&gt; 47:      Phil Woolas                       Gentleman    PER 0.9247789</span></span>
+<span><span class="co">#&gt; 48:      Phil Woolas                      Carshalton    LOC 0.9746085</span></span>
+<span><span class="co">#&gt; 49:      Phil Woolas                      Wallington    LOC 0.9838362</span></span>
+<span><span class="co">#&gt; 50:      Phil Woolas                       Tom Brake    PER 0.9667032</span></span>
+<span><span class="co">#&gt;               doc_id                          entity    tag     score</span></span></code></pre></div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
