@@ -268,17 +268,25 @@ jobs:
          })
        shell: Rscript {0}
 
-     # 優化 Python 虛擬環境設置
      - name: Set up Python
        uses: actions/setup-python@v4
        with:
          python-version: '3.10.x'
-         cache: 'pip'
+
+     - name: Setup pip cache
+       uses: actions/cache@v3
+       with:
+         path: ~/.cache/pip
+         key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+         restore-keys: |
+           ${{ runner.os }}-pip-
 
      - name: Create and configure venv
        run: |
          python -m venv flair_env
          source flair_env/bin/activate
+         mkdir -p ~/.cache/pip
+         pip install --upgrade pip
          # 分步安裝以減少內存使用
          pip install --no-cache-dir scipy==1.12.0
          pip install --no-cache-dir torch --index-url https://download.pytorch.org/whl/cpu
