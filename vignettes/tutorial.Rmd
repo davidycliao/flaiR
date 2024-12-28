@@ -37,6 +37,8 @@ reticulate::py_install("flair")
 
 In addition, Flair NLP offers pre-trained models for various languages and tasks, and is compatible with fine-tuned transformers hosted on Hugging Face.
 
+</div>
+
 - [**Sentence and Token Object**](#tutorial.html#sentence-and-token)
 
 - [**Sequence Taggings**](#tutorial.html#sequence-taggings)
@@ -52,10 +54,6 @@ In addition, Flair NLP offers pre-trained models for various languages and tasks
 - [**Finetune BERT**](#tutorial.html#finetune-transformers)
 
 - [**Extending conText's Embedding Regression**](#tutorial.html#extending-contexts-embedding-regression)
-
-
-
-</div>
 
 ------------------------------------------------------------------------
 
@@ -86,7 +84,6 @@ sentence <- Sentence(string)
 print(sentence)
 ```
 
-</div>
 
 ## **Token**
 
@@ -114,8 +111,8 @@ print(sentence$tokens)
 
 
 **Retrieve the Token**
-<div style="text-align: justify;">
 
+<div style="text-align: justify;">
 To comprehend the string representation format of the Sentence object, tagging at least one token is adequate. Python's `get_token(n)` method allows us to retrieve the Token object for a particular token. Additionally, we can use **`[]`** to index a specific token.
 </div>
 
@@ -129,17 +126,17 @@ sentence$get_token(5)
 # indexing in R 
 sentence[6]
 ```
-<div style="text-align: justify;">
 
+<div style="text-align: justify;">
 Each word (and punctuation) in the text is treated as an individual Token object. These Token objects store text information and other possible linguistic information (such as part-of-speech tags or named entity tags) and embedding (if you used a model to generate them).
 
 While you do not need to create Token objects manually, understanding how to manage them is useful in situations where you might want to fine-tune the tokenization process. For example, you can control the exactness of tokenization by manually creating Token objects from a Sentence object.
 
 This makes Flair very flexible when handling text data since the automatic tokenization feature can be used for rapid development, while also allowing users to fine-tune their tokenization.
-
 </div>
 
 **Annotate POS tag and NER tag**
+
 <div style="text-align: justify;">
 The `add_label(label_type, value)` method can be employed to assign a label to the token. In Universal POS tags, if `sentence[10]` is 'see', 'seen' might be tagged as `VERB`, indicating it is a past participle form of a verb.
 </div>
@@ -165,9 +162,7 @@ print(sentence[4])
 ```
 
 <div style="text-align: justify;">
-
 If we print the sentence object, `Sentence[50]` provides information for 50 tokens → ['in'/ORG, 'seen'/VERB], thus displaying two tagging pieces of information.
-
 </div>
 
 ```{r}
@@ -180,9 +175,7 @@ print(sentence)
 ## **Corpus**
 
 <div style="text-align: justify;">
-
 The Corpus object in Flair is a fundamental data structure that represents a dataset containing text samples, usually comprising of a training set, a development set (or validation set), and a test set. It's designed to work smoothly with Flair's models for tasks like named entity recognition, text classification, and more.
-
 </div>
 
 **Attributes:**
@@ -192,7 +185,6 @@ The Corpus object in Flair is a fundamental data structure that represents a dat
 -   `train`: A list of sentences (List[Sentence]) that form the training dataset.
 -   `dev` (or development): A list of sentences (List[Sentence]) that form the development (or validation) dataset.
 -   `test`: A list of sentences (List[Sentence]) that form the test dataset.
-
 </div>
 
 **Important Methods:**
@@ -331,7 +323,6 @@ print(sentence)
 ```
 
 <div style="text-align: justify;">
-
 Use a for loop to print out each POS tag. It's important to note that Python is indexed from 0. Therefore, in an R environment, we must use `seq_along(sentence$get_labels()) - 1`.
 </div>
 
@@ -342,12 +333,10 @@ for (i in seq_along(sentence$get_labels())) {
   }
 ```
 
-</div>
 
 ## Tag Part-of-Speech 
 
 <div style="text-align: justify;">
-
 We use flaiR/POS-english for POS tagging in the standard models on Hugging Face.
 </div>
 
@@ -421,11 +410,9 @@ for (i in seq_along(sentence$get_labels())) {
 ## Detect Sentiment
 
 <div style="text-align: justify;">
-
 Let's run sentiment analysis over the same sentence to determine whether it is POSITIVE or NEGATIVE.
 
 You can do this with essentially the same code as above. Instead of loading the 'ner' model, you now load the 'sentiment' model:
-
 </div>
 
 ```{r}
@@ -452,17 +439,13 @@ print(sentence)
 
 ------------------------------------------------------------------------
 
-
-
 ## Dealing with Dataframe
 
 ### Parts-of-Speech Tagging Across Full DataFrame
 
 <div style="text-align: justify;">
-
 You can apply Part-of-Speech (POS) tagging across an entire DataFrame using Flair's pre-trained models. Let's walk through an example using the pos-fast model. You can apply Part-of-Speech (POS) tagging across an entire DataFrame using Flair's pre-trained models. Let's walk through an example using the pos-fast model.
 First, let's load our required packages and sample data:
-
 </div>
 
 ```{r}
@@ -472,24 +455,24 @@ uk_immigration <- uk_immigration[1:2,]
 ```
 
 <div style="text-align: justify;">
-
 For POS tagging, we'll use Flair's pre-trained model. The pos-fast model offers a good balance between speed and accuracy. For more pre-trained models, check out Flair's documentation at Flair POS Tagging Documentation. There are two ways to load the POS tagger:
+</div>
+
 
 - Load with tag dictionary display (default):
 
-</div>
 
 
 ```{r}
 tagger_pos <- load_tagger_pos("pos-fast")
 ```
+
 This will show you all available POS tags grouped by categories (nouns, verbs, adjectives, etc.).
 
 - Load without tag display for a cleaner output:
+
 ```{r}
-# 載入但不顯示標籤
-pos_tagger <- load_tagger_pos("pos-fast", 
-                              show_tags = FALSE)
+pos_tagger <- load_tagger_pos("pos-fast", show_tags = FALSE)
 ```
 
 Now we can process our texts:
@@ -503,8 +486,6 @@ results <- get_pos(texts = uk_immigration$text,
 head(results, n = 10)
 ```
 
-
-
 ### Tagging Entities Across Full DataFrame
 
 <div style="text-align: justify;">
@@ -514,9 +495,7 @@ This section focuses on performing Named Entity Recognition (NER) on data stored
 
 I load the flaiR package and use the built-in uk_immigration dataset. For demonstration purposes, I'm only taking the first two rows. This dataset contains discussions about immigration in the UK.
 
-
 Load the pre-trained model `ner`. For more pre-trained models, see <https://flairnlp.github.io/docs/tutorial-basics/tagging-entities>.
-
 </div>
 
 
@@ -525,10 +504,9 @@ library(flaiR)
 data(uk_immigration)
 uk_immigration <- head(uk_immigration, n = 2)
 ```
+
 <div style="text-align: justify;">
-
 Next, I load the latest model hosted and maintained on Hugging Face by the Flair NLP team. For more Flair NER models, you can visit the official Flair NLP page on Hugging Face (https://huggingface.co/flair).
-
 </div>
 
 ```{r}
@@ -539,38 +517,12 @@ library(flaiR)
 tagger_ner <- load_tagger_ner("flair/ner-english-ontonotes")
 ```
 
-<!-- tagger <- flair_models()$SequenceTagger$load("flair/ner-english-ontonotes") -->
-<!-- Sentence <- flair_data()$Sentence -->
-<!-- sentence = Sentence("On September 1st George Washington won 1 dollar.") -->
-
-<!-- tagger$predict(sentence) -->
-
-
-<!-- for (i in seq_along(sentence$get_labels())) { -->
-<!--       print(sentence$get_labels()[[i]]) -->
-<!--   } -->
-
-<!-- vapply(sentence, function(e) e$get_labels(), character(1)) -->
-
-<!-- vapply(sentence$get_labels(), function(x) x$value, character(1)) -->
-<!-- vapply(sentence$get_spans(), function(e) e$text, character(1)) -->
-<!-- vapply(sentence$labels, function(label) label$score,  numeric(1))   -->
-
-
-<!-- vapply(sentence$labels, function(e) e$score, character(1)) -->
-<!-- apply(sentence$get_labels(), function(label) { -->
-<!--     label$value -->
-<!-- }, character(1)) -->
-
-<!-- sentence$()[[1]]$value -->
-<!-- sentence$labels[[1]]$score   -->
 <div style="text-align: justify;">
-
 I load a pre-trained NER model. Since I'm using a Mac M1/M2, I set the model to run on the MPS device for faster processing. If I want to use other pre-trained models, I can check the Flair documentation website for available options.
-
 </div>
 
 Now I'm ready to process the text:
+
 ```{r}
 results <- get_entities(texts = uk_immigration$text,
                         doc_ids = uk_immigration$speaker,
@@ -581,143 +533,23 @@ head(results, n = 10)
 ```
 
 
-
-
-<!-- ### Tagging Sentiment Across Full DataFrame -->
-
-<!-- <div style="text-align: justify;"> -->
-
-<!-- Load the pre-trained model "`sentiment`". The pre-trained models of "`sentiment`", "`sentiment-fast`", and "`de-offensive-language`" are currently available. For more pre-trained models, see <https://flairnlp.github.io/docs/tutorial-basics/tagging-sentiment>. -->
-
-<!-- ```{r} -->
-<!-- library(flaiR) -->
-<!-- ``` -->
-
-<!-- ```{r} -->
-<!-- tagger_sent <- load_tagger_sentiments("sentiment") -->
-<!-- ``` -->
-
-<!-- ```{r} -->
-<!-- results <- get_sentiments(texts = uk_immigration$text, -->
-<!--                           doc_ids = uk_immigration$speaker,  -->
-<!--                           tagger = tagger_sent) -->
-<!-- head(results, n = 10) -->
-<!-- ``` -->
-
-<!-- </div> -->
-
-
-<!-- # Performing NER Tasks -->
-
-<!-- <div style="text-align: justify"> -->
-
-<!-- Flair NLP also provides a set of functions to perform NLP tasks, such as named entity recognition, sentiment analysis, and part-of-speech tagging.  -->
-
-<!-- First, we load the data and the model to perform NER task on the text below. -->
-
-<!-- > _Yesterday, Dr. Jane Smith spoke at the United Nations in New York. She discussed climate change and its impact on global economies. The event was attended by representatives from various countries including France and Japan. Dr. Smith mentioned that by 2050, the world could see a rise in sea level by approximately 2 feet. The World Health Organization (WHO) has pledged $50 million to combat the health effects of global warming. In an interview with The New York Times, Dr. Smith emphasized the urgent need for action. Later that day, she flew back to London, arriving at 10:00 PM GMT._ -->
-
-<!-- ```{r} -->
-
-<!-- Classifier <- flair_nn()$Classifier -->
-
-<!-- Sentence <- flair_data()$Sentence -->
-
-<!-- # load the model flair NLP already trained for us -->
-
-<!-- tagger <- Classifier$load('ner') -->
-
-<!-- # make a sentence object -->
-
-<!-- text <- "Yesterday, Dr. Jane Smith spoke at the United Nations in New York. She discussed climate change and its impact on global economies. The event was attended by representatives from various countries including France and Japan. Dr. Smith mentioned that by 2050, the world could see a rise in sea level by approximately 2 feet. The World Health Organization (WHO) has pledged $50 million to combat the health effects of global warming. In an interview with The New York Times, Dr. Smith emphasized the urgent need for action. Later that day, she flew back to London, arriving at 10:00 PM GMT." -->
-
-<!-- sentence <- Sentence(text) -->
-
-<!-- # predict NER tags -->
-
-<!-- tagger$predict(sentence) -->
-
-<!-- # print sentence with predicted tags -->
-
-<!-- print(sentence) -->
-
-<!-- ``` -->
-
-<!-- Alternatively, to facilitate more efficient use for social science research, {`flairR`} expands {`flairNLP/flair`}'s core functionality for working with three major functions to extract features in a tidy and fast format-- [data.table](https://cran.r-project.org/web/packages/data.table/index.html) in R.  -->
-
-<!-- The expanded features in `flaiR` can be used to perform and extract features from the sentence object in a tidy format.  -->
-
-<!-- - [**named entity recognition**](https://davidycliao.github.io/flaiR/articles/get_entities.html) -->
-
-<!-- - [**transformer-based sentiment analysis**](https://davidycliao.github.io/flaiR/articles/get_sentiments.html) -->
-
-<!-- - [**part-of-speech tagging**](https://davidycliao.github.io/flaiR/articles/get_pos.html) -->
-
-<!-- For example, we can use the `get_entities` function and `load_tagger_ner("ner") `in flaiR to extract the named entities from the sentence object in a tidy format.  -->
-
-<!-- ```{r} -->
-
-<!-- tagger_ner <- load_tagger_ner("ner") -->
-
-<!-- results <- get_entities(text = text,  -->
-
-<!--                         doc_ids = "example text", -->
-
-<!--                         tagger_ner) -->
-
-<!-- print(results) -->
-
-<!-- ``` -->
-
-<!-- In most cases, we need to extract the named entities from a large corpus. For example, we can use Stefan's data from ___The Temporal Focus of Campaign Communication___ (JOP 2022) as an example. -->
-
-<!-- ```{r} -->
-
-<!-- library(flaiR) -->
-
-<!-- data(cc_muller) -->
-
-<!-- examples <- head(cc_muller, 10) -->
-
-<!-- examples[c("text", "countryname")] -->
-
-<!-- ``` -->
-
-<!-- ```{r} -->
-
-<!-- tagger_ner <- load_tagger_ner("ner") -->
-
-<!-- results <- get_entities(text = examples$text,  -->
-
-<!--                         doc_ids = examples$countryname, -->
-
-<!--                         tagger_ner) -->
-
-<!-- print(results) -->
-
-<!-- ``` -->
-
-<!-- In addition, to handle the load on RAM when dealing with larger corpus, {`flairR`}  supports batch processing to handle texts in batches, which is especially useful when dealing with large datasets, to optimize memory usage and performance. The implementation of batch processing can also utilize GPU acceleration for faster computations. -->
-
-
 ------------------------------------------------------------------------
 
 # Embedding
 
 <div style="text-align: justify;">
-
 Flair is a very popular natural language processing library, providing a variety of embedding methods for text representation. Flair Embeddings is a word embedding framework developed by [Zalando](https://engineering.zalando.com/posts/2018/11/zalando-research-releases-flair.html). It focuses on word-level representation and can capture contextual information of words, allowing the same word to have different embeddings in different contexts. Unlike traditional word embeddings (such as Word2Vec or GloVe), Flair can dynamically generate word embeddings based on context and has achieved excellent results in various NLP tasks. Below are some key points about Flair Embeddings:
 </div>
 
 
 **Context-Aware**
-<div style="text-align: justify;">
 
+<div style="text-align: justify;">
 Flair is a dynamic word embedding technique that can understand the meaning of words based on context. In contrast, static word embeddings, such as Word2Vec or GloVe, provide a fixed embedding for each word without considering its context in a sentence.
 
 Therefore, context-sensitive embedding techniques, such as Flair, can capture the meaning of words in specific sentences more accurately, thus enhancing the performance of language models in various tasks.
 
-Example:
+__Example:__
 
 Consider the following two English sentences:
 
@@ -753,11 +585,9 @@ bank_embedding_sentence2 = sentence2[6]$embedding  # "bank" is the sixth word
 ```
 
 <div style="text-align: justify;">
-
 Same word, similar vector representation, but essentially different. In this way, you can see how the dynamic embeddings for "bank" in the two sentences differ based on context. Although we printed the embeddings here, in reality, they would be high-dimensional vectors, so you might see a lot of numbers. If you want a more intuitive view of the differences, you could compute the cosine similarity or other metrics between the two embeddings.
 
 This is just a simple demonstration. In practice, you can also combine multiple embedding techniques, such as `WordEmbeddings` and `FlairEmbeddings`, to get richer word vectors.
-
 </div>
 
 ```{r}
@@ -769,22 +599,19 @@ cosine(as.numeric( bank_embedding_sentence1$numpy()),
 **Character-Based**
 
 <div style="text-align: justify;">
-
 Flair uses a character-level language model, meaning it can generate embeddings for rare words or even misspelled words. This is an important feature because it allows the model to understand and process words that have never appeared in the training data. Flair uses a bidirectional LSTM (Long Short-Term Memory) network that operates at a character level. This allows it to feed individual characters into the LSTM instead of words.
 </div>
 
 **Multilingual Support**
+
 <div style="text-align: justify;">
-
 Flair provides various pre-trained character-level language models, supporting contextual word embeddings for multiple languages. It allows you to easily combine different word embeddings (e.g., Flair Embeddings, Word2Vec, GloVe, etc.) to create powerful stacked embeddings.
-
 </div>
 
 
 ## Classic Wordembeddings
 
 <div style="text-align: justify;">
-
 In Flair, the simplest form of embeddings that still contains semantic information about the word are called classic word embeddings. These embeddings are pre-trained and non-contextual.
 
 Let's retrieve a few word embeddings and use FastText embeddings with the following code. To do so, we simply instantiate a WordEmbeddings class by passing in the ID of the embedding of our choice. Then, we simply wrap our text into a Sentence object, and call the `embed(sentence)` method on our WordEmbeddings class.
@@ -805,9 +632,7 @@ for (i in seq_along(sentence$tokens)) {
 ```
 
 <div style="text-align: justify;">
-
 Flair supports a range of classic word embeddings, each offering unique features and application scopes. Below is an overview, detailing the ID required to load each embedding and its corresponding language.
-
 </div>
 
 | Embedding Type              | ID      | Language   |
@@ -855,11 +680,9 @@ Flair supports a range of classic word embeddings, each offering unique features
 ## Contexual Embeddings
 
 <div style="text-align: justify;">
-
 The idea behind contextual string embeddings is that each word embedding should be defined by not only its syntactic-semantic meaning but also the context it appears in. What this means is that each word will have a different embedding for every context it appears in. Each pre-trained Flair model offers a **forward** version and a **backward** version. Let's assume you are processing a language that, just like this text, uses the left-to-right script. The forward version takes into account the context that happens before the word -- on the left-hand side. The backward version works in the opposite direction. It takes into account the context after the word -- on the right-hand side of the word. If this is true, then two same words that appear at the beginning of two different sentences should have identical forward embeddings, because their context is null. Let's test this out:
 
 Because we are using a forward model, it only takes into account the context that occurs before a word. Additionally, since our word has no context on the left-hand side of its position in the sentence, the two embeddings are identical, and the code assumes they are identical, indeed output is **True**.
-
 </div>
 
 
@@ -875,9 +698,7 @@ cat(" s1 sentence:", paste(s1[0], sep = ""), "\n", "s2 sentence:", paste(s2[0], 
 ```
 
 <div style="text-align: justify;">
-
 We test whether the sum of the two 2048 embeddings of `nice` is equal to 2048. If it is true, it indicates that the embedding results are consistent, which should theoretically be the case.
-
 </div>
 
 
@@ -902,12 +723,9 @@ length(s1[0]$embedding$numpy()) == sum(s1[0]$embedding$numpy() ==  s2[0]$embeddi
 ```
 
 <div style="text-align: justify;">
-
 The measure of similarity between two vectors in an inner product space is known as cosine similarity. The formula for calculating cosine similarity between two vectors, such as vectors A and B, is as follows:
 
 $Cosine Similarity = \frac{\sum_{i} (A_i \cdot B_i)}{\sqrt{\sum_{i} (A_i^2)} \cdot \sqrt{\sum_{i} (B_i^2)}}$
-
-
 </div>
 
 ```{r}
@@ -924,16 +742,12 @@ print(cosine_similarity)
 ```
 
 
-
-
 ------------------------------------------------------------------------
 
 ## Extracting Embeddings from BERT
 
 <div style="text-align: justify;">
-
 First, we utilize the `flair.embeddings.TransformerWordEmbeddings` function to download BERT, and more transformer models can also be found on [Flair NLP's Hugging Face](https://huggingface.co/flair).
-
 </div>
 
 ```{r}
@@ -1004,42 +818,8 @@ word_embeddings_matrix <- as.data.frame(pca_result$x[,1:3])
 word_embeddings_matrix
 ```
 
-
-
-
-<!-- -  The `sentence` is being embedded with the corresponding vector from the model, store to the list. -->
-<!-- ```{r} -->
-<!-- sen_list <- list() -->
-<!-- for (i in seq_along(sentence$tokens)) { -->
-<!--   # store the tensor vectors to numeric vectors -->
-<!--   sen_list[[i]] <- as.vector(sentence$tokens[[i]]$embedding$numpy()) -->
-<!-- } -->
-<!-- ``` -->
-
-<!-- - Extract the name list to R vector -->
-<!-- ```{r} -->
-<!-- token_texts <- sapply(sentence$tokens, function(token) token$text) -->
-<!-- ``` -->
-
-<!-- - Form the dataframe.  -->
-<!-- ```{r} -->
-<!-- sen_df <- do.call(rbind, lapply(sen_list, function(x) t(data.frame(x)))) -->
-<!-- sen_df <- as.data.frame(sen_df) -->
-<!-- rownames(sen_df) <- token_texts -->
-<!-- print(sen_df[,1:20]) -->
-<!-- ``` -->
-
-<!-- #### Dimension Reduction with PCA -->
-
-<!-- ```{r} -->
-<!-- set.seed(123) -->
-
-<!-- pca_result <- prcomp(sen_df, center = TRUE, scale. = TRUE) -->
-<!-- word_embeddings_matrix <- as.data.frame(pca_result$x[,1:3] ) -->
-<!-- word_embeddings_matrix -->
-<!-- ``` -->
-
 #### 2D Plot
+
 ```{r,  out.width="95%" }
 library(ggplot2)
 glove_plot2D <- ggplot(word_embeddings_matrix, aes(x = PC1, y = PC2, color = PC3, 
@@ -1121,66 +901,6 @@ word_embeddings_matrix <- as.data.frame(pca_result$x[,1:3])
 word_embeddings_matrix
 ```
 
-
-
-<!-- ```{r} -->
-<!-- # Tokenize & Embed -->
-<!-- # load WordEmbeddings and FlairEmbeddings -->
-<!-- WordEmbeddings <- flair_embeddings()$WordEmbeddings -->
-<!-- FlairEmbeddings <- flair_embeddings()$FlairEmbeddings -->
-<!-- StackedEmbeddings <- flair_embeddings()$StackedEmbeddings -->
-
-<!-- # init standard GloVe embedding -->
-<!-- glove_embedding = WordEmbeddings('glove') -->
-
-<!-- # init Flair forward and backwards embeddings -->
-<!-- flair_embedding_forward <- FlairEmbeddings('news-forward') -->
-<!-- flair_embedding_backward <- FlairEmbeddings('news-backward') -->
-
-<!-- embedding <- WordEmbeddings("glove")  -->
-
-
-<!-- # create a StackedEmbedding object that combines glove and forward/backward flair embeddings -->
-<!-- stacked_embeddings <-  StackedEmbeddings(c(glove_embedding, -->
-<!--                                            flair_embedding_forward, -->
-<!--                                            flair_embedding_backward)) -->
-
-
-<!-- Sentence <- flair_data()$Sentence -->
-<!-- sentence <- Sentence("King Queen man woman Paris London apple orange Taiwan Dublin Bamberg")  -->
-
-<!-- # just embed a sentence using the StackedEmbedding as you would with any single embedding. -->
-<!-- stacked_embeddings$embed(sentence) -->
-
-<!-- # The `sentence` is being embedded with the corresponding vector from the model, store to the list. -->
-<!-- sen_list <- list() -->
-<!-- for (i in seq_along(sentence$tokens)) { -->
-<!--   # store the tensor vectors to numeric vectors -->
-<!--   sen_list[[i]] <- as.vector(sentence$tokens[[i]]$embedding$numpy()) -->
-<!-- } -->
-
-<!-- # Extract the name list to R vector -->
-<!-- token_texts <- sapply(sentence$tokens, function(token) token$text) -->
-
-<!-- # Form the dataframe.  -->
-<!-- sen_df <- do.call(rbind, lapply(sen_list, function(x) t(data.frame(x)))) -->
-<!-- sen_df <- as.data.frame(sen_df) -->
-<!-- rownames(sen_df) <- token_texts -->
-<!-- print(sen_df[,1:20]) -->
-<!-- ``` -->
-
-
-
-<!-- ```{r} -->
-<!-- # Dimension Reduction  -->
-<!-- set.seed(123) -->
-
-<!-- # Execute PCA -->
-<!-- pca_result <- prcomp(sen_df, center = TRUE, scale. = TRUE) -->
-<!-- word_embeddings_matrix <- as.data.frame(pca_result$x[,1:3] ) -->
-<!-- word_embeddings_matrix -->
-<!-- ``` -->
-
 ```{r,  out.width="95%" }
 # 2D Plot
 library(ggplot2)
@@ -1232,30 +952,6 @@ pca_result <- prcomp(sen_df, center = TRUE, scale. = TRUE)
 word_embeddings_matrix <- as.data.frame(pca_result$x[,1:3])
 word_embeddings_matrix
 ```
-
-<!-- ```{r} -->
-<!-- # The `sentence` is being embedded with the corresponding vector from the model, store to the list. -->
-<!-- sen_list <- list() -->
-<!-- for (i in seq_along(sentence$tokens)) { -->
-<!--   # store the tensor vectors to numeric vectors -->
-<!--   sen_list[[i]] <- as.vector(sentence$tokens[[i]]$embedding$numpy()) -->
-<!-- } -->
-
-<!-- # Extract the name list to R vector -->
-<!-- token_texts <- sapply(sentence$tokens, function(token) token$text) -->
-
-<!-- # Format the dataframe.  -->
-<!-- sen_df <- do.call(rbind, lapply(sen_list, function(x) t(data.frame(x)))) -->
-<!-- sen_df <- as.data.frame(sen_df) -->
-<!-- rownames(sen_df) <- token_texts -->
-<!-- print(sen_df[,1:20]) -->
-
-<!-- # Dimension Reduction using PCA  -->
-<!-- set.seed(123)  # Set the seed for reproducibility -->
-<!-- pca_result <- prcomp(sen_df, center = TRUE, scale. = TRUE) -->
-<!-- word_embeddings_matrix <- as.data.frame(pca_result$x[,1:3] ) -->
-<!-- rownames(word_embeddings_matrix) <- token_texts -->
-<!-- ``` -->
 
 ```{r,  out.width="95%" }
 # 2D Plot
@@ -1345,7 +1041,6 @@ label_dict = corpus$make_label_dictionary(label_type=lbl_type)
 ## Loading the Embeddings
 
 <div style="text-align: justify;">
-
 flaiR covers all the different types of document embeddings that we can use. Here, we simply use `DocumentPoolEmbeddings`. They require no training prior to training the classification model itself:
 </div>
 
@@ -1370,9 +1065,7 @@ classifier <- TextClassifier(document_embeddings,
 ```
 
 <div style="text-align: justify;">
-
 `$to` allows you to set the device to use CPU, GPU, or specific MPS devices on Mac (such as mps:0, mps:1, mps:2).
-
 </div>
 
 ```{r eval=FALSE, include=TRUE}
@@ -1402,14 +1095,12 @@ TextClassifier(
 ## Training the Model
 
 <div style="text-align: justify;">
-
 Training the text classifier model involves two simple steps:
 
 -   Defining the model trainer class by passing in the classifier model and the corpus
 -   Setting off the training process passing in the required training hyper-parameters.
 
 **It is worth noting that the 'L' in numbers like 32L and 5L is used in R to denote that the number is an integer. Without the 'L' suffix, numbers in R are treated as numeric, which are by default double-precision floating-point numbers. In contrast, Python determines the type based on the value of the number itself. Whole numbers (e.g., 5 or 32) are of type int, while numbers with decimal points (e.g., 5.0) are of type float. Floating-point numbers in both languages are representations of real numbers but can have some approximation due to the way they are stored in memory.**
-
 </div>
 
 
@@ -1435,9 +1126,7 @@ trainer$train('classifier',
 ## Loading and Using the Classifiers
 
 <div style="text-align: justify;">
-
 After training the text classification model, the resulting classifier will already be stored in memory as part of the classifier variable. It is possible, however, that your Python session exited after training. If so, you'll need to load the model into memory with the following:
-
 </div>
 
 ```{r}
@@ -1469,13 +1158,10 @@ print(sentence$labels)
 # Training RNNs
 
 <div style="text-align: justify;">
-
 Here, we train a sentiment analysis model to categorize text. In this case, we also include a pipeline that implements the use of Recurrent Neural Networks (RNN). This makes them particularly effective for tasks involving sequential data. This section also show you how to implement one of most powerful features in flaiR, stacked embeddings. You can stack multiple embeddings with different layers and let the classifier learn from different types of features. In Flair NLP, and with the **flaiR** package, it's very easy to accomplish this task.
 </div>
 
 ## Import Necessary Modules
-
-
 
 ```{r}
 library(flaiR)
@@ -1490,9 +1176,7 @@ ModelTrainer <- flair_trainers()$ModelTrainer
 ## Get the IMDB Corpus
 
 <div style="text-align: justify;">
-
 The IMDB movie review dataset is used here, which is a commonly utilized dataset for sentiment analysis. `$downsample(0.1)` method means only 10% of the dataset is used, allowing for a faster demonstration.
-
 </div>
 
 
@@ -1508,7 +1192,6 @@ label_dict <- corpus$make_label_dictionary(label_type=lbl_type)
 ## Stacked Embeddings
 
 <div style="text-align: justify;">
-
 This is one of Flair's most powerful features: it allows for the integration of embeddings to enable the model to learn from more sparse features. Three types of embeddings are utilized here: GloVe embeddings, and two types of Flair embeddings (forward and backward). Word embeddings are used to convert words into vectors.
 </div>
 
@@ -1572,7 +1255,6 @@ print(sentence.labels)
 
 <div style="text-align: justify;">
 We use data from *The Temporal Focus of Campaign Communication (2020 JOP)* as an example. Let's assume we receive the data for training from different times. First, suppose you have a dataset of 1000 entries called `cc_muller_old`. On another day, with the help of nice friends, you receive another set of data, adding 2000 entries in a dataset called `cc_muller_new`. Both subsets are from `data(cc_muller)`. We will show how to fine-tune a transformer model with `cc_muller_old`, and then continue with another round of fine-tuning using `cc_muller_new`.
-
 </div>
 
 ```{r}
@@ -1606,9 +1288,7 @@ ModelTrainer <- flair_trainers()$ModelTrainer
 ```
 
 <div style="text-align: justify;">
-
 We use purrr to help us split sentences using Sentence from `flair_data()`, then use map2 to add labels, and finally use `Corpus` to segment the data.
-
 </div>
 
 
@@ -1644,9 +1324,7 @@ old_dev   <- old_test[!test_id]
 ```
 
 <div style="text-align: justify;">
-
 If you do not provide a development set (dev set) while using Flair, it will automatically split the training data into training and development datasets. The test set is used for training the model and evaluating its final performance, whereas the development set is used for adjusting model parameters and preventing overfitting, or in other words, for early stopping of the model.
-
 </div>
 
 
@@ -1661,9 +1339,7 @@ document_embeddings <- TransformerDocumentEmbeddings('distilbert-base-uncased', 
 ```
 
 <div style="text-align: justify;">
-
 First, the `$make_label_dictionary` function is used to automatically create a label dictionary for the classification task. The label dictionary is a mapping from label to index, which is used to map the labels to a tensor of label indices. Besides classification tasks, flaiR also supports other label types for training custom model. From the cc_muller dataset: Future (seen 423 times), Present (seen 262 times), Past (seen 131 times).
-
 </div>
 
 
@@ -1672,9 +1348,7 @@ old_label_dict <- old_corpus$make_label_dictionary(label_type="classification")
 ```
 
 <div style="text-align: justify;">
-
 `TextClassifier` is used to create a text classifier. The classifier takes the document embeddings (importing from `'distilbert-base-uncased'` from Hugging Face) and the label dictionary as input. The label type is also specified as classification.
-
 </div>
 
 ```{r}
@@ -1769,7 +1443,6 @@ More R tutorial and documentation see [here](https://github.com/davidycliao/flai
 # Extending conText's Embedding Regression
 
 <div style="text-align: justify;">
-
 `ConText` is a fast, flexible, and transparent framework for estimating context-specific word and short document embeddings using [the 'a la carte' embeddings regression](https://github.com/prodriguezsosa/EmbeddingRegression), implemented by Rodriguez et al.
 
 In this case study, I'll demonstrate how to use the conText package alongside other embedding frameworks by working through the example provided in Rodriguez et al.'s [Quick Start Guide](https://github.com/prodriguezsosa/conText/blob/master/vignettes/quickstart.md). While ConText includes its own cross-lingual ALC Embeddings, this tutorial extends its capabilities by integrating it with flaiR. Through this tutorial integration, this tutorial shows how to:
@@ -1786,7 +1459,6 @@ First of all, when loading the conText package, you'll find three pre-loaded dat
 - Flair NLP contextual embeddings (as described in  [Akbik et al., COLING 2018 paper](https://flairnlp.github.io/docs/tutorial-embeddings/flair-embeddings))
 
 - Integrated embeddings extracted from transformers like BERT.
-
 </div>
 
 ## Build Document-Embedding-Matrix with Other Embedding Frameworks
@@ -1860,7 +1532,6 @@ fasttext_embeddings$embed(sentence)
 ```
 
 <div style="text-align: justify;">
-
 The `process_embeddings` function from flaiR extracts pre-embedded GloVe vectors from a sentence object and arranges them into a structured matrix. In this matrix, tokens are represented as rows, embedding dimensions as columns, and each row is labeled with its corresponding token text.
 </div>
 
@@ -1871,7 +1542,6 @@ fasttext_subset <- process_embeddings(sentence, verbose = TRUE)
 
 <div style="text-align: justify;">
 Create a feature co-occurrence matrix (FCM) from tokenized text and transform pre-trained FastText embeddings using co-occurrence information.
-
 </div>
 
 ```{r}
@@ -1890,7 +1560,7 @@ ft_transform <- compute_transform(
 )
 ```
 
-Calculate Document Embedding Matrix (DEM) using transformed FastText embeddings
+Calculate Document Embedding Matrix (DEM) using transformed FastText embeddings.
 
 ```{r}
 # Calculate Document Embedding Matrix (DEM) using transformed FastText embeddings
@@ -2068,12 +1738,10 @@ alc_model <- conText(formula = immigration ~ party + gender,
                      verbose = FALSE)
 ```
 
-#### Document Embedding Matrix Construction Using Flair Contextual Stacked Embeddings
+### Document Embedding Matrix Construction Using Flair Contextual Stacked Embeddings
 
 <div style="text-align: justify;">
-
 To facilitate the loading of different embedding types, I'll import the following __classes__ and __functions__ from flaiF: `WordEmbeddings`, `FlairEmbeddings`, `TransformerWordEmbeddings`, `StackedEmbeddings`, and `Sentence.` These components enable us to work with GloVe embeddings, Flair's contextual embeddings, and transformer-based embeddings from the HuggingFace library.
-
 </div>
 
 ```{r include=FALSE}
@@ -2101,7 +1769,6 @@ flair_backward <- FlairEmbeddings('news-backward')
 ```
 
 <div style="text-align: justify;">
-
 Combine three different types of embeddings into a stacked embedding model.
 
 This creates a stacked embedding model that combines:
@@ -2109,7 +1776,6 @@ This creates a stacked embedding model that combines:
 - `FastText embeddings`: Captures general word semantics
 - `Forward Flair`: Captures contextual information reading text left-to-right
 - `Backward Flair`: Captures contextual information reading text right-to-left
-
 </div>
 
 ```{r}
@@ -2166,10 +1832,9 @@ st_model <- conText(formula = immigration ~ party + gender,
                     verbose = FALSE)
 ```
 
-#### Document Embedding Matrix Construction with BERT
+### Document Embedding Matrix Construction with BERT
 
 <div style="text-align: justify;">
-
 BERT embeddings provide powerful contextual representations through their bidirectional transformer architecture. These embeddings are good at understanding context from both directions within text, generating deep contextual representations through multiple transformer layers, and leveraging pre-training on large text corpora to achieve strong performance across NLP tasks. 
 
 The classic BERT base model generates 768-dimensional embeddings for each token, providing rich semantic representations.
@@ -2228,10 +1893,9 @@ bt_model <- conText(formula = immigration ~ party + gender,
                     verbose = FALSE)
 ```
 
-#### Comparision of Different Embedding Approaches
+### Comparision of Different Embedding Approaches
 
 <div style="text-align: justify;">
-
 While this tutorial doesn't determine a definitive "best" approach, it's important to understand the key distinctions between word embedding methods. BERT, FastText, Flair Stacked Embeddings, and GloVe can be categorized into two groups: dynamic and static embeddings.
 
 Dynamic embeddings, such as BERT and Flair, adapt their word representations based on context using high-dimensional vector spaces (BERT uses 768 dimensions in its base model). These methods excel at handling contextual nuances: BERT employs self-attention mechanisms and subword tokenization, while Flair uses character-level modeling. Both effectively handle out-of-vocabulary words through these mechanisms.
