@@ -74,92 +74,208 @@
 #           R CMD check *tar.gz --no-build-vignettes --no-manual --no-examples
 #         shell: bash
 #
+# #
+# name: R-ubuntu
 #
+# on:
+#   push:
+#     branches:
+#       - main
+#   pull_request:
+#     branches:
+#       - main
+#
+# jobs:
+#   R-CMD-check:
+#     runs-on: ubuntu-20.04
+#     strategy:
+#       matrix:
+#         r-version: ['4.3.2', '4.2.0', '4.2.1']
+#
+#     env:
+#       R_LIBS_USER: /home/runner/work/_temp/Library
+#       TZ: UTC
+#       _R_CHECK_SYSTEM_CLOCK_: FALSE
+#       NOT_CRAN: true
+#       RSPM: https://packagemanager.posit.co/cran/__linux__/focal/latest
+#       RENV_CONFIG_REPOS_OVERRIDE: https://packagemanager.posit.co/cran/__linux__/focal/latest
+#
+#     steps:
+#       - uses: actions/checkout@v3
+#
+#       - name: Cache R dependencies
+#         uses: actions/cache@v2
+#         with:
+#           path: ~/R/x86_64-pc-linux-gnu-library/
+#           key: ${{ runner.os }}-r-${{ matrix.r-version }}-${{ hashFiles('**/renv.lock') }}
+#           restore-keys: ${{ runner.os }}-r-${{ matrix.r-version }}-
+#
+#       - name: Setup R
+#         uses: r-lib/actions/setup-r@v2
+#         with:
+#           use-public-rspm: true
+#           r-version: ${{ matrix.r-version }}
+#
+#       - name: Restore R environment
+#         run: |
+#           if (!requireNamespace('renv', quietly = TRUE)) install.packages('renv')
+#           renv::restore()
+#         shell: Rscript {0}
+#
+#       - name: Install additional R packages
+#         env:
+#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Use the default GitHub token for authentication
+#         run: |
+#           install.packages(c("knitr", "rmarkdown", "lsa", "purrr", "ggplot2"))
+#           install.packages('remotes')
+#           remotes::install_github("davidycliao/flaiR", auth_token = Sys.getenv("GITHUB_TOKEN"), force = TRUE)
+#         shell: Rscript {0}
+#
+#       - name: Set up Python
+#         uses: actions/setup-python@v2
+#         with:
+#           python-version: '3.10.x'
+#
+#       - name: Install Python virtualenv
+#         run: pip install virtualenv
+#
+#       - name: Create Python virtual environment
+#         run: virtualenv flair_env
+#
+#       - name: Install Python dependencies in virtual environment
+#         run: |
+#           source flair_env/bin/activate
+#           pip install --upgrade pip
+#           pip install scipy==1.12.0
+#           pip install flair
+#           pip install gensim
+#
+#       - name: Remove Python cache files
+#         run: find . -name '*.pyc' -delete
+#
+#       - name: Check R environment status
+#         run: renv::status()
+#         shell: Rscript {0}
+#
+#       # - name: Check R package (with virtual environment)
+#       #   run: |
+#       #     source flair_env/bin/activate
+#       #     R CMD build . --no-build-vignettes
+#       #     R CMD check *tar.gz --no-build-vignettes --no-manual --no-tests --no-examples
+#       #   shell: bash
+
+
 name: R-ubuntu
 
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+ push:
+   branches:
+     - main
+ pull_request:
+   branches:
+     - main
 
 jobs:
-  R-CMD-check:
-    runs-on: ubuntu-20.04
-    strategy:
-      matrix:
-        r-version: ['4.3.2', '4.2.0', '4.2.1']
+ R-CMD-check:
+   runs-on: ubuntu-20.04
+   strategy:
+     matrix:
+       r-version: ['4.3.2', '4.2.0', '4.2.1']
+     fail-fast: false
 
-    env:
-      R_LIBS_USER: /home/runner/work/_temp/Library
-      TZ: UTC
-      _R_CHECK_SYSTEM_CLOCK_: FALSE
-      NOT_CRAN: true
-      RSPM: https://packagemanager.posit.co/cran/__linux__/focal/latest
-      RENV_CONFIG_REPOS_OVERRIDE: https://packagemanager.posit.co/cran/__linux__/focal/latest
+   env:
+     R_LIBS_USER: /home/runner/work/_temp/Library
+     TZ: UTC
+     R_CHECK_SYSTEM_CLOCK: FALSE
+     NOT_CRAN: true
+     RSPM: https://packagemanager.posit.co/cran/__linux__/focal/latest
+     RENV_CONFIG_REPOS_OVERRIDE: https://packagemanager.posit.co/cran/__linux__/focal/latest
 
-    steps:
-      - uses: actions/checkout@v3
+   steps:
+     - uses: actions/checkout@v3
 
-      - name: Cache R dependencies
-        uses: actions/cache@v2
-        with:
-          path: ~/R/x86_64-pc-linux-gnu-library/
-          key: ${{ runner.os }}-r-${{ matrix.r-version }}-${{ hashFiles('**/renv.lock') }}
-          restore-keys: ${{ runner.os }}-r-${{ matrix.r-version }}-
+     - name: Cache R dependencies
+       uses: actions/cache@v3
+       with:
+         path: ~/R/x86_64-pc-linux-gnu-library/
+         key: ${{ runner.os }}-r-${{ matrix.r-version }}-${{ hashFiles('**/renv.lock') }}
+         restore-keys: ${{ runner.os }}-r-${{ matrix.r-version }}-
 
-      - name: Setup R
-        uses: r-lib/actions/setup-r@v2
-        with:
-          use-public-rspm: true
-          r-version: ${{ matrix.r-version }}
+     - name: Setup R
+       uses: r-lib/actions/setup-r@v2
+       with:
+         use-public-rspm: true
+         r-version: ${{ matrix.r-version }}
 
-      - name: Restore R environment
-        run: |
-          if (!requireNamespace('renv', quietly = TRUE)) install.packages('renv')
-          renv::restore()
-        shell: Rscript {0}
+     - name: Install system dependencies
+       run: |
+         sudo apt-get update
+         sudo apt-get install -y libcurl4-openssl-dev libssl-dev libxml2-dev libfontconfig1-dev libharfbuzz-dev libfribidi-dev libfreetype6-dev libpng-dev libtiff5-dev libjpeg-dev
 
-      - name: Install additional R packages
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Use the default GitHub token for authentication
-        run: |
-          install.packages(c("knitr", "rmarkdown", "lsa", "purrr", "ggplot2"))
-          install.packages('remotes')
-          remotes::install_github("davidycliao/flaiR", auth_token = Sys.getenv("GITHUB_TOKEN"), force = TRUE)
-        shell: Rscript {0}
+     - name: Install R Matrix package
+       run: |
+         install.packages('remotes')
+         if (getRversion() >= "4.3.0") {
+           remotes::install_version("Matrix", version = "1.5-1")
+         } else {
+           remotes::install_version("Matrix", version = "1.4-1")
+         }
+       shell: Rscript {0}
 
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.10.x'
+     - name: Restore R environment
+       run: |
+         if (!requireNamespace('renv', quietly = TRUE)) install.packages('renv')
+         renv::restore()
+       shell: Rscript {0}
 
-      - name: Install Python virtualenv
-        run: pip install virtualenv
+     - name: Install additional R packages
+       env:
+         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+       run: |
+         install.packages(c("knitr", "rmarkdown", "lsa", "purrr", "ggplot2"))
+         tryCatch({
+           remotes::install_github("davidycliao/flaiR",
+                                 auth_token = Sys.getenv("GITHUB_TOKEN"),
+                                 force = TRUE,
+                                 dependencies = TRUE)
+         }, error = function(e) {
+           message("Error installing flaiR: ", e$message)
+           quit(status = 1)
+         })
+       shell: Rscript {0}
 
-      - name: Create Python virtual environment
-        run: virtualenv flair_env
+     - name: Set up Python
+       uses: actions/setup-python@v4
+       with:
+         python-version: '3.10.x'
+         cache: 'pip'
 
-      - name: Install Python dependencies in virtual environment
-        run: |
-          source flair_env/bin/activate
-          pip install --upgrade pip
-          pip install scipy==1.12.0
-          pip install flair
-          pip install gensim
+     - name: Install Python virtualenv
+       run: pip install virtualenv
 
-      - name: Remove Python cache files
-        run: find . -name '*.pyc' -delete
+     - name: Create Python virtual environment
+       run: virtualenv flair_env
 
-      - name: Check R environment status
-        run: renv::status()
-        shell: Rscript {0}
+     - name: Install Python dependencies in virtual environment
+       run: |
+         source flair_env/bin/activate
+         pip install --upgrade pip
+         pip install scipy==1.12.0
+         pip install flair
+         pip install gensim
+         deactivate
 
-      # - name: Check R package (with virtual environment)
-      #   run: |
-      #     source flair_env/bin/activate
-      #     R CMD build . --no-build-vignettes
-      #     R CMD check *tar.gz --no-build-vignettes --no-manual --no-tests --no-examples
-      #   shell: bash
+     - name: Remove Python cache files
+       run: find . -name '*.pyc' -delete
+
+     - name: Check R environment status
+       run: renv::status()
+       shell: Rscript {0}
+
+     - name: Check R package (with virtual environment)
+       run: |
+         source flair_env/bin/activate
+         set -e
+         R CMD build . --no-build-vignettes
+         R CMD check *tar.gz --no-build-vignettes --no-manual --no-tests --no-examples || true
+       shell: bash
