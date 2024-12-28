@@ -1970,13 +1970,13 @@ bt_model <- conText(formula = immigration ~ party + gender,
 
 <div style="text-align: justify;">
 
-While this tutorial doesn't determine a definitive "best" approach, it's important to understand the key distinctions between word embedding methods. BERT, FastText, Flair Stacked Embeddings, and GloVe can be categorized into two groups: dynamic and static embeddings.
+While this tutorial doesn't determine a definitive best approach, it's important to understand the key distinctions between word embedding methods. BERT, FastText, Flair Stacked Embeddings, and GloVe can be categorized into two groups: dynamic and static embeddings.
 
-Dynamic embeddings, such as BERT and Flair, adapt their word representations based on context using high-dimensional vector spaces (BERT uses 768 dimensions in its base model). These methods excel at handling contextual nuances: BERT employs self-attention mechanisms and subword tokenization, while Flair uses character-level modeling. Both effectively handle out-of-vocabulary words through these mechanisms.
+Dynamic embeddings, such as BERT and Flair, adapt their word representations based on context using high-dimensional vector spaces (BERT uses 768 dimensions in its base model). BERT employs self-attention mechanisms and subword tokenization, while Flair uses character-level modeling. Both effectively handle out-of-vocabulary words through these mechanisms.
 
-Static embeddings, like FastText (300 dimensions) and GloVe (typically 100-300 dimensions), maintain consistent word representations regardless of context. FastText stands out among static embeddings by incorporating subword information, giving it an advantage in handling out-of-vocabulary words, while GloVe relies on pre-computed global word-word co-occurrence statistics.
+However, it's worth noting that in their case study, where they provide selected words, in our case study we directly extract individual word vectors from BERT and Flair (forward/backward) embeddings using those selected words. This approach doesn't truly achieve the intended contextual modeling. A more meaningful approach would be to extract embeddings at the quasi-sentence or paragraph level. Alternatively, pooling the entire document before extracting embeddings could be more valuable.
 
-Each embedding method has its unique characteristics and trade-offs. While they share the common goal of capturing meaningful textual relationships, they differ in their balance of contextual awareness, computational demands, and representation stability. The choice among them depends on specific project requirements, including accuracy needs, computational resources, and the nature of the text being analyzed.
+These context-based approaches differ significantly from GloVe's methodology, which relies on pre-computed global word-word co-occurrence statistics to generate static word vectors.
 
 </div>
 
