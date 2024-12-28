@@ -1,6 +1,5 @@
 test_that("get_entities works with standard NER model", {
 
-  # 設置測試數據
   texts <- c(
     "John Smith works at Google in New York.",
     "The Eiffel Tower was built in 1889."
@@ -63,7 +62,6 @@ test_that("get_entities handles different parameters correctly", {
 test_that("get_entities error handling", {
   tagger_std <- load_tagger_ner('ner')
 
-  # 測試空文本
   expect_error(
     get_entities(texts = character(0), tagger = tagger_std),
     "The texts cannot be NULL or empty."
@@ -79,7 +77,6 @@ test_that("get_entities error handling", {
     "The lengths of texts and doc_ids do not match."
   )
 
-  # 測試無效的批次大小
   expect_error(
     get_entities(
       texts = "text",

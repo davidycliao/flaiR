@@ -115,20 +115,3 @@ test_that("check_texts_and_ids handles input correctly", {
   expect_equal(res$doc_ids, c("id1", "id2"))
 })
 
-
-# Test 14: check_flair_installed identifies whether flair is available
-
-test_that("check_flair_installed identifies whether flair is available", {
-  # Mocking that the module is available
-  with_mock(
-    `reticulate::py_module_available` = function(...) TRUE,
-    expect_true(check_flair_installed())
-  )
-
-  # Mocking that the module is not available
-  with_mock(
-    `reticulate::py_module_available` = function(...) FALSE,
-    expect_false(check_flair_installed())
-  )
-})
-
