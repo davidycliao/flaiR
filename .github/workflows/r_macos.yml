@@ -135,16 +135,22 @@ jobs:
     - name: Install R dependencies
       run: |
         # 基礎包安裝
-        Rscript -e "install.packages(c('remotes', 'rcmdcheck', 'reticulate', 'renv', 'knitr', 'rmarkdown', 'lsa', 'purrr', 'testthat'), repos='https://cran.r-project.org')"
+        Rscript -e 'install.packages(c("remotes", "rcmdcheck", "reticulate", "renv", "knitr", "rmarkdown", "lsa", "purrr", "testthat"), repos="https://cran.r-project.org")'
 
-        # 根據 R 版本安裝適當的 Matrix 版本
-        Rscript -e 'if (getRversion() >= "4.4.0") remotes::install_version("Matrix", version = "1.5.3") else remotes::install_version("Matrix", version = "1.5.1")'
+        # 根據 R 版本有條件地安裝 Matrix
+        Rscript -e '
+          if (getRversion() >= "4.4.0") {
+            install.packages("Matrix")
+          } else {
+            remotes::install_version("Matrix", version = "1.5.1", repos = "https://cran.r-project.org")
+          }
+        '
 
-        # 安裝特定版本的 htmltools
-        Rscript -e "remotes::install_version('htmltools', version = '0.5.8')"
+        # 安裝指定版本的 htmltools
+        Rscript -e 'remotes::install_version("htmltools", version = "0.5.8")'
 
         # 最後執行 renv::restore()
-        Rscript -e "renv::restore()"
+        Rscript -e 'renv::restore()'
 
     - name: Set up Python
       uses: actions/setup-python@v2
