@@ -2,15 +2,17 @@
 % Please edit documentation in R/get_entities.R
 \name{get_entities}
 \alias{get_entities}
-\title{Tagging Named Entities with Flair Models}
+\title{Extract Named Entities from Texts with Batch Processing}
 \usage{
 get_entities(
   texts,
   doc_ids = NULL,
-  tagger = NULL,
-  language = NULL,
+  tagger,
   show.text_id = FALSE,
-  gc.active = FALSE
+  gc.active = FALSE,
+  batch_size = 5,
+  device = "cpu",
+  verbose = FALSE
 )
 }
 \arguments{
@@ -19,69 +21,125 @@ get_entities(
 \item{doc_ids}{A character or numeric vector containing the document IDs
 corresponding to each text.}
 
-\item{tagger}{An optional tagger object. If NULL (default), the function will
-load a Flair tagger based on the specified language.}
-
-\item{language}{A character string indicating the language model to load.
-Default is "en".}
+\item{tagger}{A Flair tagger object for named entity recognition. Must be provided
+by the user. Can be created using load_tagger_ner() with different models:
+\itemize{
+\item Standard NER: tagger_ner <- load_tagger_ner('ner')
+\item OntoNotes: tagger_ner <- load_tagger_ner('flair/ner-english-ontonotes')
+\item Large model: tagger_ner <- load_tagger_ner('flair/ner-english-large')
+}}
 
 \item{show.text_id}{A logical value. If TRUE, includes the actual text from
-which the entity was extracted in the resulting data table. Useful for
-verification and traceability purposes but might increase the size of
-the output. Default is FALSE.}
+which the entity was extracted. Default is FALSE.}
 
 \item{gc.active}{A logical value. If TRUE, runs the garbage collector after
-processing all texts. This can help in freeing up memory by releasing unused
-memory space, especially when processing a large number of texts.
-Default is FALSE.}
+processing texts. Default is FALSE.}
+
+\item{batch_size}{An integer specifying the size of each batch. Set to 1 for
+single-text processing. Default is 5.}
+
+\item{device}{A character string specifying the computation device ("cpu",
+"cuda:0", "cuda:1", etc.). Default is "cpu". Note: MPS (Mac M1/M2) is currently
+not fully supported and will default to CPU.}
+
+\item{verbose}{A logical value. If TRUE, prints processing progress. Default is FALSE.}
 }
 \value{
 A data table with columns:
 \describe{
-\item{doc_id}{The ID of the document from which the entity was extracted.}
-\item{text_id}{If TRUE, the actual text from which the entity
-was extracted.}
-\item{entity}{The named entity that was extracted from the text.}
-\item{tag}{The tag or category of the named entity. Common tags include:
-PERSON (names of individuals),
-ORG (organizations, institutions),
-GPE (countries, cities, states),
-LOCATION (mountain ranges, bodies of water),
-DATE (dates or periods),
-TIME (times of day),
-MONEY (monetary values),
-PERCENT (percentage values),
-FACILITY (buildings, airports),
-PRODUCT (objects, vehicles),
-EVENT (named events like wars or sports events),
-ART (titles of books)}}
+\item{doc_id}{Character or numeric. The ID of the document from which the
+entity was extracted.}
+\item{text_id}{Character. The complete text from which the entity was
+extracted. Only included when show.text_id = TRUE.}
+\item{entity}{Character. The actual named entity text that was extracted.
+Will be NA if no entity was found.}
+\item{tag}{Character. The category of the named entity. Available tags depend on
+the model used:
+\itemize{
+\item{Standard NER tags:}
+\itemize{
+\item{PERSON: Names of people}
+\item{ORG: Organizations}
+\item{LOC: Locations}
+\item{MISC: Miscellaneous entities}
+}
+\item{OntoNotes tags:}
+\itemize{
+\item{PERSON: People, including fictional characters}
+\item{ORG: Companies, agencies, institutions}
+\item{GPE: Countries, cities, states}
+\item{LOC: Non-GPE locations, mountains, water bodies}
+\item{DATE: Absolute or relative dates}
+\item{TIME: Times of day}
+\item{MONEY: Monetary values}
+\item{PERCENT: Percentage values}
+\item{CARDINAL: Numerals}
+\item{ORDINAL: Ordinal numbers}
+\item{NORP: Nationalities, religious, or political groups}
+\item{FAC: Buildings, airports, highways, bridges}
+\item{WORK_OF_ART: Titles of books, songs, etc.}
+\item{LAW: Named documents made into laws}
+\item{LANGUAGE: Named languages}
+}
+}}
+}
 }
 \description{
-This function takes texts and their corresponding document IDs
-as inputs, uses the Flair NLP library to extract named entities,
-and returns a dataframe of the identified entities along with their tags.
-When no entities are detected in a text, the function returns a data table
-with NA values. This might clutter the results. Depending on your use case,
-you might decide to either keep this behavior or skip rows with no detected
-entities.
+This function processes texts in batches and extracts named entities
+using the Flair NLP library. It supports both standard NER and OntoNotes models,
+with options for batch processing and GPU acceleration.
 }
+\section{Tag Format}{
+
+All tags use the BIOES (Begin, Inside, Outside, End, Single) scheme:
+\itemize{
+\item{B-: Beginning of multi-token entity (e.g., B-PERSON in "John Smith")}
+\item{I-: Inside of multi-token entity}
+\item{O: Outside (not part of any entity)}
+\item{E-: End of multi-token entity}
+\item{S-: Single token entity (e.g., S-LOC in "Paris")}
+}
+}
+
 \examples{
 \dontrun{
 library(reticulate)
 library(fliaR)
 
-texts <- c("UCD is one of the best universities in Ireland.",
-           "UCD has a good campus but is very far from
-           my apartment in Dublin.",
-           "Essex is famous for social science research.",
-           "Essex is not in the Russell Group, but it is
-           famous for political science research.",
-           "TCD is the oldest university in Ireland.",
-           "TCD is similar to Oxford.")
-doc_ids <- c("doc1", "doc2", "doc3", "doc4", "doc5", "doc6")
-# Load NER ("ner") model
-tagger_ner <- load_tagger_ner('ner')
-results <- get_entities(texts, doc_ids, tagger_ner)
-print(results)}
+# Using standard NER model
+tagger_std <- load_tagger_ner('ner')
+
+# Using OntoNotes model
+tagger_onto <- load_tagger_ner('flair/ner-english-ontonotes')
+
+texts <- c(
+  "John Smith works at Google in New York.",
+  "The Eiffel Tower was built in 1889."
+)
+doc_ids <- c("doc1", "doc2")
+
+# Process with standard NER
+results_std <- get_entities(
+  texts = texts,
+  doc_ids = doc_ids,
+  tagger = tagger_std,
+  batch_size = 2,
+  verbose = TRUE
+)
+
+# Process with OntoNotes model
+results_onto <- get_entities(
+  texts = texts,
+  doc_ids = doc_ids,
+  tagger = tagger_onto,
+  batch_size = 2,
+  verbose = TRUE
+)
+
+# Filter specific entity types
+persons <- results_onto[grepl("PERSON", tag)]
+locations <- results_onto[grepl("LOC|GPE", tag)]
+dates <- results_onto[grepl("DATE", tag)]
+}
 
 }

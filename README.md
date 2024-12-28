@@ -38,7 +38,11 @@ remotes::install_github("davidycliao/flaiR", force = TRUE)
 
 ``` r
 library(flaiR)
-#> [1m[34mflaiR[39m[22m: [1m[33mAn R Wrapper for Accessing Flair NLP[39m[22m [1m[33m0.14.0[39m[22m
+```
+
+``` r
+library(flaiR)
+#> flaiR: An R Wrapper for Accessing Flair NLP 0.13.1
 ```
 
 <br>
