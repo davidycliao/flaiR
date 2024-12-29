@@ -1300,7 +1300,6 @@ trainer$train('models/sentiment',
               max_epochs=5L)  
 ```
 
-
 ## To Apply the Trained Model for Prediction
 
 ```{r eval=FALSE, include=TRUE}
@@ -1511,7 +1510,7 @@ More R tutorial and documentation see [here](https://github.com/davidycliao/flai
 
 This seciton demonstrates how to utilize your custom fine-tuned model in flaiR for text classification tasks. Let's explore this process step by step.
 
-__Setting Up Your Environment__
+<u>**Setting Up Your Environment**</u> 
 
 First, we need to load the flaiR package and prepare our model:
 
@@ -1534,7 +1533,7 @@ print(classifier$model_card$transformers_version)  # Required transformers versi
 print(classifier$model_card$flair_version)         # Required Flair version
 ```
 
-__Making Predictions__
+<u>**Making Predictions**</u> 
 
 To make predictions, we first need to prepare our text by creating a Sentence object. This is a key component in Flair's architecture that handles text processing:
 
