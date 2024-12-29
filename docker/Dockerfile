@@ -27,7 +27,7 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v2
         with:
-          context: .  # 指定构建上下文为当前目录
-          file: ./Dockerfile  # 指定 Dockerfile 的路径
+          context: .  #
+          file: ./Dockerfile
           push: true
-          tags: ghcr.io/yourusername/your-repo:latest
+          tags: ghcr.io/davidycliao/flaiR:latest
