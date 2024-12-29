@@ -1,33 +1,30 @@
-name: Docker Build and Push
+FROM r-base:latest
 
-on:
-  push:
-    branches: [main, master]
-  pull_request:
-    branches: [main, master]
+# 安裝系統依賴
+RUN apt-get update && apt-get install -y \
+    python3 \
+    python3-pip \
+    libcurl4-openssl-dev \
+    libssl-dev \
+    libxml2-dev
 
-jobs:
-  build-and-push:
-    runs-on: ubuntu-latest
+# 安裝 Python Flair NLP
+RUN pip3 install flair
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+# 安裝 R 依賴項
+RUN R -e "install.packages('remotes')"
+RUN R -e "install.packages(c('data.table', 'reticulate', 'curl', 'attempt', 'htmltools', 'stringr'))"
+RUN R -e "install.packages(c('knitr', 'rmarkdown', 'lsa', 'purrr', 'jsonlite', 'ggplot2', 'plotly', 'testthat'))"
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
+# 複製 R 套件到容器中
+COPY . /usr/src/my_pkg
+WORKDIR /usr/src/my_pkg
 
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v1
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+# 安裝 R 套件
+RUN R -e "remotes::install_local(force = TRUE)"
 
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v2
-        with:
-          context: .  #
-          file: ./Dockerfile
-          push: true
-          tags: ghcr.io/davidycliao/flaiR:latest
+# 清理不必要的文件
+RUN rm -rf /usr/src/my_pkg
+
+# 設定預設命令
+CMD ["R"]
