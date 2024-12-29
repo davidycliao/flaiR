@@ -1,3 +1,24 @@
+# flaiR 0.0.7 (2024-12-26)
+
+<div style="text-align: justify">
+
+### _Enhancements_
+
+- Added new tutorial section for embedding extraction from Flair NLP, focusing on embedding-based regression analysis
+
+### _Function_
+
+- Unified POS tagging functions: Combined get_pos() and get_pos_batch()
+- Unified entity recognition: Merged get_entities() and get_entities_batch()
+- Removed sentiment analysis functions: Deprecated get_sentiment() and get_sentiment_batch()ve get_sentiment() and get_sentimen_batch. merge get_pos and get_pos_batch& get_enetities and get_enetities_batch.
+
+</div>
+
+
+
+</div>
+
+
 # flaiR 0.0.6 (2023-10-29)
 
 <div style="text-align: justify">

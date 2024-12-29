@@ -25,7 +25,7 @@ knitr::opts_chunk$set(
 
 ```{r include=FALSE}
 library(reticulate)
-library(flaiR)
+# library(flaiR)
 reticulate::py_install("flair")
 system(paste(reticulate::py_config()$python, "-m pip install flair"))
 # options(repos = c(CRAN = "https://cloud.r-project.org/"))
@@ -35,7 +35,7 @@ system(paste(reticulate::py_config()$python, "-m pip install flair"))
 
 <div style="text-align: justify">
 
-__flaiR__ is an R package for accessing the [flairNLP/flair](flairNLP/flair) Python library, maintained by [Yen-ChiehLiao](https://davidycliao.github.io) ([University of Birmingham](https://www.birmingham.ac.uk/research/centres-institutes/centre-for-artificial-intelligence-in-government)) and  [Stefan Müller](https://muellerstefan.net) from [Next Generation Energy Systems](https://www.nexsys-energy.ie) and [Text and Policy Research Group](https://text-and-policy.com) in UCD. flaiR provides convenient access to the main functionalities of flairNLP for training word embedding-based deep learning models and fine-tune state-of-the-art transformers hosted on Hugging Face. Our team trains and fine-tunes the models with Flair in [our projects]().
+__flaiR__ is an R package for accessing the [flairNLP/flair](flairNLP/flair) Python library, maintained by [Yen-Chieh Liao](https://davidycliao.github.io) ([University of Birmingham](https://www.birmingham.ac.uk/research/centres-institutes/centre-for-artificial-intelligence-in-government)) and  [Stefan Müller](https://muellerstefan.net) from [Next Generation Energy Systems](https://www.nexsys-energy.ie) and [Text and Policy Research Group](https://text-and-policy.com) in UCD. flaiR provides convenient access to the main functionalities of flairNLP for training word embedding-based deep learning models and fine-tune state-of-the-art transformers hosted on Hugging Face. Our team trains and fine-tunes the models with Flair in [our projects]().
 
 </div>
 
@@ -50,8 +50,12 @@ install.packages("remotes")
 remotes::install_github("davidycliao/flaiR", force = TRUE)
 ```
 
-```{r}
+```{r echo=TRUE, eval=FALSE}
 library(flaiR)
+```
+
+``` r
+#> flaiR: An R Wrapper for Accessing Flair NLP 0.13.1
 ```
 
 <br>
@@ -75,7 +79,17 @@ __flaiR__ runs the Flair NLP backend in Python, thus requiring Python installati
 
 <br>
 
+
+
 </div>
+
+## Updates and News
+
+- [Tutorial for embeddings in flaiR](https://davidycliao.github.io/flaiR/articles/tutorial.html#embedding)
+
+- [Extending conText’s Embedding Regression](https://davidycliao.github.io/flaiR/articles/tutorial.html#extending-contexts-embedding-regression)
+
+<br>
 
 
 ## Contribution and Open Source
@@ -91,8 +105,5 @@ The primary communication channel for R users can be found [here](https://github
 </div>
 
 <br>
-
-
-
 
 

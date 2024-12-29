@@ -204,22 +204,22 @@ reference:
 #   - flair_models()$ClusteringModel
 #   - flair_models()$MultitaskModel
 
-- title: Expanded Feats
-  desc: <div class="text-justify">Extended functionality for working with three major functions to extract features in data.table.</div>
-- contents:
-  - load_tagger_ner
-  - load_tagger_pos
-  - load_tagger_sentiments
-  - get_entities
-  - get_entities_batch
-  - get_pos
-  - get_pos_batch
-  - get_sentiments
-  - get_sentiments_batch
+# - title: Expanded Feats
+#   desc: <div class="text-justify">Extended functionality for working with three major functions to extract features in data.table.</div>
+# - contents:
+#   - load_tagger_ner
+#   - load_tagger_pos
+#   - load_tagger_sentiments
+#   - get_entities
+#   - get_pos
+#   - get_sentiments
+#   - get_sentiments_batch
 
-- title: Toolbox
+- title: FlaiR Toolbox
   desc: <div class="text-justify"> flairR utilities</div>
 - contents:
+  - predict_label
+  - process_embeddings
   - flair_device
   - highlight_text
   - map_entities
@@ -228,6 +228,17 @@ reference:
   - show_flair_cache
   - uninstall_python_package
   - install_python_package
+  - get_tagger_tags
+  - load_tagger_ner
+  - load_tagger_pos
+  - get_entities
+  - get_pos
+
+
+
+
+
+
 
 - title: Training Dataset
   desc: <div class="text-justify"> Training dataset for tutorial</div>
@@ -266,12 +277,12 @@ navbar:
   - icon: fa-rocket
     text: Quick Start
     menu:
+    - text: "flaiR Installation"
+      href: articles/quickstart.html#flair-installation
     - text: "NLP Tasks"
       href: articles/quickstart.html#nlp-tasks
-    - text: "Class and Ojbect"
-      href: articles/quickstart.html#class-and-ojbect
-    - text: "More Details about Installation"
-      href: articles/quickstart.html#more-details-about-installation
+    - text: "Training and Finetuning"
+      href: articles/quickstart.html#training-and-fine-tuning
 
 
   - icon: fa-project-diagram
@@ -285,27 +296,28 @@ navbar:
       href: articles/tutorial.html#sequence-taggings
     - text: "Performing NER Tasks"
       href: articles/tutorial.html#performing-ner-tasks
-    - text: "Flair Embeddings"
-      href: articles/tutorial.html#flair-embedding
+    - text: "Embeddings"
+      href: articles/tutorial.html#embedding
     - text: "Training a Binary Classifier"
       href: articles/tutorial.html#training-a-binary-classifier
     - text: "Training RNNs"
       href: articles/tutorial.html#training-rnns
     - text: "Finetune Transformers "
       href: articles/tutorial.html#finetune-transformers
+    - text: "Extending conText"
+      href: articles/tutorial.html#extending-contexts-embedding-regression
 
-  - icon: fa-newspaper-o
-    text: Expanded Feats
-    menu:
-    - text: "Part-of-speech Tagging"
-      href: articles/get_pos.html
-    - text: "Named Entity Recognition"
-      href: articles/get_entities.html
-    - text: "Tagging Sentiment"
-      href: articles/get_sentiments.html
-    - text: "The Coloring Entities"
-      href: articles/highlight_text.html
-
+  # - icon: fa-newspaper-o
+  #   text: Expanded Feats
+  #   menu:
+  #   - text: "Part-of-speech Tagging"
+  #     href: articles/get_pos.html
+  #   - text: "Named Entity Recognition"
+  #     href: articles/get_entities.html
+  #   - text: "Tagging Sentiment"
+  #     href: articles/get_sentiments.html
+  #   - text: "The Coloring Entities"
+  #     href: articles/highlight_text.html
 
   - icon: fa-file-code-o
     text: Reference
@@ -336,6 +348,8 @@ navbar:
   - icon: fa-newspaper-o
     text: News
     menu:
+    - text: "0.0.7"
+      href: news/index.html#flair-007-2024-12-26
     - text: "0.0.6"
       href: news/index.html#flair-006-2023-10-29
     - text: "0.0.5"

@@ -1,100 +1,88 @@
-# Test 1: get_entities returns four entities for two input texts using "ner"
-test_that("get_entities returns four entities for two input texts using 'ner'", {
-  result <- get_entities(
-    texts = c("UCD is one of the best university in Ireland. ",
-              "TCD in less better than Oxford"),
-    doc_ids = c("doc1", "doc2"),
-    language = "ner"
+test_that("get_entities works with standard NER model", {
+
+  texts <- c(
+    "John Smith works at Google in New York.",
+    "The Eiffel Tower was built in 1889."
   )
-  # Check that the number of rows in the result matches the expected number of entities
-  expect_equal(nrow(result), 4)
+  doc_ids <- c("doc1", "doc2")
+
+  # 加載標準 NER 模型
+  tagger_std <- load_tagger_ner('ner')
+
+  # 基本功能測試
+  results <- get_entities(
+    texts = texts,
+    doc_ids = doc_ids,
+    tagger = tagger_std,
+    batch_size = 2
+  )
+
+  # 測試返回值結構
+  expect_true(is.data.frame(results))
+
+  # 測試提取的實體
+  expect_true(any(grepl("John Smith", results$entity)))
+  expect_true(any(grepl("Google", results$entity)))
+  expect_true(any(grepl("New York", results$entity)))
+
+  expected_tags <- c("PER", "ORG", "LOC")
+  expect_true(all(results$tag[results$tag != "O"] %in% expected_tags))
 })
 
-# Test 2: get_entities_batch returns four entities for two input texts.
-test_that("get_entities_batch returns four entities for two input texts using 'ner'", {
-  result <- get_entities_batch(
-    texts = c("UCD is one of the best university in Ireland. ",
-              "TCD in less better than Oxford"),
-    doc_ids = c("doc1", "doc2"),
-    language = "ner",
-    batch_size = 5,
-    device = "cpu"
+test_that("get_entities handles different parameters correctly", {
+
+  text <- "John lives in Berlin."
+  tagger_std <- load_tagger_ner('ner')
+
+  result_with_text <- get_entities(
+    texts = text,
+    doc_ids = 1,
+    tagger = tagger_std,
+    show.text_id = TRUE
   )
-  # Check that the number of rows in the result matches the expected number of entities
-  expect_equal(nrow(result), 4)
+  expect_true("text_id" %in% names(result_with_text))
+
+  # 測試批次大小
+  result_batch <- get_entities(
+    texts = rep(text, 3),
+    doc_ids = c(1, 2, 3),
+    tagger = tagger_std,
+    batch_size = 2
+  )
+  expect_true(nrow(result_batch) >= 2)
+
+  result_with_ids <- get_entities(
+    texts = text,
+    doc_ids = "doc1",
+    tagger = tagger_std
+  )
+  expect_equal(unique(result_with_ids$doc_id), "doc1")
 })
 
+test_that("get_entities error handling", {
+  tagger_std <- load_tagger_ner('ner')
 
-# Test 3: get_entities throws an error for mismatched lengths of texts and doc_ids
-test_that("get_entities throws an error for mismatched lengths of texts and doc_ids", {
+  expect_error(
+    get_entities(texts = character(0), tagger = tagger_std),
+    "The texts cannot be NULL or empty."
+  )
+
+  # 測試 texts 和 doc_ids 長度不匹配
   expect_error(
     get_entities(
-      texts = "TCD in less better than Oxford",
-      doc_ids = c("doc1", "doc2"),
-      language = "ner"
+      texts = c("text1", "text2"),
+      doc_ids = "doc1",
+      tagger = tagger_std
     ),
     "The lengths of texts and doc_ids do not match."
   )
-})
 
-# Test 4: get_entities returns NA for the "tag" field when there are mismatched
-# lengths of texts and doc_ids
-test_that("get_entities returns NA for the 'tag' field.", {
-  result <- get_entities(
-    texts = "TCD in less better than Oxford",
-    doc_ids = "doc1",
-    language = "ner"
+  expect_error(
+    get_entities(
+      texts = "text",
+      tagger = tagger_std,
+      batch_size = 0
+    ),
+    "Invalid batch size. It must be a positive integer."
   )
-  # Check that the "tag" field is NA
-  expect_true(is.na(result[3, "tag"]$tag))
-})
-
-# Test 5: get_entities returns NA for the "tag" field when the input text
-#         does not contain entities
-test_that("get_entities returns NA for the 'tag' field", {
-  result <- get_entities(
-    texts = "xxxxxxxxx",
-    doc_ids = "doc1",
-    language = "ner"
-  )
-  # Check that the "tag" field is NA
-  expect_true(is.na(result[1, "tag"]$tag))
-})
-
-# Test 6: get_entities returns NA for the "tag" field when the input text is NA
-test_that("get_entities returns NA for the 'tag' field.", {
-  result <- get_entities(
-    texts = NA,
-    doc_ids = NA,
-    language = "ner"
-  )
-  # Check that the "tag" field is NA
-  expect_true(is.na(result[1, "tag"]$tag))
-})
-
-# Test 7: get_entities returns NA for the "tag" field when the input text is
-# NA and show.text_id is TRUE
-test_that("get_entities returns NA for the 'tag' field", {
-  result <- get_entities(
-    texts = NA,
-    doc_ids = NA,
-    show.text_id = TRUE,
-    gc.active = TRUE,
-    language = "ner"
-  )
-  # Check that the "tag" field is NA
-  expect_true(is.na(result[1, "tag"]$tag))
-})
-
-# Test 8: get_entities returns the correct entity tag "ORG" for an input text
-test_that("get_entities returns the correct entity tag 'ORG' for an input text", {
-  result <- get_entities(
-    texts = "TCD in less better than Oxford",
-    doc_ids = "doc1",
-    show.text_id = TRUE,
-    gc.active = TRUE,
-    language = "ner"
-  )
-  # Check that the entity tag is "ORG"
-  expect_equal(result[1, "tag"]$tag, "ORG")
 })

@@ -85,7 +85,7 @@ get_pos <- function(texts, doc_ids = NULL, tagger = NULL, language = NULL,
                    text_id = ifelse(show.text_id, text, NA),
                    token = NA,
                    tag = NA,
-                   precision = NA))
+                   score = NA))
     }
     sentence <- Sentence(texts[[i]])
     tagger$predict(sentence)
@@ -99,7 +99,7 @@ get_pos <- function(texts, doc_ids = NULL, tagger = NULL, language = NULL,
                         text_id = ifelse(show.text_id, text, NA),
                         token = NA,
                         tag = NA,
-                        precision = NA))
+                        score = NA))
     } else {
       return(data.table(
         doc_id = rep(doc_ids[[i]], length(tag_list)),
@@ -107,7 +107,7 @@ get_pos <- function(texts, doc_ids = NULL, tagger = NULL, language = NULL,
         text_id = ifelse(show.text_id, text, NA),
         token = vapply(tag_list, function(x) gsub('^Token\\[\\d+\\]: "(.*)" .*', '\\1', x), character(1)),
         tag = vapply(tag_list, function(x) gsub('^Token\\[\\d+\\]: ".*" \u2192 (.*) \\(.*\\)', '\\1', x), character(1)),
-        precision = as.numeric(vapply(tag_list, function(x) gsub(".*\\((.*)\\)", "\\1", x), character(1)))
+        score = as.numeric(vapply(tag_list, function(x) gsub(".*\\((.*)\\)", "\\1", x), character(1)))
       ))
     }
   }

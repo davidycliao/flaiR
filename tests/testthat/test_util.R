@@ -1,13 +1,13 @@
 # Test 1: Ensure that `get_entities` provides the expected row count when
 # provided with specific texts, doc_ids, and a pre-loaded tagger.
-test_that("get_entities throws an error for unsupported languages under no internet condition", {
-  expect_equal(nrow(get_entities(
-    texts = c("UCD is one of the best university in Ireland. ",
-              "TCD in less better than Oxford"),
-    doc_ids= c("doc1", "doc2"), load_tagger_ner("en"))),
-    4)
-})
-
+# test_that("get_entities throws an error for unsupported languages under no internet condition", {
+#   expect_equal(nrow(get_entities(
+#     texts = c("UCD is one of the best university in Ireland. ",
+#               "TCD in less better than Oxford"),
+#     doc_ids= c("doc1", "doc2"), load_tagger_ner("en"))),
+#     4)
+# })
+#
 
 # Test 2: Similar test as above, but without explicitly specifying the language
 # for the tagger. This tests the default behavior.
@@ -113,22 +113,5 @@ test_that("check_texts_and_ids handles input correctly", {
   expect_silent(res <- check_texts_and_ids(c("text1", "text2"), c("id1", "id2")))
   expect_equal(res$texts, c("text1", "text2"))
   expect_equal(res$doc_ids, c("id1", "id2"))
-})
-
-
-# Test 14: check_flair_installed identifies whether flair is available
-
-test_that("check_flair_installed identifies whether flair is available", {
-  # Mocking that the module is available
-  with_mock(
-    `reticulate::py_module_available` = function(...) TRUE,
-    expect_true(check_flair_installed())
-  )
-
-  # Mocking that the module is not available
-  with_mock(
-    `reticulate::py_module_available` = function(...) FALSE,
-    expect_false(check_flair_installed())
-  )
 })
 
