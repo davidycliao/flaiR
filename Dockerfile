@@ -11,12 +11,11 @@ RUN apt-get update && apt-get install -y \
     libssl-dev \
     libxml2-dev
 
-# 創建並激活虛擬環境
+# 創建虛擬環境
 RUN python3 -m venv /opt/venv
-ENV PATH="/opt/venv/bin:$PATH"
 
-# 在虛擬環境中安裝 Flair
-RUN /opt/venv/bin/pip install --no-cache-dir flair
+# 在虛擬環境中安裝 Flair (注意這裡改用完整路徑)
+RUN /opt/venv/bin/pip install flair
 
 # 安裝 R 依賴項
 RUN R -e "install.packages('remotes')"
