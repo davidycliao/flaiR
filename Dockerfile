@@ -1,15 +1,22 @@
 FROM r-base:latest
 LABEL maintainer="Yen-Chieh Liao <davidycliao@gmail.com>"
+
 # 安裝系統依賴
 RUN apt-get update && apt-get install -y \
     python3 \
     python3-pip \
+    python3-venv \
+    python3-full \
     libcurl4-openssl-dev \
     libssl-dev \
     libxml2-dev
 
-# 安裝 Python Flair NLP
-RUN pip3 install flair
+# 創建並啟用虛擬環境
+RUN python3 -m venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
+
+# 在虛擬環境中安裝 Python Flair NLP
+RUN pip3 install --no-cache-dir flair
 
 # 安裝 R 依賴項
 RUN R -e "install.packages('remotes')"
