@@ -4,55 +4,45 @@
 \alias{predict_label}
 \title{Predict Text Label Using Flair Classifier}
 \usage{
-predict_label(text, classifier, threshold_score = NULL, threshold = FALSE)
+predict_label(text, classifier, sentence = NULL)
 }
 \arguments{
 \item{text}{A character string containing the text to be labeled}
 
 \item{classifier}{A Flair TextClassifier object for making predictions}
 
-\item{threshold_score}{Numeric value between 0 and 1 representing the confidence
-threshold for label classification. Defaults to 0.5 if not specified}
-
-\item{threshold}{Logical indicating whether to apply the threshold_score to
-adjust predictions to NEUTRAL. Defaults to FALSE}
+\item{sentence}{Optional Flair Sentence object. If NULL, one will be created from text}
 }
 \value{
-A list containing the following elements:
+A list containing:
 \describe{
-\item{label}{Character string of the final predicted label (AGAINST/FAVOR/NEUTRAL)}
-\item{score}{Numeric confidence score from the classifier}
-\item{token_number}{Integer count of tokens in the input text}
-\item{threshold_score}{Numeric value of the threshold used}
-\item{original_label}{Character string of the classifier's original prediction
-before thresholding}
+\item{label}{Character string of predicted label}
+\item{score}{Numeric confidence score from classifier}
+\item{token_number}{Integer count of tokens in input text}
 }
 }
 \description{
-This function predicts the label of input text using a Flair classifier,
-with options for confidence thresholding to adjust predictions to NEUTRAL.
-}
-\details{
-The function will throw an error if the classifier is NULL or not a
-Flair TextClassifier.
+Predict Text Label Using Flair Classifier
 }
 \examples{
 \dontrun{
-# Load a pre-trained classifier
-classifier <- flair$models$TextClassifier$load('stance-classifier')
-
-# Predict label without thresholding
+# Example 1: Using text input
+classifier <- flair_models()$TextClassifier$load('stance-classifier')
 result1 <- predict_label(
   text = "I strongly support this policy",
   classifier = classifier
 )
 
-# Predict with custom threshold
+# Example 2: Using pre-created and tagged sentence
+sent <- Sentence("I love Berlin and New York.")
+tagger <- flair_models()$SequenceTagger$load('pos')
+tagger$predict(sent)
+print(sent)  # Shows tokens with POS tags
+
 result2 <- predict_label(
-  text = "I somewhat agree with the proposal",
+  text = NULL,
   classifier = classifier,
-  threshold_score = 0.7,
-  threshold = TRUE
+  sentence = sent
 )
 }
 

@@ -1364,7 +1364,6 @@ old_text <- map(cc_muller_old$text, Sentence)
 old_labels <- as.character(cc_muller_old$class)
 
 old_text <- map2(old_text, old_labels, ~ {
-   
   .x$add_label("classification", .y)
   .x
 })
@@ -1508,7 +1507,51 @@ After fine-tuning for 1 epoch, the model showed improved performance on the same
 
 More R tutorial and documentation see [here](https://github.com/davidycliao/flaiR).
 
+## Using Your Own Fine-tuned Model in flaiR
 
+This seciton demonstrates how to utilize your custom fine-tuned model in flaiR for text classification tasks. Let's explore this process step by step.
+
+__Setting Up Your Environment__
+
+First, we need to load the flaiR package and prepare our model:
+
+
+```{r}
+library(flaiR)
+classifier <- flair_models()$TextClassifier$load('vignettes/inst/new-muller-campaign-communication/best-model.pt')
+```
+
+It's important to verify your model's compatibility with `$model_card`. You can check this by examining the version requirements:
+
+```{r}
+print(classifier$model_card)
+
+```
+
+```{r}
+# Check required versions
+print(classifier$model_card$transformers_version)  # Required transformers version
+print(classifier$model_card$flair_version)         # Required Flair version
+```
+
+__Making Predictions__
+
+To make predictions, we first need to prepare our text by creating a Sentence object. This is a key component in Flair's architecture that handles text processing:
+
+```{r}
+# Get the Sentence class from flaiR
+Sentence <- flair_data()$Sentence
+
+# Create a Sentence object with your text
+sentence <- Sentence("And to boost the housing we need, we will start to build a new generation of garden cities.")
+
+# Make prediction
+classifier$predict(sentence)
+
+# Access prediction results
+prediction <- sentence$labels[[1]]$value  # Get predicted label
+confidence <- sentence$labels[[1]]$score  # Get confidence score
+```
 
 &nbsp;
 
