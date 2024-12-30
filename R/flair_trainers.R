@@ -1,7 +1,7 @@
 #' @title Import flair.trainers Module in R
 #'
 #' @description This flair_trainers() provides R users with access to Flair's
-#' ModelTrainer Python class using the {reticulate} package. The `ModelTrainer`
+#' ModelTrainer Python class using the reticulate package. The `ModelTrainer`
 #' class offers the following main methods:
 #' \itemize{
 #'   \item **train**: Trains a given model. Parameters include the corpus

@@ -52,7 +52,7 @@ in some processing step. Default is FALSE.}
 A Flair TransformerWordEmbeddings in Python class.
 }
 \description{
-This function interfaces with Python via {reticulate} to create
+This function interfaces with Python via reticulate to create
 a \code{TransformerWordEmbeddings} object object from the flair.embeddings module.
 }
 \details{

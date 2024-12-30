@@ -1,8 +1,8 @@
 FROM r-base:latest
 LABEL maintainer="Yen-Chieh Liao <davidycliao@gmail.com>"
+LABEL org.opencontainers.image.description="flaiR: An R Docker Image for Natural Language Processing with Flair. This image includes R, Python with Flair NLP library, and essential dependencies for text analysis. Supports both standard NER and OntoNotes models, with batch processing capabilities."
 
 
-# 安裝系統依賴
 RUN apt-get update && apt-get install -y \
     python3 \
     python3-pip \

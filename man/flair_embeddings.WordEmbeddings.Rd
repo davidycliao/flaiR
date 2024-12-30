@@ -13,7 +13,7 @@ flair_embeddings.WordEmbeddings(embeddings = "glove")
 A Flair WordEmbeddings class.
 }
 \description{
-This function interfaces with Python via {reticulate} to create a \code{WordEmbeddings}
+This function interfaces with Python via reticulate to create a \code{WordEmbeddings}
 object using the Flair library. Users select which pre-trained embeddings to load
 by providing the appropriate ID string. Typically, a two-letter language code initializes
 an embedding (e.g., 'en' for English, 'de' for German). By default, this loads FastText embeddings

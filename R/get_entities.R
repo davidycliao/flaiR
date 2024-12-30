@@ -26,6 +26,7 @@ check_tagger <- function(tagger) {
 
   return(TRUE)
 }
+
 #' @title Extract Named Entities from Texts with Batch Processing
 #'
 #' @description This function processes texts in batches and extracts named entities
@@ -61,57 +62,17 @@ check_tagger <- function(tagger) {
 #'   extracted. Only included when show.text_id = TRUE.}
 #'   \item{entity}{Character. The actual named entity text that was extracted.
 #'   Will be NA if no entity was found.}
-#'   \item{tag}{Character. The category of the named entity. Available tags depend on
-#'   the model used:
-#'   \itemize{
-#'     \item{Standard NER tags:}
-#'     \itemize{
-#'       \item{PERSON: Names of people}
-#'       \item{ORG: Organizations}
-#'       \item{LOC: Locations}
-#'       \item{MISC: Miscellaneous entities}
-#'     }
-#'     \item{OntoNotes tags:}
-#'     \itemize{
-#'       \item{PERSON: People, including fictional characters}
-#'       \item{ORG: Companies, agencies, institutions}
-#'       \item{GPE: Countries, cities, states}
-#'       \item{LOC: Non-GPE locations, mountains, water bodies}
-#'       \item{DATE: Absolute or relative dates}
-#'       \item{TIME: Times of day}
-#'       \item{MONEY: Monetary values}
-#'       \item{PERCENT: Percentage values}
-#'       \item{CARDINAL: Numerals}
-#'       \item{ORDINAL: Ordinal numbers}
-#'       \item{NORP: Nationalities, religious, or political groups}
-#'       \item{FAC: Buildings, airports, highways, bridges}
-#'       \item{WORK_OF_ART: Titles of books, songs, etc.}
-#'       \item{LAW: Named documents made into laws}
-#'       \item{LANGUAGE: Named languages}
-#'     }
-#'   }}
-#' }
-#'
-#' @section Tag Format:
-#' All tags use the BIOES (Begin, Inside, Outside, End, Single) scheme:
-#' \itemize{
-#'   \item{B-: Beginning of multi-token entity (e.g., B-PERSON in "John Smith")}
-#'   \item{I-: Inside of multi-token entity}
-#'   \item{O: Outside (not part of any entity)}
-#'   \item{E-: End of multi-token entity}
-#'   \item{S-: Single token entity (e.g., S-LOC in "Paris")}
+#'   \item{tag}{Character. The category of the named entity.}
+#'   \item{score}{Numeric. Confidence score of the prediction.}
 #' }
 #'
 #' @examples
 #' \dontrun{
 #' library(reticulate)
-#' library(fliaR)
+#' library(flaiR)
 #'
 #' # Using standard NER model
 #' tagger_std <- load_tagger_ner('ner')
-#'
-#' # Using OntoNotes model
-#' tagger_onto <- load_tagger_ner('flair/ner-english-ontonotes')
 #'
 #' texts <- c(
 #'   "John Smith works at Google in New York.",
@@ -119,37 +80,23 @@ check_tagger <- function(tagger) {
 #' )
 #' doc_ids <- c("doc1", "doc2")
 #'
-#' # Process with standard NER
-#' results_std <- get_entities(
+#' results <- get_entities(
 #'   texts = texts,
 #'   doc_ids = doc_ids,
 #'   tagger = tagger_std,
 #'   batch_size = 2,
 #'   verbose = TRUE
 #' )
-#'
-#' # Process with OntoNotes model
-#' results_onto <- get_entities(
-#'   texts = texts,
-#'   doc_ids = doc_ids,
-#'   tagger = tagger_onto,
-#'   batch_size = 2,
-#'   verbose = TRUE
-#' )
-#'
-#' # Filter specific entity types
-#' persons <- results_onto[grepl("PERSON", tag)]
-#' locations <- results_onto[grepl("LOC|GPE", tag)]
-#' dates <- results_onto[grepl("DATE", tag)]
 #' }
 #'
-#' @importFrom data.table data.table rbindlist
+#' @importFrom data.table data.table rbindlist :=
 #' @importFrom reticulate import
-#' @importFrom data.table :=
 #' @export
 get_entities <- function(texts, doc_ids = NULL, tagger, show.text_id = FALSE,
                          gc.active = FALSE, batch_size = 5, device = "cpu",
                          verbose = FALSE) {
+  # 声明所有会用到的变量
+  text_id <- entity <- tag <- score <- NULL
 
   if (verbose) {
     message("Starting entity extraction process...")
@@ -222,31 +169,30 @@ get_entities <- function(texts, doc_ids = NULL, tagger, show.text_id = FALSE,
 
       if (is.na(text) || is.na(doc_id)) {
         if (verbose) message("Skipping NA text or doc_id")
-        return(data.table(
-          doc_id = NA,
-          entity = NA,
-          tag = NA,
-          score = NA
+        return(data.table::data.table(
+          doc_id = NA_character_,
+          entity = NA_character_,
+          tag = NA_character_,
+          score = NA_real_
         ))
       }
 
-      # Error handling for sentence prediction
       tryCatch({
         sentence <- Sentence(text)
         tagger$predict(sentence)
         entities <- sentence$get_spans("ner")
 
         if (length(entities) == 0) {
-          return(data.table(
+          return(data.table::data.table(
             doc_id = doc_id,
-            entity = NA,
-            tag = NA,
-            score = NA
+            entity = NA_character_,
+            tag = NA_character_,
+            score = NA_real_
           ))
         }
 
-        # Create data table with entity information using vapply
-        dt <- data.table(
+        # Create data table with entity information
+        dt <- data.table::data.table(
           doc_id = rep(doc_id, length(entities)),
           entity = vapply(entities, function(e) e$text, character(1)),
           tag = vapply(entities, function(e) e$tag, character(1)),
@@ -254,17 +200,17 @@ get_entities <- function(texts, doc_ids = NULL, tagger, show.text_id = FALSE,
         )
 
         if (isTRUE(show.text_id)) {
-          dt[, text_id := text]
+          dt[, "text_id" := text]
         }
 
         return(dt)
       }, error = function(e) {
         warning(sprintf("Error processing text %d: %s", i, e$message))
-        return(data.table(
+        return(data.table::data.table(
           doc_id = doc_id,
-          entity = NA,
-          tag = NA,
-          score = NA
+          entity = NA_character_,
+          tag = NA_character_,
+          score = NA_real_
         ))
       })
     })

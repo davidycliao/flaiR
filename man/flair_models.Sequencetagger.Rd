@@ -11,7 +11,7 @@ A Python module (\code{SequenceTagger}) from Flair, which can be utilized to loa
 and use sequence tagging models.
 }
 \description{
-This function utilizes the {reticulate} package to import the \code{SequenceTagger}s
+This function utilizes the reticulate package to import the \code{SequenceTagger}s
 from Flair's models in Python, enabling interaction with Flair's sequence
 tagging models in an R environment.
 }

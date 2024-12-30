@@ -2,7 +2,7 @@
 % Please edit documentation in R/flair_loaders.R
 \name{load_tagger_pos}
 \alias{load_tagger_pos}
-\title{Load Flair POS Tagger}
+\title{Load POS (Part-of-Speech) Tagger Model}
 \usage{
 load_tagger_pos(model_name = "pos-fast", show_tags = TRUE)
 }
@@ -12,40 +12,11 @@ Default is "pos-fast".}
 
 \item{show_tags}{Logical, whether to display the tag dictionary.
 Default is TRUE.}
-
-\item{language}{A character string indicating the desired language model. If \code{NULL},
-the function will default to the 'pos-fast' model. Supported language models include:
-\itemize{
-\item "pos" - General POS tagging
-\item "pos-fast" - Faster POS tagging
-\item "upos" - Universal POS tagging
-\item "upos-fast" - Faster Universal POS tagging
-\item "pos-multi" - Multi-language POS tagging
-\item "pos-multi-fast" - Faster Multi-language POS tagging
-\item "ar-pos" - Arabic POS tagging
-\item "de-pos" - German POS tagging
-\item "de-pos-tweets" - German POS tagging for tweets
-\item "da-pos" - Danish POS tagging
-\item "ml-pos" - Malayalam POS tagging
-\item "ml-upos" - Malayalam Universal POS tagging
-\item "pt-pos-clinical" - Clinical Portuguese POS tagging
-\item "pos-ukrainian" - Ukrainian POS tagging
-}}
 }
 \value{
-A Flair POS tagger model corresponding to the specified (or default) language.
-
 A Flair tagger model object for POS tagging
 }
 \description{
-This function loads the POS (part-of-speech) tagger model for a specified language
-using the Flair library. If no language is specified, it defaults to 'pos-fast'.
-
 Loads a Part-of-Speech tagging model from Flair and displays
 its tag dictionary in organized categories.
-}
-\examples{
-\dontrun{
-tagger <- load_tagger_pos("pos-fast")
-}
 }
