@@ -9,10 +9,12 @@ RUN apt-get update && apt-get install -y \
     libcurl4-openssl-dev \
     libssl-dev \
     gdebi-core \
-    wget \  # 添加 wget
-    && wget https://download2.rstudio.org/server/bionic/amd64/rstudio-server-2023.12.0-369-amd64.deb \
-    && gdebi -n rstudio-server-2023.12.0-369-amd64.deb \
-    && rm rstudio-server-*.deb  # 清理安装文件
+    wget
+
+# 安装 RStudio Server
+RUN wget https://download2.rstudio.org/server/bionic/amd64/rstudio-server-2023.12.0-369-amd64.deb && \
+    gdebi -n rstudio-server-2023.12.0-369-amd64.deb && \
+    rm rstudio-server-*.deb
 
 # 创建并使用 Python 虚拟环境
 RUN python3 -m venv /opt/venv
