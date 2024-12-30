@@ -1,16 +1,30 @@
-FROM rocker/r-ver:latest
+FROM r-base:latest
+LABEL maintainer="Yen-Chieh Liao <davidycliao@gmail.com>"
 
-# 系统依赖 - 只安装必要的
+# dependencies
 RUN apt-get update && apt-get install -y \
-    python3-minimal \
+    python3 \
     python3-pip \
+    python3-venv \
+    python3-full \
     libcurl4-openssl-dev \
-    libssl-dev
+    libssl-dev \
+    libxml2-dev \
+    libfontconfig1-dev \
+    libharfbuzz-dev \
+    libfribidi-dev \
+    libfreetype6-dev \
+    libpng-dev \
+    libtiff5-dev \
+    libjpeg-dev
 
-# Python 安装
-RUN pip3 install --no-cache-dir flair
+# creation of env
+RUN python3 -m venv /opt/venv
 
-# R 包安装 - 只安装核心依赖
+# Flair
+RUN /opt/venv/bin/pip install flair
+
+# CRAN mirror
 RUN R -e "install.packages(c('remotes', 'reticulate'))" && \
     R -e "remotes::install_github('davidycliao/flaiR', dependencies = FALSE)"
 
