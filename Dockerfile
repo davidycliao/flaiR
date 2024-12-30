@@ -29,8 +29,8 @@ RUN R -e "install.packages(c('knitr', 'rmarkdown', 'lsa', 'purrr', 'jsonlite', '
 COPY . /usr/src/my_pkg
 WORKDIR /usr/src/my_pkg
 
-# 安裝 R 套件
-RUN R -e "remotes::install_local(force = TRUE)"
+# 直接從 GitHub 安裝 flaiR
+RUN R -e "remotes::install_github('davidycliao/flaiR', force = TRUE)"
 
 # 清理不必要的文件
 RUN rm -rf /usr/src/my_pkg
