@@ -19,6 +19,7 @@ RUN /opt/venv/bin/pip install flair
 
 # 先安裝 remotes 包
 RUN R -e "install.packages('remotes', repos='https://cloud.r-project.org/')"
+RUN R -e "remotes::install_local(force = TRUE)"
 
 # 安裝其他 R 依賴項
 RUN R -e "install.packages(c('data.table', 'reticulate', 'curl', 'attempt', 'htmltools', 'stringr'), repos='https://cloud.r-project.org/')"
