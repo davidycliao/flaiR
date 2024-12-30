@@ -1,7 +1,7 @@
 FROM r-base:latest
 LABEL maintainer="Yen-Chieh Liao <davidycliao@gmail.com>"
 
-# 系统依赖
+# dependencies
 RUN apt-get update && apt-get install -y \
     python3 \
     python3-pip \
@@ -18,16 +18,15 @@ RUN apt-get update && apt-get install -y \
     libtiff5-dev \
     libjpeg-dev
 
-# 创建虚拟环境
+# creation of env
 RUN python3 -m venv /opt/venv
 
-# 安装 Flair
+# Flair
 RUN /opt/venv/bin/pip install flair
 
-# 设置 CRAN mirror
+# CRAN mirror
 RUN echo "options(repos = c(CRAN = 'https://cloud.r-project.org'))" >> /usr/lib/R/etc/Rprofile.site
 
-# 分阶段安装 R 包
 RUN R -e "install.packages('remotes')"
 RUN R -e "install.packages(c('httr', 'bslib'), dependencies=TRUE)"
 RUN R -e "install.packages(c('data.table', 'reticulate', 'curl', 'attempt', 'htmltools', 'stringr'), dependencies=TRUE)"
