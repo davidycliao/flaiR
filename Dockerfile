@@ -23,8 +23,12 @@ RUN R -e "install.packages(c('remotes', \
     'knitr', 'rmarkdown', 'lsa', 'purrr', 'jsonlite', 'ggplot2', 'plotly', 'testthat'), \
     repos='https://cloud.r-project.org/')"
 
-# 從 GitHub 安裝 flaiR
-RUN R -e "remotes::install_github('davidycliao/flaiR', force = TRUE)"
+# 複製你的 R 包源碼到容器中
+COPY . /pkg
+WORKDIR /pkg
+
+# 從本地安裝套件
+RUN R -e "remotes::install_local('/pkg', force = TRUE)"
 
 # 設定預設命令
 CMD ["R"]
