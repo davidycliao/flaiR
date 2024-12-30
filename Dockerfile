@@ -1,6 +1,6 @@
 FROM rocker/r-ver:latest
 
-# 安装系统依赖和 RStudio Server
+# 安装系统依赖
 RUN apt-get update && apt-get install -y \
     python3-minimal \
     python3-pip \
@@ -12,8 +12,8 @@ RUN apt-get update && apt-get install -y \
     wget
 
 # 安装 RStudio Server
-RUN wget https://download2.rstudio.org/server/bionic/amd64/rstudio-server-2023.12.0-369-amd64.deb && \
-    gdebi -n rstudio-server-2023.12.0-369-amd64.deb && \
+RUN wget https://download2.rstudio.org/server/jammy/amd64/rstudio-server-2023.12.1-402-amd64.deb && \
+    gdebi -n rstudio-server-2023.12.1-402-amd64.deb && \
     rm rstudio-server-*.deb
 
 # 创建并使用 Python 虚拟环境
