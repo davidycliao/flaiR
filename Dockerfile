@@ -1,6 +1,5 @@
 FROM rocker/r-ver:latest
 
-
 # 安装系统依赖和 RStudio Server
 RUN apt-get update && apt-get install -y \
     python3-minimal \
@@ -10,8 +9,10 @@ RUN apt-get update && apt-get install -y \
     libcurl4-openssl-dev \
     libssl-dev \
     gdebi-core \
+    wget \  # 添加 wget
     && wget https://download2.rstudio.org/server/bionic/amd64/rstudio-server-2023.12.0-369-amd64.deb \
-    && gdebi -n rstudio-server-2023.12.0-369-amd64.deb
+    && gdebi -n rstudio-server-2023.12.0-369-amd64.deb \
+    && rm rstudio-server-*.deb  # 清理安装文件
 
 # 创建并使用 Python 虚拟环境
 RUN python3 -m venv /opt/venv
@@ -27,7 +28,7 @@ RUN R -e "install.packages(c('remotes', 'reticulate'))" && \
 # 暴露 RStudio Server 端口
 EXPOSE 8787
 
-# 设置用户和密码
+# 创建用户
 ENV USER=rstudio
 ENV PASSWORD=rstudio
 
