@@ -33,9 +33,11 @@
 #' )
 #' }
 #'
-#' @import flaiR
+#' @importFrom reticulate import
 #' @export
 predict_label <- function(text, classifier, sentence = NULL) {
+  # Import Sentence class from flair
+  Sentence <- reticulate::import("flair")$data$Sentence
 
   # Check if classifier is valid
   if (is.null(classifier) || !isTRUE(class(classifier)[1] == "flair.models.text_classification_model.TextClassifier")) {
@@ -64,7 +66,6 @@ predict_label <- function(text, classifier, sentence = NULL) {
     if (!inherits(sentence, "flair.data.Sentence")) {
       stop("Invalid sentence object. Must be a Flair Sentence instance.")
     }
-
     if (!("tokens" %in% names(sentence)) || length(sentence$tokens) == 0) {
       stop("Invalid sentence object: No tokens found.")
     }
