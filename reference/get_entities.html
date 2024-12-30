@@ -150,54 +150,22 @@ extracted. Only included when show.text_id = TRUE.</p></dd>
 Will be NA if no entity was found.</p></dd>
 
 <dt>tag</dt>
-<dd><p>Character. The category of the named entity. Available tags depend on
-the model used:</p><ul><li><p>Standard NER tags:</p><ul><li><p>PERSON: Names of people</p></li>
-<li><p>ORG: Organizations</p></li>
-<li><p>LOC: Locations</p></li>
-<li><p>MISC: Miscellaneous entities</p></li>
-</ul></li>
-<li><p>OntoNotes tags:</p><ul><li><p>PERSON: People, including fictional characters</p></li>
-<li><p>ORG: Companies, agencies, institutions</p></li>
-<li><p>GPE: Countries, cities, states</p></li>
-<li><p>LOC: Non-GPE locations, mountains, water bodies</p></li>
-<li><p>DATE: Absolute or relative dates</p></li>
-<li><p>TIME: Times of day</p></li>
-<li><p>MONEY: Monetary values</p></li>
-<li><p>PERCENT: Percentage values</p></li>
-<li><p>CARDINAL: Numerals</p></li>
-<li><p>ORDINAL: Ordinal numbers</p></li>
-<li><p>NORP: Nationalities, religious, or political groups</p></li>
-<li><p>FAC: Buildings, airports, highways, bridges</p></li>
-<li><p>WORK_OF_ART: Titles of books, songs, etc.</p></li>
-<li><p>LAW: Named documents made into laws</p></li>
-<li><p>LANGUAGE: Named languages</p></li>
-</ul></li>
-</ul></dd>
+<dd><p>Character. The category of the named entity.</p></dd>
+
+<dt>score</dt>
+<dd><p>Numeric. Confidence score of the prediction.</p></dd>
 
 
 </dl></div>
-    <div class="section level2">
-    <h2 id="tag-format">Tag Format<a class="anchor" aria-label="anchor" href="#tag-format"></a></h2>
-
-
-<p>All tags use the BIOES (Begin, Inside, Outside, End, Single) scheme:</p><ul><li><p>B-: Beginning of multi-token entity (e.g., B-PERSON in "John Smith")</p></li>
-<li><p>I-: Inside of multi-token entity</p></li>
-<li><p>O: Outside (not part of any entity)</p></li>
-<li><p>E-: End of multi-token entity</p></li>
-<li><p>S-: Single token entity (e.g., S-LOC in "Paris")</p></li>
-</ul></div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rstudio.github.io/reticulate/" class="external-link">reticulate</a></span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">fliaR</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://davidycliao.github.io/flaiR">flaiR</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Using standard NER model</span></span></span>
 <span class="r-in"><span><span class="va">tagger_std</span> <span class="op">&lt;-</span> <span class="fu"><a href="load_tagger_ner.html">load_tagger_ner</a></span><span class="op">(</span><span class="st">'ner'</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Using OntoNotes model</span></span></span>
-<span class="r-in"><span><span class="va">tagger_onto</span> <span class="op">&lt;-</span> <span class="fu"><a href="load_tagger_ner.html">load_tagger_ner</a></span><span class="op">(</span><span class="st">'flair/ner-english-ontonotes'</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">texts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  <span class="st">"John Smith works at Google in New York."</span>,</span></span>
@@ -205,28 +173,13 @@ the model used:</p><ul><li><p>Standard NER tags:</p><ul><li><p>PERSON: Names of 
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">doc_ids</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"doc1"</span>, <span class="st">"doc2"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Process with standard NER</span></span></span>
-<span class="r-in"><span><span class="va">results_std</span> <span class="op">&lt;-</span> <span class="fu">get_entities</span><span class="op">(</span></span></span>
+<span class="r-in"><span><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu">get_entities</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  texts <span class="op">=</span> <span class="va">texts</span>,</span></span>
 <span class="r-in"><span>  doc_ids <span class="op">=</span> <span class="va">doc_ids</span>,</span></span>
 <span class="r-in"><span>  tagger <span class="op">=</span> <span class="va">tagger_std</span>,</span></span>
 <span class="r-in"><span>  batch_size <span class="op">=</span> <span class="fl">2</span>,</span></span>
 <span class="r-in"><span>  verbose <span class="op">=</span> <span class="cn">TRUE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Process with OntoNotes model</span></span></span>
-<span class="r-in"><span><span class="va">results_onto</span> <span class="op">&lt;-</span> <span class="fu">get_entities</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  texts <span class="op">=</span> <span class="va">texts</span>,</span></span>
-<span class="r-in"><span>  doc_ids <span class="op">=</span> <span class="va">doc_ids</span>,</span></span>
-<span class="r-in"><span>  tagger <span class="op">=</span> <span class="va">tagger_onto</span>,</span></span>
-<span class="r-in"><span>  batch_size <span class="op">=</span> <span class="fl">2</span>,</span></span>
-<span class="r-in"><span>  verbose <span class="op">=</span> <span class="cn">TRUE</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Filter specific entity types</span></span></span>
-<span class="r-in"><span><span class="va">persons</span> <span class="op">&lt;-</span> <span class="va">results_onto</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"PERSON"</span>, <span class="va">tag</span><span class="op">)</span><span class="op">]</span></span></span>
-<span class="r-in"><span><span class="va">locations</span> <span class="op">&lt;-</span> <span class="va">results_onto</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"LOC|GPE"</span>, <span class="va">tag</span><span class="op">)</span><span class="op">]</span></span></span>
-<span class="r-in"><span><span class="va">dates</span> <span class="op">&lt;-</span> <span class="va">results_onto</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grepl</a></span><span class="op">(</span><span class="st">"DATE"</span>, <span class="va">tag</span><span class="op">)</span><span class="op">]</span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
