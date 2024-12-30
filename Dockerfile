@@ -1,31 +1,34 @@
-FROM r-base:latest
-LABEL maintainer="Yen-Chieh Liao <davidycliao@gmail.com>"
+FROM rocker/r-ver:latest
 
-# dependencies
+# 安装系统依赖和 RStudio Server
 RUN apt-get update && apt-get install -y \
-    python3 \
+    python3-minimal \
     python3-pip \
     python3-venv \
     python3-full \
     libcurl4-openssl-dev \
     libssl-dev \
-    libxml2-dev \
-    libfontconfig1-dev \
-    libharfbuzz-dev \
-    libfribidi-dev \
-    libfreetype6-dev \
-    libpng-dev \
-    libtiff5-dev \
-    libjpeg-dev
+    gdebi-core \
+    && wget https://download2.rstudio.org/server/bionic/amd64/rstudio-server-2023.12.0-369-amd64.deb \
+    && gdebi -n rstudio-server-2023.12.0-369-amd64.deb
 
-# creation of env
+# 创建并使用 Python 虚拟环境
 RUN python3 -m venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
 
-# Flair
-RUN /opt/venv/bin/pip install flair
+# Python 安装
+RUN /opt/venv/bin/pip install --no-cache-dir flair
 
-# CRAN mirror
+# R 包安装
 RUN R -e "install.packages(c('remotes', 'reticulate'))" && \
     R -e "remotes::install_github('davidycliao/flaiR', dependencies = FALSE)"
 
-CMD ["R"]
+# 暴露 RStudio Server 端口
+EXPOSE 8787
+
+# 设置用户和密码
+ENV USER=rstudio
+ENV PASSWORD=rstudio
+
+# 启动 RStudio Server
+CMD ["/usr/lib/rstudio-server/bin/rserver", "--server-daemonize=0"]
