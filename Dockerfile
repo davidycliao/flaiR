@@ -14,13 +14,15 @@ RUN apt-get update && apt-get install -y \
 # 創建虛擬環境
 RUN python3 -m venv /opt/venv
 
-# 在虛擬環境中安裝 Flair (注意這裡改用完整路徑)
+# 在虛擬環境中安裝 Flair
 RUN /opt/venv/bin/pip install flair
 
-# 安裝 R 依賴項
-RUN R -e "install.packages('remotes')"
-RUN R -e "install.packages(c('data.table', 'reticulate', 'curl', 'attempt', 'htmltools', 'stringr'))"
-RUN R -e "install.packages(c('knitr', 'rmarkdown', 'lsa', 'purrr', 'jsonlite', 'ggplot2', 'plotly', 'testthat'))"
+# 先安裝 remotes 包
+RUN R -e "install.packages('remotes', repos='https://cloud.r-project.org/')"
+
+# 安裝其他 R 依賴項
+RUN R -e "install.packages(c('data.table', 'reticulate', 'curl', 'attempt', 'htmltools', 'stringr'), repos='https://cloud.r-project.org/')"
+RUN R -e "install.packages(c('knitr', 'rmarkdown', 'lsa', 'purrr', 'jsonlite', 'ggplot2', 'plotly', 'testthat'), repos='https://cloud.r-project.org/')"
 
 # 複製 R 套件到容器中
 COPY . /usr/src/my_pkg
