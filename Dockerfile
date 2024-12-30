@@ -1,13 +1,7 @@
 FROM r-base:latest
 LABEL maintainer="Yen-Chieh Liao <davidycliao@gmail.com>"
-<<<<<<< Updated upstream
-
-
-# 安裝系統依賴
-=======
 
 # 系统依赖
->>>>>>> Stashed changes
 RUN apt-get update && apt-get install -y \
     python3 \
     python3-pip \

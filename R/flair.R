@@ -57,7 +57,7 @@
 #'}
 #' @return An object that represents the Flair module from Python.
 #'
-#' @details This function relies on the `reticulate` package to import and
+#' @details This function relies on the reticulate package to import and
 #' use the Flair module from Python. Ensure you have the Flair Python library
 #' installed in the Python environment being used.
 #'

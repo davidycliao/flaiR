@@ -38,7 +38,7 @@ flair_nn <- function() {
 
 #' @title Initializing a Class for Flair Classifier
 #'
-#' @description This function interfaces with Python via the {reticulate} package
+#' @description This function interfaces with Python via the reticulate package
 #' to create a Classifier object from the Flair library.
 #'
 #' @return A Flair Classifier class instance.

@@ -66,7 +66,7 @@ contextual embeddings, etc.
 }
 }
 \details{
-This function relies on the \code{reticulate} package to import and
+This function relies on the reticulate package to import and
 use the Flair module from Python. Ensure you have the Flair Python library
 installed in the Python environment being used.
 }

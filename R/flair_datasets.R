@@ -1,6 +1,6 @@
 #' @title Access the flair_datasets Module from Flair
 #'
-#' @description Utilizes the {reticulate} package to import the `flair.datasets`
+#' @description Utilizes the reticulate package to import the `flair.datasets`
 #' dataset from Flair's datasets in Python, enabling the use of this dataset in
 #' an R environment.
 #'

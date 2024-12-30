@@ -160,57 +160,6 @@ get_tagger_tags <- function(tagger) {
 }
 
 
-#' @title Load Flair POS Tagger
-#'
-#' @description This function loads the POS (part-of-speech) tagger model for a specified language
-#' using the Flair library. If no language is specified, it defaults to 'pos-fast'.
-#'
-#' @param language A character string indicating the desired language model. If `NULL`,
-#' the function will default to the 'pos-fast' model. Supported language models include:
-#' \itemize{
-#'   \item "pos" - General POS tagging
-#'   \item "pos-fast" - Faster POS tagging
-#'   \item "upos" - Universal POS tagging
-#'   \item "upos-fast" - Faster Universal POS tagging
-#'   \item "pos-multi" - Multi-language POS tagging
-#'   \item "pos-multi-fast" - Faster Multi-language POS tagging
-#'   \item "ar-pos" - Arabic POS tagging
-#'   \item "de-pos" - German POS tagging
-#'   \item "de-pos-tweets" - German POS tagging for tweets
-#'   \item "da-pos" - Danish POS tagging
-#'   \item "ml-pos" - Malayalam POS tagging
-#'   \item "ml-upos" - Malayalam Universal POS tagging
-#'   \item "pt-pos-clinical" - Clinical Portuguese POS tagging
-#'   \item "pos-ukrainian" - Ukrainian POS tagging
-#' }
-#' @return A Flair POS tagger model corresponding to the specified (or default) language.
-#'
-#' @importFrom reticulate import
-#' @export
-#' @examples
-#' \dontrun{
-#' tagger <- load_tagger_pos("pos-fast")
-#' }
-# load_tagger_pos <- function(language = NULL) {
-#   supported_lan_models <- c("pos", "pos-fast", "upos", "upos-fast",
-#                             "pos-multi", "pos-multi-fast", "ar-pos", "de-pos",
-#                             "de-pos-tweets", "da-pos", "ml-pos",
-#                             "ml-upos", "pt-pos-clinical", "pos-ukrainian")
-#
-#   if (is.null(language)) {
-#     language <- "pos-fast"
-#     message("Language is not specified. ", language, "in Flair is forceloaded. Please ensure that the internet connectivity is stable. \n")
-#   }
-#
-#   # Ensure the model is supported
-#   check_language_supported(language = language, supported_lan_models = supported_lan_models)
-#
-#   # Load the model
-#   flair <- reticulate::import("flair")
-#   Classifier <- flair$nn$Classifier
-#   tagger <- Classifier$load(language)
-# }
-
 #' @title Load POS (Part-of-Speech) Tagger Model
 #'
 #' @description Loads a Part-of-Speech tagging model from Flair and displays

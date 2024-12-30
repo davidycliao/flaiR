@@ -10,7 +10,7 @@ flair_nn.Classifier()
 A Flair Classifier class instance.
 }
 \description{
-This function interfaces with Python via the {reticulate} package
+This function interfaces with Python via the reticulate package
 to create a Classifier object from the Flair library.
 }
 \examples{

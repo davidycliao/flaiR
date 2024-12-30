@@ -53,35 +53,8 @@ entity was extracted.}
 extracted. Only included when show.text_id = TRUE.}
 \item{entity}{Character. The actual named entity text that was extracted.
 Will be NA if no entity was found.}
-\item{tag}{Character. The category of the named entity. Available tags depend on
-the model used:
-\itemize{
-\item{Standard NER tags:}
-\itemize{
-\item{PERSON: Names of people}
-\item{ORG: Organizations}
-\item{LOC: Locations}
-\item{MISC: Miscellaneous entities}
-}
-\item{OntoNotes tags:}
-\itemize{
-\item{PERSON: People, including fictional characters}
-\item{ORG: Companies, agencies, institutions}
-\item{GPE: Countries, cities, states}
-\item{LOC: Non-GPE locations, mountains, water bodies}
-\item{DATE: Absolute or relative dates}
-\item{TIME: Times of day}
-\item{MONEY: Monetary values}
-\item{PERCENT: Percentage values}
-\item{CARDINAL: Numerals}
-\item{ORDINAL: Ordinal numbers}
-\item{NORP: Nationalities, religious, or political groups}
-\item{FAC: Buildings, airports, highways, bridges}
-\item{WORK_OF_ART: Titles of books, songs, etc.}
-\item{LAW: Named documents made into laws}
-\item{LANGUAGE: Named languages}
-}
-}}
+\item{tag}{Character. The category of the named entity.}
+\item{score}{Numeric. Confidence score of the prediction.}
 }
 }
 \description{
@@ -89,28 +62,13 @@ This function processes texts in batches and extracts named entities
 using the Flair NLP library. It supports both standard NER and OntoNotes models,
 with options for batch processing and GPU acceleration.
 }
-\section{Tag Format}{
-
-All tags use the BIOES (Begin, Inside, Outside, End, Single) scheme:
-\itemize{
-\item{B-: Beginning of multi-token entity (e.g., B-PERSON in "John Smith")}
-\item{I-: Inside of multi-token entity}
-\item{O: Outside (not part of any entity)}
-\item{E-: End of multi-token entity}
-\item{S-: Single token entity (e.g., S-LOC in "Paris")}
-}
-}
-
 \examples{
 \dontrun{
 library(reticulate)
-library(fliaR)
+library(flaiR)
 
 # Using standard NER model
 tagger_std <- load_tagger_ner('ner')
-
-# Using OntoNotes model
-tagger_onto <- load_tagger_ner('flair/ner-english-ontonotes')
 
 texts <- c(
   "John Smith works at Google in New York.",
@@ -118,28 +76,13 @@ texts <- c(
 )
 doc_ids <- c("doc1", "doc2")
 
-# Process with standard NER
-results_std <- get_entities(
+results <- get_entities(
   texts = texts,
   doc_ids = doc_ids,
   tagger = tagger_std,
   batch_size = 2,
   verbose = TRUE
 )
-
-# Process with OntoNotes model
-results_onto <- get_entities(
-  texts = texts,
-  doc_ids = doc_ids,
-  tagger = tagger_onto,
-  batch_size = 2,
-  verbose = TRUE
-)
-
-# Filter specific entity types
-persons <- results_onto[grepl("PERSON", tag)]
-locations <- results_onto[grepl("LOC|GPE", tag)]
-dates <- results_onto[grepl("DATE", tag)]
 }
 
 }

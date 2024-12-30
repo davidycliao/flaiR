@@ -83,7 +83,7 @@ flair_models.TextClassifier <- function() {
 #' @title Access Flair's SequenceTagger
 #'
 #' @description
-#' This function utilizes the {reticulate} package to import the `SequenceTagger`s
+#' This function utilizes the reticulate package to import the `SequenceTagger`s
 #' from Flair's models in Python, enabling interaction with Flair's sequence
 #' tagging models in an R environment.
 #'

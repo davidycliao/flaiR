@@ -1524,7 +1524,6 @@ It's important to verify your model's compatibility with `$model_card`. You can 
 
 ```{r}
 print(classifier$model_card)
-
 ```
 
 ```{r}
@@ -1547,13 +1546,23 @@ sentence <- Sentence("And to boost the housing we need, we will start to build a
 # Make prediction
 classifier$predict(sentence)
 
-# Access prediction results
-prediction <- sentence$labels[[1]]$value  # Get predicted label
-confidence <- sentence$labels[[1]]$score  # Get confidence score
+```
+
+<u>**Access Prediction Results**</u> 
+
+Get predicted label
+```{r}
+prediction <- sentence$labels[[1]]$value
+print(prediction)
+```
+
+Get confidence score
+```{r}
+confidence <- sentence$labels[[1]]$score 
+print(confidence)
 ```
 
 &nbsp;
-
 -----
 
 

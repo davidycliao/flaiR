@@ -11,7 +11,7 @@ A Python Module(flair.trainers) object allowing access to Flair's trainers in R.
 }
 \description{
 This flair_trainers() provides R users with access to Flair's
-ModelTrainer Python class using the {reticulate} package. The \code{ModelTrainer}
+ModelTrainer Python class using the reticulate package. The \code{ModelTrainer}
 class offers the following main methods:
 \itemize{
 \item \strong{train}: Trains a given model. Parameters include the corpus

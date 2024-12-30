@@ -180,7 +180,7 @@ flair_embeddings.FlairEmbeddings <- function(embeddings_type = "news-forward") {
 #' @title Initializing a Class for Flair WordEmbeddings Class
 #'
 #' @description
-#' This function interfaces with Python via {reticulate} to create a `WordEmbeddings`
+#' This function interfaces with Python via reticulate to create a `WordEmbeddings`
 #' object using the Flair library. Users select which pre-trained embeddings to load
 #' by providing the appropriate ID string. Typically, a two-letter language code initializes
 #' an embedding (e.g., 'en' for English, 'de' for German). By default, this loads FastText embeddings
@@ -258,7 +258,7 @@ flair_embeddings.WordEmbeddings <- function(embeddings = "glove") {
 
 #' @title Initializing a Class for TransformerDocumentEmbeddings
 #'
-#' @description This function interfaces with Python via {reticulate} to
+#' @description This function interfaces with Python via reticulate to
 #' create a `flair_embeddings.TransformerDocumentEmbeddings` object from
 #' the flair.embeddings module.
 #'
@@ -342,7 +342,7 @@ flair_embeddings.TransformerDocumentEmbeddings <- function(model = "bert-base-un
 
 #' @title Initializing a Class for TransformerWordEmbeddings
 #'
-#' @description This function interfaces with Python via {reticulate} to create
+#' @description This function interfaces with Python via reticulate to create
 #' a `TransformerWordEmbeddings` object object from the flair.embeddings module.
 #'
 #' @param model A character string specifying the pre-trained model to use.
