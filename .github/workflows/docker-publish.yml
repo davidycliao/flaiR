@@ -1,78 +1,76 @@
 name: flaiR-Docker
+
 on:
-  push:
-    branches: [main, master]
-  pull_request:
-    branches: [main, master]
+ push:
+   branches: [main, master]
+ pull_request:
+   branches: [main, master]
+
+
 jobs:
-  R-CMD-check:
-    runs-on: ubuntu-latest
-    name: R-CMD-check
-    env:
-      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
-      R_KEEP_PKG_SOURCE: yes
-    steps:
-      - uses: actions/checkout@v3
-      - uses: r-lib/actions/setup-r@v2
-        with:
-          use-public-rspm: true
-      - uses: r-lib/actions/setup-pandoc@v2
-      - name: Setup Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.9'
-      - name: Install Python dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install flair
-      - name: Install R dependencies
-        run: |
-          install.packages('remotes')
-          remotes::install_github("davidycliao/flaiR", force = TRUE)
-        shell: Rscript {0}
-      - uses: r-lib/actions/setup-r-dependencies@v2
-        with:
-          extra-packages: rcmdcheck
-  docker:
-    needs: R-CMD-check
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-    steps:
-      - uses: actions/checkout@v3
-      - name: Log in to GitHub Container Registry
-        uses: docker/login-action@v2
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-      - name: Build and push FlaiR image
-        uses: docker/build-push-action@v4
-        with:
-          context: .
-          push: true
-          tags: |
-            ghcr.io/${{ github.repository_owner }}/flair:latest
-            ghcr.io/${{ github.repository_owner }}/flair:0.0.7
-          labels: |
-            org.opencontainers.image.title=flaiR
-            org.opencontainers.image.version=0.0.7
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-      - name: Build and push Basic R image
-        uses: docker/build-push-action@v4
-        with:
-          context: .
-          file: Dockerfile.basic-r
-          push: true
-          tags: |
-            ghcr.io/${{ github.repository_owner }}/flair-basic-r:latest
-            ghcr.io/${{ github.repository_owner }}/flair-basic-r:0.0.7
-          labels: |
-            org.opencontainers.image.title=flair-basic-r
-            org.opencontainers.image.version=0.0.7
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+ R-CMD-check:
+   runs-on: ubuntu-latest
+   name: R-CMD-check
+   env:
+     GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+     R_KEEP_PKG_SOURCE: yes
+   steps:
+     - uses: actions/checkout@v3
+
+     - uses: r-lib/actions/setup-r@v2
+       with:
+         use-public-rspm: true
+
+     - uses: r-lib/actions/setup-pandoc@v2
+
+     - name: Setup Python
+       uses: actions/setup-python@v2
+       with:
+         python-version: '3.9'
+
+     - name: Install Python dependencies
+       run: |
+         python -m pip install --upgrade pip
+         pip install flair
+
+     - name: Install R dependencies
+       run: |
+         install.packages('remotes')
+         remotes::install_github("davidycliao/flaiR", force = TRUE)
+       shell: Rscript {0}
+
+     - uses: r-lib/actions/setup-r-dependencies@v2
+       with:
+         extra-packages: rcmdcheck
+
+ docker:
+   needs: R-CMD-check
+   runs-on: ubuntu-latest
+   permissions:
+     contents: read
+     packages: write
+   steps:
+     - uses: actions/checkout@v3
+
+     - name: Log in to GitHub Container Registry
+       uses: docker/login-action@v2
+       with:
+         registry: ghcr.io
+         username: ${{ github.actor }}
+         password: ${{ secrets.GITHUB_TOKEN }}
+
+     - name: Set up Docker Buildx
+       uses: docker/setup-buildx-action@v2
+
+     - name: Build and push Docker image
+       uses: docker/build-push-action@v4
+       with:
+         context: .
+         push: true
+         tags: |
+           ghcr.io/${{ github.repository_owner }}/flair:latest
+         labels: |
+           org.opencontainers.image.title=flaiR
+           org.opencontainers.image.version=0.0.7
+         cache-from: type=gha
+         cache-to: type=gha,mode=max
