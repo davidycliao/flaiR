@@ -115,23 +115,18 @@ embeddings, especially for various multilingual embedding frameworks
 like GloVe and transformer-based models on Hugging Face.</p>
 </div>
 <div class="section level2">
-<h2 id="flair-installation">FlaiR Installation<a class="anchor" aria-label="anchor" href="#flair-installation"></a>
+<h2 id="flair-installation">flaiR Installation<a class="anchor" aria-label="anchor" href="#flair-installation"></a>
 </h2>
-<div class="section level3">
-<h3 id="required-software">Required Software<a class="anchor" aria-label="anchor" href="#required-software"></a>
-</h3>
+<p><strong>Required Software</strong></p>
 <ul>
 <li>Python &gt;= 3.10</li>
 <li>R &gt;= 4.2.0</li>
 <li>Rstudio</li>
 </ul>
-</div>
 <div class="section level3">
-<h3 id="installation-by-operating-system">Installation by Operating System<a class="anchor" aria-label="anchor" href="#installation-by-operating-system"></a>
+<h3 id="operating-system">Operating System<a class="anchor" aria-label="anchor" href="#operating-system"></a>
 </h3>
-<div class="section level4">
-<h4 id="macos-terminal-installation">macOS Terminal Installation<a class="anchor" aria-label="anchor" href="#macos-terminal-installation"></a>
-</h4>
+<p><strong>macOS Terminal Installation</strong></p>
 <p>Install Python 3.10 or higher.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="ex">brew</span> install python@3.10</span>
 <span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a></span>
@@ -146,11 +141,7 @@ like GloVe and transformer-based models on Hugging Face.</p>
 <span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a></span>
 <span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a><span class="co"># Install RStudio</span></span>
 <span id="cb1-13"><a href="#cb1-13" tabindex="-1"></a><span class="ex">brew</span> install <span class="at">--cask</span> rstudio</span></code></pre></div>
-</div>
-<div class="section level4">
-<h4 id="powershell-installation-for-windows">PowerShell Installation for Windows<a class="anchor" aria-label="anchor" href="#powershell-installation-for-windows"></a>
-</h4>
-<p>Install Python 3.10 or higher.</p>
+<p><strong>PowerShell for Windows</strong></p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="co"># Download Python installer from python.org and run:</span></span>
 <span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="co"># https://www.python.org/downloads/</span></span>
 <span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a></span>
@@ -163,21 +154,36 @@ like GloVe and transformer-based models on Hugging Face.</p>
 <span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a></span>
 <span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a><span class="co"># Verify R installation</span></span>
 <span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a><span class="ex">R</span> <span class="at">--version</span></span></code></pre></div>
-</div>
+<p><strong>Docker Installation &amp; Usage</strong></p>
+<ul>
+<li>Intel/AMD Processors:</li>
+</ul>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="co"># Pull and run</span></span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="ex">docker</span> pull ghcr.io/davidycliao/flair:latest</span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">-p</span> 8787:8787 ghcr.io/davidycliao/flair:latest</span></code></pre></div>
+<ul>
+<li>Apple Silicon (M1/M2 Mac):</li>
+</ul>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="co"># Pull and run with platform specification</span></span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="ex">docker</span> pull <span class="at">--platform</span> linux/amd64 ghcr.io/davidycliao/flair:latest</span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">--platform</span> linux/amd64 <span class="at">-p</span> 8787:8787 ghcr.io/davidycliao/flair:latest</span></code></pre></div>
+<p><strong>Access RStudio Server:</strong> - Open browser:
+<code>http://localhost:8787</code> - Username: <code>rstudio</code> -
+Password: <code>rstudio123</code></p>
 </div>
 <div class="section level3">
 <h3 id="r-package-installation">R Package Installation<a class="anchor" aria-label="anchor" href="#r-package-installation"></a>
 </h3>
-<p>The faiR Will:</p>
+<p>The <code>faiR</code> Will:</p>
 <ul>
 <li>Automatically check Python environment</li>
 <li>Install required Python packages (flair and its dependencies)</li>
 <li>Configure the Python-R connection</li>
 </ul>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span></span>
 <span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"davidycliao/flaiR"</span>, force <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<p><u><strong>R Version Dependencies</strong></u></p>
+<p><strong>R Version Dependencies</strong></p>
 <p>The Matrix R package corresponds to different R versions:</p>
 <ul>
 <li>R 4.4.0+: Latest Matrix package version</li>
@@ -192,16 +198,17 @@ errors, you might need the following setup:</p>
 <ul>
 <li>Install compiler tools (if needed) in the Terminal:</li>
 </ul>
-<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="ex">brew</span> install gcc</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="ex">brew</span> install gcc</span></code></pre></div>
 <ul>
 <li>Configure R compiler settings:</li>
 </ul>
-<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> ~/.R</span>
-<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="fu">touch</span> ~/.R/Makevars</span>
-<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"FC=</span><span class="va">$(</span><span class="ex">brew</span> <span class="at">--prefix</span><span class="va">)</span><span class="st">/bin/gfortran"</span> <span class="op">&gt;&gt;</span> ~/.R/Makevars</span>
-<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"F77=</span><span class="va">$(</span><span class="ex">brew</span> <span class="at">--prefix</span><span class="va">)</span><span class="st">/bin/gfortran"</span> <span class="op">&gt;&gt;</span> ~/.R/Makevars</span>
-<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"FLIBS=-L</span><span class="va">$(</span><span class="ex">brew</span> <span class="at">--prefix</span><span class="va">)</span><span class="st">/lib/gcc/current -lgfortran -lquadmath -lm"</span> <span class="op">&gt;&gt;</span> ~/.R/Makevars</span></code></pre></div>
-<p><u><strong>Python Dependencies</strong></u></p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> ~/.R</span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a><span class="fu">touch</span> ~/.R/Makevars</span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"FC=</span><span class="va">$(</span><span class="ex">brew</span> <span class="at">--prefix</span><span class="va">)</span><span class="st">/bin/gfortran"</span> <span class="op">&gt;&gt;</span> ~/.R/Makevars</span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"F77=</span><span class="va">$(</span><span class="ex">brew</span> <span class="at">--prefix</span><span class="va">)</span><span class="st">/bin/gfortran"</span> <span class="op">&gt;&gt;</span> ~/.R/Makevars</span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"FLIBS=-L</span><span class="va">$(</span><span class="ex">brew</span> <span class="at">--prefix</span><span class="va">)</span><span class="st">/lib/gcc/current -lgfortran -lquadmath -lm"</span> <span class="op">&gt;&gt;</span> ~/.R/Makevars</span></code></pre></div>
+<p><strong>Python Dependencies</strong></p>
+<div style="text-align: justify">
 <p>The following Python packages will be installed automatically by
 flaiR:</p>
 <ul>
@@ -209,24 +216,25 @@ flaiR:</p>
 <li>scipy==1.12.0</li>
 <li>gensim==4.3.2</li>
 </ul>
-<p>flaiR will automatically detect and configure your Python
-environment:</p>
+<p><code>flaiR</code> will automatically detect and configure your
+Python environment:</p>
 <ol style="list-style-type: decimal">
 <li>Checks for Python 3.10 or higher</li>
 <li>Installs required Python packages</li>
 <li>Configures R-Python interface using reticulate</li>
 </ol>
-<p>Note: You can manage Python settings in RStudio through
-<code>Tools -&gt; Global Options -&gt; Python</code>. To check your
-Python configuration, use:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<p>Note: You can manage Python settings in RStudio through <em>Tools
+-&gt; Global Options -&gt; Python</em>. To check your Python
+configuration, use:</p>
+</div>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">reticulate</span><span class="fu">::</span><span class="fu"><a href="https://rstudio.github.io/reticulate/reference/py_config.html" class="external-link">py_config</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><em>Note: Most users won’t need these additional steps as RStudio and
-R handle the dependencies automatically.</em></p>
 </div>
 <div class="section level3">
 <h3 id="recommended-configurations">Recommended Configurations<a class="anchor" aria-label="anchor" href="#recommended-configurations"></a>
 </h3>
+<p>For stable usage, we strongly recommend installing these specific
+versions.</p>
 <table class="table">
 <thead><tr class="header">
 <th>OS</th>
@@ -236,7 +244,7 @@ R handle the dependencies automatically.</em></p>
 <tbody>
 <tr class="odd">
 <td>Mac</td>
-<td>4.3.2, 4.2.0, <del>4.2.1</del>*</td>
+<td>4.3.2, 4.2.0, 4.2.1</td>
 <td>3.10.x</td>
 </tr>
 <tr class="even">
@@ -266,12 +274,13 @@ R handle the dependencies automatically.</em></p>
 </tr>
 </tbody>
 </table>
-<p><strong>Note:</strong> For Mac M1/M2 users, avoid R 4.2.1 due to
+<p><strong>Note</strong>: For Mac M1/M2 users, avoid R 4.2.1 due to
 potential gfortran compatibility issues.</p>
 </div>
 <div class="section level3">
 <h3 id="troubleshooting">Troubleshooting<a class="anchor" aria-label="anchor" href="#troubleshooting"></a>
 </h3>
+<div style="text-align: justify">
 <p>If you encounter any problems or have questions:</p>
 <ul>
 <li>Check the documentation</li>
@@ -280,6 +289,7 @@ potential gfortran compatibility issues.</p>
 forum</a>
 </li>
 </ul>
+</div>
 <p> </p>
 <hr>
 </div>
@@ -299,31 +309,46 @@ which is especially useful when dealing with large datasets, to optimize
 memory usage and performance.</p>
 <table class="table">
 <colgroup>
-<col width="17%">
-<col width="15%">
-<col width="66%">
+<col width="23%">
+<col width="14%">
+<col width="62%">
 </colgroup>
 <thead><tr class="header">
-<th><strong>Featured Functions</strong></th>
+<th><strong>Core Featured Functions</strong></th>
 <th>Loader</th>
 <th>Supported Models from Flair NLP</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td><code><a href="../reference/get_entities.html">get_entities()</a></code></td>
+<td>
+<code><a href="../reference/get_entities.html">get_entities()</a></code>, <code>get_entities_batch()</code>
+</td>
 <td><code><a href="../reference/load_tagger_ner.html">load_tagger_ner()</a></code></td>
 <td>
 <code>en</code> (English), <code>fr</code> (French), <code>da</code>
-(Danish), <code>nl</code> (Dutch), and more on Flair NLP on
-HuggingFace.</td>
+(Danish), <code>nl</code> (Dutch), and more.</td>
 </tr>
 <tr class="even">
-<td><code><a href="../reference/get_pos.html">get_pos()</a></code></td>
+<td>
+<code><a href="../reference/get_pos.html">get_pos()</a></code>, <code>get_pos_batch()</code>
+</td>
 <td><code><a href="../reference/load_tagger_pos.html">load_tagger_pos()</a></code></td>
 <td>
 <code>pos</code> (English POS), <code>fr-pos</code> (French POS),
 <code>de-pos</code> (German POS), <code>nl-pos</code> (Dutch POS), and
-more on Flair NLP on HuggingFace.</td>
+more.</td>
+</tr>
+<tr class="odd">
+<td>
+<code>get_sentiments()</code>,
+<code>get_sentiments_batch()</code>
+</td>
+<td><code>load_tagger_sentiments()</code></td>
+<td>
+<code>sentiment</code> (English) ,
+<code>sentiment-fast</code>(English) ,
+<code>de-offensive-language</code> (German offensive language detection
+model)</td>
 </tr>
 </tbody>
 </table>
