@@ -40,7 +40,7 @@ Flair is a Python library developed by [Zalando Research](https://engineering.za
 ## flaiR Installation
 
 
-__Required Software__
+### __Required Software__
 
 - Python >= 3.10
 - R >= 4.2.0
@@ -48,7 +48,7 @@ __Required Software__
 
 ### Operating System
 
-__macOS Terminal Installation__
+#### macOS Terminal Installation
 
 Install Python 3.10 or higher.
 
@@ -68,7 +68,7 @@ R --version
 brew install --cask rstudio
 ```
 
-__PowerShell for Windows__
+#### PowerShell for Windows
 
 ```bash
 # Download Python installer from python.org and run:
@@ -85,9 +85,9 @@ python --version
 R --version
 ```
 
-__Docker Installation & Usage__
+#### Docker Installation & Usage
 
-- Intel/AMD Processors:
+__Intel/AMD Processors:__
 
 ```bash
 # Pull and run
@@ -103,9 +103,14 @@ docker run --platform linux/amd64 -p 8787:8787 ghcr.io/davidycliao/flair-rstudio
 ```
 
 __Access RStudio Server:__
+
 - Open browser: `http://localhost:8787`
 - Username: `rstudio`
 - Password: `rstudio123`
+
+
+
+<img src="flaiR/vignettes/vignettes/inst/rstudio.png" alt="圖片描述" width="500"/>
 
 
 ### R Package Installation
@@ -121,7 +126,7 @@ install.packages("remotes")
 remotes::install_github("davidycliao/flaiR", force = TRUE)
 ```
 
-__R Version Dependencies__
+#### R Version Dependencies
 
 The Matrix R package corresponds to different R versions:
 
@@ -148,7 +153,7 @@ echo "F77=$(brew --prefix)/bin/gfortran" >> ~/.R/Makevars
 echo "FLIBS=-L$(brew --prefix)/lib/gcc/current -lgfortran -lquadmath -lm" >> ~/.R/Makevars
 ```
 
-__Python Dependencies__
+#### Python Dependencies
 
 <div style="text-align: justify">
 
@@ -172,7 +177,7 @@ Note: You can manage Python settings in RStudio through _Tools -> Global Options
 reticulate::py_config()
 ```
 
-### Recommended Configurations
+#### Recommended Configurations
 
 For stable usage, we strongly recommend installing these specific versions.
 
@@ -188,7 +193,7 @@ For stable usage, we strongly recommend installing these specific versions.
 __Note__: For Mac M1/M2 users, avoid R 4.2.1 due to potential gfortran compatibility issues.
 
 
-### Troubleshooting
+#### Troubleshooting
 
 <div style="text-align: justify">
 
