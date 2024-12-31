@@ -1,19 +1,66 @@
-# flaiR 0.0.7 (2024-12-26)
+# flaiR 0.0.7 (2024-12-31)
 
 <div style="text-align: justify">
 
-### _Enhancements_
 
-- Added new tutorial section for embedding extraction from Flair NLP, focusing on embedding-based regression analysis
+## Major Changes
 
-### _Function_
+This release brings significant enhancements to streamline natural language processing workflows in R, introducing Docker support and unified function interfaces.
 
-- Unified POS tagging functions: Combined get_pos() and get_pos_batch()
-- Unified entity recognition: Merged get_entities() and get_entities_batch()
-- Removed sentiment analysis functions: Deprecated get_sentiment() and get_sentiment_batch()ve get_sentiment() and get_sentimen_batch. merge get_pos and get_pos_batch& get_enetities and get_enetities_batch.
+### New Features
 
-</div>
+- Added comprehensive tutorial section for Flair NLP embedding extraction and regression analysis
+- Introduced Docker support with RStudio Server integration
+- Enhanced documentation with detailed usage examples
 
+## Installation Guide
+
+### R Package Installation
+```R
+# Install from GitHub
+remotes::install_github("davidycliao/flaiR")
+```
+
+### Docker Installation & Usage
+
+#### Intel/AMD Processors:
+
+```bash
+# Pull and run
+docker pull ghcr.io/davidycliao/flair:latest
+docker run -p 8787:8787 ghcr.io/davidycliao/flair:latest
+```
+
+#### Apple Silicon (M1/M2 Mac):
+```bash
+# Pull and run with platform specification
+docker pull --platform linux/amd64 ghcr.io/davidycliao/flair:latest
+docker run --platform linux/amd64 -p 8787:8787 ghcr.io/davidycliao/flair:latest
+```
+
+__Access RStudio Server:__
+- Open browser: http://localhost:8787
+- Username: rstudio
+- Password: rstudio123
+
+
+### Function Optimizations
+- Unified POS tagging with streamlined interface: combined `get_pos()` functions
+- Consolidated NER functionality into single `get_entities()` function
+- Improved code performance and reliability
+
+### Code Cleanup
+- Removed deprecated sentiment analysis functions
+- Simplified API for better usability
+- Enhanced error handling and feedback
+
+## Technical Notes
+- Release Date: 2024-12-30
+- Version: 0.0.7
+- Environment: Python 3.9+, R 4.0+
+- Docker: Integrated RStudio Server with pre-configured Python environment
+- M1/M2 Mac Support: Compatible through Rosetta 2
+- Dependencies: numpy 1.26.4, scipy 1.12.0 for optimal compatibility
 
 
 </div>

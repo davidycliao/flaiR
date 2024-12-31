@@ -26,7 +26,7 @@ most notably:
 \item \strong{Sentence(text, use_tokenizer=True, language_code=None,
 start_position=0)}:A Sentence is a list of tokens and is used to
 represent a sentence or text fragment. \code{Sentence} can be imported by
-\code{flair_data()$Sentence} via {flaiR}.
+\code{flair_data()$Sentence} via flaiR.
 \itemize{
 \item text \code{Union[str, List[str], List[Token]]} - The original string (sentence), or a pre-tokenized list of tokens.
 \item use_tokenizer \code{Union[bool, Tokenizer]} - Specify a custom tokenizer to split the text into tokens. The default is \code{flair.tokenization.SegTokTokenizer}. If \code{use_tokenizer} is set to \code{False}, \code{flair.tokenization.SpaceTokenizer} will be used instead. The tokenizer will be ignored if \code{text} refers to pre-tokenized tokens.
@@ -40,13 +40,13 @@ A Span is a slice of a Sentence, consisting of a list of Tokens.
 \item \strong{Token(text, head_id=None, whitespace_after=1, start_position=0, sentence=None)}:
 This class represents one word in a tokenized sentence.
 Each token may have any number of tags. It may also point to its head in a
-dependency tree. \code{Token} can be imported by \code{flair_data()$Token} via {flaiR}.
+dependency tree. \code{Token} can be imported by \code{flair_data()$Token} via flaiR.
 
 \item \strong{Corpus(train=None, dev=None, test=None, name='corpus', sample_missing_splits=True)}: Represents a collection of sentences,
 facilitating operations like splitting into train/test/development
 sets and applying transformations. It is particularly useful
 for training and evaluating models on custom datasets.
-\code{Corpus} can be imported by \code{flair_data()$Corpus} via {flaiR}.
+\code{Corpus} can be imported by \code{flair_data()$Corpus} via flaiR.
 
 \item \strong{Dictionary}: Represents a mapping between items and indices.
 It is useful for converting text into machine-readable formats.

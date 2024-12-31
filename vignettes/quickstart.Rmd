@@ -33,9 +33,181 @@ library(flaiR)
 <div style="text-align: justify">
 
 Flair is a Python library developed by [Zalando Research](https://engineering.zalando.com/posts/2018/11/zalando-research-releases-flair.html) that stands out as a notably user-friendly NLP framework. Flair NLP provides intuitive interfaces with exceptional multilingual embeddings, especially for various multilingual embedding frameworks like GloVe and transformer-based models on Hugging Face.
+
 </div>
 
+
+## flaiR Installation
+
+
+__Required Software__
+
+- Python >= 3.10
+- R >= 4.2.0
+- Rstudio
+
+### Operating System
+
+__macOS Terminal Installation__
+
+Install Python 3.10 or higher.
+
+```bash
+brew install python@3.10
+
+# Verify Python installation
+python3 --version
+
+# Install R
+brew install R
+
+# Verify R installation
+R --version
+
+# Install RStudio
+brew install --cask rstudio
+```
+
+__PowerShell for Windows__
+
+```bash
+# Download Python installer from python.org and run:
+# https://www.python.org/downloads/
+
+# Verify Python installation
+python --version
+
+# Install R
+# Download R installer from CRAN and run:
+# https://cran.r-project.org/bin/windows/base/
+
+# Verify R installation
+R --version
+```
+
+__Docker Installation & Usage__
+
+- Intel/AMD Processors:
+
+```bash
+# Pull and run
+docker pull ghcr.io/davidycliao/flair-rstudio:latest
+docker run -p 8787:8787 ghcr.io/davidycliao/flair-rstudio:latest
+```
+
+- Apple Silicon (M1/M2 Mac):
+```bash
+# Pull and run with platform specification
+docker pull --platform linux/amd64 ghcr.io/davidycliao/flair-rstudio:latest
+docker run --platform linux/amd64 -p 8787:8787 ghcr.io/davidycliao/flair-rstudio:latest
+```
+
+__Access RStudio Server:__
+- Open browser: `http://localhost:8787`
+- Username: `rstudio`
+- Password: `rstudio123`
+
+
+### R Package Installation
+
+The `faiR` Will:
+
+- Automatically check Python environment
+- Install required Python packages (flair and its dependencies)
+- Configure the Python-R connection
+
+```r
+install.packages("remotes")
+remotes::install_github("davidycliao/flaiR", force = TRUE)
+```
+
+__R Version Dependencies__
+
+The Matrix R package corresponds to different R versions:
+
+- R 4.4.0+: Latest Matrix package version
+- R 4.3.x: Matrix 1.5-1
+- R 4.2.x: Matrix 1.4-1
+
+<div style="text-align: justify">
+Installation should work automatically as RStudio and R handle the dependencies. However, if you encounter Matrix package compilation errors, you might need the following setup:
+</div>
+
+- Install compiler tools (if needed) in the Terminal:
+
+```bash
+brew install gcc
+```
+- Configure R compiler settings:
+
+```bash
+mkdir -p ~/.R
+touch ~/.R/Makevars
+echo "FC=$(brew --prefix)/bin/gfortran" >> ~/.R/Makevars
+echo "F77=$(brew --prefix)/bin/gfortran" >> ~/.R/Makevars
+echo "FLIBS=-L$(brew --prefix)/lib/gcc/current -lgfortran -lquadmath -lm" >> ~/.R/Makevars
+```
+
+__Python Dependencies__
+
+<div style="text-align: justify">
+
+The following Python packages will be installed automatically by flaiR:
+
+- flair
+- scipy==1.12.0
+- gensim==4.3.2
+
+`flaiR` will automatically detect and configure your Python environment:
+
+1. Checks for Python 3.10 or higher
+2. Installs required Python packages
+3. Configures R-Python interface using reticulate
+
+Note: You can manage Python settings in RStudio through _Tools -> Global Options -> Python_. To check your Python configuration, use:
+
+</div>
+
+```r
+reticulate::py_config()
+```
+
+### Recommended Configurations
+
+For stable usage, we strongly recommend installing these specific versions.
+
+| OS      | R Versions                 | Python Version |
+|---------|----------------------------|----------------|
+| Mac     | 4.3.2, 4.2.0, 4.2.1        | 3.10.x         |
+| Mac     | Latest                     | 3.9            |
+| Windows | 4.0.5                      | 3.10.x         |
+| Windows | Latest                     | 3.9            |
+| Ubuntu  | 4.3.2, 4.2.0, 4.2.1        | 3.10.x         |
+| Ubuntu  | Latest                     | 3.9            |
+
+__Note__: For Mac M1/M2 users, avoid R 4.2.1 due to potential gfortran compatibility issues.
+
+
+### Troubleshooting
+
+<div style="text-align: justify">
+
+
+If you encounter any problems or have questions:
+
+- Check the documentation
+- Visit our Issues page
+- Join our [Discussion forum](https://github.com/davidycliao/flaiR/discussions)
+
+</div>
+
+
+&nbsp;
+
+-----
+
 ## NLP Tasks
+
 <div style="text-align: justify">
 
 For R users, flairR extends FlairNLP with three NLP task functions to extract features in a neat format with [data.table](https://cran.r-project.org/web/packages/data.table/index.html). Through these featured functions, you don't have to write loops to format parsed output on your own. The main features include part-of-speech tagging, named entity recognition and sentiment analysis. Additionally, to handle the load on RAM when dealing with larger corpora, flairR supports batch processing to handle texts in batches, which is especially useful when dealing with large datasets, to optimize memory usage and performance.
@@ -71,38 +243,5 @@ In __flairR__, we use the simplest __S3__ method to wrap major modules. All modu
 &nbsp;
 
 -----
-
-## More Details about Installation
-
-<div style="text-align: justify">
-
-The installation consists of two parts: First, install [Python 3.8](https://www.python.org/downloads/) or higher, and [R 3.6.3](https://www.r-project.org) or higher. Although we have tested it on Github Action with R 3.6.2, we strongly recommend installing [R 4.0.0 or above](https://github.com/davidycliao/flaiR/actions/runs/6416611291) to ensure compatibility between the R environment and Python. When first installed, __flaiR__ automatically detects whether you have Python 3.8 or higher. If not, it will skip the automatic installation of Python and flair NLP. In this case, you will need to mannually install it yourself and reload __flaiR__ again. If you have Python 3.8 or higher alreadt installed, the installer of __flaiR__ will automatically install flair Python NLP in your global environment. If you are using {reticulate}, {flaiR} will typically assume the __r-reticulate__ environment by default. At the same time, you can use py_config() to check the location of your environment. Please note that flaiR will directly install flair NLP in the Python environment that your R is using. This environment can be adjusted through _RStudio_ by navigating to `Tools -> Global Options -> Python`. If there are any issues with the installation, feel free to ask in the <u>[Discussion](https://github.com/davidycliao/flaiR/discussions).
-
-For stable usage, we strongly recommend installing these specific versions.
-
-| OS      | R Versions                 | Python Version |
-|---------|----------------------------|----------------|
-| Mac     | 4.3.2, 4.2.0, 4.2.1        | 3.10.x         |
-| Mac     | Latest                     | 3.9            |
-| Windows | 4.0.5                      | 3.10.x         |
-| Windows | Latest                     | 3.9            |
-| Ubuntu  | 4.3.2, 4.2.0, 4.2.1        | 3.10.x         |
-| Ubuntu  | Latest                     | 3.9            |
-
-
-
-During this process, you will observe numerous messages related to the installation of the Python environment and the Python flair module. Notably, flair has numerous dependencies, including libraries related to transformers (like the torch, tokeniser, transformers, gensim, flair, etc). Thus, the installation might take some time to complete. 
-
-There's also another scenario to consider. If __flaiR__ is unable to automatically install Flair and PyTorch, it will attempt to force the installation again. However, if this attempt fails, you'll encounter the message: "Failed to install Flair. __flaiR__ requires Flair NLP. Please ensure Flair NLP is installed in Python manually." If you're using an Apple operating environment, it's essential at this point to check the compatibility of your M1/M2 chip with Python and Torch.  If there are any issues with the installation, feel free to ask in the <u>[Discussion](https://github.com/davidycliao/flaiR/discussions)</u>.
-
-
-```
-install.packages("remotes")
-remotes::install_github("davidycliao/flaiR", force = TRUE)
-library(flaiR)
-```
-
-</div>
-
 
 
