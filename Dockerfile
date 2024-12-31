@@ -33,8 +33,9 @@ RUN /opt/venv/bin/pip install --no-cache-dir \
 # R 包安装 - 分步进行
 RUN R -e "install.packages('remotes', repos='https://cloud.r-project.org/')"
 RUN R -e "install.packages('reticulate', repos='https://cloud.r-project.org/')"
-RUN R -e "reticulate::use_virtualenv('/opt/venv')"
 RUN R -e "remotes::install_github('davidycliao/flaiR', dependencies = FALSE)"
+RUN R -e "reticulate::use_virtualenv('/opt/venv')"
+
 
 # 创建 rstudio 用户和设置密码
 ENV USER=rstudio
