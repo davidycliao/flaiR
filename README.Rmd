@@ -9,8 +9,15 @@ output: github_document
 [![R-Windows](https://github.com/davidycliao/flaiR/actions/workflows/r_window.yml/badge.svg)](https://github.com/davidycliao/flaiR/actions/workflows/r_window.yml)
 [![R-CMD-Check](https://github.com/davidycliao/flaiR/actions/workflows/r.yml/badge.svg)](https://github.com/davidycliao/flaiR/actions/workflows/r.yml)
 [![flaiR-Installation-Check](https://github.com/davidycliao/flaiR/actions/workflows/R-CMD-check.yml/badge.svg)](https://github.com/davidycliao/flaiR/actions/workflows/R-CMD-check.yml)
+[![R](https://img.shields.io/badge/R-package-blue)](https://github.com/davidycliao/flaiR)
+[![Docker Image](https://img.shields.io/badge/Docker-ghcr.io-blue?logo=docker)](https://github.com/davidycliao/flaiR/pkgs/container/flair)
 [![codecov](https://codecov.io/gh/davidycliao/flaiR/graph/badge.svg?token=CPIBIB6L78)](https://codecov.io/gh/davidycliao/flaiR)
 [![CodeFactor](https://www.codefactor.io/repository/github/davidycliao/flair/badge)](https://www.codefactor.io/repository/github/davidycliao/flair)
+
+<!-- [![flaiR-Docker](https://github.com/davidycliao/flaiR/actions/workflows/docker-publish.yml/badge.svg)](https://github.com/davidycliao/flaiR/actions/workflows/docker-publish.yml) -->
+<!-- <!-- ![ARM64](https://img.shields.io/badge/ARM64-M1|M2-success?logo=arm) --> 
+<!-- [![R](https://img.shields.io/badge/R-package-blue)](https://github.com/davidycliao/flaiR) -->
+<!-- [![Docker Image](https://img.shields.io/badge/Docker-ghcr.io-blue?logo=docker)](https://github.com/davidycliao/flaiR/pkgs/container/flair) -->
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
@@ -30,6 +37,11 @@ reticulate::py_install("flair")
 system(paste(reticulate::py_config()$python, "-m pip install flair"))
 # options(repos = c(CRAN = "https://cloud.r-project.org/"))
 # install.packages("remotes")
+# remotes::install_github("tidyverse/tidytemplate", force = TRUE)
+```
+
+```{r include=FALSE}
+# devtools::install_github("prodriguezsosa/conText")
 # remotes::install_github("tidyverse/tidytemplate", force = TRUE)
 ```
 
@@ -64,7 +76,11 @@ library(flaiR)
 
 <div style="text-align: justify">
 
-__flaiR__ runs the Flair NLP backend in Python, thus requiring Python installation. We have extensively tested flaiR using CI/CD with GitHub Actions, conducting integration tests across various operating systems. These tests includes integration between R versions ~~4.2.1~~, 4.3.2, and 4.2.0, along with Python 3.9 and 3.10.x. Additionally, the testing includes environments with PyTorch, Flair NLP, and their dependencies in both R and Python. For stable usage, we strongly recommend installing these specific versions.
+__Required Software__
+
+- Python >= 3.10
+- R >= 4.2.0
+- Rstudio
 
 | OS      | R Versions                 | Python Version |
 |---------|----------------------------|----------------|
@@ -79,6 +95,25 @@ __flaiR__ runs the Flair NLP backend in Python, thus requiring Python installati
 
 <br>
 
+
+## Docker
+
+__Intel/AMD Processors:__
+
+```bash
+# Pull and run
+docker pull ghcr.io/davidycliao/flair-rstudio:latest
+docker run -p 8787:8787 ghcr.io/davidycliao/flair-rstudio:latest
+```
+
+__Apple Silicon (M1/M2 Mac):__
+```bash
+# Pull and run with platform specification
+docker pull --platform linux/amd64 ghcr.io/davidycliao/flair-rstudio:latest
+docker run --platform linux/amd64 -p 8787:8787 ghcr.io/davidycliao/flair-rstudio:latest
+```
+
+Detailed instructions available in [the Quick Start](https://davidycliao.github.io/flaiR/articles/quickstart.html#flair-installation).
 
 
 </div>
