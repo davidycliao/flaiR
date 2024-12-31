@@ -20,13 +20,20 @@ RUN wget https://download2.rstudio.org/server/jammy/amd64/rstudio-server-2023.12
 # 创建并使用 Python 虚拟环境
 RUN python3 -m venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
+ENV RETICULATE_PYTHON="/opt/venv/bin/python"
 
-# Python 安装
-RUN /opt/venv/bin/pip install --no-cache-dir flair
+# 安装指定版本的 Python 包
+RUN /opt/venv/bin/pip install --no-cache-dir \
+    numpy==1.26.4 \
+    scipy==1.12.0 \
+    transformers \
+    torch \
+    flair
 
-# R 包安装
-RUN R -e "install.packages(c('remotes', 'reticulate'))" && \
-    R -e "remotes::install_github('davidycliao/flaiR', dependencies = FALSE)"
+# 安装 R 包 - 改进安装顺序
+RUN R -e "install.packages('reticulate', repos='https://cloud.r-project.org/', dependencies=TRUE)" && \
+    R -e "install.packages('remotes', repos='https://cloud.r-project.org/', dependencies=TRUE)" && \
+    R -e "remotes::install_github('davidycliao/flaiR', dependencies=TRUE)"
 
 # 创建 rstudio 用户和设置密码
 ENV USER=rstudio
@@ -37,7 +44,8 @@ RUN useradd -m $USER && \
 
 # 设置工作目录权限
 RUN mkdir -p /home/$USER && \
-    chown -R $USER:$USER /home/$USER
+    chown -R $USER:$USER /home/$USER && \
+    chown -R $USER:$USER /opt/venv
 
 # 暴露 RStudio Server 端口
 EXPOSE 8787
