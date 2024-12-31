@@ -128,7 +128,12 @@
 <h2 id="requirements">Requirements<a class="anchor" aria-label="anchor" href="#requirements"></a>
 </h2>
 <div style="text-align: justify">
-<p><strong>flaiR</strong> runs the Flair NLP backend in Python, thus requiring Python installation. We have extensively tested flaiR using CI/CD with GitHub Actions, conducting integration tests across various operating systems. These tests includes integration between R versions <del>4.2.1</del>, 4.3.2, and 4.2.0, along with Python 3.9 and 3.10.x. Additionally, the testing includes environments with PyTorch, Flair NLP, and their dependencies in both R and Python. For stable usage, we strongly recommend installing these specific versions.</p>
+<p><strong>Required Software</strong></p>
+<ul>
+<li>Python &gt;= 3.10</li>
+<li>R &gt;= 4.2.0</li>
+<li>Rstudio</li>
+</ul>
 <table class="table">
 <thead><tr>
 <th>OS</th>
@@ -170,6 +175,19 @@
 </table>
 <p>*: <em>On R 4.2.1, especially on Mac M1/M2, compatibility issues with <code>gfortran</code> may occur.</em></p>
 <p><br></p>
+<div class="section level2">
+<h2 id="docker">Docker<a class="anchor" aria-label="anchor" href="#docker"></a>
+</h2>
+<p><strong>Intel/AMD Processors:</strong></p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="co"># Pull and run</span></span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="ex">docker</span> pull ghcr.io/davidycliao/flair-rstudio:latest</span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">-p</span> 8787:8787 ghcr.io/davidycliao/flair-rstudio:latest</span></code></pre></div>
+<p><strong>Apple Silicon (M1/M2 Mac):</strong></p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="co"># Pull and run with platform specification</span></span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="ex">docker</span> pull <span class="at">--platform</span> linux/amd64 ghcr.io/davidycliao/flair-rstudio:latest</span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">--platform</span> linux/amd64 <span class="at">-p</span> 8787:8787 ghcr.io/davidycliao/flair-rstudio:latest</span></code></pre></div>
+<p>Detailed instructions available in <a href="https://davidycliao.github.io/flaiR/articles/quickstart.html#flair-installation">the Quick Start</a>.</p>
+</div>
 </div>
 </div>
 <div class="section level2">

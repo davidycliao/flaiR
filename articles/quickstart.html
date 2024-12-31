@@ -117,16 +117,22 @@ like GloVe and transformer-based models on Hugging Face.</p>
 <div class="section level2">
 <h2 id="flair-installation">flaiR Installation<a class="anchor" aria-label="anchor" href="#flair-installation"></a>
 </h2>
-<p><strong>Required Software</strong></p>
+<div class="section level3">
+<h3 id="required-software">
+<strong>Required Software</strong><a class="anchor" aria-label="anchor" href="#required-software"></a>
+</h3>
 <ul>
 <li>Python &gt;= 3.10</li>
 <li>R &gt;= 4.2.0</li>
 <li>Rstudio</li>
 </ul>
+</div>
 <div class="section level3">
 <h3 id="operating-system">Operating System<a class="anchor" aria-label="anchor" href="#operating-system"></a>
 </h3>
-<p><strong>macOS Terminal Installation</strong></p>
+<div class="section level4">
+<h4 id="macos-terminal-installation">macOS Terminal Installation<a class="anchor" aria-label="anchor" href="#macos-terminal-installation"></a>
+</h4>
 <p>Install Python 3.10 or higher.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="ex">brew</span> install python@3.10</span>
 <span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a></span>
@@ -141,7 +147,10 @@ like GloVe and transformer-based models on Hugging Face.</p>
 <span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a></span>
 <span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a><span class="co"># Install RStudio</span></span>
 <span id="cb1-13"><a href="#cb1-13" tabindex="-1"></a><span class="ex">brew</span> install <span class="at">--cask</span> rstudio</span></code></pre></div>
-<p><strong>PowerShell for Windows</strong></p>
+</div>
+<div class="section level4">
+<h4 id="powershell-for-windows">PowerShell for Windows<a class="anchor" aria-label="anchor" href="#powershell-for-windows"></a>
+</h4>
 <div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="co"># Download Python installer from python.org and run:</span></span>
 <span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="co"># https://www.python.org/downloads/</span></span>
 <span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a></span>
@@ -154,10 +163,11 @@ like GloVe and transformer-based models on Hugging Face.</p>
 <span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a></span>
 <span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a><span class="co"># Verify R installation</span></span>
 <span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a><span class="ex">R</span> <span class="at">--version</span></span></code></pre></div>
-<p><strong>Docker Installation &amp; Usage</strong></p>
-<ul>
-<li>Intel/AMD Processors:</li>
-</ul>
+</div>
+<div class="section level4">
+<h4 id="docker-installation-usage">Docker Installation &amp; Usage<a class="anchor" aria-label="anchor" href="#docker-installation-usage"></a>
+</h4>
+<p><strong>Intel/AMD Processors:</strong></p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="co"># Pull and run</span></span>
 <span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="ex">docker</span> pull ghcr.io/davidycliao/flair-rstudio:latest</span>
 <span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">-p</span> 8787:8787 ghcr.io/davidycliao/flair-rstudio:latest</span></code></pre></div>
@@ -167,9 +177,17 @@ like GloVe and transformer-based models on Hugging Face.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="co"># Pull and run with platform specification</span></span>
 <span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="ex">docker</span> pull <span class="at">--platform</span> linux/amd64 ghcr.io/davidycliao/flair-rstudio:latest</span>
 <span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">--platform</span> linux/amd64 <span class="at">-p</span> 8787:8787 ghcr.io/davidycliao/flair-rstudio:latest</span></code></pre></div>
-<p><strong>Access RStudio Server:</strong> - Open browser:
-<code>http://localhost:8787</code> - Username: <code>rstudio</code> -
-Password: <code>rstudio123</code></p>
+<p><strong>Access RStudio Server:</strong></p>
+<ul>
+<li>Open browser: <code>http://localhost:8787</code>
+</li>
+<li>Username: <code>rstudio</code>
+</li>
+<li>Password: <code>rstudio123</code>
+</li>
+</ul>
+<p><img src="flaiR/articles/vignettes/inst/rstudio.png" alt="圖片描述" width="500"></p>
+</div>
 </div>
 <div class="section level3">
 <h3 id="r-package-installation">R Package Installation<a class="anchor" aria-label="anchor" href="#r-package-installation"></a>
@@ -183,7 +201,9 @@ Password: <code>rstudio123</code></p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span></span>
 <span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"davidycliao/flaiR"</span>, force <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<p><strong>R Version Dependencies</strong></p>
+<div class="section level4">
+<h4 id="r-version-dependencies">R Version Dependencies<a class="anchor" aria-label="anchor" href="#r-version-dependencies"></a>
+</h4>
 <p>The Matrix R package corresponds to different R versions:</p>
 <ul>
 <li>R 4.4.0+: Latest Matrix package version</li>
@@ -207,7 +227,10 @@ errors, you might need the following setup:</p>
 <span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"FC=</span><span class="va">$(</span><span class="ex">brew</span> <span class="at">--prefix</span><span class="va">)</span><span class="st">/bin/gfortran"</span> <span class="op">&gt;&gt;</span> ~/.R/Makevars</span>
 <span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"F77=</span><span class="va">$(</span><span class="ex">brew</span> <span class="at">--prefix</span><span class="va">)</span><span class="st">/bin/gfortran"</span> <span class="op">&gt;&gt;</span> ~/.R/Makevars</span>
 <span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"FLIBS=-L</span><span class="va">$(</span><span class="ex">brew</span> <span class="at">--prefix</span><span class="va">)</span><span class="st">/lib/gcc/current -lgfortran -lquadmath -lm"</span> <span class="op">&gt;&gt;</span> ~/.R/Makevars</span></code></pre></div>
-<p><strong>Python Dependencies</strong></p>
+</div>
+<div class="section level4">
+<h4 id="python-dependencies">Python Dependencies<a class="anchor" aria-label="anchor" href="#python-dependencies"></a>
+</h4>
 <div style="text-align: justify">
 <p>The following Python packages will be installed automatically by
 flaiR:</p>
@@ -230,9 +253,9 @@ configuration, use:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">reticulate</span><span class="fu">::</span><span class="fu"><a href="https://rstudio.github.io/reticulate/reference/py_config.html" class="external-link">py_config</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div class="section level3">
-<h3 id="recommended-configurations">Recommended Configurations<a class="anchor" aria-label="anchor" href="#recommended-configurations"></a>
-</h3>
+<div class="section level4">
+<h4 id="recommended-configurations">Recommended Configurations<a class="anchor" aria-label="anchor" href="#recommended-configurations"></a>
+</h4>
 <p>For stable usage, we strongly recommend installing these specific
 versions.</p>
 <table class="table">
@@ -277,9 +300,9 @@ versions.</p>
 <p><strong>Note</strong>: For Mac M1/M2 users, avoid R 4.2.1 due to
 potential gfortran compatibility issues.</p>
 </div>
-<div class="section level3">
-<h3 id="troubleshooting">Troubleshooting<a class="anchor" aria-label="anchor" href="#troubleshooting"></a>
-</h3>
+<div class="section level4">
+<h4 id="troubleshooting">Troubleshooting<a class="anchor" aria-label="anchor" href="#troubleshooting"></a>
+</h4>
 <div style="text-align: justify">
 <p>If you encounter any problems or have questions:</p>
 <ul>
@@ -292,6 +315,7 @@ forum</a>
 </div>
 <p> </p>
 <hr>
+</div>
 </div>
 </div>
 <div class="section level2">
