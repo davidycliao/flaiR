@@ -100,7 +100,6 @@ test_that("loading tagger works as expected", {
 
   messages <- capture_messages(get_pos("Hello World", "doc1"))
 
-  # 檢查每個期望的訊息是否都存在
   for(expected in expected_messages) {
     expect_true(
       any(grepl(expected, messages, fixed = TRUE)),
