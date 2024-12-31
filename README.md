@@ -25,18 +25,49 @@ Image](https://img.shields.io/badge/Docker-ghcr.io-blue?logo=docker)](https://gi
 <div style="text-align: justify">
 
 **flaiR** is an R package for accessing the
-[flairNLP/flair](flairNLP/flair) Python library, maintained by
-[Yen-Chieh Liao](https://davidycliao.github.io) ([University of
+[flairNLP/flair](https://github.com/flairNLP/flair) Python library,
+maintained by [Yen-Chieh Liao](https://davidycliao.github.io)
+([University of
 Birmingham](https://www.birmingham.ac.uk/research/centres-institutes/centre-for-artificial-intelligence-in-government))
 and [Stefan Müller](https://muellerstefan.net) from [Next Generation
 Energy Systems](https://www.nexsys-energy.ie) and [Text and Policy
-Research Group](https://text-and-policy.com) in UCD. flaiR provides
-convenient access to the main functionalities of flairNLP for training
-word embedding-based deep learning models and fine-tune state-of-the-art
-transformers hosted on Hugging Face. Our team trains and fine-tunes the
-models with Flair in [our projects]().
+Research Group](https://text-and-policy.com) in UCD.
+
+flaiR provides convenient access to the main functionalities of flairNLP
+for training word embedding-based deep learning models and fine-tune
+state-of-the-art transformers hosted on Hugging Face.
+
+<!-- Our team trains and fine-tunes the models with Flair in [our projects](). -->
+
+This package is an R wrapper for [Flair
+NLP](https://github.com/flairNLP/flair), developed by Humboldt
+University of Berlin.
 
 </div>
+
+<br>
+
+## Requirements
+
+<div style="text-align: justify">
+
+**Required Software**
+
+- Python \>= 3.10
+- R \>= 4.2.0
+- Rstudio
+
+**OS Systems**
+
+| OS      | R Versions                | Python Version |
+|---------|---------------------------|----------------|
+| Mac     | 4.3.2, 4.2.0, ~~4.2.1~~\* | 3.10.x, 3.9    |
+| Windows | 4.0.5, Latest             | 3.10.x, 3.9    |
+| Ubuntu  | 4.3.2, 4.2.0, 4.2.1       | 3.10.x, 3.9    |
+
+\*: *On R 4.2.1, particularly when using the Matrix package on ARM 64
+architecture Macs (M1/M2), compatibility issues with gfortran may occur.
+It’s recommended to avoid this combination.*
 
 <br>
 
@@ -57,30 +88,6 @@ library(flaiR)
 
 <br>
 
-## Requirements
-
-<div style="text-align: justify">
-
-**Required Software**
-
-- Python \>= 3.10
-- R \>= 4.2.0
-- Rstudio
-
-| OS      | R Versions                | Python Version |
-|---------|---------------------------|----------------|
-| Mac     | 4.3.2, 4.2.0, ~~4.2.1~~\* | 3.10.x         |
-| Mac     | Latest                    | 3.9            |
-| Windows | 4.0.5                     | 3.10.x         |
-| Windows | Latest                    | 3.9            |
-| Ubuntu  | 4.3.2, 4.2.0, 4.2.1       | 3.10.x         |
-| Ubuntu  | Latest                    | 3.9            |
-
-\*: *On R 4.2.1, especially on Mac M1/M2, compatibility issues with
-`gfortran` may occur.*
-
-<br>
-
 ## Docker
 
 **Intel/AMD Processors:**
@@ -96,6 +103,9 @@ docker run -p 8787:8787 ghcr.io/davidycliao/flair-rstudio:latest
 ``` bash
 # Pull and run with platform specification
 docker pull --platform linux/amd64 ghcr.io/davidycliao/flair-rstudio:latest
+```
+
+``` bash
 docker run --platform linux/amd64 -p 8787:8787 ghcr.io/davidycliao/flair-rstudio:latest
 ```
 
@@ -103,6 +113,8 @@ Detailed instructions available in [the Quick
 Start](https://davidycliao.github.io/flaiR/articles/quickstart.html#flair-installation).
 
 </div>
+
+<br>
 
 ## Updates and News
 
@@ -114,7 +126,7 @@ Start](https://davidycliao.github.io/flaiR/articles/quickstart.html#flair-instal
 
 <br>
 
-## Contribution and Open Source
+## Contribution and Open Sourc
 
 <div style="text-align: justify">
 
