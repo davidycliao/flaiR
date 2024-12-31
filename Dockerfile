@@ -9,7 +9,8 @@ RUN apt-get update && apt-get install -y \
     libcurl4-openssl-dev \
     libssl-dev \
     gdebi-core \
-    wget
+    wget \
+    sudo
 
 # 安装 RStudio Server
 RUN wget https://download2.rstudio.org/server/jammy/amd64/rstudio-server-2023.12.1-402-amd64.deb && \
@@ -27,12 +28,19 @@ RUN /opt/venv/bin/pip install --no-cache-dir flair
 RUN R -e "install.packages(c('remotes', 'reticulate'))" && \
     R -e "remotes::install_github('davidycliao/flaiR', dependencies = FALSE)"
 
+# 创建 rstudio 用户和设置密码
+ENV USER=rstudio
+ENV PASSWORD=rstudio123
+RUN useradd -m $USER && \
+    echo "$USER:$PASSWORD" | chpasswd && \
+    adduser $USER sudo
+
+# 设置工作目录权限
+RUN mkdir -p /home/$USER && \
+    chown -R $USER:$USER /home/$USER
+
 # 暴露 RStudio Server 端口
 EXPOSE 8787
-
-# 创建用户
-ENV USER=rstudio
-ENV PASSWORD=rstudio
 
 # 启动 RStudio Server
 CMD ["/usr/lib/rstudio-server/bin/rserver", "--server-daemonize=0"]
