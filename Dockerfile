@@ -30,12 +30,11 @@ RUN /opt/venv/bin/pip install --no-cache-dir \
     torch \
     flair
 
-# R 包安装 - 分步进行
-RUN R -e "install.packages('remotes', repos='https://cloud.r-project.org/')"
-RUN R -e "install.packages('reticulate', repos='https://cloud.r-project.org/')"
-RUN R -e "remotes::install_github('davidycliao/flaiR', dependencies = FALSE)"
-RUN R -e "reticulate::use_virtualenv('/opt/venv')"
-
+# 安装 R 包 - 改进安装顺序
+RUN R -e "install.packages('reticulate', repos='https://cloud.r-project.org/', dependencies=TRUE)" && \
+    R -e "install.packages('remotes', repos='https://cloud.r-project.org/', dependencies=TRUE)" && \
+    Rscript -e "library(reticulate); use_virtualenv('/opt/venv')" && \
+    R -e "remotes::install_github('davidycliao/flaiR', dependencies=TRUE)"
 
 # 创建 rstudio 用户和设置密码
 ENV USER=rstudio
