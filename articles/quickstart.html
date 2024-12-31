@@ -159,14 +159,14 @@ like GloVe and transformer-based models on Hugging Face.</p>
 <li>Intel/AMD Processors:</li>
 </ul>
 <div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="co"># Pull and run</span></span>
-<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="ex">docker</span> pull ghcr.io/davidycliao/flair:latest</span>
-<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">-p</span> 8787:8787 ghcr.io/davidycliao/flair:latest</span></code></pre></div>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="ex">docker</span> pull ghcr.io/davidycliao/flair-rstudio:latest</span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">-p</span> 8787:8787 ghcr.io/davidycliao/flair-rstudio:latest</span></code></pre></div>
 <ul>
 <li>Apple Silicon (M1/M2 Mac):</li>
 </ul>
 <div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="co"># Pull and run with platform specification</span></span>
-<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="ex">docker</span> pull <span class="at">--platform</span> linux/amd64 ghcr.io/davidycliao/flair:latest</span>
-<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">--platform</span> linux/amd64 <span class="at">-p</span> 8787:8787 ghcr.io/davidycliao/flair:latest</span></code></pre></div>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="ex">docker</span> pull <span class="at">--platform</span> linux/amd64 ghcr.io/davidycliao/flair-rstudio:latest</span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">--platform</span> linux/amd64 <span class="at">-p</span> 8787:8787 ghcr.io/davidycliao/flair-rstudio:latest</span></code></pre></div>
 <p><strong>Access RStudio Server:</strong> - Open browser:
 <code>http://localhost:8787</code> - Username: <code>rstudio</code> -
 Password: <code>rstudio123</code></p>
