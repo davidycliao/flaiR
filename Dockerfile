@@ -30,17 +30,10 @@ RUN /opt/venv/bin/pip install --no-cache-dir \
     torch \
     flair
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y libpng-dev
-
-# Install R packages
-RUN R -e "install.packages(c('data.table', 'reticulate', 'curl', 'attempt', 'htmltools', 'stringr', 'tibble', 'remotes'), repos='https://cran.rstudio.com/')"
-
-# Install flaiR package
-RUN R -e "remotes::install_github('davidycliao/flaiR', dependencies = FALSE)"
-
-# Set up virtual environment
-RUN R -e "reticulate::use_virtualenv('/opt/venv')"
+# 安装 R 包 - 改进安装顺序
+RUN R -e "install.packages('reticulate', repos='https://cloud.r-project.org/', dependencies=TRUE)" && \
+    R -e "install.packages('remotes', repos='https://cloud.r-project.org/', dependencies=TRUE)" && \
+    R -e "remotes::install_github('davidycliao/flaiR', dependencies=TRUE)"
 
 # 创建 rstudio 用户和设置密码
 ENV USER=rstudio
