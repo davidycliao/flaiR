@@ -22,6 +22,9 @@ RUN python3 -m venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
 ENV RETICULATE_PYTHON="/opt/venv/bin/python"
 
+# 添加 RETICULATE_PYTHON 到 R 环境配置
+RUN echo "RETICULATE_PYTHON=/opt/venv/bin/python" >> /usr/local/lib/R/etc/Renviron.site
+
 # 安装指定版本的 Python 包
 RUN /opt/venv/bin/pip install --no-cache-dir \
     numpy==1.26.4 \
@@ -30,7 +33,7 @@ RUN /opt/venv/bin/pip install --no-cache-dir \
     torch \
     flair
 
-# 安装 R 包 - 改进安装顺序
+# 安装 R 包
 RUN R -e "install.packages('reticulate', repos='https://cloud.r-project.org/', dependencies=TRUE)" && \
     R -e "install.packages('remotes', repos='https://cloud.r-project.org/', dependencies=TRUE)" && \
     R -e "remotes::install_github('davidycliao/flaiR', dependencies=TRUE)"
@@ -46,6 +49,10 @@ RUN useradd -m $USER && \
 RUN mkdir -p /home/$USER && \
     chown -R $USER:$USER /home/$USER && \
     chown -R $USER:$USER /opt/venv
+
+# 确保 R 环境配置文件的权限正确
+RUN chown -R $USER:$USER /usr/local/lib/R/etc/Renviron.site && \
+    chmod 644 /usr/local/lib/R/etc/Renviron.site
 
 # 暴露 RStudio Server 端口
 EXPOSE 8787
