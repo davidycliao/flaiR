@@ -116,16 +116,6 @@ Start](https://davidycliao.github.io/flaiR/articles/quickstart.html#flair-instal
 
 <br>
 
-## Updates and News
-
-- [Tutorial for embeddings in
-  flaiR](https://davidycliao.github.io/flaiR/articles/tutorial.html#embedding)
-
-- [Extending conText’s Embedding
-  Regression](https://davidycliao.github.io/flaiR/articles/tutorial.html#extending-contexts-embedding-regression)
-
-<br>
-
 ## Contribution and Open Sourc
 
 <div style="text-align: justify">
