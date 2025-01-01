@@ -26,7 +26,8 @@ Sys.setenv(RETICULATE_PYTHON = Sys.which("python3"))
 library(flaiR)
 library(reticulate)
 # system(paste(reticulate::py_config()$python, "-m pip install flair"))
-reticulate::py_install("flair")
+# reticulate::py_install("flair")
+# Sys.setenv(FLAIR_CACHE_ROOT = path.expand("~/.cache/flair"))
 ```
 
 
@@ -305,11 +306,64 @@ In the later sections, there will be more similar processing using the `Corpus`.
 
 ## Tag Entities in Text
 
+
 <div style="text-align: justify;">
 
 Let's run named entity recognition over the following example sentence: "I love Berlin and New York". To do this, all you need to do is make a Sentence object for this text, load a pre-trained model and use it to predict tags for the object.
 
 </div>
+
+
+
+__NER Models__
+
+| ID                  | Task              | Language         | Training Dataset            | Accuracy     | Contributor / Notes    |
+|---------------------|-------------------|------------------|-----------------------------|--------------|------------------------|
+| 'ner'               | NER (4-class)     | English          | Conll-03                    | 93.03 (F1)   |                        |
+| 'ner-fast'          | NER (4-class)     | English          | Conll-03                    | 92.75 (F1)   | (fast model)           |
+| 'ner-large'         | NER (4-class)     | English / Multilingual | Conll-03               | 94.09 (F1)   | (large model)         |
+| 'ner-pooled'        | NER (4-class)     | English          | Conll-03                    | 93.24 (F1)   | (memory inefficient)   |
+| 'ner-ontonotes'     | NER (18-class)    | English          | Ontonotes                   | 89.06 (F1)   |                        |
+| 'ner-ontonotes-fast'| NER (18-class)    | English          | Ontonotes                   | 89.27 (F1)   | (fast model)           |
+| 'ner-ontonotes-large'| NER (18-class)   | English / Multilingual | Ontonotes             | 90.93 (F1)   | (large model)          |
+| 'ar-ner'            | NER (4-class)     | Arabic           | AQMAR & ANERcorp (curated)  | 86.66 (F1)   |                        |
+| 'da-ner'            | NER (4-class)     | Danish           | Danish NER dataset          |              | AmaliePauli            |
+| 'de-ner'            | NER (4-class)     | German           | Conll-03                    | 87.94 (F1)   |                        |
+| 'de-ner-large'      | NER (4-class)     | German / Multilingual | Conll-03               | 92.31 (F1)   |                        |
+| 'de-ner-germeval'   | NER (4-class)     | German           | Germeval                    | 84.90 (F1)   |                        |
+| 'de-ner-legal'      | NER (legal text)  | German           | LER dataset                 | 96.35 (F1)   |                        |
+| 'fr-ner'            | NER (4-class)     | French           | WikiNER (aij-wikiner-fr-wp3)| 95.57 (F1)   | mhham                  |
+| 'es-ner-large'      | NER (4-class)     | Spanish          | CoNLL-03                    | 90.54 (F1)   | mhham                  |
+| 'nl-ner'            | NER (4-class)     | Dutch            | CoNLL 2002                  | 92.58 (F1)   |                        |
+| 'nl-ner-large'      | NER (4-class)     | Dutch            | Conll-03                    | 95.25 (F1)   |                        |
+| 'nl-ner-rnn'        | NER (4-class)     | Dutch            | CoNLL 2002                  | 90.79 (F1)   |                        |
+| 'ner-ukrainian'     | NER (4-class)     | Ukrainian        | NER-UK dataset              | 86.05 (F1)   | dchaplinsky             |
+
+
+Source: https://flairnlp.github.io/docs/tutorial-basics/tagging-entities
+
+
+__POS Models__
+
+| ID              | Task                     | Language            | Training Dataset                  | Accuracy             | Contributor / Notes                 |
+|-----------------|--------------------------|---------------------|-----------------------------------|----------------------|-------------------------------------|
+| 'pos'           | POS-tagging              | English             | Ontonotes                         | 98.19 (Accuracy)     |                                     |
+| 'pos-fast'      | POS-tagging              | English             | Ontonotes                         | 98.1 (Accuracy)      | (fast model)                        |
+| 'upos'          | POS-tagging (universal)  | English             | Ontonotes                         | 98.6 (Accuracy)      |                                     |
+| 'upos-fast'     | POS-tagging (universal)  | English             | Ontonotes                         | 98.47 (Accuracy)     | (fast model)                        |
+| 'pos-multi'     | POS-tagging              | Multilingual        | UD Treebanks                      | 96.41 (average acc.) | (12 languages)                      |
+| 'pos-multi-fast'| POS-tagging              | Multilingual        | UD Treebanks                      | 92.88 (average acc.) | (12 languages)                      |
+| 'ar-pos'        | POS-tagging              | Arabic (+dialects)  | combination of corpora            |                      |                                     |
+| 'de-pos'        | POS-tagging              | German              | UD German - HDT                   | 98.50 (Accuracy)     |                                     |
+| 'de-pos-tweets' | POS-tagging              | German              | German Tweets                     | 93.06 (Accuracy)     | stefan-it                           |
+| 'da-pos'        | POS-tagging              | Danish              | Danish Dependency Treebank        |                      | AmaliePauli                         |
+| 'ml-pos'        | POS-tagging              | Malayalam           | 30000 Malayalam sentences         | 83                   | sabiqueqb                           |
+| 'ml-upos'       | POS-tagging              | Malayalam           | 30000 Malayalam sentences         | 87                   | sabiqueqb                           |
+| 'pt-pos-clinical'|POS-tagging              | Portuguese          | PUCPR                             | 92.39                | LucasFerroHAILab for clinical texts|
+| 'pos-ukrainian' | POS-tagging              | Ukrainian           | Ukrainian UD                      | 97.93 (F1)           | dchaplinsky                         |
+
+Source: https://flairnlp.github.io/docs/tutorial-basics/part-of-speech-tagging
+
 
 
 ```{r}
@@ -322,8 +376,8 @@ Sentence <- flair_data()$Sentence
 sentence <- Sentence('I love Berlin and New York.')
 
 # load the NER tagger
-Classifier <- flair_nn()$Classifier
-tagger <- Classifier$load('ner')
+SequenceTagger <- flair_models()$SequenceTagger
+tagger <- SequenceTagger$load('flair/ner-english')  
 
 # run NER over sentence
 tagger$predict(sentence)
@@ -583,7 +637,8 @@ First, we load the flaiR package and work with a sample text:
 library(flaiR)
 data("uk_immigration")
 uk_immigration <- uk_immigration[30,]
-tagger_ner <- load_tagger_ner("ner")
+tagger_ner <- load_tagger_ner("flair/ner-english-fast")
+
 result <- get_entities(uk_immigration$text,
                        tagger = tagger_ner,
                        show.text_id = FALSE
@@ -659,22 +714,53 @@ _Please note that ihis document for R is a conversion of the  [Flair NLP](https:
 
 
 
-`BytePairEmbeddings` are word embeddings that are precomputed on the subword-level. This means that they are able to embed any word by splitting words into subwords and looking up their embeddings. `BytePairEmbeddings` were proposed and computed by [Heinzerling and Strube (2018)](https://www.aclweb.org/anthology/L18-1473) who found that they offer nearly the same accuracy as word embeddings, but at a fraction
-of the model size. So they are a great choice if you want to train small models.
+`BytePairEmbeddings` are word embeddings that operate at the subword level. They can embed any word by breaking it down into subwords and looking up their corresponding embeddings. This technique was introduced by [Heinzerling and Strube (2018)](https://www.aclweb.org/anthology/L18-1473) , who demonstrated that BytePairEmbeddings achieve comparable accuracy to traditional word embeddings while requiring only a fraction of the model size. This makes them an excellent choice for training compact models.
 
-You initialize with a language code (275 languages supported), a number of 'syllables' (one of ) and a number of dimensions (one of 50, 100, 200 or 300). The following initializes and uses byte pair embeddings for English:
+To initialize BytePairEmbeddings, you need to specify:
+
+- A language code (275 languages supported)
+- Number of syllables
+- Number of dimensions (options: 50, 100, 200, or 300)
+
+```{r include=FALSE}
+# 在 R console 中執行
+unlink("~/.cache/flair", recursive = TRUE)  
+```
 
 
 ```{r}
 library(flaiR)
-# initialize embedding
+
+# Initialize embedding
 BytePairEmbeddings <- flair_embeddings()$BytePairEmbeddings
-embedding <- BytePairEmbeddings('en')
-# create a sentence
+
+# Create BytePairEmbeddings with specified parameters
+embedding <- BytePairEmbeddings(
+    language = "en",        # Language code (e.g., "en" for English)
+    dim = 50L,              # Embedding dimensions: options are 50L, 100L, 200L, or 300L
+    syllables = 100000L     # Subword vocabulary size
+
+)
+
+# Create a sample sentence
 Sentence <- flair_data()$Sentence
 sentence = Sentence('The grass is green .')
-# embed words in sentence
+
+# Embed words in the sentence
 embedding$embed(sentence)
+
+# Print embeddings 
+for (i in 1:length(sentence$tokens)) {
+    token <- sentence$tokens[[i]]
+    cat("\nWord:", token$text, "\n")
+    
+    # Convert embedding to R vector and print
+    # Python index starts from 0, so use i-1
+    embedding_vector <- sentence[i-1]$embedding$numpy()
+    cat("Embedding shape:", length(embedding_vector), "\n")
+    cat("First 5 values:", head(embedding_vector, 5), "\n")
+    cat("-------------------\n")
+}
 ```
 
 
@@ -684,8 +770,7 @@ More information can be found on the [byte pair embeddings](https://nlp.h-its.or
 embedding <- BytePairEmbeddings('multi')
 ```
 
-You can also load custom `BytePairEmbeddings` by specifying a path to model_file_path and embedding_file_path arguments. They correspond respectively to a SentencePiece model file and to an embedding file (Word2Vec plain text or GenSim binary). For example:
-
+You can also load custom `BytePairEmbeddings` by specifying a path to model_file_path and embedding_file_path arguments. They correspond respectively to a `SentencePiece` model file and to an embedding file (Word2Vec plain text or GenSim binary). 
 
 </div>
 
@@ -781,7 +866,7 @@ flair_bg_backward <- FlairEmbeddings('bg-backward')
 
 -----
 
-##  Recommended Flair Usage in {flaiR} in R
+##  Recommended Flair Usage in flaiR in R
 
 <div style="text-align: justify">
 We recommend combining both forward and backward Flair embeddings. Depending on the task, we also recommend adding standard word embeddings into the mix. So, our recommended `StackedEmbedding` for most English tasks is:
