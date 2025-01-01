@@ -57,7 +57,7 @@ University of Berlin.
 - R \>= 4.2.0
 - Rstudio
 
-**OS Systems**
+**Operation Systems**
 
 | OS      | R Versions                | Python Version |
 |---------|---------------------------|----------------|
@@ -92,20 +92,23 @@ library(flaiR)
 
 **Intel/AMD Processors:**
 
-``` bash
+``` r
 # Pull and run
 docker pull ghcr.io/davidycliao/flair-rstudio:latest
+```
+
+``` r
 docker run -p 8787:8787 ghcr.io/davidycliao/flair-rstudio:latest
 ```
 
 **Apple Silicon (M1/M2 Mac):**
 
-``` bash
+``` r
 # Pull and run with platform specification
 docker pull --platform linux/amd64 ghcr.io/davidycliao/flair-rstudio:latest
 ```
 
-``` bash
+``` r
 docker run --platform linux/amd64 -p 8787:8787 ghcr.io/davidycliao/flair-rstudio:latest
 ```
 
@@ -116,7 +119,7 @@ Start](https://davidycliao.github.io/flaiR/articles/quickstart.html#flair-instal
 
 <br>
 
-## Contribution and Open Sourc
+## Contribution and Open Source
 
 <div style="text-align: justify">
 
