@@ -46,7 +46,9 @@ flaiR bridges these powerful NLP features from Python to the R environment, maki
 
 - [**Sequence Taggings**](#tutorial.html#sequence-taggings)
 
-- [**Embedding in flaiR**](#tutorial.html#flair-embedding)
+- [**The Overview of Embedding**](#tutorial.html#the-overview-of-embedding)
+
+- [**Embedding Examples**](#tutorial.html#embedding-examples)
 
 - [**Performing NER Tasks**](#tutorial.html#performing-ner-tasks)
 
@@ -269,7 +271,7 @@ sprintf("Corpus object sizes - Train: %d |  Test: %d", length(train), length(tes
 
 If you don't provide a dev set, flaiR will not force you to carve out a portion of your test set to serve as a dev set. However, in some cases when only the train and test sets are provided without a dev set, flaiR might automatically take a fraction of the train set (e.g., 10%) to use as a dev set ([#2259](https://github.com/flairNLP/flair/issues/2259#issuecomment-830040253)). This is to offer a mechanism for model selection and to prevent the model from overfitting on the train set.
 
-In the "Corpus" function, there is a random selection of the "dev" dataset. To ensure reproducibility, we need to set the seed in the flaiR framework. We can accomplish this by calling the top-level module "flair" from {flaiR} and using `$set_seed(1964L)` to set the seed.
+In the "Corpus" function, there is a random selection of the `"dev"` dataset. To ensure reproducibility, we need to set the seed in the flaiR framework. We can accomplish this by calling the top-level module "flair" from flaiR and using `$set_seed(1964L)` to set the seed.
 
 </div>
 
@@ -560,11 +562,667 @@ head(results, n = 10)
 ```
 
 
+
 &nbsp;
 
 -----
 
-# Embedding
+## Highlight Entities with Colors
+<div style="text-align: justify;">
+
+This tutorial demonstrates how to use the flaiR package to identify and highlight named entities (such as names, locations, organizations) in text.
+
+
+<u>**Step 1**</u> Create Text with Named Entities
+
+First, we load the flaiR package and work with a sample text:
+
+</div>
+
+```{r}
+library(flaiR)
+data("uk_immigration")
+uk_immigration <- uk_immigration[30,]
+tagger_ner <- load_tagger_ner("ner")
+result <- get_entities(uk_immigration$text,
+                       tagger = tagger_ner,
+                       show.text_id = FALSE
+                       )
+```
+
+<u>**Step 2**</u> Highlight the Named Entities
+
+<div style="text-align: justify;">
+
+Use the `highlight_text` function to color-code the identified entities:
+</div>
+
+```{r}
+highlighted_text <- highlight_text(text = uk_immigration$text, 
+                                   entities_mapping = map_entities(result))
+highlighted_text
+```
+
+
+
+__Explanation:__
+
+- `load_tagger_ner("ner")` loads the pre-trained NER model
+- `get_entities()` identifies named entities in the text
+- `map_entities()` maps the identified entities to colors
+- `highlight_text()` marks the original text using these colors
+
+<div style="text-align: justify;">
+Each type of entity (such as person names, locations, organization names) will be displayed in a different color, making the named entities in the text immediately visible.
+
+</div>
+
+
+&nbsp;
+
+-----
+
+
+# The Overview of Embedding
+
+<div style="text-align: justify">
+
+
+All word embedding classes inherit from the `TokenEmbeddings` class and call the `embed()` method to embed the text. In most cases when using Flair, various and complex embedding processes are hidden behind the interface. Users simply need to instantiate the necessary embedding class and call `embed()` to embed text.
+
+Here are the types of embeddings currently supported in FlairNLP: 
+
+
+| Class | Type | Paper |
+| ------------- | -------------  | -------------  |
+| [`BytePairEmbeddings`](articles/transformer_wordembeddings.html#bytepairembeddings) | Subword-level word embeddings | [Heinzerling and Strube (2018)](https://www.aclweb.org/anthology/L18-1473)  |
+| [`CharacterEmbeddings`]() | Task-trained character-level embeddings of words | [Lample et al. (2016)](https://www.aclweb.org/anthology/N16-1030) |
+| [`ELMoEmbeddings`]() | Contextualized word-level embeddings | [Peters et al. (2018)](https://aclweb.org/anthology/N18-1202)  |
+| [`FastTextEmbeddings`]() | Word embeddings with subword features | [Bojanowski et al. (2017)](https://aclweb.org/anthology/Q17-1010)  |
+| [`FlairEmbeddings`](articles/transformer_wordembeddings.html#flair-embeddings) | Contextualized character-level embeddings | [Akbik et al. (2018)](https://www.aclweb.org/anthology/C18-1139/)  |
+| [`OneHotEmbeddings`]() | Standard one-hot embeddings of text or tags | - |
+| [`PooledFlairEmbeddings`](articles/transformer_wordembeddings.html#pooled-flair-embeddings) | Pooled variant of `FlairEmbeddings` |  [Akbik et al. (2019)](https://www.aclweb.org/anthology/N19-1078/)  |
+| [`TransformerWordEmbeddings`](articles/transformer_wordembeddings.html#transformer-embeddings)) | Embeddings from pretrained [transformers](https://huggingface.co/transformers/pretrained_models.html) (BERT, XLM, GPT, RoBERTa, XLNet, DistilBERT etc.) | [Devlin et al. (2018)](https://www.aclweb.org/anthology/N19-1423/) [Radford et al. (2018)](https://d4mucfpksywv.cloudfront.net/better-language-models/language_models_are_unsupervised_multitask_learners.pdf)  [Liu et al. (2019)](https://arxiv.org/abs/1907.11692) [Dai et al. (2019)](https://arxiv.org/abs/1901.02860) [Yang et al. (2019)](https://arxiv.org/abs/1906.08237) [Lample and Conneau (2019)](https://arxiv.org/abs/1901.07291) |
+| [`WordEmbeddings`](https://github.com/flairNLP/flair/tree/master/resources/docs/embeddings/CLASSIC_WORD_EMBEDDINGS.md) | Classic word embeddings |  |
+
+</div>
+
+&nbsp;
+
+-----
+
+
+## Byte Pair Embeddings 
+<div style="text-align: justify">
+
+_Please note that ihis document for R is a conversion of the  [Flair NLP](https://github.com/flairNLP/flair/blob/master/resources/docs/embeddings/BYTE_PAIR_EMBEDDINGS.md) document implemented in Python._
+
+
+
+`BytePairEmbeddings` are word embeddings that are precomputed on the subword-level. This means that they are able to embed any word by splitting words into subwords and looking up their embeddings. `BytePairEmbeddings` were proposed and computed by [Heinzerling and Strube (2018)](https://www.aclweb.org/anthology/L18-1473) who found that they offer nearly the same accuracy as word embeddings, but at a fraction
+of the model size. So they are a great choice if you want to train small models.
+
+You initialize with a language code (275 languages supported), a number of 'syllables' (one of ) and a number of dimensions (one of 50, 100, 200 or 300). The following initializes and uses byte pair embeddings for English:
+
+
+```{r}
+library(flaiR)
+# initialize embedding
+BytePairEmbeddings <- flair_embeddings()$BytePairEmbeddings
+embedding <- BytePairEmbeddings('en')
+# create a sentence
+Sentence <- flair_data()$Sentence
+sentence = Sentence('The grass is green .')
+# embed words in sentence
+embedding$embed(sentence)
+```
+
+
+More information can be found on the [byte pair embeddings](https://nlp.h-its.org/bpemb/) web page. `BytePairEmbeddings` also have a multilingual model capable of embedding any word in any language.  You can instantiate it with:
+
+```{r eval=FALSE, include=TRUE}
+embedding <- BytePairEmbeddings('multi')
+```
+
+You can also load custom `BytePairEmbeddings` by specifying a path to model_file_path and embedding_file_path arguments. They correspond respectively to a SentencePiece model file and to an embedding file (Word2Vec plain text or GenSim binary). For example:
+
+
+</div>
+
+
+##  Flair Embeddings
+
+<div style="text-align: justify">
+
+__The following example manual is translated into R from Flair NLP by [Zalando Research](https://engineering.zalando.com/posts/2018/11/zalando-research-releases-flair.html).__ In Flair, the use of embedding is very quite straightforward. Here’s an example code snippet of how to use Flair’s contextual string embeddings:
+
+```{r}
+library(flaiR)
+FlairEmbeddings <- flair_embeddings()$FlairEmbeddings
+# init embedding
+flair_embedding_forward <- FlairEmbeddings('news-forward')
+
+# create a sentence
+Sentence <- flair_data()$Sentence
+sentence = Sentence('The grass is green .')
+
+# embed words in sentence
+flair_embedding_forward$embed(sentence)
+```
+
+
+| ID | Language | Embedding |
+| -------------     | ------------- | ------------- |
+| 'multi-X'    | 300+ | [JW300 corpus](http://opus.nlpl.eu/JW300.php), as proposed by [Agić and Vulić (2019)](https://www.aclweb.org/anthology/P19-1310/). The corpus is licensed under CC-BY-NC-SA
+| 'multi-X-fast'    | English, German, French, Italian, Dutch, Polish | Mix of corpora (Web, Wikipedia, Subtitles, News), CPU-friendly |
+| 'news-X'    | English | Trained with 1 billion word corpus |
+| 'news-X-fast'    | English | Trained with 1 billion word corpus, CPU-friendly |
+| 'mix-X'     | English | Trained with mixed corpus (Web, Wikipedia, Subtitles) |
+| 'ar-X'     | Arabic | Added by [@stefan-it](https://github.com/zalandoresearch/flair/issues/614): Trained with Wikipedia/OPUS |
+| 'bg-X'  | Bulgarian | Added by [@stefan-it](https://github.com/zalandoresearch/flair/issues/614): Trained with Wikipedia/OPUS |
+| 'bg-X-fast'  | Bulgarian  | Added by [@stefan-it](https://github.com/stefan-it/flair-lms): Trained with various sources (Europarl, Wikipedia or SETimes) |
+| 'cs-X'     | Czech | Added by [@stefan-it](https://github.com/zalandoresearch/flair/issues/614): Trained with Wikipedia/OPUS |
+| 'cs-v0-X'    | Czech | Added by [@stefan-it](https://github.com/stefan-it/flair-lms): LM embeddings (earlier version) |
+| 'de-X'  | German  | Trained with mixed corpus (Web, Wikipedia, Subtitles) |
+| 'de-historic-ha-X'  | German (historical) | Added by [@stefan-it](https://github.com/stefan-it/flair-lms): Historical German trained over *Hamburger Anzeiger* |
+| 'de-historic-wz-X'  | German (historical) | Added by [@stefan-it](https://github.com/stefan-it/flair-lms): Historical German trained over *Wiener Zeitung* |
+| 'de-historic-rw-X'  | German (historical) | Added by [@redewiedergabe](https://github.com/redewiedergabe): Historical German trained over 100 million tokens |
+| 'es-X'    | Spanish | Added by [@iamyihwa](https://github.com/zalandoresearch/flair/issues/80): Trained with Wikipedia |
+| 'es-X-fast'    | Spanish | Added by [@iamyihwa](https://github.com/zalandoresearch/flair/issues/80): Trained with Wikipedia, CPU-friendly |
+| 'es-clinical-'    | Spanish (clinical) | Added by [@matirojasg](https://github.com/flairNLP/flair/issues/2292): Trained with Wikipedia |
+| 'eu-X'    | Basque | Added by [@stefan-it](https://github.com/zalandoresearch/flair/issues/614): Trained with Wikipedia/OPUS |
+| 'eu-v0-X'    | Basque | Added by [@stefan-it](https://github.com/stefan-it/flair-lms): LM embeddings (earlier version) |
+| 'fa-X'     | Persian | Added by [@stefan-it](https://github.com/zalandoresearch/flair/issues/614): Trained with Wikipedia/OPUS |
+| 'fi-X'     | Finnish | Added by [@stefan-it](https://github.com/zalandoresearch/flair/issues/614): Trained with Wikipedia/OPUS |
+| 'fr-X'    | French | Added by [@mhham](https://github.com/mhham): Trained with French Wikipedia |
+| 'he-X'     | Hebrew | Added by [@stefan-it](https://github.com/zalandoresearch/flair/issues/614): Trained with Wikipedia/OPUS |
+| 'hi-X'     | Hindi | Added by [@stefan-it](https://github.com/zalandoresearch/flair/issues/614): Trained with Wikipedia/OPUS |
+| 'hr-X'     | Croatian | Added by [@stefan-it](https://github.com/zalandoresearch/flair/issues/614): Trained with Wikipedia/OPUS |
+| 'id-X'     | Indonesian | Added by [@stefan-it](https://github.com/zalandoresearch/flair/issues/614): Trained with Wikipedia/OPUS |
+| 'it-X'     | Italian | Added by [@stefan-it](https://github.com/zalandoresearch/flair/issues/614): Trained with Wikipedia/OPUS |
+| 'ja-X'    | Japanese | Added by [@frtacoa](https://github.com/zalandoresearch/flair/issues/527): Trained with 439M words of Japanese Web crawls (2048 hidden states, 2 layers)|
+| 'nl-X'     | Dutch | Added by [@stefan-it](https://github.com/zalandoresearch/flair/issues/614): Trained with Wikipedia/OPUS |
+| 'nl-v0-X'    | Dutch | Added by [@stefan-it](https://github.com/stefan-it/flair-lms): LM embeddings (earlier version) |
+| 'no-X'     | Norwegian | Added by [@stefan-it](https://github.com/zalandoresearch/flair/issues/614): Trained with Wikipedia/OPUS |
+| 'pl-X'  | Polish  | Added by [@borchmann](https://github.com/applicaai/poleval-2018): Trained with web crawls (Polish part of CommonCrawl) |
+| 'pl-opus-X'     | Polish | Added by [@stefan-it](https://github.com/zalandoresearch/flair/issues/614): Trained with Wikipedia/OPUS |
+| 'pt-X'    | Portuguese | Added by [@ericlief](https://github.com/ericlief/language_models): LM embeddings |
+| 'sl-X'     | Slovenian | Added by [@stefan-it](https://github.com/zalandoresearch/flair/issues/614): Trained with Wikipedia/OPUS |
+| 'sl-v0-X'  | Slovenian  | Added by [@stefan-it](https://github.com/stefan-it/flair-lms): Trained with various sources (Europarl, Wikipedia and OpenSubtitles2018) |
+| 'sv-X'    | Swedish | Added by [@stefan-it](https://github.com/zalandoresearch/flair/issues/614): Trained with Wikipedia/OPUS |
+| 'sv-v0-X'    | Swedish | Added by [@stefan-it](https://github.com/stefan-it/flair-lms): Trained with various sources (Europarl, Wikipedia or OpenSubtitles2018) |
+| 'ta-X'    | Tamil | Added by [@stefan-it](https://github.com/stefan-it/plur) |
+| 'pubmed-X'    | English | Added by [@jessepeng](https://github.com/zalandoresearch/flair/pull/519): Trained with 5% of PubMed abstracts until 2015 (1150 hidden states, 3 layers)|
+| 'de-impresso-hipe-v1-X' | German (historical)  | In-domain data (Swiss and Luxembourgish newspapers) for [CLEF HIPE Shared task](https://impresso.github.io/CLEF-HIPE-2020). More information on the shared task can be found in [this paper](https://zenodo.org/record/3752679#.XqgzxXUzZzU) |
+| 'en-impresso-hipe-v1-X' | English (historical) | In-domain data (Chronicling America material) for [CLEF HIPE Shared task](https://impresso.github.io/CLEF-HIPE-2020). More information on the shared task can be found in [this paper](https://zenodo.org/record/3752679#.XqgzxXUzZzU) |
+| 'fr-impresso-hipe-v1-X' | French (historical)  | In-domain data (Swiss and Luxembourgish newspapers) for [CLEF HIPE Shared task](https://impresso.github.io/CLEF-HIPE-2020). More information on the shared task can be found in [this paper](https://zenodo.org/record/3752679#.XqgzxXUzZzU) |
+| 'am-X' | Amharic  | Based on 6.5m Amharic text corpus crawled from different sources. See [this paper](https://www.mdpi.com/1999-5903/13/11/275) and the official [GitHub Repository](https://github.com/uhh-lt/amharicmodels) for more information. |
+| 'uk-X' | Ukrainian | Added by [@dchaplinsky](https://github.com/dchaplinsky): Trained with [UberText](https://lang.org.ua/en/corpora/) corpus. |
+
+__Source__: [https://github.com/flairNLP/flair/blob/master/resources/docs/embeddings/FLAIR_EMBEDDINGS.md#flair-embeddings](https://github.com/flairNLP/flair/blob/master/resources/docs/embeddings/FLAIR_EMBEDDINGS.md#flair-embeddings)
+
+</div>
+
+<div style="text-align: justify">
+
+So, if you want to load embeddings from the German forward LM model, instantiate the method as follows:
+```{r}
+flair_de_forward <- FlairEmbeddings('de-forward')
+```
+
+And if you want to load embeddings from the Bulgarian backward LM model, instantiate the method as follows:
+```{r}
+flair_bg_backward <- FlairEmbeddings('bg-backward')
+```
+
+</div>
+
+&nbsp;
+
+-----
+
+##  Recommended Flair Usage in {flaiR} in R
+
+<div style="text-align: justify">
+We recommend combining both forward and backward Flair embeddings. Depending on the task, we also recommend adding standard word embeddings into the mix. So, our recommended `StackedEmbedding` for most English tasks is:
+
+```{r}
+FlairEmbeddings <- flair_embeddings()$FlairEmbeddings
+WordEmbeddings <- flair_embeddings()$WordEmbeddings
+StackedEmbeddings <- flair_embeddings()$StackedEmbeddings
+
+# create a StackedEmbedding object that combines glove and forward/backward flair embeddings
+stacked_embeddings <- StackedEmbeddings(list(WordEmbeddings("glove"),
+                                             FlairEmbeddings("news-forward"),
+                                             FlairEmbeddings("news-backward")))
+
+```
+
+
+
+That's it! Now just use this embedding like all the other embeddings, i.e. call the `embed()` method over your sentences.
+```{r}
+# create a sentence
+Sentence <- flair_data()$Sentence
+sentence = Sentence('The grass is green .')
+```
+
+```{r}
+# just embed a sentence using the StackedEmbedding as you would with any single embedding.
+stacked_embeddings$embed(sentence)
+```
+
+```{r}
+# now check out the embedded tokens.
+# Note that Python is indexing from 0. In an R for loop, using seq_along(sentence) - 1 achieves the same effect.
+for (i in  seq_along(sentence)-1) {
+  print(sentence[i])
+  print(sentence[i]$embedding)
+}
+```
+
+Words are now embedded using a concatenation of three different embeddings. This combination often gives state-of-the-art accuracy.
+
+</div>
+
+&nbsp;
+
+-----
+
+
+##  Pooled Flair Embeddings
+
+<div style="text-align: justify">
+
+We also developed a pooled variant of the `FlairEmbeddings`. These embeddings differ in that they *constantly evolve over time*, even at prediction time (i.e. after training is complete). This means that the same words in the same sentence at two different points in time may have different embeddings.
+
+`PooledFlairEmbeddings` manage a 'global' representation of each distinct word by using a pooling operation of all past occurences. More details on how this works may be found in [Akbik et al. (2019)](https://www.aclweb.org/anthology/N19-1078/).
+
+You can instantiate and use `PooledFlairEmbeddings` like any other embedding:
+
+
+```{r}
+# initiate embedding from Flair NLP
+PooledFlairEmbeddings <- flair_embeddings()$PooledFlairEmbeddings
+flair_embedding_forward <- PooledFlairEmbeddings('news-forward')
+
+# create a sentence object
+sentence <- Sentence('The grass is green .')
+
+# embed words in sentence
+flair_embedding_forward$embed(sentence)
+```
+
+Note that while we get some of our best results with `PooledFlairEmbeddings` they are very ineffective memory-wise since they keep past embeddings of all words in memory. In many cases, regular `FlairEmbeddings` will be nearly as good but with much lower memory requirements.
+
+
+</div>
+
+&nbsp;
+
+-----
+
+##  Transformer Embeddings
+
+
+<div style="text-align: justify">
+
+Please note that content and examples in this section have been extensively revised from the [`TransformerWordEmbeddings`](https://github.com/flairNLP/flair/tree/master/resources/docs/embeddings/TRANSFORMER_EMBEDDINGS.md) official documentation. Flair supports various Transformer-based architectures like BERT or XLNet from [HuggingFace](https://github.com/huggingface), 
+with two classes [`TransformerWordEmbeddings`](#flair.embeddings.token.TransformerWordEmbeddings) (to embed words or tokens) and [`TransformerDocumentEmbeddings`](#flair.embeddings.document.TransformerDocumentEmbeddings) (to embed documents).
+
+</div>
+
+&nbsp;
+
+
+
+## Embeddings Words with Transformers
+
+<div style="text-align: justify">
+
+For instance, to load a standard BERT transformer model, do:
+
+```{r}
+library(flaiR)
+# initiate embedding and load BERT model from HugginFaces
+TransformerWordEmbeddings <- flair_embeddings()$TransformerWordEmbeddings
+embedding <- TransformerWordEmbeddings('bert-base-uncased')
+
+# create a sentence
+Sentence <- flair_data()$Sentence
+sentence = Sentence('The grass is green .')
+
+# embed words in sentence
+embedding$embed(sentence)
+```
+
+
+If instead you want to use RoBERTa, do:
+```{r}
+TransformerWordEmbeddings <- flair_embeddings()$TransformerWordEmbeddings
+embedding <- TransformerWordEmbeddings('roberta-base')
+sentence <- Sentence('The grass is green .')
+embedding$embed(sentence)
+```
+
+{`flaiR`} interacts with Flair NLP ([Zalando Research](https://github.com/zalandoresearch/)), allowing you to use pre-trained models from [HuggingFace](https://https://huggingface.co/models) , where you can search for models to use. 
+
+
+## Embedding Documents with Transformers
+
+To embed a whole sentence as one (instead of each word in the sentence), simply use the [`TransformerDocumentEmbeddings`](#flair.embeddings.document.TransformerDocumentEmbeddings) 
+instead:
+
+```{r}
+TransformerDocumentEmbeddings <- flair_embeddings()$TransformerDocumentEmbeddings
+embedding <- TransformerDocumentEmbeddings('roberta-base')
+sentence <- Sentence('The grass is green .')
+embedding$embed(sentence)
+```
+
+
+</div>
+
+### Arguments
+
+<div style="text-align: justify">
+
+
+There are several options that you can set when you init the [`TransformerWordEmbeddings`](#flair.embeddings.token.TransformerWordEmbeddings) 
+and [`TransformerDocumentEmbeddings`](#flair.embeddings.document.TransformerDocumentEmbeddings) classes:
+
+| Argument               | Default              | Description
+|------------------------|----------------------| ------------------------------------------------------------------------------
+| `model`                | `bert-base-uncased`  | The string identifier of the transformer model you want to use (see above)
+| `layers`               | `all`                | Defines the layers of the Transformer-based model that produce the embedding
+| `subtoken_pooling`     | `first`              | See [Pooling operation section](#Pooling-operation).
+| `layer_mean`           | `True`               | See [Layer mean section](#Layer-mean).
+| `fine_tune`            | `False`              | Whether or not embeddings are fine-tuneable.
+| `allow_long_sentences` | `True`               | Whether or not texts longer than maximal sequence length are supported.
+| `use_context`          | `False`              | Set to True to include context outside of sentences. This can greatly increase accuracy on some tasks, but slows down embedding generation.
+
+</div>
+
+### Layers
+
+<div style="text-align: justify">
+
+The `layers` argument controls which transformer layers are used for the embedding. If you set this value to '-1,-2,-3,-4', the top 4 layers are used to make an embedding. If you set it to '-1', only the last layer is used. If you set it to "all", then all layers are used. This affects the length of an embedding, since layers are just concatenated.
+
+```{r}
+Sentence <- flair_data()$Sentence
+TransformerWordEmbeddings <- flair_embeddings()$TransformerWordEmbeddings
+sentence = Sentence('The grass is green.')
+
+# use only last layers
+embeddings <- TransformerWordEmbeddings('bert-base-uncased', layers='-1', layer_mean = FALSE)
+embeddings$embed(sentence)
+print(sentence[0]$embedding$size())
+
+sentence$clear_embeddings()
+```
+
+```{r}
+sentence <- Sentence('The grass is green.')
+
+# use only last layers
+embeddings <- TransformerWordEmbeddings('bert-base-uncased', layers = "-1", layer_mean = FALSE)
+embeddings$embed(sentence)
+print(sentence[0]$embedding$size())
+
+sentence$clear_embeddings()
+
+```
+
+
+```{r}
+# use last two layers
+embeddings <- TransformerWordEmbeddings('bert-base-uncased', layers='-1,-2', layer_mean = FALSE)
+embeddings$embed(sentence)
+print(sentence[0]$embedding$size())
+
+sentence$clear_embeddings()
+
+```
+
+
+```{r}
+# use ALL layers
+embeddings = TransformerWordEmbeddings('bert-base-uncased', layers='all', layer_mean=FALSE)
+embeddings$embed(sentence)
+print(sentence[0]$embedding$size())
+```
+
+Here's an example of how it might be done:
+
+You can directly import torch from reticulate since it has already been installed through the flair dependency when you installed flair in Python.
+
+```{r}
+# You can directly import torch from reticulate since it has already been installed through the flair dependency when you installed flair in Python.
+torch <- reticulate::import('torch')
+
+# Attempting to create a tensor with integer dimensions
+torch$Size(list(768L))
+torch$Size(list(1536L))
+torch$Size(list(9984L))
+```
+
+
+Notice the L after the numbers in the list? This ensures that R treats the numbers as integers. If you're generating these numbers dynamically (e.g., through computation), you might want to ensure they are integers before attempting to create the tensor. I.e. the size of the embedding increases the mode layers we use (but ONLY if layer_mean is set to False, otherwise the length is always the same).
+
+</div>
+
+
+### Pooling Operation
+
+<div style="text-align: justify">
+
+Most of the Transformer-based models use subword tokenization. E.g. the following
+token `puppeteer` could be tokenized into the subwords: `pupp`, `##ete` and `##er`.
+
+We implement different pooling operations for these subwords to generate the final token representation:
+
+* `first`: only the embedding of the first subword is used
+* `last`: only the embedding of the last subword is used
+* `first_last`: embeddings of the first and last subwords are concatenated and used
+* `mean`: a `torch.mean` over all subword embeddings is calculated and used
+
+You can choose which one to use by passing this in the constructor:
+
+
+```{r}
+# use first and last subtoken for each word
+embeddings = TransformerWordEmbeddings('bert-base-uncased', subtoken_pooling='first_last')
+embeddings$embed(sentence)
+print(sentence[0]$embedding$size())
+```
+
+</div>
+
+### Layer Mean
+
+<div style="text-align: justify">
+
+The Transformer-based models have a certain number of layers. By default, all layers you select are
+concatenated as explained above. Alternatively, you can set `layer_mean=True` to do a mean over all
+selected layers. The resulting vector will then always have the same dimensionality as a single layer:
+
+```{r}
+# initiate embedding from transformer. This model will be downloaded from Flair NLP huggingface.
+embeddings <- TransformerWordEmbeddings('bert-base-uncased', layers="all", layer_mean=TRUE)
+
+# create a sentence object
+sentence = Sentence("The Oktoberfest is the world's largest Volksfest .")
+
+# embed words in sentence
+embedding$embed(sentence)
+```
+
+</div>
+
+## Fine-tuneable or Not
+<div style="text-align: justify">
+
+Here's an example of how it might be done: In some setups, you may wish to fine-tune the transformer embeddings. In this case, set `fine_tune=True` in the init method. When fine-tuning, you should also only use the topmost layer, so best set `layers='-1'`.
+```{r}
+# use first and last subtoken for each word
+TransformerWordEmbeddings <- flair_embeddings()$TransformerWordEmbeddings
+embeddings <- TransformerWordEmbeddings('bert-base-uncased', fine_tune=TRUE, layers='-1')
+embeddings$embed(sentence)
+```
+
+This will print a tensor that now has a gradient function and can be fine-tuned if you use it in a training routine.
+
+
+```{r}
+print(sentence[0]$embedding)
+```
+
+<!-- ```python -->
+<!-- tensor([-0.0323, -0.3904, -1.1946,  ...,  0.1305, -0.1365, -0.4323], -->
+<!--        device='cuda:0', grad_fn=<CatBackward>) -->
+<!-- ``` -->
+</div>
+
+__More Models__
+
+<div style="text-align: justify">
+
+Please have a look at the awesome [HuggingFace](https://huggingface.co/models) for all supported pre-trained models!
+
+</div>
+
+
+
+&nbsp;
+
+-----
+ 
+
+###  Classic Word Embeddings
+<div style="text-align: justify">
+
+
+Classic word embeddings are static and word-level, meaning that each distinct word gets exactly one pre-computed
+embedding. Most embeddings fall under this class, including the popular GloVe or Komninos embeddings.
+
+Simply instantiate the `WordEmbeddings` class and pass a string identifier of the embedding you wish to load. So, if
+you want to use GloVe embeddings, pass the string 'glove' to the constructor:
+
+
+```{r}
+library(flaiR)
+# initiate embedding with glove
+WordEmbeddings <- flair_embeddings()$WordEmbeddings
+glove_embedding <-  WordEmbeddings('glove')
+```
+
+
+Now, create an example sentence and call the embedding's `embed()` method. You can also pass a list of sentences to this method since some embedding types make use of batching to increase speed.
+
+
+```{r}
+library(flaiR)
+# initiate a sentence object
+Sentence <- flair_data()$Sentence
+
+# create sentence object.
+sentence = Sentence('The grass is green .')
+
+# embed a sentence using glove.
+glove_embedding$embed(sentence)
+```
+
+This prints out the tokens and their embeddings. GloVe embeddings are Pytorch vectors of dimensionality 100.
+
+```{r}
+# view embedded tokens.
+for (token in seq_along(sentence)-1) {
+  print(sentence[token])
+  print(sentence[token]$embedding$numpy())
+}
+```
+
+
+You choose which pre-trained embeddings you load by passing the appropriate id string to the constructor of the `WordEmbeddings` class. Typically, you use the **two-letter language code** to init an embedding, so 'en' for English and 'de' for German and so on. By default, this will initialize FastText embeddings trained over Wikipedia. You can also always use _FastText_ embeddings over Web crawls, by instantiating with '-crawl'. So 'de-crawl' to use embeddings trained over German web crawls.
+
+For English, we provide a few more options, so here you can choose between instantiating '`en-glove`', '`en-extvec`' and so on.
+
+### Suppored Models:
+
+The following embeddings are currently supported:
+
+| ID | Language | Embedding |
+| ------------- | -------------  | ------------- |
+| 'en-glove' (or 'glove') | English | GloVe embeddings |
+| 'en-extvec' (or 'extvec') | English |Komninos embeddings |
+| 'en-crawl' (or 'crawl')  | English | FastText embeddings over Web crawls |
+| 'en-twitter' (or 'twitter')  | English | Twitter embeddings |
+| 'en-turian' (or 'turian')  | English | Turian embeddings (small) |
+| 'en' (or 'en-news' or 'news')  |English | FastText embeddings over news and wikipedia data |
+| 'de' | German |German FastText embeddings |
+| 'nl' | Dutch | Dutch FastText embeddings |
+| 'fr' | French | French FastText embeddings |
+| 'it' | Italian | Italian FastText embeddings |
+| 'es' | Spanish | Spanish FastText embeddings |
+| 'pt' | Portuguese | Portuguese FastText embeddings |
+| 'ro' | Romanian | Romanian FastText embeddings |
+| 'ca' | Catalan | Catalan FastText embeddings |
+| 'sv' | Swedish | Swedish FastText embeddings |
+| 'da' | Danish | Danish FastText embeddings |
+| 'no' | Norwegian | Norwegian FastText embeddings |
+| 'fi' | Finnish | Finnish FastText embeddings |
+| 'pl' | Polish | Polish FastText embeddings |
+| 'cz' | Czech | Czech FastText embeddings |
+| 'sk' | Slovak | Slovak FastText embeddings |
+| 'sl' | Slovenian | Slovenian FastText embeddings |
+| 'sr' | Serbian | Serbian FastText embeddings |
+| 'hr' | Croatian | Croatian FastText embeddings |
+| 'bg' | Bulgarian | Bulgarian FastText embeddings |
+| 'ru' | Russian | Russian FastText embeddings |
+| 'ar' | Arabic | Arabic FastText embeddings |
+| 'he' | Hebrew | Hebrew FastText embeddings |
+| 'tr' | Turkish | Turkish FastText embeddings |
+| 'fa' | Persian | Persian FastText embeddings |
+| 'ja' | Japanese | Japanese FastText embeddings |
+| 'ko' | Korean | Korean FastText embeddings |
+| 'zh' | Chinese | Chinese FastText embeddings |
+| 'hi' | Hindi | Hindi FastText embeddings |
+| 'id' | Indonesian | Indonesian FastText embeddings |
+| 'eu' | Basque | Basque FastText embeddings |
+
+So, if you want to load German FastText embeddings, instantiate as follows:
+
+```{r echo=FALSE}
+german_embedding <- WordEmbeddings('de')
+```
+
+
+Alternatively, if you want to load German FastText embeddings trained over crawls, instantiate as follows:
+
+
+```{r echo=FALSE}
+german_embedding <- WordEmbeddings('de-crawl')
+```
+
+
+
+```{r echo=FALSE}
+german_embedding <- WordEmbeddings('de-crawl')
+```
+
+</div>
+
+
+
+
+&nbsp;
+
+-----
+
+
+
+# Embedding Examples
 
 <div style="text-align: justify;">
 
@@ -1562,7 +2220,9 @@ confidence <- sentence$labels[[1]]$score
 print(confidence)
 ```
 
+
 &nbsp;
+
 -----
 
 
