@@ -60,7 +60,8 @@
     <li><a class="dropdown-item" href="../articles/tutorial.html#sentence-and-token">Sentence and Token</a></li>
     <li><a class="dropdown-item" href="../articles/tutorial.html#sequence-taggings">Sequence Taggings</a></li>
     <li><a class="dropdown-item" href="../articles/tutorial.html#performing-ner-tasks">Performing NER Tasks</a></li>
-    <li><a class="dropdown-item" href="../articles/tutorial.html#embedding">Embeddings</a></li>
+    <li><a class="dropdown-item" href="../articles/tutorial.html#the-overview-of-embeddings">The Overview of Embedding</a></li>
+    <li><a class="dropdown-item" href="../articles/tutorial.html#embedding">Embeddings Example</a></li>
     <li><a class="dropdown-item" href="../articles/tutorial.html#training-a-binary-classifier">Training a Binary Classifier</a></li>
     <li><a class="dropdown-item" href="../articles/tutorial.html#training-rnns">Training RNNs</a></li>
     <li><a class="dropdown-item" href="../articles/tutorial.html#finetune-transformers">Finetune Transformers </a></li>
@@ -115,7 +116,7 @@ UCD<br><small class="dont-index">Source: <a href="https://github.com/davidycliao
 </h2>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://davidycliao.github.io/flaiR">flaiR</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #0000BB; font-weight: bold;">flaiR</span>: <span style="color: #BBBB00; font-weight: bold;">An R Wrapper for Accessing Flair NLP</span> <span style="color: #BBBB00; font-weight: bold;">0.15.0</span></span></span>
+<span><span class="co">#&gt; <span style="color: #0000BB; font-weight: bold;">flaiR</span>: <span style="color: #BBBB00; font-weight: bold;">An R Wrapper for Accessing Flair NLP</span> <span style="color: #BBBB00; font-weight: bold;">0.13.1</span></span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"uk_immigration"</span><span class="op">)</span></span>
 <span><span class="va">uk_immigration</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">uk_immigration</span>, <span class="fl">10</span><span class="op">)</span></span></code></pre></div>
 <div style="text-align: justify">
@@ -127,7 +128,7 @@ once you’ve downloaded it and it hasn’t been manually removed, executing
 the command again will not trigger a download.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tagger_ner</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_tagger_ner.html">load_tagger_ner</a></span><span class="op">(</span><span class="st">"ner"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2024-12-31 19:10:38,741 SequenceTagger predicts: Dictionary with 20 tags: &lt;unk&gt;, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, &lt;START&gt;, &lt;STOP&gt;</span></span>
+<span><span class="co">#&gt; 2025-01-01 01:05:33,964 SequenceTagger predicts: Dictionary with 20 tags: &lt;unk&gt;, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, &lt;START&gt;, &lt;STOP&gt;</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; NER Tagger Dictionary:</span></span>
 <span><span class="co">#&gt; ========================================</span></span>

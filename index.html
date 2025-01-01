@@ -63,7 +63,8 @@
     <li><a class="dropdown-item" href="articles/tutorial.html#sentence-and-token">Sentence and Token</a></li>
     <li><a class="dropdown-item" href="articles/tutorial.html#sequence-taggings">Sequence Taggings</a></li>
     <li><a class="dropdown-item" href="articles/tutorial.html#performing-ner-tasks">Performing NER Tasks</a></li>
-    <li><a class="dropdown-item" href="articles/tutorial.html#embedding">Embeddings</a></li>
+    <li><a class="dropdown-item" href="articles/tutorial.html#the-overview-of-embeddings">The Overview of Embedding</a></li>
+    <li><a class="dropdown-item" href="articles/tutorial.html#embedding">Embeddings Example</a></li>
     <li><a class="dropdown-item" href="articles/tutorial.html#training-a-binary-classifier">Training a Binary Classifier</a></li>
     <li><a class="dropdown-item" href="articles/tutorial.html#training-rnns">Training RNNs</a></li>
     <li><a class="dropdown-item" href="articles/tutorial.html#finetune-transformers">Finetune Transformers </a></li>
@@ -107,7 +108,10 @@
 <!-- [![Docker Image](https://img.shields.io/badge/Docker-ghcr.io-blue?logo=docker)](https://github.com/davidycliao/flaiR/pkgs/container/flair) -->
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 <div style="text-align: justify">
-<p><strong>flaiR</strong> is an R package for accessing the <a href="flairNLP/flair">flairNLP/flair</a> Python library, maintained by <a href="https://davidycliao.github.io" class="external-link">Yen-Chieh Liao</a> (<a href="https://www.birmingham.ac.uk/research/centres-institutes/centre-for-artificial-intelligence-in-government" class="external-link">University of Birmingham</a>) and <a href="https://muellerstefan.net" class="external-link">Stefan Müller</a> from <a href="https://www.nexsys-energy.ie" class="external-link">Next Generation Energy Systems</a> and <a href="https://text-and-policy.com" class="external-link">Text and Policy Research Group</a> in UCD. flaiR provides convenient access to the main functionalities of flairNLP for training word embedding-based deep learning models and fine-tune state-of-the-art transformers hosted on Hugging Face. Our team trains and fine-tunes the models with Flair in <a href="">our projects</a>.</p>
+<p><strong>flaiR</strong> is an R package for accessing the <a href="https://github.com/flairNLP/flair" class="external-link">flairNLP/flair</a> Python library, maintained by <a href="https://davidycliao.github.io" class="external-link">Yen-Chieh Liao</a> (<a href="https://www.birmingham.ac.uk/research/centres-institutes/centre-for-artificial-intelligence-in-government" class="external-link">University of Birmingham</a>) and <a href="https://muellerstefan.net" class="external-link">Stefan Müller</a> from <a href="https://www.nexsys-energy.ie" class="external-link">Next Generation Energy Systems</a> and <a href="https://text-and-policy.com" class="external-link">Text and Policy Research Group</a> in UCD.</p>
+<p>flaiR provides convenient access to the main functionalities of flairNLP for training word embedding-based deep learning models and fine-tune state-of-the-art transformers hosted on Hugging Face.</p>
+<!-- Our team trains and fine-tunes the models with Flair in [our projects](). -->
+<p>This package is an R wrapper for <a href="https://github.com/flairNLP/flair" class="external-link">Flair NLP</a>, developed by Humboldt University of Berlin.</p>
 </div>
 <p><br></p>
 </div>
@@ -144,11 +148,6 @@
 <td>4.3.2, 4.2.0, 4.2.1</td>
 <td>3.10.x, 3.9</td>
 </tr>
-<tr>
-<td>Ubuntu</td>
-<td>Latest</td>
-<td>3.9</td>
-</tr>
 </tbody>
 </table>
 <p>*: <em>On R 4.2.1, particularly when using the Matrix package on ARM 64 architecture Macs (M1/M2), compatibility issues with gfortran may occur. It’s recommended to avoid this combination.</em></p>
@@ -175,20 +174,11 @@
 <span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">-p</span> 8787:8787 ghcr.io/davidycliao/flair-rstudio:latest</span></code></pre></div>
 <p><strong>Apple Silicon (M1/M2 Mac):</strong></p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="co"># Pull and run with platform specification</span></span>
-<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="ex">docker</span> pull <span class="at">--platform</span> linux/amd64 ghcr.io/davidycliao/flair-rstudio:latest</span>
-<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">--platform</span> linux/amd64 <span class="at">-p</span> 8787:8787 ghcr.io/davidycliao/flair-rstudio:latest</span></code></pre></div>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="ex">docker</span> pull <span class="at">--platform</span> linux/amd64 ghcr.io/davidycliao/flair-rstudio:latest</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">--platform</span> linux/amd64 <span class="at">-p</span> 8787:8787 ghcr.io/davidycliao/flair-rstudio:latest</span></code></pre></div>
 <p>Detailed instructions available in <a href="https://davidycliao.github.io/flaiR/articles/quickstart.html#flair-installation">the Quick Start</a>.</p>
 </div>
 </div>
-<p><br></p>
-</div>
-<div class="section level2">
-<h2 id="updates-and-news">Updates and News<a class="anchor" aria-label="anchor" href="#updates-and-news"></a>
-</h2>
-<ul>
-<li><p><a href="https://davidycliao.github.io/flaiR/articles/tutorial.html#embedding">Tutorial for embeddings in flaiR</a></p></li>
-<li><p><a href="https://davidycliao.github.io/flaiR/articles/tutorial.html#extending-contexts-embedding-regression">Extending conText’s Embedding Regression</a></p></li>
-</ul>
 <p><br></p>
 </div>
 <div class="section level2">
