@@ -8,7 +8,7 @@
 [![flaiR-Installation-Check](https://github.com/davidycliao/flaiR/actions/workflows/R-CMD-check.yml/badge.svg)](https://github.com/davidycliao/flaiR/actions/workflows/R-CMD-check.yml)
 [![R](https://img.shields.io/badge/R-package-blue)](https://github.com/davidycliao/flaiR)
 [![Docker
-Image](https://img.shields.io/badge/Docker-ghcr.io-blue?logo=docker)](https://github.com/davidycliao/flaiR/pkgs/container/flair)
+Image](https://img.shields.io/badge/Docker-ghcr.io-blue?logo=docker)](https://github.com/davidycliao/flaiR/pkgs/container/flair-rstudio)
 [![codecov](https://codecov.io/gh/davidycliao/flaiR/graph/badge.svg?token=CPIBIB6L78)](https://codecov.io/gh/davidycliao/flaiR)
 [![CodeFactor](https://www.codefactor.io/repository/github/davidycliao/flair/badge)](https://www.codefactor.io/repository/github/davidycliao/flair)
 
@@ -57,7 +57,7 @@ University of Berlin.
 - R \>= 4.2.0
 - Rstudio
 
-**OS Systems**
+**Operation Systems**
 
 | OS      | R Versions                | Python Version |
 |---------|---------------------------|----------------|
@@ -92,20 +92,23 @@ library(flaiR)
 
 **Intel/AMD Processors:**
 
-``` bash
+``` r
 # Pull and run
 docker pull ghcr.io/davidycliao/flair-rstudio:latest
+```
+
+``` r
 docker run -p 8787:8787 ghcr.io/davidycliao/flair-rstudio:latest
 ```
 
 **Apple Silicon (M1/M2 Mac):**
 
-``` bash
+``` r
 # Pull and run with platform specification
 docker pull --platform linux/amd64 ghcr.io/davidycliao/flair-rstudio:latest
 ```
 
-``` bash
+``` r
 docker run --platform linux/amd64 -p 8787:8787 ghcr.io/davidycliao/flair-rstudio:latest
 ```
 
@@ -116,7 +119,7 @@ Start](https://davidycliao.github.io/flaiR/articles/quickstart.html#flair-instal
 
 <br>
 
-## Contribution and Open Sourc
+## Contribution and Open Source
 
 <div style="text-align: justify">
 
