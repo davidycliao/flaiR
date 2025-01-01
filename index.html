@@ -101,7 +101,7 @@
 <h2 id="flairr-an-r-wrapper-for-accessing-flair-nlp-library-">
 <u><code>flairR</code></u>: An R Wrapper for Accessing Flair NLP Library <img src="reference/figures/logo.png" align="right" width="180"><a class="anchor" aria-label="anchor" href="#flairr-an-r-wrapper-for-accessing-flair-nlp-library-"></a>
 </h2>
-<p><a href="https://github.com/davidycliao/flaiR/actions/workflows/r_macos.yml" class="external-link"><img src="https://github.com/davidycliao/flaiR/actions/workflows/r_macos.yml/badge.svg" alt="R-MacOS"></a> <a href="https://github.com/davidycliao/flaiR/actions/workflows/r_ubuntu.yaml" class="external-link"><img src="https://github.com/davidycliao/flaiR/actions/workflows/r_ubuntu.yaml/badge.svg" alt="R-ubuntu"></a> <a href="https://github.com/davidycliao/flaiR/actions/workflows/r_window.yml" class="external-link"><img src="https://github.com/davidycliao/flaiR/actions/workflows/r_window.yml/badge.svg" alt="R-Windows"></a> <a href="https://github.com/davidycliao/flaiR/actions/workflows/r.yml" class="external-link"><img src="https://github.com/davidycliao/flaiR/actions/workflows/r.yml/badge.svg" alt="R-CMD-Check"></a> <a href="https://github.com/davidycliao/flaiR/actions/workflows/R-CMD-check.yml" class="external-link"><img src="https://github.com/davidycliao/flaiR/actions/workflows/R-CMD-check.yml/badge.svg" alt="flaiR-Installation-Check"></a> <a href="https://github.com/davidycliao/flaiR" class="external-link"><img src="https://img.shields.io/badge/R-package-blue" alt="R"></a> <a href="https://github.com/davidycliao/flaiR/pkgs/container/flair" class="external-link"><img src="https://img.shields.io/badge/Docker-ghcr.io-blue?logo=docker" alt="Docker Image"></a> <a href="https://codecov.io/gh/davidycliao/flaiR" class="external-link"><img src="https://codecov.io/gh/davidycliao/flaiR/graph/badge.svg?token=CPIBIB6L78" alt="codecov"></a> <a href="https://www.codefactor.io/repository/github/davidycliao/flair" class="external-link"><img src="https://www.codefactor.io/repository/github/davidycliao/flair/badge" alt="CodeFactor"></a></p>
+<p><a href="https://github.com/davidycliao/flaiR/actions/workflows/r_macos.yml" class="external-link"><img src="https://github.com/davidycliao/flaiR/actions/workflows/r_macos.yml/badge.svg" alt="R-MacOS"></a> <a href="https://github.com/davidycliao/flaiR/actions/workflows/r_ubuntu.yaml" class="external-link"><img src="https://github.com/davidycliao/flaiR/actions/workflows/r_ubuntu.yaml/badge.svg" alt="R-ubuntu"></a> <a href="https://github.com/davidycliao/flaiR/actions/workflows/r_window.yml" class="external-link"><img src="https://github.com/davidycliao/flaiR/actions/workflows/r_window.yml/badge.svg" alt="R-Windows"></a> <a href="https://github.com/davidycliao/flaiR/actions/workflows/r.yml" class="external-link"><img src="https://github.com/davidycliao/flaiR/actions/workflows/r.yml/badge.svg" alt="R-CMD-Check"></a> <a href="https://github.com/davidycliao/flaiR/actions/workflows/R-CMD-check.yml" class="external-link"><img src="https://github.com/davidycliao/flaiR/actions/workflows/R-CMD-check.yml/badge.svg" alt="flaiR-Installation-Check"></a> <a href="https://github.com/davidycliao/flaiR" class="external-link"><img src="https://img.shields.io/badge/R-package-blue" alt="R"></a> <a href="https://github.com/davidycliao/flaiR/pkgs/container/flair-rstudio" class="external-link"><img src="https://img.shields.io/badge/Docker-ghcr.io-blue?logo=docker" alt="Docker Image"></a> <a href="https://codecov.io/gh/davidycliao/flaiR" class="external-link"><img src="https://codecov.io/gh/davidycliao/flaiR/graph/badge.svg?token=CPIBIB6L78" alt="codecov"></a> <a href="https://www.codefactor.io/repository/github/davidycliao/flair" class="external-link"><img src="https://www.codefactor.io/repository/github/davidycliao/flair/badge" alt="CodeFactor"></a></p>
 <!-- [![flaiR-Docker](https://github.com/davidycliao/flaiR/actions/workflows/docker-publish.yml/badge.svg)](https://github.com/davidycliao/flaiR/actions/workflows/docker-publish.yml) -->
 <!-- <!-- ![ARM64](https://img.shields.io/badge/ARM64-M1|M2-success?logo=arm) -->
 <!-- [![R](https://img.shields.io/badge/R-package-blue)](https://github.com/davidycliao/flaiR) -->
@@ -125,7 +125,7 @@
 <li>R &gt;= 4.2.0</li>
 <li>Rstudio</li>
 </ul>
-<p><strong>OS Systems</strong></p>
+<p><strong>Operation Systems</strong></p>
 <table class="table">
 <thead><tr>
 <th>OS</th>
@@ -169,20 +169,20 @@
 <h2 id="docker">Docker<a class="anchor" aria-label="anchor" href="#docker"></a>
 </h2>
 <p><strong>Intel/AMD Processors:</strong></p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="co"># Pull and run</span></span>
-<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="ex">docker</span> pull ghcr.io/davidycliao/flair-rstudio:latest</span>
-<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">-p</span> 8787:8787 ghcr.io/davidycliao/flair-rstudio:latest</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="co"># Pull and run</span></span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>docker pull ghcr.io<span class="sc">/</span>davidycliao<span class="sc">/</span>flair<span class="sc">-</span>rstudio<span class="sc">:</span>latest</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>docker run <span class="sc">-</span>p <span class="dv">8787</span><span class="sc">:</span><span class="dv">8787</span> ghcr.io<span class="sc">/</span>davidycliao<span class="sc">/</span>flair<span class="sc">-</span>rstudio<span class="sc">:</span>latest</span></code></pre></div>
 <p><strong>Apple Silicon (M1/M2 Mac):</strong></p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="co"># Pull and run with platform specification</span></span>
-<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="ex">docker</span> pull <span class="at">--platform</span> linux/amd64 ghcr.io/davidycliao/flair-rstudio:latest</span></code></pre></div>
-<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">--platform</span> linux/amd64 <span class="at">-p</span> 8787:8787 ghcr.io/davidycliao/flair-rstudio:latest</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="co"># Pull and run with platform specification</span></span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>docker pull <span class="sc">--</span>platform linux<span class="sc">/</span>amd64 ghcr.io<span class="sc">/</span>davidycliao<span class="sc">/</span>flair<span class="sc">-</span>rstudio<span class="sc">:</span>latest</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>docker run <span class="sc">--</span>platform linux<span class="sc">/</span>amd64 <span class="sc">-</span>p <span class="dv">8787</span><span class="sc">:</span><span class="dv">8787</span> ghcr.io<span class="sc">/</span>davidycliao<span class="sc">/</span>flair<span class="sc">-</span>rstudio<span class="sc">:</span>latest</span></code></pre></div>
 <p>Detailed instructions available in <a href="https://davidycliao.github.io/flaiR/articles/quickstart.html#flair-installation">the Quick Start</a>.</p>
 </div>
 </div>
 <p><br></p>
 </div>
 <div class="section level2">
-<h2 id="contribution-and-open-sourc">Contribution and Open Sourc<a class="anchor" aria-label="anchor" href="#contribution-and-open-sourc"></a>
+<h2 id="contribution-and-open-source">Contribution and Open Source<a class="anchor" aria-label="anchor" href="#contribution-and-open-source"></a>
 </h2>
 <div style="text-align: justify">
 <p>R developers who want to contribute to <code>flaiR</code> are welcome – flaiR is an open source project. We warmly invite R users who share similar interests to join in contributing to this package. Please feel free to shoot me an email us to collaborate on the task. Contributions – whether they be comments, code suggestions, tutorial examples, or forking the repository – are greatly appreciated. Please note that the <code>flaiR</code> is released with the <a href="https://github.com/davidycliao/flaiR/blob/master/CONDUCT.md" class="external-link">Contributor Code of Conduct</a>. By contributing to this project, you agree to abide by its terms.</p>
