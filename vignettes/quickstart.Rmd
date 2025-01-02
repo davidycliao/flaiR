@@ -46,13 +46,12 @@ Flair is a Python library developed by [Zalando Research](https://engineering.za
 - R >= 4.2.0
 - Rstudio
 
-### Operating System
+### Operating Systems
 
-#### macOS Terminal Installation
-
-Install Python 3.10 or higher.
+#### macOS Terminal
 
 ```bash
+# Install Python 3.10 or higher.
 brew install python@3.10
 
 # Verify Python installation
@@ -122,31 +121,47 @@ install.packages("remotes")
 remotes::install_github("davidycliao/flaiR", force = TRUE)
 ```
 
-#### R Version Dependencies
+#### Notice:
 
-The Matrix R package corresponds to different R versions:
+<div style="text-align: justify">
+Installation should work automatically as RStudio and R handle the dependencies.  However, users may encounter compilation errors, particularly with the Matrix package on Mac ARM64 systems (M1/M2 chips). These issues often stem from version conflicts between the Matrix package and the gfortran compiler. To resolve these, follow these steps:
 
-- R 4.4.0+: Latest Matrix package version
+<u>**Version Compatibility:**</u> 
+
+
+First, verify your R version compatibility. For Mac M1/M2 systems, ensure your R version aligns with these Matrix package dependencies:
+
+- R 4.5.0+: Latest Matrix package version (1.7-0 or newer)
+- R 4.4.x: Matrix 1.6-x
 - R 4.3.x: Matrix 1.5-1
 - R 4.2.x: Matrix 1.4-1
 
-<div style="text-align: justify">
-Installation should work automatically as RStudio and R handle the dependencies. However, if you encounter Matrix package compilation errors, you might need the following setup:
-</div>
+<u>**Architecture Compatibility:**</u> 
 
-- Install compiler tools (if needed) in the Terminal:
+- Ensure you've downloaded the correct R version for your Mac's processor architecture (Apple Silicon or Intel).
+- For Apple M1/M2 systems, consider using the official Intel 64-bit R version running through Rosetta, rather than the native arm64 version.
 
-```bash
-brew install gcc
-```
-- Configure R compiler settings:
+<u>**Compiler Issues:**</u> 
 
-```bash
-mkdir -p ~/.R
-touch ~/.R/Makevars
-echo "FC=$(brew --prefix)/bin/gfortran" >> ~/.R/Makevars
-echo "F77=$(brew --prefix)/bin/gfortran" >> ~/.R/Makevars
-echo "FLIBS=-L$(brew --prefix)/lib/gcc/current -lgfortran -lquadmath -lm" >> ~/.R/Makevars
+- For arm64 systems, you may need to download and install GNU Fortran from https://mac.r-project.org/tools/.
+- For R 4.3.0 and above, you'll need GNU Fortran 12.2 (universal) compiler, which supports both Intel and Apple Silicon architectures. macOS users should download and install gfortran-12.2-universal.pkg (242MB) from either the CRAN macOS tools page or GitHub R-macos GNU Fortran releases. This is a significant change from earlier versions (R 3.5.0-3.6.3) which used GNU Fortran 6.1, and ensures proper compilation of the Matrix package on modern Mac systems.
+
+
+However, if you encounter Matrix package compilation errors (which commonly occur on Mac ARM64 systems due to version conflicts between the Matrix package and the gfortran compiler), you'll need to verify your R version compatibility first.
+For Mac M1/M2 systems, ensure your R version matches these Matrix package dependencies:
+
+
+<!-- ```bash -->
+<!-- brew install gcc -->
+<!-- ``` -->
+<!-- - Configure R compiler settings: -->
+
+<!-- ```bash -->
+<!-- mkdir -p ~/.R -->
+<!-- touch ~/.R/Makevars -->
+<!-- echo "FC=$(brew --prefix)/bin/gfortran" >> ~/.R/Makevars -->
+<!-- echo "F77=$(brew --prefix)/bin/gfortran" >> ~/.R/Makevars -->
+<!-- echo "FLIBS=-L$(brew --prefix)/lib/gcc/current -lgfortran -lquadmath -lm" >> ~/.R/Makevars -->
 ```
 
 #### Python Dependencies
@@ -210,11 +225,10 @@ If you encounter any problems or have questions:
 
 For R users, flairR extends FlairNLP with three NLP task functions to extract features in a neat format with [data.table](https://cran.r-project.org/web/packages/data.table/index.html). Through these featured functions, you don't have to write loops to format parsed output on your own. The main features include part-of-speech tagging, named entity recognition and sentiment analysis. Additionally, to handle the load on RAM when dealing with larger corpora, flairR supports batch processing to handle texts in batches, which is especially useful when dealing with large datasets, to optimize memory usage and performance.
 
-| **Core  Featured Functions**                    | Loader                     | Supported Models from Flair NLP                                                                                                        |
-|----------------------------------------------|----------------------------|--------------------------------------------------------------------------------------------------------------------------|
-| `get_entities()`, `get_entities_batch()`     | `load_tagger_ner()`        | `en` (English), `fr` (French), `da` (Danish), `nl` (Dutch), and more.                                                    |
-| `get_pos()`, `get_pos_batch()`               | `load_tagger_pos()`        | `pos` (English POS), `fr-pos` (French POS), `de-pos` (German POS), `nl-pos` (Dutch POS), and more.                       |
-| `get_sentiments()`, `get_sentiments_batch()` | `load_tagger_sentiments()` | `sentiment` (English) , `sentiment-fast `(English) , `de-offensive-language` (German offensive language detection model) |
+| **Core  Featured Functions**    | Loader                     | Supported Models from Flair NLP  |
+|---------------------------------|----------------------------|----------------------------------|
+| `get_entities()`                | `load_tagger_ner()`        | `en` (English), `fr` (French), `da` (Danish), `nl` (Dutch), and more.                                                    |
+| `get_pos()`                     | `load_tagger_pos()`        | `pos` (English POS), `fr-pos` (French POS), `de-pos` (German POS), `nl-pos` (Dutch POS), and more.                       |
 
 </div>
 
