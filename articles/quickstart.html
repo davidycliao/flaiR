@@ -129,25 +129,25 @@ like GloVe and transformer-based models on Hugging Face.</p>
 </ul>
 </div>
 <div class="section level3">
-<h3 id="operating-system">Operating System<a class="anchor" aria-label="anchor" href="#operating-system"></a>
+<h3 id="operating-systems">Operating Systems<a class="anchor" aria-label="anchor" href="#operating-systems"></a>
 </h3>
 <div class="section level4">
-<h4 id="macos-terminal-installation">macOS Terminal Installation<a class="anchor" aria-label="anchor" href="#macos-terminal-installation"></a>
+<h4 id="macos-terminal">macOS Terminal<a class="anchor" aria-label="anchor" href="#macos-terminal"></a>
 </h4>
-<p>Install Python 3.10 or higher.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="ex">brew</span> install python@3.10</span>
-<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a></span>
-<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="co"># Verify Python installation</span></span>
-<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="ex">python3</span> <span class="at">--version</span></span>
-<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a></span>
-<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a><span class="co"># Install R</span></span>
-<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a><span class="ex">brew</span> install R</span>
-<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a></span>
-<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a><span class="co"># Verify R installation</span></span>
-<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a><span class="ex">R</span> <span class="at">--version</span></span>
-<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a></span>
-<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a><span class="co"># Install RStudio</span></span>
-<span id="cb1-13"><a href="#cb1-13" tabindex="-1"></a><span class="ex">brew</span> install <span class="at">--cask</span> rstudio</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="co"># Install Python 3.10 or higher.</span></span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="ex">brew</span> install python@3.10</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="co"># Verify Python installation</span></span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a><span class="ex">python3</span> <span class="at">--version</span></span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a><span class="co"># Install R</span></span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a><span class="ex">brew</span> install R</span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a><span class="co"># Verify R installation</span></span>
+<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a><span class="ex">R</span> <span class="at">--version</span></span>
+<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" tabindex="-1"></a><span class="co"># Install RStudio</span></span>
+<span id="cb1-14"><a href="#cb1-14" tabindex="-1"></a><span class="ex">brew</span> install <span class="at">--cask</span> rstudio</span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="powershell-for-windows">PowerShell for Windows<a class="anchor" aria-label="anchor" href="#powershell-for-windows"></a>
@@ -202,57 +202,82 @@ like GloVe and transformer-based models on Hugging Face.</p>
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span></span>
 <span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"davidycliao/flaiR"</span>, force <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <div class="section level4">
-<h4 id="r-version-dependencies">R Version Dependencies<a class="anchor" aria-label="anchor" href="#r-version-dependencies"></a>
+<h4 id="notice">Notice:<a class="anchor" aria-label="anchor" href="#notice"></a>
 </h4>
-<p>The Matrix R package corresponds to different R versions:</p>
+<div style="text-align: justify">
+<p>Installation should work automatically as RStudio and R handle the
+dependencies. However, users may encounter compilation errors,
+particularly with the Matrix package on Mac ARM64 systems (M1/M2 chips).
+These issues often stem from version conflicts between the Matrix
+package and the gfortran compiler. To resolve these, follow these
+steps:</p>
+<p><u><strong>Version Compatibility:</strong></u></p>
+<p>First, verify your R version compatibility. For Mac M1/M2 systems,
+ensure your R version aligns with these Matrix package dependencies:</p>
 <ul>
-<li>R 4.4.0+: Latest Matrix package version</li>
+<li>R 4.5.0+: Latest Matrix package version (1.7-0 or newer)</li>
+<li>R 4.4.x: Matrix 1.6-x</li>
 <li>R 4.3.x: Matrix 1.5-1</li>
 <li>R 4.2.x: Matrix 1.4-1</li>
 </ul>
-<div style="text-align: justify">
-<p>Installation should work automatically as RStudio and R handle the
-dependencies. However, if you encounter Matrix package compilation
-errors, you might need the following setup:</p>
-</div>
+<p><u><strong>Architecture Compatibility:</strong></u></p>
 <ul>
-<li>Install compiler tools (if needed) in the Terminal:</li>
+<li>Ensure you’ve downloaded the correct R version for your Mac’s
+processor architecture (Apple Silicon or Intel).</li>
+<li>For Apple M1/M2 systems, consider using the official Intel 64-bit R
+version running through Rosetta, rather than the native arm64
+version.</li>
 </ul>
-<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="ex">brew</span> install gcc</span></code></pre></div>
+<p><u><strong>Compiler Issues:</strong></u></p>
 <ul>
-<li>Configure R compiler settings:</li>
+<li>For arm64 systems, you may need to download and install GNU Fortran
+from <a href="https://mac.r-project.org/tools/" class="external-link uri">https://mac.r-project.org/tools/</a>.</li>
+<li>For R 4.3.0 and above, you’ll need GNU Fortran 12.2 (universal)
+compiler, which supports both Intel and Apple Silicon architectures.
+macOS users should download and install gfortran-12.2-universal.pkg
+(242MB) from either the CRAN macOS tools page or GitHub R-macos GNU
+Fortran releases. This is a significant change from earlier versions (R
+3.5.0-3.6.3) which used GNU Fortran 6.1, and ensures proper compilation
+of the Matrix package on modern Mac systems.</li>
 </ul>
-<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> ~/.R</span>
-<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a><span class="fu">touch</span> ~/.R/Makevars</span>
-<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"FC=</span><span class="va">$(</span><span class="ex">brew</span> <span class="at">--prefix</span><span class="va">)</span><span class="st">/bin/gfortran"</span> <span class="op">&gt;&gt;</span> ~/.R/Makevars</span>
-<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"F77=</span><span class="va">$(</span><span class="ex">brew</span> <span class="at">--prefix</span><span class="va">)</span><span class="st">/bin/gfortran"</span> <span class="op">&gt;&gt;</span> ~/.R/Makevars</span>
-<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"FLIBS=-L</span><span class="va">$(</span><span class="ex">brew</span> <span class="at">--prefix</span><span class="va">)</span><span class="st">/lib/gcc/current -lgfortran -lquadmath -lm"</span> <span class="op">&gt;&gt;</span> ~/.R/Makevars</span></code></pre></div>
-</div>
-<div class="section level4">
-<h4 id="python-dependencies">Python Dependencies<a class="anchor" aria-label="anchor" href="#python-dependencies"></a>
-</h4>
-<div style="text-align: justify">
-<p>The following Python packages will be installed automatically by
-flaiR:</p>
-<ul>
-<li>flair</li>
-<li>scipy==1.12.0</li>
-<li>gensim==4.3.2</li>
-</ul>
-<p><code>flaiR</code> will automatically detect and configure your
-Python environment:</p>
-<ol style="list-style-type: decimal">
-<li>Checks for Python 3.10 or higher</li>
-<li>Installs required Python packages</li>
-<li>Configures R-Python interface using reticulate</li>
-</ol>
-<p>Note: You can manage Python settings in RStudio through <em>Tools
--&gt; Global Options -&gt; Python</em>. To check your Python
-configuration, use:</p>
-</div>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">reticulate</span><span class="fu">::</span><span class="fu"><a href="https://rstudio.github.io/reticulate/reference/py_config.html" class="external-link">py_config</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-</div>
+<p>However, if you encounter Matrix package compilation errors (which
+commonly occur on Mac ARM64 systems due to version conflicts between the
+Matrix package and the gfortran compiler), you’ll need to verify your R
+version compatibility first. For Mac M1/M2 systems, ensure your R
+version matches these Matrix package dependencies:</p>
+<!-- ```bash -->
+<!-- brew install gcc -->
+<!-- ``` -->
+<!-- - Configure R compiler settings: -->
+<!-- ```bash -->
+<!-- mkdir -p ~/.R -->
+<!-- touch ~/.R/Makevars -->
+<!-- echo "FC=$(brew --prefix)/bin/gfortran" >> ~/.R/Makevars -->
+<!-- echo "F77=$(brew --prefix)/bin/gfortran" >> ~/.R/Makevars -->
+<!-- echo "FLIBS=-L$(brew --prefix)/lib/gcc/current -lgfortran -lquadmath -lm" >> ~/.R/Makevars -->
+<pre><code>
+#### Python Dependencies
+
+&lt;div style="text-align: justify"&gt;
+
+The following Python packages will be installed automatically by flaiR:
+
+- flair
+- scipy==1.12.0
+- gensim==4.3.2
+
+`flaiR` will automatically detect and configure your Python environment:
+
+1. Checks for Python 3.10 or higher
+2. Installs required Python packages
+3. Configures R-Python interface using reticulate
+
+Note: You can manage Python settings in RStudio through _Tools -&gt; Global Options -&gt; Python_. To check your Python configuration, use:
+
+&lt;/div&gt;
+
+```r
+reticulate::py_config()</code></pre>
 <div class="section level4">
 <h4 id="recommended-configurations">Recommended Configurations<a class="anchor" aria-label="anchor" href="#recommended-configurations"></a>
 </h4>
@@ -281,8 +306,6 @@ forum</a>
 <p> </p>
 <hr>
 </div>
-</div>
-</div>
 <div class="section level2">
 <h2 id="nlp-tasks">NLP Tasks<a class="anchor" aria-label="anchor" href="#nlp-tasks"></a>
 </h2>
@@ -298,9 +321,9 @@ which is especially useful when dealing with large datasets, to optimize
 memory usage and performance.</p>
 <table class="table">
 <colgroup>
-<col width="23%">
-<col width="14%">
-<col width="62%">
+<col width="34%">
+<col width="29%">
+<col width="35%">
 </colgroup>
 <thead><tr class="header">
 <th><strong>Core Featured Functions</strong></th>
@@ -309,35 +332,19 @@ memory usage and performance.</p>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td>
-<code><a href="../reference/get_entities.html">get_entities()</a></code>, <code>get_entities_batch()</code>
-</td>
+<td><code><a href="../reference/get_entities.html">get_entities()</a></code></td>
 <td><code><a href="../reference/load_tagger_ner.html">load_tagger_ner()</a></code></td>
 <td>
 <code>en</code> (English), <code>fr</code> (French), <code>da</code>
 (Danish), <code>nl</code> (Dutch), and more.</td>
 </tr>
 <tr class="even">
-<td>
-<code><a href="../reference/get_pos.html">get_pos()</a></code>, <code>get_pos_batch()</code>
-</td>
+<td><code><a href="../reference/get_pos.html">get_pos()</a></code></td>
 <td><code><a href="../reference/load_tagger_pos.html">load_tagger_pos()</a></code></td>
 <td>
 <code>pos</code> (English POS), <code>fr-pos</code> (French POS),
 <code>de-pos</code> (German POS), <code>nl-pos</code> (Dutch POS), and
 more.</td>
-</tr>
-<tr class="odd">
-<td>
-<code>get_sentiments()</code>,
-<code>get_sentiments_batch()</code>
-</td>
-<td><code>load_tagger_sentiments()</code></td>
-<td>
-<code>sentiment</code> (English) ,
-<code>sentiment-fast</code>(English) ,
-<code>de-offensive-language</code> (German offensive language detection
-model)</td>
 </tr>
 </tbody>
 </table>
@@ -392,6 +399,10 @@ environment with <strong>flairR</strong>.</p>
 </table>
 <p> </p>
 <hr>
+</div>
+</div>
+</div>
+</div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
