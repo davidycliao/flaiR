@@ -46,11 +46,11 @@ quanteda in the R environment.
 
 <br>
 
-## Requirements
+## Installation via <u>**`GitHub`**</u>
 
 <div style="text-align: justify">
 
-**Required Software**
+**Required Softwares**
 
 - Python \>= 3.10
 - R \>= 4.2.0
@@ -70,8 +70,6 @@ It’s recommended to avoid this combination.*
 
 <br>
 
-## Installation via <u>**`GitHub`**</u>
-
 ``` r
 install.packages("remotes")
 remotes::install_github("davidycliao/flaiR", force = TRUE)
@@ -87,7 +85,7 @@ library(flaiR)
 
 <br>
 
-## Docker Setup
+## Installation with Docker Setup
 
 **Intel/AMD Processors:**
 
