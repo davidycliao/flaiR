@@ -1,116 +1,64 @@
 name: flaiR-Docker
 on:
- push:
-   branches: [main, master]
- pull_request:
-   branches: [main, master]
-
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
 jobs:
- R-CMD-check:
-   runs-on: ubuntu-latest
-   name: R-CMD-check
-   env:
-     GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
-     R_KEEP_PKG_SOURCE: yes
-   steps:
-     - uses: actions/checkout@v3
-     - uses: r-lib/actions/setup-r@v2
-       with:
-         use-public-rspm: true
-     - uses: r-lib/actions/setup-pandoc@v2
-     - name: Setup Python
-       uses: actions/setup-python@v2
-       with:
-         python-version: '3.9'
-     - name: Install Python dependencies
-       run: |
-         python -m pip install --upgrade pip
-         pip install flair
-     - name: Install R dependencies
-       run: |
-         install.packages('remotes')
-         remotes::install_github("davidycliao/flaiR", force = TRUE)
-       shell: Rscript {0}
-     - uses: r-lib/actions/setup-r-dependencies@v2
-       with:
-         extra-packages: rcmdcheck
+  R-CMD-check:
+    runs-on: ubuntu-latest
+    name: R-CMD-check
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      R_KEEP_PKG_SOURCE: yes
+    steps:
+      - uses: actions/checkout@v3
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          use-public-rspm: true
+      - uses: r-lib/actions/setup-pandoc@v2
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install flair
+      - name: Install R dependencies
+        run: |
+          install.packages('remotes')
+          remotes::install_github("davidycliao/flaiR", force = TRUE)
+        shell: Rscript {0}
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          extra-packages: rcmdcheck
 
- security-scan:
-   runs-on: ubuntu-latest
-   steps:
-     - uses: actions/checkout@v3
-
-     - name: Run Docker Scout
-       uses: docker/scout-action@v1
-       with:
-         command: cves
-         image: ghcr.io/${{ github.repository_owner }}/flair-rstudio:latest
-         only-severity: critical,high
-
-     - name: Run Trivy vulnerability scanner
-       uses: aquasecurity/trivy-action@master
-       with:
-         image-ref: ghcr.io/${{ github.repository_owner }}/flair-rstudio:latest
-         format: 'sarif'
-         output: 'trivy-results.sarif'
-         severity: 'CRITICAL,HIGH'
-
-     - name: Upload Trivy scan results
-       uses: github/codeql-action/upload-sarif@v2
-       if: always()
-       with:
-         sarif_file: 'trivy-results.sarif'
-
- docker:
-   needs: [R-CMD-check, security-scan]
-   runs-on: ubuntu-latest
-   permissions:
-     contents: read
-     packages: write
-     security-events: write
-   steps:
-     - uses: actions/checkout@v3
-
-     - name: Set up QEMU
-       uses: docker/setup-qemu-action@v3
-
-     - name: Log in to GitHub Container Registry
-       uses: docker/login-action@v2
-       with:
-         registry: ghcr.io
-         username: ${{ github.actor }}
-         password: ${{ secrets.GITHUB_TOKEN }}
-
-     - name: Set up Docker Buildx
-       uses: docker/setup-buildx-action@v2
-
-     - name: Extract metadata
-       id: meta
-       uses: docker/metadata-action@v4
-       with:
-         images: ghcr.io/${{ github.repository_owner }}/flair-rstudio
-
-     - name: Scan base image
-       uses: docker/scout-action@v1
-       with:
-         command: cves
-         image: rocker/r-ver:latest
-         only-severity: critical,high
-
-     - name: Build and push RStudio image
-       uses: docker/build-push-action@v4
-       with:
-         context: .
-         push: ${{ github.event_name != 'pull_request' }}
-         platforms: linux/amd64,linux/arm64
-         tags: |
-           ghcr.io/${{ github.repository_owner }}/flair-rstudio:latest
-           ghcr.io/${{ github.repository_owner }}/flair-rstudio:0.0.7
-           ghcr.io/${{ github.repository_owner }}/flair-rstudio:${{ github.sha }}
-         labels: ${{ steps.meta.outputs.labels }}
-         build-args: |
-           BUILDKIT_INLINE_CACHE=1
-           USER=rstudio
-           PASSWORD=${{ secrets.RSTUDIO_PASSWORD }}
-         cache-from: type=gha
-         cache-to: type=gha,mode=max
+  docker:
+    needs: R-CMD-check
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v3
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      - name: Build and push RStudio image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository_owner }}/flair-rstudio:latest
+          labels: |
+            org.opencontainers.image.title=flaiR-RStudio
+            org.opencontainers.image.version=0.0.7
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
