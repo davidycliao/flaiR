@@ -27,7 +27,7 @@ ENV PATH="/opt/venv/bin:$PATH"
 ENV RETICULATE_PYTHON="/opt/venv/bin/python"
 
 
-# 設置 R 環境
+# R env
 RUN echo "RETICULATE_PYTHON=/opt/venv/bin/python" >> /usr/local/lib/R/etc/Renviron.site
 
 # 安裝更新的 Python 包
@@ -51,6 +51,7 @@ ARG PASSWORD=rstudio123
 RUN useradd -m $USER && \
     echo "$USER:$PASSWORD" | chpasswd && \
     adduser $USER sudo
+
 
 # 設置權限
 RUN mkdir -p /home/$USER && \
