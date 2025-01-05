@@ -118,19 +118,16 @@ like GloVe and transformer-based models on Hugging Face.</p>
 <div class="section level2">
 <h2 id="flair-installation">flaiR Installation<a class="anchor" aria-label="anchor" href="#flair-installation"></a>
 </h2>
-<div class="section level3">
-<h3 id="required-software">
-<strong>Required Software</strong><a class="anchor" aria-label="anchor" href="#required-software"></a>
-</h3>
+</div>
+<div class="section level2">
+<h2 id="option-1-direct-installation">Option 1: Direct Installation<a class="anchor" aria-label="anchor" href="#option-1-direct-installation"></a>
+</h2>
+<p><strong>System Requirements:</strong></p>
 <ul>
 <li>Python &gt;= 3.10</li>
 <li>R &gt;= 4.2.0</li>
 <li>Rstudio</li>
 </ul>
-</div>
-<div class="section level3">
-<h3 id="operating-systems">Operating Systems<a class="anchor" aria-label="anchor" href="#operating-systems"></a>
-</h3>
 <div class="section level4">
 <h4 id="macos-terminal">macOS Terminal<a class="anchor" aria-label="anchor" href="#macos-terminal"></a>
 </h4>
@@ -165,9 +162,20 @@ like GloVe and transformer-based models on Hugging Face.</p>
 <span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a><span class="co"># Verify R installation</span></span>
 <span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a><span class="ex">R</span> <span class="at">--version</span></span></code></pre></div>
 </div>
-<div class="section level4">
-<h4 id="docker-installation-usage">Docker Installation &amp; Usage<a class="anchor" aria-label="anchor" href="#docker-installation-usage"></a>
-</h4>
+</div>
+<div class="section level2">
+<h2 id="option-2-docker-setup">Option 2: Docker Setup<a class="anchor" aria-label="anchor" href="#option-2-docker-setup"></a>
+</h2>
+<p>The Docker image (12.5GB) includes a complete R/Python development
+environment with RStudio Server + R environments and Python 3.9 with
+flair NLP and its dependencies (PyTorch, models).</p>
+<p>Please ensure your system meets these requirements:</p>
+<ul>
+<li>At least 15GB of free disk space</li>
+<li>Minimum 16GB RAM recommended</li>
+<li>Stable internet connection for initial download</li>
+<li>Docker installed and running</li>
+</ul>
 <p><strong>Intel/AMD Processors:</strong></p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="co"># Pull and run</span></span>
 <span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="ex">docker</span> pull ghcr.io/davidycliao/flair-rstudio:latest</span>
@@ -188,10 +196,9 @@ like GloVe and transformer-based models on Hugging Face.</p>
 </li>
 </ul>
 </div>
-</div>
-<div class="section level3">
-<h3 id="r-package-installation">R Package Installation<a class="anchor" aria-label="anchor" href="#r-package-installation"></a>
-</h3>
+<div class="section level2">
+<h2 id="troubleshooting-guide">Troubleshooting Guide<a class="anchor" aria-label="anchor" href="#troubleshooting-guide"></a>
+</h2>
 <p>The <code>faiR</code> Will:</p>
 <ul>
 <li>Automatically check Python environment</li>
@@ -201,86 +208,69 @@ like GloVe and transformer-based models on Hugging Face.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span></span>
 <span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"davidycliao/flaiR"</span>, force <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<div class="section level4">
-<h4 id="notice">Notice:<a class="anchor" aria-label="anchor" href="#notice"></a>
-</h4>
 <div style="text-align: justify">
-<p>Installation should work automatically as RStudio and R handle the
-dependencies. However, users may encounter compilation errors,
-particularly with the Matrix package on Mac ARM64 systems (M1/M2 chips).
-These issues often stem from version conflicts between the Matrix
-package and the gfortran compiler. To resolve these, follow these
-steps:</p>
-<p><u><strong>Version Compatibility:</strong></u></p>
-<p>First, verify your R version compatibility. For Mac M1/M2 systems,
-ensure your R version aligns with these Matrix package dependencies:</p>
+<p>Installation typically proceeds automatically with RStudio and R
+handling dependencies. However, users (particularly those with Mac ARM64
+systems) may encounter compilation issues. Here’s a comprehensive guide
+to resolve common problems:</p>
+<p><strong>Mac M1/M2 (Apple Silicon) Specific Setup</strong></p>
+<p>1 Architecture Options</p>
 <ul>
-<li>R 4.5.0+: Latest Matrix package version (1.7-0 or newer)</li>
+<li>Requires specific compiler setup</li>
+<li>May encounter additional compatibility issues</li>
+</ul>
+<ol start="2" style="list-style-type: decimal">
+<li>Native ARM64 Version</li>
+</ol>
+<ul>
+<li>Requires specific compiler setup</li>
+<li>May encounter additional compatibility issues</li>
+</ul>
+<p><strong>Version Compatibility</strong></p>
+<p>R Version Requirements:</p>
+<ul>
+<li>R 4.5.0+: Matrix 1.7-0 or newer</li>
 <li>R 4.4.x: Matrix 1.6-x</li>
 <li>R 4.3.x: Matrix 1.5-1</li>
 <li>R 4.2.x: Matrix 1.4-1</li>
 </ul>
-<p><u><strong>Architecture Compatibility:</strong></u></p>
+<p><strong>Compiler Setup for ARM64 Systems</strong></p>
+<p>Required Steps:</p>
+<ol style="list-style-type: decimal">
+<li><p>Download GNU Fortran from
+<code>https://mac.r-project.org/tools/</code></p></li>
+<li><p>For R 4.3.0+:</p></li>
+</ol>
 <ul>
-<li>Ensure you’ve downloaded the correct R version for your Mac’s
-processor architecture (Apple Silicon or Intel).</li>
-<li>For Apple M1/M2 systems, consider using the official Intel 64-bit R
-version running through Rosetta, rather than the native arm64
-version.</li>
-</ul>
-<p><u><strong>Compiler Issues:</strong></u></p>
+<li>Install GNU Fortran 12.2 (universal)</li>
+<li>Supports both Intel and Apple Silicon</li>
+<li>Download <code>gfortran-12.2-universal.pkg</code> (242MB) from:
 <ul>
-<li>For arm64 systems, you may need to download and install GNU Fortran
-from <a href="https://mac.r-project.org/tools/" class="external-link uri">https://mac.r-project.org/tools/</a>.</li>
-<li>For R 4.3.0 and above, you’ll need GNU Fortran 12.2 (universal)
-compiler, which supports both Intel and Apple Silicon architectures.
-macOS users should download and install gfortran-12.2-universal.pkg
-(242MB) from either the CRAN macOS tools page or GitHub R-macos GNU
-Fortran releases. This is a significant change from earlier versions (R
-3.5.0-3.6.3) which used GNU Fortran 6.1, and ensures proper compilation
-of the Matrix package on modern Mac systems.</li>
+<li><a href="CRAN%20macOS%20tools%20page">CRAN macOS tools page</a></li>
+<li><a href="https://github.com/fxcoudert/gfortran-for-macOS/releases" class="external-link">GitHub
+R-macos GNU Fortran releases</a></li>
 </ul>
-<p>However, if you encounter Matrix package compilation errors (which
-commonly occur on Mac ARM64 systems due to version conflicts between the
-Matrix package and the gfortran compiler), you’ll need to verify your R
-version compatibility first. For Mac M1/M2 systems, ensure your R
-version matches these Matrix package dependencies:</p>
-<!-- ```bash -->
-<!-- brew install gcc -->
-<!-- ``` -->
-<!-- - Configure R compiler settings: -->
-<!-- ```bash -->
-<!-- mkdir -p ~/.R -->
-<!-- touch ~/.R/Makevars -->
-<!-- echo "FC=$(brew --prefix)/bin/gfortran" >> ~/.R/Makevars -->
-<!-- echo "F77=$(brew --prefix)/bin/gfortran" >> ~/.R/Makevars -->
-<!-- echo "FLIBS=-L$(brew --prefix)/lib/gcc/current -lgfortran -lquadmath -lm" >> ~/.R/Makevars -->
-<pre><code>
-#### Python Dependencies
-
-&lt;div style="text-align: justify"&gt;
-
-The following Python packages will be installed automatically by flaiR:
-
-- flair
-- scipy==1.12.0
-- gensim==4.3.2
-
-`flaiR` will automatically detect and configure your Python environment:
-
-1. Checks for Python 3.10 or higher
-2. Installs required Python packages
-3. Configures R-Python interface using reticulate
-
-Note: You can manage Python settings in RStudio through _Tools -&gt; Global Options -&gt; Python_. To check your Python configuration, use:
-
-&lt;/div&gt;
-
-```r
-reticulate::py_config()</code></pre>
-<div class="section level4">
-<h4 id="recommended-configurations">Recommended Configurations<a class="anchor" aria-label="anchor" href="#recommended-configurations"></a>
-</h4>
+</li>
+</ul>
+</div>
+<p><strong>Automatic Dependencies (Python)</strong></p>
+<div style="text-align: justify">
+<p>flaiR will automatically install the following Python packages during
+setup:</p>
+<ul>
+<li>flair (with default dependencies)</li>
+<li>scipy (1.12.0)</li>
+<li>gensim (4.3.2)</li>
+</ul>
+<p><strong>Note</strong>: No manual installation required. These
+packages will be handled automatically during flaiR installation.</p>
+<p>You can manage Python settings in RStudio through <em>Tools -&gt;
+Global Options -&gt; Python</em>. To check your Python configuration,
+use:</p>
+</div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">reticulate</span><span class="fu">::</span><span class="fu"><a href="https://rstudio.github.io/reticulate/reference/py_config.html" class="external-link">py_config</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p><strong>Recommended Configurations</strong></p>
 <p>For stable usage, we strongly recommend installing these specific
 versions.</p>
 <table class="table">
@@ -310,10 +300,7 @@ versions.</p>
 <p>*: <em>On R 4.2.1, particularly when using the Matrix package on ARM
 64 architecture Macs (M1/M2), compatibility issues with gfortran may
 occur. It’s recommended to avoid this combination.</em></p>
-</div>
-<div class="section level4">
-<h4 id="troubleshooting">Troubleshooting<a class="anchor" aria-label="anchor" href="#troubleshooting"></a>
-</h4>
+<p> </p>
 <div style="text-align: justify">
 <p>If you encounter any problems or have questions:</p>
 <ul>
@@ -324,7 +311,6 @@ forum</a>
 </li>
 </ul>
 </div>
-<p> </p>
 <hr>
 </div>
 <div class="section level2">
@@ -420,10 +406,6 @@ environment with <strong>flairR</strong>.</p>
 </table>
 <p> </p>
 <hr>
-</div>
-</div>
-</div>
-</div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

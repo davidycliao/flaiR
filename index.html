@@ -108,18 +108,18 @@
 <!-- [![Docker Image](https://img.shields.io/badge/Docker-ghcr.io-blue?logo=docker)](https://github.com/davidycliao/flaiR/pkgs/container/flair) -->
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 <div style="text-align: justify">
-<p><strong>flaiR</strong> is an R package for accessing the <a href="https://github.com/flairNLP/flair" class="external-link">flairNLP/flair</a> Python library, maintained by <a href="https://davidycliao.github.io" class="external-link">Yen-Chieh Liao</a> (<a href="https://www.birmingham.ac.uk/research/centres-institutes/centre-for-artificial-intelligence-in-government" class="external-link">University of Birmingham</a>) and <a href="https://muellerstefan.net" class="external-link">Stefan Müller</a> from <a href="https://www.nexsys-energy.ie" class="external-link">Next Generation Energy Systems</a> and <a href="https://text-and-policy.com" class="external-link">Text and Policy Research Group</a> in UCD.</p>
-<p>flaiR provides convenient access to the main functionalities of flairNLP for training word embedding-based deep learning models and fine-tune state-of-the-art transformers hosted on Hugging Face.</p>
+<p><strong>flaiR</strong> is an R package that provides convenient access to <a href="https://github.com/flairNLP/flair" class="external-link">flairNLP/flair</a>, a powerful Python-based NLP toolkit developed by Humboldt University of Berlin. The R package is maintained by <a href="https://davidycliao.github.io" class="external-link">Yen-Chieh Liao</a> (<a href="https://www.birmingham.ac.uk/research/centres-institutes/centre-for-artificial-intelligence-in-government" class="external-link">University of Birmingham</a>) and <a href="https://muellerstefan.net" class="external-link">Stefan Müller</a> from <a href="https://www.nexsys-energy.ie" class="external-link">Next Generation Energy Systems</a> and <a href="https://text-and-policy.com" class="external-link">Text and Policy Research Group</a> at UCD.</p>
+<p>Through <strong>flaiR</strong>, R users can easily utilize and combine various word embeddings, train deep learning models, and fine-tune the latest transformer models from Hugging Face, bridging advanced NLP functionality with popular quantitative text analysis toolkits like quanteda in the R environment.</p>
 <!-- Our team trains and fine-tunes the models with Flair in [our projects](). -->
-<p>This package is an R wrapper for <a href="https://github.com/flairNLP/flair" class="external-link">Flair NLP</a>, developed by Humboldt University of Berlin.</p>
 </div>
 <p><br></p>
 </div>
 <div class="section level2">
-<h2 id="requirements">Requirements<a class="anchor" aria-label="anchor" href="#requirements"></a>
+<h2 id="installation-via-github">Installation via <u><strong><code>GitHub</code></strong></u>
+<a class="anchor" aria-label="anchor" href="#installation-via-github"></a>
 </h2>
 <div style="text-align: justify">
-<p><strong>Required Software</strong></p>
+<p><strong>Required Softwares</strong></p>
 <ul>
 <li>Python &gt;= 3.10</li>
 <li>R &gt;= 4.2.0</li>
@@ -152,10 +152,6 @@
 </table>
 <p>*: <em>On R 4.2.1, particularly when using the Matrix package on ARM 64 architecture Macs (M1/M2), compatibility issues with gfortran may occur. It’s recommended to avoid this combination.</em></p>
 <p><br></p>
-<div class="section level2">
-<h2 id="installation-via-github">Installation via <u><strong><code>GitHub</code></strong></u>
-<a class="anchor" aria-label="anchor" href="#installation-via-github"></a>
-</h2>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span></span>
 <span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"davidycliao/flaiR"</span>, force <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
@@ -164,19 +160,19 @@
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#&gt; flaiR: An R Wrapper for Accessing Flair NLP 0.13.1</span></span></code></pre></div>
 <p><br></p>
-</div>
 <div class="section level2">
-<h2 id="docker">Docker<a class="anchor" aria-label="anchor" href="#docker"></a>
+<h2 id="installation-with-docker">Installation with Docker<a class="anchor" aria-label="anchor" href="#installation-with-docker"></a>
 </h2>
 <p><strong>Intel/AMD Processors:</strong></p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="co"># Pull and run</span></span>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="co"># Pull image</span></span>
 <span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>docker pull ghcr.io<span class="sc">/</span>davidycliao<span class="sc">/</span>flair<span class="sc">-</span>rstudio<span class="sc">:</span>latest</span></code></pre></div>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>docker run <span class="sc">-</span>p <span class="dv">8787</span><span class="sc">:</span><span class="dv">8787</span> ghcr.io<span class="sc">/</span>davidycliao<span class="sc">/</span>flair<span class="sc">-</span>rstudio<span class="sc">:</span>latest</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="co"># Run container</span></span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>docker run <span class="sc">-</span>p <span class="dv">8787</span><span class="sc">:</span><span class="dv">8787</span> ghcr.io<span class="sc">/</span>davidycliao<span class="sc">/</span>flair<span class="sc">-</span>rstudio<span class="sc">:</span>latest</span></code></pre></div>
 <p><strong>Apple Silicon (M1/M2 Mac):</strong></p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="co"># Pull and run with platform specification</span></span>
 <span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>docker pull <span class="sc">--</span>platform linux<span class="sc">/</span>amd64 ghcr.io<span class="sc">/</span>davidycliao<span class="sc">/</span>flair<span class="sc">-</span>rstudio<span class="sc">:</span>latest</span></code></pre></div>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>docker run <span class="sc">--</span>platform linux<span class="sc">/</span>amd64 <span class="sc">-</span>p <span class="dv">8787</span><span class="sc">:</span><span class="dv">8787</span> ghcr.io<span class="sc">/</span>davidycliao<span class="sc">/</span>flair<span class="sc">-</span>rstudio<span class="sc">:</span>latest</span></code></pre></div>
-<p>Detailed instructions available in <a href="https://davidycliao.github.io/flaiR/articles/quickstart.html#flair-installation">the Quick Start</a>.</p>
+<p>After running these commands in terminal (or powershell), open your browser and navigate to <a href=""><code>http://localhost:8787</code></a> to access RStudio. For detailed installation instructions, please visit <a href="https://davidycliao.github.io/flaiR/articles/quickstart.html#flair-installation">Quick Start Guide</a>.</p>
 </div>
 </div>
 <p><br></p>
