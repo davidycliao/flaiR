@@ -85,7 +85,7 @@ library(flaiR)
 
 <br>
 
-## Installation with Docker Setup
+## Installation with Docker
 
 **Intel/AMD Processors:**
 
@@ -112,7 +112,7 @@ docker run --platform linux/amd64 -p 8787:8787 ghcr.io/davidycliao/flair-rstudio
 
 After running these commands in terminal (or powershell), open your
 browser and navigate to [`http://localhost:8787`]() to access RStudio.
-For detailed installation instructions, please visit[Quick Start
+For detailed installation instructions, please visit [Quick Start
 Guide](https://davidycliao.github.io/flaiR/articles/quickstart.html#flair-installation).
 
 </div>
