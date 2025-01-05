@@ -110,92 +110,66 @@
 
   # 檢查 Python 版本
   tryCatch({
-    python_version <- system2(python_path, "--version", stdout = TRUE, stderr = TRUE)
-    if (!any(grepl("Python 3", python_version))) {
+    python_version <- system(paste(python_path, "--version"), intern = TRUE)
+    if (!grepl("Python 3", python_version)) {
       packageStartupMessage("Python 3 is required.")
       return(invisible(NULL))
     }
   }, error = function(e) {
-    packageStartupMessage(sprintf("Failed to check Python version: %s", e$message))
+    packageStartupMessage(paste("Failed to check Python version:", e$message))
     return(invisible(NULL))
   })
 
-  # 檢查 PyTorch 版本
+  # Version check functions
   check_torch_version <- function() {
-    tryCatch({
-      cmd <- sprintf("%s -c 'import torch; print(torch.__version__)'", python_path)
-      result <- system(cmd, intern = TRUE)
-      if (length(result) > 0 && !is.na(result[1])) {
-        return(list(
-          status = paste("PyTorch", "\u2713", result[1]),
-          success = TRUE,
-          version = result[1]
-        ))
-      }
-    }, error = function(e) NULL)
-    return(list(status = paste("PyTorch", "\u2717"), success = FALSE))
+    torch_version_command <- paste(python_path, "-c \"import torch; print(torch.__version__)\"")
+    result <- system(torch_version_command, intern = TRUE)
+    if (length(result) == 0 || result[1] == "ERROR" || is.na(result[1])) {
+      return(list(paste("PyTorch", paste0("\033[31m", "\u2717", "\033[39m"), sep = " "), FALSE))
+    }
+    return(list(paste("PyTorch", paste0("\033[32m", "\u2713", "\033[39m"), result[1], sep = " "), TRUE, result[1]))
   }
 
-  # 檢查 Flair 版本
   check_flair_version <- function() {
-    tryCatch({
-      cmd <- sprintf("%s -c 'import flair; print(flair.__version__)'", python_path)
-      result <- system(cmd, intern = TRUE)
-      if (length(result) > 0 && !is.na(result[1])) {
-        return(list(
-          status = paste("Flair", "\u2713", result[1]),
-          success = TRUE,
-          version = result[1]
-        ))
-      }
-    }, error = function(e) NULL)
-    return(list(status = paste("Flair", "\u2717"), success = FALSE))
+    flair_version_command <- paste(python_path, "-c \"import flair; print(flair.__version__)\"")
+    result <- system(flair_version_command, intern = TRUE)
+    if (length(result) == 0 || result[1] == "ERROR" || is.na(result[1])) {
+      return(list(paste("flair", paste0("\033[31m", "\u2717", "\033[39m"), sep = " "), FALSE))
+    }
+    return(list(paste("flair", paste0("\033[32m", "\u2713", "\033[39m"), result[1], sep = " "), TRUE, result[1]))
   }
 
-  # 執行版本檢查
-  flair_check <- check_flair_version()
-  torch_check <- check_torch_version()
+  flair_version <- check_flair_version()
+  torch_version <- check_torch_version()
 
-  # 如果 Flair 未安裝，嘗試安裝
-  if (!flair_check$success) {
-    packageStartupMessage("Installing Flair and dependencies...")
+  if (isFALSE(flair_version[[2]])) {
+    packageStartupMessage(sprintf(" Flair %-50s", paste0("is installing from Python")))
 
     # 安裝命令
-    install_commands <- if (in_docker) {
-      c(
-        sprintf("%s -m pip install --no-cache-dir numpy==1.26.4", python_path),
-        sprintf("%s -m pip install --no-cache-dir torch", python_path),
-        sprintf("%s -m pip install --no-cache-dir flair", python_path),
-        sprintf("%s -m pip install --no-cache-dir scipy==1.12.0", python_path)
+    if (in_docker) {
+      commands <- c(
+        paste(python_path, "-m pip install --no-cache-dir numpy==1.26.4"),
+        paste(python_path, "-m pip install --no-cache-dir torch"),
+        paste(python_path, "-m pip install --no-cache-dir flair"),
+        paste(python_path, "-m pip install --no-cache-dir scipy==1.12.0")
       )
     } else {
-      c(
-        sprintf("%s -m pip install --upgrade pip", python_path),
-        sprintf("%s -m pip install torch", python_path),
-        sprintf("%s -m pip install flair", python_path),
-        sprintf("%s -m pip install scipy==1.12.0", python_path)
+      commands <- c(
+        paste(python_path, "-m pip install --upgrade pip"),
+        paste(python_path, "-m pip install torch"),
+        paste(python_path, "-m pip install flair"),
+        paste(python_path, "-m pip install scipy==1.12.0")
       )
     }
 
-    # 執行安裝
-    install_status <- vapply(install_commands, function(cmd) {
-      tryCatch({
-        system(cmd)
-        TRUE
-      }, error = function(e) FALSE)
-    }, logical(1))
+    command_statuses <- vapply(commands, system, FUN.VALUE = integer(1))
 
-    # 重新檢查安裝
-    flair_check <- check_flair_version()
-    if (!flair_check$success) {
+    flair_check_again <- check_flair_version()
+    if (isFALSE(flair_check_again[[2]])) {
       packageStartupMessage("Failed to install Flair. Please install manually.")
-      return(invisible(NULL))
     }
+  } else {
+    packageStartupMessage(sprintf("\033[1m\033[34mflaiR\033[39m\033[22m: \033[1m\033[33mAn R Wrapper for Accessing Flair NLP\033[39m\033[22m %-5s",
+                                  paste("\033[1m\033[33m", flair_version[[3]], "\033[39m\033[22m", sep = "")))
   }
-
-  # 顯示啟動訊息
-  packageStartupMessage(sprintf(
-    "flaiR: An R Wrapper for Accessing Flair NLP %s",
-    if (flair_check$success) flair_check$version else ""
-  ))
 }
