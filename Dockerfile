@@ -1,8 +1,5 @@
 FROM rocker/r-ver:latest
 
-# 設置非互動模式
-ENV DEBIAN_FRONTEND=noninteractive
-
 # 系統更新和安裝安全性修補
 RUN apt-get update && \
     apt-get upgrade -y && \
@@ -15,18 +12,15 @@ RUN apt-get update && \
     libssl-dev \
     gdebi-core \
     wget \
-    sudo \
-    psmisc && \  # 添加 psmisc 依賴
+    psmisc && \
+    sudo && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
 # 安裝 RStudio Server
-RUN apt-get update && \
-    wget --no-verbose https://download2.rstudio.org/server/jammy/amd64/rstudio-server-2023.12.1-402-amd64.deb && \
+RUN wget --progress=dot:giga https://download2.rstudio.org/server/jammy/amd64/rstudio-server-2023.12.1-402-amd64.deb && \
     gdebi -n rstudio-server-2023.12.1-402-amd64.deb && \
-    rm rstudio-server-*.deb && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+    rm rstudio-server-*.deb
 
 # Python 虛擬環境設置
 RUN python3 -m venv /opt/venv
@@ -51,17 +45,18 @@ RUN install2.r --error --deps TRUE \
     remotes && \
     R -e "remotes::install_github('davidycliao/flaiR', dependencies=TRUE)"
 
-# 使用者設置（移除 ARG PASSWORD）
-ENV DEFAULT_USER=rstudio
-RUN useradd -m $DEFAULT_USER && \
-    adduser $DEFAULT_USER sudo && \
-    echo "$DEFAULT_USER ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+# 使用者設置（使用 ARG 而不是 ENV 來處理敏感資訊）
+ARG USER=rstudio
+ARG PASSWORD=rstudio123
+RUN useradd -m $USER && \
+    echo "$USER:$PASSWORD" | chpasswd && \
+    adduser $USER sudo
 
 # 設置權限
-RUN mkdir -p /home/$DEFAULT_USER && \
-    chown -R $DEFAULT_USER:$DEFAULT_USER /home/$DEFAULT_USER && \
-    chown -R $DEFAULT_USER:$DEFAULT_USER /opt/venv && \
-    chown -R $DEFAULT_USER:$DEFAULT_USER /usr/local/lib/R/etc/Renviron.site && \
+RUN mkdir -p /home/$USER && \
+    chown -R $USER:$USER /home/$USER && \
+    chown -R $USER:$USER /opt/venv && \
+    chown -R $USER:$USER /usr/local/lib/R/etc/Renviron.site && \
     chmod 644 /usr/local/lib/R/etc/Renviron.site
 
 # 清理
