@@ -26,6 +26,7 @@ RUN python3 -m venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
 ENV RETICULATE_PYTHON="/opt/venv/bin/python"
 
+
 # 設置 R 環境
 RUN echo "RETICULATE_PYTHON=/opt/venv/bin/python" >> /usr/local/lib/R/etc/Renviron.site
 
