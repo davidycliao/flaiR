@@ -90,6 +90,7 @@
 # }
 .onAttach <- function(...) {
   # Check if running in Docker
+  Sys.unsetenv("RETICULATE_PYTHON")
   in_docker <- file.exists("/.dockerenv")
 
   # Determine Python command
