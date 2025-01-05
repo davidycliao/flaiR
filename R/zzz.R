@@ -19,125 +19,51 @@
 #' @importFrom reticulate py_module_available
 #' @importFrom reticulate py_install
 #' @keywords internal
-# .onAttach <- function(...) {
-#   # Determine Python command
-#   python_cmd <- if (Sys.info()["sysname"] == "Windows") "python" else "python3"
-#   python_path <- Sys.which(python_cmd)
-#
-#   # Check Python path
-#   if (python_path == "") {
-#     packageStartupMessage(paste("Cannot locate the", python_cmd, "executable. Ensure it's installed and in your system's PATH. flaiR functionality requiring Python will not be available."))
-#     return(invisible(NULL))  # Exit .onAttach without stopping package loading
-#   }
-#
-#   # Check Python versio Try to get Python version
-#   tryCatch({
-#     python_version <- system(paste(python_path, "--version"), intern = TRUE)
-#     if (!grepl("Python 3", python_version)) {
-#       packageStartupMessage("Python 3 is required, but a different version was found. Please install Python 3. flaiR functionality requiring Python will not be available.")
-#       return(invisible(NULL))  # Exit .onAttach without stopping package loading
-#     }
-#   }, error = function(e) {
-#     packageStartupMessage(paste("Failed to get Python version with path:", python_path, "Error:", e$message, ". flaiR functionality requiring Python will not be available."))
-#     return(invisible(NULL))   # Exit .onAttach without stopping package loading
-#   })
-#
-#   # Check if PyTorch is installed
-#   check_torch_version <- function() {
-#     # torch_version_command <- paste(python_path, "-c 'import torch; print(torch.__version__)'")
-#     torch_version_command <- paste(python_path, "-c \"import torch; print(torch.__version__)\"")
-#     result <- system(torch_version_command, intern = TRUE)
-#     if (length(result) == 0 || result[1] == "ERROR" || is.na(result[1])) {
-#       return(list(paste("PyTorch", paste0("\033[31m", "\u2717", "\033[39m"), sep = " "), FALSE))
-#     }
-#     # Return flair version
-#     return(list(paste("PyTorch", paste0("\033[32m", "\u2713", "\033[39m") ,result[1], sep = " "), TRUE, result[1]))
-#   }
-#
-#   # Check if flair is installed
-#   check_flair_version <- function() {
-#     # flair_version_command <- paste(python_path, "-c 'import flair; print(flair.__version__)'")
-#     flair_version_command <- paste(python_path, "-c \"import flair; print(flair.__version__)\"")
-#     result <- system(flair_version_command, intern = TRUE)
-#     if (length(result) == 0 || result[1] == "ERROR" || is.na(result[1])) {
-#       return(list(paste("flair", paste0("\033[31m", "\u2717", "\033[39m"), sep = " "), FALSE))
-#     }
-#     # Return flair version
-#     return(list(paste("flair", paste0("\033[32m", "\u2713", "\033[39m"),result[1], sep = " "), TRUE, result[1]))
-#   }
-#
-#   flair_version <- check_flair_version()
-#   torch_version <- check_torch_version()
-#
-#   if (isFALSE(flair_version[[2]])) {
-#     packageStartupMessage(sprintf(" Flair %-50s", paste0("is installing from Python")))
-#
-#     commands <- c(
-#       paste(python_path, "-m pip install --upgrade pip"),
-#       paste(python_path, "-m pip install torch"),
-#       paste(python_path, "-m pip install flair"),
-#       paste(python_path, "-m pip install scipy==1.12.0")
-#     )
-#     command_statuses <- vapply(commands, system, FUN.VALUE = integer(1))
-#
-#     flair_check_again <- check_flair_version()
-#     if (isFALSE(flair_check_again[[2]])) {
-#       packageStartupMessage("Failed to install Flair. {flaiR} requires Flair NLP. Please ensure Flair NLP is installed in Python manually.")
-#     }
-#   } else {
-#     packageStartupMessage(sprintf("\033[1m\033[34mflaiR\033[39m\033[22m: \033[1m\033[33mAn R Wrapper for Accessing Flair NLP\033[39m\033[22m %-5s", paste("\033[1m\033[33m", flair_version[[3]], "\033[39m\033[22m", sep = "")))
-#   }
-# }
 .onAttach <- function(...) {
-  # Docker 環境檢查及 Python 設置
-  Sys.unsetenv("RETICULATE_PYTHON")
-  in_docker <- file.exists("/.dockerenv")
+  # Determine Python command
+  python_cmd <- if (Sys.info()["sysname"] == "Windows") "python" else "python3"
+  python_path <- Sys.which(python_cmd)
 
-  if (in_docker) {
-    # Docker 環境使用固定路徑
-    python_path <- "/opt/venv/bin/python3"
-    Sys.setenv(RETICULATE_PYTHON = python_path)
-  } else {
-    # 非 Docker 環境
-    python_cmd <- if (Sys.info()["sysname"] == "Windows") "python" else "python3"
-    python_path <- Sys.which(python_cmd)
-  }
-
-  # 檢查 Python 路徑
+  # Check Python path
   if (python_path == "") {
-    packageStartupMessage("Cannot locate Python executable. Ensure Python is installed and in PATH.")
-    return(invisible(NULL))
+    packageStartupMessage(paste("Cannot locate the", python_cmd, "executable. Ensure it's installed and in your system's PATH. flaiR functionality requiring Python will not be available."))
+    return(invisible(NULL))  # Exit .onAttach without stopping package loading
   }
 
-  # 檢查 Python 版本
+  # Check Python versio Try to get Python version
   tryCatch({
     python_version <- system(paste(python_path, "--version"), intern = TRUE)
     if (!grepl("Python 3", python_version)) {
-      packageStartupMessage("Python 3 is required.")
-      return(invisible(NULL))
+      packageStartupMessage("Python 3 is required, but a different version was found. Please install Python 3. flaiR functionality requiring Python will not be available.")
+      return(invisible(NULL))  # Exit .onAttach without stopping package loading
     }
   }, error = function(e) {
-    packageStartupMessage(paste("Failed to check Python version:", e$message))
-    return(invisible(NULL))
+    packageStartupMessage(paste("Failed to get Python version with path:", python_path, "Error:", e$message, ". flaiR functionality requiring Python will not be available."))
+    return(invisible(NULL))   # Exit .onAttach without stopping package loading
   })
 
-  # Version check functions
+  # Check if PyTorch is installed
   check_torch_version <- function() {
+    # torch_version_command <- paste(python_path, "-c 'import torch; print(torch.__version__)'")
     torch_version_command <- paste(python_path, "-c \"import torch; print(torch.__version__)\"")
     result <- system(torch_version_command, intern = TRUE)
     if (length(result) == 0 || result[1] == "ERROR" || is.na(result[1])) {
       return(list(paste("PyTorch", paste0("\033[31m", "\u2717", "\033[39m"), sep = " "), FALSE))
     }
-    return(list(paste("PyTorch", paste0("\033[32m", "\u2713", "\033[39m"), result[1], sep = " "), TRUE, result[1]))
+    # Return flair version
+    return(list(paste("PyTorch", paste0("\033[32m", "\u2713", "\033[39m") ,result[1], sep = " "), TRUE, result[1]))
   }
 
+  # Check if flair is installed
   check_flair_version <- function() {
+    # flair_version_command <- paste(python_path, "-c 'import flair; print(flair.__version__)'")
     flair_version_command <- paste(python_path, "-c \"import flair; print(flair.__version__)\"")
     result <- system(flair_version_command, intern = TRUE)
     if (length(result) == 0 || result[1] == "ERROR" || is.na(result[1])) {
       return(list(paste("flair", paste0("\033[31m", "\u2717", "\033[39m"), sep = " "), FALSE))
     }
-    return(list(paste("flair", paste0("\033[32m", "\u2713", "\033[39m"), result[1], sep = " "), TRUE, result[1]))
+    # Return flair version
+    return(list(paste("flair", paste0("\033[32m", "\u2713", "\033[39m"),result[1], sep = " "), TRUE, result[1]))
   }
 
   flair_version <- check_flair_version()
@@ -146,31 +72,107 @@
   if (isFALSE(flair_version[[2]])) {
     packageStartupMessage(sprintf(" Flair %-50s", paste0("is installing from Python")))
 
-    # 安裝命令
-    if (in_docker) {
-      commands <- c(
-        paste(python_path, "-m pip install --no-cache-dir numpy==1.26.4"),
-        paste(python_path, "-m pip install --no-cache-dir torch"),
-        paste(python_path, "-m pip install --no-cache-dir flair"),
-        paste(python_path, "-m pip install --no-cache-dir scipy==1.12.0")
-      )
-    } else {
-      commands <- c(
-        paste(python_path, "-m pip install --upgrade pip"),
-        paste(python_path, "-m pip install torch"),
-        paste(python_path, "-m pip install flair"),
-        paste(python_path, "-m pip install scipy==1.12.0")
-      )
-    }
-
+    commands <- c(
+      paste(python_path, "-m pip install --upgrade pip"),
+      paste(python_path, "-m pip install torch"),
+      paste(python_path, "-m pip install flair"),
+      paste(python_path, "-m pip install scipy==1.12.0")
+    )
     command_statuses <- vapply(commands, system, FUN.VALUE = integer(1))
 
     flair_check_again <- check_flair_version()
     if (isFALSE(flair_check_again[[2]])) {
-      packageStartupMessage("Failed to install Flair. Please install manually.")
+      packageStartupMessage("Failed to install Flair. {flaiR} requires Flair NLP. Please ensure Flair NLP is installed in Python manually.")
     }
   } else {
-    packageStartupMessage(sprintf("\033[1m\033[34mflaiR\033[39m\033[22m: \033[1m\033[33mAn R Wrapper for Accessing Flair NLP\033[39m\033[22m %-5s",
-                                  paste("\033[1m\033[33m", flair_version[[3]], "\033[39m\033[22m", sep = "")))
+    packageStartupMessage(sprintf("\033[1m\033[34mflaiR\033[39m\033[22m: \033[1m\033[33mAn R Wrapper for Accessing Flair NLP\033[39m\033[22m %-5s", paste("\033[1m\033[33m", flair_version[[3]], "\033[39m\033[22m", sep = "")))
   }
 }
+
+
+# .onAttach <- function(...) {
+#   # Docker 環境檢查及 Python 設置
+#   Sys.unsetenv("RETICULATE_PYTHON")
+#   in_docker <- file.exists("/.dockerenv")
+#
+#   if (in_docker) {
+#     # Docker 環境使用固定路徑
+#     python_path <- "/opt/venv/bin/python3"
+#     Sys.setenv(RETICULATE_PYTHON = python_path)
+#   } else {
+#     # 非 Docker 環境
+#     python_cmd <- if (Sys.info()["sysname"] == "Windows") "python" else "python3"
+#     python_path <- Sys.which(python_cmd)
+#   }
+#
+#   # 檢查 Python 路徑
+#   if (python_path == "") {
+#     packageStartupMessage("Cannot locate Python executable. Ensure Python is installed and in PATH.")
+#     return(invisible(NULL))
+#   }
+#
+#   # 檢查 Python 版本
+#   tryCatch({
+#     python_version <- system(paste(python_path, "--version"), intern = TRUE)
+#     if (!grepl("Python 3", python_version)) {
+#       packageStartupMessage("Python 3 is required.")
+#       return(invisible(NULL))
+#     }
+#   }, error = function(e) {
+#     packageStartupMessage(paste("Failed to check Python version:", e$message))
+#     return(invisible(NULL))
+#   })
+#
+#   # Version check functions
+#   check_torch_version <- function() {
+#     torch_version_command <- paste(python_path, "-c \"import torch; print(torch.__version__)\"")
+#     result <- system(torch_version_command, intern = TRUE)
+#     if (length(result) == 0 || result[1] == "ERROR" || is.na(result[1])) {
+#       return(list(paste("PyTorch", paste0("\033[31m", "\u2717", "\033[39m"), sep = " "), FALSE))
+#     }
+#     return(list(paste("PyTorch", paste0("\033[32m", "\u2713", "\033[39m"), result[1], sep = " "), TRUE, result[1]))
+#   }
+#
+#   check_flair_version <- function() {
+#     flair_version_command <- paste(python_path, "-c \"import flair; print(flair.__version__)\"")
+#     result <- system(flair_version_command, intern = TRUE)
+#     if (length(result) == 0 || result[1] == "ERROR" || is.na(result[1])) {
+#       return(list(paste("flair", paste0("\033[31m", "\u2717", "\033[39m"), sep = " "), FALSE))
+#     }
+#     return(list(paste("flair", paste0("\033[32m", "\u2713", "\033[39m"), result[1], sep = " "), TRUE, result[1]))
+#   }
+#
+#   flair_version <- check_flair_version()
+#   torch_version <- check_torch_version()
+#
+#   if (isFALSE(flair_version[[2]])) {
+#     packageStartupMessage(sprintf(" Flair %-50s", paste0("is installing from Python")))
+#
+#     # 安裝命令
+#     if (in_docker) {
+#       commands <- c(
+#         paste(python_path, "-m pip install --no-cache-dir numpy==1.26.4"),
+#         paste(python_path, "-m pip install --no-cache-dir torch"),
+#         paste(python_path, "-m pip install --no-cache-dir flair"),
+#         paste(python_path, "-m pip install --no-cache-dir scipy==1.12.0")
+#       )
+#     } else {
+#       commands <- c(
+#         paste(python_path, "-m pip install --upgrade pip"),
+#         paste(python_path, "-m pip install torch"),
+#         paste(python_path, "-m pip install flair"),
+#         paste(python_path, "-m pip install scipy==1.12.0")
+#       )
+#     }
+#
+#     command_statuses <- vapply(commands, system, FUN.VALUE = integer(1))
+#
+#     flair_check_again <- check_flair_version()
+#     if (isFALSE(flair_check_again[[2]])) {
+#       packageStartupMessage("Failed to install Flair. Please install manually.")
+#     }
+#   } else {
+#     packageStartupMessage(sprintf("\033[1m\033[34mflaiR\033[39m\033[22m: \033[1m\033[33mAn R Wrapper for Accessing Flair NLP\033[39m\033[22m %-5s",
+#                                   paste("\033[1m\033[33m", flair_version[[3]], "\033[39m\033[22m", sep = "")))
+#   }
+# }
