@@ -39,14 +39,13 @@ Flair is a Python library developed by [Zalando Research](https://engineering.za
 
 ## flaiR Installation
 
+## Option 1: Direct Installation
 
-### __Required Software__
+__System Requirements:__
 
 - Python >= 3.10
 - R >= 4.2.0
 - Rstudio
-
-### Operating Systems
 
 #### macOS Terminal
 
@@ -84,7 +83,16 @@ python --version
 R --version
 ```
 
-#### Docker Installation & Usage
+## Option 2: Docker Setup 
+
+The Docker image (12.5GB) includes a complete R/Python development environment with RStudio Server + R environments and Python 3.9 with flair NLP and its dependencies (PyTorch, models).
+
+Please ensure your system meets these requirements:
+
+- At least 15GB of free disk space
+- Minimum 16GB RAM recommended
+- Stable internet connection for initial download
+- Docker installed and running
 
 __Intel/AMD Processors:__
 
@@ -95,6 +103,7 @@ docker run -p 8787:8787 ghcr.io/davidycliao/flair-rstudio:latest
 ```
 
 - Apple Silicon (M1/M2 Mac):
+
 ```bash
 # Pull and run with platform specification
 docker pull --platform linux/amd64 ghcr.io/davidycliao/flair-rstudio:latest
@@ -191,6 +200,7 @@ reticulate::py_config()
 #### Recommended Configurations
 
 For stable usage, we strongly recommend installing these specific versions.
+
 | OS      | R Versions                 | Python Version |
 |---------|----------------------------|----------------|
 | Mac     | 4.3.2, 4.2.0, ~~4.2.1~~*   | 3.10.x, 3.9    |

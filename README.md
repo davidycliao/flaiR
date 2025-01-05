@@ -24,24 +24,23 @@ Image](https://img.shields.io/badge/Docker-ghcr.io-blue?logo=docker)](https://gi
 
 <div style="text-align: justify">
 
-**flaiR** is an R package for accessing the
-[flairNLP/flair](https://github.com/flairNLP/flair) Python library,
-maintained by [Yen-Chieh Liao](https://davidycliao.github.io)
-([University of
+**flaiR** is an R package that provides convenient access to
+[flairNLP/flair](https://github.com/flairNLP/flair), a powerful
+Python-based NLP toolkit developed by Humboldt University of Berlin. The
+R package is maintained by [Yen-Chieh
+Liao](https://davidycliao.github.io) ([University of
 Birmingham](https://www.birmingham.ac.uk/research/centres-institutes/centre-for-artificial-intelligence-in-government))
 and [Stefan Müller](https://muellerstefan.net) from [Next Generation
 Energy Systems](https://www.nexsys-energy.ie) and [Text and Policy
-Research Group](https://text-and-policy.com) in UCD.
+Research Group](https://text-and-policy.com) at UCD.
 
-flaiR provides convenient access to the main functionalities of flairNLP
-for training word embedding-based deep learning models and fine-tune
-state-of-the-art transformers hosted on Hugging Face.
+Through **flaiR**, R users can easily utilize and combine various word
+embeddings, train deep learning models, and fine-tune the latest
+transformer models from Hugging Face, bridging advanced NLP
+functionality with popular quantitative text analysis toolkits like
+quanteda in the R environment.
 
 <!-- Our team trains and fine-tunes the models with Flair in [our projects](). -->
-
-This package is an R wrapper for [Flair
-NLP](https://github.com/flairNLP/flair), developed by Humboldt
-University of Berlin.
 
 </div>
 
@@ -88,16 +87,17 @@ library(flaiR)
 
 <br>
 
-## Docker
+## Docker Setup
 
 **Intel/AMD Processors:**
 
 ``` r
-# Pull and run
+# Pull image
 docker pull ghcr.io/davidycliao/flair-rstudio:latest
 ```
 
 ``` r
+# Run container
 docker run -p 8787:8787 ghcr.io/davidycliao/flair-rstudio:latest
 ```
 
@@ -112,8 +112,10 @@ docker pull --platform linux/amd64 ghcr.io/davidycliao/flair-rstudio:latest
 docker run --platform linux/amd64 -p 8787:8787 ghcr.io/davidycliao/flair-rstudio:latest
 ```
 
-Detailed instructions available in [the Quick
-Start](https://davidycliao.github.io/flaiR/articles/quickstart.html#flair-installation).
+After running these commands in terminal (or powershell), open your
+browser and navigate to [`http://localhost:8787`]() to access RStudio.
+For detailed installation instructions, please visit[Quick Start
+Guide](https://davidycliao.github.io/flaiR/articles/quickstart.html#flair-installation).
 
 </div>
 
