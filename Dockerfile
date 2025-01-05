@@ -37,25 +37,3 @@ RUN /opt/venv/bin/pip install --no-cache-dir \
 RUN R -e "install.packages('reticulate', repos='https://cloud.r-project.org/', dependencies=TRUE)" && \
     R -e "install.packages('remotes', repos='https://cloud.r-project.org/', dependencies=TRUE)" && \
     R -e "remotes::install_github('davidycliao/flaiR', dependencies=TRUE)"
-
-# 创建 rstudio 用户和设置密码
-ENV USER=rstudio
-ENV PASSWORD=rstudio123
-RUN useradd -m $USER && \
-    echo "$USER:$PASSWORD" | chpasswd && \
-    adduser $USER sudo
-
-# 设置工作目录权限
-RUN mkdir -p /home/$USER && \
-    chown -R $USER:$USER /home/$USER && \
-    chown -R $USER:$USER /opt/venv
-
-# 确保 R 环境配置文件的权限正确
-RUN chown -R $USER:$USER /usr/local/lib/R/etc/Renviron.site && \
-    chmod 644 /usr/local/lib/R/etc/Renviron.site
-
-# 暴露 RStudio Server 端口
-EXPOSE 8787
-
-# 启动 RStudio Server
-CMD ["/usr/lib/rstudio-server/bin/rserver", "--server-daemonize=0"]

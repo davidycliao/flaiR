@@ -39,14 +39,13 @@ Flair is a Python library developed by [Zalando Research](https://engineering.za
 
 ## flaiR Installation
 
+## Option 1: Direct Installation
 
-### __Required Software__
+__System Requirements:__
 
 - Python >= 3.10
 - R >= 4.2.0
 - Rstudio
-
-### Operating Systems
 
 #### macOS Terminal
 
@@ -84,7 +83,16 @@ python --version
 R --version
 ```
 
-#### Docker Installation & Usage
+## Option 2: Docker Setup 
+
+The Docker image (12.5GB) includes a complete R/Python development environment with RStudio Server + R environments and Python 3.9 with flair NLP and its dependencies (PyTorch, models).
+
+Please ensure your system meets these requirements:
+
+- At least 15GB of free disk space
+- Minimum 16GB RAM recommended
+- Stable internet connection for initial download
+- Docker installed and running
 
 __Intel/AMD Processors:__
 
@@ -95,6 +103,7 @@ docker run -p 8787:8787 ghcr.io/davidycliao/flair-rstudio:latest
 ```
 
 - Apple Silicon (M1/M2 Mac):
+
 ```bash
 # Pull and run with platform specification
 docker pull --platform linux/amd64 ghcr.io/davidycliao/flair-rstudio:latest
@@ -108,7 +117,7 @@ __Access RStudio Server:__
 - Password: `rstudio123`
 
 
-### R Package Installation
+## Troubleshooting Guide 
 
 The `faiR` Will:
 
@@ -121,66 +130,61 @@ install.packages("remotes")
 remotes::install_github("davidycliao/flaiR", force = TRUE)
 ```
 
-#### Notice:
-
 <div style="text-align: justify">
-Installation should work automatically as RStudio and R handle the dependencies.  However, users may encounter compilation errors, particularly with the Matrix package on Mac ARM64 systems (M1/M2 chips). These issues often stem from version conflicts between the Matrix package and the gfortran compiler. To resolve these, follow these steps:
 
-<u>**Version Compatibility:**</u> 
+Installation typically proceeds automatically with RStudio and R handling dependencies. However, users (particularly those with Mac ARM64 systems) may encounter compilation issues. Here's a comprehensive guide to resolve common problems:
 
 
-First, verify your R version compatibility. For Mac M1/M2 systems, ensure your R version aligns with these Matrix package dependencies:
+__Mac M1/M2 (Apple Silicon) Specific Setup__
 
-- R 4.5.0+: Latest Matrix package version (1.7-0 or newer)
+1 Architecture Options
+
+  - Requires specific compiler setup
+  - May encounter additional compatibility issues
+
+2. Native ARM64 Version
+
+  - Requires specific compiler setup
+  - May encounter additional compatibility issues
+
+__Version Compatibility__
+
+R Version Requirements:
+
+- R 4.5.0+: Matrix 1.7-0 or newer
 - R 4.4.x: Matrix 1.6-x
 - R 4.3.x: Matrix 1.5-1
 - R 4.2.x: Matrix 1.4-1
 
-<u>**Architecture Compatibility:**</u> 
+__Compiler Setup for ARM64 Systems__
 
-- Ensure you've downloaded the correct R version for your Mac's processor architecture (Apple Silicon or Intel).
-- For Apple M1/M2 systems, consider using the official Intel 64-bit R version running through Rosetta, rather than the native arm64 version.
+Required Steps:
 
-<u>**Compiler Issues:**</u> 
+1. Download GNU Fortran from `https://mac.r-project.org/tools/`
 
-- For arm64 systems, you may need to download and install GNU Fortran from https://mac.r-project.org/tools/.
-- For R 4.3.0 and above, you'll need GNU Fortran 12.2 (universal) compiler, which supports both Intel and Apple Silicon architectures. macOS users should download and install gfortran-12.2-universal.pkg (242MB) from either the CRAN macOS tools page or GitHub R-macos GNU Fortran releases. This is a significant change from earlier versions (R 3.5.0-3.6.3) which used GNU Fortran 6.1, and ensures proper compilation of the Matrix package on modern Mac systems.
+2. For R 4.3.0+:
+  - Install GNU Fortran 12.2 (universal)
+  - Supports both Intel and Apple Silicon
+  - Download `gfortran-12.2-universal.pkg` (242MB) from:
+    + [CRAN macOS tools page](CRAN macOS tools page)
+    + [GitHub R-macos GNU Fortran releases](https://github.com/fxcoudert/gfortran-for-macOS/releases)
+</div>
 
-
-However, if you encounter Matrix package compilation errors (which commonly occur on Mac ARM64 systems due to version conflicts between the Matrix package and the gfortran compiler), you'll need to verify your R version compatibility first.
-For Mac M1/M2 systems, ensure your R version matches these Matrix package dependencies:
-
-
-<!-- ```bash -->
-<!-- brew install gcc -->
-<!-- ``` -->
-<!-- - Configure R compiler settings: -->
-
-<!-- ```bash -->
-<!-- mkdir -p ~/.R -->
-<!-- touch ~/.R/Makevars -->
-<!-- echo "FC=$(brew --prefix)/bin/gfortran" >> ~/.R/Makevars -->
-<!-- echo "F77=$(brew --prefix)/bin/gfortran" >> ~/.R/Makevars -->
-<!-- echo "FLIBS=-L$(brew --prefix)/lib/gcc/current -lgfortran -lquadmath -lm" >> ~/.R/Makevars -->
-```
-
-#### Python Dependencies
+__Automatic Dependencies (Python)__
 
 <div style="text-align: justify">
 
-The following Python packages will be installed automatically by flaiR:
 
-- flair
-- scipy==1.12.0
-- gensim==4.3.2
+flaiR will automatically install the following Python packages during setup:
 
-`flaiR` will automatically detect and configure your Python environment:
+- flair (with default dependencies)
+- scipy (1.12.0)
+- gensim (4.3.2)
 
-1. Checks for Python 3.10 or higher
-2. Installs required Python packages
-3. Configures R-Python interface using reticulate
+__Note__: No manual installation required. These packages will be handled automatically during flaiR installation. 
 
-Note: You can manage Python settings in RStudio through _Tools -> Global Options -> Python_. To check your Python configuration, use:
+
+You can manage Python settings in RStudio through _Tools -> Global Options -> Python_. To check your Python configuration, use:
 
 </div>
 
@@ -188,9 +192,10 @@ Note: You can manage Python settings in RStudio through _Tools -> Global Options
 reticulate::py_config()
 ```
 
-#### Recommended Configurations
+__Recommended Configurations__
 
 For stable usage, we strongly recommend installing these specific versions.
+
 | OS      | R Versions                 | Python Version |
 |---------|----------------------------|----------------|
 | Mac     | 4.3.2, 4.2.0, ~~4.2.1~~*   | 3.10.x, 3.9    |
@@ -201,7 +206,7 @@ For stable usage, we strongly recommend installing these specific versions.
 
 
 
-#### Troubleshooting
+&nbsp;
 
 <div style="text-align: justify">
 
@@ -215,11 +220,11 @@ If you encounter any problems or have questions:
 </div>
 
 
-&nbsp;
 
 -----
 
 ## NLP Tasks
+
 
 <div style="text-align: justify">
 
