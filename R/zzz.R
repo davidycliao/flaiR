@@ -90,6 +90,7 @@
 # }
 .onAttach <- function(...) {
   # Docker 環境檢查及 Python 設置
+  Sys.unsetenv("RETICULATE_PYTHON")
   in_docker <- file.exists("/.dockerenv")
 
   if (in_docker) {
