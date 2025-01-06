@@ -89,35 +89,34 @@
 #   }
 # }
 
+
+
 .onAttach <- function(...) {
-  # 检查环境变量
-  env_python <- Sys.getenv("RETICULATE_PYTHON")
+  # 总是先清除环境变量，避免冲突
+  Sys.unsetenv("RETICULATE_PYTHON")
 
-  # 如果环境变量已经设置并且路径存在，就使用它
-  if (env_python != "" && file.exists(env_python)) {
-    python_path <- env_python
-  } else {
-    # 清除不存在的环境变量
-    Sys.unsetenv("RETICULATE_PYTHON")
-
-    # 找系统 Python
+  # 使用 reticulate 的 py_discover_config 来检测 Python
+  tryCatch({
+    python_config <- reticulate::py_discover_config()
+    python_path <- python_config$python
+  }, error = function(e) {
+    # 如果 py_discover_config 失败，尝试找系统 Python
     python_cmd <- if (Sys.info()["sysname"] == "Windows") "python" else "python3"
     python_path <- Sys.which(python_cmd)
-  }
+  })
 
-  # check Python location
-  if (python_path == "" || !file.exists(python_path)) {
+  # 检查 Python 路径
+  if (!file.exists(python_path)) {
     packageStartupMessage("Cannot locate Python. Please ensure Python 3 is installed.")
     return(invisible(NULL))
   }
 
-  # check Python
-  tryCatch({
-    suppressMessages(reticulate::use_python(python_path, required = TRUE))
-  }, error = function(e) {
-    packageStartupMessage(paste("Failed to initialize Python:", e$message))
-    return(invisible(NULL))
+  # 设置 Python 路径并检查版本（全部静默执行）
+  suppressWarnings({
+    Sys.setenv(RETICULATE_PYTHON = python_path)
+    reticulate::use_python(python_path, required = TRUE)
   })
+
 
   check_flair_version <- function() {
     # flair_version_command <- paste(python_path, "-c 'import flair; print(flair.__version__)'")
@@ -158,3 +157,7 @@
                                   paste("\033[1m\033[33m", flair_version[[3]], "\033[39m\033[22m", sep = "")))
   }
 }
+
+
+
+
