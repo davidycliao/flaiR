@@ -38,7 +38,7 @@
 
     <a class="navbar-brand me-2" href="index.html">flaiR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.0.7</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.7</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -165,14 +165,17 @@
 </h2>
 <p><strong>Intel/AMD Processors:</strong></p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="co"># Pull image</span></span>
-<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>docker pull ghcr.io<span class="sc">/</span>davidycliao<span class="sc">/</span>flair<span class="sc">-</span>rstudio<span class="sc">:</span>latest</span></code></pre></div>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="co"># Run container</span></span>
-<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>docker run <span class="sc">-</span>p <span class="dv">8787</span><span class="sc">:</span><span class="dv">8787</span> ghcr.io<span class="sc">/</span>davidycliao<span class="sc">/</span>flair<span class="sc">-</span>rstudio<span class="sc">:</span>latest</span></code></pre></div>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>docker pull ghcr.io<span class="sc">/</span>davidycliao<span class="sc">/</span>flair<span class="sc">-</span>rstudio<span class="sc">:</span>latest</span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a><span class="co"># Run container</span></span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>docker run <span class="sc">-</span>d <span class="sc">-</span>p <span class="dv">8787</span><span class="sc">:</span><span class="dv">8787</span> <span class="sc">--</span>user root <span class="sc">--</span>name flair<span class="sc">-</span>rstudio ghcr.io<span class="sc">/</span>davidycliao<span class="sc">/</span>flair<span class="sc">-</span>rstudio<span class="sc">:</span>latest</span></code></pre></div>
 <p><strong>Apple Silicon (M1/M2 Mac):</strong></p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="co"># Pull and run with platform specification</span></span>
-<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>docker pull <span class="sc">--</span>platform linux<span class="sc">/</span>amd64 ghcr.io<span class="sc">/</span>davidycliao<span class="sc">/</span>flair<span class="sc">-</span>rstudio<span class="sc">:</span>latest</span></code></pre></div>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>docker run <span class="sc">--</span>platform linux<span class="sc">/</span>amd64 <span class="sc">-</span>p <span class="dv">8787</span><span class="sc">:</span><span class="dv">8787</span> ghcr.io<span class="sc">/</span>davidycliao<span class="sc">/</span>flair<span class="sc">-</span>rstudio<span class="sc">:</span>latest</span></code></pre></div>
-<p>After running these commands in terminal (or powershell), open your browser and navigate to <a href=""><code>http://localhost:8787</code></a> to access RStudio. For detailed installation instructions, please visit <a href="https://davidycliao.github.io/flaiR/articles/quickstart.html#flair-installation">Quick Start Guide</a>.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="co"># Pull image</span></span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>docker pull <span class="sc">--</span>platform linux<span class="sc">/</span>amd64 ghcr.io<span class="sc">/</span>davidycliao<span class="sc">/</span>flair<span class="sc">-</span>rstudio<span class="sc">:</span>latest</span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a><span class="co"># Run container</span></span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>docker run <span class="sc">-</span>d <span class="sc">-</span>p <span class="dv">8787</span><span class="sc">:</span><span class="dv">8787</span> <span class="sc">--</span>platform linux<span class="sc">/</span>amd64 <span class="sc">--</span>user root <span class="sc">--</span>name flair<span class="sc">-</span>rstudio ghcr.io<span class="sc">/</span>davidycliao<span class="sc">/</span>flair<span class="sc">-</span>rstudio<span class="sc">:</span>latest</span></code></pre></div>
+<p>After running these commands in terminal (or powershell), open your browser and navigate to <a href="http://localhost:8787" class="external-link"><code>http://localhost:8787</code></a> to access RStudio. For detailed installation instructions, please visit <a href="https://davidycliao.github.io/flaiR/articles/quickstart.html#flair-installation">Quick Start Guide</a>.</p>
 </div>
 </div>
 <p><br></p>

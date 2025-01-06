@@ -13,7 +13,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">flaiR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.0.7</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.7</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -66,36 +66,36 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.0.7" id="flair-007-2024-12-31">flaiR 0.0.7 (2024-12-31)<a class="anchor" aria-label="anchor" href="#flair-007-2024-12-31"></a></h2>
+<h2 class="pkg-version" data-toc-text="0.1.7" id="flair-017-2024-12-31">flaiR 0.1.7 (2024-12-31)<a class="anchor" aria-label="anchor" href="#flair-017-2024-12-31"></a></h2>
 <div style="text-align: justify">
 <div class="section level3">
-<h3 id="major-changes-0-0-7">Major Changes<a class="anchor" aria-label="anchor" href="#major-changes-0-0-7"></a></h3>
+<h3 id="major-changes-0-1-7">Major Changes<a class="anchor" aria-label="anchor" href="#major-changes-0-1-7"></a></h3>
 <p>This release brings significant enhancements to streamline natural language processing workflows in R, introducing Docker support and unified function interfaces.</p>
 <div class="section level4">
-<h4 id="new-features-0-0-7">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-0-7"></a></h4>
+<h4 id="new-features-0-1-7">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-1-7"></a></h4>
 <ul><li>Added comprehensive tutorial section for Flair NLP embedding extraction and regression analysis</li>
 <li>Introduced Docker support with RStudio Server integration</li>
 <li>Enhanced documentation with detailed usage examples</li>
 </ul></div>
 </div>
 <div class="section level3">
-<h3 id="installation-guide-0-0-7">Installation Guide<a class="anchor" aria-label="anchor" href="#installation-guide-0-0-7"></a></h3>
+<h3 id="installation-guide-0-1-7">Installation Guide<a class="anchor" aria-label="anchor" href="#installation-guide-0-1-7"></a></h3>
 <div class="section level4">
-<h4 id="r-package-installation-0-0-7">R Package Installation<a class="anchor" aria-label="anchor" href="#r-package-installation-0-0-7"></a></h4>
+<h4 id="r-package-installation-0-1-7">R Package Installation<a class="anchor" aria-label="anchor" href="#r-package-installation-0-1-7"></a></h4>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Install from GitHub</span></span>
 <span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"davidycliao/flaiR"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level4">
-<h4 id="docker-installation--usage-0-0-7">Docker Installation &amp; Usage<a class="anchor" aria-label="anchor" href="#docker-installation--usage-0-0-7"></a></h4>
+<h4 id="docker-installation--usage-0-1-7">Docker Installation &amp; Usage<a class="anchor" aria-label="anchor" href="#docker-installation--usage-0-1-7"></a></h4>
 <div class="section level5">
-<h5 id="intelamd-processors-0-0-7">Intel/AMD Processors:<a class="anchor" aria-label="anchor" href="#intelamd-processors-0-0-7"></a></h5>
+<h5 id="intelamd-processors-0-1-7">Intel/AMD Processors:<a class="anchor" aria-label="anchor" href="#intelamd-processors-0-1-7"></a></h5>
 <div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="co"># Pull and run</span></span>
 <span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="ex">docker</span> pull ghcr.io/davidycliao/flair:latest</span>
 <span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">-p</span> 8787:8787 ghcr.io/davidycliao/flair:latest</span></code></pre></div>
 </div>
 <div class="section level5">
-<h5 id="apple-silicon-m1m2-mac-0-0-7">Apple Silicon (M1/M2 Mac):<a class="anchor" aria-label="anchor" href="#apple-silicon-m1m2-mac-0-0-7"></a></h5>
+<h5 id="apple-silicon-m1m2-mac-0-1-7">Apple Silicon (M1/M2 Mac):<a class="anchor" aria-label="anchor" href="#apple-silicon-m1m2-mac-0-1-7"></a></h5>
 <div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="co"># Pull and run with platform specification</span></span>
 <span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="ex">docker</span> pull <span class="at">--platform</span> linux/amd64 ghcr.io/davidycliao/flair:latest</span>
 <span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">--platform</span> linux/amd64 <span class="at">-p</span> 8787:8787 ghcr.io/davidycliao/flair:latest</span></code></pre></div>
@@ -103,20 +103,20 @@
 </div>
 </div>
 <div class="section level4">
-<h4 id="function-optimizations-0-0-7">Function Optimizations<a class="anchor" aria-label="anchor" href="#function-optimizations-0-0-7"></a></h4>
+<h4 id="function-optimizations-0-1-7">Function Optimizations<a class="anchor" aria-label="anchor" href="#function-optimizations-0-1-7"></a></h4>
 <ul><li>Unified POS tagging with streamlined interface: combined <code><a href="../reference/get_pos.html">get_pos()</a></code> functions</li>
 <li>Consolidated NER functionality into single <code><a href="../reference/get_entities.html">get_entities()</a></code> function</li>
 <li>Improved code performance and reliability</li>
 </ul></div>
 <div class="section level4">
-<h4 id="code-cleanup-0-0-7">Code Cleanup<a class="anchor" aria-label="anchor" href="#code-cleanup-0-0-7"></a></h4>
+<h4 id="code-cleanup-0-1-7">Code Cleanup<a class="anchor" aria-label="anchor" href="#code-cleanup-0-1-7"></a></h4>
 <ul><li>Removed deprecated sentiment analysis functions</li>
 <li>Simplified API for better usability</li>
 <li>Enhanced error handling and feedback</li>
 </ul></div>
 </div>
 <div class="section level3">
-<h3 id="technical-notes-0-0-7">Technical Notes<a class="anchor" aria-label="anchor" href="#technical-notes-0-0-7"></a></h3>
+<h3 id="technical-notes-0-1-7">Technical Notes<a class="anchor" aria-label="anchor" href="#technical-notes-0-1-7"></a></h3>
 <ul><li>Release Date: 2024-12-30</li>
 <li>Version: 0.0.7</li>
 <li>Environment: Python 3.9+, R 4.0+</li>
