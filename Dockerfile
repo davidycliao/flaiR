@@ -12,6 +12,7 @@ RUN apt-get update && apt-get install -y \
     curl
 
 # Create rstudio user
+# default accout 'rstudio'; password: rstudio123
 ENV USER=rstudio
 ENV PASSWORD=rstudio123
 RUN useradd -m $USER && \
