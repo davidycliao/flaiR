@@ -1,3 +1,26 @@
+# flaiR 0.1.7 (2025-01-06)
+
+<div style="text-align: justify">
+
+## 🛠️ Infrastructure
+- Improved GitHub Actions workflow with security features
+- Added support for both AMD64 and ARM64 architectures
+- Improved system dependencies and package versions
+- Enhanced startup messages for both Docker and local installations
+- Enhanced dependency management
+
+## 📝 Documentation
+- Updated installation guide for different architectures
+- Added system requirements and troubleshooting info
+
+For installation instructions and documentation, visit our [Quick Start Guide](https://davidycliao.github.io/flaiR/articles/quickstart.html).
+
+</div>
+
+&nbsp;
+
+-----
+
 # flaiR 0.0.7 (2024-12-31)
 
 <div style="text-align: justify">
