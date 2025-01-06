@@ -179,16 +179,29 @@ flair NLP and its dependencies (PyTorch, models).</p>
 <p><strong>Intel/AMD Processors:</strong></p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="co"># Pull and run</span></span>
 <span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="ex">docker</span> pull ghcr.io/davidycliao/flair-rstudio:latest</span>
-<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">-p</span> 8787:8787 ghcr.io/davidycliao/flair-rstudio:latest</span></code></pre></div>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">-d</span> <span class="dt">\</span></span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>  <span class="at">-p</span> 8787:8787 <span class="dt">\</span></span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a>  <span class="at">--user</span> root <span class="dt">\</span></span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a>  <span class="at">-e</span> USER=rstudio <span class="dt">\</span></span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a>  <span class="at">-e</span> PASSWORD=rstudio123 <span class="dt">\</span></span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a>  <span class="at">--name</span> flair-rstudio <span class="dt">\</span></span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a>  ghcr.io/davidycliao/flair-rstudio:latest</span></code></pre></div>
 <ul>
 <li>Apple Silicon (M1/M2 Mac):</li>
 </ul>
 <div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="co"># Pull and run with platform specification</span></span>
 <span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="ex">docker</span> pull <span class="at">--platform</span> linux/amd64 ghcr.io/davidycliao/flair-rstudio:latest</span>
-<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">--platform</span> linux/amd64 <span class="at">-p</span> 8787:8787 ghcr.io/davidycliao/flair-rstudio:latest</span></code></pre></div>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">-d</span> <span class="dt">\</span></span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>  <span class="at">-p</span> 8787:8787 <span class="dt">\</span></span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>  <span class="at">--platform</span> linux/amd64 <span class="dt">\</span></span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>  <span class="at">--user</span> root <span class="dt">\</span></span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a>  <span class="at">-e</span> USER=rstudio <span class="dt">\</span></span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a>  <span class="at">-e</span> PASSWORD=rstudio123 <span class="dt">\</span></span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a>  <span class="at">--name</span> flair-rstudio <span class="dt">\</span></span>
+<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a>  ghcr.io/davidycliao/flair-rstudio:latest</span></code></pre></div>
 <p><strong>Access RStudio Server:</strong></p>
 <ul>
-<li>Open browser: <code>http://localhost:8787</code>
+<li>Open browser: <a href="http://localhost:8787" class="external-link"><code>http://localhost:8787</code></a>
 </li>
 <li>Username: <code>rstudio</code>
 </li>
@@ -311,6 +324,34 @@ forum</a>
 </li>
 </ul>
 </div>
+<p><strong>Troubleshooting for Docker</strong></p>
+<ol style="list-style-type: decimal">
+<li>If you encounter any issues:</li>
+</ol>
+<pre><code># Try using a different port (e.g., 8788)
+docker run -d \
+  -p 8788:8787 \
+  --platform linux/amd64 \
+  --user root \
+  --name flair-rstudio \
+  ghcr.io/davidycliao/flair-rstudio:latest</code></pre>
+<p>Then access via <a href="http://localhost:8788" class="external-link"><code>http://localhost:8788</code></a></p>
+<ol start="2" style="list-style-type: decimal">
+<li>Container already exists:</li>
+</ol>
+<pre><code># Remove existing container
+docker stop flair-rstudio
+docker rm flair-rstudio</code></pre>
+<p>Then retry the run command.</p>
+<ol start="3" style="list-style-type: decimal">
+<li>Check container status:</li>
+</ol>
+<pre><code># View running containers
+docker ps
+# View all containers including stopped ones
+docker ps -a
+# View container logs
+docker logs flair-rstudio</code></pre>
 <hr>
 </div>
 <div class="section level2">
