@@ -1,4 +1,4 @@
-# flaiR 0.0.7 (2024-12-31)
+# flaiR 0.1.7 (2024-12-31)
 
 <div style="text-align: justify">
 
