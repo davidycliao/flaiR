@@ -2,28 +2,36 @@
 % Please edit documentation in R/zzz.R
 \name{.onAttach}
 \alias{.onAttach}
-\title{Install Python Dependencies and Load the flaiRnlp}
+\title{Initialize Python Environment and Load flaiR NLP}
 \usage{
 .onAttach(...)
 }
 \arguments{
-\item{...}{A character string specifying the name of the virtual environment.}
+\item{...}{Additional arguments passed to startup functions}
 }
 \description{
-.onAttach sets up a virtual environment, checks for Python availability,
-and ensures the 'flair' module is installed in flair_env in Python.
+Sets up Python environment, manages virtual environment, and installs required flair NLP packages.
 }
 \details{
 The function performs the following steps:
 \itemize{
-\item Checks if the virtual environment specified by \code{venv} exists.
-If not, it creates the environment.
-\item Activates the virtual environment.
-\item Checks for the availability of Python. If Python is not available,
-it displays an error message.
-\item Checks if the 'flair' Python module is available in the virtual
-environment. If not, it attempts to install 'flair'. If the
-installation fails, it prompts the user to install 'flair' manually.
+\item Clears any existing Python environment variables
+\item Detects Python installation based on operating system (Windows/Unix)
+\item Manages 'flair_env' virtual environment:
+- Uses existing environment if available
+- Creates new environment if needed
+\item Verifies and installs required packages:
+- torch
+- flair
+- scipy (version 1.12.0)
+\item Validates flair installation and displays version information
 }
+
+The function includes comprehensive error handling and provides status messages
+throughout the initialization process.
+}
+\note{
+Requires Python 3.x installed on the system. Will create a virtual environment
+named 'flair_env' if it doesn't exist.
 }
 \keyword{internal}
