@@ -2315,9 +2315,9 @@ print(confidence)
 
 <div style="text-align: justify;">
 
-`ConText` is a fast, flexible, and transparent framework for estimating context-specific word and short document embeddings using [the 'a la carte' embeddings regression](https://github.com/prodriguezsosa/EmbeddingRegression), implemented by Rodriguez et al.
+`ConText` is a fast, flexible, and transparent framework for estimating context-specific word and short document embeddings using [the 'a la carte' embeddings regression](https://github.com/prodriguezsosa/EmbeddingRegression), implemented by [Rodriguez et al (2022)](https://www.cambridge.org/core/journals/american-political-science-review/article/embedding-regression-models-for-contextspecific-description-and-inference/4C90013E5C714C8483ED95CC699022FB) and [Rodriguez et al (2024)](https://www.cambridge.org/core/journals/political-analysis/article/multilanguage-word-embeddings-for-social-scientists-estimation-inference-and-validation-resources-for-157-languages/F5DE16FA784CA81481150715967BD9FC).
 
-In this case study, I'll demonstrate how to use the conText package alongside other embedding frameworks by working through the example provided in Rodriguez et al.'s [Quick Start Guide](https://github.com/prodriguezsosa/conText/blob/master/vignettes/quickstart.md). While ConText includes its own cross-lingual ALC Embeddings, this tutorial extends its capabilities by integrating it with flaiR. Through this tutorial integration, this tutorial shows how to:
+In this case study, we will demonstrate how to use the conText package alongside other embedding frameworks by working through the example provided in Rodriguez et al.'s [Quick Start Guide](https://github.com/prodriguezsosa/conText/blob/master/vignettes/quickstart.md). While ConText includes its own cross-lingual ALC Embeddings, this tutorial extends its capabilities by integrating it with flaiR. Through this tutorial integration, this tutorial shows how to:
 
 </div>
 
@@ -2329,9 +2329,9 @@ In this case study, I'll demonstrate how to use the conText package alongside ot
 
 <div style="text-align: justify;">
 
-I'll be following the example directly from [Rodriguez et al.'s Quick Start Guide]() as this case study. It's important to note that results obtained using alternative embedding frameworks may deviate from the original implementation, and should be interpreted with caution. These comparative results are primarily intended for reference and educational use.
+We will be following the example directly from [Rodriguez et al.'s Quick Start Guide]() as this case study. It's important to note that results obtained using alternative embedding frameworks may deviate from the original implementation, and should be interpreted with caution. These comparative results are primarily intended for reference and educational use.
 
-First of all, when loading the conText package, you'll find three pre-loaded datasets: `cr_sample_corpus`, `cr_glove_subset`, and `cr_transform.` These datasets are used in the package's tutorial to demonstrate preprocessing steps. For this exercise, I'll use `cr_sample_corpus` to explore other embedding frameworks, including:
+First of all, when loading the conText package, you'll find three pre-loaded datasets: `cr_sample_corpus`, `cr_glove_subset`, and `cr_transform.` These datasets are used in the package's tutorial to demonstrate preprocessing steps. For this exercise, we only use `cr_sample_corpus` to explore other embedding frameworks, including:
 
 </div>
 

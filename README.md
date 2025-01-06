@@ -92,27 +92,25 @@ library(flaiR)
 ``` r
 # Pull image
 docker pull ghcr.io/davidycliao/flair-rstudio:latest
-```
 
-``` r
 # Run container
-docker run -p 8787:8787 ghcr.io/davidycliao/flair-rstudio:latest
+docker run -d -p 8787:8787 --user root --name flair-rstudio ghcr.io/davidycliao/flair-rstudio:latest
 ```
 
 **Apple Silicon (M1/M2 Mac):**
 
 ``` r
-# Pull and run with platform specification
+# Pull image
 docker pull --platform linux/amd64 ghcr.io/davidycliao/flair-rstudio:latest
-```
 
-``` r
-docker run --platform linux/amd64 -p 8787:8787 ghcr.io/davidycliao/flair-rstudio:latest
+# Run container
+docker run -d -p 8787:8787 --platform linux/amd64 --user root --name flair-rstudio ghcr.io/davidycliao/flair-rstudio:latest
 ```
 
 After running these commands in terminal (or powershell), open your
-browser and navigate to [`http://localhost:8787`]() to access RStudio.
-For detailed installation instructions, please visit [Quick Start
+browser and navigate to [`http://localhost:8787`](http://localhost:8787)
+to access RStudio. For detailed installation instructions, please visit
+[Quick Start
 Guide](https://davidycliao.github.io/flaiR/articles/quickstart.html#flair-installation).
 
 </div>

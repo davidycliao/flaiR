@@ -99,7 +99,13 @@ __Intel/AMD Processors:__
 ```bash
 # Pull and run
 docker pull ghcr.io/davidycliao/flair-rstudio:latest
-docker run -p 8787:8787 ghcr.io/davidycliao/flair-rstudio:latest
+docker run -d \
+  -p 8787:8787 \
+  --user root \
+  -e USER=rstudio \
+  -e PASSWORD=rstudio123 \
+  --name flair-rstudio \
+  ghcr.io/davidycliao/flair-rstudio:latest
 ```
 
 - Apple Silicon (M1/M2 Mac):
@@ -107,12 +113,19 @@ docker run -p 8787:8787 ghcr.io/davidycliao/flair-rstudio:latest
 ```bash
 # Pull and run with platform specification
 docker pull --platform linux/amd64 ghcr.io/davidycliao/flair-rstudio:latest
-docker run --platform linux/amd64 -p 8787:8787 ghcr.io/davidycliao/flair-rstudio:latest
+docker run -d \
+  -p 8787:8787 \
+  --platform linux/amd64 \
+  --user root \
+  -e USER=rstudio \         
+  -e PASSWORD=rstudio123 \
+  --name flair-rstudio \
+  ghcr.io/davidycliao/flair-rstudio:latest
 ```
 
 __Access RStudio Server:__
 
-- Open browser: `http://localhost:8787`
+- Open browser: [`http://localhost:8787`](http://localhost:8787)
 - Username: `rstudio`
 - Password: `rstudio123`
 
@@ -218,6 +231,50 @@ If you encounter any problems or have questions:
 - Join our [Discussion forum](https://github.com/davidycliao/flaiR/discussions)
 
 </div>
+
+
+__Troubleshooting for Docker__
+
+1. If you encounter any issues:
+
+```
+# Try using a different port (e.g., 8788)
+docker run -d \
+  -p 8788:8787 \
+  --platform linux/amd64 \
+  --user root \
+  --name flair-rstudio \
+  ghcr.io/davidycliao/flair-rstudio:latest
+```
+Then access via [`http://localhost:8788`](http://localhost:8788)
+
+2. Container already exists:
+
+```
+# Remove existing container
+docker stop flair-rstudio
+docker rm flair-rstudio
+```
+
+Then retry the run command.
+
+3. Check container status:
+
+```
+# View running containers
+docker ps
+# View all containers including stopped ones
+docker ps -a
+# View container logs
+docker logs flair-rstudio
+```
+
+
+
+
+
+
+
 
 
 
