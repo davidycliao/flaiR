@@ -26,8 +26,8 @@ Image](https://img.shields.io/badge/Docker-ghcr.io-blue?logo=docker)](https://gi
 
 **flaiR** is an R package that provides convenient access to
 [flairNLP/flair](https://github.com/flairNLP/flair), a powerful
-Python-based NLP toolkit developed by Humboldt University of Berlin. The
-R package is maintained by [Yen-Chieh
+Python-based NLP toolkit developed by Humboldt University of Berlin.
+**flaiR** package is maintained by [Yen-Chieh
 Liao](https://davidycliao.github.io) ([University of
 Birmingham](https://www.birmingham.ac.uk/research/centres-institutes/centre-for-artificial-intelligence-in-government))
 and [Stefan Müller](https://muellerstefan.net) from [Next Generation
@@ -36,13 +36,30 @@ Research Group](https://text-and-policy.com) at UCD.
 
 Through **flaiR**, R users can easily utilize and combine various word
 embeddings, train deep learning models, and fine-tune the latest
-transformer models from Hugging Face, bridging advanced NLP
-functionality with popular quantitative text analysis toolkits like
-quanteda in the R environment.
+transformer models from Hugging Face, bridging advanced NLP techniques
+with popular quantitative text analysis toolkits like quanteda in the R
+environment.
 
 <!-- Our team trains and fine-tunes the models with Flair in [our projects](). -->
 
 </div>
+
+<br>
+
+## Some Useful Cases
+
+- [Working Various Embedding Framework in
+  R](https://davidycliao.github.io/flaiR/articles/tutorial.html#embedding)
+
+- [Beyond the ‘à la carte’ Embeddings
+  Regression](https://davidycliao.github.io/flaiR/articles/tutorial.html#embedding)
+
+- [Finetune Transformers in
+  R](https://davidycliao.github.io/flaiR/articles/tutorial.html#finetune-transformers)
+
+For more detailed tutorial instructions, please visit [Flair NLP and
+flaiR for Social
+Science](https://davidycliao.github.io/flaiR/articles/quickstart.html#flair-installation).
 
 <br>
 
