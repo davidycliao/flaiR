@@ -59,7 +59,7 @@ environment.
 
 For more detailed tutorial instructions, please visit [Flair NLP and
 flaiR for Social
-Science](https://davidycliao.github.io/flaiR/articles/quickstart.html#flair-installation).
+Science](https://davidycliao.github.io/flaiR/articles/tutorial.html#introduction).
 
 <br>
 
