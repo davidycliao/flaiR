@@ -52,7 +52,7 @@ environment.
   R](https://davidycliao.github.io/flaiR/articles/tutorial.html#embedding)
 
 - [Beyond the ‘à la carte’ Embeddings
-  Regression](https://davidycliao.github.io/flaiR/articles/tutorial.html#embedding)
+  Regression](https://davidycliao.github.io/flaiR/articles/tutorial.html#extending-contexts-embedding-regression)
 
 - [Finetune Transformers in
   R](https://davidycliao.github.io/flaiR/articles/tutorial.html#finetune-transformers)
