@@ -9,12 +9,11 @@ RUN apt-get update && apt-get install -y \
     gdebi-core \
     wget \
     sudo \
-    curl \
-    virtualenv  # 添加virtualenv
+    curl
 
 # Create rstudio user
-ENV USER=rstudio
-ENV PASSWORD=rstudio123
+ARG USER=rstudio
+ARG PASSWORD=rstudio123
 RUN useradd -m $USER && \
     echo "$USER:$PASSWORD" | chpasswd && \
     adduser $USER sudo && \
@@ -25,46 +24,37 @@ RUN wget https://download2.rstudio.org/server/jammy/amd64/rstudio-server-2023.12
     gdebi -n rstudio-server-2023.12.1-402-amd64.deb && \
     rm rstudio-server-*.deb
 
-# 修改虚拟环境路径到用户目录
-ENV VENV_PATH=/home/$USER/flair_env
-RUN python3 -m venv $VENV_PATH && \
-    chown -R $USER:$USER $VENV_PATH
+# Create and configure Python virtual environment
+RUN python3 -m venv /opt/venv && \
+    chown -R $USER:$USER /opt/venv
 
-# 更新环境变量
-ENV PATH="$VENV_PATH/bin:$PATH"
-ENV RETICULATE_PYTHON="$VENV_PATH/bin/python"
+ENV PATH="/opt/venv/bin:$PATH"
+ENV RETICULATE_PYTHON="/opt/venv/bin/python"
 
 # Setup R environment config
 RUN mkdir -p /usr/local/lib/R/etc && \
-    echo "RETICULATE_PYTHON=$VENV_PATH/bin/python" >> /usr/local/lib/R/etc/Renviron.site && \
-    chown -R $USER:$USER /usr/local/lib/R/etc/Renviron.site && \
-    chmod 644 /usr/local/lib/R/etc/Renviron.site
+    echo "RETICULATE_PYTHON=/opt/venv/bin/python" >> /usr/local/lib/R/etc/Renviron.site && \
+    echo "options(reticulate.prompt = FALSE)" >> /usr/local/lib/R/etc/Rprofile.site
 
-# Install Python packages in the virtual environment
-RUN $VENV_PATH/bin/pip install --no-cache-dir \
+# Install Python packages
+RUN /opt/venv/bin/pip install --no-cache-dir \
     numpy==1.26.4 \
     scipy==1.12.0 \
     transformers \
     torch \
     flair
 
-# Install R packages
-RUN R -e "install.packages('reticulate', repos='https://cloud.r-project.org/', dependencies=TRUE)" && \
-    R -e "install.packages('remotes', repos='https://cloud.r-project.org/', dependencies=TRUE)" && \
-    R -e "options(timeout=600); Sys.setenv(RETICULATE_PYTHON='$VENV_PATH/bin/python'); library(reticulate); use_virtualenv('$VENV_PATH', required = TRUE); remotes::install_github('davidycliao/flaiR', dependencies=TRUE)"
+# Install R packages with proper setup
+RUN R -e 'install.packages("reticulate", repos="https://cloud.r-project.org/", dependencies=TRUE)' && \
+    R -e 'if(require(reticulate)) { \
+          Sys.setenv(RETICULATE_PYTHON="/opt/venv/bin/python"); \
+          reticulate::use_python("/opt/venv/bin/python", required=TRUE); \
+          install.packages("remotes", repos="https://cloud.r-project.org/", dependencies=TRUE); \
+          remotes::install_github("davidycliao/flaiR", dependencies=TRUE) \
+        }'
 
-# Set working directory
 WORKDIR /home/$USER
-RUN chown -R $USER:$USER /home/$USER
-
-# Add healthcheck
-HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-    CMD curl -f http://localhost:8787/ || exit 1
-
-# Expose port
+USER $USER
 EXPOSE 8787
 
-# Run service as rstudio user
-USER $USER
-CMD ["/usr/lib/rstudio-server/bin/rserver", "--server-daemonize=0"]
 CMD ["/usr/lib/rstudio-server/bin/rserver", "--server-daemonize=0"]
