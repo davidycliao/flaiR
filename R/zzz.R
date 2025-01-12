@@ -27,150 +27,302 @@
 #'
 #' @importFrom reticulate virtualenv_exists virtualenv_create use_virtualenv py_install
 #' @keywords internal
-
+#'
 .onAttach <- function(...) {
-  # Check and set Python environment
-  Sys.unsetenv("RETICULATE_PYTHON")
-  venv <- "flair_env"
+  # Prevent reticulate from asking about Python environment
+  options(reticulate.prompt = FALSE)
 
-  # Get Python path based on OS
-  python_path <- tryCatch({
-    if (Sys.info()["sysname"] == "Windows") {
-      normalizePath(Sys.which("python"), winslash = "/", mustWork = TRUE)
-    } else {
-      Sys.which("python3")
-    }
-  }, error = function(e) {
-    packageStartupMessage("Cannot locate Python. Please install Python 3.")
-    return(invisible(NULL))
-  })
+  # Check and set Python environment
+  home_dir <- path.expand("~")
+  venv <- file.path(home_dir, "flair_env")
 
   # Define version check function
   check_flair_version <- function() {
-    flair_version_command <- paste(python_path, "-c \"import flair; print(flair.__version__)\"")
-    result <- system(flair_version_command, intern = TRUE)
-    if (length(result) == 0 || result[1] == "ERROR" || is.na(result[1])) {
-      return(list(paste("flair", paste0("\033[31m", "\u2717", "\033[39m"), sep = " "), FALSE))
-    }
-    return(list(paste("flair", paste0("\033[32m", "\u2713", "\033[39m"), result[1], sep = " "), TRUE, result[1]))
+    tryCatch({
+      flair <- reticulate::import("flair", delay_load = TRUE)
+      version <- reticulate::py_get_attr(flair, "__version__")
+      return(list(
+        message = paste("flair", paste0("\033[32m", "\u2713", "\033[39m"), version, sep = " "),
+        status = TRUE,
+        version = version
+      ))
+    }, error = function(e) {
+      return(list(
+        message = paste("flair", paste0("\033[31m", "\u2717", "\033[39m"), sep = " "),
+        status = FALSE,
+        version = NULL
+      ))
+    })
   }
 
-  # Check if flair_env exists
-  if (reticulate::virtualenv_exists(venv)) {
-    packageStartupMessage("Using existing virtual environment: ", venv)
-    reticulate::use_virtualenv(venv, required = TRUE)
+  # Check if in Docker environment
+  in_docker <- file.exists("/.dockerenv")
 
-    # Check flair in existing environment
-    flair_status <- suppressMessages(check_flair_version())
-    if (!flair_status[[2]]) {
-      packageStartupMessage("Installing missing flair in existing environment...")
+  if (in_docker) {
+    docker_python <- Sys.getenv("RETICULATE_PYTHON")
+    if (docker_python != "" && file.exists(docker_python)) {
+      packageStartupMessage("Using Docker Python environment: ", docker_python)
       tryCatch({
-        reticulate::py_install(c("torch", "flair", "scipy==1.12.0"), envname = venv)
+        reticulate::use_python(docker_python, required = TRUE)
+        flair_status <- suppressMessages(check_flair_version())
+        if (flair_status$status) {
+          packageStartupMessage(sprintf("\033[1m\033[34mflaiR\033[39m\033[22m: \033[1m\033[33mAn R Wrapper for Accessing Flair NLP\033[39m\033[22m %-5s",
+                                        paste("\033[1m\033[33m", flair_status$version, "\033[39m\033[22m", sep = "")))
+        }
       }, error = function(e) {
-        packageStartupMessage("Failed to install flair: ", e$message)
-        return(invisible(NULL))
+        packageStartupMessage("Failed to initialize Docker Python environment: ", e$message)
       })
-      flair_status <- suppressMessages(check_flair_version())
+      return(invisible(NULL))
     }
   } else {
-    # Create new virtual environment
-    packageStartupMessage("Creating new virtual environment: ", venv)
-    reticulate::virtualenv_create(venv)
-    reticulate::use_virtualenv(venv, required = TRUE)
-
-    # Install in new environment
-    packageStartupMessage("Installing flair NLP in new environment...")
-    tryCatch({
-      reticulate::py_install(c("torch", "flair", "scipy==1.12.0"), envname = venv)
+    # Get Python path for local environment
+    python_path <- tryCatch({
+      if (Sys.info()["sysname"] == "Windows") {
+        file.path(venv, "Scripts", "python.exe")
+      } else {
+        file.path(venv, "bin", "python")
+      }
     }, error = function(e) {
-      packageStartupMessage("Failed to install flair: ", e$message)
+      packageStartupMessage("Cannot locate Python in virtual environment.")
       return(invisible(NULL))
     })
-    flair_status <- suppressMessages(check_flair_version())
+
+    # Check if virtual environment exists
+    if (reticulate::virtualenv_exists(venv)) {
+      packageStartupMessage("Using existing virtual environment: ", venv)
+      tryCatch({
+        reticulate::use_virtualenv(venv, required = TRUE)
+
+        # Check flair in existing environment
+        flair_status <- suppressMessages(check_flair_version())
+        if (!flair_status$status) {
+          packageStartupMessage("Installing missing flair in existing environment...")
+          reticulate::py_install(c("torch", "flair", "scipy==1.12.0"),
+                                 envname = venv,
+                                 pip = TRUE,
+                                 method = "auto")
+          flair_status <- suppressMessages(check_flair_version())
+        }
+
+        if (flair_status$status) {
+          packageStartupMessage(sprintf("\033[1m\033[34mflaiR\033[39m\033[22m: \033[1m\033[33mAn R Wrapper for Accessing Flair NLP\033[39m\033[22m %-5s",
+                                        paste("\033[1m\033[33m", flair_status$version, "\033[39m\033[22m", sep = "")))
+        }
+      }, error = function(e) {
+        packageStartupMessage("Error in virtual environment setup: ", e$message)
+      })
+    } else {
+      # Create new virtual environment
+      packageStartupMessage("Creating new virtual environment: ", venv)
+      tryCatch({
+        reticulate::virtualenv_create(venv)
+        reticulate::use_virtualenv(venv, required = TRUE)
+
+        packageStartupMessage("Installing flair NLP in new environment...")
+        reticulate::py_install(c("torch", "flair", "scipy==1.12.0"),
+                               envname = venv,
+                               pip = TRUE,
+                               method = "auto")
+
+        flair_status <- suppressMessages(check_flair_version())
+        if (flair_status$status) {
+          packageStartupMessage(sprintf("\033[1m\033[34mflaiR\033[39m\033[22m: \033[1m\033[33mAn R Wrapper for Accessing Flair NLP\033[39m\033[22m %-5s",
+                                        paste("\033[1m\033[33m", flair_status$version, "\033[39m\033[22m", sep = "")))
+        }
+      }, error = function(e) {
+        packageStartupMessage("Failed to create virtual environment: ", e$message)
+      })
+    }
   }
 
-  # Display final status
-  if (flair_status[[2]]) {
-    packageStartupMessage(sprintf("\033[1m\033[34mflaiR\033[39m\033[22m: \033[1m\033[33mAn R Wrapper for Accessing Flair NLP\033[39m\033[22m %-5s",
-                                  paste("\033[1m\033[33m", flair_status[[3]], "\033[39m\033[22m", sep = "")))
-  } else {
+  # If we get here and flair_status doesn't exist, something went wrong
+  if (!exists("flair_status") || !flair_status$status) {
     packageStartupMessage("Failed to load flair. Please install manually.")
+    return(invisible(NULL))
   }
 }
 
-
-
-
-
-
-#'
 # .onAttach <- function(...) {
-#   # Determine Python command
-#   python_cmd <- if (Sys.info()["sysname"] == "Windows") "python" else "python3"
-#   python_path <- Sys.which(python_cmd)
+#   # Check and set Python environment
+#   # Sys.unsetenv("RETICULATE_PYTHON")
+#   home_dir <- path.expand("~")
+#   venv <- file.path(home_dir, "flair_env")
 #
-#   # Check Python path
-#   if (python_path == "") {
-#     packageStartupMessage(paste("Cannot locate the", python_cmd, "executable. Ensure it's installed and in your system's PATH. flaiR functionality requiring Python will not be available."))
-#     return(invisible(NULL))  # Exit .onAttach without stopping package loading
+#   # check docker env
+#   in_docker <- file.exists("/.dockerenv")
+#
+#   # bring it to docker
+#   if (in_docker) {
+#     docker_python <- Sys.getenv("RETICULATE_PYTHON")
+#     if (docker_python != "" && file.exists(docker_python)) {
+#       packageStartupMessage("Using Docker Python environment: ", docker_python)
+#       Sys.setenv(RETICULATE_PYTHON = docker_python)
+#       reticulate::use_python(docker_python, required = TRUE)
+#       return(invisible(NULL))
+#     }
 #   }
 #
-#   # Check Python versio Try to get Python version
-#   tryCatch({
-#     python_version <- system(paste(python_path, "--version"), intern = TRUE)
-#     if (!grepl("Python 3", python_version)) {
-#       packageStartupMessage("Python 3 is required, but a different version was found. Please install Python 3. flaiR functionality requiring Python will not be available.")
-#       return(invisible(NULL))  # Exit .onAttach without stopping package loading
+#   # Get Python path from virtual environment
+#   python_path <- tryCatch({
+#     if (Sys.info()["sysname"] == "Windows") {
+#       file.path(venv, "Scripts", "python.exe")
+#     } else {
+#       file.path(venv, "bin", "python")
 #     }
 #   }, error = function(e) {
-#     packageStartupMessage(paste("Failed to get Python version with path:", python_path, "Error:", e$message, ". flaiR functionality requiring Python will not be available."))
-#     return(invisible(NULL))   # Exit .onAttach without stopping package loading
+#     packageStartupMessage("Cannot locate Python in virtual environment.")
+#     return(invisible(NULL))
 #   })
 #
-#   # Check if PyTorch is installed
-#   check_torch_version <- function() {
-#     # torch_version_command <- paste(python_path, "-c 'import torch; print(torch.__version__)'")
-#     torch_version_command <- paste(python_path, "-c \"import torch; print(torch.__version__)\"")
-#     result <- system(torch_version_command, intern = TRUE)
-#     if (length(result) == 0 || result[1] == "ERROR" || is.na(result[1])) {
-#       return(list(paste("PyTorch", paste0("\033[31m", "\u2717", "\033[39m"), sep = " "), FALSE))
-#     }
-#     # Return flair version
-#     return(list(paste("PyTorch", paste0("\033[32m", "\u2713", "\033[39m") ,result[1], sep = " "), TRUE, result[1]))
+#   # Define version check function
+#   check_flair_version <- function() {
+#     tryCatch({
+#       reticulate::use_virtualenv(venv, required = TRUE)
+#       flair <- reticulate::import("flair", delay_load = TRUE)
+#       version <- reticulate::py_get_attr(flair, "__version__")
+#       return(list(
+#         message = paste("flair", paste0("\033[32m", "\u2713", "\033[39m"), version, sep = " "),
+#         status = TRUE,
+#         version = version
+#       ))
+#     }, error = function(e) {
+#       return(list(
+#         message = paste("flair", paste0("\033[31m", "\u2717", "\033[39m"), sep = " "),
+#         status = FALSE,
+#         version = NULL
+#       ))
+#     })
 #   }
 #
-#   # Check if flair is installed
-  # check_flair_version <- function() {
-  #   # flair_version_command <- paste(python_path, "-c 'import flair; print(flair.__version__)'")
-  #   flair_version_command <- paste(python_path, "-c \"import flair; print(flair.__version__)\"")
-  #   result <- system(flair_version_command, intern = TRUE)
-  #   if (length(result) == 0 || result[1] == "ERROR" || is.na(result[1])) {
-  #     return(list(paste("flair", paste0("\033[31m", "\u2717", "\033[39m"), sep = " "), FALSE))
-  #   }
-  #   # Return flair version
-  #   return(list(paste("flair", paste0("\033[32m", "\u2713", "\033[39m"),result[1], sep = " "), TRUE, result[1]))
-  # }
-
-#   flair_version <- check_flair_version()
-#   torch_version <- check_torch_version()
+#   # Initialize Python environment (only if not in Docker)
+#   if (!in_docker) {
+#     Sys.setenv(RETICULATE_PYTHON = python_path)
 #
-#   if (isFALSE(flair_version[[2]])) {
-#     packageStartupMessage(sprintf(" Flair %-50s", paste0("is installing from Python")))
+#     # Check if flair_env exists
+#     if (reticulate::virtualenv_exists(venv)) {
+#       packageStartupMessage("Using existing virtual environment: ", venv)
+#       reticulate::use_virtualenv(venv, required = TRUE)
 #
-#     commands <- c(
-#       paste(python_path, "-m pip install --upgrade pip"),
-#       paste(python_path, "-m pip install torch"),
-#       paste(python_path, "-m pip install flair"),
-#       paste(python_path, "-m pip install scipy==1.12.0")
-#     )
-#     command_statuses <- vapply(commands, system, FUN.VALUE = integer(1))
+#       # Check flair in existing environment
+#       flair_status <- suppressMessages(check_flair_version())
+#       if (!flair_status$status) {
+#         packageStartupMessage("Installing missing flair in existing environment...")
+#         tryCatch({
+#           reticulate::py_install(c("torch", "flair", "scipy==1.12.0"), envname = venv)
+#         }, error = function(e) {
+#           packageStartupMessage("Failed to install flair: ", e$message)
+#           return(invisible(NULL))
+#         })
+#         flair_status <- suppressMessages(check_flair_version())
+#       }
+#     } else {
+#       # Create new virtual environment
+#       packageStartupMessage("Creating new virtual environment: ", venv)
+#       reticulate::virtualenv_create(venv)
+#       reticulate::use_virtualenv(venv, required = TRUE)
 #
-#     flair_check_again <- check_flair_version()
-#     if (isFALSE(flair_check_again[[2]])) {
-#       packageStartupMessage("Failed to install Flair. {flaiR} requires Flair NLP. Please ensure Flair NLP is installed in Python manually.")
+#       # Install in new environment
+#       packageStartupMessage("Installing flair NLP in new environment...")
+#       tryCatch({
+#         reticulate::py_install(c("torch", "flair", "scipy==1.12.0"), envname = venv)
+#       }, error = function(e) {
+#         packageStartupMessage("Failed to install flair: ", e$message)
+#         return(invisible(NULL))
+#       })
+#       flair_status <- suppressMessages(check_flair_version())
 #     }
-#   } else {
-#     packageStartupMessage(sprintf("\033[1m\033[34mflaiR\033[39m\033[22m: \033[1m\033[33mAn R Wrapper for Accessing Flair NLP\033[39m\033[22m %-5s", paste("\033[1m\033[33m", flair_version[[3]], "\033[39m\033[22m", sep = "")))
+#
+#     # Display final status
+#     if (flair_status$status) {
+#       packageStartupMessage(sprintf("\033[1m\033[34mflaiR\033[39m\033[22m: \033[1m\033[33mAn R Wrapper for Accessing Flair NLP\033[39m\033[22m %-5s",
+#                                     paste("\033[1m\033[33m", flair_status$version, "\033[39m\033[22m", sep = "")))
+#     } else {
+#       packageStartupMessage("Failed to load flair. Please install manually.")
+#     }
 #   }
 # }
 
+#
+# .onAttach <- function(...) {
+#   # Check and set Python environment
+#   Sys.unsetenv("RETICULATE_PYTHON")
+#   home_dir <- path.expand("~")
+#   venv <- file.path(home_dir, "flair_env")
+#
+#   # Get Python path from virtual environment
+#   python_path <- tryCatch({
+#     if (Sys.info()["sysname"] == "Windows") {
+#       file.path(venv, "Scripts", "python.exe")
+#     } else {
+#       file.path(venv, "bin", "python")
+#     }
+#   }, error = function(e) {
+#     packageStartupMessage("Cannot locate Python in virtual environment.")
+#     return(invisible(NULL))
+#   })
+#
+#   # Define version check function
+#   check_flair_version <- function() {
+#     tryCatch({
+#       reticulate::use_virtualenv(venv, required = TRUE)
+#       flair <- reticulate::import("flair", delay_load = TRUE)
+#       version <- reticulate::py_get_attr(flair, "__version__")
+#       return(list(
+#         message = paste("flair", paste0("\033[32m", "\u2713", "\033[39m"), version, sep = " "),
+#         status = TRUE,
+#         version = version
+#       ))
+#     }, error = function(e) {
+#       return(list(
+#         message = paste("flair", paste0("\033[31m", "\u2717", "\033[39m"), sep = " "),
+#         status = FALSE,
+#         version = NULL
+#       ))
+#     })
+#   }
+#
+#   # Initialize Python environment
+#   Sys.setenv(RETICULATE_PYTHON = python_path)
+#
+#   # Check if flair_env exists
+#   if (reticulate::virtualenv_exists(venv)) {
+#     packageStartupMessage("Using existing virtual environment: ", venv)
+#     reticulate::use_virtualenv(venv, required = TRUE)
+#
+#     # Check flair in existing environment
+#     flair_status <- suppressMessages(check_flair_version())
+#     if (!flair_status$status) {
+#       packageStartupMessage("Installing missing flair in existing environment...")
+#       tryCatch({
+#         reticulate::py_install(c("torch", "flair", "scipy==1.12.0"), envname = venv)
+#       }, error = function(e) {
+#         packageStartupMessage("Failed to install flair: ", e$message)
+#         return(invisible(NULL))
+#       })
+#       flair_status <- suppressMessages(check_flair_version())
+#     }
+#   } else {
+#     # Create new virtual environment
+#     packageStartupMessage("Creating new virtual environment: ", venv)
+#     reticulate::virtualenv_create(venv)
+#     reticulate::use_virtualenv(venv, required = TRUE)
+#
+#     # Install in new environment
+#     packageStartupMessage("Installing flair NLP in new environment...")
+#     tryCatch({
+#       reticulate::py_install(c("torch", "flair", "scipy==1.12.0"), envname = venv)
+#     }, error = function(e) {
+#       packageStartupMessage("Failed to install flair: ", e$message)
+#       return(invisible(NULL))
+#     })
+#     flair_status <- suppressMessages(check_flair_version())
+#   }
+#
+#   # Display final status
+#   if (flair_status$status) {
+#     packageStartupMessage(sprintf("\033[1m\033[34mflaiR\033[39m\033[22m: \033[1m\033[33mAn R Wrapper for Accessing Flair NLP\033[39m\033[22m %-5s",
+#                                   paste("\033[1m\033[33m", flair_status$version, "\033[39m\033[22m", sep = "")))
+#   } else {
+#     packageStartupMessage("Failed to load flair. Please install manually.")
+#   }
+# }
