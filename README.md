@@ -63,11 +63,9 @@ Science](https://davidycliao.github.io/flaiR/articles/tutorial.html#introduction
 
 <br>
 
-## Installation via <u>**`GitHub`**</u>
+## Required Softwares
 
 <div style="text-align: justify">
-
-**Required Softwares**
 
 - Python \>= 3.10
 - R \>= 4.2.0
@@ -86,6 +84,19 @@ architecture Macs (M1/M2), compatibility issues with gfortran may occur.
 It’s recommended to avoid this combination.*
 
 <br>
+
+## Fast Install Python with `reticulate`
+
+- Install Python 3.10 using reticulate:
+
+<!-- -->
+
+    # Install and load reticulate package
+    install.packages("reticulate")
+    library(reticulate)
+    install_python(version = "3.10")
+
+- To install flaiR package
 
 ``` r
 install.packages("remotes")
