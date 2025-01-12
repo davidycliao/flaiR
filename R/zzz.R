@@ -31,7 +31,9 @@
 .onAttach <- function(...) {
   # Check and set Python environment
   Sys.unsetenv("RETICULATE_PYTHON")
-  venv <- "flair_env"
+  # venv <- "flair_env"
+  home_dir <- path.expand("~")
+  venv <- file.path(home_dir, "flair_env")
 
   # Get Python path based on OS
   python_path <- tryCatch({
