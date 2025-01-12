@@ -29,7 +29,6 @@
 #' @keywords internal
 #'
 
-
 .onAttach <- function(...) {
   # Check and set Python environment
   Sys.unsetenv("RETICULATE_PYTHON")
@@ -39,7 +38,7 @@
   # check docker env
   in_docker <- file.exists("/.dockerenv")
 
-  # bring it to docker env
+  # bring it to docker
   if (in_docker) {
     docker_python <- Sys.getenv("RETICULATE_PYTHON")
     if (docker_python != "" && file.exists(docker_python)) {
