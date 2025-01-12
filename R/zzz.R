@@ -29,6 +29,7 @@
 #' @keywords internal
 .onAttach <- function(...) {
   # Check and set Python environment
+  Sys.unsetenv("RETICULATE_PYTHON")
   home_dir <- path.expand("~")
   venv <- file.path(home_dir, "flair_env")
 
