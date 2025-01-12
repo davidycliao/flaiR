@@ -1,6 +1,5 @@
-FROM rocker/r-ver:latest
 
-# Install minimum required system dependencies
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
     python3-minimal \
     python3-pip \
@@ -12,6 +11,7 @@ RUN apt-get update && apt-get install -y \
     curl
 
 # Create rstudio user
+# default accout 'rstudio'; password: rstudio123
 ENV USER=rstudio
 ENV PASSWORD=rstudio123
 RUN useradd -m $USER && \
@@ -24,22 +24,43 @@ RUN wget https://download2.rstudio.org/server/jammy/amd64/rstudio-server-2023.12
     gdebi -n rstudio-server-2023.12.1-402-amd64.deb && \
     rm rstudio-server-*.deb
 
-# Set virtual environment
-ENV VENV_PATH=/opt/venv
-RUN python3 -m venv $VENV_PATH && \
-    chown -R $USER:$USER $VENV_PATH && \
-    echo "RETICULATE_PYTHON=$VENV_PATH/bin/python" >> /usr/local/lib/R/etc/Renviron.site && \
-    echo "options(reticulate.prompt = FALSE)" >> /usr/local/lib/R/etc/Rprofile.site
+# Create and configure Python virtual environment
+RUN python3 -m venv /opt/venv && \
+    chown -R $USER:$USER /opt/venv
+
+ENV PATH="/opt/venv/bin:$PATH"
+ENV RETICULATE_PYTHON="/opt/venv/bin/python"
+
+# Setup R environment config
+RUN mkdir -p /usr/local/lib/R/etc && \
+    echo "RETICULATE_PYTHON=/opt/venv/bin/python" >> /usr/local/lib/R/etc/Renviron.site && \
+    chown -R $USER:$USER /usr/local/lib/R/etc/Renviron.site && \
+    chmod 644 /usr/local/lib/R/etc/Renviron.site
 
 # Install Python packages
-RUN $VENV_PATH/bin/pip install --no-cache-dir torch flair scipy==1.12.0
+RUN /opt/venv/bin/pip install --no-cache-dir \
+    numpy==1.26.4 \
+    scipy==1.12.0 \
+    transformers \
+    torch \
+    flair
 
 # Install R packages
-RUN R -e "install.packages(c('reticulate', 'remotes'), repos='https://cloud.r-project.org/', dependencies=TRUE)" && \
+RUN R -e "install.packages('reticulate', repos='https://cloud.r-project.org/', dependencies=TRUE)" && \
+    R -e "install.packages('remotes', repos='https://cloud.r-project.org/', dependencies=TRUE)" && \
     R -e "remotes::install_github('davidycliao/flaiR', dependencies=TRUE)"
 
+# Set working directory
 WORKDIR /home/$USER
+RUN chown -R $USER:$USER /home/$USER
+
+# Add healthcheck
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost:8787/ || exit 1
+
+# Expose port
 EXPOSE 8787
 
+# Run service as rstudio user
 USER $USER
 CMD ["/usr/lib/rstudio-server/bin/rserver", "--server-daemonize=0"]
