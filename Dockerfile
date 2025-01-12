@@ -9,10 +9,10 @@ RUN apt-get update && apt-get install -y \
     gdebi-core \
     wget \
     sudo \
-    curl
+    curl \
+    virtualenv  # 添加virtualenv
 
 # Create rstudio user
-# default accout 'rstudio'; password: rstudio123
 ENV USER=rstudio
 ENV PASSWORD=rstudio123
 RUN useradd -m $USER && \
@@ -25,21 +25,23 @@ RUN wget https://download2.rstudio.org/server/jammy/amd64/rstudio-server-2023.12
     gdebi -n rstudio-server-2023.12.1-402-amd64.deb && \
     rm rstudio-server-*.deb
 
-# Create and configure Python virtual environment
-RUN python3 -m venv /opt/venv && \
-    chown -R $USER:$USER /opt/venv
+# 修改虚拟环境路径到用户目录
+ENV VENV_PATH=/home/$USER/flair_env
+RUN python3 -m venv $VENV_PATH && \
+    chown -R $USER:$USER $VENV_PATH
 
-ENV PATH="/opt/venv/bin:$PATH"
-ENV RETICULATE_PYTHON="/opt/venv/bin/python"
+# 更新环境变量
+ENV PATH="$VENV_PATH/bin:$PATH"
+ENV RETICULATE_PYTHON="$VENV_PATH/bin/python"
 
 # Setup R environment config
 RUN mkdir -p /usr/local/lib/R/etc && \
-    echo "RETICULATE_PYTHON=/opt/venv/bin/python" >> /usr/local/lib/R/etc/Renviron.site && \
+    echo "RETICULATE_PYTHON=$VENV_PATH/bin/python" >> /usr/local/lib/R/etc/Renviron.site && \
     chown -R $USER:$USER /usr/local/lib/R/etc/Renviron.site && \
     chmod 644 /usr/local/lib/R/etc/Renviron.site
 
-# Install Python packages
-RUN /opt/venv/bin/pip install --no-cache-dir \
+# Install Python packages in the virtual environment
+RUN $VENV_PATH/bin/pip install --no-cache-dir \
     numpy==1.26.4 \
     scipy==1.12.0 \
     transformers \
@@ -49,7 +51,7 @@ RUN /opt/venv/bin/pip install --no-cache-dir \
 # Install R packages
 RUN R -e "install.packages('reticulate', repos='https://cloud.r-project.org/', dependencies=TRUE)" && \
     R -e "install.packages('remotes', repos='https://cloud.r-project.org/', dependencies=TRUE)" && \
-    R -e "remotes::install_github('davidycliao/flaiR', dependencies=TRUE)"
+    R -e "options(timeout=600); Sys.setenv(RETICULATE_PYTHON='$VENV_PATH/bin/python'); library(reticulate); use_virtualenv('$VENV_PATH', required = TRUE); remotes::install_github('davidycliao/flaiR', dependencies=TRUE)"
 
 # Set working directory
 WORKDIR /home/$USER
@@ -65,4 +67,3 @@ EXPOSE 8787
 # Run service as rstudio user
 USER $USER
 CMD ["/usr/lib/rstudio-server/bin/rserver", "--server-daemonize=0"]
-
