@@ -1,96 +1,60 @@
-name: flaiR-Docker
-on:
-  push:
-    branches: [main, master]
-  pull_request:
-    branches: [main, master]
+FROM rocker/r-ver:latest
 
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    python3-minimal \
+    python3-pip \
+    python3-venv \
+    libssl-dev \
+    gdebi-core \
+    wget \
+    sudo \
+    curl
 
-jobs:
-  R-CMD-check:
-    runs-on: ubuntu-latest
-    name: R-CMD-check
-    env:
-      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
-      R_KEEP_PKG_SOURCE: yes
-    steps:
-      - uses: actions/checkout@v3
-      - uses: r-lib/actions/setup-r@v2
-        with:
-          use-public-rspm: true
-      - uses: r-lib/actions/setup-pandoc@v2
+# Create rstudio user
+ARG USER=rstudio
+ARG PASSWORD=rstudio123
+RUN useradd -m $USER && \
+    echo "$USER:$PASSWORD" | chpasswd && \
+    adduser $USER sudo && \
+    echo "$USER ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
-      - name: Setup Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.9'
+# Install RStudio Server
+RUN wget https://download2.rstudio.org/server/jammy/amd64/rstudio-server-2023.12.1-402-amd64.deb && \
+    gdebi -n rstudio-server-2023.12.1-402-amd64.deb && \
+    rm rstudio-server-*.deb
 
-      - name: Install Python dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install flair
+# Create and configure Python virtual environment
+RUN python3 -m venv /opt/venv && \
+    chown -R $USER:$USER /opt/venv
 
-      - name: Install R dependencies
-        run: |
-          install.packages('remotes')
-          remotes::install_github("davidycliao/flaiR", force = TRUE)
-        shell: Rscript {0}
+ENV PATH="/opt/venv/bin:$PATH"
+ENV RETICULATE_PYTHON="/opt/venv/bin/python"
 
-      - uses: r-lib/actions/setup-r-dependencies@v2
-        with:
-          extra-packages: rcmdcheck
+# Setup R environment config
+RUN mkdir -p /usr/local/lib/R/etc && \
+    echo "RETICULATE_PYTHON=/opt/venv/bin/python" >> /usr/local/lib/R/etc/Renviron.site && \
+    echo "options(reticulate.prompt = FALSE)" >> /usr/local/lib/R/etc/Rprofile.site
 
-  docker:
-    needs: R-CMD-check
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
+# Install Python packages
+RUN /opt/venv/bin/pip install --no-cache-dir \
+    numpy==1.26.4 \
+    scipy==1.12.0 \
+    transformers \
+    torch \
+    flair
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+# Install R packages with proper setup
+RUN R -e 'install.packages("reticulate", repos="https://cloud.r-project.org/", dependencies=TRUE)' && \
+    R -e 'if(require(reticulate)) { \
+          Sys.setenv(RETICULATE_PYTHON="/opt/venv/bin/python"); \
+          reticulate::use_python("/opt/venv/bin/python", required=TRUE); \
+          install.packages("remotes", repos="https://cloud.r-project.org/", dependencies=TRUE); \
+          remotes::install_github("davidycliao/flaiR", dependencies=TRUE) \
+        }'
 
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
+WORKDIR /home/$USER
+USER $USER
+EXPOSE 8787
 
-      - name: Log in to GitHub Container Registry
-        uses: docker/login-action@v2
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-        with:
-          buildkitd-flags: --debug
-
-      - name: Extract metadata for Docker
-        id: meta
-        uses: docker/metadata-action@v4
-        with:
-          images: ghcr.io/${{ github.repository_owner }}/flair-rstudio
-          tags: |
-            type=ref,event=branch
-            type=ref,event=pr
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
-            type=sha
-            type=raw,value=latest,enable={{is_default_branch}}
-
-      - name: Build and push RStudio image
-        uses: docker/build-push-action@v4
-        with:
-          context: .
-          platforms: linux/amd64
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          build-args: |
-            DEFAULT_USER=rstudio
-          secrets: |
-            PASSWORD=${{ secrets.RSTUDIO_PASSWORD }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-          provenance: false
+CMD ["/usr/lib/rstudio-server/bin/rserver", "--server-daemonize=0"]

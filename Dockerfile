@@ -67,3 +67,4 @@ EXPOSE 8787
 # Run service as rstudio user
 USER $USER
 CMD ["/usr/lib/rstudio-server/bin/rserver", "--server-daemonize=0"]
+CMD ["/usr/lib/rstudio-server/bin/rserver", "--server-daemonize=0"]
