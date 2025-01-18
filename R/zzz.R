@@ -29,11 +29,12 @@
 #' @keywords internal
 
 .onAttach <- function(...) {
-  # 1. Environment setup
+  # 1. Initialize environment paths
+  # Set up the home directory and virtual environment path
   home_dir <- path.expand("~")
   venv <- file.path(home_dir, "flair_env")
 
-  # 2. Basic settings (suppress all warnings)
+  # 2. Configure basic settings and suppress warnings
   suppressWarnings({
     options(reticulate.prompt = FALSE)
     if (Sys.info()["sysname"] == "Darwin") {
@@ -41,7 +42,7 @@
     }
   })
 
-  # 3. Version checking function
+  # 3. Python version compatibility check
   check_python_version <- function() {
     tryCatch({
       py_config <- reticulate::py_config()
@@ -49,7 +50,7 @@
       major <- as.numeric(version_parts[1])
       minor <- as.numeric(version_parts[2])
 
-      # Python 3.8-3.11 与 PyTorch 2.0+ 兼容
+      # Verify Python version is between 3.8-3.11 for PyTorch compatibility
       status <- (major == 3 && minor >= 8 && minor <= 11)
 
       if (!status) {
@@ -84,7 +85,7 @@
     })
   }
 
-  # 4. Check flair version
+  # 4. Check flair version and installation status
   check_flair_version <- function() {
     tryCatch({
       flair <- reticulate::import("flair", delay_load = TRUE)
@@ -103,7 +104,7 @@
     })
   }
 
-  # 5. Print function
+  # 5. Status printing utility with colored output
   print_status <- function(component, version, status = TRUE, extra_message = NULL) {
     if (status) {
       symbol <- "\u2713"  # checkmark
@@ -113,8 +114,15 @@
       color <- "\033[31m" # red
     }
 
-    message <- sprintf("%s %s%s\033[39m %s",
-                       component,
+    # Standardize component names and padding
+    formatted_component <- switch(component,
+                                  "Python" = sprintf("Python%-15s", ""),
+                                  "flaiR" = sprintf("Flair NLP%-12s", ""),
+                                  component
+    )
+
+    message <- sprintf("%s %s%s\033[39m  %s", # 增加一個空格在 checkmark 後面
+                       formatted_component,
                        color,
                        symbol,
                        if(!is.null(version)) version else "")
@@ -125,39 +133,67 @@
     }
   }
 
-  # 6. Main execution
+  # 6. Main execution block
   tryCatch({
-    # Setup virtual environment
+    # Initialize or verify virtual environment
     if (!reticulate::virtualenv_exists(venv)) {
       suppressWarnings({
         reticulate::virtualenv_create(venv)
       })
     }
 
+    # Activate the virtual environment
     suppressWarnings({
       reticulate::use_virtualenv(venv, required = TRUE)
     })
 
-    # Check Python version
+    # Verify Python version compatibility
     python_check <- check_python_version()
     print_status("Python", python_check$version, python_check$status, python_check$message)
 
-    # Check and install flair if Python version is compatible
+    # Install and configure flair if Python version is compatible
     if (python_check$status) {
       flair_check <- check_flair_version()
       if (!flair_check$status) {
         suppressWarnings({
+          # First install numpy with specific version for scipy compatibility
           reticulate::py_install(
-            packages = c("flair>=0.11.3", "scipy==1.12.0"),
+            packages = c("numpy>=1.22.4,<1.29.0"),
+            envname = venv,
+            pip = TRUE,
+            method = "auto"
+          )
+
+          # Then install flair and dependencies
+          reticulate::py_install(
+            packages = c(
+              "scipy==1.12.0",
+              "flair[word-embeddings]>=0.11.3"
+            ),
             envname = venv,
             pip = TRUE,
             method = "auto"
           )
         })
         flair_check <- check_flair_version()
+      } else {
+        # Check and install word-embeddings if needed
+        tryCatch({
+          reticulate::import("bpemb")
+        }, error = function(e) {
+          suppressWarnings({
+            reticulate::py_install(
+              packages = "flair[word-embeddings]",
+              envname = venv,
+              pip = TRUE,
+              method = "auto"
+            )
+          })
+        })
       }
 
-      print_status("flair", flair_check$version, flair_check$status, flair_check$message)
+      # Display final status
+      print_status("flaiR", flair_check$version, flair_check$status, flair_check$message)
 
       if (flair_check$status) {
         packageStartupMessage(sprintf("\033[1m\033[34mflaiR\033[39m\033[22m: \033[1m\033[33mAn R Wrapper for Accessing Flair NLP\033[39m\033[22m"))
@@ -170,7 +206,6 @@
 
   invisible(NULL)
 }
-
 
 # .onAttach <- function(...) {
 #   # Prevent reticulate from asking about Python environment
