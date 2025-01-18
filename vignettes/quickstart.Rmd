@@ -22,10 +22,10 @@ knitr::opts_chunk$set(
 # library(flaiR)
 # # reticulate::py_install("flair")
 # system(paste(reticulate::py_config()$python, "-m pip install flair"))
-system(paste(Sys.which("python3"), "-m pip install --upgrade pip"))
-system(paste(Sys.which("python3"), "-m pip install torch"))
-system(paste(Sys.which("python3"), "-m pip install flair"))
-Sys.setenv(RETICULATE_PYTHON = Sys.which("python3"))
+# system(paste(Sys.which("python3"), "-m pip install --upgrade pip"))
+# system(paste(Sys.which("python3"), "-m pip install torch"))
+# system(paste(Sys.which("python3"), "-m pip install flair"))
+# Sys.setenv(RETICULATE_PYTHON = Sys.which("python3"))
 library(flaiR)
 ```
 
@@ -37,53 +37,49 @@ Flair is a Python library developed by [Zalando Research](https://engineering.za
 </div>
 
 
-## flaiR Installation
-
-### Option 1: Direct Installation
+# flaiR Installation
 
 __System Requirements:__
 
-- Python >= 3.10
+- Python >= 3.9
 - R >= 4.2.0
 - Rstudio
 
-#### macOS Terminal
+## Option 1: Fast Install Python with `reticulate` and 
 
-```bash
-# Install Python 3.10 or higher.
-brew install python@3.10
-
-# Verify Python installation
-python3 --version
-
-# Install R
-brew install R
-
-# Verify R installation
-R --version
-
-# Install RStudio
-brew install --cask rstudio
+1. Install Python automatically through R reticulate:
+```
+# Install and load reticulate package
+install.packages("reticulate")
+library(reticulate)
 ```
 
-#### PowerShell for Windows
-
-```bash
-# Download Python installer from python.org and run:
-# https://www.python.org/downloads/
-
-# Verify Python installation
-python --version
-
-# Install R
-# Download R installer from CRAN and run:
-# https://cran.r-project.org/bin/windows/base/
-
-# Verify R installation
-R --version
+2. Install Python 3.10 using reticulate:
+```
+install_python(version = "3.10")
 ```
 
-### Option 2: Docker Setup 
+3. Verify the Python installation and see which version is being used:
+```
+py_config()  # Shows Python configuration details
+```
+
+4. To install flaiR package:
+```
+install.packages("remotes")
+remotes::install_github("davidycliao/flaiR", force = TRUE)
+```
+
+5. Load the flaiR package (when the message is printed showing the corresponding flair NLP python version, it indicates successful attachment of Flair NLP python to your R):
+```
+library(flaiR)
+```
+
+```
+#> flaiR: An R Wrapper for Accessing Flair NLP 0.13.1
+```
+
+## Option 2: Docker Setup 
 
 The Docker image (12.5GB) includes a complete R/Python development environment with RStudio Server + R environments and Python 3.9 with flair NLP and its dependencies (PyTorch, models).
 
@@ -108,7 +104,8 @@ docker run -d \
   ghcr.io/davidycliao/flair-rstudio:latest
 ```
 
-- Apple Silicon (M1/M2 Mac):
+__Apple Silicon (M1 Series MacOS):__
+
 
 ```bash
 # Pull and run with platform specification
@@ -130,7 +127,7 @@ __Access RStudio Server:__
 - Password: `rstudio123`
 
 
-### Troubleshooting Guide 
+## Troubleshooting Guide 
 
 The `faiR` Will:
 
@@ -148,7 +145,7 @@ remotes::install_github("davidycliao/flaiR", force = TRUE)
 Installation typically proceeds automatically with RStudio and R handling dependencies. However, users (particularly those with Mac ARM64 systems) may encounter compilation issues. Here's a comprehensive guide to resolve common problems:
 
 
-__Mac M1/M2 (Apple Silicon) Specific Setup__
+###  __Mac M1/M2 (Apple Silicon) Specific Setup__
 
 1 Architecture Options
 
@@ -160,16 +157,7 @@ __Mac M1/M2 (Apple Silicon) Specific Setup__
   - Requires specific compiler setup
   - May encounter additional compatibility issues
 
-__Version Compatibility__
-
-R Version Requirements:
-
-- R 4.5.0+: Matrix 1.7-0 or newer
-- R 4.4.x: Matrix 1.6-x
-- R 4.3.x: Matrix 1.5-1
-- R 4.2.x: Matrix 1.4-1
-
-__Compiler Setup for ARM64 Systems__
+###   __Compiler Setup for ARM64 Systems__
 
 Required Steps:
 
@@ -183,21 +171,32 @@ Required Steps:
     + [GitHub R-macos GNU Fortran releases](https://github.com/fxcoudert/gfortran-for-macOS/releases)
 </div>
 
-__Automatic Dependencies (Python)__
+### __Automatic Dependencies (Python)__
 
 <div style="text-align: justify">
 
 
-flaiR will automatically install the following Python packages during setup:
+`flaiR` R package will automatically install the following Python packages during setup:
 
-- flair (with default dependencies)
-- scipy (1.12.0)
-- gensim (4.3.2)
+__Core Dependencies__
+- Python (3.9 or 3.10 recommended)
+- flair[word-embeddings] (>=0.11.3)
+- numpy (>=1.22.4, <1.29.0)
+- PyTorch (>=2.0.0, <2.6.0)
+- scipy (==1.12.0)
 
-__Note__: No manual installation required. These packages will be handled automatically during flaiR installation. 
+__Additional Dependencies__
+- gensim (>=4.3.2)
+- transformers (>=4.30.0)
+- sentencepiece (>=0.1.99)
+- bpemb (>=0.3.5)
 
 
-You can manage Python settings in RStudio through _Tools -> Global Options -> Python_. To check your Python configuration, use:
+All other required dependencies will be automatically handled during the installation process.
+You can manage Python settings in RStudio through `Tools -> Global Options -> Python`.
+
+To check your Python configuration, use:
+
 
 </div>
 
@@ -205,7 +204,7 @@ You can manage Python settings in RStudio through _Tools -> Global Options -> Py
 reticulate::py_config()
 ```
 
-__Recommended Configurations__
+### __Recommended Configurations__
 
 For stable usage, we strongly recommend installing these specific versions.
 
@@ -215,8 +214,18 @@ For stable usage, we strongly recommend installing these specific versions.
 | Windows | 4.0.5, Latest              | 3.10.x, 3.9    |
 | Ubuntu  | 4.3.2, 4.2.0, 4.2.1        | 3.10.x, 3.9    |
 
-*: _On R 4.2.1, particularly when using the Matrix package on ARM 64 architecture Macs (M1/M2), compatibility issues with gfortran may occur. It's recommended to avoid this combination._
 
+### __R Version Requirements__
+
+The flaiR package has specific R version requirements based on Matrix package compatibility:
+
+- R 4.5.0+: Matrix 1.7-0 or newer
+- R 4.4.x: Matrix 1.6-x
+- R 4.3.x: Matrix 1.5-1
+- R 4.2.x: Matrix 1.4-1
+
+
+*: _On R 4.2.1, particularly when using the Matrix package on ARM 64 architecture Macs (M1/M2), compatibility issues with gfortran may occur. It's recommended to avoid this combination._
 
 
 &nbsp;
@@ -233,7 +242,7 @@ If you encounter any problems or have questions:
 </div>
 
 
-__Troubleshooting for Docker__
+###  __Troubleshooting for Docker__
 
 1. If you encounter any issues:
 
