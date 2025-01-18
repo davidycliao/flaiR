@@ -196,7 +196,8 @@
       print_status("flaiR", flair_check$version, flair_check$status, flair_check$message)
 
       if (flair_check$status) {
-        packageStartupMessage(sprintf("\033[1m\033[34mflaiR\033[39m\033[22m: \033[1m\033[33mAn R Wrapper for Accessing Flair NLP\033[39m\033[22m"))
+        packageStartupMessage(sprintf("\033[1m\033[34mflaiR\033[39m\033[22m: \033[1m\033[33mAn R Wrapper for Accessing Flair NLP %s\033[39m\033[22m",
+                                      flair_check$version))
       }
     }
 
