@@ -119,75 +119,42 @@ like GloVe and transformer-based models on Hugging Face.</p>
 <div class="section level2">
 <h2 id="flair-installation">flaiR Installation<a class="anchor" aria-label="anchor" href="#flair-installation"></a>
 </h2>
-<div class="section level3">
-<h3 id="option-1-direct-installation">Option 1: Direct Installation<a class="anchor" aria-label="anchor" href="#option-1-direct-installation"></a>
-</h3>
 <p><strong>System Requirements:</strong></p>
 <ul>
-<li>Python &gt;= 3.10</li>
+<li>Python &gt;= 3.9</li>
 <li>R &gt;= 4.2.0</li>
 <li>Rstudio</li>
 </ul>
-<div class="section level4">
-<h4 id="fast-install-python-with-reticulate">Fast Install Python with <code>reticulate</code><a class="anchor" aria-label="anchor" href="#fast-install-python-with-reticulate"></a>
-</h4>
+<div class="section level3">
+<h3 id="option-1-fast-install-python-with-reticulate-and">Option 1: Fast Install Python with <code>reticulate</code> and<a class="anchor" aria-label="anchor" href="#option-1-fast-install-python-with-reticulate-and"></a>
+</h3>
 <ol style="list-style-type: decimal">
-<li>Install Python automatically through R <a href="https://rstudio.github.io/reticulate/" class="external-link">reticulate</a>:</li>
+<li>Install Python automatically through R reticulate:</li>
 </ol>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Install and load reticulate package</span></span>
+<pre><code><span><span class="co"># Install and load reticulate package</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"reticulate"</span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rstudio.github.io/reticulate/" class="external-link">reticulate</a></span><span class="op">)</span></span></code></pre></div>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rstudio.github.io/reticulate/" class="external-link">reticulate</a></span><span class="op">)</span></span></code></pre>
 <ol start="2" style="list-style-type: decimal">
 <li>Install Python 3.10 using reticulate:</li>
 </ol>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rstudio.github.io/reticulate/reference/install_python.html" class="external-link">install_python</a></span><span class="op">(</span>version <span class="op">=</span> <span class="st">"3.10"</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="fu"><a href="https://rstudio.github.io/reticulate/reference/install_python.html" class="external-link">install_python</a></span><span class="op">(</span>version <span class="op">=</span> <span class="st">"3.10"</span><span class="op">)</span></span></code></pre>
 <ol start="3" style="list-style-type: decimal">
-<li>You can verify the Python installation and see which version is
-being used:</li>
+<li>Verify the Python installation and see which version is being
+used:</li>
 </ol>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rstudio.github.io/reticulate/reference/py_config.html" class="external-link">py_config</a></span><span class="op">(</span><span class="op">)</span>  <span class="co"># Shows Python configuration details</span></span></code></pre></div>
+<pre><code><span><span class="fu"><a href="https://rstudio.github.io/reticulate/reference/py_config.html" class="external-link">py_config</a></span><span class="op">(</span><span class="op">)</span>  <span class="co"># Shows Python configuration details</span></span></code></pre>
 <ol start="4" style="list-style-type: decimal">
-<li>To install <code>flaiR</code> package:</li>
+<li>To install flaiR package:</li>
 </ol>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span></span>
-<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"davidycliao/flaiR"</span>, force <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span></span>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"davidycliao/flaiR"</span>, force <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre>
 <ol start="5" style="list-style-type: decimal">
-<li>Load the <code>flaiR</code> package (when the message is printed
-showing the corresponding flair NLP python version, it indicates
-successful attachment of Flair NLP python to your R):</li>
+<li>Load the flaiR package (when the message is printed showing the
+corresponding flair NLP python version, it indicates successful
+attachment of Flair NLP python to your R):</li>
 </ol>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://davidycliao.github.io/flaiR">flaiR</a></span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">#&gt; flaiR: An R Wrapper for Accessing Flair NLP 0.13.1</span></span></code></pre></div>
-</div>
-<div class="section level4">
-<h4 id="python-installaiton">Python Installaiton<a class="anchor" aria-label="anchor" href="#python-installaiton"></a>
-</h4>
-<div class="section level5">
-<h5 id="macos-terminal">
-<code>macOS</code> Terminal<a class="anchor" aria-label="anchor" href="#macos-terminal"></a>
-</h5>
-<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="co"># Install Python 3.10 or higher.</span></span>
-<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a><span class="ex">brew</span> install python@3.10</span>
-<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a></span>
-<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a><span class="co"># Verify Python installation</span></span>
-<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a><span class="ex">python3</span> <span class="at">--version</span></span></code></pre></div>
-</div>
-<div class="section level5">
-<h5 id="powershell-for-windows">PowerShell for Windows<a class="anchor" aria-label="anchor" href="#powershell-for-windows"></a>
-</h5>
-<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="co"># Download Python installer from python.org and run:</span></span>
-<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a><span class="co"># https://www.python.org/downloads/</span></span>
-<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a></span>
-<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a><span class="co"># Verify Python installation</span></span>
-<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a><span class="ex">python</span> <span class="at">--version</span></span></code></pre></div>
-</div>
-</div>
+<pre><code><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://davidycliao.github.io/flaiR">flaiR</a></span><span class="op">)</span></span></code></pre>
+<pre><code><span><span class="co">#&gt; flaiR: An R Wrapper for Accessing Flair NLP 0.13.1</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="option-2-docker-setup">Option 2: Docker Setup<a class="anchor" aria-label="anchor" href="#option-2-docker-setup"></a>
@@ -203,28 +170,26 @@ flair NLP and its dependencies (PyTorch, models).</p>
 <li>Docker installed and running</li>
 </ul>
 <p><strong>Intel/AMD Processors:</strong></p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="co"># Pull and run</span></span>
-<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a><span class="ex">docker</span> pull ghcr.io/davidycliao/flair-rstudio:latest</span>
-<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">-d</span> <span class="dt">\</span></span>
-<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a>  <span class="at">-p</span> 8787:8787 <span class="dt">\</span></span>
-<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a>  <span class="at">--user</span> root <span class="dt">\</span></span>
-<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a>  <span class="at">-e</span> USER=rstudio <span class="dt">\</span></span>
-<span id="cb9-7"><a href="#cb9-7" tabindex="-1"></a>  <span class="at">-e</span> PASSWORD=rstudio123 <span class="dt">\</span></span>
-<span id="cb9-8"><a href="#cb9-8" tabindex="-1"></a>  <span class="at">--name</span> flair-rstudio <span class="dt">\</span></span>
-<span id="cb9-9"><a href="#cb9-9" tabindex="-1"></a>  ghcr.io/davidycliao/flair-rstudio:latest</span></code></pre></div>
-<ul>
-<li>Apple Silicon (M1/M2/M3 Mac):</li>
-</ul>
-<div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="co"># Pull and run with platform specification</span></span>
-<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a><span class="ex">docker</span> pull <span class="at">--platform</span> linux/amd64 ghcr.io/davidycliao/flair-rstudio:latest</span>
-<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">-d</span> <span class="dt">\</span></span>
-<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a>  <span class="at">-p</span> 8787:8787 <span class="dt">\</span></span>
-<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a>  <span class="at">--platform</span> linux/amd64 <span class="dt">\</span></span>
-<span id="cb10-6"><a href="#cb10-6" tabindex="-1"></a>  <span class="at">--user</span> root <span class="dt">\</span></span>
-<span id="cb10-7"><a href="#cb10-7" tabindex="-1"></a>  <span class="at">-e</span> USER=rstudio <span class="dt">\ </span>        </span>
-<span id="cb10-8"><a href="#cb10-8" tabindex="-1"></a>  <span class="ex">-e</span> PASSWORD=rstudio123 <span class="dt">\</span></span>
-<span id="cb10-9"><a href="#cb10-9" tabindex="-1"></a>  <span class="at">--name</span> flair-rstudio <span class="dt">\</span></span>
-<span id="cb10-10"><a href="#cb10-10" tabindex="-1"></a>  ghcr.io/davidycliao/flair-rstudio:latest</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="co"># Pull and run</span></span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a><span class="ex">docker</span> pull ghcr.io/davidycliao/flair-rstudio:latest</span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">-d</span> <span class="dt">\</span></span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a>  <span class="at">-p</span> 8787:8787 <span class="dt">\</span></span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a>  <span class="at">--user</span> root <span class="dt">\</span></span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a>  <span class="at">-e</span> USER=rstudio <span class="dt">\</span></span>
+<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a>  <span class="at">-e</span> PASSWORD=rstudio123 <span class="dt">\</span></span>
+<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a>  <span class="at">--name</span> flair-rstudio <span class="dt">\</span></span>
+<span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a>  ghcr.io/davidycliao/flair-rstudio:latest</span></code></pre></div>
+<p><strong>Apple Silicon (M1 Series MacOS):</strong></p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="co"># Pull and run with platform specification</span></span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a><span class="ex">docker</span> pull <span class="at">--platform</span> linux/amd64 ghcr.io/davidycliao/flair-rstudio:latest</span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">-d</span> <span class="dt">\</span></span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a>  <span class="at">-p</span> 8787:8787 <span class="dt">\</span></span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a>  <span class="at">--platform</span> linux/amd64 <span class="dt">\</span></span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a>  <span class="at">--user</span> root <span class="dt">\</span></span>
+<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a>  <span class="at">-e</span> USER=rstudio <span class="dt">\ </span>        </span>
+<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a>  <span class="ex">-e</span> PASSWORD=rstudio123 <span class="dt">\</span></span>
+<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a>  <span class="at">--name</span> flair-rstudio <span class="dt">\</span></span>
+<span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a>  ghcr.io/davidycliao/flair-rstudio:latest</span></code></pre></div>
 <p><strong>Access RStudio Server:</strong></p>
 <ul>
 <li>Open browser: <a href="http://localhost:8787" class="external-link"><code>http://localhost:8787</code></a>
@@ -244,7 +209,7 @@ flair NLP and its dependencies (PyTorch, models).</p>
 <li>Install required Python packages (flair and its dependencies)</li>
 <li>Configure the Python-R connection</li>
 </ul>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span></span>
 <span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"davidycliao/flaiR"</span>, force <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <div style="text-align: justify">
@@ -270,18 +235,6 @@ to resolve common problems:</p>
 </ul>
 </div>
 <div class="section level4">
-<h4 id="version-compatibility">
-<strong>Version Compatibility</strong><a class="anchor" aria-label="anchor" href="#version-compatibility"></a>
-</h4>
-<p>R Version Requirements:</p>
-<ul>
-<li>R 4.5.0+: Matrix 1.7-0 or newer</li>
-<li>R 4.4.x : Matrix 1.6-x</li>
-<li>R 4.3.x : Matrix 1.5-1</li>
-<li>R 4.2.x : Matrix 1.4-1</li>
-</ul>
-</div>
-<div class="section level4">
 <h4 id="compiler-setup-for-arm64-systems">
 <strong>Compiler Setup for ARM64 Systems</strong><a class="anchor" aria-label="anchor" href="#compiler-setup-for-arm64-systems"></a>
 </h4>
@@ -304,23 +257,27 @@ R-macos GNU Fortran releases</a></li>
 </ul>
 </div>
 </div>
-<p><strong>Automatic Dependencies (Python)</strong></p>
+<div class="section level4">
+<h4 id="automatic-dependencies-python">
+<strong>Automatic Dependencies (Python)</strong><a class="anchor" aria-label="anchor" href="#automatic-dependencies-python"></a>
+</h4>
 <div style="text-align: justify">
-<p>flaiR will automatically install the following Python packages during
-setup:</p>
-<ul>
-<li>flair (with default dependencies)</li>
-<li>scipy (1.12.0)</li>
-<li>gensim (4.3.2)</li>
-</ul>
-<p><strong>Note</strong>: No manual installation required. These
-packages will be handled automatically during flaiR installation.</p>
-<p>You can manage Python settings in RStudio through <em>Tools -&gt;
-Global Options -&gt; Python</em>. To check your Python configuration,
-use:</p>
+<p><code>flaiR</code> R package will automatically install the following
+Python packages during setup:</p>
+<p><strong>Core Dependencies</strong> - Python (3.9 or 3.10 recommended)
+- flair[word-embeddings] (&gt;=0.11.3) - numpy (&gt;=1.22.4, &lt;1.29.0)
+- PyTorch (&gt;=2.0.0, &lt;2.6.0) - scipy (==1.12.0)</p>
+<p><strong>Additional Dependencies</strong> - gensim (&gt;=4.3.2) -
+transformers (&gt;=4.30.0) - sentencepiece (&gt;=0.1.99) - bpemb
+(&gt;=0.3.5)</p>
+<p>All other required dependencies will be automatically handled during
+the installation process. You can manage Python settings in RStudio
+through <code>Tools -&gt; Global Options -&gt; Python</code>.</p>
+<p>To check your Python configuration, use:</p>
 </div>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">reticulate</span><span class="fu">::</span><span class="fu"><a href="https://rstudio.github.io/reticulate/reference/py_config.html" class="external-link">py_config</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+</div>
 <div class="section level4">
 <h4 id="recommended-configurations">
 <strong>Recommended Configurations</strong><a class="anchor" aria-label="anchor" href="#recommended-configurations"></a>
@@ -351,6 +308,19 @@ versions.</p>
 </tr>
 </tbody>
 </table>
+</div>
+<div class="section level4">
+<h4 id="r-version-requirements">
+<strong>R Version Requirements</strong><a class="anchor" aria-label="anchor" href="#r-version-requirements"></a>
+</h4>
+<p>The flaiR package has specific R version requirements based on Matrix
+package compatibility:</p>
+<ul>
+<li>R 4.5.0+: Matrix 1.7-0 or newer</li>
+<li>R 4.4.x: Matrix 1.6-x</li>
+<li>R 4.3.x: Matrix 1.5-1</li>
+<li>R 4.2.x: Matrix 1.4-1</li>
+</ul>
 <p>*: <em>On R 4.2.1, particularly when using the Matrix package on ARM
 64 architecture Macs (M1/M2), compatibility issues with gfortran may
 occur. It’s recommended to avoid this combination.</em></p>
@@ -371,7 +341,7 @@ forum</a>
 <strong>Troubleshooting for Docker</strong><a class="anchor" aria-label="anchor" href="#troubleshooting-for-docker"></a>
 </h4>
 <ol style="list-style-type: decimal">
-<li>f you encounter any issues:</li>
+<li>If you encounter any issues:</li>
 </ol>
 <pre><code># Try using a different port (e.g., 8788)
 docker run -d \
@@ -397,36 +367,9 @@ docker ps
 docker ps -a
 # View container logs
 docker logs flair-rstudio</code></pre>
-</div>
-<div class="section level4">
-<h4 id="some-useful-reticulate-commands-to-help-check-flair-environment">
-<strong>Some Useful <code>reticulate</code> Commands to Help Check
-flair Environment</strong><a class="anchor" aria-label="anchor" href="#some-useful-reticulate-commands-to-help-check-flair-environment"></a>
-</h4>
-<ul>
-<li>Check Python execution path</li>
-</ul>
-<pre><code><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rstudio.github.io/reticulate/" class="external-link">reticulate</a></span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rstudio.github.io/reticulate/reference/py_config.html" class="external-link">py_config</a></span><span class="op">(</span><span class="op">)</span></span></code></pre>
-<ul>
-<li>List installed Python packages</li>
-</ul>
-<pre><code><span><span class="fu">reticulate</span><span class="fu">::</span><span class="fu"><a href="https://rstudio.github.io/reticulate/reference/py_list_packages.html" class="external-link">py_list_packages</a></span><span class="op">(</span><span class="op">)</span></span></code></pre>
-<ul>
-<li>Check Python environment variables</li>
-</ul>
-<pre><code><span><span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"RETICULATE_PYTHON"</span><span class="op">)</span></span></code></pre>
-<ul>
-<li>Verify if flair is loaded correctly</li>
-</ul>
-<pre><code><span><span class="fu"><a href="https://rstudio.github.io/reticulate/reference/py_module_available.html" class="external-link">py_module_available</a></span><span class="op">(</span><span class="st">"flair"</span><span class="op">)</span></span></code></pre>
 <hr>
 </div>
 </div>
-</div>
-<div class="section level2">
-<h2 id="overview-of-flair-r-package">Overview of flaiR R Package<a class="anchor" aria-label="anchor" href="#overview-of-flair-r-package"></a>
-</h2>
 <div class="section level3">
 <h3 id="nlp-tasks">NLP Tasks<a class="anchor" aria-label="anchor" href="#nlp-tasks"></a>
 </h3>
