@@ -528,7 +528,7 @@ top-level module “flair” from flaiR and using
 <code class="sourceCode R"><span><span class="va">corp</span> <span class="op">&lt;-</span> <span class="fu">Corpus</span><span class="op">(</span>train<span class="op">=</span><span class="va">train</span>, </span>
 <span>                 <span class="co"># dev=test,</span></span>
 <span>                 test<span class="op">=</span><span class="va">test</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:30:41,594 No dev split found. Using 10% (i.e. 471 samples) of the train split as dev data</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:01:07,747 No dev split found. Using 10% (i.e. 471 samples) of the train split as dev data</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"Corpus object sizes - Train: %d | Test: %d | Dev: %d"</span>, </span>
 <span>        <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">corp</span><span class="op">$</span><span class="va">train</span><span class="op">)</span>, </span>
 <span>        <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">corp</span><span class="op">$</span><span class="va">test</span><span class="op">)</span>,</span>
@@ -875,7 +875,7 @@ use it to predict tags for the object.</p>
 <span><span class="co"># load the NER tagger</span></span>
 <span><span class="va">SequenceTagger</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_models.html">flair_models</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">SequenceTagger</span></span>
 <span><span class="va">tagger</span> <span class="op">&lt;-</span> <span class="va">SequenceTagger</span><span class="op">$</span><span class="fu">load</span><span class="op">(</span><span class="st">'flair/ner-english'</span><span class="op">)</span>  </span>
-<span><span class="co">#&gt; 2025-01-19 00:30:42,270 SequenceTagger predicts: Dictionary with 20 tags: &lt;unk&gt;, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, &lt;START&gt;, &lt;STOP&gt;</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:01:09,156 SequenceTagger predicts: Dictionary with 20 tags: &lt;unk&gt;, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, &lt;START&gt;, &lt;STOP&gt;</span></span>
 <span></span>
 <span><span class="co"># run NER over sentence</span></span>
 <span><span class="va">tagger</span><span class="op">$</span><span class="fu">predict</span><span class="op">(</span><span class="va">sentence</span><span class="op">)</span></span></code></pre></div>
@@ -914,7 +914,7 @@ models on Hugging Face.</p>
 <span><span class="co"># load the NER tagger</span></span>
 <span><span class="va">Classifier</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_nn.html">flair_nn</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">Classifier</span></span>
 <span><span class="va">tagger</span> <span class="op">&lt;-</span> <span class="va">Classifier</span><span class="op">$</span><span class="fu">load</span><span class="op">(</span><span class="st">'pos'</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:30:43,403 SequenceTagger predicts: Dictionary with 53 tags: &lt;unk&gt;, O, UH, ,, VBD, PRP, VB, PRP$, NN, RB, ., DT, JJ, VBP, VBG, IN, CD, NNS, NNP, WRB, VBZ, WDT, CC, TO, MD, VBN, WP, :, RP, EX, JJR, FW, XX, HYPH, POS, RBR, JJS, PDT, NNPS, RBS, AFX, WP$, -LRB-, -RRB-, ``, '', LS, $, SYM, ADD</span></span></code></pre></div>
+<span><span class="co">#&gt; 2025-01-19 02:01:10,276 SequenceTagger predicts: Dictionary with 53 tags: &lt;unk&gt;, O, UH, ,, VBD, PRP, VB, PRP$, NN, RB, ., DT, JJ, VBP, VBG, IN, CD, NNS, NNP, WRB, VBZ, WDT, CC, TO, MD, VBN, WP, :, RP, EX, JJR, FW, XX, HYPH, POS, RBR, JJS, PDT, NNPS, RBS, AFX, WP$, -LRB-, -RRB-, ``, '', LS, $, SYM, ADD</span></span></code></pre></div>
 <p><em>Penn Treebank POS Tags Reference</em></p>
 <table class="table">
 <thead><tr class="header">
@@ -1150,7 +1150,7 @@ Documentation. There are two ways to load the POS tagger:</p>
 <div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tagger_pos</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_tagger_pos.html">load_tagger_pos</a></span><span class="op">(</span><span class="st">"pos-fast"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Loading POS tagger model: pos-fast</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:30:47,212 SequenceTagger predicts: Dictionary with 53 tags: &lt;unk&gt;, O, UH, ,, VBD, PRP, VB, PRP$, NN, RB, ., DT, JJ, VBP, VBG, IN, CD, NNS, NNP, WRB, VBZ, WDT, CC, TO, MD, VBN, WP, :, RP, EX, JJR, FW, XX, HYPH, POS, RBR, JJS, PDT, NNPS, RBS, AFX, WP$, -LRB-, -RRB-, ``, '', LS, $, SYM, ADD</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:01:13,909 SequenceTagger predicts: Dictionary with 53 tags: &lt;unk&gt;, O, UH, ,, VBD, PRP, VB, PRP$, NN, RB, ., DT, JJ, VBP, VBG, IN, CD, NNS, NNP, WRB, VBZ, WDT, CC, TO, MD, VBN, WP, :, RP, EX, JJR, FW, XX, HYPH, POS, RBR, JJS, PDT, NNPS, RBS, AFX, WP$, -LRB-, -RRB-, ``, '', LS, $, SYM, ADD</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; POS Tagger Dictionary:</span></span>
 <span><span class="co">#&gt; ========================================</span></span>
@@ -1184,7 +1184,7 @@ Documentation. There are two ways to load the POS tagger:</p>
 <div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pos_tagger</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_tagger_pos.html">load_tagger_pos</a></span><span class="op">(</span><span class="st">"pos-fast"</span>, show_tags <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Loading POS tagger model: pos-fast</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:30:47,696 SequenceTagger predicts: Dictionary with 53 tags: &lt;unk&gt;, O, UH, ,, VBD, PRP, VB, PRP$, NN, RB, ., DT, JJ, VBP, VBG, IN, CD, NNS, NNP, WRB, VBZ, WDT, CC, TO, MD, VBN, WP, :, RP, EX, JJR, FW, XX, HYPH, POS, RBR, JJS, PDT, NNPS, RBS, AFX, WP$, -LRB-, -RRB-, ``, '', LS, $, SYM, ADD</span></span></code></pre></div>
+<span><span class="co">#&gt; 2025-01-19 02:01:14,279 SequenceTagger predicts: Dictionary with 53 tags: &lt;unk&gt;, O, UH, ,, VBD, PRP, VB, PRP$, NN, RB, ., DT, JJ, VBP, VBG, IN, CD, NNS, NNP, WRB, VBZ, WDT, CC, TO, MD, VBN, WP, :, RP, EX, JJR, FW, XX, HYPH, POS, RBR, JJS, PDT, NNPS, RBS, AFX, WP$, -LRB-, -RRB-, ``, '', LS, $, SYM, ADD</span></span></code></pre></div>
 <p>Now we can process our texts:</p>
 <div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_pos.html">get_pos</a></span><span class="op">(</span>texts <span class="op">=</span> <span class="va">uk_immigration</span><span class="op">$</span><span class="va">text</span>,</span>
@@ -1258,7 +1258,7 @@ official Flair NLP page on Hugging Face (<a href="https://huggingface.co/flair" 
 <span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://davidycliao.github.io/flaiR">flaiR</a></span><span class="op">)</span></span>
 <span><span class="va">tagger_ner</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_tagger_ner.html">load_tagger_ner</a></span><span class="op">(</span><span class="st">"flair/ner-english-ontonotes"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:30:53,832 SequenceTagger predicts: Dictionary with 75 tags: O, S-PERSON, B-PERSON, E-PERSON, I-PERSON, S-GPE, B-GPE, E-GPE, I-GPE, S-ORG, B-ORG, E-ORG, I-ORG, S-DATE, B-DATE, E-DATE, I-DATE, S-CARDINAL, B-CARDINAL, E-CARDINAL, I-CARDINAL, S-NORP, B-NORP, E-NORP, I-NORP, S-MONEY, B-MONEY, E-MONEY, I-MONEY, S-PERCENT, B-PERCENT, E-PERCENT, I-PERCENT, S-ORDINAL, B-ORDINAL, E-ORDINAL, I-ORDINAL, S-LOC, B-LOC, E-LOC, I-LOC, S-TIME, B-TIME, E-TIME, I-TIME, S-WORK_OF_ART, B-WORK_OF_ART, E-WORK_OF_ART, I-WORK_OF_ART, S-FAC</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:01:20,307 SequenceTagger predicts: Dictionary with 75 tags: O, S-PERSON, B-PERSON, E-PERSON, I-PERSON, S-GPE, B-GPE, E-GPE, I-GPE, S-ORG, B-ORG, E-ORG, I-ORG, S-DATE, B-DATE, E-DATE, I-DATE, S-CARDINAL, B-CARDINAL, E-CARDINAL, I-CARDINAL, S-NORP, B-NORP, E-NORP, I-NORP, S-MONEY, B-MONEY, E-MONEY, I-MONEY, S-PERCENT, B-PERCENT, E-PERCENT, I-PERCENT, S-ORDINAL, B-ORDINAL, E-ORDINAL, I-ORDINAL, S-LOC, B-LOC, E-LOC, I-LOC, S-TIME, B-TIME, E-TIME, I-TIME, S-WORK_OF_ART, B-WORK_OF_ART, E-WORK_OF_ART, I-WORK_OF_ART, S-FAC</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; NER Tagger Dictionary:</span></span>
 <span><span class="co">#&gt; ========================================</span></span>
@@ -1332,7 +1332,7 @@ in text.</p>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"uk_immigration"</span><span class="op">)</span></span>
 <span><span class="va">uk_immigration</span> <span class="op">&lt;-</span> <span class="va">uk_immigration</span><span class="op">[</span><span class="fl">30</span>,<span class="op">]</span></span>
 <span><span class="va">tagger_ner</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_tagger_ner.html">load_tagger_ner</a></span><span class="op">(</span><span class="st">"flair/ner-english-fast"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:31:05,593 SequenceTagger predicts: Dictionary with 20 tags: &lt;unk&gt;, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, &lt;START&gt;, &lt;STOP&gt;</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:01:28,453 SequenceTagger predicts: Dictionary with 20 tags: &lt;unk&gt;, O, S-ORG, S-MISC, B-PER, E-PER, S-LOC, B-ORG, E-ORG, I-PER, S-PER, B-MISC, I-MISC, E-MISC, I-ORG, B-LOC, E-LOC, I-LOC, &lt;START&gt;, &lt;STOP&gt;</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; NER Tagger Dictionary:</span></span>
 <span><span class="co">#&gt; ========================================</span></span>
@@ -3248,7 +3248,7 @@ to download BERT, and more transformer models can also be found on <a href="http
 <span><span class="va">sen_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/process_embeddings.html">process_embeddings</a></span><span class="op">(</span><span class="va">sentence</span>, </span>
 <span>                          verbose <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Extracting token embeddings...</span></span>
-<span><span class="co">#&gt; Converting embeddings to matrix format...Processing completed in 0.005 seconds</span></span>
+<span><span class="co">#&gt; Converting embeddings to matrix format...Processing completed in 0.004 seconds</span></span>
 <span><span class="co">#&gt; Generated embedding matrix with 11 tokens and 100 dimensions</span></span>
 <span></span>
 <span><span class="co"># Dimensionality Reduction ---------------------------------</span></span>
@@ -3303,7 +3303,7 @@ to download BERT, and more transformer models can also be found on <a href="http
 <span></span>
 <span><span class="va">glove_plot3D</span></span></code></pre></div>
 <div class="plotly html-widget html-fill-item" id="htmlwidget-ac96cb3ee4656e2e9ec3" style="width:95%;height:432.632880098888px;"></div>
-<script type="application/json" data-for="htmlwidget-ac96cb3ee4656e2e9ec3">{"x":{"visdat":{"ca1c4bfc665f":["function () ","plotlyVisDat"]},"cur_data":"ca1c4bfc665f","attrs":{"ca1c4bfc665f":{"x":{},"y":{},"z":{},"mode":"markers","marker":{"size":5},"text":["King","Queen","man","woman","Paris","London","apple","orange","Taiwan","Dublin","Bamberg"],"hoverinfo":"text","alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter3d"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"scene":{"xaxis":{"title":"PC1"},"yaxis":{"title":"PC2"},"zaxis":{"title":"PC3"}},"hovermode":"closest","showlegend":false},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[-2.9120909537095603,-2.2413803786431767,-5.6381902126446377,-6.489100263080025,3.0702212168953986,5.3196216302548889,0.33625352733862268,-0.048546700064410864,-2.7993829314866114,5.8994096251956245,5.503185439943886],"y":[1.2851996577231659,2.2667143730326891,2.9844609788519225,2.4586065811283584,5.0390609708283636,4.3684329527277832,-8.6793584684395366,-4.404100922374389,-4.149287004719004,1.0632913485136049,-2.2330204672729552],"z":[-1.9505385365242927,-1.0902097244737821,3.5546200951647635,3.5669365986108126,-2.6596201976138238,-2.6072662735213945,-0.44752721605925688,0.7715148004016178,-6.3329603909196477,-0.09271924783335489,7.2877700927683549],"mode":"markers","marker":{"color":"rgba(31,119,180,1)","size":5,"line":{"color":"rgba(31,119,180,1)"}},"text":["King","Queen","man","woman","Paris","London","apple","orange","Taiwan","Dublin","Bamberg"],"hoverinfo":["text","text","text","text","text","text","text","text","text","text","text"],"type":"scatter3d","error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"line":{"color":"rgba(31,119,180,1)"},"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<script type="application/json" data-for="htmlwidget-ac96cb3ee4656e2e9ec3">{"x":{"visdat":{"f14bc9e092":["function () ","plotlyVisDat"]},"cur_data":"f14bc9e092","attrs":{"f14bc9e092":{"x":{},"y":{},"z":{},"mode":"markers","marker":{"size":5},"text":["King","Queen","man","woman","Paris","London","apple","orange","Taiwan","Dublin","Bamberg"],"hoverinfo":"text","alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter3d"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"scene":{"xaxis":{"title":"PC1"},"yaxis":{"title":"PC2"},"zaxis":{"title":"PC3"}},"hovermode":"closest","showlegend":false},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[-2.9120909537095603,-2.2413803786431767,-5.6381902126446377,-6.489100263080025,3.0702212168953986,5.3196216302548889,0.33625352733862268,-0.048546700064410864,-2.7993829314866114,5.8994096251956245,5.503185439943886],"y":[1.2851996577231659,2.2667143730326891,2.9844609788519225,2.4586065811283584,5.0390609708283636,4.3684329527277832,-8.6793584684395366,-4.404100922374389,-4.149287004719004,1.0632913485136049,-2.2330204672729552],"z":[-1.9505385365242927,-1.0902097244737821,3.5546200951647635,3.5669365986108126,-2.6596201976138238,-2.6072662735213945,-0.44752721605925688,0.7715148004016178,-6.3329603909196477,-0.09271924783335489,7.2877700927683549],"mode":"markers","marker":{"color":"rgba(31,119,180,1)","size":5,"line":{"color":"rgba(31,119,180,1)"}},"text":["King","Queen","man","woman","Paris","London","apple","orange","Taiwan","Dublin","Bamberg"],"hoverinfo":["text","text","text","text","text","text","text","text","text","text","text"],"type":"scatter3d","error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"line":{"color":"rgba(31,119,180,1)"},"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 <div class="section level4">
@@ -3510,15 +3510,15 @@ couldn’t be easier:</p>
 <div class="sourceCode" id="cb83"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># downsize to 0.05</span></span>
 <span><span class="va">corpus</span> <span class="op">=</span> <span class="fu">IMDB</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:08,229 Reading data from /Users/yenchiehliao/.flair/datasets/imdb_v4-rebalanced</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:08,229 Train: /Users/yenchiehliao/.flair/datasets/imdb_v4-rebalanced/train.txt</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:08,229 Dev: None</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:08,230 Test: None</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:08,838 No test split found. Using 10% (i.e. 5000 samples) of the train split as test data</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:08,853 No dev split found. Using 10% (i.e. 4500 samples) of the train split as dev data</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:08,854 Initialized corpus /Users/yenchiehliao/.flair/datasets/imdb_v4-rebalanced (label type name is 'sentiment')</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:02:21,350 Reading data from /Users/yenchiehliao/.flair/datasets/imdb_v4-rebalanced</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:02:21,351 Train: /Users/yenchiehliao/.flair/datasets/imdb_v4-rebalanced/train.txt</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:02:21,351 Dev: None</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:02:21,351 Test: None</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:02:21,952 No test split found. Using 10% (i.e. 5000 samples) of the train split as test data</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:02:21,967 No dev split found. Using 10% (i.e. 4500 samples) of the train split as dev data</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:02:21,967 Initialized corpus /Users/yenchiehliao/.flair/datasets/imdb_v4-rebalanced (label type name is 'sentiment')</span></span>
 <span><span class="va">corpus</span><span class="op">$</span><span class="fu">downsample</span><span class="op">(</span><span class="fl">0.05</span><span class="op">)</span></span>
-<span><span class="co">#&gt; &lt;flair.datasets.document_classification.IMDB object at 0x538f168c0&gt;</span></span></code></pre></div>
+<span><span class="co">#&gt; &lt;flair.datasets.document_classification.IMDB object at 0x5162fc6d0&gt;</span></span></code></pre></div>
 <p>Print the sizes in the corpus object as follows - test: %d | train:
 %d | dev: %d”</p>
 <div class="sourceCode" id="cb84"><pre class="downlit sourceCode r">
@@ -3531,8 +3531,8 @@ couldn’t be easier:</p>
 <div class="sourceCode" id="cb85"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">lbl_type</span> <span class="op">=</span> <span class="st">'sentiment'</span></span>
 <span><span class="va">label_dict</span> <span class="op">=</span> <span class="va">corpus</span><span class="op">$</span><span class="fu">make_label_dictionary</span><span class="op">(</span>label_type<span class="op">=</span><span class="va">lbl_type</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:08,954 Computing label dictionary. Progress:</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:13,282 Dictionary created for label 'sentiment' with 2 values: POSITIVE (seen 1014 times), NEGATIVE (seen 1011 times)</span></span></code></pre></div>
+<span><span class="co">#&gt; 2025-01-19 02:02:22,060 Computing label dictionary. Progress:</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:02:26,436 Dictionary created for label 'sentiment' with 2 values: POSITIVE (seen 1014 times), NEGATIVE (seen 1011 times)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="loading-the-embeddings">Loading the Embeddings<a class="anchor" aria-label="anchor" href="#loading-the-embeddings"></a>
@@ -3615,8 +3615,8 @@ the way they are stored in memory.</strong></p>
 <span>              <span class="co"># specifies how embeddings are stored in RAM, ie."cpu", "cuda", "gpu", "mps".</span></span>
 <span>              <span class="co"># embeddings_storage_mode = "mps",</span></span>
 <span>              max_epochs<span class="op">=</span><span class="fl">10L</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:15,177 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:15,178 Model: "TextClassifier(</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:02:28,413 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:02:28,413 Model: "TextClassifier(</span></span>
 <span><span class="co">#&gt;   (embeddings): DocumentPoolEmbeddings(</span></span>
 <span><span class="co">#&gt;     fine_tune_mode=none, pooling=mean</span></span>
 <span><span class="co">#&gt;     (embeddings): StackedEmbeddings(</span></span>
@@ -3634,188 +3634,188 @@ the way they are stored in memory.</strong></p>
 <span><span class="co">#&gt;   (weights): None</span></span>
 <span><span class="co">#&gt;   (weight_tensor) None</span></span>
 <span><span class="co">#&gt; )"</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:15,178 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:15,178 Corpus: 2025 train + 225 dev + 250 test sentences</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:15,178 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:15,178 Train:  2025 sentences</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:15,178         (train_with_dev=False, train_with_test=False)</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:15,178 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:15,178 Training Params:</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:15,178  - learning_rate: "0.1" </span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:15,178  - mini_batch_size: "32"</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:15,178  - max_epochs: "10"</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:15,178  - shuffle: "True"</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:15,178 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:15,178 Plugins:</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:15,178  - AnnealOnPlateau | patience: '3', anneal_factor: '0.5', min_learning_rate: '0.0001'</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:15,178 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:15,178 Final evaluation on model from best epoch (best-model.pt)</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:15,178  - metric: "('micro avg', 'f1-score')"</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:15,178 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:15,179 Computation:</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:15,179  - compute on device: cpu</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:15,179  - embedding storage: cpu</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:15,179 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:15,179 Model training base path: "classifier"</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:15,179 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:15,179 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:16,047 epoch 1 - iter 6/64 - loss 1.03482102 - time (sec): 0.87 - samples/sec: 221.31 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:17,094 epoch 1 - iter 12/64 - loss 0.97625112 - time (sec): 1.91 - samples/sec: 200.56 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:18,660 epoch 1 - iter 18/64 - loss 0.97130605 - time (sec): 3.48 - samples/sec: 165.46 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:19,545 epoch 1 - iter 24/64 - loss 0.96554917 - time (sec): 4.37 - samples/sec: 175.90 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:20,503 epoch 1 - iter 30/64 - loss 0.95172536 - time (sec): 5.32 - samples/sec: 180.32 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:21,474 epoch 1 - iter 36/64 - loss 0.93596985 - time (sec): 6.29 - samples/sec: 183.01 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:22,387 epoch 1 - iter 42/64 - loss 0.93621534 - time (sec): 7.21 - samples/sec: 186.45 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:23,279 epoch 1 - iter 48/64 - loss 0.93329721 - time (sec): 8.10 - samples/sec: 189.63 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:24,165 epoch 1 - iter 54/64 - loss 0.92732978 - time (sec): 8.99 - samples/sec: 192.30 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:25,272 epoch 1 - iter 60/64 - loss 0.91905521 - time (sec): 10.09 - samples/sec: 190.23 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:25,617 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:25,617 EPOCH 1 done: loss 0.9183 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:26,899 DEV : loss 0.969170331954956 - f1-score (micro avg)  0.4533</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:27,644  - 0 epochs without improvement</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:27,647 saving best model</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:28,144 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:29,029 epoch 2 - iter 6/64 - loss 0.89565008 - time (sec): 0.88 - samples/sec: 217.07 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:29,924 epoch 2 - iter 12/64 - loss 0.91454447 - time (sec): 1.78 - samples/sec: 215.84 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:30,832 epoch 2 - iter 18/64 - loss 0.87032511 - time (sec): 2.69 - samples/sec: 214.36 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:31,942 epoch 2 - iter 24/64 - loss 0.89476166 - time (sec): 3.80 - samples/sec: 202.23 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:32,853 epoch 2 - iter 30/64 - loss 0.89790537 - time (sec): 4.71 - samples/sec: 203.90 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:33,770 epoch 2 - iter 36/64 - loss 0.88154723 - time (sec): 5.63 - samples/sec: 204.79 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:34,880 epoch 2 - iter 42/64 - loss 0.89160718 - time (sec): 6.73 - samples/sec: 199.56 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:35,924 epoch 2 - iter 48/64 - loss 0.88830253 - time (sec): 7.78 - samples/sec: 197.45 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:36,816 epoch 2 - iter 54/64 - loss 0.88188778 - time (sec): 8.67 - samples/sec: 199.28 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:37,651 epoch 2 - iter 60/64 - loss 0.87024007 - time (sec): 9.51 - samples/sec: 201.98 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:38,218 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:38,218 EPOCH 2 done: loss 0.8670 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:39,401 DEV : loss 0.6613298654556274 - f1-score (micro avg)  0.56</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:40,161  - 0 epochs without improvement</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:40,163 saving best model</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:40,502 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:41,394 epoch 3 - iter 6/64 - loss 0.97559432 - time (sec): 0.89 - samples/sec: 215.32 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:42,313 epoch 3 - iter 12/64 - loss 0.96988676 - time (sec): 1.81 - samples/sec: 212.09 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:43,358 epoch 3 - iter 18/64 - loss 0.95166033 - time (sec): 2.86 - samples/sec: 201.70 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:44,180 epoch 3 - iter 24/64 - loss 0.94594647 - time (sec): 3.68 - samples/sec: 208.82 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:45,111 epoch 3 - iter 30/64 - loss 0.92877954 - time (sec): 4.61 - samples/sec: 208.30 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:46,132 epoch 3 - iter 36/64 - loss 0.90791758 - time (sec): 5.63 - samples/sec: 204.63 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:47,085 epoch 3 - iter 42/64 - loss 0.90284721 - time (sec): 6.58 - samples/sec: 204.16 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:48,017 epoch 3 - iter 48/64 - loss 0.89997107 - time (sec): 7.51 - samples/sec: 204.40 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:48,992 epoch 3 - iter 54/64 - loss 0.89072626 - time (sec): 8.49 - samples/sec: 203.54 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:50,256 epoch 3 - iter 60/64 - loss 0.89468155 - time (sec): 9.75 - samples/sec: 196.83 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:50,605 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:50,605 EPOCH 3 done: loss 0.8853 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:52,160 DEV : loss 0.9235679507255554 - f1-score (micro avg)  0.4533</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:52,640  - 1 epochs without improvement</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:52,642 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:53,731 epoch 4 - iter 6/64 - loss 0.82624254 - time (sec): 1.09 - samples/sec: 176.25 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:54,612 epoch 4 - iter 12/64 - loss 0.90411119 - time (sec): 1.97 - samples/sec: 194.95 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:55,998 epoch 4 - iter 18/64 - loss 0.85366339 - time (sec): 3.36 - samples/sec: 171.63 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:56,919 epoch 4 - iter 24/64 - loss 0.83558531 - time (sec): 4.28 - samples/sec: 179.55 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:57,927 epoch 4 - iter 30/64 - loss 0.85402448 - time (sec): 5.29 - samples/sec: 181.64 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:58,901 epoch 4 - iter 36/64 - loss 0.85074003 - time (sec): 6.26 - samples/sec: 184.04 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:32:59,920 epoch 4 - iter 42/64 - loss 0.83589199 - time (sec): 7.28 - samples/sec: 184.65 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:33:00,887 epoch 4 - iter 48/64 - loss 0.84322071 - time (sec): 8.25 - samples/sec: 186.29 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:33:01,877 epoch 4 - iter 54/64 - loss 0.83743314 - time (sec): 9.24 - samples/sec: 187.11 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:33:02,844 epoch 4 - iter 60/64 - loss 0.83712479 - time (sec): 10.20 - samples/sec: 188.19 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:33:03,430 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:33:03,431 EPOCH 4 done: loss 0.8385 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:33:04,632 DEV : loss 0.902965784072876 - f1-score (micro avg)  0.4533</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:33:05,388  - 2 epochs without improvement</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:33:05,389 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:33:06,264 epoch 5 - iter 6/64 - loss 0.83386131 - time (sec): 0.87 - samples/sec: 219.50 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:33:07,112 epoch 5 - iter 12/64 - loss 0.81110337 - time (sec): 1.72 - samples/sec: 222.87 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:33:08,021 epoch 5 - iter 18/64 - loss 0.81918713 - time (sec): 2.63 - samples/sec: 218.90 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:33:08,901 epoch 5 - iter 24/64 - loss 0.82163843 - time (sec): 3.51 - samples/sec: 218.71 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:33:09,781 epoch 5 - iter 30/64 - loss 0.80355368 - time (sec): 4.39 - samples/sec: 218.58 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:33:10,974 epoch 5 - iter 36/64 - loss 0.82123225 - time (sec): 5.58 - samples/sec: 206.30 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:33:11,892 epoch 5 - iter 42/64 - loss 0.83147700 - time (sec): 6.50 - samples/sec: 206.69 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:33:12,924 epoch 5 - iter 48/64 - loss 0.82776047 - time (sec): 7.53 - samples/sec: 203.85 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:33:13,827 epoch 5 - iter 54/64 - loss 0.82137293 - time (sec): 8.44 - samples/sec: 204.79 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:33:14,781 epoch 5 - iter 60/64 - loss 0.82507927 - time (sec): 9.39 - samples/sec: 204.43 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:33:15,408 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:33:15,408 EPOCH 5 done: loss 0.8266 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:33:16,631 DEV : loss 0.8814549446105957 - f1-score (micro avg)  0.4533</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:33:17,347  - 3 epochs without improvement</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:33:17,349 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:33:18,370 epoch 6 - iter 6/64 - loss 0.86599507 - time (sec): 1.02 - samples/sec: 188.11 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:33:19,263 epoch 6 - iter 12/64 - loss 0.83119471 - time (sec): 1.91 - samples/sec: 200.76 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:33:20,160 epoch 6 - iter 18/64 - loss 0.83965523 - time (sec): 2.81 - samples/sec: 204.95 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:33:21,048 epoch 6 - iter 24/64 - loss 0.82790930 - time (sec): 3.70 - samples/sec: 207.65 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:33:21,905 epoch 6 - iter 30/64 - loss 0.82493706 - time (sec): 4.56 - samples/sec: 210.74 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:33:22,877 epoch 6 - iter 36/64 - loss 0.82221150 - time (sec): 5.53 - samples/sec: 208.41 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:33:23,781 epoch 6 - iter 42/64 - loss 0.82115991 - time (sec): 6.43 - samples/sec: 208.99 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:33:24,708 epoch 6 - iter 48/64 - loss 0.82263479 - time (sec): 7.36 - samples/sec: 208.75 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:33:25,577 epoch 6 - iter 54/64 - loss 0.81930931 - time (sec): 8.23 - samples/sec: 210.03 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:33:26,428 epoch 6 - iter 60/64 - loss 0.81072097 - time (sec): 9.08 - samples/sec: 211.48 - lr: 0.100000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:33:27,059 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:33:27,059 EPOCH 6 done: loss 0.8158 - lr: 0.100000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:33:28,293 DEV : loss 0.7792848944664001 - f1-score (micro avg)  0.5556</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:33:29,059  - 4 epochs without improvement (above 'patience')-&gt; annealing learning_rate to [0.05]</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:33:29,060 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:33:29,894 epoch 7 - iter 6/64 - loss 0.62141190 - time (sec): 0.83 - samples/sec: 230.40 - lr: 0.050000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:33:30,797 epoch 7 - iter 12/64 - loss 0.60887330 - time (sec): 1.74 - samples/sec: 221.18 - lr: 0.050000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:33:31,684 epoch 7 - iter 18/64 - loss 0.60901921 - time (sec): 2.62 - samples/sec: 219.60 - lr: 0.050000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:33:32,559 epoch 7 - iter 24/64 - loss 0.62312240 - time (sec): 3.50 - samples/sec: 219.55 - lr: 0.050000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:33:33,771 epoch 7 - iter 30/64 - loss 0.64444851 - time (sec): 4.71 - samples/sec: 203.81 - lr: 0.050000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:33:34,633 epoch 7 - iter 36/64 - loss 0.64126529 - time (sec): 5.57 - samples/sec: 206.73 - lr: 0.050000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:33:35,517 epoch 7 - iter 42/64 - loss 0.65158008 - time (sec): 6.46 - samples/sec: 208.15 - lr: 0.050000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:33:36,441 epoch 7 - iter 48/64 - loss 0.65823784 - time (sec): 7.38 - samples/sec: 208.13 - lr: 0.050000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:33:37,404 epoch 7 - iter 54/64 - loss 0.65939955 - time (sec): 8.34 - samples/sec: 207.10 - lr: 0.050000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:33:38,344 epoch 7 - iter 60/64 - loss 0.66072118 - time (sec): 9.28 - samples/sec: 206.82 - lr: 0.050000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:33:38,995 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:33:38,996 EPOCH 7 done: loss 0.6589 - lr: 0.050000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:33:40,176 DEV : loss 0.6003721356391907 - f1-score (micro avg)  0.6978</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:33:40,943  - 0 epochs without improvement</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:33:40,946 saving best model</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:33:41,420 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:33:42,309 epoch 8 - iter 6/64 - loss 0.65252212 - time (sec): 0.89 - samples/sec: 216.26 - lr: 0.050000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:33:43,305 epoch 8 - iter 12/64 - loss 0.63390189 - time (sec): 1.88 - samples/sec: 203.84 - lr: 0.050000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:33:44,175 epoch 8 - iter 18/64 - loss 0.63412659 - time (sec): 2.75 - samples/sec: 209.13 - lr: 0.050000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:33:45,068 epoch 8 - iter 24/64 - loss 0.63389341 - time (sec): 3.65 - samples/sec: 210.59 - lr: 0.050000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:33:45,970 epoch 8 - iter 30/64 - loss 0.63322895 - time (sec): 4.55 - samples/sec: 211.03 - lr: 0.050000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:33:47,120 epoch 8 - iter 36/64 - loss 0.63415459 - time (sec): 5.70 - samples/sec: 202.14 - lr: 0.050000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:33:48,067 epoch 8 - iter 42/64 - loss 0.63968469 - time (sec): 6.65 - samples/sec: 202.22 - lr: 0.050000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:33:49,054 epoch 8 - iter 48/64 - loss 0.65097602 - time (sec): 7.63 - samples/sec: 201.23 - lr: 0.050000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:33:50,074 epoch 8 - iter 54/64 - loss 0.65496666 - time (sec): 8.65 - samples/sec: 199.69 - lr: 0.050000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:33:51,082 epoch 8 - iter 60/64 - loss 0.64874915 - time (sec): 9.66 - samples/sec: 198.72 - lr: 0.050000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:33:51,843 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:33:51,843 EPOCH 8 done: loss 0.6494 - lr: 0.050000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:33:53,364 DEV : loss 0.6876248717308044 - f1-score (micro avg)  0.5467</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:33:54,238  - 1 epochs without improvement</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:33:54,240 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:33:55,290 epoch 9 - iter 6/64 - loss 0.64467014 - time (sec): 1.05 - samples/sec: 182.96 - lr: 0.050000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:33:56,349 epoch 9 - iter 12/64 - loss 0.64915569 - time (sec): 2.11 - samples/sec: 182.10 - lr: 0.050000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:33:57,409 epoch 9 - iter 18/64 - loss 0.63960192 - time (sec): 3.17 - samples/sec: 181.81 - lr: 0.050000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:33:58,499 epoch 9 - iter 24/64 - loss 0.62827631 - time (sec): 4.26 - samples/sec: 180.35 - lr: 0.050000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:33:59,577 epoch 9 - iter 30/64 - loss 0.63651646 - time (sec): 5.34 - samples/sec: 179.90 - lr: 0.050000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:34:00,449 epoch 9 - iter 36/64 - loss 0.63269677 - time (sec): 6.21 - samples/sec: 185.55 - lr: 0.050000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:34:01,353 epoch 9 - iter 42/64 - loss 0.64019648 - time (sec): 7.11 - samples/sec: 188.97 - lr: 0.050000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:34:02,535 epoch 9 - iter 48/64 - loss 0.64170534 - time (sec): 8.29 - samples/sec: 185.19 - lr: 0.050000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:34:03,516 epoch 9 - iter 54/64 - loss 0.63846545 - time (sec): 9.28 - samples/sec: 186.29 - lr: 0.050000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:34:04,809 epoch 9 - iter 60/64 - loss 0.63938779 - time (sec): 10.57 - samples/sec: 181.67 - lr: 0.050000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:34:05,180 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:34:05,180 EPOCH 9 done: loss 0.6397 - lr: 0.050000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:34:06,474 DEV : loss 0.5814307332038879 - f1-score (micro avg)  0.7156</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:34:07,265  - 0 epochs without improvement</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:34:07,267 saving best model</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:34:07,737 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:34:08,644 epoch 10 - iter 6/64 - loss 0.60317001 - time (sec): 0.91 - samples/sec: 211.83 - lr: 0.050000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:34:09,561 epoch 10 - iter 12/64 - loss 0.61682722 - time (sec): 1.82 - samples/sec: 210.57 - lr: 0.050000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:34:10,515 epoch 10 - iter 18/64 - loss 0.61251386 - time (sec): 2.78 - samples/sec: 207.40 - lr: 0.050000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:34:11,734 epoch 10 - iter 24/64 - loss 0.61089186 - time (sec): 4.00 - samples/sec: 192.19 - lr: 0.050000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:34:12,706 epoch 10 - iter 30/64 - loss 0.62348493 - time (sec): 4.97 - samples/sec: 193.23 - lr: 0.050000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:34:13,589 epoch 10 - iter 36/64 - loss 0.61944086 - time (sec): 5.85 - samples/sec: 196.87 - lr: 0.050000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:34:14,577 epoch 10 - iter 42/64 - loss 0.62064590 - time (sec): 6.84 - samples/sec: 196.51 - lr: 0.050000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:34:15,543 epoch 10 - iter 48/64 - loss 0.62229136 - time (sec): 7.80 - samples/sec: 196.80 - lr: 0.050000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:34:16,612 epoch 10 - iter 54/64 - loss 0.62610477 - time (sec): 8.87 - samples/sec: 194.72 - lr: 0.050000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:34:17,576 epoch 10 - iter 60/64 - loss 0.62748551 - time (sec): 9.84 - samples/sec: 195.16 - lr: 0.050000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:34:18,161 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:34:18,161 EPOCH 10 done: loss 0.6305 - lr: 0.050000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:34:19,609 DEV : loss 0.5568863153457642 - f1-score (micro avg)  0.7244</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:34:20,686  - 0 epochs without improvement</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:34:20,688 saving best model</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:34:21,594 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:34:21,595 Loading model from best epoch ...</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:34:23,516 </span></span>
+<span><span class="co">#&gt; 2025-01-19 02:02:28,413 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:02:28,413 Corpus: 2025 train + 225 dev + 250 test sentences</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:02:28,413 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:02:28,413 Train:  2025 sentences</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:02:28,413         (train_with_dev=False, train_with_test=False)</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:02:28,413 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:02:28,413 Training Params:</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:02:28,413  - learning_rate: "0.1" </span></span>
+<span><span class="co">#&gt; 2025-01-19 02:02:28,414  - mini_batch_size: "32"</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:02:28,414  - max_epochs: "10"</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:02:28,414  - shuffle: "True"</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:02:28,414 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:02:28,414 Plugins:</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:02:28,414  - AnnealOnPlateau | patience: '3', anneal_factor: '0.5', min_learning_rate: '0.0001'</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:02:28,414 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:02:28,414 Final evaluation on model from best epoch (best-model.pt)</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:02:28,414  - metric: "('micro avg', 'f1-score')"</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:02:28,414 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:02:28,414 Computation:</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:02:28,414  - compute on device: cpu</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:02:28,414  - embedding storage: cpu</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:02:28,414 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:02:28,414 Model training base path: "classifier"</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:02:28,414 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:02:28,414 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:02:29,257 epoch 1 - iter 6/64 - loss 1.03482102 - time (sec): 0.84 - samples/sec: 227.94 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:02:30,095 epoch 1 - iter 12/64 - loss 0.97625112 - time (sec): 1.68 - samples/sec: 228.49 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:02:31,264 epoch 1 - iter 18/64 - loss 0.97130605 - time (sec): 2.85 - samples/sec: 202.15 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:02:32,131 epoch 1 - iter 24/64 - loss 0.96554917 - time (sec): 3.72 - samples/sec: 206.65 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:02:33,013 epoch 1 - iter 30/64 - loss 0.95172536 - time (sec): 4.60 - samples/sec: 208.74 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:02:33,973 epoch 1 - iter 36/64 - loss 0.93596985 - time (sec): 5.56 - samples/sec: 207.24 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:02:34,821 epoch 1 - iter 42/64 - loss 0.93621534 - time (sec): 6.41 - samples/sec: 209.79 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:02:35,728 epoch 1 - iter 48/64 - loss 0.93329721 - time (sec): 7.31 - samples/sec: 210.01 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:02:36,601 epoch 1 - iter 54/64 - loss 0.92732978 - time (sec): 8.19 - samples/sec: 211.08 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:02:37,744 epoch 1 - iter 60/64 - loss 0.91905521 - time (sec): 9.33 - samples/sec: 205.80 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:02:38,082 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:02:38,082 EPOCH 1 done: loss 0.9183 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:02:39,411 DEV : loss 0.969170331954956 - f1-score (micro avg)  0.4533</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:02:40,208  - 0 epochs without improvement</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:02:40,209 saving best model</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:02:40,650 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:02:41,648 epoch 2 - iter 6/64 - loss 0.89565008 - time (sec): 1.00 - samples/sec: 192.47 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:02:42,546 epoch 2 - iter 12/64 - loss 0.91454447 - time (sec): 1.90 - samples/sec: 202.57 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:02:43,654 epoch 2 - iter 18/64 - loss 0.87032511 - time (sec): 3.00 - samples/sec: 191.82 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:02:44,940 epoch 2 - iter 24/64 - loss 0.89476166 - time (sec): 4.29 - samples/sec: 179.04 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:02:45,965 epoch 2 - iter 30/64 - loss 0.89790537 - time (sec): 5.31 - samples/sec: 180.64 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:02:46,893 epoch 2 - iter 36/64 - loss 0.88154723 - time (sec): 6.24 - samples/sec: 184.56 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:02:47,900 epoch 2 - iter 42/64 - loss 0.89160718 - time (sec): 7.25 - samples/sec: 185.41 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:02:48,882 epoch 2 - iter 48/64 - loss 0.88830253 - time (sec): 8.23 - samples/sec: 186.62 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:02:49,723 epoch 2 - iter 54/64 - loss 0.88188778 - time (sec): 9.07 - samples/sec: 190.48 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:02:50,594 epoch 2 - iter 60/64 - loss 0.87024007 - time (sec): 9.94 - samples/sec: 193.10 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:02:51,221 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:02:51,221 EPOCH 2 done: loss 0.8670 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:02:52,640 DEV : loss 0.6613298654556274 - f1-score (micro avg)  0.56</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:02:53,510  - 0 epochs without improvement</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:02:53,511 saving best model</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:02:53,853 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:02:54,970 epoch 3 - iter 6/64 - loss 0.97559432 - time (sec): 1.12 - samples/sec: 171.99 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:02:55,906 epoch 3 - iter 12/64 - loss 0.96988676 - time (sec): 2.05 - samples/sec: 187.15 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:02:56,919 epoch 3 - iter 18/64 - loss 0.95166033 - time (sec): 3.07 - samples/sec: 187.90 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:02:57,805 epoch 3 - iter 24/64 - loss 0.94594647 - time (sec): 3.95 - samples/sec: 194.39 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:02:58,731 epoch 3 - iter 30/64 - loss 0.92877954 - time (sec): 4.88 - samples/sec: 196.85 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:02:59,694 epoch 3 - iter 36/64 - loss 0.90791758 - time (sec): 5.84 - samples/sec: 197.24 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:03:00,675 epoch 3 - iter 42/64 - loss 0.90284721 - time (sec): 6.82 - samples/sec: 197.05 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:03:01,694 epoch 3 - iter 48/64 - loss 0.89997107 - time (sec): 7.84 - samples/sec: 195.91 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:03:02,773 epoch 3 - iter 54/64 - loss 0.89072626 - time (sec): 8.92 - samples/sec: 193.73 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:03:03,973 epoch 3 - iter 60/64 - loss 0.89468155 - time (sec): 10.12 - samples/sec: 189.74 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:03:04,405 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:03:04,406 EPOCH 3 done: loss 0.8853 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:03:06,045 DEV : loss 0.9235679507255554 - f1-score (micro avg)  0.4533</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:03:06,628  - 1 epochs without improvement</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:03:06,630 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:03:08,014 epoch 4 - iter 6/64 - loss 0.82624254 - time (sec): 1.38 - samples/sec: 138.74 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:03:09,249 epoch 4 - iter 12/64 - loss 0.90411119 - time (sec): 2.62 - samples/sec: 146.65 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:03:11,007 epoch 4 - iter 18/64 - loss 0.85366339 - time (sec): 4.38 - samples/sec: 131.61 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:03:12,098 epoch 4 - iter 24/64 - loss 0.83558531 - time (sec): 5.47 - samples/sec: 140.47 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:03:13,134 epoch 4 - iter 30/64 - loss 0.85402448 - time (sec): 6.50 - samples/sec: 147.61 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:03:14,263 epoch 4 - iter 36/64 - loss 0.85074003 - time (sec): 7.63 - samples/sec: 150.94 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:03:15,365 epoch 4 - iter 42/64 - loss 0.83589199 - time (sec): 8.73 - samples/sec: 153.88 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:03:16,395 epoch 4 - iter 48/64 - loss 0.84322071 - time (sec): 9.76 - samples/sec: 157.30 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:03:17,312 epoch 4 - iter 54/64 - loss 0.83743314 - time (sec): 10.68 - samples/sec: 161.77 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:03:18,262 epoch 4 - iter 60/64 - loss 0.83712479 - time (sec): 11.63 - samples/sec: 165.06 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:03:18,871 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:03:18,871 EPOCH 4 done: loss 0.8385 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:03:20,146 DEV : loss 0.902965784072876 - f1-score (micro avg)  0.4533</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:03:20,953  - 2 epochs without improvement</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:03:20,956 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:03:21,826 epoch 5 - iter 6/64 - loss 0.83386131 - time (sec): 0.87 - samples/sec: 220.80 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:03:22,721 epoch 5 - iter 12/64 - loss 0.81110337 - time (sec): 1.76 - samples/sec: 217.58 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:03:23,645 epoch 5 - iter 18/64 - loss 0.81918713 - time (sec): 2.69 - samples/sec: 214.20 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:03:24,551 epoch 5 - iter 24/64 - loss 0.82163843 - time (sec): 3.59 - samples/sec: 213.65 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:03:25,493 epoch 5 - iter 30/64 - loss 0.80355368 - time (sec): 4.54 - samples/sec: 211.62 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:03:26,718 epoch 5 - iter 36/64 - loss 0.82123225 - time (sec): 5.76 - samples/sec: 199.92 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:03:27,734 epoch 5 - iter 42/64 - loss 0.83147700 - time (sec): 6.78 - samples/sec: 198.31 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:03:28,627 epoch 5 - iter 48/64 - loss 0.82776047 - time (sec): 7.67 - samples/sec: 200.24 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:03:29,564 epoch 5 - iter 54/64 - loss 0.82137293 - time (sec): 8.61 - samples/sec: 200.74 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:03:30,468 epoch 5 - iter 60/64 - loss 0.82507927 - time (sec): 9.51 - samples/sec: 201.85 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:03:31,095 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:03:31,095 EPOCH 5 done: loss 0.8266 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:03:32,352 DEV : loss 0.8814549446105957 - f1-score (micro avg)  0.4533</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:03:33,076  - 3 epochs without improvement</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:03:33,077 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:03:34,090 epoch 6 - iter 6/64 - loss 0.86599507 - time (sec): 1.01 - samples/sec: 189.54 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:03:35,050 epoch 6 - iter 12/64 - loss 0.83119471 - time (sec): 1.97 - samples/sec: 194.62 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:03:36,034 epoch 6 - iter 18/64 - loss 0.83965523 - time (sec): 2.96 - samples/sec: 194.80 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:03:36,911 epoch 6 - iter 24/64 - loss 0.82790930 - time (sec): 3.83 - samples/sec: 200.35 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:03:37,794 epoch 6 - iter 30/64 - loss 0.82493706 - time (sec): 4.72 - samples/sec: 203.52 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:03:38,736 epoch 6 - iter 36/64 - loss 0.82221150 - time (sec): 5.66 - samples/sec: 203.59 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:03:39,646 epoch 6 - iter 42/64 - loss 0.82115991 - time (sec): 6.57 - samples/sec: 204.62 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:03:40,549 epoch 6 - iter 48/64 - loss 0.82263479 - time (sec): 7.47 - samples/sec: 205.58 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:03:41,435 epoch 6 - iter 54/64 - loss 0.81930931 - time (sec): 8.36 - samples/sec: 206.76 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:03:42,305 epoch 6 - iter 60/64 - loss 0.81072097 - time (sec): 9.23 - samples/sec: 208.07 - lr: 0.100000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:03:42,932 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:03:42,932 EPOCH 6 done: loss 0.8158 - lr: 0.100000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:03:44,188 DEV : loss 0.7792848944664001 - f1-score (micro avg)  0.5556</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:03:44,915  - 4 epochs without improvement (above 'patience')-&gt; annealing learning_rate to [0.05]</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:03:44,917 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:03:45,764 epoch 7 - iter 6/64 - loss 0.62141190 - time (sec): 0.85 - samples/sec: 226.88 - lr: 0.050000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:03:46,665 epoch 7 - iter 12/64 - loss 0.60887330 - time (sec): 1.75 - samples/sec: 219.70 - lr: 0.050000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:03:47,536 epoch 7 - iter 18/64 - loss 0.60901921 - time (sec): 2.62 - samples/sec: 219.94 - lr: 0.050000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:03:48,443 epoch 7 - iter 24/64 - loss 0.62312240 - time (sec): 3.53 - samples/sec: 217.82 - lr: 0.050000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:03:49,515 epoch 7 - iter 30/64 - loss 0.64444851 - time (sec): 4.60 - samples/sec: 208.79 - lr: 0.050000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:03:50,426 epoch 7 - iter 36/64 - loss 0.64126529 - time (sec): 5.51 - samples/sec: 209.15 - lr: 0.050000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:03:51,306 epoch 7 - iter 42/64 - loss 0.65158008 - time (sec): 6.39 - samples/sec: 210.40 - lr: 0.050000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:03:52,234 epoch 7 - iter 48/64 - loss 0.65823784 - time (sec): 7.32 - samples/sec: 209.93 - lr: 0.050000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:03:53,223 epoch 7 - iter 54/64 - loss 0.65939955 - time (sec): 8.31 - samples/sec: 208.05 - lr: 0.050000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:03:54,190 epoch 7 - iter 60/64 - loss 0.66072118 - time (sec): 9.27 - samples/sec: 207.08 - lr: 0.050000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:03:54,800 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:03:54,800 EPOCH 7 done: loss 0.6589 - lr: 0.050000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:03:55,992 DEV : loss 0.6003721356391907 - f1-score (micro avg)  0.6978</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:03:56,760  - 0 epochs without improvement</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:03:56,762 saving best model</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:03:57,171 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:03:58,053 epoch 8 - iter 6/64 - loss 0.65252212 - time (sec): 0.88 - samples/sec: 217.70 - lr: 0.050000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:03:59,057 epoch 8 - iter 12/64 - loss 0.63390189 - time (sec): 1.89 - samples/sec: 203.62 - lr: 0.050000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:03:59,952 epoch 8 - iter 18/64 - loss 0.63412659 - time (sec): 2.78 - samples/sec: 207.11 - lr: 0.050000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:04:01,075 epoch 8 - iter 24/64 - loss 0.63389341 - time (sec): 3.90 - samples/sec: 196.72 - lr: 0.050000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:04:02,016 epoch 8 - iter 30/64 - loss 0.63322895 - time (sec): 4.84 - samples/sec: 198.17 - lr: 0.050000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:04:03,338 epoch 8 - iter 36/64 - loss 0.63415459 - time (sec): 6.17 - samples/sec: 186.83 - lr: 0.050000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:04:04,331 epoch 8 - iter 42/64 - loss 0.63968469 - time (sec): 7.16 - samples/sec: 187.71 - lr: 0.050000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:04:05,300 epoch 8 - iter 48/64 - loss 0.65097602 - time (sec): 8.13 - samples/sec: 188.95 - lr: 0.050000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:04:06,243 epoch 8 - iter 54/64 - loss 0.65496666 - time (sec): 9.07 - samples/sec: 190.47 - lr: 0.050000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:04:07,227 epoch 8 - iter 60/64 - loss 0.64874915 - time (sec): 10.06 - samples/sec: 190.93 - lr: 0.050000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:04:07,854 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:04:07,855 EPOCH 8 done: loss 0.6494 - lr: 0.050000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:04:09,156 DEV : loss 0.6876248717308044 - f1-score (micro avg)  0.5467</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:04:09,920  - 1 epochs without improvement</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:04:09,922 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:04:10,904 epoch 9 - iter 6/64 - loss 0.64467014 - time (sec): 0.98 - samples/sec: 195.52 - lr: 0.050000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:04:11,961 epoch 9 - iter 12/64 - loss 0.64915569 - time (sec): 2.04 - samples/sec: 188.35 - lr: 0.050000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:04:12,911 epoch 9 - iter 18/64 - loss 0.63960192 - time (sec): 2.99 - samples/sec: 192.73 - lr: 0.050000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:04:13,928 epoch 9 - iter 24/64 - loss 0.62827631 - time (sec): 4.01 - samples/sec: 191.72 - lr: 0.050000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:04:14,936 epoch 9 - iter 30/64 - loss 0.63651646 - time (sec): 5.01 - samples/sec: 191.46 - lr: 0.050000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:04:15,889 epoch 9 - iter 36/64 - loss 0.63269677 - time (sec): 5.97 - samples/sec: 193.07 - lr: 0.050000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:04:16,828 epoch 9 - iter 42/64 - loss 0.64019648 - time (sec): 6.91 - samples/sec: 194.62 - lr: 0.050000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:04:17,868 epoch 9 - iter 48/64 - loss 0.64170534 - time (sec): 7.95 - samples/sec: 193.30 - lr: 0.050000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:04:18,832 epoch 9 - iter 54/64 - loss 0.63846545 - time (sec): 8.91 - samples/sec: 193.94 - lr: 0.050000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:04:20,097 epoch 9 - iter 60/64 - loss 0.63938779 - time (sec): 10.17 - samples/sec: 188.70 - lr: 0.050000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:04:20,475 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:04:20,476 EPOCH 9 done: loss 0.6397 - lr: 0.050000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:04:21,799 DEV : loss 0.5814307332038879 - f1-score (micro avg)  0.7156</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:04:22,610  - 0 epochs without improvement</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:04:22,613 saving best model</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:04:22,982 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:04:23,847 epoch 10 - iter 6/64 - loss 0.60317001 - time (sec): 0.86 - samples/sec: 222.09 - lr: 0.050000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:04:24,865 epoch 10 - iter 12/64 - loss 0.61682722 - time (sec): 1.88 - samples/sec: 204.02 - lr: 0.050000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:04:25,971 epoch 10 - iter 18/64 - loss 0.61251386 - time (sec): 2.99 - samples/sec: 192.72 - lr: 0.050000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:04:27,248 epoch 10 - iter 24/64 - loss 0.61089186 - time (sec): 4.27 - samples/sec: 180.04 - lr: 0.050000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:04:28,175 epoch 10 - iter 30/64 - loss 0.62348493 - time (sec): 5.19 - samples/sec: 184.86 - lr: 0.050000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:04:29,032 epoch 10 - iter 36/64 - loss 0.61944086 - time (sec): 6.05 - samples/sec: 190.42 - lr: 0.050000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:04:30,011 epoch 10 - iter 42/64 - loss 0.62064590 - time (sec): 7.03 - samples/sec: 191.22 - lr: 0.050000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:04:31,039 epoch 10 - iter 48/64 - loss 0.62229136 - time (sec): 8.06 - samples/sec: 190.65 - lr: 0.050000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:04:32,118 epoch 10 - iter 54/64 - loss 0.62610477 - time (sec): 9.14 - samples/sec: 189.15 - lr: 0.050000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:04:33,054 epoch 10 - iter 60/64 - loss 0.62748551 - time (sec): 10.07 - samples/sec: 190.63 - lr: 0.050000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:04:33,629 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:04:33,629 EPOCH 10 done: loss 0.6305 - lr: 0.050000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:04:34,963 DEV : loss 0.5568863153457642 - f1-score (micro avg)  0.7244</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:04:35,828  - 0 epochs without improvement</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:04:35,830 saving best model</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:04:36,712 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:04:36,713 Loading model from best epoch ...</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:04:38,435 </span></span>
 <span><span class="co">#&gt; Results:</span></span>
 <span><span class="co">#&gt; - F-score (micro) 0.712</span></span>
 <span><span class="co">#&gt; - F-score (macro) 0.7078</span></span>
@@ -3831,7 +3831,7 @@ the way they are stored in memory.</strong></p>
 <span><span class="co">#&gt;    macro avg     0.7336    0.7166    0.7078       250</span></span>
 <span><span class="co">#&gt; weighted avg     0.7362    0.7120    0.7067       250</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; 2025-01-19 00:34:23,517 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:04:38,435 ----------------------------------------------------------------------------------------------------</span></span>
 <span><span class="co">#&gt; $test_score</span></span>
 <span><span class="co">#&gt; [1] 0.712</span></span></code></pre></div>
 </div>
@@ -3906,18 +3906,18 @@ demonstration.</p>
 <code class="sourceCode R"><span><span class="co"># load the IMDB file and downsize it to 0.1</span></span>
 <span><span class="va">IMDB</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/flair_datasets.html">flair_datasets</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">IMDB</span></span>
 <span><span class="va">corpus</span> <span class="op">&lt;-</span> <span class="fu">IMDB</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">downsample</span><span class="op">(</span><span class="fl">0.1</span><span class="op">)</span> </span>
-<span><span class="co">#&gt; 2025-01-19 00:34:24,031 Reading data from /Users/yenchiehliao/.flair/datasets/imdb_v4-rebalanced</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:34:24,031 Train: /Users/yenchiehliao/.flair/datasets/imdb_v4-rebalanced/train.txt</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:34:24,031 Dev: None</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:34:24,031 Test: None</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:34:24,628 No test split found. Using 10% (i.e. 5000 samples) of the train split as test data</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:34:24,643 No dev split found. Using 10% (i.e. 4500 samples) of the train split as dev data</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:34:24,643 Initialized corpus /Users/yenchiehliao/.flair/datasets/imdb_v4-rebalanced (label type name is 'sentiment')</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:04:38,929 Reading data from /Users/yenchiehliao/.flair/datasets/imdb_v4-rebalanced</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:04:38,930 Train: /Users/yenchiehliao/.flair/datasets/imdb_v4-rebalanced/train.txt</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:04:38,930 Dev: None</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:04:38,930 Test: None</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:04:39,546 No test split found. Using 10% (i.e. 5000 samples) of the train split as test data</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:04:39,561 No dev split found. Using 10% (i.e. 4500 samples) of the train split as dev data</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:04:39,561 Initialized corpus /Users/yenchiehliao/.flair/datasets/imdb_v4-rebalanced (label type name is 'sentiment')</span></span>
 <span><span class="co"># create the label dictionary</span></span>
 <span><span class="va">lbl_type</span> <span class="op">&lt;-</span> <span class="st">'sentiment'</span></span>
 <span><span class="va">label_dict</span> <span class="op">&lt;-</span> <span class="va">corpus</span><span class="op">$</span><span class="fu">make_label_dictionary</span><span class="op">(</span>label_type<span class="op">=</span><span class="va">lbl_type</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:34:24,660 Computing label dictionary. Progress:</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:34:33,395 Dictionary created for label 'sentiment' with 2 values: POSITIVE (seen 2056 times), NEGATIVE (seen 1994 times)</span></span></code></pre></div>
+<span><span class="co">#&gt; 2025-01-19 02:04:39,579 Computing label dictionary. Progress:</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:04:49,332 Dictionary created for label 'sentiment' with 2 values: POSITIVE (seen 2056 times), NEGATIVE (seen 1994 times)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="stacked-embeddings">Stacked Embeddings<a class="anchor" aria-label="anchor" href="#stacked-embeddings"></a>
@@ -4061,7 +4061,7 @@ words, for early stopping of the model.</p>
 </div>
 <div class="sourceCode" id="cb106"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">old_corpus</span> <span class="op">&lt;-</span> <span class="fu">Corpus</span><span class="op">(</span>train <span class="op">=</span> <span class="va">old_train</span>, test <span class="op">=</span> <span class="va">old_test</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:34:35,906 No dev split found. Using 10% (i.e. 80 samples) of the train split as dev data</span></span></code></pre></div>
+<span><span class="co">#&gt; 2025-01-19 02:04:52,042 No dev split found. Using 10% (i.e. 80 samples) of the train split as dev data</span></span></code></pre></div>
 <p><u><strong>Step 3</strong></u> Load <code>distilbert</code>
 Transformer</p>
 <div class="sourceCode" id="cb107"><pre class="downlit sourceCode r">
@@ -4077,8 +4077,8 @@ times), Past (seen 131 times).</p>
 </div>
 <div class="sourceCode" id="cb108"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">old_label_dict</span> <span class="op">&lt;-</span> <span class="va">old_corpus</span><span class="op">$</span><span class="fu">make_label_dictionary</span><span class="op">(</span>label_type<span class="op">=</span><span class="st">"classification"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:34:37,307 Computing label dictionary. Progress:</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:34:37,319 Dictionary created for label 'classification' with 3 values: Future (seen 380 times), Present (seen 232 times), Past (seen 111 times)</span></span></code></pre></div>
+<span><span class="co">#&gt; 2025-01-19 02:04:53,249 Computing label dictionary. Progress:</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:04:53,258 Dictionary created for label 'classification' with 3 values: Future (seen 380 times), Present (seen 232 times), Past (seen 111 times)</span></span></code></pre></div>
 <div style="text-align: justify;">
 <p><code>TextClassifier</code> is used to create a text classifier. The
 classifier takes the document embeddings (importing from
@@ -4101,8 +4101,8 @@ classification.</p>
 <span>                  anneal_with_restarts <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>                  save_final_model<span class="op">=</span><span class="cn">TRUE</span>,</span>
 <span>                  max_epochs<span class="op">=</span><span class="fl">1L</span><span class="op">)</span>   </span>
-<span><span class="co">#&gt; 2025-01-19 00:34:37,449 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:34:37,449 Model: "TextClassifier(</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:04:53,390 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:04:53,390 Model: "TextClassifier(</span></span>
 <span><span class="co">#&gt;   (embeddings): TransformerDocumentEmbeddings(</span></span>
 <span><span class="co">#&gt;     (model): DistilBertModel(</span></span>
 <span><span class="co">#&gt;       (embeddings): Embeddings(</span></span>
@@ -4142,49 +4142,49 @@ classification.</p>
 <span><span class="co">#&gt;   (weights): None</span></span>
 <span><span class="co">#&gt;   (weight_tensor) None</span></span>
 <span><span class="co">#&gt; )"</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:34:37,449 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:34:37,449 Corpus: 723 train + 80 dev + 85 test sentences</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:34:37,449 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:34:37,449 Train:  723 sentences</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:34:37,450         (train_with_dev=False, train_with_test=False)</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:34:37,450 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:34:37,450 Training Params:</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:34:37,450  - learning_rate: "0.02" </span></span>
-<span><span class="co">#&gt; 2025-01-19 00:34:37,450  - mini_batch_size: "8"</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:34:37,450  - max_epochs: "1"</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:34:37,450  - shuffle: "True"</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:34:37,450 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:34:37,450 Plugins:</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:34:37,450  - AnnealOnPlateau | patience: '3', anneal_factor: '0.5', min_learning_rate: '0.0001'</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:34:37,450 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:34:37,450 Final evaluation on model from best epoch (best-model.pt)</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:34:37,450  - metric: "('micro avg', 'f1-score')"</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:34:37,450 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:34:37,450 Computation:</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:34:37,450  - compute on device: cpu</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:34:37,450  - embedding storage: cpu</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:34:37,450 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:34:37,450 Model training base path: "vignettes/inst/muller-campaign-communication"</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:34:37,450 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:34:37,450 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:34:39,910 epoch 1 - iter 9/91 - loss 1.15913804 - time (sec): 2.46 - samples/sec: 29.28 - lr: 0.020000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:34:42,163 epoch 1 - iter 18/91 - loss 1.09388583 - time (sec): 4.71 - samples/sec: 30.56 - lr: 0.020000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:34:44,353 epoch 1 - iter 27/91 - loss 0.98490597 - time (sec): 6.90 - samples/sec: 31.29 - lr: 0.020000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:34:47,327 epoch 1 - iter 36/91 - loss 0.90666179 - time (sec): 9.88 - samples/sec: 29.16 - lr: 0.020000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:34:49,387 epoch 1 - iter 45/91 - loss 0.86723306 - time (sec): 11.94 - samples/sec: 30.16 - lr: 0.020000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:34:51,298 epoch 1 - iter 54/91 - loss 0.82877369 - time (sec): 13.85 - samples/sec: 31.20 - lr: 0.020000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:34:53,567 epoch 1 - iter 63/91 - loss 0.82633138 - time (sec): 16.12 - samples/sec: 31.27 - lr: 0.020000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:34:55,603 epoch 1 - iter 72/91 - loss 0.77545721 - time (sec): 18.15 - samples/sec: 31.73 - lr: 0.020000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:34:57,674 epoch 1 - iter 81/91 - loss 0.75503454 - time (sec): 20.22 - samples/sec: 32.04 - lr: 0.020000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:34:59,826 epoch 1 - iter 90/91 - loss 0.73309229 - time (sec): 22.38 - samples/sec: 32.18 - lr: 0.020000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:34:59,934 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:34:59,934 EPOCH 1 done: loss 0.7313 - lr: 0.020000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:35:00,684 DEV : loss 0.4210357666015625 - f1-score (micro avg)  0.8375</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:35:00,687  - 0 epochs without improvement</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:35:00,688 saving best model</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:35:01,640 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:35:01,641 Loading model from best epoch ...</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:35:03,527 </span></span>
+<span><span class="co">#&gt; 2025-01-19 02:04:53,390 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:04:53,390 Corpus: 723 train + 80 dev + 85 test sentences</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:04:53,390 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:04:53,390 Train:  723 sentences</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:04:53,390         (train_with_dev=False, train_with_test=False)</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:04:53,390 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:04:53,390 Training Params:</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:04:53,390  - learning_rate: "0.02" </span></span>
+<span><span class="co">#&gt; 2025-01-19 02:04:53,390  - mini_batch_size: "8"</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:04:53,391  - max_epochs: "1"</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:04:53,391  - shuffle: "True"</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:04:53,391 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:04:53,391 Plugins:</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:04:53,391  - AnnealOnPlateau | patience: '3', anneal_factor: '0.5', min_learning_rate: '0.0001'</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:04:53,391 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:04:53,391 Final evaluation on model from best epoch (best-model.pt)</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:04:53,391  - metric: "('micro avg', 'f1-score')"</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:04:53,391 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:04:53,391 Computation:</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:04:53,391  - compute on device: cpu</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:04:53,391  - embedding storage: cpu</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:04:53,391 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:04:53,391 Model training base path: "vignettes/inst/muller-campaign-communication"</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:04:53,391 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:04:53,391 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:04:56,642 epoch 1 - iter 9/91 - loss 1.15913804 - time (sec): 3.25 - samples/sec: 22.15 - lr: 0.020000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:04:59,345 epoch 1 - iter 18/91 - loss 1.09388583 - time (sec): 5.95 - samples/sec: 24.19 - lr: 0.020000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:05:02,125 epoch 1 - iter 27/91 - loss 0.98490597 - time (sec): 8.73 - samples/sec: 24.73 - lr: 0.020000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:05:04,561 epoch 1 - iter 36/91 - loss 0.90666179 - time (sec): 11.17 - samples/sec: 25.79 - lr: 0.020000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:05:06,768 epoch 1 - iter 45/91 - loss 0.86723306 - time (sec): 13.38 - samples/sec: 26.91 - lr: 0.020000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:05:08,690 epoch 1 - iter 54/91 - loss 0.82877369 - time (sec): 15.30 - samples/sec: 28.24 - lr: 0.020000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:05:10,977 epoch 1 - iter 63/91 - loss 0.82633138 - time (sec): 17.59 - samples/sec: 28.66 - lr: 0.020000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:05:13,127 epoch 1 - iter 72/91 - loss 0.77545721 - time (sec): 19.74 - samples/sec: 29.19 - lr: 0.020000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:05:15,355 epoch 1 - iter 81/91 - loss 0.75503454 - time (sec): 21.96 - samples/sec: 29.50 - lr: 0.020000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:05:17,573 epoch 1 - iter 90/91 - loss 0.73309229 - time (sec): 24.18 - samples/sec: 29.78 - lr: 0.020000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:05:17,685 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:05:17,685 EPOCH 1 done: loss 0.7313 - lr: 0.020000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:05:18,438 DEV : loss 0.4210357666015625 - f1-score (micro avg)  0.8375</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:05:18,440  - 0 epochs without improvement</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:05:18,442 saving best model</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:05:19,321 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:05:19,324 Loading model from best epoch ...</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:05:21,320 </span></span>
 <span><span class="co">#&gt; Results:</span></span>
 <span><span class="co">#&gt; - F-score (micro) 0.8235</span></span>
 <span><span class="co">#&gt; - F-score (macro) 0.8246</span></span>
@@ -4201,7 +4201,7 @@ classification.</p>
 <span><span class="co">#&gt;    macro avg     0.8412    0.8134    0.8246        85</span></span>
 <span><span class="co">#&gt; weighted avg     0.8235    0.8235    0.8205        85</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; 2025-01-19 00:35:03,528 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:05:21,320 ----------------------------------------------------------------------------------------------------</span></span>
 <span><span class="co">#&gt; $test_score</span></span>
 <span><span class="co">#&gt; [1] 0.8235294</span></span></code></pre></div>
 </div>
@@ -4239,7 +4239,7 @@ Corpus</p>
 <span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb114"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">new_corpus</span> <span class="op">&lt;-</span> <span class="fu">Corpus</span><span class="op">(</span>train<span class="op">=</span><span class="va">new_text</span>, test<span class="op">=</span><span class="va">old_test</span><span class="op">)</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:35:05,613 No dev split found. Using 10% (i.e. 200 samples) of the train split as dev data</span></span></code></pre></div>
+<span><span class="co">#&gt; 2025-01-19 02:05:23,437 No dev split found. Using 10% (i.e. 200 samples) of the train split as dev data</span></span></code></pre></div>
 <p><u><strong>Step 3</strong></u> Create a New Model Trainer with the
 Old Model and New Corpus</p>
 <div class="sourceCode" id="cb115"><pre class="downlit sourceCode r">
@@ -4250,8 +4250,8 @@ Old Model and New Corpus</p>
 <span>                  learning_rate<span class="op">=</span><span class="fl">0.002</span>, </span>
 <span>                  mini_batch_size<span class="op">=</span><span class="fl">8L</span>,  </span>
 <span>                  max_epochs<span class="op">=</span><span class="fl">1L</span><span class="op">)</span>    </span>
-<span><span class="co">#&gt; 2025-01-19 00:35:05,703 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:35:05,703 Model: "TextClassifier(</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:05:23,525 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:05:23,526 Model: "TextClassifier(</span></span>
 <span><span class="co">#&gt;   (embeddings): TransformerDocumentEmbeddings(</span></span>
 <span><span class="co">#&gt;     (model): DistilBertModel(</span></span>
 <span><span class="co">#&gt;       (embeddings): Embeddings(</span></span>
@@ -4291,49 +4291,49 @@ Old Model and New Corpus</p>
 <span><span class="co">#&gt;   (weights): None</span></span>
 <span><span class="co">#&gt;   (weight_tensor) None</span></span>
 <span><span class="co">#&gt; )"</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:35:05,703 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:35:05,703 Corpus: 1800 train + 200 dev + 85 test sentences</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:35:05,703 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:35:05,703 Train:  1800 sentences</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:35:05,704         (train_with_dev=False, train_with_test=False)</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:35:05,704 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:35:05,704 Training Params:</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:35:05,704  - learning_rate: "0.002" </span></span>
-<span><span class="co">#&gt; 2025-01-19 00:35:05,704  - mini_batch_size: "8"</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:35:05,704  - max_epochs: "1"</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:35:05,704  - shuffle: "True"</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:35:05,704 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:35:05,704 Plugins:</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:35:05,704  - AnnealOnPlateau | patience: '3', anneal_factor: '0.5', min_learning_rate: '0.0001'</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:35:05,704 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:35:05,704 Final evaluation on model from best epoch (best-model.pt)</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:35:05,704  - metric: "('micro avg', 'f1-score')"</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:35:05,704 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:35:05,704 Computation:</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:35:05,704  - compute on device: cpu</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:35:05,704  - embedding storage: cpu</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:35:05,704 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:35:05,704 Model training base path: "vignettes/inst/new-muller-campaign-communication"</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:35:05,704 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:35:05,704 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:35:10,991 epoch 1 - iter 22/225 - loss 0.47686889 - time (sec): 5.29 - samples/sec: 33.29 - lr: 0.002000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:35:16,968 epoch 1 - iter 44/225 - loss 0.47116109 - time (sec): 11.26 - samples/sec: 31.25 - lr: 0.002000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:35:22,239 epoch 1 - iter 66/225 - loss 0.45405770 - time (sec): 16.53 - samples/sec: 31.93 - lr: 0.002000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:35:28,194 epoch 1 - iter 88/225 - loss 0.42943539 - time (sec): 22.49 - samples/sec: 31.30 - lr: 0.002000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:35:33,789 epoch 1 - iter 110/225 - loss 0.41669404 - time (sec): 28.08 - samples/sec: 31.33 - lr: 0.002000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:35:39,161 epoch 1 - iter 132/225 - loss 0.41539682 - time (sec): 33.46 - samples/sec: 31.56 - lr: 0.002000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:35:45,299 epoch 1 - iter 154/225 - loss 0.41510456 - time (sec): 39.59 - samples/sec: 31.12 - lr: 0.002000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:35:50,494 epoch 1 - iter 176/225 - loss 0.41127963 - time (sec): 44.79 - samples/sec: 31.44 - lr: 0.002000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:35:55,404 epoch 1 - iter 198/225 - loss 0.40708528 - time (sec): 49.70 - samples/sec: 31.87 - lr: 0.002000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:36:01,105 epoch 1 - iter 220/225 - loss 0.39587183 - time (sec): 55.40 - samples/sec: 31.77 - lr: 0.002000 - momentum: 0.000000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:36:02,468 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:36:02,469 EPOCH 1 done: loss 0.3941 - lr: 0.002000</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:36:04,512 DEV : loss 0.40370461344718933 - f1-score (micro avg)  0.85</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:36:04,518  - 0 epochs without improvement</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:36:04,519 saving best model</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:36:05,498 ----------------------------------------------------------------------------------------------------</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:36:05,499 Loading model from best epoch ...</span></span>
-<span><span class="co">#&gt; 2025-01-19 00:36:07,412 </span></span>
+<span><span class="co">#&gt; 2025-01-19 02:05:23,526 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:05:23,526 Corpus: 1800 train + 200 dev + 85 test sentences</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:05:23,526 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:05:23,526 Train:  1800 sentences</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:05:23,526         (train_with_dev=False, train_with_test=False)</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:05:23,526 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:05:23,526 Training Params:</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:05:23,526  - learning_rate: "0.002" </span></span>
+<span><span class="co">#&gt; 2025-01-19 02:05:23,526  - mini_batch_size: "8"</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:05:23,526  - max_epochs: "1"</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:05:23,526  - shuffle: "True"</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:05:23,526 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:05:23,526 Plugins:</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:05:23,526  - AnnealOnPlateau | patience: '3', anneal_factor: '0.5', min_learning_rate: '0.0001'</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:05:23,526 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:05:23,527 Final evaluation on model from best epoch (best-model.pt)</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:05:23,527  - metric: "('micro avg', 'f1-score')"</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:05:23,527 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:05:23,527 Computation:</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:05:23,527  - compute on device: cpu</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:05:23,527  - embedding storage: cpu</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:05:23,527 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:05:23,527 Model training base path: "vignettes/inst/new-muller-campaign-communication"</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:05:23,527 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:05:23,527 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:05:29,093 epoch 1 - iter 22/225 - loss 0.47686889 - time (sec): 5.57 - samples/sec: 31.62 - lr: 0.002000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:05:35,058 epoch 1 - iter 44/225 - loss 0.47116109 - time (sec): 11.53 - samples/sec: 30.53 - lr: 0.002000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:05:40,434 epoch 1 - iter 66/225 - loss 0.45405770 - time (sec): 16.91 - samples/sec: 31.23 - lr: 0.002000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:05:46,206 epoch 1 - iter 88/225 - loss 0.42943539 - time (sec): 22.68 - samples/sec: 31.04 - lr: 0.002000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:05:51,013 epoch 1 - iter 110/225 - loss 0.41669404 - time (sec): 27.49 - samples/sec: 32.02 - lr: 0.002000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:05:56,094 epoch 1 - iter 132/225 - loss 0.41539682 - time (sec): 32.57 - samples/sec: 32.43 - lr: 0.002000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:06:01,879 epoch 1 - iter 154/225 - loss 0.41510456 - time (sec): 38.35 - samples/sec: 32.12 - lr: 0.002000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:06:07,257 epoch 1 - iter 176/225 - loss 0.41127963 - time (sec): 43.73 - samples/sec: 32.20 - lr: 0.002000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:06:12,124 epoch 1 - iter 198/225 - loss 0.40708528 - time (sec): 48.60 - samples/sec: 32.59 - lr: 0.002000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:06:17,665 epoch 1 - iter 220/225 - loss 0.39587183 - time (sec): 54.14 - samples/sec: 32.51 - lr: 0.002000 - momentum: 0.000000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:06:19,026 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:06:19,027 EPOCH 1 done: loss 0.3941 - lr: 0.002000</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:06:21,162 DEV : loss 0.40370461344718933 - f1-score (micro avg)  0.85</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:06:21,167  - 0 epochs without improvement</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:06:21,168 saving best model</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:06:22,009 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:06:22,009 Loading model from best epoch ...</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:06:23,943 </span></span>
 <span><span class="co">#&gt; Results:</span></span>
 <span><span class="co">#&gt; - F-score (micro) 0.8706</span></span>
 <span><span class="co">#&gt; - F-score (macro) 0.8779</span></span>
@@ -4350,7 +4350,7 @@ Old Model and New Corpus</p>
 <span><span class="co">#&gt;    macro avg     0.8923    0.8674    0.8779        85</span></span>
 <span><span class="co">#&gt; weighted avg     0.8755    0.8706    0.8718        85</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; 2025-01-19 00:36:07,413 ----------------------------------------------------------------------------------------------------</span></span>
+<span><span class="co">#&gt; 2025-01-19 02:06:23,943 ----------------------------------------------------------------------------------------------------</span></span>
 <span><span class="co">#&gt; $test_score</span></span>
 <span><span class="co">#&gt; [1] 0.8705882</span></span></code></pre></div>
 </div>
@@ -4681,7 +4681,7 @@ corresponding token text.</p>
 <div class="sourceCode" id="cb125"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fasttext_subset</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/process_embeddings.html">process_embeddings</a></span><span class="op">(</span><span class="va">sentence</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Extracting token embeddings...</span></span>
-<span><span class="co">#&gt; Converting embeddings to matrix format...Processing completed in 3.566 seconds</span></span>
+<span><span class="co">#&gt; Converting embeddings to matrix format...Processing completed in 3.729 seconds</span></span>
 <span><span class="co">#&gt; Generated embedding matrix with 500 tokens and 300 dimensions</span></span></code></pre></div>
 <p><u><strong>Step 3</strong></u> Computing Context-Specific Word
 Embeddings Using FastText</p>
@@ -5027,7 +5027,7 @@ text right-to-left</li>
 <span><span class="co"># Step 3: Extract and store embeddings for each token</span></span>
 <span><span class="va">stacked_subset</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/process_embeddings.html">process_embeddings</a></span><span class="op">(</span><span class="va">sentence</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Extracting token embeddings...</span></span>
-<span><span class="co">#&gt; Converting embeddings to matrix format...Processing completed in 3.158 seconds</span></span>
+<span><span class="co">#&gt; Converting embeddings to matrix format...Processing completed in 3.539 seconds</span></span>
 <span><span class="co">#&gt; Generated embedding matrix with 500 tokens and 4396 dimensions</span></span>
 <span></span>
 <span><span class="co"># Step 4: Compute transformation matrix</span></span>
@@ -5105,7 +5105,7 @@ integrate:</p>
 <span><span class="co"># Step 3: Extract and store embeddings for each token</span></span>
 <span><span class="va">bert_subset</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/process_embeddings.html">process_embeddings</a></span><span class="op">(</span><span class="va">sentence</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Extracting token embeddings...</span></span>
-<span><span class="co">#&gt; Converting embeddings to matrix format...Processing completed in 2.791 seconds</span></span>
+<span><span class="co">#&gt; Converting embeddings to matrix format...Processing completed in 3.027 seconds</span></span>
 <span><span class="co">#&gt; Generated embedding matrix with 500 tokens and 768 dimensions</span></span>
 <span></span>
 <span><span class="co"># Step 4: Compute transformation matrix </span></span>
