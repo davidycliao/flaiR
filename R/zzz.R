@@ -29,12 +29,21 @@
 #' @keywords internal
 
 .onAttach <- function(...) {
-  # 1. Initialize environment paths
-  # Set up the home directory and virtual environment path
-  home_dir <- path.expand("~")
-  venv <- file.path(home_dir, "flair_env")
+  # Check if running in Docker (safe check for all platforms)
+  check_if_docker <- function() {
+    tryCatch({
+      if (file.exists("/.dockerenv")) {
+        return(TRUE)
+      }
+      return(FALSE)
+    }, error = function(e) {
+      return(FALSE)
+    })
+  }
 
-  # 2. Configure basic settings and suppress warnings
+  is_docker <- check_if_docker()
+
+  # Configure basic settings and suppress warnings
   suppressWarnings({
     options(reticulate.prompt = FALSE)
     if (Sys.info()["sysname"] == "Darwin") {
@@ -42,69 +51,7 @@
     }
   })
 
-  # 3. Python version compatibility check
-  check_python_version <- function() {
-    tryCatch({
-      py_config <- reticulate::py_config()
-      version_parts <- strsplit(as.character(py_config$version), "\\.")[[1]]
-      major <- as.numeric(version_parts[1])
-      minor <- as.numeric(version_parts[2])
-
-      # Verify Python version is between 3.8-3.12 for PyTorch compatibility
-      status <- (major == 3 && minor >= 9 && minor <= 12)
-
-      if (!status) {
-        message <- paste0(
-          "\n",
-          "Warning: Python version ", major, ".", minor, " may cause compatibility issues.\n",
-          "Recommended Python versions for PyTorch 2.0+ and Flair NLP: 3.8-3.12\n",
-          "\n",
-          "To install compatible Python version:\n",
-          "1. install.packages('reticulate')\n",
-          "2. library(reticulate)\n",
-          "3. install_python(version = '3.10')\n"
-        )
-        return(list(
-          status = FALSE,
-          version = paste(major, minor, sep = "."),
-          message = message
-        ))
-      }
-
-      return(list(
-        status = TRUE,
-        version = paste(major, minor, sep = "."),
-        message = NULL
-      ))
-    }, error = function(e) {
-      return(list(
-        status = FALSE,
-        version = "unknown",
-        message = "Could not detect Python version"
-      ))
-    })
-  }
-
-  # 4. Check flair version and installation status
-  check_flair_version <- function() {
-    tryCatch({
-      flair <- reticulate::import("flair", delay_load = TRUE)
-      version <- reticulate::py_get_attr(flair, "__version__")
-      return(list(
-        status = TRUE,
-        version = version,
-        message = NULL
-      ))
-    }, error = function(e) {
-      return(list(
-        status = FALSE,
-        version = NULL,
-        message = "Failed to load flair"
-      ))
-    })
-  }
-
-  # 5. Status printing utility with colored output
+  # Status printing utility with colored output
   print_status <- function(component, version, status = TRUE, extra_message = NULL) {
     if (status) {
       symbol <- "\u2713"  # checkmark
@@ -114,14 +61,13 @@
       color <- "\033[31m" # red
     }
 
-    # Standardize component names and padding
     formatted_component <- switch(component,
                                   "Python" = sprintf("Python%-15s", ""),
                                   "flaiR" = sprintf("Flair NLP%-12s", ""),
                                   component
     )
 
-    message <- sprintf("%s %s%s\033[39m  %s", # 增加一個空格在 checkmark 後面
+    message <- sprintf("%s %s%s\033[39m  %s",
                        formatted_component,
                        color,
                        symbol,
@@ -133,80 +79,267 @@
     }
   }
 
-  # 6. Main execution block
+  # Main execution block
   tryCatch({
-    # Initialize or verify virtual environment
-    if (!reticulate::virtualenv_exists(venv)) {
+    if (is_docker) {
+      # In Docker environment, just use the pre-configured Python
+      python_path <- Sys.getenv("RETICULATE_PYTHON")
+      if (python_path != "") {
+        suppressWarnings({
+          reticulate::use_python(python_path, required = TRUE)
+        })
+      }
+    } else {
+      # Local environment setup
+      home_dir <- path.expand("~")
+      venv <- file.path(home_dir, "flair_env")
+
+      if (!reticulate::virtualenv_exists(venv)) {
+        suppressWarnings({
+          reticulate::virtualenv_create(venv)
+        })
+      }
       suppressWarnings({
-        reticulate::virtualenv_create(venv)
+        reticulate::use_virtualenv(venv, required = TRUE)
       })
     }
 
-    # Activate the virtual environment
-    suppressWarnings({
-      reticulate::use_virtualenv(venv, required = TRUE)
-    })
+    # Version checks
+    py_config <- reticulate::py_config()
+    version_parts <- strsplit(as.character(py_config$version), "\\.")[[1]]
+    major <- as.numeric(version_parts[1])
+    minor <- as.numeric(version_parts[2])
 
-    # Verify Python version compatibility
-    python_check <- check_python_version()
-    print_status("Python", python_check$version, python_check$status, python_check$message)
+    # Python version check
+    python_status <- (major == 3 && minor >= 9 && minor <= 12)
+    print_status("Python", paste(major, minor, sep = "."), python_status)
 
-    # Install and configure flair if Python version is compatible
-    if (python_check$status) {
-      flair_check <- check_flair_version()
-      if (!flair_check$status) {
+    if (python_status) {
+      # Check flair
+      flair_check <- tryCatch({
+        flair <- reticulate::import("flair", delay_load = TRUE)
+        version <- reticulate::py_get_attr(flair, "__version__")
+        list(status = TRUE, version = version)
+      }, error = function(e) {
+        list(status = FALSE, version = NULL)
+      })
+
+      # Only attempt installation in non-Docker environment
+      if (!flair_check$status && !is_docker) {
         suppressWarnings({
-          # First install numpy with specific version for scipy compatibility
-          reticulate::py_install(
-            packages = c("numpy>=1.22.4,<1.29.0"),
-            envname = venv,
-            pip = TRUE,
-            method = "auto"
-          )
-
-          # Then install flair and dependencies
           reticulate::py_install(
             packages = c(
+              "numpy==1.26.4",
               "scipy==1.12.0",
               "flair[word-embeddings]>=0.11.3"
             ),
-            envname = venv,
             pip = TRUE,
             method = "auto"
           )
         })
-        flair_check <- check_flair_version()
-      } else {
-        # Check and install word-embeddings if needed
-        tryCatch({
-          reticulate::import("bpemb")
+        # Recheck flair after installation
+        flair_check <- tryCatch({
+          flair <- reticulate::import("flair", delay_load = TRUE)
+          version <- reticulate::py_get_attr(flair, "__version__")
+          list(status = TRUE, version = version)
         }, error = function(e) {
-          suppressWarnings({
-            reticulate::py_install(
-              packages = "flair[word-embeddings]",
-              envname = venv,
-              pip = TRUE,
-              method = "auto"
-            )
-          })
+          list(status = FALSE, version = NULL)
         })
       }
 
-      # Display final status
-      print_status("flaiR", flair_check$version, flair_check$status, flair_check$message)
+      print_status("flaiR", flair_check$version, flair_check$status)
 
       if (flair_check$status) {
         packageStartupMessage(sprintf("\033[1m\033[34mflaiR\033[39m\033[22m: \033[1m\033[33mAn R Wrapper for Accessing Flair NLP %s\033[39m\033[22m",
                                       flair_check$version))
       }
     }
-
   }, error = function(e) {
     packageStartupMessage("Error during initialization: ", e$message)
   })
 
   invisible(NULL)
 }
+
+# .onAttach <- function(...) {
+#   # 1. Initialize environment paths
+#   # Set up the home directory and virtual environment path
+#   home_dir <- path.expand("~")
+#   venv <- file.path(home_dir, "flair_env")
+#
+#   # 2. Configure basic settings and suppress warnings
+#   suppressWarnings({
+#     options(reticulate.prompt = FALSE)
+#     if (Sys.info()["sysname"] == "Darwin") {
+#       Sys.setenv(KMP_DUPLICATE_LIB_OK = "TRUE")
+#     }
+#   })
+#
+#   # 3. Python version compatibility check
+#   check_python_version <- function() {
+#     tryCatch({
+#       py_config <- reticulate::py_config()
+#       version_parts <- strsplit(as.character(py_config$version), "\\.")[[1]]
+#       major <- as.numeric(version_parts[1])
+#       minor <- as.numeric(version_parts[2])
+#
+#       # Verify Python version is between 3.8-3.12 for PyTorch compatibility
+#       status <- (major == 3 && minor >= 9 && minor <= 12)
+#
+#       if (!status) {
+#         message <- paste0(
+#           "\n",
+#           "Warning: Python version ", major, ".", minor, " may cause compatibility issues.\n",
+#           "Recommended Python versions for PyTorch 2.0+ and Flair NLP: 3.8-3.12\n",
+#           "\n",
+#           "To install compatible Python version:\n",
+#           "1. install.packages('reticulate')\n",
+#           "2. library(reticulate)\n",
+#           "3. install_python(version = '3.10')\n"
+#         )
+#         return(list(
+#           status = FALSE,
+#           version = paste(major, minor, sep = "."),
+#           message = message
+#         ))
+#       }
+#
+#       return(list(
+#         status = TRUE,
+#         version = paste(major, minor, sep = "."),
+#         message = NULL
+#       ))
+#     }, error = function(e) {
+#       return(list(
+#         status = FALSE,
+#         version = "unknown",
+#         message = "Could not detect Python version"
+#       ))
+#     })
+#   }
+#
+#   # 4. Check flair version and installation status
+#   check_flair_version <- function() {
+#     tryCatch({
+#       flair <- reticulate::import("flair", delay_load = TRUE)
+#       version <- reticulate::py_get_attr(flair, "__version__")
+#       return(list(
+#         status = TRUE,
+#         version = version,
+#         message = NULL
+#       ))
+#     }, error = function(e) {
+#       return(list(
+#         status = FALSE,
+#         version = NULL,
+#         message = "Failed to load flair"
+#       ))
+#     })
+#   }
+#
+#   # 5. Status printing utility with colored output
+#   print_status <- function(component, version, status = TRUE, extra_message = NULL) {
+#     if (status) {
+#       symbol <- "\u2713"  # checkmark
+#       color <- "\033[32m" # green
+#     } else {
+#       symbol <- "\u2717"  # x mark
+#       color <- "\033[31m" # red
+#     }
+#
+#     # Standardize component names and padding
+#     formatted_component <- switch(component,
+#                                   "Python" = sprintf("Python%-15s", ""),
+#                                   "flaiR" = sprintf("Flair NLP%-12s", ""),
+#                                   component
+#     )
+#
+#     message <- sprintf("%s %s%s\033[39m  %s", # 增加一個空格在 checkmark 後面
+#                        formatted_component,
+#                        color,
+#                        symbol,
+#                        if(!is.null(version)) version else "")
+#
+#     packageStartupMessage(message)
+#     if (!is.null(extra_message)) {
+#       packageStartupMessage(extra_message)
+#     }
+#   }
+#
+#   # 6. Main execution block
+#   tryCatch({
+#     # Initialize or verify virtual environment
+#     if (!reticulate::virtualenv_exists(venv)) {
+#       suppressWarnings({
+#         reticulate::virtualenv_create(venv)
+#       })
+#     }
+#
+#     # Activate the virtual environment
+#     suppressWarnings({
+#       reticulate::use_virtualenv(venv, required = TRUE)
+#     })
+#
+#     # Verify Python version compatibility
+#     python_check <- check_python_version()
+#     print_status("Python", python_check$version, python_check$status, python_check$message)
+#
+#     # Install and configure flair if Python version is compatible
+#     if (python_check$status) {
+#       flair_check <- check_flair_version()
+#       if (!flair_check$status) {
+#         suppressWarnings({
+#           # First install numpy with specific version for scipy compatibility
+#           reticulate::py_install(
+#             packages = c("numpy>=1.22.4,<1.29.0"),
+#             envname = venv,
+#             pip = TRUE,
+#             method = "auto"
+#           )
+#
+#           # Then install flair and dependencies
+#           reticulate::py_install(
+#             packages = c(
+#               "scipy==1.12.0",
+#               "flair[word-embeddings]>=0.11.3"
+#             ),
+#             envname = venv,
+#             pip = TRUE,
+#             method = "auto"
+#           )
+#         })
+#         flair_check <- check_flair_version()
+#       } else {
+#         # Check and install word-embeddings if needed
+#         tryCatch({
+#           reticulate::import("bpemb")
+#         }, error = function(e) {
+#           suppressWarnings({
+#             reticulate::py_install(
+#               packages = "flair[word-embeddings]",
+#               envname = venv,
+#               pip = TRUE,
+#               method = "auto"
+#             )
+#           })
+#         })
+#       }
+#
+#       # Display final status
+#       print_status("flaiR", flair_check$version, flair_check$status, flair_check$message)
+#
+#       if (flair_check$status) {
+#         packageStartupMessage(sprintf("\033[1m\033[34mflaiR\033[39m\033[22m: \033[1m\033[33mAn R Wrapper for Accessing Flair NLP %s\033[39m\033[22m",
+#                                       flair_check$version))
+#       }
+#     }
+#
+#   }, error = function(e) {
+#     packageStartupMessage("Error during initialization: ", e$message)
+#   })
+#
+#   invisible(NULL)
+# }
 
 # .onAttach <- function(...) {
 #   # Prevent reticulate from asking about Python environment
