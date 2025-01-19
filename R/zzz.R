@@ -50,8 +50,8 @@
       major <- as.numeric(version_parts[1])
       minor <- as.numeric(version_parts[2])
 
-      # Verify Python version is between 3.8-3.11 for PyTorch compatibility
-      status <- (major == 3 && minor >= 8 && minor <= 11)
+      # Verify Python version is between 3.8-3.12 for PyTorch compatibility
+      status <- (major == 3 && minor >= 8 && minor <= 12)
 
       if (!status) {
         message <- paste0(
