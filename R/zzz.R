@@ -51,13 +51,13 @@
       minor <- as.numeric(version_parts[2])
 
       # Verify Python version is between 3.8-3.12 for PyTorch compatibility
-      status <- (major == 3 && minor >= 8 && minor <= 12)
+      status <- (major == 3 && minor >= 9 && minor <= 12)
 
       if (!status) {
         message <- paste0(
           "\n",
           "Warning: Python version ", major, ".", minor, " may cause compatibility issues.\n",
-          "Recommended Python versions for PyTorch 2.0+: 3.8-3.11\n",
+          "Recommended Python versions for PyTorch 2.0+ and Flair NLP: 3.8-3.12\n",
           "\n",
           "To install compatible Python version:\n",
           "1. install.packages('reticulate')\n",
