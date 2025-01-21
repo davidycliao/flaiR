@@ -126,45 +126,16 @@ check_python_env <- function() {
 #' @noRd
 initialize_modules <- function() {
   tryCatch({
-    # Import modules with more explicit error handling
-    torch <- reticulate::import("torch", delay_load = TRUE)
-    if (is.null(torch)) {
-      return(list(status = FALSE, error = "Failed to import torch"))
-    }
+    # Import modules
+    torch <- import("torch", delay_load = TRUE)
+    transformers <- import("transformers", delay_load = TRUE)
+    flair <- import("flair", delay_load = TRUE)
+    flair_embeddings <- import("flair.embeddings", delay_load = TRUE)
 
-    transformers <- reticulate::import("transformers", delay_load = TRUE)
-    if (is.null(transformers)) {
-      return(list(status = FALSE, error = "Failed to import transformers"))
-    }
-
-    flair <- reticulate::import("flair", delay_load = TRUE)
-    if (is.null(flair)) {
-      return(list(status = FALSE, error = "Failed to import flair"))
-    }
-
-    # 明確導入 flair.embeddings
-    flair_embeddings <- reticulate::import("flair.embeddings", delay_load = TRUE)
-    if (is.null(flair_embeddings)) {
-      return(list(status = FALSE, error = "Failed to import flair.embeddings"))
-    }
-
-    # Get versions with error checking
-    torch_version <- tryCatch(
-      reticulate::py_get_attr(torch, "__version__"),
-      error = function(e) NULL
-    )
-    transformers_version <- tryCatch(
-      reticulate::py_get_attr(transformers, "__version__"),
-      error = function(e) NULL
-    )
-    flair_version <- tryCatch(
-      reticulate::py_get_attr(flair, "__version__"),
-      error = function(e) NULL
-    )
-
-    if (any(sapply(list(torch_version, transformers_version, flair_version), is.null))) {
-      return(list(status = FALSE, error = "Failed to get package versions"))
-    }
+    # Get versions
+    torch_version <- py_get_attr(torch, "__version__")
+    transformers_version <- py_get_attr(transformers, "__version__")
+    flair_version <- py_get_attr(flair, "__version__")
 
     # Check GPU capabilities
     cuda_info <- list(
@@ -178,18 +149,11 @@ initialize_modules <- function() {
       version = tryCatch(torch$version$cuda, error = function(e) NULL)
     )
 
-    # 檢查 MPS 可用性並設置相應環境變量
     mps_available <- if(Sys.info()["sysname"] == "Darwin") {
-      is_available <- torch$backends$mps$is_available()
-      if (is_available) {
-        # 確保 MPS 相關設置正確
-        Sys.setenv(PYTORCH_ENABLE_MPS_FALLBACK = 1)
-        Sys.setenv(PYTORCH_MPS_HIGH_WATERMARK_RATIO = 0.0)
-      }
-      is_available
+      torch$backends$mps$is_available()
     } else FALSE
 
-    # Store modules - 確保所有模組都被正確存儲
+    # Store modules
     .pkgenv$modules$flair <- flair
     .pkgenv$modules$flair_embeddings <- flair_embeddings
     .pkgenv$modules$torch <- torch
@@ -211,192 +175,17 @@ initialize_modules <- function() {
   })
 }
 
-
-# initialize_modules <- function() {
-#   tryCatch({
-#     # Import modules
-#     torch <- import("torch", delay_load = TRUE)
-#     transformers <- import("transformers", delay_load = TRUE)
-#     flair <- import("flair", delay_load = TRUE)
-#     # flair_embeddings <- import("flair.embeddings", delay_load = TRUE)
-#
-#     # Get versions
-#     torch_version <- py_get_attr(torch, "__version__")
-#     transformers_version <- py_get_attr(transformers, "__version__")
-#     flair_version <- py_get_attr(flair, "__version__")
-#
-#     # Check GPU capabilities
-#     cuda_info <- list(
-#       available = torch$cuda$is_available(),
-#       device_name = if (torch$cuda$is_available()) {
-#         tryCatch({
-#           props <- torch$cuda$get_device_properties(0)
-#           props$name
-#         }, error = function(e) NULL)
-#       } else NULL,
-#       version = tryCatch(torch$version$cuda, error = function(e) NULL)
-#     )
-#
-#     mps_available <- if(Sys.info()["sysname"] == "Darwin") {
-#       torch$backends$mps$is_available()
-#     } else FALSE
-#
-#     # Store modules
-#     .pkgenv$modules$flair <- flair
-#     .pkgenv$modules$flair_embeddings <- flair_embeddings
-#     .pkgenv$modules$torch <- torch
-#
-#     list(
-#       versions = list(
-#         torch = torch_version,
-#         transformers = transformers_version,
-#         flair = flair_version
-#       ),
-#       device = list(
-#         cuda = cuda_info,
-#         mps = mps_available
-#       ),
-#       status = TRUE
-#     )
-#   }, error = function(e) {
-#     list(status = FALSE, error = e$message)
-#   })
-# }
-
-
-#' Check and select Python environment
-#' @noRd
-select_python_env <- function() {
-  # 檢查系統 Python
-  system_py <- tryCatch({
-    config <- py_config()
-    list(
-      exists = TRUE,
-      path = config$python,
-      version = config$version,
-      type = "system"
-    )
-  }, error = function(e) {
-    list(exists = FALSE, path = NULL, version = NULL, type = NULL)
-  })
-
-  # 檢查現有的虛擬環境
-  venv_info <- tryCatch({
-    venvs <- virtualenv_list()
-    current_venv <- Sys.getenv("VIRTUAL_ENV")
-    if (length(venvs) > 0 && current_venv != "") {
-      list(
-        exists = TRUE,
-        path = current_venv,
-        envs = venvs,
-        type = "virtualenv"
-      )
-    } else {
-      list(exists = FALSE, path = NULL, envs = NULL, type = NULL)
-    }
-  }, error = function(e) {
-    list(exists = FALSE, path = NULL, envs = NULL, type = NULL)
-  })
-
-  # 返回環境信息
-  list(
-    system = system_py,
-    virtualenv = venv_info
-  )
-}
 # Package initialization ----------------------------------------------
+
 #' @noRd
-
 .onLoad <- function(libname, pkgname) {
-  # Mac 特定設置（保留這部分，這是必要的）
-  if (Sys.info()["sysname"] == "Darwin") {
-    if (Sys.info()["machine"] == "arm64") {
-      Sys.setenv(PYTORCH_ENABLE_MPS_FALLBACK = 1)
-    }
-    Sys.setenv(KMP_DUPLICATE_LIB_OK = "TRUE")
+  if (Sys.info()["sysname"] == "Darwin" &&
+      Sys.info()["machine"] == "arm64") {
+    Sys.setenv(PYTORCH_ENABLE_MPS_FALLBACK = 1)
   }
-
-  # 基本設置
+  Sys.setenv(KMP_DUPLICATE_LIB_OK = "TRUE")
   options(reticulate.prompt = FALSE)
-
-  # 檢查是否已有 Python 環境
-  current_python <- Sys.getenv("RETICULATE_PYTHON")
-  if (current_python != "" && file.exists(current_python)) {
-    # 使用現有的 Python 環境
-    message(sprintf("Using existing Python: %s", current_python))
-    return()
-  }
-
-  # 檢查是否在虛擬環境中
-  current_venv <- Sys.getenv("VIRTUAL_ENV")
-  if (current_venv != "" && dir.exists(current_venv)) {
-    # 使用現有的虛擬環境
-    message(sprintf("Using existing virtual environment: %s", current_venv))
-    return()
-  }
-
-  # 如果沒有環境，才考慮創建新的
-  venv_path <- file.path(path.expand("~"), "flair_env")
-  if (!dir.exists(venv_path)) {
-    message("No Python environment found. Creating new virtual environment...")
-    tryCatch({
-      virtualenv_create(venv_path)
-      venv_python <- file.path(venv_path, "bin", "python")
-      if (file.exists(venv_python)) {
-        Sys.setenv(RETICULATE_PYTHON = venv_python)
-        options(reticulate.python = venv_python)
-      }
-    }, error = function(e) {
-      warning("Failed to create virtual environment: ", e$message)
-    })
-  }
 }
-
-# .onLoad <- function(libname, pkgname) {
-#   # Mac 特定設置（保留這部分，這是必要的）
-#   if (Sys.info()["sysname"] == "Darwin") {
-#     if (Sys.info()["machine"] == "arm64") {
-#       Sys.setenv(PYTORCH_ENABLE_MPS_FALLBACK = 1)
-#     }
-#     Sys.setenv(KMP_DUPLICATE_LIB_OK = "TRUE")
-#   }
-#
-#   # 基本設置
-#   options(reticulate.prompt = FALSE)
-#
-#   # 檢查是否已有 Python 環境
-#   current_python <- Sys.getenv("RETICULATE_PYTHON")
-#   if (current_python != "" && file.exists(current_python)) {
-#     # 使用現有的 Python 環境
-#     message(sprintf("Using existing Python: %s", current_python))
-#     return()
-#   }
-#
-#   # 檢查是否在虛擬環境中
-#   current_venv <- Sys.getenv("VIRTUAL_ENV")
-#   if (current_venv != "" && dir.exists(current_venv)) {
-#     # 使用現有的虛擬環境
-#     message(sprintf("Using existing virtual environment: %s", current_venv))
-#     return()
-#   }
-#
-#   # 如果沒有環境，才考慮創建新的
-#   venv_path <- file.path(path.expand("~"), "flair_env")
-#   if (!dir.exists(venv_path)) {
-#     message("No Python environment found. Creating new virtual environment...")
-#     tryCatch({
-#       virtualenv_create(venv_path)
-#       venv_python <- file.path(venv_path, "bin", "python")
-#       if (file.exists(venv_python)) {
-#         Sys.setenv(RETICULATE_PYTHON = venv_python)
-#         options(reticulate.python = venv_python)
-#       }
-#     }, error = function(e) {
-#       warning("Failed to create virtual environment: ", e$message)
-#     })
-#   }
-# }
-#
 
 #' @noRd
 .onAttach <- function(libname, pkgname) {
@@ -412,10 +201,27 @@ select_python_env <- function() {
     message(sprintf("System Python: %s", env_info$python$path))
   }
 
+  if (env_info$virtualenv$exists) {
+    message("\nVirtual environments:")
+    for (env in env_info$virtualenv$envs) {
+      is_current <- !is.null(env_info$virtualenv$current) &&
+        env_info$virtualenv$current == env
+      marker <- if (is_current) "*" else " "
+      message(sprintf("%s %s", marker, env))
+    }
+  }
+
   message("")
 
   # Initialize Python environment
   tryCatch({
+    # Set up virtual environment
+    venv <- file.path(path.expand("~"), "flair_env")
+    if (!virtualenv_exists(venv)) {
+      suppressWarnings(virtualenv_create(venv))
+    }
+    suppressWarnings(use_virtualenv(venv, required = TRUE))
+
     # Check Python version
     config <- py_config()
     version_parts <- strsplit(as.character(config$version), "\\.")[[1]]
@@ -494,6 +300,8 @@ select_python_env <- function() {
 
   invisible(NULL)
 }
+
+
 
 # .onAttach <- function(...) {
 #   # 1. Check if running in Docker (safe check for all platforms)
