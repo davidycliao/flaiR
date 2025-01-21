@@ -29,12 +29,6 @@
 #' @keywords internal
 
 
-.onLoad <- function(libname, pkgname) {
-  if (!requireNamespace("reticulate", quietly = TRUE)) {
-    install.packages("reticulate")
-  }
-}
-
 .onAttach <- function(libname, pkgname) {
   # 1. Ensure reticulate is loaded
   library(reticulate)
