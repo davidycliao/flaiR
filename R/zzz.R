@@ -216,14 +216,33 @@ select_python_env <- function() {
   )
 }
 # Package initialization ----------------------------------------------
-
 #' @noRd
 .onLoad <- function(libname, pkgname) {
-  if (Sys.info()["sysname"] == "Darwin" &&
-      Sys.info()["machine"] == "arm64") {
-    Sys.setenv(PYTORCH_ENABLE_MPS_FALLBACK = 1)
+  # 清理已存在的 Python 設置
+  Sys.unsetenv("RETICULATE_PYTHON")
+  options(reticulate.python = NULL)
+
+  # 設置虛擬環境路徑
+  venv_path <- file.path(path.expand("~"), "flair_env")
+  if (!dir.exists(venv_path)) {
+    virtualenv_create(venv_path)
   }
-  Sys.setenv(KMP_DUPLICATE_LIB_OK = "TRUE")
+
+  # 設置 Python 路徑
+  venv_python <- file.path(venv_path, "bin", "python")
+  if (file.exists(venv_python)) {
+    Sys.setenv(RETICULATE_PYTHON = venv_python)
+    options(reticulate.python = venv_python)
+  }
+
+  # Mac 特定設置
+  if (Sys.info()["sysname"] == "Darwin") {
+    if (Sys.info()["machine"] == "arm64") {
+      Sys.setenv(PYTORCH_ENABLE_MPS_FALLBACK = 1)
+    }
+    Sys.setenv(KMP_DUPLICATE_LIB_OK = "TRUE")
+  }
+
   options(reticulate.prompt = FALSE)
 }
 
@@ -241,27 +260,10 @@ select_python_env <- function() {
     message(sprintf("System Python: %s", env_info$python$path))
   }
 
-  if (env_info$virtualenv$exists) {
-    message("\nVirtual environments:")
-    for (env in env_info$virtualenv$envs) {
-      is_current <- !is.null(env_info$virtualenv$current) &&
-        env_info$virtualenv$current == env
-      marker <- if (is_current) "*" else " "
-      message(sprintf("%s %s", marker, env))
-    }
-  }
-
   message("")
 
   # Initialize Python environment
   tryCatch({
-    # Set up virtual environment
-    venv <- file.path(path.expand("~"), "flair_env")
-    if (!virtualenv_exists(venv)) {
-      suppressWarnings(virtualenv_create(venv))
-    }
-    suppressWarnings(use_virtualenv(venv, required = TRUE))
-
     # Check Python version
     config <- py_config()
     version_parts <- strsplit(as.character(config$version), "\\.")[[1]]
@@ -340,7 +342,6 @@ select_python_env <- function() {
 
   invisible(NULL)
 }
-
 
 # .onAttach <- function(...) {
 #   # 1. Check if running in Docker (safe check for all platforms)

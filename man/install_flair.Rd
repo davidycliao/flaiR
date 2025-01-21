@@ -7,7 +7,7 @@
 install_flair(
   force = FALSE,
   python_version = "3.10",
-  flair_version = "latest",
+  flair_version = "0.11.3",
   pip_options = NULL
 )
 }
@@ -16,7 +16,7 @@ install_flair(
 
 \item{python_version}{Character, specify Python version to install. Default is "3.10".}
 
-\item{flair_version}{Character, specify Flair version to install. Use "latest" for the latest version.}
+\item{flair_version}{Character, specify Flair version to install. Default is "0.11.3".}
 
 \item{pip_options}{Character, additional pip install options. Default is NULL.}
 }
@@ -24,18 +24,5 @@ install_flair(
 Invisible NULL, called for side effects
 }
 \description{
-This function installs Flair NLP and its dependencies in a Python virtual environment.
-If Python is not found, it will provide instructions for installing Python.
-}
-\examples{
-\dontrun{
-# Install latest version
-install_flair()
-
-# Install specific version
-install_flair(flair_version = "0.11.3")
-
-# Force reinstall with specific Python version
-install_flair(force = TRUE, python_version = "3.9")
-}
+Install Flair NLP in Python environment
 }
