@@ -179,71 +179,76 @@ check_flair <- function() {
     list(status = FALSE, version = NULL)
   })
 }
-
 .onLoad <- function(libname, pkgname) {
   if (!requireNamespace("reticulate", quietly = TRUE)) {
     install.packages("reticulate")
+  }
+
+  python_path <- "/usr/local/bin/python3.10"
+  if (file.exists(python_path)) {
+    Sys.setenv(RETICULATE_PYTHON = python_path)
+    options(reticulate.python = python_path)
   }
 }
 
 .onAttach <- function(...) {
   options(reticulate.prompt = FALSE)
 
-  # Set OpenMP environment variable for Mac systems
   if (Sys.info()["sysname"] == "Darwin") {
-    current_value <- Sys.getenv("KMP_DUPLICATE_LIB_OK")
-    if (current_value == "") {
-      Sys.setenv(KMP_DUPLICATE_LIB_OK = "TRUE")
-      packageStartupMessage("Set KMP_DUPLICATE_LIB_OK=TRUE for OpenMP")
-    }
+    Sys.setenv(KMP_DUPLICATE_LIB_OK = "TRUE")
+    packageStartupMessage("Set KMP_DUPLICATE_LIB_OK=TRUE for OpenMP")
   }
 
   tryCatch({
-    # Check environment
-    is_docker <- check_if_docker()
+    # 使用系統 Python
+    python_path <- "/usr/local/bin/python3.10"
+    reticulate::use_python(python_path, required = TRUE)
 
-    # Setup Python environment
-    if (!setup_python_env(is_docker)) {
-      packageStartupMessage("Failed to setup Python environment. Attempting recovery...")
-      # 清理並重試
-      unlink(file.path(path.expand("~"), "flair_env"), recursive = TRUE)
-      if (!setup_python_env(is_docker)) {
-        stop("Failed to setup Python environment after recovery attempt")
-      }
-    }
+    # 檢查 Python 版本
+    py_config <- reticulate::py_config()
+    version_parts <- strsplit(as.character(py_config$version), "\\.")[[1]]
+    major <- as.numeric(version_parts[1])
+    minor <- as.numeric(version_parts[2])
 
-    # Check Python version
-    python_check <- check_python_version()
-    print_status("Python", python_check$version, python_check$status)
-
-    if (!python_check$status) {
+    if (!(major == 3 && minor >= 9 && minor <= 12)) {
       stop("Incompatible Python version. Python 3.9-3.12 required")
     }
 
-    # Check and install flair
-    flair_check <- check_flair()
-    if (!flair_check$status && !is_docker) {
-      if (!install_dependencies()) {
-        stop("Failed to install dependencies")
-      }
-      flair_check <- check_flair()
+    # 安裝必要的包
+    if (!reticulate::py_module_available("flair")) {
+      packageStartupMessage("Installing required packages...")
+      reticulate::py_install(
+        packages = c(
+          "numpy==1.26.4",
+          "scipy==1.12.0",
+          "flair>=0.11.3"
+        ),
+        pip = TRUE
+      )
     }
 
-    print_status("flaiR", flair_check$version, flair_check$status)
+    # 載入 flair 並檢查版本
+    flair_check <- tryCatch({
+      flair <- reticulate::import("flair", delay_load = TRUE)
+      version <- reticulate::py_get_attr(flair, "__version__")
+      list(status = TRUE, version = version)
+    }, error = function(e) {
+      list(status = FALSE, version = NULL)
+    })
 
     if (flair_check$status) {
-      packageStartupMessage(sprintf(
-        "\033[1m\033[34mflaiR\033[39m\033[22m: \033[1m\033[33mAn R Wrapper for Accessing Flair NLP %s\033[39m\033[22m",
-        flair_check$version
-      ))
+      packageStartupMessage(sprintf("\033[1m\033[34mflaiR\033[39m\033[22m: \033[1m\033[33mAn R Wrapper for Accessing Flair NLP %s\033[39m\033[22m",
+                                    flair_check$version))
+    } else {
+      packageStartupMessage("Failed to initialize flair. Please check your installation.")
     }
+
   }, error = function(e) {
     packageStartupMessage("Error during initialization: ", e$message)
   })
 
   invisible(NULL)
 }
-
 #
 # .onAttach <- function(...) {
 #   # 1. Check if running in Docker (safe check for all platforms)
