@@ -1,5 +1,3 @@
-
-
 # Constants for version management
 .PACKAGE_CONSTANTS <- new.env()
 assign("PYTHON_MIN_VERSION", "3.9", envir = .PACKAGE_CONSTANTS)
@@ -7,6 +5,7 @@ assign("PYTHON_MAX_VERSION", "3.12", envir = .PACKAGE_CONSTANTS)
 assign("NUMPY_VERSION", "1.26.4", envir = .PACKAGE_CONSTANTS)
 assign("SCIPY_VERSION", "1.12.0", envir = .PACKAGE_CONSTANTS)
 assign("FLAIR_MIN_VERSION", "0.11.3", envir = .PACKAGE_CONSTANTS)
+assign("TORCH_VERSION", "2.1.2", envir = .PACKAGE_CONSTANTS)
 
 # ANSI color codes for status messages
 .COLORS <- list(
@@ -20,38 +19,61 @@ assign("FLAIR_MIN_VERSION", "0.11.3", envir = .PACKAGE_CONSTANTS)
 )
 
 .onAttach <- function(...) {
-  # 1. Enhanced Docker environment detection
-  check_if_docker <- function() {
-    docker_indicators <- c(
-      "/.dockerenv",
-      "/proc/1/cgroup"  # Additional check for Linux systems
+  # 1. Platform and environment detection
+  check_environment <- function() {
+    # Basic system info
+    os_type <- Sys.info()["sysname"]
+    machine <- Sys.info()["machine"]
+
+    # Docker detection
+    docker_check <- tryCatch({
+      if (os_type == "Windows") {
+        FALSE
+      } else {
+        any(sapply(c("/.dockerenv", "/proc/1/cgroup"), file.exists))
+      }
+    }, error = function(e) FALSE)
+
+    # Mac ARM detection (M1/M2/M3)
+    is_mac <- os_type == "Darwin"
+    is_arm <- grepl("arm64", machine, ignore.case = TRUE)
+    is_mac_arm <- is_mac && is_arm
+
+    # RStudio detection
+    is_rstudio <- tryCatch(rstudioapi::isAvailable(), error = function(e) FALSE)
+
+    # Python environment info
+    python_info <- tryCatch({
+      reticulate::py_discover_config()
+    }, error = function(e) NULL)
+
+    list(
+      os_type = os_type,
+      docker = docker_check,
+      mac_arm = is_mac_arm,
+      rstudio = is_rstudio,
+      python_info = python_info
     )
-    tryCatch({
-      any(sapply(docker_indicators, file.exists))
-    }, error = function(e) {
-      FALSE
-    })
   }
 
   # 2. Status message utilities
-  get_status_color <- function(status) {
-    if (status) .COLORS$GREEN else .COLORS$RED
-  }
-
   get_status_symbol <- function(status) {
     if (status) "\u2713" else "\u2717"
   }
 
   print_status <- function(component, version, status = TRUE, extra_message = NULL) {
+    color <- if (status) .COLORS$GREEN else .COLORS$RED
+
     formatted_component <- switch(component,
                                   "Python" = sprintf("Python%-15s", ""),
                                   "flaiR" = sprintf("Flair NLP%-12s", ""),
+                                  "PyTorch" = sprintf("PyTorch%-13s", ""),
                                   component
     )
 
     message <- sprintf("%s %s%s%s  %s",
                        formatted_component,
-                       get_status_color(status),
+                       color,
                        get_status_symbol(status),
                        .COLORS$RESET,
                        if(!is.null(version)) version else ""
@@ -63,140 +85,126 @@ assign("FLAIR_MIN_VERSION", "0.11.3", envir = .PACKAGE_CONSTANTS)
     }
   }
 
-  # 3. Version comparison utility
-  check_version_range <- function(version, min_version, max_version) {
-    tryCatch({
-      version <- numeric_version(version)
-      min_version <- numeric_version(min_version)
-      max_version <- numeric_version(max_version)
-      version >= min_version && version <= max_version
-    }, error = function(e) {
-      FALSE
-    })
-  }
-
-  # 4. Check RStudio Python environment
-  check_rstudio_python <- function() {
-    tryCatch({
-      if (rstudioapi::isAvailable()) {
-        # Get RStudio version
-        rs_version <- rstudioapi::getVersion()
-
-        # Check if reticulate is already configured
-        py_config <- reticulate::py_discover_config()
-
-        if (!is.null(py_config$python)) {
-          # Verify if this Python installation meets our version requirements
-          version_parts <- strsplit(as.character(py_config$version), "\\.")[[1]]
-          python_version <- paste(version_parts[1], version_parts[2], sep = ".")
-
-          if (check_version_range(
-            python_version,
-            get("PYTHON_MIN_VERSION", envir = .PACKAGE_CONSTANTS),
-            get("PYTHON_MAX_VERSION", envir = .PACKAGE_CONSTANTS)
-          )) {
-            return(list(
-              status = TRUE,
-              python_path = py_config$python,
-              version = python_version
-            ))
-          }
-        }
-      }
-      return(list(status = FALSE, python_path = NULL, version = NULL))
-    }, error = function(e) {
-      return(list(status = FALSE, python_path = NULL, version = NULL))
-    })
-  }
-
-  is_docker <- check_if_docker()
-
-  # 5. Configure basic settings
-  suppressWarnings({
-    options(reticulate.prompt = FALSE)
-    if (Sys.info()["sysname"] == "Darwin") {
-      Sys.setenv(KMP_DUPLICATE_LIB_OK = "TRUE")
+  # 3. Platform-specific Python path
+  get_python_path <- function(env) {
+    if (env$docker) {
+      Sys.getenv("RETICULATE_PYTHON", "")
+    } else if (env$rstudio && !is.null(env$python_info$python)) {
+      env$python_info$python
+    } else {
+      switch(env$os_type,
+             "Windows" = {
+               python_cmd <- suppressWarnings(system("where python", intern = TRUE))
+               if (length(python_cmd) > 0) python_cmd[1] else "python"
+             },
+             "Darwin" = "/usr/local/bin/python3",
+             "/usr/bin/python3"
+      )
     }
-  })
+  }
+
+  # 4. Installation of dependencies
+  install_dependencies <- function(env) {
+    tryCatch({
+      # Set environment variables for Mac ARM
+      if (env$mac_arm) {
+        Sys.setenv(PYTORCH_ENABLE_MPS_FALLBACK = 1)
+        Sys.setenv(KMP_DUPLICATE_LIB_OK = "TRUE")
+      }
+
+      # Common packages
+      packages <- c(
+        paste0("torch==", get("TORCH_VERSION", envir = .PACKAGE_CONSTANTS)),
+        "torchvision",
+        paste0("numpy==", get("NUMPY_VERSION", envir = .PACKAGE_CONSTANTS)),
+        paste0("scipy==", get("SCIPY_VERSION", envir = .PACKAGE_CONSTANTS)),
+        "transformers",
+        "sentence-transformers",
+        paste0("flair>=", get("FLAIR_MIN_VERSION", envir = .PACKAGE_CONSTANTS))
+      )
+
+      suppressWarnings(
+        reticulate::py_install(packages, pip = TRUE, method = "auto")
+      )
+
+      return(TRUE)
+    }, error = function(e) {
+      packageStartupMessage(sprintf("Installation error: %s", e$message))
+      return(FALSE)
+    })
+  }
 
   # Main execution block
   tryCatch({
-    # 6. Environment setup with RStudio check
-    rstudio_env <- check_rstudio_python()
+    # 5. Environment setup
+    env <- check_environment()
 
-    if (is_docker) {
-      python_path <- Sys.getenv("RETICULATE_PYTHON")
-      if (python_path != "") {
-        suppressWarnings(reticulate::use_python(python_path, required = TRUE))
-      }
-    } else if (rstudio_env$status) {
-      # Use existing RStudio Python environment
-      suppressWarnings(reticulate::use_python(rstudio_env$python_path, required = TRUE))
-      packageStartupMessage(sprintf("Using exiting environment: %s", rstudio_env$python_path))
-    } else {
-      # Fall back to creating/using virtualenv
-      home_dir <- path.expand("~")
-      venv <- file.path(home_dir, "flair_env")
+    # Print environment info
+    if (env$mac_arm) packageStartupMessage("Apple Silicon (M1/M2/M3) detected")
+    if (env$docker) packageStartupMessage("Docker environment detected")
 
-      if (!reticulate::virtualenv_exists(venv)) {
-        suppressWarnings(reticulate::virtualenv_create(venv))
-      }
-      suppressWarnings(reticulate::use_virtualenv(venv, required = TRUE))
+    # Configure Python
+    python_path <- get_python_path(env)
+    if (python_path != "") {
+      suppressWarnings(reticulate::use_python(python_path, required = TRUE))
     }
 
-    # 7. Version checks
+    # 6. Version checks
     py_config <- reticulate::py_config()
     version_parts <- strsplit(as.character(py_config$version), "\\.")[[1]]
     python_version <- paste(version_parts[1], version_parts[2], sep = ".")
 
-    python_status <- check_version_range(
-      python_version,
-      get("PYTHON_MIN_VERSION", envir = .PACKAGE_CONSTANTS),
-      get("PYTHON_MAX_VERSION", envir = .PACKAGE_CONSTANTS)
-    )
+    python_status <- as.numeric(version_parts[1]) == 3 &&
+      as.numeric(version_parts[2]) >= 9 &&
+      as.numeric(version_parts[2]) <= 12
+
     print_status("Python", python_version, python_status)
 
-    if (python_status) {
-      # 8. Check and install flair
-      check_flair <- function() {
-        tryCatch({
-          flair <- reticulate::import("flair", delay_load = TRUE)
+    if (python_status && !env$docker) {
+      # 7. Check and install dependencies
+      if (install_dependencies(env)) {
+        # 8. Verify PyTorch
+        torch_check <- tryCatch({
+          torch <- reticulate::import("torch")
+          torch_version <- reticulate::py_get_attr(torch, "__version__")
+          list(
+            status = TRUE,
+            version = torch_version,
+            cuda = torch$cuda$is_available(),
+            mps = if(env$mac_arm) torch$backends$mps$is_available() else FALSE
+          )
+        }, error = function(e) {
+          list(status = FALSE, version = NULL, cuda = FALSE, mps = FALSE)
+        })
+
+        print_status("PyTorch", torch_check$version, torch_check$status)
+        if (torch_check$status) {
+          if (torch_check$cuda) packageStartupMessage("CUDA is available")
+          if (torch_check$mps) packageStartupMessage("MPS acceleration is available")
+        }
+
+        # 9. Check Flair
+        flair_check <- tryCatch({
+          flair <- reticulate::import("flair")
           version <- reticulate::py_get_attr(flair, "__version__")
           list(status = TRUE, version = version)
         }, error = function(e) {
           list(status = FALSE, version = NULL)
         })
-      }
 
-      flair_check <- check_flair()
+        print_status("flaiR", flair_check$version, flair_check$status)
 
-      if (!flair_check$status && !is_docker) {
-        suppressWarnings({
-          reticulate::py_install(
-            packages = c(
-              paste0("numpy==", get("NUMPY_VERSION", envir = .PACKAGE_CONSTANTS)),
-              paste0("scipy==", get("SCIPY_VERSION", envir = .PACKAGE_CONSTANTS)),
-              paste0("flair[word-embeddings]>=", get("FLAIR_MIN_VERSION", envir = .PACKAGE_CONSTANTS))
-            ),
-            pip = TRUE,
-            method = "auto"
-          )
-        })
-        flair_check <- check_flair()
-      }
-
-      print_status("flaiR", flair_check$version, flair_check$status)
-
-      if (flair_check$status) {
-        packageStartupMessage(sprintf(
-          "%s%sflaiR%s%s: %s%sAn R Wrapper for Accessing Flair NLP %s%s%s",
-          .COLORS$BOLD, .COLORS$BLUE, .COLORS$RESET, .COLORS$RESET_BOLD,
-          .COLORS$BOLD, .COLORS$YELLOW, flair_check$version, .COLORS$RESET, .COLORS$RESET_BOLD
-        ))
+        if (flair_check$status) {
+          packageStartupMessage(sprintf(
+            "%s%sflaiR%s%s: %s%sAn R Wrapper for Accessing Flair NLP %s%s%s",
+            .COLORS$BOLD, .COLORS$BLUE, .COLORS$RESET, .COLORS$RESET_BOLD,
+            .COLORS$BOLD, .COLORS$YELLOW, flair_check$version, .COLORS$RESET, .COLORS$RESET_BOLD
+          ))
+        }
       }
     }
   }, error = function(e) {
-    packageStartupMessage("Error during initialization: ", e$message)
+    packageStartupMessage(sprintf("Critical error: %s", e$message))
   })
 
   invisible(NULL)
