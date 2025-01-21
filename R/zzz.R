@@ -175,11 +175,42 @@ initialize_modules <- function() {
   })
 }
 
-# Package initialization ----------------------------------------------
-
+#' Check for existing flair environment
 #' @noRd
+check_flair_env <- function() {
+  venv_path <- file.path(path.expand("~"), "flair_env")
+  venv_python <- file.path(venv_path, "bin", "python")
+
+  if (dir.exists(venv_path) && file.exists(venv_python)) {
+    # 檢查是否已安裝所需套件
+    tryCatch({
+      reticulate::use_virtualenv(venv_path, required = TRUE)
+      py <- reticulate::import("sys", convert = TRUE)
+      packages <- reticulate::py_list_packages()
+
+      required_packages <- c("torch", "transformers", "flair")
+      missing_packages <- required_packages[!required_packages %in% packages$package]
+
+      list(
+        exists = TRUE,
+        path = venv_python,
+        missing_packages = missing_packages
+      )
+    }, error = function(e) {
+      list(
+        exists = TRUE,
+        path = venv_python,
+        error = e$message
+      )
+    })
+  } else {
+    list(exists = FALSE, path = NULL)
+  }
+}
+
+# 修改 .onLoad 函數
 .onLoad <- function(libname, pkgname) {
-  # Mac 特定設置
+  # Mac 特定設置保持不變
   if (Sys.info()["sysname"] == "Darwin") {
     if (Sys.info()["machine"] == "arm64") {
       Sys.setenv(PYTORCH_ENABLE_MPS_FALLBACK = 1)
@@ -190,34 +221,66 @@ initialize_modules <- function() {
   # 基本設置
   options(reticulate.prompt = FALSE)
 
-  # 設置虛擬環境路徑
-  venv_path <- file.path(path.expand("~"), "flair_env")
-  venv_python <- file.path(venv_path, "bin", "python")
+  # 檢查現有環境
+  env_check <- check_flair_env()
 
-  # 檢查或創建虛擬環境
-  if (!dir.exists(venv_path)) {
-    message("Creating virtual environment...")
+  if (env_check$exists) {
+    message(sprintf("Found existing flair environment at: %s", env_check$path))
+
+    # 檢查是否有缺少的套件
+    if (length(env_check$missing_packages) > 0) {
+      message("Installing missing packages: ", paste(env_check$missing_packages, collapse = ", "))
+      reticulate::use_virtualenv(dirname(dirname(env_check$path)), required = TRUE)
+
+      for (pkg in env_check$missing_packages) {
+        tryCatch({
+          if (pkg == "torch" && Sys.info()["sysname"] == "Darwin" &&
+              Sys.info()["machine"] == "arm64") {
+            message("Installing PyTorch for M1/M2 Mac...")
+            reticulate::py_install("torch", pip = TRUE)
+          } else {
+            version <- .pkgenv$package_constants[[paste0(pkg, "_version")]]
+            if (!is.null(version)) {
+              reticulate::py_install(paste0(pkg, "==", version), pip = TRUE)
+            } else {
+              reticulate::py_install(pkg, pip = TRUE)
+            }
+          }
+        }, error = function(e) {
+          warning(sprintf("Failed to install %s: %s", pkg, e$message))
+        })
+      }
+    }
+
+    # 使用現有環境
+    Sys.setenv(RETICULATE_PYTHON = env_check$path)
+    options(reticulate.python = env_check$path)
+    reticulate::use_virtualenv(dirname(dirname(env_check$path)), required = TRUE)
+
+  } else {
+    # 如果環境不存在，創建新環境（原有的創建邏輯）
+    venv_path <- file.path(path.expand("~"), "flair_env")
+    message("Creating new virtual environment at: ", venv_path)
+
     tryCatch({
-      reticulate::virtualenv_create(venv_path)
+      if (Sys.info()["sysname"] == "Darwin" &&
+          Sys.info()["machine"] == "arm64") {
+        reticulate::virtualenv_create(
+          venv_path,
+          python = "/usr/local/bin/python3.10"
+        )
+      } else {
+        reticulate::virtualenv_create(venv_path)
+      }
+
+      venv_python <- file.path(venv_path, "bin", "python")
+      Sys.setenv(RETICULATE_PYTHON = venv_python)
+      options(reticulate.python = venv_python)
+      reticulate::use_virtualenv(venv_path, required = TRUE)
+
     }, error = function(e) {
       stop("Failed to create virtual environment: ", e$message)
     })
-  }
-
-  # 強制使用虛擬環境
-  if (file.exists(venv_python)) {
-    # 清理之前的 Python 設置
-    Sys.unsetenv("RETICULATE_PYTHON")
-    options(reticulate.python = NULL)
-
-    # 設置新的 Python 路徑
-    Sys.setenv(RETICULATE_PYTHON = venv_python)
-    options(reticulate.python = venv_python)
-
-    # 強制使用虛擬環境
-    reticulate::use_virtualenv(venv_path, required = TRUE)
-  } else {
-    stop("Virtual environment Python not found at: ", venv_python)
   }
 }
 
