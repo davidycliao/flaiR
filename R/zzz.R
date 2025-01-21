@@ -176,39 +176,91 @@ initialize_modules <- function() {
 }
 
 # Package initialization ----------------------------------------------
-
 #' @noRd
 .onLoad <- function(libname, pkgname) {
-  if (Sys.info()["sysname"] == "Darwin" &&
-      Sys.info()["machine"] == "arm64") {
-    Sys.setenv(PYTORCH_ENABLE_MPS_FALLBACK = 1)
+  # Mac 特定設置（保留這部分，這是必要的）
+  if (Sys.info()["sysname"] == "Darwin") {
+    if (Sys.info()["machine"] == "arm64") {
+      Sys.setenv(PYTORCH_ENABLE_MPS_FALLBACK = 1)
+    }
+    Sys.setenv(KMP_DUPLICATE_LIB_OK = "TRUE")
   }
-  Sys.setenv(KMP_DUPLICATE_LIB_OK = "TRUE")
+
+  # 基本設置
   options(reticulate.prompt = FALSE)
+
+  # 檢查當前的 Python 配置
+  tryCatch({
+    current_config <- reticulate::py_config()
+
+    # 如果已經有配置好的 Python，就使用它
+    if (!is.null(current_config$python)) {
+      message(sprintf("Using existing Python: %s", current_config$python))
+      return(invisible(NULL))
+    }
+  }, error = function(e) {
+    # 如果獲取配置失敗，繼續檢查其他選項
+  })
+
+  # 如果沒有現有配置，檢查可用的 Python 環境
+  python_env <- tryCatch({
+    # 檢查系統 Python（優先）
+    if (file.exists("/usr/local/bin/python3.10")) {
+      return("/usr/local/bin/python3.10")
+    }
+
+    # 檢查 conda 環境
+    conda_path <- file.path(
+      path.expand("~"),
+      "Library/r-miniconda-arm64/envs/r-reticulate/bin/python"
+    )
+    if (file.exists(conda_path)) {
+      return(conda_path)
+    }
+
+    # 如果都沒有，返回 NULL
+    NULL
+  }, error = function(e) NULL)
+
+  # 如果找到可用的 Python 環境
+  if (!is.null(python_env)) {
+    reticulate::use_python(python_env, required = TRUE)
+    return(invisible(NULL))
+  }
+
+  # 如果沒有找到任何可用的環境，嘗試創建新的虛擬環境
+  venv_path <- file.path(path.expand("~"), "flair_env")
+  if (!dir.exists(venv_path)) {
+    message("No Python environment found. Creating new virtual environment...")
+    tryCatch({
+      reticulate::virtualenv_create(venv_path)
+      venv_python <- file.path(venv_path, "bin", "python")
+      if (file.exists(venv_python)) {
+        reticulate::use_python(venv_python, required = TRUE)
+      }
+    }, error = function(e) {
+      warning("Failed to create virtual environment: ", e$message)
+    })
+  }
 }
 
 #' @noRd
 .onAttach <- function(libname, pkgname) {
   # Get system and environment information
   sys_info <- get_system_info()
-  env_info <- check_python_env()
 
   # Print environment information
   message("\nEnvironment Information:")
   message(sprintf("OS: %s (%s)", sys_info$name, sys_info$version))
 
-  if (env_info$python$exists) {
-    message(sprintf("System Python: %s", env_info$python$path))
-  }
+  # 獲取當前 Python 路徑
+  current_python <- tryCatch({
+    config <- reticulate::py_config()
+    config$python
+  }, error = function(e) NULL)
 
-  if (env_info$virtualenv$exists) {
-    message("\nVirtual environments:")
-    for (env in env_info$virtualenv$envs) {
-      is_current <- !is.null(env_info$virtualenv$current) &&
-        env_info$virtualenv$current == env
-      marker <- if (is_current) "*" else " "
-      message(sprintf("%s %s", marker, env))
-    }
+  if (!is.null(current_python)) {
+    message(sprintf("System Python: %s", current_python))
   }
 
   message("")
