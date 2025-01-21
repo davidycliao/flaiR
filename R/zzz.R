@@ -253,26 +253,14 @@ select_python_env <- function() {
 
   message("")
 
+  # Initialize Python environment
   tryCatch({
-    # 檢查現有環境
-    env_check <- select_python_env()
-
-    # 優先使用順序：現有虛擬環境 > 系統Python > 創建新環境
-    if (env_check$virtualenv$exists) {
-      message(sprintf("Using existing virtual environment: %s", env_check$virtualenv$path))
-      suppressWarnings(use_virtualenv(env_check$virtualenv$path, required = TRUE))
-    } else if (env_check$system$exists) {
-      message(sprintf("Using system Python: %s", env_check$system$path))
-      suppressWarnings(use_python(env_check$system$path, required = TRUE))
-    } else {
-      # 如果都沒有，創建新環境
-      message("Creating new virtual environment...")
-      venv <- file.path(path.expand("~"), "flair_env")
-      if (!virtualenv_exists(venv)) {
-        suppressWarnings(virtualenv_create(venv))
-      }
-      suppressWarnings(use_virtualenv(venv, required = TRUE))
+    # Set up virtual environment
+    venv <- file.path(path.expand("~"), "flair_env")
+    if (!virtualenv_exists(venv)) {
+      suppressWarnings(virtualenv_create(venv))
     }
+    suppressWarnings(use_virtualenv(venv, required = TRUE))
 
     # Check Python version
     config <- py_config()
@@ -284,11 +272,6 @@ select_python_env <- function() {
       as.numeric(version_parts[2]) <= 12
 
     print_status("Python", python_version, python_status)
-
-    if (!python_status) {
-      message(sprintf("Python version %s is not supported. Please use Python 3.9-3.12", python_version))
-      return(invisible(NULL))
-    }
 
     if (python_status) {
       init_result <- initialize_modules()
