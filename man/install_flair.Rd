@@ -4,17 +4,10 @@
 \alias{install_flair}
 \title{Install Flair NLP in Python environment}
 \usage{
-install_flair(
-  force = FALSE,
-  python_version = "3.10",
-  flair_version = "0.11.3",
-  pip_options = NULL
-)
+install_flair(force = FALSE, flair_version = "0.11.3", pip_options = NULL)
 }
 \arguments{
 \item{force}{Logical, whether to force reinstall packages. Default is FALSE.}
-
-\item{python_version}{Character, specify Python version to install. Default is "3.10".}
 
 \item{flair_version}{Character, specify Flair version to install. Default is "0.11.3".}
 

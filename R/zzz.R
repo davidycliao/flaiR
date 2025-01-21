@@ -126,16 +126,45 @@ check_python_env <- function() {
 #' @noRd
 initialize_modules <- function() {
   tryCatch({
-    # Import modules
-    torch <- import("torch", delay_load = TRUE)
-    transformers <- import("transformers", delay_load = TRUE)
-    flair <- import("flair", delay_load = TRUE)
-    # flair_embeddings <- import("flair.embeddings", delay_load = TRUE)
+    # Import modules with more explicit error handling
+    torch <- reticulate::import("torch", delay_load = TRUE)
+    if (is.null(torch)) {
+      return(list(status = FALSE, error = "Failed to import torch"))
+    }
 
-    # Get versions
-    torch_version <- py_get_attr(torch, "__version__")
-    transformers_version <- py_get_attr(transformers, "__version__")
-    flair_version <- py_get_attr(flair, "__version__")
+    transformers <- reticulate::import("transformers", delay_load = TRUE)
+    if (is.null(transformers)) {
+      return(list(status = FALSE, error = "Failed to import transformers"))
+    }
+
+    flair <- reticulate::import("flair", delay_load = TRUE)
+    if (is.null(flair)) {
+      return(list(status = FALSE, error = "Failed to import flair"))
+    }
+
+    # 明確導入 flair.embeddings
+    flair_embeddings <- reticulate::import("flair.embeddings", delay_load = TRUE)
+    if (is.null(flair_embeddings)) {
+      return(list(status = FALSE, error = "Failed to import flair.embeddings"))
+    }
+
+    # Get versions with error checking
+    torch_version <- tryCatch(
+      reticulate::py_get_attr(torch, "__version__"),
+      error = function(e) NULL
+    )
+    transformers_version <- tryCatch(
+      reticulate::py_get_attr(transformers, "__version__"),
+      error = function(e) NULL
+    )
+    flair_version <- tryCatch(
+      reticulate::py_get_attr(flair, "__version__"),
+      error = function(e) NULL
+    )
+
+    if (any(sapply(list(torch_version, transformers_version, flair_version), is.null))) {
+      return(list(status = FALSE, error = "Failed to get package versions"))
+    }
 
     # Check GPU capabilities
     cuda_info <- list(
@@ -149,11 +178,18 @@ initialize_modules <- function() {
       version = tryCatch(torch$version$cuda, error = function(e) NULL)
     )
 
+    # 檢查 MPS 可用性並設置相應環境變量
     mps_available <- if(Sys.info()["sysname"] == "Darwin") {
-      torch$backends$mps$is_available()
+      is_available <- torch$backends$mps$is_available()
+      if (is_available) {
+        # 確保 MPS 相關設置正確
+        Sys.setenv(PYTORCH_ENABLE_MPS_FALLBACK = 1)
+        Sys.setenv(PYTORCH_MPS_HIGH_WATERMARK_RATIO = 0.0)
+      }
+      is_available
     } else FALSE
 
-    # Store modules
+    # Store modules - 確保所有模組都被正確存儲
     .pkgenv$modules$flair <- flair
     .pkgenv$modules$flair_embeddings <- flair_embeddings
     .pkgenv$modules$torch <- torch
@@ -174,6 +210,59 @@ initialize_modules <- function() {
     list(status = FALSE, error = e$message)
   })
 }
+
+
+# initialize_modules <- function() {
+#   tryCatch({
+#     # Import modules
+#     torch <- import("torch", delay_load = TRUE)
+#     transformers <- import("transformers", delay_load = TRUE)
+#     flair <- import("flair", delay_load = TRUE)
+#     # flair_embeddings <- import("flair.embeddings", delay_load = TRUE)
+#
+#     # Get versions
+#     torch_version <- py_get_attr(torch, "__version__")
+#     transformers_version <- py_get_attr(transformers, "__version__")
+#     flair_version <- py_get_attr(flair, "__version__")
+#
+#     # Check GPU capabilities
+#     cuda_info <- list(
+#       available = torch$cuda$is_available(),
+#       device_name = if (torch$cuda$is_available()) {
+#         tryCatch({
+#           props <- torch$cuda$get_device_properties(0)
+#           props$name
+#         }, error = function(e) NULL)
+#       } else NULL,
+#       version = tryCatch(torch$version$cuda, error = function(e) NULL)
+#     )
+#
+#     mps_available <- if(Sys.info()["sysname"] == "Darwin") {
+#       torch$backends$mps$is_available()
+#     } else FALSE
+#
+#     # Store modules
+#     .pkgenv$modules$flair <- flair
+#     .pkgenv$modules$flair_embeddings <- flair_embeddings
+#     .pkgenv$modules$torch <- torch
+#
+#     list(
+#       versions = list(
+#         torch = torch_version,
+#         transformers = transformers_version,
+#         flair = flair_version
+#       ),
+#       device = list(
+#         cuda = cuda_info,
+#         mps = mps_available
+#       ),
+#       status = TRUE
+#     )
+#   }, error = function(e) {
+#     list(status = FALSE, error = e$message)
+#   })
+# }
+
 
 #' Check and select Python environment
 #' @noRd
