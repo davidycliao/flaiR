@@ -306,25 +306,9 @@ select_python_env <- function() {
 }
 # Package initialization ----------------------------------------------
 #' @noRd
+
 .onLoad <- function(libname, pkgname) {
-  # 清理已存在的 Python 設置
-  Sys.unsetenv("RETICULATE_PYTHON")
-  options(reticulate.python = NULL)
-
-  # 設置虛擬環境路徑
-  venv_path <- file.path(path.expand("~"), "flair_env")
-  if (!dir.exists(venv_path)) {
-    virtualenv_create(venv_path)
-  }
-
-  # 設置 Python 路徑
-  venv_python <- file.path(venv_path, "bin", "python")
-  if (file.exists(venv_python)) {
-    Sys.setenv(RETICULATE_PYTHON = venv_python)
-    options(reticulate.python = venv_python)
-  }
-
-  # Mac 特定設置
+  # Mac 特定設置（保留這部分，這是必要的）
   if (Sys.info()["sysname"] == "Darwin") {
     if (Sys.info()["machine"] == "arm64") {
       Sys.setenv(PYTORCH_ENABLE_MPS_FALLBACK = 1)
@@ -332,8 +316,87 @@ select_python_env <- function() {
     Sys.setenv(KMP_DUPLICATE_LIB_OK = "TRUE")
   }
 
+  # 基本設置
   options(reticulate.prompt = FALSE)
+
+  # 檢查是否已有 Python 環境
+  current_python <- Sys.getenv("RETICULATE_PYTHON")
+  if (current_python != "" && file.exists(current_python)) {
+    # 使用現有的 Python 環境
+    message(sprintf("Using existing Python: %s", current_python))
+    return()
+  }
+
+  # 檢查是否在虛擬環境中
+  current_venv <- Sys.getenv("VIRTUAL_ENV")
+  if (current_venv != "" && dir.exists(current_venv)) {
+    # 使用現有的虛擬環境
+    message(sprintf("Using existing virtual environment: %s", current_venv))
+    return()
+  }
+
+  # 如果沒有環境，才考慮創建新的
+  venv_path <- file.path(path.expand("~"), "flair_env")
+  if (!dir.exists(venv_path)) {
+    message("No Python environment found. Creating new virtual environment...")
+    tryCatch({
+      virtualenv_create(venv_path)
+      venv_python <- file.path(venv_path, "bin", "python")
+      if (file.exists(venv_python)) {
+        Sys.setenv(RETICULATE_PYTHON = venv_python)
+        options(reticulate.python = venv_python)
+      }
+    }, error = function(e) {
+      warning("Failed to create virtual environment: ", e$message)
+    })
+  }
 }
+
+# .onLoad <- function(libname, pkgname) {
+#   # Mac 特定設置（保留這部分，這是必要的）
+#   if (Sys.info()["sysname"] == "Darwin") {
+#     if (Sys.info()["machine"] == "arm64") {
+#       Sys.setenv(PYTORCH_ENABLE_MPS_FALLBACK = 1)
+#     }
+#     Sys.setenv(KMP_DUPLICATE_LIB_OK = "TRUE")
+#   }
+#
+#   # 基本設置
+#   options(reticulate.prompt = FALSE)
+#
+#   # 檢查是否已有 Python 環境
+#   current_python <- Sys.getenv("RETICULATE_PYTHON")
+#   if (current_python != "" && file.exists(current_python)) {
+#     # 使用現有的 Python 環境
+#     message(sprintf("Using existing Python: %s", current_python))
+#     return()
+#   }
+#
+#   # 檢查是否在虛擬環境中
+#   current_venv <- Sys.getenv("VIRTUAL_ENV")
+#   if (current_venv != "" && dir.exists(current_venv)) {
+#     # 使用現有的虛擬環境
+#     message(sprintf("Using existing virtual environment: %s", current_venv))
+#     return()
+#   }
+#
+#   # 如果沒有環境，才考慮創建新的
+#   venv_path <- file.path(path.expand("~"), "flair_env")
+#   if (!dir.exists(venv_path)) {
+#     message("No Python environment found. Creating new virtual environment...")
+#     tryCatch({
+#       virtualenv_create(venv_path)
+#       venv_python <- file.path(venv_path, "bin", "python")
+#       if (file.exists(venv_python)) {
+#         Sys.setenv(RETICULATE_PYTHON = venv_python)
+#         options(reticulate.python = venv_python)
+#       }
+#     }, error = function(e) {
+#       warning("Failed to create virtual environment: ", e$message)
+#     })
+#   }
+# }
+#
 
 #' @noRd
 .onAttach <- function(libname, pkgname) {
