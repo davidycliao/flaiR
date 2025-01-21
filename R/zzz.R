@@ -210,11 +210,13 @@ check_flair_env <- function() {
 
 # 修改 .onLoad 函數
 .onLoad <- function(libname, pkgname) {
-  # Mac 特定設置保持不變
-  if (Sys.info()["sysname"] == "Darwin") {
-    if (Sys.info()["machine"] == "arm64") {
-      Sys.setenv(PYTORCH_ENABLE_MPS_FALLBACK = 1)
-    }
+  # Mac 特定設置優化
+  if (Sys.info()["sysname"] == "Darwin" &&
+      Sys.info()["machine"] == "arm64") {
+    # M1/M2/M3 優化設置
+    Sys.setenv(PYTORCH_ENABLE_MPS_FALLBACK = 1)
+    Sys.setenv(PYTORCH_MPS_HIGH_WATERMARK_RATIO = 0.0)
+    Sys.setenv(TORCH_NCCL_DEBUG = "INFO")
     Sys.setenv(KMP_DUPLICATE_LIB_OK = "TRUE")
   }
 
@@ -223,20 +225,23 @@ check_flair_env <- function() {
 
   # 檢查現有環境
   env_check <- check_flair_env()
-
   if (env_check$exists) {
     message(sprintf("Found existing flair environment at: %s", env_check$path))
 
-    # 檢查是否有缺少的套件
+    # 使用現有環境
+    Sys.setenv(RETICULATE_PYTHON = env_check$path)
+    options(reticulate.python = env_check$path)
+    reticulate::use_virtualenv(dirname(dirname(env_check$path)), required = TRUE)
+
+    # 檢查缺少的套件
     if (length(env_check$missing_packages) > 0) {
       message("Installing missing packages: ", paste(env_check$missing_packages, collapse = ", "))
-      reticulate::use_virtualenv(dirname(dirname(env_check$path)), required = TRUE)
-
       for (pkg in env_check$missing_packages) {
         tryCatch({
           if (pkg == "torch" && Sys.info()["sysname"] == "Darwin" &&
               Sys.info()["machine"] == "arm64") {
-            message("Installing PyTorch for M1/M2 Mac...")
+            # 針對 Apple Silicon 的 PyTorch 安裝
+            message("Installing PyTorch for Apple Silicon...")
             reticulate::py_install("torch", pip = TRUE)
           } else {
             version <- .pkgenv$package_constants[[paste0(pkg, "_version")]]
@@ -251,33 +256,37 @@ check_flair_env <- function() {
         })
       }
     }
-
-    # 使用現有環境
-    Sys.setenv(RETICULATE_PYTHON = env_check$path)
-    options(reticulate.python = env_check$path)
-    reticulate::use_virtualenv(dirname(dirname(env_check$path)), required = TRUE)
-
   } else {
-    # 如果環境不存在，創建新環境（原有的創建邏輯）
+    # 創建新環境
     venv_path <- file.path(path.expand("~"), "flair_env")
     message("Creating new virtual environment at: ", venv_path)
 
     tryCatch({
       if (Sys.info()["sysname"] == "Darwin" &&
           Sys.info()["machine"] == "arm64") {
-        reticulate::virtualenv_create(
-          venv_path,
-          python = "/usr/local/bin/python3.10"
-        )
+        # 使用系統 Python 創建虛擬環境
+        python_path <- "/usr/local/bin/python3.10"
+        if (!file.exists(python_path)) {
+          python_path <- "/usr/bin/python3"
+        }
+        reticulate::virtualenv_create(venv_path, python = python_path)
+
+        # 立即設置必要的環境變量
+        venv_python <- file.path(venv_path, "bin", "python")
+        Sys.setenv(RETICULATE_PYTHON = venv_python)
+        options(reticulate.python = venv_python)
+        reticulate::use_virtualenv(venv_path, required = TRUE)
+
+        # 先安裝 PyTorch
+        message("Installing PyTorch for Apple Silicon...")
+        reticulate::py_install("torch", pip = TRUE)
       } else {
         reticulate::virtualenv_create(venv_path)
+        venv_python <- file.path(venv_path, "bin", "python")
+        Sys.setenv(RETICULATE_PYTHON = venv_python)
+        options(reticulate.python = venv_python)
+        reticulate::use_virtualenv(venv_path, required = TRUE)
       }
-
-      venv_python <- file.path(venv_path, "bin", "python")
-      Sys.setenv(RETICULATE_PYTHON = venv_python)
-      options(reticulate.python = venv_python)
-      reticulate::use_virtualenv(venv_path, required = TRUE)
-
     }, error = function(e) {
       stop("Failed to create virtual environment: ", e$message)
     })
