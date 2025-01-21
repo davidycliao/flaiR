@@ -175,6 +175,46 @@ initialize_modules <- function() {
   })
 }
 
+#' Check and select Python environment
+#' @noRd
+select_python_env <- function() {
+  # 檢查系統 Python
+  system_py <- tryCatch({
+    config <- py_config()
+    list(
+      exists = TRUE,
+      path = config$python,
+      version = config$version,
+      type = "system"
+    )
+  }, error = function(e) {
+    list(exists = FALSE, path = NULL, version = NULL, type = NULL)
+  })
+
+  # 檢查現有的虛擬環境
+  venv_info <- tryCatch({
+    venvs <- virtualenv_list()
+    current_venv <- Sys.getenv("VIRTUAL_ENV")
+    if (length(venvs) > 0 && current_venv != "") {
+      list(
+        exists = TRUE,
+        path = current_venv,
+        envs = venvs,
+        type = "virtualenv"
+      )
+    } else {
+      list(exists = FALSE, path = NULL, envs = NULL, type = NULL)
+    }
+  }, error = function(e) {
+    list(exists = FALSE, path = NULL, envs = NULL, type = NULL)
+  })
+
+  # 返回環境信息
+  list(
+    system = system_py,
+    virtualenv = venv_info
+  )
+}
 # Package initialization ----------------------------------------------
 
 #' @noRd
@@ -213,14 +253,26 @@ initialize_modules <- function() {
 
   message("")
 
-  # Initialize Python environment
   tryCatch({
-    # Set up virtual environment
-    venv <- file.path(path.expand("~"), "flair_env")
-    if (!virtualenv_exists(venv)) {
-      suppressWarnings(virtualenv_create(venv))
+    # 檢查現有環境
+    env_check <- select_python_env()
+
+    # 優先使用順序：現有虛擬環境 > 系統Python > 創建新環境
+    if (env_check$virtualenv$exists) {
+      message(sprintf("Using existing virtual environment: %s", env_check$virtualenv$path))
+      suppressWarnings(use_virtualenv(env_check$virtualenv$path, required = TRUE))
+    } else if (env_check$system$exists) {
+      message(sprintf("Using system Python: %s", env_check$system$path))
+      suppressWarnings(use_python(env_check$system$path, required = TRUE))
+    } else {
+      # 如果都沒有，創建新環境
+      message("Creating new virtual environment...")
+      venv <- file.path(path.expand("~"), "flair_env")
+      if (!virtualenv_exists(venv)) {
+        suppressWarnings(virtualenv_create(venv))
+      }
+      suppressWarnings(use_virtualenv(venv, required = TRUE))
     }
-    suppressWarnings(use_virtualenv(venv, required = TRUE))
 
     # Check Python version
     config <- py_config()
@@ -232,6 +284,11 @@ initialize_modules <- function() {
       as.numeric(version_parts[2]) <= 12
 
     print_status("Python", python_version, python_status)
+
+    if (!python_status) {
+      message(sprintf("Python version %s is not supported. Please use Python 3.9-3.12", python_version))
+      return(invisible(NULL))
+    }
 
     if (python_status) {
       init_result <- initialize_modules()
@@ -301,247 +358,6 @@ initialize_modules <- function() {
   invisible(NULL)
 }
 
-
-# # zzz.R
-# .pkgenv <- new.env(parent = emptyenv())
-#
-# # Constants for version management
-# .pkgenv$PACKAGE_CONSTANTS <- list(
-#   PYTHON_MIN_VERSION = "3.9",
-#   PYTHON_MAX_VERSION = "3.12",
-#   NUMPY_VERSION = "1.26.4",
-#   SCIPY_VERSION = "1.12.0",
-#   FLAIR_MIN_VERSION = "0.11.3",
-#   TORCH_VERSION = "2.1.2",
-#   TRANSFORMERS_VERSION = "4.37.2"
-# )
-#
-# # ANSI color codes for status messages
-# .pkgenv$COLORS <- list(
-#   GREEN = "\033[32m",
-#   RED = "\033[31m",
-#   BLUE = "\033[34m",
-#   YELLOW = "\033[33m",
-#   RESET = "\033[39m",
-#   BOLD = "\033[1m",
-#   RESET_BOLD = "\033[22m"
-# )
-#
-# # Initialize module storage
-# .pkgenv$modules <- list(
-#   flair = NULL,
-#   flair_embeddings = NULL,
-#   torch = NULL
-# )
-#
-# .onLoad <- function(libname, pkgname) {
-#   # Set environment variables first
-#   if (Sys.info()["sysname"] == "Darwin" &&
-#       Sys.info()["machine"] == "arm64") {
-#     Sys.setenv(PYTORCH_ENABLE_MPS_FALLBACK = 1)
-#   }
-#   Sys.setenv(KMP_DUPLICATE_LIB_OK = "TRUE")
-#
-#   # Initialize reticulate configuration
-#   options(reticulate.prompt = FALSE)
-# }
-#
-# print_status <- function(component, version, status = TRUE, extra_message = NULL) {
-#   if (status) {
-#     symbol <- "✓"
-#     color <- .pkgenv$COLORS$GREEN
-#   } else {
-#     symbol <- "✗"
-#     color <- .pkgenv$COLORS$RED
-#   }
-#
-#   formatted_component <- switch(component,
-#                                 "Python" = sprintf("%-20s", "Python"),
-#                                 "PyTorch" = sprintf("%-20s", "PyTorch"),
-#                                 "Transformers" = sprintf("%-20s", "Transformers"),
-#                                 "Flair NLP" = sprintf("%-20s", "Flair NLP"),
-#                                 "GPU" = sprintf("%-20s", "GPU"),
-#                                 sprintf("%-20s", component)
-#   )
-#
-#   message <- sprintf("%s %s%s%s  %s",
-#                      formatted_component,
-#                      color,
-#                      symbol,
-#                      .pkgenv$COLORS$RESET,
-#                      if(!is.null(version)) version else "")
-#
-#   packageStartupMessage(message)
-#   if (!is.null(extra_message)) {
-#     packageStartupMessage(extra_message)
-#   }
-# }
-#
-# initialize_modules <- function() {
-#   tryCatch({
-#     # Import modules
-#     torch <- reticulate::import("torch", delay_load = TRUE)
-#     transformers <- reticulate::import("transformers", delay_load = TRUE)
-#     flair <- reticulate::import("flair", delay_load = TRUE)
-#     flair_embeddings <- reticulate::import("flair.embeddings", delay_load = TRUE)
-#
-#     # Get version information
-#     torch_version <- reticulate::py_get_attr(torch, "__version__")
-#     transformers_version <- reticulate::py_get_attr(transformers, "__version__")
-#     flair_version <- reticulate::py_get_attr(flair, "__version__")
-#
-#     # Check CUDA information
-#     cuda_info <- list(
-#       available = torch$cuda$is_available(),
-#       device_count = if (torch$cuda$is_available()) torch$cuda$device_count() else 0,
-#       device_name = if (torch$cuda$is_available()) {
-#         tryCatch({
-#           device_props <- torch$cuda$get_device_properties(0)
-#           device_props$name
-#         }, error = function(e) NULL)
-#       } else NULL,
-#       version = tryCatch(torch$version$cuda, error = function(e) NULL)
-#     )
-#
-#     # Check MPS availability
-#     mps_available <- if(Sys.info()["sysname"] == "Darwin") {
-#       torch$backends$mps$is_available()
-#     } else FALSE
-#
-#     # Store modules in package environment
-#     .pkgenv$modules$flair <- flair
-#     .pkgenv$modules$flair_embeddings <- flair_embeddings
-#     .pkgenv$modules$torch <- torch
-#
-#     list(
-#       versions = list(
-#         torch = torch_version,
-#         transformers = transformers_version,
-#         flair = flair_version
-#       ),
-#       device = list(
-#         cuda = cuda_info,
-#         mps = mps_available
-#       ),
-#       status = TRUE
-#     )
-#   }, error = function(e) {
-#     list(status = FALSE, error = e$message)
-#   })
-# }
-#
-# print_device_status <- function(init_result) {
-#   # Check system and device type
-#   is_mac <- Sys.info()["sysname"] == "Darwin"
-#   is_mac_arm <- is_mac && Sys.info()["machine"] == "arm64"
-#
-#   # GPU status
-#   cuda_info <- init_result$device$cuda
-#   if (cuda_info$available || init_result$device$mps) {
-#     print_status("GPU", "available", TRUE)
-#
-#     # CUDA information
-#     if (cuda_info$available) {
-#       gpu_type <- if (!is.null(cuda_info$device_name)) {
-#         sprintf("CUDA (%s)", cuda_info$device_name)
-#       } else {
-#         "CUDA"
-#       }
-#       print_status(gpu_type, cuda_info$version, TRUE)
-#     }
-#
-#     # MPS information (Mac ARM only)
-#     if (is_mac_arm && init_result$device$mps) {
-#       print_status("Mac MPS", "available", TRUE)
-#     }
-#   } else {
-#     print_status("GPU", "not available", FALSE)
-#   }
-# }
-#
-# .onAttach <- function(libname, pkgname) {
-#   # Check if running in Docker
-#   is_docker <- file.exists("/.dockerenv")
-#   if (is_docker) {
-#     packageStartupMessage("Docker environment detected")
-#   }
-#
-#   tryCatch({
-#     if (is_docker) {
-#       # Docker environment setup
-#       python_path <- Sys.getenv("RETICULATE_PYTHON")
-#       if (python_path != "") {
-#         suppressWarnings(reticulate::use_python(python_path, required = TRUE))
-#       }
-#     } else {
-#       # Local environment setup
-#       home_dir <- path.expand("~")
-#       venv <- file.path(home_dir, "flair_env")
-#
-#       if (!reticulate::virtualenv_exists(venv)) {
-#         suppressWarnings(reticulate::virtualenv_create(venv))
-#       }
-#       suppressWarnings(reticulate::use_virtualenv(venv, required = TRUE))
-#     }
-#
-#     # Check Python version
-#     py_config <- reticulate::py_config()
-#     version_parts <- strsplit(as.character(py_config$version), "\\.")[[1]]
-#     python_version <- paste(version_parts[1], version_parts[2], sep = ".")
-#
-#     python_status <- as.numeric(version_parts[1]) == 3 &&
-#       as.numeric(version_parts[2]) >= 9 &&
-#       as.numeric(version_parts[2]) <= 12
-#
-#     print_status("Python", python_version, python_status)
-#
-#     if (python_status) {
-#       # Initialize and install components
-#       init_result <- initialize_modules()
-#
-#       if (!init_result$status && !is_docker) {
-#         # Install required packages
-#         suppressWarnings({
-#           reticulate::py_install(
-#             packages = c(
-#               paste0("torch==", .pkgenv$PACKAGE_CONSTANTS$TORCH_VERSION),
-#               paste0("numpy==", .pkgenv$PACKAGE_CONSTANTS$NUMPY_VERSION),
-#               paste0("scipy==", .pkgenv$PACKAGE_CONSTANTS$SCIPY_VERSION),
-#               paste0("transformers==", .pkgenv$PACKAGE_CONSTANTS$TRANSFORMERS_VERSION),
-#               paste0("flair>=", .pkgenv$PACKAGE_CONSTANTS$FLAIR_MIN_VERSION)
-#             ),
-#             pip = TRUE,
-#             method = "auto"
-#           )
-#         })
-#         # Reinitialize
-#         init_result <- initialize_modules()
-#       }
-#
-#       if (init_result$status) {
-#         # Print component status
-#         print_status("PyTorch", init_result$versions$torch, TRUE)
-#         print_status("Transformers", init_result$versions$transformers, TRUE)
-#         print_status("Flair NLP", init_result$versions$flair, TRUE)
-#
-#         # Print device status
-#         print_device_status(init_result)
-#
-#         # Print welcome message
-#         packageStartupMessage(sprintf("%s%sflaiR%s%s: %s%sAn R Wrapper for Accessing Flair NLP %s%s%s",
-#                                       .pkgenv$COLORS$BOLD, .pkgenv$COLORS$BLUE,
-#                                       .pkgenv$COLORS$RESET, .pkgenv$COLORS$RESET_BOLD,
-#                                       .pkgenv$COLORS$BOLD, .pkgenv$COLORS$YELLOW,
-#                                       init_result$versions$flair,
-#                                       .pkgenv$COLORS$RESET, .pkgenv$COLORS$RESET_BOLD))
-#       }
-#     }
-#   }, error = function(e) {
-#     packageStartupMessage("Error during initialization: ", e$message)
-#   })
-#
-#   invisible(NULL)
-# }
 
 # .onAttach <- function(...) {
 #   # 1. Check if running in Docker (safe check for all platforms)
