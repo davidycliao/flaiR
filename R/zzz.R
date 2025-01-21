@@ -1,241 +1,207 @@
-#' @title Initialize Python Environment and Load flaiR NLP
-#' @description Sets up Python environment, manages virtual environment, and installs required flair NLP packages.
-#'
-#' @param ... Additional arguments passed to startup functions
-#'
-#' @details
-#' The function performs the following steps:
-#' \itemize{
-#'   \item Checks for Docker environment
-#'   \item Sets up operating system specific configurations:
-#'     - Windows: Configures Python path
-#'     - macOS: Sets KMP_DUPLICATE_LIB_OK environment variable
-#'     - Linux: Uses system Python path
-#'   \item Manages Python environment:
-#'     - Detects existing Python installation
-#'     - Provides installation guidance if Python not found
-#'     - Supports Python versions 3.9 to 3.12
-#'   \item Verifies and validates:
-#'     - Python version compatibility
-#'     - Flair NLP installation status
-#'     - Package dependencies
-#' }
-#'
-#' Error handling includes:
-#' \itemize{
-#'   \item Comprehensive environment checks
-#'   \item Detailed error messages with installation guides
-#'   \item System-specific troubleshooting suggestions
-#' }
-#'
-#' Output includes:
-#' \itemize{
-#'   \item Environment status indicators
-#'   \item Python version information
-#'   \item Flair NLP version details
-#'   \item Installation status and paths
-#' }
-#'
-#' @section Virtual Environment:
-#' The package uses a dedicated virtual environment ('flair_env') located in the user's home directory.
-#' For Docker environments, it uses the pre-configured Python installation.
-#'
-#' @section Package Dependencies:
-#' Required Python packages:
-#' \itemize{
-#'   \item numpy (version 1.26.4)
-#'   \item scipy (version 1.12.0)
-#'   \item flair (version 0.11.3 or higher)
-#' }
-#'
-#' @section Operating System Support:
-#' \itemize{
-#'   \item Windows: Supports both standard Python and Anaconda installations
-#'   \item macOS: Includes automatic KMP_DUPLICATE_LIB_OK configuration
-#'   \item Linux: Compatible with system Python and virtual environments
-#'   \item Docker: Supports pre-configured container environments
-#' }
-#'
-#' @note
-#' \itemize{
-#'   \item Requires Python 3.9 or higher
-#'   \item Creates 'flair_env' virtual environment if not exists
-#'   \item Docker environments use pre-configured Python
-#'   \item Restart R session after installation for changes to take effect
-#' }
-#'
-#' @seealso
-#' \itemize{
-#'   \item \code{\link{install_flair}} for manual installation
-#'   \item \code{\link{check_flairenv}} for environment verification
-#' }
-#'
-#' @return Invisible NULL, called for side effects
-#' @keywords internal
-#' @title Initialize Python Environment and Load flaiR NLP
-#' @description Sets up Python environment, manages virtual environment, and installs required flair NLP packages.
-#'
-#' @param ... Additional arguments passed to startup functions
-#'
-#' @details
-#' The function performs the following steps:
-#' \itemize{
-#'   \item Checks for Docker environment
-#'   \item Sets up operating system specific configurations
-#'   \item Manages Python environment
-#'   \item Verifies and validates installations
-#' }
-#'
-#' @return Invisible NULL, called for side effects
-#' @keywords internal
-.onAttach <- function(...) {
-  # Print status function
-  print_status <- function(component, status, extra_info = NULL) {
-    symbol <- if(status) "\u2713" else "\u2717"  # checkmark or x
-    color <- if(status) "\033[32m" else "\033[31m"  # green or red
 
-    message <- sprintf("%s%s\033[39m %s", color, symbol, component)
-    if (!is.null(extra_info)) {
-      message <- paste0(message, ": ", extra_info)
-    }
-    packageStartupMessage(message)
+
+# Constants for version management
+.PACKAGE_CONSTANTS <- new.env()
+assign("PYTHON_MIN_VERSION", "3.9", envir = .PACKAGE_CONSTANTS)
+assign("PYTHON_MAX_VERSION", "3.12", envir = .PACKAGE_CONSTANTS)
+assign("NUMPY_VERSION", "1.26.4", envir = .PACKAGE_CONSTANTS)
+assign("SCIPY_VERSION", "1.12.0", envir = .PACKAGE_CONSTANTS)
+assign("FLAIR_MIN_VERSION", "0.11.3", envir = .PACKAGE_CONSTANTS)
+
+# ANSI color codes for status messages
+.COLORS <- list(
+  GREEN = "\033[32m",
+  RED = "\033[31m",
+  BLUE = "\033[34m",
+  YELLOW = "\033[33m",
+  RESET = "\033[39m",
+  BOLD = "\033[1m",
+  RESET_BOLD = "\033[22m"
+)
+
+.onAttach <- function(...) {
+  # 1. Enhanced Docker environment detection
+  check_if_docker <- function() {
+    docker_indicators <- c(
+      "/.dockerenv",
+      "/proc/1/cgroup"  # Additional check for Linux systems
+    )
+    tryCatch({
+      any(sapply(docker_indicators, file.exists))
+    }, error = function(e) {
+      FALSE
+    })
   }
 
-  # Check if running in Docker
-  check_if_docker <- function() {
+  # 2. Status message utilities
+  get_status_color <- function(status) {
+    if (status) .COLORS$GREEN else .COLORS$RED
+  }
+
+  get_status_symbol <- function(status) {
+    if (status) "\u2713" else "\u2717"
+  }
+
+  print_status <- function(component, version, status = TRUE, extra_message = NULL) {
+    formatted_component <- switch(component,
+                                  "Python" = sprintf("Python%-15s", ""),
+                                  "flaiR" = sprintf("Flair NLP%-12s", ""),
+                                  component
+    )
+
+    message <- sprintf("%s %s%s%s  %s",
+                       formatted_component,
+                       get_status_color(status),
+                       get_status_symbol(status),
+                       .COLORS$RESET,
+                       if(!is.null(version)) version else ""
+    )
+
+    packageStartupMessage(message)
+    if (!is.null(extra_message)) {
+      packageStartupMessage(extra_message)
+    }
+  }
+
+  # 3. Version comparison utility
+  check_version_range <- function(version, min_version, max_version) {
     tryCatch({
-      if (file.exists("/.dockerenv")) {
-        return(TRUE)
-      }
-      return(FALSE)
+      version <- numeric_version(version)
+      min_version <- numeric_version(min_version)
+      max_version <- numeric_version(max_version)
+      version >= min_version && version <= max_version
     }, error = function(e) {
-      return(FALSE)
+      FALSE
+    })
+  }
+
+  # 4. Check RStudio Python environment
+  check_rstudio_python <- function() {
+    tryCatch({
+      if (rstudioapi::isAvailable()) {
+        # Get RStudio version
+        rs_version <- rstudioapi::getVersion()
+
+        # Check if reticulate is already configured
+        py_config <- reticulate::py_discover_config()
+
+        if (!is.null(py_config$python)) {
+          # Verify if this Python installation meets our version requirements
+          version_parts <- strsplit(as.character(py_config$version), "\\.")[[1]]
+          python_version <- paste(version_parts[1], version_parts[2], sep = ".")
+
+          if (check_version_range(
+            python_version,
+            get("PYTHON_MIN_VERSION", envir = .PACKAGE_CONSTANTS),
+            get("PYTHON_MAX_VERSION", envir = .PACKAGE_CONSTANTS)
+          )) {
+            return(list(
+              status = TRUE,
+              python_path = py_config$python,
+              version = python_version
+            ))
+          }
+        }
+      }
+      return(list(status = FALSE, python_path = NULL, version = NULL))
+    }, error = function(e) {
+      return(list(status = FALSE, python_path = NULL, version = NULL))
     })
   }
 
   is_docker <- check_if_docker()
-  os_name <- Sys.info()["sysname"]
 
-  # Python installation guide based on OS
-  python_install_guide <- function(os_name) {
-    if (os_name == "Windows") {
-      return(paste(
-        "To install Python:",
-        "1. You can use reticulate: install.packages('reticulate'); reticulate::install_python(version = '3.10')",
-        "2. Or download directly from https://www.python.org/downloads/",
-        "3. Make sure to check 'Add Python to PATH' during installation",
-        sep = "\n"
-      ))
-    } else if (os_name == "Darwin") {  # macOS
-      return(paste(
-        "To install Python:",
-        "1. Using reticulate: install.packages('reticulate'); reticulate::install_python(version = '3.10')",
-        "2. Or using Homebrew: brew install python@3.10",
-        "3. Or download from https://www.python.org/downloads/macos",
-        sep = "\n"
-      ))
-    } else {  # Linux
-      return(paste(
-        "To install Python:",
-        "1. Using reticulate: install.packages('reticulate'); reticulate::install_python(version = '3.10')",
-        "2. Or using apt: sudo apt-get update && sudo apt-get install python3.10",
-        "3. Or using conda: conda install python=3.10",
-        sep = "\n"
-      ))
+  # 5. Configure basic settings
+  suppressWarnings({
+    options(reticulate.prompt = FALSE)
+    if (Sys.info()["sysname"] == "Darwin") {
+      Sys.setenv(KMP_DUPLICATE_LIB_OK = "TRUE")
     }
-  }
+  })
 
-  # Set environment variables for macOS
-  if (os_name == "Darwin") {
-    current_kmp <- Sys.getenv("KMP_DUPLICATE_LIB_OK")
-    Sys.setenv(KMP_DUPLICATE_LIB_OK = "TRUE")
-    print_status("KMP_DUPLICATE_LIB_OK", TRUE,
-                 sprintf("%s -> TRUE", if(current_kmp == "") "not set" else current_kmp))
-  }
-
-  # Check Python environment
-  if (is_docker) {
-    python_path <- Sys.getenv("RETICULATE_PYTHON")
-    if (python_path == "") {
-      python_cmd <- if(os_name == "Windows") "python" else "python3"
-      python_path <- Sys.which(python_cmd)
-      if (python_path == "") {
-        print_status("Python", FALSE, "Not found in Docker environment")
-        packageStartupMessage("\nPlease ensure Python is installed in your Docker image")
-        return(invisible(NULL))
-      }
-    }
-    print_status("Environment", TRUE, sprintf("Docker (Python: %s)", python_path))
-  } else {
-    # Local environment setup
-    if (os_name == "Windows") {
-      python_cmd <- "python"
-      tryCatch({
-        python_path <- normalizePath(Sys.which(python_cmd), winslash = "/", mustWork = TRUE)
-      }, error = function(e) {
-        print_status("Python", FALSE, "Not found")
-        packageStartupMessage("\n", python_install_guide(os_name))
-        return(invisible(NULL))
-      })
-    } else {
-      python_cmd <- "python3"
-      python_path <- Sys.which(python_cmd)
-    }
-
-    if (python_path == "") {
-      print_status("Python", FALSE, "Not found")
-      packageStartupMessage("\n", python_install_guide(os_name))
-      return(invisible(NULL))
-    }
-  }
-
-  # Check Python version
+  # Main execution block
   tryCatch({
-    cmd <- sprintf('"%s" -V', python_path)
-    python_version <- system(cmd, intern = TRUE)
-    version_match <- regexpr("Python ([0-9.]+)", python_version)
-    if (version_match > 0) {
-      version_str <- regmatches(python_version, version_match)[[1]]
-      version_parts <- strsplit(gsub("Python ", "", version_str), "\\.")[[1]]
-      major <- as.numeric(version_parts[1])
-      minor <- as.numeric(version_parts[2])
+    # 6. Environment setup with RStudio check
+    rstudio_env <- check_rstudio_python()
 
-      python_status <- (major == 3 && minor >= 9 && minor <= 12)
-      print_status("Python", python_status, version_str)
-
-      if (!python_status) {
-        packageStartupMessage("\nPython version not compatible. Please install Python 3.9-3.12")
-        return(invisible(NULL))
+    if (is_docker) {
+      python_path <- Sys.getenv("RETICULATE_PYTHON")
+      if (python_path != "") {
+        suppressWarnings(reticulate::use_python(python_path, required = TRUE))
       }
-    }
-
-    # Check Flair installation
-    cmd <- sprintf('"%s" -c "import flair; print(flair.__version__)"', python_path)
-    flair_version <- tryCatch({
-      system(cmd, intern = TRUE)[1]
-    }, error = function(e) NULL)
-
-    if (is.null(flair_version)) {
-      print_status("Flair NLP", FALSE, "Not installed")
-      if (!is_docker) {
-        packageStartupMessage("\nUse install_flair() to install Flair NLP")
-      } else {
-        packageStartupMessage("\nPlease ensure Flair is installed in your Docker image")
-      }
+    } else if (rstudio_env$status) {
+      # Use existing RStudio Python environment
+      suppressWarnings(reticulate::use_python(rstudio_env$python_path, required = TRUE))
+      packageStartupMessage(sprintf("Using exiting environment: %s", rstudio_env$python_path))
     } else {
-      print_status("Flair NLP", TRUE, paste("version", flair_version))
-      packageStartupMessage(sprintf(
-        "\n\033[1m\033[34mflaiR\033[39m\033[22m: \033[1m\033[33mAn R Wrapper for Accessing Flair NLP %s\033[39m\033[22m",
-        flair_version
-      ))
+      # Fall back to creating/using virtualenv
+      home_dir <- path.expand("~")
+      venv <- file.path(home_dir, "flair_env")
+
+      if (!reticulate::virtualenv_exists(venv)) {
+        suppressWarnings(reticulate::virtualenv_create(venv))
+      }
+      suppressWarnings(reticulate::use_virtualenv(venv, required = TRUE))
     }
 
+    # 7. Version checks
+    py_config <- reticulate::py_config()
+    version_parts <- strsplit(as.character(py_config$version), "\\.")[[1]]
+    python_version <- paste(version_parts[1], version_parts[2], sep = ".")
+
+    python_status <- check_version_range(
+      python_version,
+      get("PYTHON_MIN_VERSION", envir = .PACKAGE_CONSTANTS),
+      get("PYTHON_MAX_VERSION", envir = .PACKAGE_CONSTANTS)
+    )
+    print_status("Python", python_version, python_status)
+
+    if (python_status) {
+      # 8. Check and install flair
+      check_flair <- function() {
+        tryCatch({
+          flair <- reticulate::import("flair", delay_load = TRUE)
+          version <- reticulate::py_get_attr(flair, "__version__")
+          list(status = TRUE, version = version)
+        }, error = function(e) {
+          list(status = FALSE, version = NULL)
+        })
+      }
+
+      flair_check <- check_flair()
+
+      if (!flair_check$status && !is_docker) {
+        suppressWarnings({
+          reticulate::py_install(
+            packages = c(
+              paste0("numpy==", get("NUMPY_VERSION", envir = .PACKAGE_CONSTANTS)),
+              paste0("scipy==", get("SCIPY_VERSION", envir = .PACKAGE_CONSTANTS)),
+              paste0("flair[word-embeddings]>=", get("FLAIR_MIN_VERSION", envir = .PACKAGE_CONSTANTS))
+            ),
+            pip = TRUE,
+            method = "auto"
+          )
+        })
+        flair_check <- check_flair()
+      }
+
+      print_status("flaiR", flair_check$version, flair_check$status)
+
+      if (flair_check$status) {
+        packageStartupMessage(sprintf(
+          "%s%sflaiR%s%s: %s%sAn R Wrapper for Accessing Flair NLP %s%s%s",
+          .COLORS$BOLD, .COLORS$BLUE, .COLORS$RESET, .COLORS$RESET_BOLD,
+          .COLORS$BOLD, .COLORS$YELLOW, flair_check$version, .COLORS$RESET, .COLORS$RESET_BOLD
+        ))
+      }
+    }
   }, error = function(e) {
-    print_status("Environment", FALSE, paste("Error:", e$message))
+    packageStartupMessage("Error during initialization: ", e$message)
   })
 
   invisible(NULL)
 }
+
 #
 # .onAttach <- function(...) {
 #   # 1. Check if running in Docker (safe check for all platforms)
