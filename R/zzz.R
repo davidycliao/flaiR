@@ -291,10 +291,6 @@ initialize_modules <- function() {
 #' @noRd
 .onAttach <- function(libname, pkgname) {
   tryCatch({
-    # Reset Python environment variables
-    Sys.unsetenv("VIRTUAL_ENV")
-    Sys.unsetenv("PYTHONPATH")
-
     # Show environment information
     sys_info <- get_system_info()
     message("\nEnvironment Information:")
@@ -302,19 +298,9 @@ initialize_modules <- function() {
                     as.character(sys_info$name),
                     as.character(sys_info$version)))
 
-    # Check conda installation
-    conda_path <- reticulate::conda_binary()
-    if (is.null(conda_path)) {
-      print_status("Conda", NULL, FALSE, "Conda not found")
-      message("Please install Miniconda or Anaconda.")
-      return(invisible(NULL))
-    }
-    print_status("Conda", conda_path, TRUE)
-
     # Initialize Python environment
-    conda_setup <- check_conda_env(show_status = FALSE)
+    conda_setup <- check_conda_env()
     if (!conda_setup) {
-      message("Attempting to use system Python...")
       return(invisible(NULL))
     }
 
@@ -361,7 +347,16 @@ initialize_modules <- function() {
       init_result <- initialize_modules()
 
       if (init_result$status) {
-        # Print status for each component
+        # Verify all required modules
+        required_modules <- c("flair", "torch", "transformers")
+        missing_modules <- required_modules[!sapply(required_modules, reticulate::py_module_available)]
+
+        if (length(missing_modules) > 0) {
+          message(sprintf("Warning: Required modules missing: %s",
+                          paste(missing_modules, collapse = ", ")))
+          return(invisible(NULL))
+        }
+
         print_status("PyTorch", init_result$versions$torch, TRUE)
         print_status("Transformers", init_result$versions$transformers, TRUE)
         print_status("Flair NLP", init_result$versions$flair, TRUE)
@@ -370,15 +365,19 @@ initialize_modules <- function() {
         cuda_info <- init_result$device$cuda
         if (!is.null(cuda_info$available) &&
             (cuda_info$available || init_result$device$mps)) {
+          print_status("GPU", "available", TRUE)
+
           if (cuda_info$available) {
             gpu_type <- if (!is.null(cuda_info$device_name)) {
               sprintf("CUDA (%s)", cuda_info$device_name)
             } else {
               "CUDA"
             }
-            print_status("GPU", gpu_type, TRUE)
-          } else if (!is.null(init_result$device$mps) && init_result$device$mps) {
-            print_status("GPU", "Mac MPS", TRUE)
+            print_status(gpu_type, cuda_info$version, TRUE)
+          }
+
+          if (!is.null(init_result$device$mps) && init_result$device$mps) {
+            print_status("Mac MPS", "available", TRUE)
           }
         } else {
           print_status("GPU", "not available", FALSE)
@@ -402,7 +401,6 @@ initialize_modules <- function() {
 
   invisible(NULL)
 }
-
 #' #' @keywords internal
 #' "_PACKAGE"
 #'
