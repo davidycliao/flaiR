@@ -36,7 +36,7 @@ NULL
   torch = NULL
 )
 
-# Helper functions -----------------------------------------------------
+# Helper functions -------------------------------------------------------------
 
 #' Print formatted status message
 #' @noRd
@@ -94,14 +94,7 @@ get_system_info <- function() {
 #' Check and setup conda environment
 #' @noRd
 check_conda_env <- function() {
-  # 先檢查系統 Python 版本
-  system_python_version <- tryCatch({
-    # 使用 system2 來執行 python3 -V
-    py_ver <- system2("python3", args = "-V", stdout = TRUE)
-    # 提取版本號
-    gsub("Python ", "", py_ver)
-  }, error = function(e) "3.10")  # 預設值
-
+  # Check if conda exists
   conda_available <- tryCatch({
     conda_bin <- reticulate::conda_binary()
     list(status = TRUE, path = conda_bin)
@@ -113,19 +106,24 @@ check_conda_env <- function() {
     print_status("Conda", NULL, FALSE, "Conda not found")
     return(FALSE)
   }
-
   print_status("Conda", conda_available$path, TRUE)
-  conda_envs <- reticulate::conda_list()
-  has_flair_env <- "flair_env" %in% conda_envs$name
 
+  # List conda environments
+  conda_envs <- reticulate::conda_list()
+
+  # Check for flair_env
+  has_flair_env <- "flair_env" %in% conda_envs$name
   if (!has_flair_env) {
     message("Creating new conda environment: flair_env")
     tryCatch({
-      # 使用系統檢測到的 Python 版本
-      message(sprintf("Using system Python version: %s", system_python_version))
-      reticulate::conda_create("flair_env", python_version = system_python_version)
+      # Create environment without specifying Python version
+      reticulate::conda_create("flair_env")
 
-      # 其他安裝步驟保持不變
+      # Get Python version from the new environment
+      python_config <- reticulate::py_config()
+      message(sprintf("Using Python %s", python_config$version))
+
+      # Install base packages with conda
       reticulate::conda_install(
         envname = "flair_env",
         packages = c(
@@ -136,11 +134,13 @@ check_conda_env <- function() {
         )
       )
 
+      # Install flair with pip
       reticulate::py_install(
         packages = sprintf("flair>=%s", .pkgenv$package_constants$flair_min_version),
         pip = TRUE,
         conda = "flair_env"
       )
+
       return(TRUE)
     }, error = function(e) {
       message("Failed to create conda environment: ", e$message)
@@ -148,8 +148,27 @@ check_conda_env <- function() {
     })
   }
 
+  # Try to use existing flair_env
   tryCatch({
     reticulate::use_condaenv("flair_env", required = TRUE)
+
+    # Verify Python version meets requirements
+    python_config <- reticulate::py_config()
+    version_parts <- strsplit(as.character(python_config$version), "\\.")[[1]]
+    python_version <- as.numeric(paste(version_parts[1], version_parts[2], sep = "."))
+
+    min_version <- as.numeric(.pkgenv$package_constants$python_min_version)
+    max_version <- as.numeric(.pkgenv$package_constants$python_max_version)
+
+    if (python_version < min_version || python_version > max_version) {
+      message(sprintf(
+        "Warning: Python version %s is outside the supported range (%s-%s)",
+        python_config$version,
+        .pkgenv$package_constants$python_min_version,
+        .pkgenv$package_constants$python_max_version
+      ))
+    }
+
     return(TRUE)
   }, error = function(e) {
     message("Error using conda environment: ", e$message)
@@ -294,7 +313,7 @@ initialize_modules <- function() {
     # 首先檢查和設置 conda 環境
     conda_setup <- check_conda_env()
     if (!conda_setup) {
-      packageStartupMessage("Attempting to use system Python...")
+      message("Attempting to use system Python...")
     }
 
     # Check Python version
@@ -307,8 +326,8 @@ initialize_modules <- function() {
       as.numeric(version_parts[2]) <= 12
 
     print_status("Python", python_version, python_status)
-    packageStartupMessage(sprintf("Using Python: %s", config$python))
-    packageStartupMessage("")
+    message(sprintf("Using Python: %s", config$python))
+    message("")
 
     if (python_status) {
       init_result <- initialize_modules()
@@ -348,15 +367,14 @@ initialize_modules <- function() {
           init_result$versions$flair,
           .pkgenv$colors$reset, .pkgenv$colors$reset_bold
         )
-        packageStartupMessage(msg)
+        message(msg)
       }
     }
   }, error = function(e) {
-    packageStartupMessage("Error during initialization: ", e$message)
+    message("Error during initialization: ", e$message)
   })
 
   invisible(NULL)
 }
-
 
 
