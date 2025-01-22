@@ -9,6 +9,7 @@
   reset_bold = "\033[22m"
 )
 
+
 #' Initialize required modules
 #' @noRd
 initialize_modules <- function() {
@@ -81,9 +82,9 @@ print_status <- function(component, version, status = TRUE, extra_message = NULL
     .COLORS$reset,
     if(!is.null(version)) version else "")
 
-  message(message)
+  packageStartupMessage(message)
   if (!is.null(extra_message)) {
-    message(extra_message)
+    packageStartupMessage(extra_message)
   }
 }
 
@@ -110,24 +111,25 @@ get_system_info <- function() {
   list(name = os_name, version = os_version)
 }
 
+
 #' @noRd
 .onAttach <- function(libname, pkgname) {
-  # 顯示環境信息
+  # show env messages
   sys_info <- get_system_info()
-  message("\nEnvironment Information:")
-  message(sprintf("OS: %s (%s)", sys_info$name, sys_info$version))
+  packageStartupMessage("\nEnvironment Information:")
+  packageStartupMessage(sprintf("OS: %s (%s)", sys_info$name, sys_info$version))
 
-  # 獲取當前 Python 路徑
+  # tract python path
   current_python <- tryCatch({
     config <- reticulate::py_config()
-    message(sprintf("Using conda environment: %s", config$python))
+    packageStartupMessage(sprintf("Using conda environment: %s", config$python))
     config$python
   }, error = function(e) {
-    message("Error getting Python configuration: ", e$message)
+    packageStartupMessage("Error getting Python configuration: ", e$message)
     NULL
   })
 
-  message("")
+  packageStartupMessage("")
 
   # Initialize modules
   tryCatch({
@@ -180,11 +182,11 @@ get_system_info <- function() {
           init_result$versions$flair,
           .COLORS$reset, .COLORS$reset_bold
         )
-        message(msg)
+        packageStartupMessage(msg)
       }
     }
   }, error = function(e) {
-    message("Error during initialization: ", e$message)
+    packageStartupMessage("Error during initialization: ", e$message)
   })
 
   invisible(NULL)
