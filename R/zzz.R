@@ -70,76 +70,106 @@ install_dependencies <- function(venv) {
   tryCatch({
     message("Installing dependencies in ", venv, "...")
 
-    # 1. Setup conda environment
-    message("Setting up conda environment...")
-    system("conda config --add channels conda-forge")
-    system("conda config --set channel_priority flexible")
+    # 確保使用 conda 環境
+    conda_path <- reticulate::conda_binary()
+    if (is.null(conda_path)) {
+      stop("Conda not found. Please install Miniconda or Anaconda.")
+    }
 
-    # 2. Install Python packages separately to better handle errors
-    message("Installing base Python packages...")
-    reticulate::conda_install(
-      envname = venv,
-      packages = c("python>=3.9"),
-      channel = "conda-forge"
-    )
+    # 確保環境存在
+    if (!venv %in% reticulate::conda_list()$name) {
+      message("Creating conda environment: ", venv)
+      reticulate::conda_create(venv)
+    }
 
-    # 3. Install numpy and scipy
-    message("Installing numpy and scipy...")
+    # 先啟用環境
+    reticulate::use_condaenv(venv, required = TRUE)
+
+    # 使用 conda 安裝基礎套件
+    message("Installing base packages with conda...")
     reticulate::conda_install(
       envname = venv,
       packages = c(
+        sprintf("python>=3.9"),
         sprintf("numpy==%s", .pkgenv$package_constants$numpy_version),
         sprintf("scipy==%s", .pkgenv$package_constants$scipy_version)
       ),
-      channel = "conda-forge"
+      channel = c("conda-forge", "defaults")
     )
 
-    # 4. Install PyTorch with pip (more reliable than conda for M1)
+    # 使用 pip 安裝 PyTorch
     message("Installing PyTorch...")
-    reticulate::py_install(
-      packages = "torch",
-      pip = TRUE,
-      envname = venv
+    system2(
+      "conda",
+      args = c("run", "-n", venv, "pip", "install", "torch")
     )
 
-    # 5. Install transformers
-    message("Installing transformers...")
-    reticulate::py_install(
-      packages = sprintf("transformers==%s", .pkgenv$package_constants$transformers_version),
-      pip = TRUE,
-      envname = venv
+    # 使用 pip 安裝其他依賴
+    message("Installing other dependencies...")
+    system2(
+      "conda",
+      args = c(
+        "run", "-n", venv, "pip", "install",
+        sprintf("transformers==%s", .pkgenv$package_constants$transformers_version),
+        "sentencepiece<0.2.0",
+        sprintf("flair>=%s", .pkgenv$package_constants$flair_min_version)
+      )
     )
 
-    # 6. Install additional dependencies for flair
-    message("Installing additional dependencies...")
-    reticulate::py_install(
-      packages = c(
-        "sentencepiece>=0.1.99",
-        "tabulate>=0.8.9",
-        "langdetect>=1.0.9",
-        "regex>=2021.4.4"
-      ),
-      pip = TRUE,
-      envname = venv
-    )
-
-    # 7. Install flair
-    message("Installing flair...")
-    reticulate::py_install(
-      packages = sprintf("flair>=%s", .pkgenv$package_constants$flair_min_version),
-      pip = TRUE,
-      envname = venv
-    )
-
-    # 8. Verify installation
+    # 驗證安裝
     reticulate::use_condaenv(venv, required = TRUE)
-    verify_installation(venv)
+    if (!reticulate::py_module_available("flair")) {
+      stop("Flair installation verification failed")
+    }
 
     return(TRUE)
   }, error = function(e) {
     message("Error installing dependencies: ", e$message)
     return(FALSE)
   })
+}
+
+#' Check and setup conda environment
+#' @noRd
+check_conda_env <- function() {
+  # 檢查 conda
+  conda_available <- tryCatch({
+    conda_bin <- reticulate::conda_binary()
+    list(status = TRUE, path = conda_bin)
+  }, error = function(e) {
+    list(status = FALSE, error = e$message)
+  })
+
+  if (!conda_available$status) {
+    print_status("Conda", NULL, FALSE, "Conda not found")
+    return(FALSE)
+  }
+  print_status("Conda", conda_available$path, TRUE)
+
+  # 檢查環境
+  has_flair_env <- "flair_env" %in% reticulate::conda_list()$name
+  if (!has_flair_env) {
+    message("Creating new conda environment: flair_env")
+    if (!install_dependencies("flair_env")) {
+      return(FALSE)
+    }
+  } else {
+    # 檢查現有環境
+    tryCatch({
+      reticulate::use_condaenv("flair_env", required = TRUE)
+      if (!reticulate::py_module_available("flair")) {
+        message("Reinstalling dependencies in existing environment...")
+        if (!install_dependencies("flair_env")) {
+          return(FALSE)
+        }
+      }
+    }, error = function(e) {
+      message("Error with existing environment: ", e$message)
+      return(FALSE)
+    })
+  }
+
+  return(TRUE)
 }
 
 #' Verify package installation
@@ -240,68 +270,7 @@ get_system_info <- function() {
   list(name = os_name, version = os_version)
 }
 
-#' Check and setup conda environment
-#' @noRd
-check_conda_env <- function() {
-  # Check if conda exists
-  conda_available <- tryCatch({
-    conda_bin <- reticulate::conda_binary()
-    list(status = TRUE, path = conda_bin)
-  }, error = function(e) {
-    list(status = FALSE, error = e$message)
-  })
 
-  if (!conda_available$status) {
-    print_status("Conda", NULL, FALSE, "Conda not found")
-    return(FALSE)
-  }
-  print_status("Conda", conda_available$path, TRUE)
-
-  # List conda environments
-  conda_envs <- reticulate::conda_list()
-
-  # Check for flair_env
-  has_flair_env <- "flair_env" %in% conda_envs$name
-  if (has_flair_env) {
-    # Check if environment is properly set up
-    env_status <- tryCatch({
-      reticulate::use_condaenv("flair_env", required = TRUE)
-
-      # Verify all required modules are available
-      if (!reticulate::py_module_available("flair")) {
-        message("Flair module not found in existing environment. Reinstalling...")
-        if (!install_dependencies("flair_env")) {
-          return(FALSE)
-        }
-      }
-
-      # Try importing flair to verify it works
-      flair <- reticulate::import("flair")
-      return(TRUE)
-    }, error = function(e) {
-      message(sprintf("Error with existing flair_env: %s", e$message))
-      message("Attempting to recreate environment...")
-      return(FALSE)
-    })
-
-    if (env_status) {
-      return(TRUE)
-    }
-  }
-
-  # Create new environment if needed
-  message("Creating new conda environment: flair_env")
-  tryCatch({
-    reticulate::conda_create("flair_env")
-    if (!install_dependencies("flair_env")) {
-      return(FALSE)
-    }
-    return(TRUE)
-  }, error = function(e) {
-    message("Failed to create conda environment: ", e$message)
-    return(FALSE)
-  })
-}
 # check_conda_env <- function() {
 #   # Check if conda exists
 #   conda_available <- tryCatch({
