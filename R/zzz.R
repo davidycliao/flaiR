@@ -1,4 +1,4 @@
-# 常數設定
+# Color setting
 .COLORS <- list(
   bold = "\033[1m",
   blue = "\033[34m",
