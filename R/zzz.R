@@ -289,30 +289,26 @@ initialize_modules <- function() {
 }
 
 #' @noRd
-#' @noRd
 .onAttach <- function(libname, pkgname) {
-  # 保存原始環境設定
+  # 儲存原始環境設定
   original_env <- list(
     RETICULATE_PYTHON = Sys.getenv("RETICULATE_PYTHON"),
-    VIRTUALENV = Sys.getenv("VIRTUALENV"),
-    RETICULATE_PYTHON_ENV = Sys.getenv("RETICULATE_PYTHON_ENV")
+    VIRTUALENV = Sys.getenv("VIRTUALENV")
   )
 
-  # 確保在函數結束時恢復設定
+  # 在函數結束時恢復原始設定
   on.exit({
     for (name in names(original_env)) {
       if (original_env[[name]] != "") {
         Sys.setenv(!!name := original_env[[name]])
       }
     }
-    options(reticulate.python.initializing = FALSE)
   })
 
   tryCatch({
-    # 清除現有 Python 設定
+    # 清除 Python 相關設定
     Sys.unsetenv("RETICULATE_PYTHON")
     Sys.unsetenv("VIRTUALENV")
-    Sys.unsetenv("RETICULATE_PYTHON_ENV")
     options(reticulate.python.initializing = TRUE)
 
     # 顯示系統資訊
@@ -330,111 +326,77 @@ initialize_modules <- function() {
       list(status = FALSE, error = e$message)
     })
 
-    if (!conda_available$status) {
-      print_status("Conda", NULL, FALSE, "Conda not found")
-      message("Will attempt to use system Python...")
-    } else {
+    if (conda_available$status) {
       print_status("Conda", conda_available$path, TRUE)
+    }
 
-      # 列出所有 conda 環境
-      conda_envs <- reticulate::conda_list()
-      has_flair_env <- "flair_env" %in% conda_envs$name
+    # 優先檢查已知工作的 Python 路徑
+    known_working_paths <- c(
+      "/Users/yenchiehliao/.venv/bin/python",
+      "/Library/Frameworks/Python.framework/Versions/3.11/bin/python3",
+      Sys.which("python3"),
+      Sys.which("python")
+    )
 
-      if (!has_flair_env && nrow(conda_envs) > 0) {
-        message("\nNo flair_env found. Available conda environments:")
-        for (i in seq_len(nrow(conda_envs))) {
-          message(sprintf("%d. %s (%s)",
-                          i,
-                          conda_envs$name[i],
-                          conda_envs$python[i]))
-        }
-
-        # 使用第一個可用的環境
-        selected_env <- conda_envs$name[1]
-        message(sprintf("\nUsing conda environment: %s", selected_env))
-
+    python_found <- FALSE
+    for (python_path in known_working_paths) {
+      if (file.exists(python_path)) {
         tryCatch({
-          reticulate::use_condaenv(selected_env, required = TRUE)
-          if (!reticulate::py_module_available("flair")) {
-            message(sprintf("Installing flair in %s...", selected_env))
-            install_dependencies(selected_env)
-          }
-        }, error = function(e) {
-          message(sprintf("Error using conda environment %s: %s",
-                          selected_env, e$message))
-        })
+          reticulate::use_python(python_path, required = TRUE)
+          config <- reticulate::py_config()
+          python_version <- as.character(config$version)
+
+          print_status("Python", python_version, TRUE)
+          message(sprintf("Using Python: %s", python_path))
+          message("")
+
+          python_found <- TRUE
+          break
+        }, error = function(e) NULL)
       }
     }
 
-    # 取得 Python 配置
-    config <- tryCatch({
-      reticulate::py_config()
-    }, error = function(e) {
-      message("Error getting Python configuration: ", e$message)
-      return(NULL)
-    })
+    if (!python_found) {
+      message("No suitable Python environment found.")
+      return(invisible(NULL))
+    }
 
-    if (!is.null(config)) {
-      python_version <- as.character(config$version)
-      python_status <- check_python_version(python_version)
+    # 初始化模組
+    init_result <- initialize_modules()
 
-      print_status("Python", python_version, python_status)
-      message(sprintf("Using Python: %s", config$python))
-      message("")
+    if (init_result$status) {
+      print_status("PyTorch", init_result$versions$torch, TRUE)
+      print_status("Transformers", init_result$versions$transformers, TRUE)
+      print_status("Flair NLP", init_result$versions$flair, TRUE)
 
-      # 初始化模組
-      init_result <- initialize_modules()
+      # GPU 狀態
+      cuda_info <- init_result$device$cuda
+      if (!is.null(cuda_info$available) &&
+          (cuda_info$available || init_result$device$mps)) {
+        print_status("GPU", "available", TRUE)
 
-      if (init_result$status) {
-        # 驗證所需模組
-        required_modules <- c("torch", "transformers", "flair")
-        missing_modules <- required_modules[!sapply(required_modules, reticulate::py_module_available)]
-
-        if (length(missing_modules) == 0) {
-          print_status("PyTorch", init_result$versions$torch, TRUE)
-          print_status("Transformers", init_result$versions$transformers, TRUE)
-          print_status("Flair NLP", init_result$versions$flair, TRUE)
-
-          # GPU 狀態
-          cuda_info <- init_result$device$cuda
-          if (!is.null(cuda_info$available) &&
-              (cuda_info$available || init_result$device$mps)) {
-            print_status("GPU", "available", TRUE)
-
-            if (cuda_info$available) {
-              gpu_type <- if (!is.null(cuda_info$device_name)) {
-                sprintf("CUDA (%s)", cuda_info$device_name)
-              } else {
-                "CUDA"
-              }
-              print_status(gpu_type, cuda_info$version, TRUE)
-            }
-
-            if (!is.null(init_result$device$mps) && init_result$device$mps) {
-              print_status("Mac MPS", "available", TRUE)
-            }
-          } else {
-            print_status("GPU", "not available", FALSE)
-          }
-
-          # 歡迎訊息
-          msg <- sprintf(
-            "%s%sflaiR%s%s: %s%sAn R Wrapper for Accessing Flair NLP %s%s%s",
-            .pkgenv$colors$bold, .pkgenv$colors$blue,
-            .pkgenv$colors$reset, .pkgenv$colors$reset_bold,
-            .pkgenv$colors$bold, .pkgenv$colors$yellow,
-            init_result$versions$flair,
-            .pkgenv$colors$reset, .pkgenv$colors$reset_bold
-          )
-          message(msg)
-        } else {
-          message(sprintf("Warning: Required modules missing: %s",
-                          paste(missing_modules, collapse = ", ")))
+        if (!is.null(init_result$device$mps) && init_result$device$mps) {
+          print_status("Mac MPS", "available", TRUE)
         }
+      } else {
+        print_status("GPU", "not available", FALSE)
       }
+
+      # 歡迎訊息
+      msg <- sprintf(
+        "%s%sflaiR%s%s: %s%sAn R Wrapper for Accessing Flair NLP %s%s%s",
+        .pkgenv$colors$bold, .pkgenv$colors$blue,
+        .pkgenv$colors$reset, .pkgenv$colors$reset_bold,
+        .pkgenv$colors$bold, .pkgenv$colors$yellow,
+        init_result$versions$flair,
+        .pkgenv$colors$reset, .pkgenv$colors$reset_bold
+      )
+      message(msg)
     }
   }, error = function(e) {
     message("Error during initialization: ", as.character(e$message))
+  }, finally = {
+    options(reticulate.python.initializing = FALSE)
   })
 
   invisible(NULL)
