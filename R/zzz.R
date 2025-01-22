@@ -90,36 +90,34 @@ install_dependencies <- function(venv) {
     reticulate::conda_install(
       envname = venv,
       packages = c(
-        sprintf("python>=3.9"),
+        "python>=3.9",
         sprintf("numpy==%s", .pkgenv$package_constants$numpy_version),
         sprintf("scipy==%s", .pkgenv$package_constants$scipy_version)
       ),
       channel = c("conda-forge", "defaults")
     )
 
-    # 使用 pip 安裝 PyTorch
-    message("Installing PyTorch...")
-    system2(
-      "conda",
-      args = c("run", "-n", venv, "pip", "install", "torch")
-    )
-
-    # 使用 pip 安裝其他依賴
-    message("Installing other dependencies...")
-    system2(
-      "conda",
-      args = c(
-        "run", "-n", venv, "pip", "install",
+    # 使用 reticulate 的 py_install 安裝所有依賴
+    message("Installing PyTorch and other dependencies...")
+    reticulate::py_install(
+      packages = c(
+        "torch",
         sprintf("transformers==%s", .pkgenv$package_constants$transformers_version),
         "sentencepiece<0.2.0",
         sprintf("flair>=%s", .pkgenv$package_constants$flair_min_version)
-      )
+      ),
+      pip = TRUE,
+      envname = venv
     )
 
     # 驗證安裝
     reticulate::use_condaenv(venv, required = TRUE)
-    if (!reticulate::py_module_available("flair")) {
-      stop("Flair installation verification failed")
+    required_packages <- c("torch", "transformers", "flair")
+    missing_packages <- required_packages[!sapply(required_packages, reticulate::py_module_available)]
+
+    if (length(missing_packages) > 0) {
+      stop(sprintf("Installation verification failed for: %s",
+                   paste(missing_packages, collapse = ", ")))
     }
 
     return(TRUE)
