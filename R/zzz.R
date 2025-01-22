@@ -1,7 +1,3 @@
-
-
-
-
 #' @keywords internal
 "_PACKAGE"
 
@@ -40,31 +36,7 @@ NULL
   torch = NULL
 )
 
-# Helper functions -----------------------------------------------------
-
-#' Install required dependencies in the specified environment
-#' @noRd
-install_dependencies <- function(venv) {
-  tryCatch({
-    reticulate::py_install(
-      packages = c(
-        sprintf("numpy>=%s", .pkgenv$package_constants$numpy_version),
-        sprintf("torch>=%s", .pkgenv$package_constants$torch_version),
-        sprintf("transformers>=%s", .pkgenv$package_constants$transformers_version),
-        sprintf("flair[word-embeddings]>=%s", .pkgenv$package_constants$flair_min_version),
-        sprintf("scipy==%s", .pkgenv$package_constants$scipy_version),
-        "sentencepiece>=0.1.99"
-      ),
-      envname = venv,
-      pip = TRUE,
-      method = "auto"
-    )
-    return(TRUE)
-  }, error = function(e) {
-    message("Error installing dependencies: ", e$message)
-    return(FALSE)
-  })
-}
+# Helper functions -------------------------------------------------------------
 
 #' Print formatted status message
 #' @noRd
@@ -121,8 +93,10 @@ get_system_info <- function() {
 
 #' Check and setup conda environment
 #' @noRd
+#' Check and setup conda environment
+#' @noRd
 check_conda_env <- function() {
-  # Check conda existence
+  # Check if conda exists
   conda_available <- tryCatch({
     conda_bin <- reticulate::conda_binary()
     list(status = TRUE, path = conda_bin)
@@ -141,54 +115,121 @@ check_conda_env <- function() {
 
   # Check for flair_env
   has_flair_env <- "flair_env" %in% conda_envs$name
-  if (has_flair_env) {
+  if (!has_flair_env) {
+    message("Creating new conda environment: flair_env")
     tryCatch({
-      reticulate::use_condaenv("flair_env", required = TRUE)
-      if (!reticulate::py_module_available("flair")) {
-        message("Installing flair in flair_env...")
-        if (!install_dependencies("flair_env")) {
-          return(FALSE)
-        }
-      }
+      # Create environment without specifying Python version
+      reticulate::conda_create("flair_env")
+
+      # Get Python version from the new environment
+      python_config <- reticulate::py_config()
+      message(sprintf("Using Python %s", python_config$version))
+
+      # Install base packages with conda
+      reticulate::conda_install(
+        envname = "flair_env",
+        packages = c(
+          sprintf("numpy==%s", .pkgenv$package_constants$numpy_version),
+          sprintf("scipy==%s", .pkgenv$package_constants$scipy_version),
+          sprintf("torch==%s", .pkgenv$package_constants$torch_version),
+          sprintf("transformers==%s", .pkgenv$package_constants$transformers_version)
+        )
+      )
+
+      # Install flair with pip
+      reticulate::py_install(
+        packages = sprintf("flair>=%s", .pkgenv$package_constants$flair_min_version),
+        pip = TRUE,
+        conda = "flair_env"
+      )
+
       return(TRUE)
     }, error = function(e) {
-      message("Error using flair_env: ", e$message)
+      message("Failed to create conda environment: ", e$message)
+      return(FALSE)
     })
   }
 
-  # Try other conda environments
-  if (nrow(conda_envs) > 0) {
-    for (env in conda_envs$name) {
-      tryCatch({
-        reticulate::use_condaenv(env, required = TRUE)
-        message(sprintf("Using conda environment: %s", env))
-        if (!reticulate::py_module_available("flair")) {
-          message(sprintf("Installing flair in %s...", env))
-          if (install_dependencies(env)) {
-            return(TRUE)
-          }
-        } else {
-          return(TRUE)
-        }
-      }, error = function(e) next)
-    }
-  }
+  # Try to use existing flair_env
+  tryCatch({
+    reticulate::use_condaenv("flair_env", required = TRUE)
 
-  # Try system Python as last resort
-  python_path <- Sys.which("python3")
-  if (python_path != "") {
-    reticulate::use_python(python_path, required = TRUE)
-    if (!reticulate::py_module_available("flair")) {
-      message("Installing flair in system Python...")
-      if (install_dependencies(NULL)) {
-        return(TRUE)
-      }
+    # Verify Python version meets requirements
+    python_config <- reticulate::py_config()
+    version_parts <- strsplit(as.character(python_config$version), "\\.")[[1]]
+    python_version <- as.numeric(paste(version_parts[1], version_parts[2], sep = "."))
+
+    min_version <- as.numeric(.pkgenv$package_constants$python_min_version)
+    max_version <- as.numeric(.pkgenv$package_constants$python_max_version)
+
+    if (python_version < min_version || python_version > max_version) {
+      message(sprintf(
+        "Warning: Python version %s is outside the supported range (%s-%s)",
+        python_config$version,
+        .pkgenv$package_constants$python_min_version,
+        .pkgenv$package_constants$python_max_version
+      ))
     }
+
     return(TRUE)
-  }
-
-  return(FALSE)
+  }, error = function(e) {
+    message("Error using conda environment: ", e$message)
+    return(FALSE)
+  })
 }
+
+# check_conda_env <- function() {
+#   conda_available <- tryCatch({
+#     conda_bin <- reticulate::conda_binary()
+#     list(status = TRUE, path = conda_bin)
+#   }, error = function(e) {
+#     list(status = FALSE, error = e$message)
+#   })
+#
+#   if (!conda_available$status) {
+#     print_status("Conda", NULL, FALSE, "Conda not found")
+#     return(FALSE)
+#   }
+#
+#   print_status("Conda", conda_available$path, TRUE)
+#
+#   conda_envs <- reticulate::conda_list()
+#   has_flair_env <- "flair_env" %in% conda_envs$name
+#
+#   if (!has_flair_env) {
+#     message("Creating new conda environment: flair_env")
+#     tryCatch({
+#       reticulate::conda_create("flair_env", python_version = "3.10")
+#       reticulate::conda_install(
+#         envname = "flair_env",
+#         packages = c(
+#           sprintf("numpy==%s", .pkgenv$package_constants$numpy_version),
+#           sprintf("scipy==%s", .pkgenv$package_constants$scipy_version),
+#           sprintf("torch==%s", .pkgenv$package_constants$torch_version),
+#           sprintf("transformers==%s", .pkgenv$package_constants$transformers_version)
+#         )
+#       )
+#
+#       reticulate::py_install(
+#         packages = sprintf("flair>=%s", .pkgenv$package_constants$flair_min_version),
+#         pip = TRUE,
+#         conda = "flair_env"
+#       )
+#       return(TRUE)
+#     }, error = function(e) {
+#       message("Failed to create conda environment: ", e$message)
+#       return(FALSE)
+#     })
+#   }
+#
+#   tryCatch({
+#     reticulate::use_condaenv("flair_env", required = TRUE)
+#     return(TRUE)
+#   }, error = function(e) {
+#     message("Error using conda environment: ", e$message)
+#     return(FALSE)
+#   })
+# }
 
 #' Initialize required modules
 #' @noRd
@@ -245,7 +286,7 @@ initialize_modules <- function() {
 
 #' @noRd
 .onLoad <- function(libname, pkgname) {
-  # Set essential environment variables
+  # Set essential environment variables first
   Sys.setenv(KMP_DUPLICATE_LIB_OK = "TRUE")
 
   # Mac-specific settings
@@ -253,6 +294,7 @@ initialize_modules <- function() {
     if (Sys.info()["machine"] == "arm64") {
       Sys.setenv(PYTORCH_ENABLE_MPS_FALLBACK = 1)
     }
+    # Additional OpenMP settings for Mac
     Sys.setenv(OMP_NUM_THREADS = 1)
     Sys.setenv(MKL_NUM_THREADS = 1)
   }
@@ -270,10 +312,10 @@ initialize_modules <- function() {
 
   # Initialize Python environment
   tryCatch({
-    # Setup conda environment first
+    # 首先檢查和設置 conda 環境
     conda_setup <- check_conda_env()
     if (!conda_setup) {
-      packageStartupMessage("Attempting to use system Python...")
+      message("Attempting to use system Python...")
     }
 
     # Check Python version
@@ -286,8 +328,8 @@ initialize_modules <- function() {
       as.numeric(version_parts[2]) <= 12
 
     print_status("Python", python_version, python_status)
-    packageStartupMessage(sprintf("Using Python: %s", config$python))
-    packageStartupMessage("")
+    message(sprintf("Using Python: %s", config$python))
+    message("")
 
     if (python_status) {
       init_result <- initialize_modules()
@@ -327,13 +369,14 @@ initialize_modules <- function() {
           init_result$versions$flair,
           .pkgenv$colors$reset, .pkgenv$colors$reset_bold
         )
-        packageStartupMessage(msg)
+        message(msg)
       }
     }
   }, error = function(e) {
-    packageStartupMessage("Error during initialization: ", e$message)
+    message("Error during initialization: ", e$message)
   })
 
   invisible(NULL)
 }
+
 
