@@ -288,27 +288,22 @@ initialize_modules <- function() {
   options(reticulate.prompt = FALSE)
 }
 
-
-
-
-
 #' @noRd
 .onAttach <- function(libname, pkgname) {
   # 儲存原始環境設定
   original_python <- Sys.getenv("RETICULATE_PYTHON")
   original_virtualenv <- Sys.getenv("VIRTUALENV")
 
-  # 在函數結束時恢復設定
+  # 在函數結束時恢復原始設定
   on.exit({
     if (original_python != "") Sys.setenv(RETICULATE_PYTHON = original_python)
     if (original_virtualenv != "") Sys.setenv(VIRTUALENV = original_virtualenv)
   })
 
   tryCatch({
-    # 清除環境變數
+    # 清除 Python 相關設定
     Sys.unsetenv("RETICULATE_PYTHON")
     Sys.unsetenv("VIRTUALENV")
-    Sys.unsetenv("PYTHON_PATH")
     options(reticulate.python.initializing = TRUE)
 
     # 顯示系統資訊
@@ -318,102 +313,73 @@ initialize_modules <- function() {
                     as.character(sys_info$name),
                     as.character(sys_info$version)))
 
-    # 檢查是否已經初始化了 Python
-    current_python <- tryCatch({
-      config <- reticulate::py_config()
-      list(status = TRUE, path = config$python)
+    # 檢查 conda
+    conda_available <- tryCatch({
+      conda_bin <- reticulate::conda_binary()
+      list(status = TRUE, path = conda_bin)
     }, error = function(e) {
       list(status = FALSE, error = e$message)
     })
 
-    # 如果已經有可用的 Python，優先使用它
-    if (current_python$status) {
-      python_path <- current_python$path
-      python_version <- tryCatch({
-        config <- reticulate::py_config()
-        as.character(config$version)
-      }, error = function(e) "unknown")
+    if (conda_available$status) {
+      print_status("Conda", conda_available$path, TRUE)
+    }
 
-      print_status("Python", python_version, TRUE)
-      message(sprintf("Using existing Python: %s", python_path))
-    } else {
-      # 檢查 conda
-      conda_available <- tryCatch({
-        conda_bin <- reticulate::conda_binary()
-        list(status = TRUE, path = conda_bin)
-      }, error = function(e) {
-        list(status = FALSE, error = e$message)
-      })
+    # 優先檢查已知工作的 Python 路徑
+    known_working_paths <- c(
+      "/Users/yenchiehliao/.venv/bin/python",
+      "/Library/Frameworks/Python.framework/Versions/3.11/bin/python3",
+      Sys.which("python3"),
+      Sys.which("python")
+    )
 
-      if (conda_available$status) {
-        print_status("Conda", conda_available$path, TRUE)
-
-        # 列出所有 conda 環境
-        conda_envs <- reticulate::conda_list()
-        if (nrow(conda_envs) > 0) {
-          message("\nAvailable conda environments:")
-          for (i in seq_len(nrow(conda_envs))) {
-            message(sprintf("%d. %s (%s)",
-                            i,
-                            conda_envs$name[i],
-                            conda_envs$python[i]))
-          }
-
-          # 尋找並使用最合適的環境
-          preferred_envs <- c("flair_env", "r-reticulate", "base")
-          selected_env <- NULL
-
-          for (env_name in preferred_envs) {
-            if (env_name %in% conda_envs$name) {
-              selected_env <- env_name
-              break
-            }
-          }
-
-          if (is.null(selected_env)) {
-            selected_env <- conda_envs$name[1]
-          }
-
-          message(sprintf("\nUsing conda environment: %s", selected_env))
-
-          tryCatch({
-            reticulate::use_condaenv(selected_env, required = FALSE)
-          }, error = function(e) {
-            message(sprintf("Note: Using default Python due to conda environment error: %s",
-                            e$message))
-          })
-        }
+    python_found <- FALSE
+    for (python_path in known_working_paths) {
+      if (file.exists(python_path)) {
+        tryCatch({
+          reticulate::use_python(python_path, required = TRUE)
+          config <- reticulate::py_config()
+          python_version <- as.character(config$version)
+          print_status("Python", python_version, TRUE)
+          message(sprintf("Using Python: %s", python_path))
+          message("")
+          python_found <- TRUE
+          break
+        }, error = function(e) NULL)
       }
+    }
+
+    if (!python_found) {
+      message("No suitable Python environment found.")
+      return(invisible(NULL))
     }
 
     # 初始化模組
     init_result <- initialize_modules()
-
     if (init_result$status) {
       print_status("PyTorch", init_result$versions$torch, TRUE)
       print_status("Transformers", init_result$versions$transformers, TRUE)
       print_status("Flair NLP", init_result$versions$flair, TRUE)
 
-      # GPU 狀態
+      # GPU 檢查邏輯
       cuda_info <- init_result$device$cuda
-      if (!is.null(cuda_info$available) &&
-          (cuda_info$available || init_result$device$mps)) {
-        print_status("GPU", "available", TRUE)
+      mps_available <- init_result$device$mps
 
-        if (cuda_info$available) {
-          gpu_type <- if (!is.null(cuda_info$device_name)) {
-            sprintf("CUDA (%s)", cuda_info$device_name)
-          } else {
-            "CUDA"
-          }
-          print_status(gpu_type, cuda_info$version, TRUE)
+      # 檢查 GPU 狀態
+      if (!is.null(cuda_info$available) && cuda_info$available) {
+        # 如果有 CUDA GPU
+        gpu_name <- if (!is.null(cuda_info$device_name)) {
+          paste("CUDA", cuda_info$device_name)
+        } else {
+          "CUDA"
         }
-
-        if (!is.null(init_result$device$mps) && init_result$device$mps) {
-          print_status("Mac MPS", "available", TRUE)
-        }
+        print_status("GPU", gpu_name, TRUE)
+      } else if (!is.null(mps_available) && mps_available) {
+        # 如果有 Mac MPS
+        print_status("GPU", "Mac MPS", TRUE)
       } else {
-        print_status("GPU", "not available", FALSE)
+        # 如果沒有 GPU
+        print_status("GPU", "CPU Only", FALSE)
       }
 
       # 歡迎訊息
@@ -435,235 +401,3 @@ initialize_modules <- function() {
 
   invisible(NULL)
 }
-
-# .onAttach <- function(libname, pkgname) {
-#   # 儲存原始環境設定
-#   original_python <- Sys.getenv("RETICULATE_PYTHON")
-#   original_virtualenv <- Sys.getenv("VIRTUALENV")
-#
-#   # 在函數結束時恢復設定
-#   on.exit({
-#     if (original_python != "") Sys.setenv(RETICULATE_PYTHON = original_python)
-#     if (original_virtualenv != "") Sys.setenv(VIRTUALENV = original_virtualenv)
-#   })
-#
-#   tryCatch({
-#     # 首先完全清除所有相關環境變數和設定
-#     Sys.unsetenv("RETICULATE_PYTHON")
-#     Sys.unsetenv("VIRTUALENV")
-#     Sys.unsetenv("PYTHON_PATH")
-#     options(reticulate.python.initializing = TRUE)
-#
-#     # 顯示系統資訊
-#     sys_info <- get_system_info()
-#     message("\nEnvironment Information:")
-#     message(sprintf("OS: %s (%s)",
-#                     as.character(sys_info$name),
-#                     as.character(sys_info$version)))
-#
-#     # 檢查 conda
-#     conda_available <- tryCatch({
-#       conda_bin <- reticulate::conda_binary()
-#       list(status = TRUE, path = conda_bin)
-#     }, error = function(e) {
-#       list(status = FALSE, error = e$message)
-#     })
-#
-#     if (conda_available$status) {
-#       print_status("Conda", conda_available$path, TRUE)
-#     }
-#
-#     # 直接檢查系統 Python 路徑
-#     known_working_paths <- c(
-#       "/Library/Frameworks/Python.framework/Versions/3.11/bin/python3", # 已知工作的路徑
-#       "/opt/homebrew/bin/python3",                                      # Homebrew Python
-#       "/usr/local/bin/python3",                                         # 系統 Python
-#       "/usr/bin/python3",                                               # 系統 Python 備選
-#       Sys.which("python3"),                                             # 系統路徑中的 Python
-#       Sys.which("python")                                               # 最後的備選
-#     )
-#
-#     python_found <- FALSE
-#     for (python_path in known_working_paths) {
-#       if (file.exists(python_path)) {
-#         tryCatch({
-#           # 設定 Python 路徑並嘗試使用
-#           Sys.setenv(RETICULATE_PYTHON = python_path)
-#           reticulate::use_python(python_path, required = TRUE)
-#
-#           # 檢查是否能成功配置
-#           config <- reticulate::py_config()
-#           python_version <- as.character(config$version)
-#
-#           print_status("Python", python_version, TRUE)
-#           message(sprintf("Using Python: %s", python_path))
-#           message("")
-#
-#           python_found <- TRUE
-#           break
-#         }, error = function(e) NULL)
-#       }
-#     }
-#
-#     if (!python_found) {
-#       message("No suitable Python environment found.")
-#       return(invisible(NULL))
-#     }
-#
-#     # 其餘代碼保持不變...
-#
-#   }, error = function(e) {
-#     message("Error during initialization: ", as.character(e$message))
-#   }, finally = {
-#     options(reticulate.python.initializing = FALSE)
-#   })
-#
-#   invisible(NULL)
-# }
-
-# .onAttach <- function(libname, pkgname) {
-#   # 儲存原始環境設定
-#   original_python <- Sys.getenv("RETICULATE_PYTHON")
-#   original_virtualenv <- Sys.getenv("VIRTUALENV")
-#
-#   # 在函數結束時恢復設定
-#   on.exit({
-#     if (original_python != "") Sys.setenv(RETICULATE_PYTHON = original_python)
-#     if (original_virtualenv != "") Sys.setenv(VIRTUALENV = original_virtualenv)
-#   })
-#
-#   tryCatch({
-#     # 清除 Python 相關設定
-#     Sys.unsetenv("RETICULATE_PYTHON")
-#     Sys.unsetenv("VIRTUALENV")
-#     options(reticulate.python.initializing = TRUE)
-#
-#     # 顯示系統資訊
-#     sys_info <- get_system_info()
-#     message("\nEnvironment Information:")
-#     message(sprintf("OS: %s (%s)",
-#                     as.character(sys_info$name),
-#                     as.character(sys_info$version)))
-#
-#     # 檢查 conda
-#     conda_available <- tryCatch({
-#       conda_bin <- reticulate::conda_binary()
-#       list(status = TRUE, path = conda_bin)
-#     }, error = function(e) {
-#       list(status = FALSE, error = e$message)
-#     })
-#
-#     if (conda_available$status) {
-#       print_status("Conda", conda_available$path, TRUE)
-#
-#       # 列出所有 conda 環境
-#       conda_envs <- reticulate::conda_list()
-#       has_flair_env <- "flair_env" %in% conda_envs$name
-#
-#       if (!has_flair_env && nrow(conda_envs) > 0) {
-#         message("\nNo flair_env found. Available conda environments:")
-#         for (i in seq_len(nrow(conda_envs))) {
-#           message(sprintf("%d. %s (%s)",
-#                           i,
-#                           conda_envs$name[i],
-#                           conda_envs$python[i]))
-#         }
-#
-#         # 使用第一個可用的環境
-#         selected_env <- conda_envs$name[1]
-#         message(sprintf("\nUsing conda environment: %s", selected_env))
-#
-#         tryCatch({
-#           reticulate::use_condaenv(selected_env, required = TRUE)
-#         }, error = function(e) {
-#           message(sprintf("Error using conda environment %s: %s",
-#                           selected_env, e$message))
-#         })
-#       }
-#     }
-#
-#     # 如果沒有 conda 環境，檢查系統 Python
-#     if (!conda_available$status ||
-#         (conda_available$status && !has_flair_env && nrow(conda_envs) == 0)) {
-#       known_working_paths <- c(
-#         "/opt/venv/bin/python3",
-#         "/usr/local/bin/python3",
-#         "/usr/bin/python3",
-#         Sys.which("python3"),
-#         Sys.which("python")
-#       )
-#
-#       python_found <- FALSE
-#       for (python_path in known_working_paths) {
-#         if (file.exists(python_path)) {
-#           tryCatch({
-#             reticulate::use_python(python_path, required = TRUE)
-#             python_found <- TRUE
-#             break
-#           }, error = function(e) NULL)
-#         }
-#       }
-#
-#       if (!python_found) {
-#         message("No suitable Python environment found.")
-#         return(invisible(NULL))
-#       }
-#     }
-#
-#     # 顯示 Python 資訊
-#     config <- tryCatch({
-#       reticulate::py_config()
-#     }, error = function(e) NULL)
-#
-#     if (!is.null(config)) {
-#       python_version <- as.character(config$version)
-#       print_status("Python", python_version, TRUE)
-#       message(sprintf("Using Python: %s", config$python))
-#       message("")
-#     }
-#
-#     # 初始化模組
-#     init_result <- initialize_modules()
-#
-#     if (init_result$status) {
-#       print_status("PyTorch", init_result$versions$torch, TRUE)
-#       print_status("Transformers", init_result$versions$transformers, TRUE)
-#       print_status("Flair NLP", init_result$versions$flair, TRUE)
-#
-#       # GPU 狀態
-#       cuda_info <- init_result$device$cuda
-#       if (!is.null(cuda_info$available) &&
-#           (cuda_info$available || init_result$device$mps)) {
-#         if (cuda_info$available) {
-#           gpu_type <- if (!is.null(cuda_info$device_name)) {
-#             sprintf("CUDA (%s)", cuda_info$device_name)
-#           } else {
-#             "CUDA"
-#           }
-#           print_status("GPU", sprintf("%s - %s", gpu_type, cuda_info$version), TRUE)
-#         } else if (!is.null(init_result$device$mps) && init_result$device$mps) {
-#           print_status("GPU", "Mac MPS", TRUE)
-#         }
-#       } else {
-#         print_status("GPU", "not available", FALSE)
-#       }
-#
-#       # 歡迎訊息
-#       msg <- sprintf(
-#         "%s%sflaiR%s%s: %s%sAn R Wrapper for Accessing Flair NLP %s%s%s",
-#         .pkgenv$colors$bold, .pkgenv$colors$blue,
-#         .pkgenv$colors$reset, .pkgenv$colors$reset_bold,
-#         .pkgenv$colors$bold, .pkgenv$colors$yellow,
-#         init_result$versions$flair,
-#         .pkgenv$colors$reset, .pkgenv$colors$reset_bold
-#       )
-#       message(msg)
-#     }
-#   }, error = function(e) {
-#     message("Error during initialization: ", as.character(e$message))
-#   }, finally = {
-#     options(reticulate.python.initializing = FALSE)
-#   })
-#
-#   invisible(NULL)
-# }
