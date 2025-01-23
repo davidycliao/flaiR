@@ -23,6 +23,12 @@ jobs:
       fail-fast: false
 
     steps:
+    - name: Install system dependencies
+      run: |
+        brew install gettext
+        brew link gettext --force
+        brew install gcc
+
     - name: Set up R ${{ matrix.r-version }}
       uses: r-lib/actions/setup-r@v2
       with:
@@ -31,31 +37,28 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: '3.10'    # 確保使用 Python 3.10
-        architecture: 'x64'       # 明確指定架構
+        python-version: '3.10'
+        architecture: 'x64'
 
-    - name: Verify Python version
+    - name: Verify Python installation
       run: |
         python --version
         which python
+        python -m pip --version
 
-    - name: Setup virtual environment and dependencies
+    - name: Setup virtual environment
       run: |
+        export PATH="/usr/local/opt/gettext/bin:$PATH"
         python -m pip install --upgrade pip
         python -m pip install virtualenv
         python -m virtualenv r-reticulate
-        source r-reticulate/bin/activate
-        # python -m pip install torch>=2.0.0
-        # python -m pip install scipy==1.12.0
-        # python -m pip install flair>=0.11.3
-        # python -m pip list
-        deactivate
 
     - name: Test flaiR installation
       env:
         GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
         RETICULATE_PYTHON: ${{ github.workspace }}/r-reticulate/bin/python
       run: |
+        export PATH="/usr/local/opt/gettext/bin:$PATH"
         Rscript -e '
           install.packages("remotes", repos="https://cran.r-project.org")
           Sys.setenv(GITHUB_PAT = Sys.getenv("GITHUB_PAT"))
@@ -73,8 +76,10 @@ jobs:
     - name: Print environment info
       if: always()
       run: |
+        brew list
         R --version
         python --version
+        echo "RETICULATE_PYTHON: $RETICULATE_PYTHON"
         Rscript -e 'reticulate::py_config()'
 
 # name: R-MacOS
