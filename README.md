@@ -26,7 +26,8 @@ Image](https://img.shields.io/badge/Docker-ghcr.io-blue?logo=docker)](https://gi
 
 **flaiR** is an R package that provides convenient access to
 [flairNLP/flair](https://github.com/flairNLP/flair), a powerful
-Python-based NLP toolkit developed by Humboldt University of Berlin.
+Python-based NLP toolkit developed [Zalando
+Research](https://engineering.zalando.com/posts/2018/11/zalando-research-releases-flair.html).
 **flaiR** package is maintained by [Yen-Chieh
 Liao](https://davidycliao.github.io) ([University of
 Birmingham](https://www.birmingham.ac.uk/research/centres-institutes/centre-for-artificial-intelligence-in-government))
@@ -34,11 +35,10 @@ and [Stefan Müller](https://muellerstefan.net) from [Next Generation
 Energy Systems](https://www.nexsys-energy.ie) and [Text and Policy
 Research Group](https://text-and-policy.com) at UCD.
 
-Through **flaiR**, R users can easily utilize and combine various word
-embeddings, train deep learning models, and fine-tune the latest
-transformer models from Hugging Face, bridging advanced NLP techniques
-with popular quantitative text analysis toolkits like quanteda in the R
-environment.
+flaiR R package provides R-friendly wrapper functions integrated with R
+community packages for quantitative text analysis.
+
+<!-- Through **flaiR**, R users can easily utilize and combine various word embeddings, train deep learning models, and fine-tune the latest transformer models from Hugging Face, bridging advanced NLP techniques with popular quantitative text analysis toolkits like quanteda in the R environment. -->
 
 <!-- Our team trains and fine-tunes the models with Flair in [our projects](). -->
 
@@ -80,23 +80,35 @@ Science](https://davidycliao.github.io/flaiR/articles/tutorial.html#introduction
 | Ubuntu  | 4.3.2, 4.2.0, 4.2.1       | 3.10.x, 3.9    |
 
 \*: *On R 4.2.1, particularly when using the Matrix package on ARM 64
-architecture Macs (M1/M2), compatibility issues with gfortran may occur.
-It’s recommended to avoid this combination.*
+architecture Macs (M1/M2/M3), compatibility issues with gfortran may
+occur. It’s recommended to avoid this combination.*
 
 <br>
 
-## Fast Install Python with `reticulate`
+## Fast Install flaiR with `remotes`
 
-- Install Python 3.10 using reticulate:
+<u>Step 1 </u>: Install and Load `reticulate` Package
 
-<!-- -->
+``` r
+# Install reticulate package
+install.packages("reticulate")
 
-    # Install and load reticulate package
-    install.packages("reticulate")
-    library(reticulate)
-    install_python(version = "3.10")
+# Load reticulate library
+library(reticulate)
+```
 
-- To install flaiR package
+<u>Step 2 </u>: Check Existing Python Configuration
+
+If not, recommend referring to [the Quick Start-flaiR
+Installation](https://davidycliao.github.io/flaiR/articles/quickstart.html#option-1-fast-install-flair-and-python-with-reticulate).
+This quick install guide provides step-by-step instructions for
+installing recommended Python with reticulate.
+
+``` r
+py_config()
+```
+
+To install flaiR package
 
 ``` r
 install.packages("remotes")
@@ -108,14 +120,23 @@ library(flaiR)
 ```
 
 ``` r
-#> flaiR: An R Wrapper for Accessing Flair NLP 0.13.1
+Environment Information:
+OS: Darwin (15.2)
+Conda                ✓  /Users/Library/r-miniconda-arm64/bin/conda
+Python               ✓  3.10
+
+PyTorch              ✓  2.2.2
+Transformers         ✓  4.40.1
+Flair NLP            ✓  0.13.1
+GPU                  ✓  Mac MPS
+flaiR: An R Wrapper for Accessing Flair NLP 0.13.1
 ```
 
 <br>
 
 ## Installation with Docker
 
-**Intel/AMD Processors:**
+- **Intel/AMD Processors:**
 
 ``` r
 # Pull image
@@ -125,7 +146,7 @@ docker pull ghcr.io/davidycliao/flair-rstudio:latest
 docker run -d -p 8787:8787 --user root --name flair-rstudio ghcr.io/davidycliao/flair-rstudio:latest
 ```
 
-**Apple Silicon (M1/M2 Mac):**
+- **Apple Silicon (M1/M2 Mac):**
 
 ``` r
 # Pull image
@@ -137,8 +158,8 @@ docker run -d -p 8787:8787 --platform linux/amd64 --user root --name flair-rstud
 
 After running these commands in terminal (or powershell), open your
 browser and navigate to [`http://localhost:8787`](http://localhost:8787)
-to access RStudio. For detailed installation instructions, please visit
-[Quick Start
+to access RStudio Server. For detailed installation instructions, please
+visit [Quick Start
 Guide](https://davidycliao.github.io/flaiR/articles/quickstart.html#flair-installation).
 
 </div>

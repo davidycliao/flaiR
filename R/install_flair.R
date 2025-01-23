@@ -5,6 +5,7 @@
 #' @param pip_options Character, additional pip install options. Default is NULL.
 #'
 #' @return Invisible NULL, called for side effects
+#' @importFrom utils install.packages
 #' @export
 install_flair <- function(force = FALSE,
                           flair_version = "0.11.3",
@@ -31,10 +32,10 @@ install_flair <- function(force = FALSE,
     print_status("Version", TRUE, paste("Using Flair version:", flair_version))
     print_status("Installation", TRUE, "Installing required packages...")
 
-    # 升級 pip 和基礎工具
+    # upgrade pip
     reticulate::py_install(c("pip", "setuptools", "wheel"), pip = TRUE)
 
-    # 安裝基礎依賴（按順序）
+    # dependencies
     packages <- list(
       base = c(
         "numpy==1.26.4",
