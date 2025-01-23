@@ -114,70 +114,116 @@ get_system_info <- function() {
   list(name = os_name, version = os_version)
 }
 
-#' Install Required Dependencies
+
+#' Install required dependencies
 #' @noRd
 install_dependencies <- function(venv) {
   tryCatch({
-    message("Installing dependencies in ", venv, "...")
+    packageStartupMessage("Installing dependencies in ", venv, "...")
 
-    # Install base packages with conda
-    reticulate::conda_install(
-      envname = venv,
+    # 先安裝 PyTorch 相關套件
+    reticulate::py_install(
+      packages = c(
+        sprintf("torch==%s", .pkgenv$package_constants$torch_version),
+        sprintf("torchvision==%s", "0.16.2")  # 指定相容版本
+      ),
+      pip = TRUE,
+      envname = venv
+    )
+
+    # 安裝基本套件
+    reticulate::py_install(
       packages = c(
         sprintf("numpy==%s", .pkgenv$package_constants$numpy_version),
-        sprintf("scipy==%s", .pkgenv$package_constants$scipy_version)
-      ),
-      channel = "conda-forge"
-    )
-
-    # Install PyTorch
-    reticulate::py_install(
-      packages = "torch",
-      pip = TRUE,
-      envname = venv
-    )
-
-    # Install other dependencies
-    reticulate::py_install(
-      packages = c(
+        sprintf("scipy==%s", .pkgenv$package_constants$scipy_version),
         sprintf("transformers==%s", .pkgenv$package_constants$transformers_version),
-        "sentencepiece>=0.1.97,<0.2.0",
-        sprintf("flair>=%s", .pkgenv$package_constants$flair_min_version)
+        "sentencepiece>=0.1.97,<0.2.0"
       ),
       pip = TRUE,
       envname = venv
     )
 
-    # Verify installation
-    reticulate::use_condaenv(venv, required = TRUE)
-    if (!reticulate::py_module_available("flair")) {
-      stop("Flair installation verification failed")
-    }
+    # 最後安裝 flair
+    reticulate::py_install(
+      packages = sprintf("flair>=%s", .pkgenv$package_constants$flair_min_version),
+      pip = TRUE,
+      envname = venv
+    )
 
-    return(TRUE)
+    TRUE
   }, error = function(e) {
-    message("Error installing dependencies: ", e$message)
-    return(FALSE)
+    packageStartupMessage("Error installing dependencies: ", e$message)
+    FALSE
   })
 }
+# install_dependencies <- function(venv) {
+#   tryCatch({
+#     message("Installing dependencies in ", venv, "...")
+#
+#     # Install base packages with conda
+#     reticulate::conda_install(
+#       envname = venv,
+#       packages = c(
+#         sprintf("numpy==%s", .pkgenv$package_constants$numpy_version),
+#         sprintf("scipy==%s", .pkgenv$package_constants$scipy_version)
+#       ),
+#       channel = "conda-forge"
+#     )
+#
+#     # Install PyTorch
+#     reticulate::py_install(
+#       packages = "torch",
+#       pip = TRUE,
+#       envname = venv
+#     )
+#
+#     # Install other dependencies
+#     reticulate::py_install(
+#       packages = c(
+#         sprintf("transformers==%s", .pkgenv$package_constants$transformers_version),
+#         "sentencepiece>=0.1.97,<0.2.0",
+#         sprintf("flair>=%s", .pkgenv$package_constants$flair_min_version)
+#       ),
+#       pip = TRUE,
+#       envname = venv
+#     )
+#
+#     # Verify installation
+#     reticulate::use_condaenv(venv, required = TRUE)
+#     if (!reticulate::py_module_available("flair")) {
+#       stop("Flair installation verification failed")
+#     }
+#
+#     return(TRUE)
+#   }, error = function(e) {
+#     message("Error installing dependencies: ", e$message)
+#     return(FALSE)
+#   })
+# }
 
 
-##' Check and setup conda environment
+# Check and setup conda environment
 #' @noRd
-check_conda_env <- function(show_status = FALSE, auto_install = TRUE) {  # 預設 auto_install = TRUE
-  # 清除任何現有的 Python 設定
-  try({
-    reticulate::py_clear_config()
-    reticulate::use_python(NULL)
-  }, silent = TRUE)
+check_conda_env <- function(show_status = FALSE) {
+  # 先檢查當前 Python 環境是否可用
+  current_python <- tryCatch({
+    config <- reticulate::py_config()
+    if (reticulate::py_module_available("flair")) {
+      list(status = TRUE, path = config$python)
+    } else {
+      list(status = FALSE)
+    }
+  }, error = function(e) {
+    list(status = FALSE)
+  })
 
-  # 清除環境變數
-  Sys.unsetenv("RETICULATE_PYTHON")
-  Sys.unsetenv("VIRTUALENV")
-  Sys.unsetenv("PYTHONHOME")
-  Sys.unsetenv("PYTHONPATH")
+  # 如果當前環境已有 flair，直接使用
+  if (current_python$status) {
+    packageStartupMessage(sprintf("Using existing Python: %s", current_python$path))
+    return(TRUE)
+  }
 
-  # 檢查 conda
+  # 如果當前環境不可用，再檢查 conda
   conda_available <- tryCatch({
     conda_bin <- reticulate::conda_binary()
     list(status = TRUE, path = conda_bin)
@@ -185,115 +231,64 @@ check_conda_env <- function(show_status = FALSE, auto_install = TRUE) {  # 預�
     list(status = FALSE, error = e$message)
   })
 
-  # 顯示 conda 狀態
-  if (show_status) {
-    if (conda_available$status) {
-      print_status("Conda", conda_available$path, TRUE)
-    } else {
-      print_status("Conda", NULL, FALSE, "Conda not found")
-    }
-  }
-
   if (conda_available$status) {
-    # 獲取所有 conda 環境
+    print_status("Conda", conda_available$path, TRUE)
+
+    # 獲取所有環境
     conda_envs <- reticulate::conda_list()
 
-    # 檢查 flair_env
     if ("flair_env" %in% conda_envs$name) {
+      # 獲取 flair_env 相關環境
       flair_envs <- conda_envs[conda_envs$name == "flair_env", ]
 
-      if (nrow(flair_envs) > 1) {
-        packageStartupMessage("\nMultiple flair_env environments found:")
-        for (i in seq_len(nrow(flair_envs))) {
-          packageStartupMessage(sprintf("%d. %s", i, flair_envs$python[i]))
-        }
-
-        # 優先選擇 miniconda 環境
-        miniconda_env <- grep("miniconda", flair_envs$python, value = TRUE)
-
-        if (length(miniconda_env) > 0) {
-          packageStartupMessage("\nSelecting miniconda environment")
-          selected_env <- miniconda_env[1]
-        } else {
-          packageStartupMessage("\nNo miniconda environment found, using first available")
-          selected_env <- flair_envs$python[1]
-        }
-
-        packageStartupMessage(sprintf("Using environment: %s", selected_env))
-
-        if (file.exists(selected_env)) {
-          return(tryCatch({
-            reticulate::use_python(selected_env, required = TRUE)
-            # 自動安裝 flair 如果不存在
-            if (!reticulate::py_module_available("flair")) {
-              packageStartupMessage("Installing flair in selected environment...")
-              install_dependencies("flair_env")
-            }
-            TRUE
-          }, error = function(e) {
-            packageStartupMessage(sprintf("Error using environment: %s", e$message))
-            FALSE
-          }))
-        }
+      # 優先選擇 miniconda 路徑
+      miniconda_path <- grep("miniconda", flair_envs$python, value = TRUE)
+      selected_env <- if (length(miniconda_path) > 0) {
+        miniconda_path[1]
       } else {
-        # 單一 flair_env 的情況
-        env_path <- flair_envs$python[1]
-        if (file.exists(env_path)) {
-          return(tryCatch({
-            reticulate::use_python(env_path, required = TRUE)
-            if (!reticulate::py_module_available("flair")) {
-              packageStartupMessage("Installing flair...")
-              install_dependencies("flair_env")
-            }
-            TRUE
-          }, error = function(e) {
-            packageStartupMessage(sprintf("Error using environment: %s", e$message))
-            FALSE
-          }))
-        }
+        flair_envs$python[1]
       }
-    }
 
-    # 如果沒有 flair_env，使用其他環境
-    if (nrow(conda_envs) > 0) {
-      env_name <- conda_envs$name[1]
-      packageStartupMessage(sprintf("\nUsing conda environment: %s", env_name))
-      return(tryCatch({
-        reticulate::use_condaenv(env_name, required = TRUE)
-        if (!reticulate::py_module_available("flair")) {
-          packageStartupMessage("Installing flair...")
-          install_dependencies(env_name)
-        }
-        TRUE
-      }, error = function(e) {
-        packageStartupMessage(sprintf("Failed to use conda environment %s: %s", env_name, e$message))
-        FALSE
-      }))
+      # 確保路徑存在
+      if (file.exists(selected_env)) {
+        packageStartupMessage(sprintf("Using environment: %s", selected_env))
+        tryCatch({
+          reticulate::use_python(selected_env, required = TRUE)
+          if (!reticulate::py_module_available("flair")) {
+            install_dependencies("flair_env")
+          }
+          return(TRUE)
+        }, error = function(e) {
+          packageStartupMessage(sprintf("Error using environment: %s", e$message))
+          FALSE
+        })
+      }
     }
   }
 
-  # 如果沒有 conda 環境，使用系統 Python
-  packageStartupMessage("\nUsing system Python...")
-  return(tryCatch({
-    python_path <- Sys.which("python3")
-    if (python_path == "") python_path <- Sys.which("python")
+  # 如果上述都失敗，使用系統 Python
+  packageStartupMessage("Using system Python...")
+  python_path <- Sys.which("python3")
+  if (python_path == "") python_path <- Sys.which("python")
 
-    if (python_path != "" && file.exists(python_path)) {
+  if (python_path != "" && file.exists(python_path)) {
+    tryCatch({
       reticulate::use_python(python_path, required = TRUE)
       if (!reticulate::py_module_available("flair")) {
-        packageStartupMessage("Installing flair in system Python...")
         install_dependencies(NULL)
       }
-      TRUE
-    } else {
-      packageStartupMessage("No Python installation found")
+      return(TRUE)
+    }, error = function(e) {
+      packageStartupMessage(sprintf("Error using system Python: %s", e$message))
       FALSE
-    }
-  }, error = function(e) {
-    packageStartupMessage(sprintf("Error using system Python: %s", e$message))
-    FALSE
-  }))
+    })
+  }
+
+  packageStartupMessage("No suitable Python installation found")
+  return(FALSE)
 }
+
+
 # check_conda_env <- function(show_status = FALSE) {
 #   # 清除任何現有的 Python 設定
 #   try({
@@ -676,35 +671,10 @@ initialize_modules <- function() {
                                   as.character(sys_info$name),
                                   as.character(sys_info$version)))
 
-    # 檢查 conda
-    conda_available <- tryCatch({
-      conda_bin <- reticulate::conda_binary()
-      list(status = TRUE, path = conda_bin)
-    }, error = function(e) {
-      list(status = FALSE, error = e$message)
-    })
-
-    if (conda_available$status) {
-      print_status("Conda", conda_available$path, TRUE)
-
-      # 直接檢查所有 flair_env
-      conda_envs <- reticulate::conda_list()
-      flair_envs <- conda_envs[conda_envs$name == "flair_env", ]
-
-      if (nrow(flair_envs) > 0) {
-        # 優先使用 miniconda 路徑
-        miniconda_path <- grep("miniconda", flair_envs$python, value = TRUE)
-        if (length(miniconda_path) > 0 && file.exists(miniconda_path[1])) {
-          python_path <- miniconda_path[1]
-        } else {
-          python_path <- flair_envs$python[1]  # 使用第一個可用的
-        }
-
-        if (file.exists(python_path)) {
-          packageStartupMessage(sprintf("Using Python: %s", python_path))
-          reticulate::use_python(python_path, required = TRUE)
-        }
-      }
+    # 執行環境檢查和安裝
+    env_setup <- check_conda_env()
+    if (!env_setup) {
+      return(invisible(NULL))
     }
 
     # 檢查 Python 設定
@@ -713,7 +683,7 @@ initialize_modules <- function() {
     print_status("Python", python_version, TRUE)
     packageStartupMessage("")
 
-    # 初始化模組
+    # 初始化模組 (因為已強制安裝，這裡應該不會失敗)
     init_result <- initialize_modules()
     if (init_result$status) {
       print_status("PyTorch", init_result$versions$torch, TRUE)
@@ -746,10 +716,10 @@ initialize_modules <- function() {
         init_result$versions$flair,
         .pkgenv$colors$reset, .pkgenv$colors$reset_bold
       )
-      message(msg)
+      packageStartupMessage(msg)
     }
   }, error = function(e) {
-    message("Error during initialization: ", as.character(e$message))
+    packageStartupMessage("Error during initialization: ", as.character(e$message))
   }, finally = {
     options(reticulate.python.initializing = FALSE)
   })
