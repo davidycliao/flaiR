@@ -1,4 +1,3 @@
-
 #' @keywords internal
 "_PACKAGE"
 
@@ -11,7 +10,7 @@ NULL
 # Version constants
 .pkgenv$package_constants <- list(
   python_min_version = "3.9",
-  python_max_version = "3.12",
+  python_max_version = "3.13",
   numpy_version = "1.26.4",
   scipy_version = "1.12.0",
   flair_min_version = "0.11.3",
