@@ -18,54 +18,40 @@ jobs:
     runs-on: macos-latest
     strategy:
       matrix:
-        r-version: ['4.3.2', '4.2.0']
-        python-version: ['3.10']
+        r-version: ['4.2.0']
+        python-version: ['3.10']  # 文檔要求的 Python 版本
       fail-fast: false
 
     steps:
-    - name: Install system dependencies
-      run: |
-        brew install gettext
-        brew link gettext --force
-        brew install gcc
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+        architecture: 'arm64'
 
-    - name: Set up R ${{ matrix.r-version }}
+    - name: Verify Python
+      run: |
+        python --version
+        which python
+
+    - name: Set up R
       uses: r-lib/actions/setup-r@v2
       with:
         r-version: ${{ matrix.r-version }}
 
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.10'
-        architecture: 'x64'
-
-    - name: Verify Python installation
+    - name: Install R dependencies
       run: |
-        python --version
-        which python
-        python -m pip --version
+        Rscript -e 'install.packages(c("reticulate", "remotes"), repos="https://cran.r-project.org")'
+        Rscript -e 'reticulate::py_config()'
 
-    - name: Setup virtual environment
-      run: |
-        export PATH="/usr/local/opt/gettext/bin:$PATH"
-        python -m pip install --upgrade pip
-        python -m pip install virtualenv
-        python -m virtualenv r-reticulate
-
-    - name: Test flaiR installation
+    - name: Install flaiR
       env:
         GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
-        RETICULATE_PYTHON: ${{ github.workspace }}/r-reticulate/bin/python
       run: |
-        export PATH="/usr/local/opt/gettext/bin:$PATH"
         Rscript -e '
-          install.packages("remotes", repos="https://cran.r-project.org")
           Sys.setenv(GITHUB_PAT = Sys.getenv("GITHUB_PAT"))
-          Sys.setenv(RETICULATE_PYTHON = Sys.getenv("RETICULATE_PYTHON"))
           tryCatch({
             remotes::install_github("davidycliao/flaiR", force = TRUE)
-            reticulate::py_config()
             library(flaiR)
             cat("flaiR installed and loaded successfully\n")
           }, error = function(e) {
@@ -76,10 +62,8 @@ jobs:
     - name: Print environment info
       if: always()
       run: |
-        brew list
-        R --version
         python --version
-        echo "RETICULATE_PYTHON: $RETICULATE_PYTHON"
+        R --version
         Rscript -e 'reticulate::py_config()'
 
 # name: R-MacOS
