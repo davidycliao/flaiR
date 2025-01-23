@@ -18,8 +18,8 @@ jobs:
     runs-on: macos-latest
     strategy:
       matrix:
-        r-version: ['4.3.2', '4.2.0']  # 符合文檔的 R 版本
-        python-version: ['3.10']        # 符合文檔的 Python 版本
+        r-version: ['4.3.2', '4.2.0']
+        python-version: ['3.10']
       fail-fast: false
 
     steps:
@@ -40,9 +40,12 @@ jobs:
         python -m virtualenv r-reticulate
 
     - name: Test flaiR installation
+      env:
+        GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       run: |
         Rscript -e '
           install.packages("remotes", repos="https://cran.r-project.org")
+          Sys.setenv(GITHUB_PAT = Sys.getenv("GITHUB_PAT"))
           tryCatch({
             remotes::install_github("davidycliao/flaiR", force = TRUE)
             library(flaiR)
@@ -58,6 +61,7 @@ jobs:
         R --version
         python --version
         Rscript -e 'sessionInfo()'
+
 
 # name: R-MacOS
 #
