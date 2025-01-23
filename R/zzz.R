@@ -161,9 +161,10 @@ install_dependencies <- function(venv) {
   })
 }
 
-#' Check and setup conda environment
+
+##' Check and setup conda environment
 #' @noRd
-check_conda_env <- function(show_status = FALSE) {
+check_conda_env <- function(show_status = FALSE, auto_install = TRUE) {  # 預設 auto_install = TRUE
   # 清除任何現有的 Python 設定
   try({
     reticulate::py_clear_config()
@@ -222,8 +223,8 @@ check_conda_env <- function(show_status = FALSE) {
 
         if (file.exists(selected_env)) {
           return(tryCatch({
-            # 直接使用 Python 路徑
             reticulate::use_python(selected_env, required = TRUE)
+            # 自動安裝 flair 如果不存在
             if (!reticulate::py_module_available("flair")) {
               packageStartupMessage("Installing flair in selected environment...")
               install_dependencies("flair_env")
@@ -235,10 +236,9 @@ check_conda_env <- function(show_status = FALSE) {
           }))
         }
       } else {
-        # 只有一個 flair_env
+        # 單一 flair_env 的情況
         env_path <- flair_envs$python[1]
         if (file.exists(env_path)) {
-          packageStartupMessage(sprintf("Using single flair_env at: %s", env_path))
           return(tryCatch({
             reticulate::use_python(env_path, required = TRUE)
             if (!reticulate::py_module_available("flair")) {
@@ -253,9 +253,26 @@ check_conda_env <- function(show_status = FALSE) {
         }
       }
     }
+
+    # 如果沒有 flair_env，使用其他環境
+    if (nrow(conda_envs) > 0) {
+      env_name <- conda_envs$name[1]
+      packageStartupMessage(sprintf("\nUsing conda environment: %s", env_name))
+      return(tryCatch({
+        reticulate::use_condaenv(env_name, required = TRUE)
+        if (!reticulate::py_module_available("flair")) {
+          packageStartupMessage("Installing flair...")
+          install_dependencies(env_name)
+        }
+        TRUE
+      }, error = function(e) {
+        packageStartupMessage(sprintf("Failed to use conda environment %s: %s", env_name, e$message))
+        FALSE
+      }))
+    }
   }
 
-  # 如果以上都失敗，使用系統 Python
+  # 如果沒有 conda 環境，使用系統 Python
   packageStartupMessage("\nUsing system Python...")
   return(tryCatch({
     python_path <- Sys.which("python3")
@@ -277,6 +294,120 @@ check_conda_env <- function(show_status = FALSE) {
     FALSE
   }))
 }
+# check_conda_env <- function(show_status = FALSE) {
+#   # 清除任何現有的 Python 設定
+#   try({
+#     reticulate::py_clear_config()
+#     reticulate::use_python(NULL)
+#   }, silent = TRUE)
+#
+#   # 清除環境變數
+#   Sys.unsetenv("RETICULATE_PYTHON")
+#   Sys.unsetenv("VIRTUALENV")
+#   Sys.unsetenv("PYTHONHOME")
+#   Sys.unsetenv("PYTHONPATH")
+#
+#   # 檢查 conda
+#   conda_available <- tryCatch({
+#     conda_bin <- reticulate::conda_binary()
+#     list(status = TRUE, path = conda_bin)
+#   }, error = function(e) {
+#     list(status = FALSE, error = e$message)
+#   })
+#
+#   # 顯示 conda 狀態
+#   if (show_status) {
+#     if (conda_available$status) {
+#       print_status("Conda", conda_available$path, TRUE)
+#     } else {
+#       print_status("Conda", NULL, FALSE, "Conda not found")
+#     }
+#   }
+#
+#   if (conda_available$status) {
+#     # 獲取所有 conda 環境
+#     conda_envs <- reticulate::conda_list()
+#
+#     # 檢查 flair_env
+#     if ("flair_env" %in% conda_envs$name) {
+#       flair_envs <- conda_envs[conda_envs$name == "flair_env", ]
+#
+#       if (nrow(flair_envs) > 1) {
+#         packageStartupMessage("\nMultiple flair_env environments found:")
+#         for (i in seq_len(nrow(flair_envs))) {
+#           packageStartupMessage(sprintf("%d. %s", i, flair_envs$python[i]))
+#         }
+#
+#         # 優先選擇 miniconda 環境
+#         miniconda_env <- grep("miniconda", flair_envs$python, value = TRUE)
+#
+#         if (length(miniconda_env) > 0) {
+#           packageStartupMessage("\nSelecting miniconda environment")
+#           selected_env <- miniconda_env[1]
+#         } else {
+#           packageStartupMessage("\nNo miniconda environment found, using first available")
+#           selected_env <- flair_envs$python[1]
+#         }
+#
+#         packageStartupMessage(sprintf("Using environment: %s", selected_env))
+#
+#         if (file.exists(selected_env)) {
+#           return(tryCatch({
+#             # 直接使用 Python 路徑
+#             reticulate::use_python(selected_env, required = TRUE)
+#             if (!reticulate::py_module_available("flair")) {
+#               packageStartupMessage("Installing flair in selected environment...")
+#               install_dependencies("flair_env")
+#             }
+#             TRUE
+#           }, error = function(e) {
+#             packageStartupMessage(sprintf("Error using environment: %s", e$message))
+#             FALSE
+#           }))
+#         }
+#       } else {
+#         # 只有一個 flair_env
+#         env_path <- flair_envs$python[1]
+#         if (file.exists(env_path)) {
+#           packageStartupMessage(sprintf("Using single flair_env at: %s", env_path))
+#           return(tryCatch({
+#             reticulate::use_python(env_path, required = TRUE)
+#             if (!reticulate::py_module_available("flair")) {
+#               packageStartupMessage("Installing flair...")
+#               install_dependencies("flair_env")
+#             }
+#             TRUE
+#           }, error = function(e) {
+#             packageStartupMessage(sprintf("Error using environment: %s", e$message))
+#             FALSE
+#           }))
+#         }
+#       }
+#     }
+#   }
+#
+#   # 如果以上都失敗，使用系統 Python
+#   packageStartupMessage("\nUsing system Python...")
+#   return(tryCatch({
+#     python_path <- Sys.which("python3")
+#     if (python_path == "") python_path <- Sys.which("python")
+#
+#     if (python_path != "" && file.exists(python_path)) {
+#       reticulate::use_python(python_path, required = TRUE)
+#       if (!reticulate::py_module_available("flair")) {
+#         packageStartupMessage("Installing flair in system Python...")
+#         install_dependencies(NULL)
+#       }
+#       TRUE
+#     } else {
+#       packageStartupMessage("No Python installation found")
+#       FALSE
+#     }
+#   }, error = function(e) {
+#     packageStartupMessage(sprintf("Error using system Python: %s", e$message))
+#     FALSE
+#   }))
+# }
 
 # check_conda_env <- function(show_status = FALSE) {
 #   # 獲取作業系統類型
