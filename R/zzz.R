@@ -115,7 +115,7 @@ get_system_info <- function() {
 }
 
 
-#' Install required dependencies
+#' Install Required dependencies
 #' @noRd
 install_dependencies <- function(venv) {
   tryCatch({
