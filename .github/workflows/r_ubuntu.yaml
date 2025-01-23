@@ -1,174 +1,232 @@
 
-name: R-ubuntu
 
+name: flaiR-Ubuntu
 on:
  push:
-   branches:
-     - main
+   branches: [ "main" ]
  pull_request:
-   branches:
-     - main
+   branches: [ "main" ]
 
 jobs:
- R-CMD-check:
-   runs-on: ubuntu-20.04
+ test-installation:
+   runs-on: ubuntu-latest
    strategy:
      matrix:
-       r-version: ['4.3.2', '4.2.0', '4.2.1']
+       r-version: ['4.2.0']
+       python-version: ['3.10']
      fail-fast: false
 
-   env:
-     R_LIBS_USER: /home/runner/work/_temp/Library
-     TZ: UTC
-     R_CHECK_SYSTEM_CLOCK: FALSE
-     NOT_CRAN: true
-     RSPM: https://packagemanager.posit.co/cran/__linux__/focal/latest
-     RENV_CONFIG_REPOS_OVERRIDE: https://packagemanager.posit.co/cran/__linux__/focal/latest
-
    steps:
-     - uses: actions/checkout@v3
+   - uses: actions/setup-python@v4
+     with:
+       python-version: ${{ matrix.python-version }}
 
-     # 添加磁盤清理步驟
-     - name: Free Disk Space
-       run: |
-         sudo rm -rf /usr/share/dotnet
-         sudo rm -rf /usr/local/lib/android
-         sudo rm -rf /opt/ghc
-         sudo rm -rf /opt/hostedtoolcache/CodeQL
-         df -h
+   - name: Verify Python
+     run: |
+       python --version
+       which python
 
-     - name: Cache R dependencies
-       uses: actions/cache@v3
-       with:
-         path: ~/R/x86_64-pc-linux-gnu-library/
-         key: ${{ runner.os }}-r-${{ matrix.r-version }}-${{ hashFiles('**/renv.lock') }}
-         restore-keys: ${{ runner.os }}-r-${{ matrix.r-version }}-
+   - uses: r-lib/actions/setup-r@v2
+     with:
+       r-version: ${{ matrix.r-version }}
 
-     - name: Setup R
-       uses: r-lib/actions/setup-r@v2
-       with:
-         use-public-rspm: true
-         r-version: ${{ matrix.r-version }}
+   - name: Install R dependencies
+     run: |
+       Rscript -e 'install.packages(c("reticulate", "remotes"), repos="https://cran.r-project.org")'
+       Rscript -e 'reticulate::py_config()'
 
-     # Install Matrix first with version control
-     - name: Install R Matrix package
-       run: |
-         install.packages('remotes')
-         version <- getRversion()
+   - name: Install flaiR
+     env:
+       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+     run: |
+       Rscript -e '
+         Sys.setenv(GITHUB_PAT = Sys.getenv("GITHUB_PAT"))
          tryCatch({
-           if (version >= "4.3.2") {
-             remotes::install_version("Matrix", version = "1.5-1", repos = "https://cran.r-project.org")
-           } else if (version >= "4.2.0" && version < "4.3.0") {
-             remotes::install_version("Matrix", version = "1.4-1", repos = "https://cran.r-project.org", force = TRUE)
-           } else if (version >= "4.1.0" && version < "4.2.0") {
-             remotes::install_version("Matrix", version = "1.3-4", repos = "https://cran.r-project.org")
-           }
-           message(sprintf("R version: %s, Matrix version: %s", version, packageVersion("Matrix")))
+           remotes::install_github("davidycliao/flaiR", force = TRUE)
+           library(flaiR)
+           cat("flaiR installed and loaded successfully\n")
          }, error = function(e) {
-           message("Error installing Matrix: ", e$message)
-           if (version < "4.3.0") {
-             message("Attempting fallback installation...")
-             remotes::install_version("Matrix", version = "1.4-1",
-                                    repos = "https://cran.r-project.org",
-                                    force = TRUE)
-           }
-         })
-       shell: Rscript {0}
-
-     # Verify Matrix installation
-     - name: Verify Matrix Installation
-       run: |
-         tryCatch({
-           if (!requireNamespace("Matrix", quietly = TRUE)) {
-             message("Matrix package not installed properly")
-             quit(status = 1)
-           }
-           version <- as.character(packageVersion("Matrix"))
-           r_version <- getRversion()
-           message("Current configuration:")
-           message("R version: ", r_version)
-           message("Matrix version: ", version)
-
-           # 驗證版本相容性
-           if (r_version >= "4.3.2" && version != "1.5-1") {
-             message("Warning: Unexpected Matrix version for R 4.3.2+")
-           } else if (r_version >= "4.2.0" && r_version < "4.3.0" && version != "1.4-1") {
-             message("Warning: Unexpected Matrix version for R 4.2.x")
-           } else if (r_version >= "4.1.0" && r_version < "4.2.0" && version != "1.3-4") {
-             message("Warning: Unexpected Matrix version for R 4.1.x")
-           }
-         }, error = function(e) {
-           message("Error during Matrix verification: ", e$message)
+           cat("Error during installation or loading:", conditionMessage(e), "\n")
            quit(status = 1)
-         })
-       shell: Rscript {0}
+         })'
 
-     - name: Set up Python
-       uses: actions/setup-python@v4
-       with:
-         python-version: '3.10.x'
+   - name: Print environment info
+     if: always()
+     run: |
+       python --version
+       R --version
+       Rscript -e 'reticulate::py_config()'
 
-     - name: Setup pip cache
-       uses: actions/cache@v3
-       with:
-         path: ~/.cache/pip
-         key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
-         restore-keys: |
-           ${{ runner.os }}-pip-
-
-     - name: Create and configure venv
-       run: |
-         python -m venv flair_env
-         source flair_env/bin/activate
-         mkdir -p ~/.cache/pip
-         pip install --upgrade pip
-         # 分步安裝以減少內存使用
-         pip install --no-cache-dir scipy==1.12.0
-         pip install --no-cache-dir torch --index-url https://download.pytorch.org/whl/cpu
-         pip install --no-cache-dir flair
-         pip install --no-cache-dir gensim==4.3.2
-         deactivate
-
-     - name: Install system dependencies
-       run: |
-         sudo apt-get update
-         sudo apt-get install -y --no-install-recommends \
-           libcurl4-openssl-dev \
-           libssl-dev \
-           libxml2-dev \
-           libfontconfig1-dev \
-           libharfbuzz-dev \
-           libfribidi-dev \
-           libfreetype6-dev \
-           libpng-dev \
-           libtiff5-dev \
-           libjpeg-dev
-
-     - name: Install base R dependencies
-       run: |
-         options(repos = c(CRAN = "https://cloud.r-project.org"))
-         install.packages(c("remotes", "rcmdcheck", "reticulate", "renv", "knitr",
-                          "rmarkdown", "lsa", "purrr", "testthat", "ggplot2"))
-       shell: Rscript {0}
-
-     - name: Restore R environment
-       run: |
-         if (!requireNamespace('renv', quietly = TRUE)) install.packages('renv')
-         options(warn = 2)
-         tryCatch({
-           renv::restore()
-         }, error = function(e) {
-           message("Error in renv::restore(): ", e$message)
-           install.packages(c("knitr", "rmarkdown", "lsa", "purrr", "ggplot2"))
-         })
-       shell: Rscript {0}
-
-     - name: Check R package
-       run: |
-         source flair_env/bin/activate
-         export TMPDIR="/tmp/R-pkg-tmp"
-         mkdir -p $TMPDIR
-         R CMD build . --no-build-vignettes
-         R CMD check *tar.gz --no-build-vignettes --no-manual --no-tests --no-examples || true
-         deactivate
-       shell: bash
+# name: R-ubuntu
+#
+# on:
+#  push:
+#    branches:
+#      - main
+#  pull_request:
+#    branches:
+#      - main
+#
+# jobs:
+#  R-CMD-check:
+#    runs-on: ubuntu-20.04
+#    strategy:
+#      matrix:
+#        r-version: ['4.3.2', '4.2.0', '4.2.1']
+#      fail-fast: false
+#
+#    env:
+#      R_LIBS_USER: /home/runner/work/_temp/Library
+#      TZ: UTC
+#      R_CHECK_SYSTEM_CLOCK: FALSE
+#      NOT_CRAN: true
+#      RSPM: https://packagemanager.posit.co/cran/__linux__/focal/latest
+#      RENV_CONFIG_REPOS_OVERRIDE: https://packagemanager.posit.co/cran/__linux__/focal/latest
+#
+#    steps:
+#      - uses: actions/checkout@v3
+#
+#      # 添加磁盤清理步驟
+#      - name: Free Disk Space
+#        run: |
+#          sudo rm -rf /usr/share/dotnet
+#          sudo rm -rf /usr/local/lib/android
+#          sudo rm -rf /opt/ghc
+#          sudo rm -rf /opt/hostedtoolcache/CodeQL
+#          df -h
+#
+#      - name: Cache R dependencies
+#        uses: actions/cache@v3
+#        with:
+#          path: ~/R/x86_64-pc-linux-gnu-library/
+#          key: ${{ runner.os }}-r-${{ matrix.r-version }}-${{ hashFiles('**/renv.lock') }}
+#          restore-keys: ${{ runner.os }}-r-${{ matrix.r-version }}-
+#
+#      - name: Setup R
+#        uses: r-lib/actions/setup-r@v2
+#        with:
+#          use-public-rspm: true
+#          r-version: ${{ matrix.r-version }}
+#
+#      # Install Matrix first with version control
+#      - name: Install R Matrix package
+#        run: |
+#          install.packages('remotes')
+#          version <- getRversion()
+#          tryCatch({
+#            if (version >= "4.3.2") {
+#              remotes::install_version("Matrix", version = "1.5-1", repos = "https://cran.r-project.org")
+#            } else if (version >= "4.2.0" && version < "4.3.0") {
+#              remotes::install_version("Matrix", version = "1.4-1", repos = "https://cran.r-project.org", force = TRUE)
+#            } else if (version >= "4.1.0" && version < "4.2.0") {
+#              remotes::install_version("Matrix", version = "1.3-4", repos = "https://cran.r-project.org")
+#            }
+#            message(sprintf("R version: %s, Matrix version: %s", version, packageVersion("Matrix")))
+#          }, error = function(e) {
+#            message("Error installing Matrix: ", e$message)
+#            if (version < "4.3.0") {
+#              message("Attempting fallback installation...")
+#              remotes::install_version("Matrix", version = "1.4-1",
+#                                     repos = "https://cran.r-project.org",
+#                                     force = TRUE)
+#            }
+#          })
+#        shell: Rscript {0}
+#
+#      # Verify Matrix installation
+#      - name: Verify Matrix Installation
+#        run: |
+#          tryCatch({
+#            if (!requireNamespace("Matrix", quietly = TRUE)) {
+#              message("Matrix package not installed properly")
+#              quit(status = 1)
+#            }
+#            version <- as.character(packageVersion("Matrix"))
+#            r_version <- getRversion()
+#            message("Current configuration:")
+#            message("R version: ", r_version)
+#            message("Matrix version: ", version)
+#
+#            # 驗證版本相容性
+#            if (r_version >= "4.3.2" && version != "1.5-1") {
+#              message("Warning: Unexpected Matrix version for R 4.3.2+")
+#            } else if (r_version >= "4.2.0" && r_version < "4.3.0" && version != "1.4-1") {
+#              message("Warning: Unexpected Matrix version for R 4.2.x")
+#            } else if (r_version >= "4.1.0" && r_version < "4.2.0" && version != "1.3-4") {
+#              message("Warning: Unexpected Matrix version for R 4.1.x")
+#            }
+#          }, error = function(e) {
+#            message("Error during Matrix verification: ", e$message)
+#            quit(status = 1)
+#          })
+#        shell: Rscript {0}
+#
+#      - name: Set up Python
+#        uses: actions/setup-python@v4
+#        with:
+#          python-version: '3.10.x'
+#
+#      - name: Setup pip cache
+#        uses: actions/cache@v3
+#        with:
+#          path: ~/.cache/pip
+#          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+#          restore-keys: |
+#            ${{ runner.os }}-pip-
+#
+#      - name: Create and configure venv
+#        run: |
+#          python -m venv flair_env
+#          source flair_env/bin/activate
+#          mkdir -p ~/.cache/pip
+#          pip install --upgrade pip
+#          # 分步安裝以減少內存使用
+#          pip install --no-cache-dir scipy==1.12.0
+#          pip install --no-cache-dir torch --index-url https://download.pytorch.org/whl/cpu
+#          pip install --no-cache-dir flair
+#          pip install --no-cache-dir gensim==4.3.2
+#          deactivate
+#
+#      - name: Install system dependencies
+#        run: |
+#          sudo apt-get update
+#          sudo apt-get install -y --no-install-recommends \
+#            libcurl4-openssl-dev \
+#            libssl-dev \
+#            libxml2-dev \
+#            libfontconfig1-dev \
+#            libharfbuzz-dev \
+#            libfribidi-dev \
+#            libfreetype6-dev \
+#            libpng-dev \
+#            libtiff5-dev \
+#            libjpeg-dev
+#
+#      - name: Install base R dependencies
+#        run: |
+#          options(repos = c(CRAN = "https://cloud.r-project.org"))
+#          install.packages(c("remotes", "rcmdcheck", "reticulate", "renv", "knitr",
+#                           "rmarkdown", "lsa", "purrr", "testthat", "ggplot2"))
+#        shell: Rscript {0}
+#
+#      - name: Restore R environment
+#        run: |
+#          if (!requireNamespace('renv', quietly = TRUE)) install.packages('renv')
+#          options(warn = 2)
+#          tryCatch({
+#            renv::restore()
+#          }, error = function(e) {
+#            message("Error in renv::restore(): ", e$message)
+#            install.packages(c("knitr", "rmarkdown", "lsa", "purrr", "ggplot2"))
+#          })
+#        shell: Rscript {0}
+#
+#      - name: Check R package
+#        run: |
+#          source flair_env/bin/activate
+#          export TMPDIR="/tmp/R-pkg-tmp"
+#          mkdir -p $TMPDIR
+#          R CMD build . --no-build-vignettes
+#          R CMD check *tar.gz --no-build-vignettes --no-manual --no-tests --no-examples || true
+#          deactivate
+#        shell: bash
