@@ -92,7 +92,7 @@ check_python_version <- function(version) {
 #'
 #' @noRd
 print_status <- function(component, version, status = TRUE, extra_message = NULL) {
-  symbol <- if (status) "✓" else "✗"
+  symbol <- if (status) "\u2713" else "u2717"
   color <- if (status) .pkgenv$colors$green else .pkgenv$colors$red
 
   formatted_component <- switch(
@@ -427,7 +427,7 @@ initialize_modules <- function() {
       print_status("Transformers", init_result$versions$transformers, TRUE)
       print_status("Flair NLP", init_result$versions$flair, TRUE)
 
-      # GPU 检查逻辑
+      # GPU check
       cuda_info <- init_result$device$cuda
       mps_available <- init_result$device$mps
 
@@ -444,7 +444,7 @@ initialize_modules <- function() {
         print_status("GPU", "CPU Only", FALSE)
       }
 
-      # 欢迎信息
+      # Welvome messeges
       msg <- sprintf(
         "%s%sflaiR%s%s: %s%sAn R Wrapper for Accessing Flair NLP %s%s%s",
         .pkgenv$colors$bold, .pkgenv$colors$blue,
