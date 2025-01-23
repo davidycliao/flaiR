@@ -1,3 +1,4 @@
+
 #' @keywords internal
 "_PACKAGE"
 
@@ -14,7 +15,7 @@ NULL
   numpy_version = "1.26.4",
   scipy_version = "1.12.0",
   flair_min_version = "0.11.3",
-  torch_version = "2.2.0",  # Updated default version
+  torch_version = "2.1.2",
   transformers_version = "4.37.2"
 )
 
@@ -44,6 +45,7 @@ check_python_version <- function(version) {
   min_v <- .pkgenv$package_constants$python_min_version
   max_v <- .pkgenv$package_constants$python_max_version
 
+  # Parse version strings to numeric vectors
   parse_version <- function(v) {
     as.numeric(strsplit(v, "\\.")[[1]][1:2])
   }
@@ -52,27 +54,12 @@ check_python_version <- function(version) {
   min_ver <- parse_version(min_v)
   max_ver <- parse_version(max_v)
 
+  # Check version compatibility
   if (ver[1] < min_ver[1] || ver[1] > max_ver[1]) return(FALSE)
   if (ver[1] == min_ver[1] && ver[2] < min_ver[2]) return(FALSE)
   if (ver[1] == max_ver[1] && ver[2] > max_ver[2]) return(FALSE)
 
   return(TRUE)
-}
-
-#' Check Available PyTorch Versions
-#' @noRd
-check_pytorch_versions <- function() {
-  tryCatch({
-    result <- system("pip index versions torch", intern = TRUE)
-    versions <- sub(".*\\((.*?)\\).*", "\\1", result)
-    versions <- strsplit(versions, ", ")[[1]]
-    versions <- gsub("[^0-9.]", "", versions)
-    versions <- versions[versions != ""]
-    latest <- sort(versions, decreasing = TRUE)[1]
-    return(latest)
-  }, error = function(e) {
-    return("2.2.0") # Default fallback version
-  })
 }
 
 #' Print Formatted Message
@@ -128,24 +115,24 @@ get_system_info <- function() {
   list(name = os_name, version = os_version)
 }
 
+
 #' Install Required dependencies
 #' @noRd
 install_dependencies <- function(venv) {
   tryCatch({
     packageStartupMessage("Installing dependencies in ", venv, "...")
 
-    # Install PyTorch packages
-    torch_version <- .pkgenv$package_constants$torch_version
+    # 先安裝 PyTorch 相關套件
     reticulate::py_install(
       packages = c(
-        sprintf("torch>=%s", torch_version),
-        "torchvision"  # Let system choose compatible version
+        sprintf("torch==%s", .pkgenv$package_constants$torch_version),
+        sprintf("torchvision==%s", "0.16.2")  # 指定相容版本
       ),
       pip = TRUE,
       envname = venv
     )
 
-    # Install basic packages
+    # 安裝基本套件
     reticulate::py_install(
       packages = c(
         sprintf("numpy==%s", .pkgenv$package_constants$numpy_version),
@@ -157,7 +144,7 @@ install_dependencies <- function(venv) {
       envname = venv
     )
 
-    # Install flair
+    # 最後安裝 flair
     reticulate::py_install(
       packages = sprintf("flair>=%s", .pkgenv$package_constants$flair_min_version),
       pip = TRUE,
@@ -171,18 +158,100 @@ install_dependencies <- function(venv) {
   })
 }
 
+
+
+# Check and setup conda environment
+#' @noRd
+check_conda_env <- function(show_status = FALSE) {
+  # 先檢查當前 Python 環境是否可用
+  current_python <- tryCatch({
+    config <- reticulate::py_config()
+    if (reticulate::py_module_available("flair")) {
+      list(status = TRUE, path = config$python)
+    } else {
+      list(status = FALSE)
+    }
+  }, error = function(e) {
+    list(status = FALSE)
+  })
+
+  # 如果當前環境已有 flair，直接使用
+  if (current_python$status) {
+    packageStartupMessage(sprintf("Using existing Python: %s", current_python$path))
+    return(TRUE)
+  }
+
+  # 如果當前環境不可用，再檢查 conda
+  conda_available <- tryCatch({
+    conda_bin <- reticulate::conda_binary()
+    list(status = TRUE, path = conda_bin)
+  }, error = function(e) {
+    list(status = FALSE, error = e$message)
+  })
+
+  if (conda_available$status) {
+    print_status("Conda", conda_available$path, TRUE)
+
+    # 獲取所有環境
+    conda_envs <- reticulate::conda_list()
+
+    if ("flair_env" %in% conda_envs$name) {
+      # 獲取 flair_env 相關環境
+      flair_envs <- conda_envs[conda_envs$name == "flair_env", ]
+
+      # 優先選擇 miniconda 路徑
+      miniconda_path <- grep("miniconda", flair_envs$python, value = TRUE)
+      selected_env <- if (length(miniconda_path) > 0) {
+        miniconda_path[1]
+      } else {
+        flair_envs$python[1]
+      }
+
+      # 確保路徑存在
+      if (file.exists(selected_env)) {
+        packageStartupMessage(sprintf("Using environment: %s", selected_env))
+        tryCatch({
+          reticulate::use_python(selected_env, required = TRUE)
+          if (!reticulate::py_module_available("flair")) {
+            install_dependencies("flair_env")
+          }
+          return(TRUE)
+        }, error = function(e) {
+          packageStartupMessage(sprintf("Error using environment: %s", e$message))
+          FALSE
+        })
+      }
+    }
+  }
+
+  # 如果上述都失敗，使用系統 Python
+  packageStartupMessage("Using system Python...")
+  python_path <- Sys.which("python3")
+  if (python_path == "") python_path <- Sys.which("python")
+
+  if (python_path != "" && file.exists(python_path)) {
+    tryCatch({
+      reticulate::use_python(python_path, required = TRUE)
+      if (!reticulate::py_module_available("flair")) {
+        install_dependencies(NULL)
+      }
+      return(TRUE)
+    }, error = function(e) {
+      packageStartupMessage(sprintf("Error using system Python: %s", e$message))
+      FALSE
+    })
+  }
+
+  packageStartupMessage("No suitable Python installation found")
+  return(FALSE)
+}
+
+
+
 #' Initialize Required Modules
 #' @noRd
 initialize_modules <- function() {
   tryCatch({
-    # Check latest PyTorch version
-    # latest_torch <- check_pytorch_versions()
-    # if (latest_torch != .pkgenv$package_constants$torch_version) {
-    #   packageStartupMessage(sprintf("Updating PyTorch version from %s to %s",
-    #                                 .pkgenv$package_constants$torch_version, latest_torch))
-    #   .pkgenv$package_constants$torch_version <- latest_torch
-    # }
-
     # Import modules
     torch <- reticulate::import("torch", delay_load = TRUE)
     transformers <- reticulate::import("transformers", delay_load = TRUE)
@@ -230,88 +299,6 @@ initialize_modules <- function() {
   })
 }
 
-# Check and setup conda environment
-#' @noRd
-check_conda_env <- function(show_status = FALSE) {
-  # Check current Python environment
-  current_python <- tryCatch({
-    config <- reticulate::py_config()
-    if (reticulate::py_module_available("flair")) {
-      list(status = TRUE, path = config$python)
-    } else {
-      list(status = FALSE)
-    }
-  }, error = function(e) {
-    list(status = FALSE)
-  })
-
-  # If current environment has flair, use it
-  if (current_python$status) {
-    packageStartupMessage(sprintf("Using existing Python: %s", current_python$path))
-    return(TRUE)
-  }
-
-  # Check conda if current environment is not usable
-  conda_available <- tryCatch({
-    conda_bin <- reticulate::conda_binary()
-    list(status = TRUE, path = conda_bin)
-  }, error = function(e) {
-    list(status = FALSE, error = e$message)
-  })
-
-  if (conda_available$status) {
-    print_status("Conda", conda_available$path, TRUE)
-
-    conda_envs <- reticulate::conda_list()
-
-    if ("flair_env" %in% conda_envs$name) {
-      flair_envs <- conda_envs[conda_envs$name == "flair_env", ]
-
-      miniconda_path <- grep("miniconda", flair_envs$python, value = TRUE)
-      selected_env <- if (length(miniconda_path) > 0) {
-        miniconda_path[1]
-      } else {
-        flair_envs$python[1]
-      }
-
-      if (file.exists(selected_env)) {
-        packageStartupMessage(sprintf("Using environment: %s", selected_env))
-        tryCatch({
-          reticulate::use_python(selected_env, required = TRUE)
-          if (!reticulate::py_module_available("flair")) {
-            install_dependencies("flair_env")
-          }
-          return(TRUE)
-        }, error = function(e) {
-          packageStartupMessage(sprintf("Error using environment: %s", e$message))
-          FALSE
-        })
-      }
-    }
-  }
-
-  # Use system Python if above fails
-  packageStartupMessage("Using system Python...")
-  python_path <- Sys.which("python3")
-  if (python_path == "") python_path <- Sys.which("python")
-
-  if (python_path != "" && file.exists(python_path)) {
-    tryCatch({
-      reticulate::use_python(python_path, required = TRUE)
-      if (!reticulate::py_module_available("flair")) {
-        install_dependencies(NULL)
-      }
-      return(TRUE)
-    }, error = function(e) {
-      packageStartupMessage(sprintf("Error using system Python: %s", e$message))
-      FALSE
-    })
-  }
-
-  packageStartupMessage("No suitable Python installation found")
-  return(FALSE)
-}
-
 # Package Initialization ----------------------------------------------
 
 #' @noRd
@@ -334,53 +321,49 @@ check_conda_env <- function(show_status = FALSE) {
 
 #' @noRd
 .onAttach <- function(libname, pkgname) {
-  # Save original environment settings
+  # 儲存原始環境設定
   original_python <- Sys.getenv("RETICULATE_PYTHON")
   original_virtualenv <- Sys.getenv("VIRTUALENV")
 
-  # Restore settings when function exits
+  # 在函數結束時恢復設定
   on.exit({
     if (original_python != "") Sys.setenv(RETICULATE_PYTHON = original_python)
     if (original_virtualenv != "") Sys.setenv(VIRTUALENV = original_virtualenv)
   })
 
   tryCatch({
-    # Clear environment variables
+    # 清除環境變數
     Sys.unsetenv("RETICULATE_PYTHON")
     Sys.unsetenv("VIRTUALENV")
     options(reticulate.python.initializing = TRUE)
 
-    # Show system information
+    # 顯示系統資訊
     sys_info <- get_system_info()
     packageStartupMessage("\nEnvironment Information:")
     packageStartupMessage(sprintf("OS: %s (%s)",
                                   as.character(sys_info$name),
                                   as.character(sys_info$version)))
 
-    # Check environment and install
+    # 執行環境檢查和安裝
     env_setup <- check_conda_env()
     if (!env_setup) {
       return(invisible(NULL))
     }
 
-    # Check Python configuration
+    # 檢查 Python 設定
     config <- reticulate::py_config()
     python_version <- as.character(config$version)
-    print_status("Python", python_version,
-                 check_python_version(python_version))
+    print_status("Python", python_version, TRUE)
     packageStartupMessage("")
 
-    # Initialize modules
+    # 初始化模組 (因為已強制安裝，這裡應該不會失敗)
     init_result <- initialize_modules()
     if (init_result$status) {
-      if (init_result$versions$torch != .pkgenv$package_constants$torch_version) {
-        packageStartupMessage(sprintf("Note: Using PyTorch %s", init_result$versions$torch))
-      }
       print_status("PyTorch", init_result$versions$torch, TRUE)
       print_status("Transformers", init_result$versions$transformers, TRUE)
       print_status("Flair NLP", init_result$versions$flair, TRUE)
 
-      # GPU check logic
+      # GPU 檢查邏輯
       cuda_info <- init_result$device$cuda
       mps_available <- init_result$device$mps
 
@@ -397,7 +380,7 @@ check_conda_env <- function(show_status = FALSE) {
         print_status("GPU", "CPU Only", FALSE)
       }
 
-      # Welcome message
+      # 歡迎訊息
       msg <- sprintf(
         "%s%sflaiR%s%s: %s%sAn R Wrapper for Accessing Flair NLP %s%s%s",
         .pkgenv$colors$bold, .pkgenv$colors$blue,
@@ -416,3 +399,4 @@ check_conda_env <- function(show_status = FALSE) {
 
   invisible(NULL)
 }
+
