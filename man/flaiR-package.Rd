@@ -8,19 +8,8 @@
 \if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
 
 Provides a suite of intuitive and flexible wrapper tools tailored for accessing FLAIR in Python data analysis. The package is an R wrapper designed to provide access to the primary features of Flair NLP.
-
-\if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
-
-Provides a suite of intuitive and flexible wrapper tools tailored for accessing FLAIR in Python data analysis. The package is an R wrapper designed to provide access to the primary features of Flair NLP.
 }
 \seealso{
-Useful links:
-\itemize{
-  \item \url{https://davidycliao.github.io/flaiR}
-  \item Report bugs at \url{https://github.com/davidycliao/flaiR/issues}
-}
-
-
 Useful links:
 \itemize{
   \item \url{https://davidycliao.github.io/flaiR}
@@ -45,4 +34,4 @@ Other contributors:
 }
 
 }
-\keyword{internal}
+\keyword{package}
