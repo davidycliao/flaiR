@@ -2,15 +2,25 @@
 % Please edit documentation in R/zzz.R
 \docType{package}
 \name{flaiR-package}
-\alias{flaiR}
 \alias{flaiR-package}
 \title{flaiR: An R Wrapper for Accessing FLAIR}
 \description{
 \if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
 
 Provides a suite of intuitive and flexible wrapper tools tailored for accessing FLAIR in Python data analysis. The package is an R wrapper designed to provide access to the primary features of Flair NLP.
+
+\if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
+
+Provides a suite of intuitive and flexible wrapper tools tailored for accessing FLAIR in Python data analysis. The package is an R wrapper designed to provide access to the primary features of Flair NLP.
 }
 \seealso{
+Useful links:
+\itemize{
+  \item \url{https://davidycliao.github.io/flaiR}
+  \item Report bugs at \url{https://github.com/davidycliao/flaiR/issues}
+}
+
+
 Useful links:
 \itemize{
   \item \url{https://davidycliao.github.io/flaiR}
