@@ -2,6 +2,7 @@
 % Please edit documentation in R/zzz.R
 \docType{package}
 \name{flaiR-package}
+\alias{flaiR}
 \alias{flaiR-package}
 \title{flaiR: An R Wrapper for Accessing FLAIR}
 \description{
@@ -34,4 +35,4 @@ Other contributors:
 }
 
 }
-\keyword{package}
+\keyword{internal}
