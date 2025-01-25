@@ -1,16 +1,17 @@
 
 ## <u>`flairR`</u>: An R Wrapper for Accessing Flair NLP Library <img src="man/figures/logo.png" align="right" width="180"/>
 
-[![R-MacOS](https://github.com/davidycliao/flaiR/actions/workflows/r_macos.yml/badge.svg)](https://github.com/davidycliao/flaiR/actions/workflows/r_macos.yml)
-[![R-ubuntu](https://github.com/davidycliao/flaiR/actions/workflows/r_ubuntu.yaml/badge.svg)](https://github.com/davidycliao/flaiR/actions/workflows/r_ubuntu.yaml)
-[![R-Windows](https://github.com/davidycliao/flaiR/actions/workflows/r_window.yml/badge.svg)](https://github.com/davidycliao/flaiR/actions/workflows/r_window.yml)
+[![flaiR-Python3.9](https://github.com/davidycliao/flaiR/actions/workflows/r-python-3-9.yml/badge.svg)](https://github.com/davidycliao/flaiR/actions/workflows/r-python-3-9.yml)
+[![flaiR-Python-3.10](https://github.com/davidycliao/flaiR/actions/workflows/r-python-3-10.yml/badge.svg)](https://github.com/davidycliao/flaiR/actions/workflows/r-python-3-10.yml)
+[![flaiR-Python3.11](https://github.com/davidycliao/flaiR/actions/workflows/r-python-3-11.yml/badge.svg)](https://github.com/davidycliao/flaiR/actions/workflows/r-python-3-11.yml)
 [![R-CMD-Check](https://github.com/davidycliao/flaiR/actions/workflows/r.yml/badge.svg)](https://github.com/davidycliao/flaiR/actions/workflows/r.yml)
 [![flaiR-Installation-Check](https://github.com/davidycliao/flaiR/actions/workflows/R-CMD-check.yml/badge.svg)](https://github.com/davidycliao/flaiR/actions/workflows/R-CMD-check.yml)
-[![R](https://img.shields.io/badge/R-package-blue)](https://github.com/davidycliao/flaiR)
 [![Docker
 Image](https://img.shields.io/badge/Docker-ghcr.io-blue?logo=docker)](https://github.com/davidycliao/flaiR/pkgs/container/flair-rstudio)
 [![codecov](https://codecov.io/gh/davidycliao/flaiR/graph/badge.svg?token=CPIBIB6L78)](https://codecov.io/gh/davidycliao/flaiR)
 [![CodeFactor](https://www.codefactor.io/repository/github/davidycliao/flair/badge)](https://www.codefactor.io/repository/github/davidycliao/flair)
+
+<!-- [![R](https://img.shields.io/badge/R-package-blue)](https://github.com/davidycliao/flaiR) -->
 
 <!-- [![flaiR-Docker](https://github.com/davidycliao/flaiR/actions/workflows/docker-publish.yml/badge.svg)](https://github.com/davidycliao/flaiR/actions/workflows/docker-publish.yml) -->
 
@@ -67,21 +68,23 @@ Science](https://davidycliao.github.io/flaiR/articles/tutorial.html#introduction
 
 <div style="text-align: justify">
 
-- Python \>= 3.10
-- R \>= 4.2.0
+- Python \>= 3.9 (Python 3.10 is recommended)
+- R \>= 4.1.3
 - Rstudio
 
 **Operation Systems**
 
-| OS      | R Versions                | Python Version |
-|---------|---------------------------|----------------|
-| Mac     | 4.3.2, 4.2.0, ~~4.2.1~~\* | 3.10.x, 3.9    |
-| Windows | 4.0.5, Latest             | 3.10.x, 3.9    |
-| Ubuntu  | 4.3.2, 4.2.0, 4.2.1       | 3.10.x, 3.9    |
+| OS | R Versions | Python Version | CI Status |
+|----|----|----|----|
+| Mac | 4.1.3, 4.2.3, 4.3.2 and recent | 3.10.x, 3.9 | [![R-MacOS](https://github.com/davidycliao/flaiR/actions/workflows/r_macos.yml/badge.svg)](https://github.com/davidycliao/flaiR/actions/workflows/r_macos.yml) |
+| Windows | 4.1.3, 4.2.3, 4.3.2 and recent | 3.10.x, 3.9 | [![R-Windows](https://github.com/davidycliao/flaiR/actions/workflows/r_window.yml/badge.svg)](https://github.com/davidycliao/flaiR/actions/workflows/r_window.yml) |
+|  |  |  |  |
+| Ubuntu | 4.1.3, 4.2.3, 4.3.2 and recent | 3.10.x, 3.9 | [![R-ubuntu](https://github.com/davidycliao/flaiR/actions/workflows/r_ubuntu.yaml/badge.svg)](https://github.com/davidycliao/flaiR/actions/workflows/r_ubuntu.yaml) |
+|  |  |  |  |
 
-\*: *On R 4.2.1, particularly when using the Matrix package on ARM 64
-architecture Macs (M1/M2/M3), compatibility issues with gfortran may
-occur. It’s recommended to avoid this combination.*
+\*: *On R 4.2.1 and 4.0.5, particularly when using the Matrix package on
+ARM 64 architecture Macs (M1/M2/M3), compatibility issues with gfortran
+may occur. It’s recommended to avoid this combination.*
 
 <br>
 
