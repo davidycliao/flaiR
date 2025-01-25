@@ -2,9 +2,13 @@ name: flaiR-Python-3.10
 
 on:
   push:
-    branches: [main, master]
+    branches:
+      - main
+      - develop
   pull_request:
-    branches: [main, master]
+    branches:
+      - main
+      - develop
 
 jobs:
   R-CMD-check:
