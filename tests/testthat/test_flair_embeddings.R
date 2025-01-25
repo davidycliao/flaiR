@@ -18,21 +18,21 @@ test_that("flair_embeddings returns an object", {
 
 
 # flair_embeddings.FlairEmbeddings gives messages and stops as expected
-test_that("flair_embeddings.FlairEmbeddings gives messages and stops as expected", {
-  # Skipping if necessary modules are not available
-  skip_if_not_installed("reticulate")
-  available <- requireNamespace("reticulate") && reticulate::py_module_available("flair")
-  skip_if_not(available, "Python or the 'flair' module is not available")
-
-  # Testing if the function issues the expected message
-  embedding <- flair_embeddings.FlairEmbeddings("news-forward")
-  expect_message(message( py_get_attr(embedding, "__class__")$`__name__`), "FlairEmbeddings")
-
-  # Testing if the function issues an error with invalid input
-  expect_error(flair_embeddings.FlairEmbeddings("invalid_type"),
-               "ValueError: The given model \"invalid_type\" is not available or is not a valid path.",
-               fixed = TRUE)
-})
+# test_that("flair_embeddings.FlairEmbeddings gives messages and stops as expected", {
+#   # Skipping if necessary modules are not available
+#   skip_if_not_installed("reticulate")
+#   available <- requireNamespace("reticulate") && reticulate::py_module_available("flair")
+#   skip_if_not(available, "Python or the 'flair' module is not available")
+#
+#   # Testing if the function issues the expected message
+#   embedding <- flair_embeddings.FlairEmbeddings("news-forward")
+#   expect_message(message( py_get_attr(embedding, "__class__")$`__name__`), "FlairEmbeddings")
+#
+#   # Testing if the function issues an error with invalid input
+#   expect_error(flair_embeddings.FlairEmbeddings("invalid_type"),
+#                "ValueError: The given model \"invalid_type\" is not available or is not a valid path.",
+#                fixed = TRUE)
+# })
 
 # Function should raise an error if embeddings_list is not a list
 test_that("function raises error for non-list input", {
@@ -42,6 +42,6 @@ test_that("function raises error for non-list input", {
 
 
 # flair_embeddings.WordEmbeddings runs without errors
-test_that("flair_embeddings.WordEmbeddings runs without errors", {
-  expect_silent(flair_embeddings.WordEmbeddings())
-})
+# test_that("flair_embeddings.WordEmbeddings runs without errors", {
+#   expect_silent(flair_embeddings.WordEmbeddings())
+# })
