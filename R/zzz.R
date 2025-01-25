@@ -224,52 +224,88 @@ install_package <- function(venv_path, pkg_name, version_spec = "") {
 }
 
 # 更新的依賴安裝函數
-install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
-  if (is.null(venv)) {
-    venv <- file.path(Sys.getenv("HOME"), ".virtualenvs", "r-reticulate")
+install_package <- function(venv_path, package_spec, quiet = FALSE) {
+  pip_cmd <- file.path(venv_path, "bin", "pip")
+
+  # 檢查 pip 是否存在
+  if (!file.exists(pip_cmd)) {
+    stop("pip not found in virtual environment")
   }
 
-  # 定義依賴包及其版本
-  dependencies <- list(
-    torch = list(
-      name = "torch",
-      version = sprintf(">=%s", .pkgenv$package_constants$torch_version)
-    ),
-    torchvision = list(
-      name = "torchvision",
-      version = ""
-    ),
-    numpy = list(
-      name = "numpy",
-      version = sprintf("==%s", .pkgenv$package_constants$numpy_version)
-    ),
-    scipy = list(
-      name = "scipy",
-      version = sprintf("==%s", .pkgenv$package_constants$scipy_version)
-    ),
-    transformers = list(
-      name = "transformers",
-      version = sprintf("==%s", .pkgenv$package_constants$transformers_version)
-    ),
-    sentencepiece = list(
-      name = "sentencepiece",
-      version = ">=0.1.97,<0.2.0"
-    ),
-    flair = list(
-      name = "flair",
-      version = sprintf(">=%s", .pkgenv$package_constants$flair_min_version)
-    )
+  # 需要將版本規格放在引號中傳遞給 pip
+  if (!quiet) message(sprintf("Installing %s", package_spec))
+
+  cmd_result <- system2(
+    pip_cmd,
+    c("install", "--upgrade", "--no-user", shQuote(package_spec)),
+    stdout = TRUE,
+    stderr = TRUE
   )
 
-  # 安裝每個依賴包
-  for (dep in dependencies) {
-    tryCatch({
-      message(sprintf("Installing %s %s", dep$name, dep$version))
-      install_package(venv, dep$name, dep$version)
-    }, error = function(e) {
-      message(sprintf("Error installing %s: %s", dep$name, e$message))
+  # 檢查安裝結果
+  if (attr(cmd_result, "status", exact = TRUE) != 0) {
+    stop(paste(cmd_result, collapse = "\n"))
+  }
+
+  return(invisible(TRUE))
+}
+
+install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
+  if (is.null(venv)) {
+    venv <- file.path(Sys.getenv("HOME"), ".flair_env")
+  }
+
+  # 確保虛擬環境存在
+  if (!dir.exists(venv)) {
+    if (!quiet) message(sprintf("Creating virtual environment at %s", venv))
+    dir.create(venv, recursive = TRUE)
+    system2("python3", c("-m", "venv", venv))
+  }
+
+  # 定義需要安裝的包和版本
+  packages <- list(
+    "torch>=2.2.0",
+    "torchvision",
+    "numpy==1.26.4",
+    "scipy==1.12.0",
+    "transformers==4.37.2",
+    "sentencepiece>=0.1.97,<0.2.0",
+    "flair>=0.11.3"
+  )
+
+  # 安裝每個包
+  for (package_spec in packages) {
+    success <- FALSE
+    for (try_count in 1:max_retries) {
+      tryCatch({
+        install_package(venv, package_spec, quiet)
+        success <- TRUE
+        break
+      }, error = function(e) {
+        if (try_count == max_retries) {
+          warning(sprintf("Failed to install %s: %s", package_spec, e$message))
+        } else {
+          if (!quiet) message(sprintf("Retry %d/%d for %s", try_count, max_retries, package_spec))
+          Sys.sleep(2 ^ try_count)  # 指數退避
+        }
+      })
+    }
+
+    if (!success) {
       return(FALSE)
-    })
+    }
+  }
+
+  # 驗證安裝
+  python_cmd <- file.path(venv, "bin", "python")
+  required_modules <- c("torch", "numpy", "flair")
+  for (module in required_modules) {
+    check_cmd <- sprintf("import %s", module)
+    check_result <- system2(python_cmd, c("-c", check_cmd), stdout = TRUE, stderr = TRUE)
+    if (attr(check_result, "status", exact = TRUE) != 0) {
+      warning(sprintf("Failed to import %s after installation", module))
+      return(FALSE)
+    }
   }
 
   return(TRUE)
