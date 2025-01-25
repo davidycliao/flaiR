@@ -17,16 +17,44 @@ NULL
 #   torch_version = "2.2.0",
 #   transformers_version = "4.37.2"
 # )
+
 .pkgenv$package_constants <- list(
-  versions = list(
-    python = list(min = "3.9", max = "3.12"),
-    packages = list(
-      numpy = "1.26.4",
-      scipy = "1.12.0",
-      flair = list(min = "0.11.3"),
-      torch = "2.2.0",
-      transformers = "4.37.2"
-    )
+  python = list(
+    python_min_version = "3.9",
+    python_max_version = "3.12"
+  ),
+  packages = list(
+    # 核心依賴
+    torch = list(min = "1.5.0", exclude = "1.8"),
+    numpy = "1.26.4",
+    scipy = "1.12.0",
+    flair = list(min = "0.11.3"),
+
+    # Flair 相關依賴
+    boto3 = list(min = "1.20.27"),
+    conllu = list(min = "4.0", max = "7.0.0"),
+    deprecated = list(min = "1.2.13"),
+    ftfy = list(min = "6.1.0"),
+    gdown = list(min = "4.4.0"),
+    huggingface_hub = list(min = "0.10.0"),
+    langdetect = list(min = "1.0.9"),
+    lxml = list(min = "4.8.0"),
+    matplotlib = list(min = "2.2.3"),
+    more_itertools = list(min = "8.13.0"),
+    mpld3 = list(min = "0.3"),
+    pptree = list(min = "3.1"),
+    python_dateutil = list(min = "2.8.2"),
+    pytorch_revgrad = list(min = "0.2.0"),
+    regex = list(min = "2022.1.18"),
+    scikit_learn = list(min = "1.0.2"),
+    segtok = list(min = "1.5.11"),
+    sqlitedict = list(min = "2.0.0"),
+    tabulate = list(min = "0.8.10"),
+    tqdm = list(min = "4.63.0"),
+    transformer_smaller_training_vocab = list(min = "0.2.3"),
+    transformers = list(min = "4.25.0", max = "5.0.0", extras = "sentencepiece"),
+    wikipedia_api = list(min = "0.5.7"),
+    bioc = list(min = "2.0.0", max = "3.0.0")
   )
 )
 
@@ -209,6 +237,24 @@ get_system_info <- function() {
 #' @return logical TRUE if successful, FALSE otherwise
 #' @noRd
 
+# 版本規格轉換函數
+create_version_spec <- function(pkg_info) {
+  if (is.character(pkg_info)) return(pkg_info)
+
+  specs <- c()
+  if (!is.null(pkg_info$min)) specs <- c(specs, sprintf(">=%s", pkg_info$min))
+  if (!is.null(pkg_info$max)) specs <- c(specs, sprintf("<%s", pkg_info$max))
+  if (!is.null(pkg_info$exclude)) specs <- c(specs, sprintf("!=%s", pkg_info$exclude))
+
+  spec <- paste(specs, collapse=",")
+  if (!is.null(pkg_info$extras)) {
+    spec <- sprintf("%s[%s]", spec, pkg_info$extras)
+  }
+
+  spec
+}
+
+# 改進的安裝依賴函數
 install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
   # Helper function to log messages
   log_msg <- function(msg, is_error = FALSE) {
@@ -221,207 +267,66 @@ install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
     }
   }
 
+  # 準備安裝規格
+  pkg_specs <- lapply(.pkgenv$package_constants$packages, create_version_spec)
+
+  # 建立安裝順序（某些包需要特定順序）
+  install_order <- c(
+    "torch",  # 基礎依賴
+    "numpy",
+    "scipy",
+    setdiff(names(pkg_specs), c("torch", "numpy", "scipy", "flair")),
+    "flair"   # 最後安裝 flair
+  )
+
   # Helper function for installation retry logic
-  retry_install <- function(install_fn, pkg_name) {
+  retry_install <- function(pkg_name) {
     for (i in 1:max_retries) {
-      tryCatch({
-        if (i > 1) log_msg(sprintf("Retry attempt %d/%d for %s", i, max_retries, pkg_name))
-        result <- install_fn()
-        return(list(success = TRUE))
+      if (i > 1) log_msg(sprintf("Retry attempt %d/%d for %s", i, max_retries, pkg_name))
+
+      result <- tryCatch({
+        spec <- pkg_specs[[pkg_name]]
+        if (!is.null(spec)) {
+          if (!is.null(venv)) {
+            pip_path <- if (Sys.info()["sysname"] == "Windows") {
+              file.path(venv, "Scripts", "pip.exe")
+            } else {
+              file.path(venv, "bin", "pip")
+            }
+            system2(pip_path, c("install", "--upgrade", "--no-deps", spec))
+          } else {
+            reticulate::py_install(
+              packages = spec,
+              pip = TRUE,
+              envname = venv
+            )
+          }
+        }
+        TRUE
       }, error = function(e) {
         if (i == max_retries) {
-          return(list(
-            success = FALSE,
-            error = sprintf("Failed to install %s: %s", pkg_name, e$message)
-          ))
+          log_msg(sprintf("Failed to install %s: %s", pkg_name, e$message), TRUE)
+          return(FALSE)
         }
-        Sys.sleep(2 ^ i) # Exponential backoff
+        Sys.sleep(2 ^ i)  # Exponential backoff
         NULL
       })
+
+      if (!is.null(result)) return(result)
     }
+    FALSE
   }
 
-  # Check Python environment
-  check_python_environment <- function() {
-    tryCatch({
-      # 獲取 Python 配置
-      py_config <- reticulate::py_config()
-      if (is.null(py_config)) {
-        packageStartupMessage(.pkgenv$colors$red, "Error: Could not detect Python configuration", .pkgenv$colors$reset)
-        return(FALSE)
-      }
-
-      # 檢查版本
-      python_version <- as.character(py_config$version)
-      version_ok <- check_python_version(python_version)
-      if (!version_ok) {
-        packageStartupMessage(sprintf(
-          "%sWarning: Python version %s is not in supported range (%s - %s)%s",
-          .pkgenv$colors$yellow,
-          python_version,
-          .pkgenv$package_constants$python_min_version,
-          .pkgenv$package_constants$python_max_version,
-          .pkgenv$colors$reset
-        ))
-      }
-
-      # 檢查並安裝 pip (如果需要)
-      install_pip <- function() {
-        tryCatch({
-          # 使用 ensurepip
-          system2("python3", "-m ensurepip --upgrade", stdout = TRUE, stderr = TRUE)
-          # 或使用 get-pip.py
-          if (!reticulate::py_module_available("pip")) {
-            tmp <- tempfile()
-            download.file(
-              "https://bootstrap.pypa.io/get-pip.py",
-              tmp
-            )
-            system2("python3", c(tmp))
-            unlink(tmp)
-          }
-          TRUE
-        }, error = function(e) FALSE)
-      }
-
-      # 檢查 pip
-      if (!reticulate::py_module_available("pip")) {
-        packageStartupMessage(sprintf(
-          "%sWarning: pip not found, attempting to install...%s",
-          .pkgenv$colors$yellow,
-          .pkgenv$colors$reset
-        ))
-
-        if (!install_pip()) {
-          packageStartupMessage(sprintf(
-            "%sError: Failed to install pip. Please install pip manually:%s\n%s1. Run 'python3 -m ensurepip --upgrade'%s\n%s2. Or download get-pip.py from https://bootstrap.pypa.io/get-pip.py%s",
-            .pkgenv$colors$red,
-            .pkgenv$colors$reset,
-            .pkgenv$colors$blue,
-            .pkgenv$colors$reset,
-            .pkgenv$colors$blue,
-            .pkgenv$colors$reset
-          ))
-          return(FALSE)
-        }
-      }
-
-      # 檢查虛擬環境
-      if (!is_docker()) {
-        tryCatch({
-          venv_dir <- file.path(Sys.getenv("HOME"), ".flair_venv")
-          if (!dir.exists(venv_dir)) {
-            dir.create(venv_dir, recursive = TRUE)
-            system2("python3", c("-m", "venv", venv_dir))
-            Sys.setenv(VIRTUAL_ENV = venv_dir)
-            Sys.setenv(PATH = paste(file.path(venv_dir, "bin"), Sys.getenv("PATH"), sep = ":"))
-          }
-        }, error = function(e) {
-          packageStartupMessage(sprintf(
-            "%sWarning: Could not create virtual environment%s",
-            .pkgenv$colors$yellow,
-            .pkgenv$colors$reset
-          ))
-        })
-      }
-
-      return(TRUE)
-    }, error = function(e) {
-      packageStartupMessage(sprintf(
-        "%sError checking Python environment: %s%s",
-        .pkgenv$colors$red,
-        e$message,
-        .pkgenv$colors$reset
-      ))
-      return(FALSE)
-    })
-  }
-
-  # Main installation process
+  # 主安裝流程
   tryCatch({
-    if (!check_python_environment()) {
-      return(FALSE)
+    if (!is.null(venv)) {
+      log_msg(sprintf("Using virtual environment '%s'", venv))
     }
 
-    in_docker <- is_docker()
-    env_msg <- if (!is.null(venv)) {
-      sprintf(" in %s", venv)
-    } else {
-      if (in_docker) " in Docker environment" else ""
-    }
-
-    log_msg(sprintf("Installing dependencies%s...", env_msg))
-
-    if (in_docker) {
-      # Docker environment installation
-      pip_path <- "/opt/venv/bin/pip"
-
-      # Install PyTorch packages
-      torch_result <- retry_install(function() {
-        system2(pip_path, c("install", "--no-cache-dir",
-                            sprintf("torch>=%s", .pkgenv$package_constants$torch_version),
-                            "torchvision"))
-      }, "PyTorch")
-
-      if (!torch_result$success) {
-        log_msg(torch_result$error, TRUE)
+    for (pkg_name in install_order) {
+      if (!retry_install(pkg_name)) {
+        log_msg(sprintf("Installation failed at package: %s", pkg_name), TRUE)
         return(FALSE)
-      }
-
-      # Install other dependencies
-      deps_result <- retry_install(function() {
-        system2(pip_path, c("install", "--no-cache-dir",
-                            sprintf("numpy==%s", .pkgenv$package_constants$numpy_version),
-                            sprintf("scipy==%s", .pkgenv$package_constants$scipy_version),
-                            sprintf("transformers==%s", .pkgenv$package_constants$transformers_version),
-                            "sentencepiece>=0.1.97,<0.2.0"))
-      }, "Core dependencies")
-
-      if (!deps_result$success) {
-        log_msg(deps_result$error, TRUE)
-        return(FALSE)
-      }
-
-      # Install flair
-      flair_result <- retry_install(function() {
-        system2(pip_path, c("install", "--no-cache-dir",
-                            sprintf("flair>=%s", .pkgenv$package_constants$flair_min_version)))
-      }, "Flair")
-
-      if (!flair_result$success) {
-        log_msg(flair_result$error, TRUE)
-        return(FALSE)
-      }
-
-    } else {
-      # Standard environment installation
-      packages <- list(
-        torch = c(
-          sprintf("torch>=%s", .pkgenv$package_constants$torch_version),
-          "torchvision"
-        ),
-        core = c(
-          sprintf("numpy==%s", .pkgenv$package_constants$numpy_version),
-          sprintf("scipy==%s", .pkgenv$package_constants$scipy_version),
-          sprintf("transformers==%s", .pkgenv$package_constants$transformers_version),
-          "sentencepiece>=0.1.97,<0.2.0"
-        ),
-        flair = sprintf("flair>=%s", .pkgenv$package_constants$flair_min_version)
-      )
-
-      for (pkg_type in names(packages)) {
-        result <- retry_install(function() {
-          reticulate::py_install(
-            packages = packages[[pkg_type]],
-            pip = TRUE,
-            envname = venv
-          )
-        }, pkg_type)
-
-        if (!result$success) {
-          log_msg(result$error, TRUE)
-          return(FALSE)
-        }
       }
     }
 
@@ -437,6 +342,7 @@ install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
   })
 }
 
+#
 # install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
 #   # Helper function to log messages
 #   log_msg <- function(msg, is_error = FALSE) {
@@ -609,7 +515,7 @@ install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
 #     return(FALSE)
 #   })
 # }
-
+#
 
 
 # Check and Setup Conda -----------------------------------------------------
