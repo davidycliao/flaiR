@@ -82,7 +82,7 @@ Science](https://davidycliao.github.io/flaiR/articles/tutorial.html#introduction
 
 \*: *On R 4.2.1 and 4.0.5, particularly when using the Matrix package on
 ARM 64 architecture Macs (M1/M2/M3), compatibility issues with gfortran
-may occur. It’s recommended to avoid this combination.*
+may occur. It’s recommended to avoid these versions.*
 
 <br>
 
