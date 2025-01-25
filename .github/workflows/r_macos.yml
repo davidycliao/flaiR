@@ -18,8 +18,8 @@ jobs:
     runs-on: macos-latest
     strategy:
       matrix:
-        r-version: ['4.2.0']
-        python-version: ['3.10']  # 文檔要求的 Python 版本
+        r-version: ['4.1.0', '4.2.0', '4.3.0', '4.3.2']
+        python-version: ['3.10']
       fail-fast: false
 
     steps:
