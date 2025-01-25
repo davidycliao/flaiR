@@ -183,72 +183,163 @@ get_system_info <- function() {
 #' @param quiet Suppress status messages if TRUE
 #' @return logical TRUE if successful, FALSE otherwise
 #' @noRd
+# 改進的版本規格處理
+format_version_spec <- function(pkg_name, version_spec) {
+  if (is.null(version_spec) || version_spec == "") {
+    return(pkg_name)
+  }
+  # 確保包名在版本規格之前
+  if (!grepl("^[a-zA-Z0-9_-]+", version_spec)) {
+    return(sprintf("%s%s", pkg_name, version_spec))
+  }
+  return(version_spec)
+}
+
+install_package <- function(venv_path, pkg_name, version_spec = "") {
+  # 格式化完整的包規格
+  pkg_spec <- format_version_spec(pkg_name, version_spec)
+
+  # 建構 pip 命令
+  pip_cmd <- file.path(venv_path, "bin", "pip")
+  args <- c("install", "--upgrade", "--no-user", pkg_spec)
+
+  # 執行安裝
+  result <- system2(pip_cmd, args, stdout = TRUE, stderr = TRUE)
+
+  # 檢查安裝結果
+  if (attr(result, "status") != 0) {
+    stop(sprintf("Failed to install %s: %s", pkg_spec, paste(result, collapse = "\n")))
+  }
+
+  # 驗證安裝
+  verify_cmd <- sprintf("import %s; print(%s.__version__)", pkg_name, pkg_name)
+  python_cmd <- file.path(venv_path, "bin", "python")
+  version <- system2(python_cmd, c("-c", verify_cmd), stdout = TRUE, stderr = TRUE)
+
+  if (attr(version, "status") != 0) {
+    stop(sprintf("Failed to verify %s installation", pkg_name))
+  }
+
+  return(TRUE)
+}
+
+# 更新的依賴安裝函數
 install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
-  # Installation order
-  install_order <- c(
-    "torch",
-    "numpy",
-    "scipy",
-    "transformers",
-    "sentencepiece",
-    "boto3",
-    "conllu",
-    "deprecated",
-    "ftfy",
-    "gdown",
-    "huggingface_hub",
-    "flair"
+  if (is.null(venv)) {
+    venv <- file.path(Sys.getenv("HOME"), ".virtualenvs", "r-reticulate")
+  }
+
+  # 定義依賴包及其版本
+  dependencies <- list(
+    torch = list(
+      name = "torch",
+      version = sprintf(">=%s", .pkgenv$package_constants$torch_version)
+    ),
+    torchvision = list(
+      name = "torchvision",
+      version = ""
+    ),
+    numpy = list(
+      name = "numpy",
+      version = sprintf("==%s", .pkgenv$package_constants$numpy_version)
+    ),
+    scipy = list(
+      name = "scipy",
+      version = sprintf("==%s", .pkgenv$package_constants$scipy_version)
+    ),
+    transformers = list(
+      name = "transformers",
+      version = sprintf("==%s", .pkgenv$package_constants$transformers_version)
+    ),
+    sentencepiece = list(
+      name = "sentencepiece",
+      version = ">=0.1.97,<0.2.0"
+    ),
+    flair = list(
+      name = "flair",
+      version = sprintf(">=%s", .pkgenv$package_constants$flair_min_version)
+    )
   )
 
-  # Version specification helper
-  create_version_spec <- function(pkg_info) {
-    if (is.character(pkg_info)) return(pkg_info)
-    specs <- c()
-    if (!is.null(pkg_info$min)) specs <- c(specs, sprintf(">=%s", pkg_info$min))
-    if (!is.null(pkg_info$max)) specs <- c(specs, sprintf("<%s", pkg_info$max))
-    if (!is.null(pkg_info$exclude)) specs <- c(specs, sprintf("!=%s", pkg_info$exclude))
-    spec <- paste(specs, collapse=",")
-    if (!is.null(pkg_info$extras)) spec <- sprintf("%s[%s]", spec, pkg_info$extras)
-    spec
+  # 安裝每個依賴包
+  for (dep in dependencies) {
+    tryCatch({
+      message(sprintf("Installing %s %s", dep$name, dep$version))
+      install_package(venv, dep$name, dep$version)
+    }, error = function(e) {
+      message(sprintf("Error installing %s: %s", dep$name, e$message))
+      return(FALSE)
+    })
   }
 
-  # Installation with retry
-  install_package <- function(pkg_name) {
-    for (attempt in 1:max_retries) {
-      tryCatch({
-        pkg_spec <- create_version_spec(.pkgenv$package_constants$packages[[pkg_name]])
-        if (!quiet) packageStartupMessage(sprintf("Installing %s (%s)...", pkg_name, pkg_spec))
-
-        if (is_docker()) {
-          cmd <- "/opt/venv/bin/pip"
-          args <- c("install", "--no-cache-dir", pkg_spec)
-          system2(cmd, args)
-        } else {
-          reticulate::py_install(
-            packages = pkg_spec,
-            pip = TRUE,
-            envname = venv
-          )
-        }
-        return(TRUE)
-      }, error = function(e) {
-        if (attempt == max_retries) {
-          if (!quiet) packageStartupMessage(sprintf("Failed to install %s: %s", pkg_name, e$message))
-          return(FALSE)
-        }
-        Sys.sleep(2 ^ attempt)
-      })
-    }
-    FALSE
-  }
-
-  # Main installation process
-  for (pkg in install_order) {
-    if (!install_package(pkg)) return(FALSE)
-  }
-
-  TRUE
+  return(TRUE)
 }
+# install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
+#   # Installation order
+#   install_order <- c(
+#     "torch",
+#     "numpy",
+#     "scipy",
+#     "transformers",
+#     "sentencepiece",
+#     "boto3",
+#     "conllu",
+#     "deprecated",
+#     "ftfy",
+#     "gdown",
+#     "huggingface_hub",
+#     "flair"
+#   )
+#
+#   # Version specification helper
+#   create_version_spec <- function(pkg_info) {
+#     if (is.character(pkg_info)) return(pkg_info)
+#     specs <- c()
+#     if (!is.null(pkg_info$min)) specs <- c(specs, sprintf(">=%s", pkg_info$min))
+#     if (!is.null(pkg_info$max)) specs <- c(specs, sprintf("<%s", pkg_info$max))
+#     if (!is.null(pkg_info$exclude)) specs <- c(specs, sprintf("!=%s", pkg_info$exclude))
+#     spec <- paste(specs, collapse=",")
+#     if (!is.null(pkg_info$extras)) spec <- sprintf("%s[%s]", spec, pkg_info$extras)
+#     spec
+#   }
+#
+#   # Installation with retry
+#   install_package <- function(pkg_name) {
+#     for (attempt in 1:max_retries) {
+#       tryCatch({
+#         pkg_spec <- create_version_spec(.pkgenv$package_constants$packages[[pkg_name]])
+#         if (!quiet) packageStartupMessage(sprintf("Installing %s (%s)...", pkg_name, pkg_spec))
+#
+#         if (is_docker()) {
+#           cmd <- "/opt/venv/bin/pip"
+#           args <- c("install", "--no-cache-dir", pkg_spec)
+#           system2(cmd, args)
+#         } else {
+#           reticulate::py_install(
+#             packages = pkg_spec,
+#             pip = TRUE,
+#             envname = venv
+#           )
+#         }
+#         return(TRUE)
+#       }, error = function(e) {
+#         if (attempt == max_retries) {
+#           if (!quiet) packageStartupMessage(sprintf("Failed to install %s: %s", pkg_name, e$message))
+#           return(FALSE)
+#         }
+#         Sys.sleep(2 ^ attempt)
+#       })
+#     }
+#     FALSE
+#   }
+#
+#   # Main installation process
+#   for (pkg in install_order) {
+#     if (!install_package(pkg)) return(FALSE)
+#   }
+#
+#   TRUE
+# }
 
 # Environment Setup ------------------------------------------------------
 #' Check and setup Python environment
