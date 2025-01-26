@@ -285,16 +285,23 @@ install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
           sprintf("numpy==%s", .pkgenv$package_constants$numpy_version),
           sprintf("scipy==%s", .pkgenv$package_constants$scipy_version),
           sprintf("transformers==%s", .pkgenv$package_constants$transformers_version),
-          "sentencepiece>=0.1.97,<0.2.0"
+          "sentencepiece>=0.1.97,<0.2.0",
+          "gensim>=4.0.0"  # Add gensim for word embeddings
+        )
+      ),
+      wordembeddings = list(
+        name = "Word Embeddings Base",
+        packages = c(
+          "smart-open>=1.8.1",
+          "wikipedia-api>=0.5.4"
         )
       ),
       flair = list(
-        name = "Flair",
-        packages = sprintf("flair>=%s", .pkgenv$package_constants$flair_min_version)
-      ),
-      embeddings = list(
-        name = "Word Embeddings",
-        packages = "flair[word-embeddings]"
+        name = "Flair with Embeddings",
+        packages = c(
+          sprintf("flair[embeddings]>=%s", .pkgenv$package_constants$flair_min_version),
+          sprintf("flair[word-embeddings]>=%s", .pkgenv$package_constants$flair_min_version)
+        )
       )
     )
   }
@@ -321,6 +328,9 @@ install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
       # Docker environment installation
       pip_path <- "/opt/venv/bin/pip"
 
+      # Upgrade pip first
+      system2(pip_path, c("install", "--upgrade", "pip"))
+
       for (pkg in install_sequence) {
         result <- retry_install(function() {
           system2(pip_path, c("install", "--no-cache-dir", pkg$packages))
@@ -331,8 +341,23 @@ install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
           return(FALSE)
         }
       }
+
+      # Double-check flair installation with word embeddings
+      verify_result <- retry_install(function() {
+        system2(pip_path, c("install", "--no-cache-dir", "--force-reinstall",
+                            sprintf("'flair[word-embeddings]>=%s'", .pkgenv$package_constants$flair_min_version)))
+      }, "Flair word embeddings verification")
+
+      if (!verify_result$success) {
+        log_msg(verify_result$error, TRUE)
+        return(FALSE)
+      }
+
     } else {
       # Standard environment installation
+      # Upgrade pip first
+      reticulate::py_install("pip", pip = TRUE, envname = venv)
+
       for (pkg in install_sequence) {
         result <- retry_install(function() {
           reticulate::py_install(
@@ -347,6 +372,20 @@ install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
           return(FALSE)
         }
       }
+
+      # Double-check flair installation with word embeddings
+      verify_result <- retry_install(function() {
+        reticulate::py_install(
+          packages = sprintf("flair[word-embeddings]>=%s", .pkgenv$package_constants$flair_min_version),
+          pip = TRUE,
+          envname = venv
+        )
+      }, "Flair word embeddings verification")
+
+      if (!verify_result$success) {
+        log_msg(verify_result$error, TRUE)
+        return(FALSE)
+      }
     }
 
     log_msg("Successfully installed all dependencies")
@@ -360,6 +399,170 @@ install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
     return(FALSE)
   })
 }
+# install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
+#   # Helper function to log messages
+#   log_msg <- function(msg, is_error = FALSE) {
+#     if (!quiet) {
+#       if (is_error) {
+#         packageStartupMessage(.pkgenv$colors$red, msg, .pkgenv$colors$reset)
+#       } else {
+#         packageStartupMessage(msg)
+#       }
+#     }
+#   }
+#
+#   # Helper function for installation retry logic
+#   retry_install <- function(install_fn, pkg_name) {
+#     for (i in 1:max_retries) {
+#       tryCatch({
+#         if (i > 1) log_msg(sprintf("Retry attempt %d/%d for %s", i, max_retries, pkg_name))
+#         result <- install_fn()
+#         return(list(success = TRUE))
+#       }, error = function(e) {
+#         if (i == max_retries) {
+#           return(list(
+#             success = FALSE,
+#             error = sprintf("Failed to install %s: %s", pkg_name, e$message)
+#           ))
+#         }
+#         Sys.sleep(2 ^ i) # Exponential backoff
+#         NULL
+#       })
+#     }
+#   }
+#
+#   # Check Python environment
+#   check_python_environment <- function() {
+#     tryCatch({
+#       # Get Python config
+#       py_config <- reticulate::py_config()
+#       if (is.null(py_config)) {
+#         log_msg("Error: Could not detect Python configuration", TRUE)
+#         return(FALSE)
+#       }
+#
+#       # Check version
+#       python_version <- as.character(py_config$version)
+#       if (!check_python_version(python_version)) {
+#         log_msg(sprintf(
+#           "Warning: Python version %s might have compatibility issues",
+#           python_version
+#         ), TRUE)
+#       }
+#
+#       # Check pip availability
+#       pip_version <- tryCatch({
+#         if (in_docker) {
+#           system2("/opt/venv/bin/pip", "--version", stdout = TRUE)
+#         } else {
+#           reticulate::py_eval("import pip; pip.__version__", convert = TRUE)
+#         }
+#         TRUE
+#       }, error = function(e) {
+#         log_msg("Error: pip is not available in the Python environment", TRUE)
+#         FALSE
+#       })
+#
+#       if (!pip_version) return(FALSE)
+#
+#       return(TRUE)
+#     }, error = function(e) {
+#       log_msg(sprintf("Error checking Python environment: %s", e$message), TRUE)
+#       return(FALSE)
+#     })
+#   }
+#
+#   # Define package installation sequence
+#   get_install_sequence <- function() {
+#     list(
+#       torch = list(
+#         name = "PyTorch",
+#         packages = c(
+#           sprintf("torch>=%s", .pkgenv$package_constants$torch_version),
+#           "torchvision"
+#         )
+#       ),
+#       core = list(
+#         name = "Core dependencies",
+#         packages = c(
+#           sprintf("numpy==%s", .pkgenv$package_constants$numpy_version),
+#           sprintf("scipy==%s", .pkgenv$package_constants$scipy_version),
+#           sprintf("transformers==%s", .pkgenv$package_constants$transformers_version),
+#           "sentencepiece>=0.1.97,<0.2.0"
+#         )
+#       ),
+#       flair = list(
+#         name = "Flair",
+#         packages = sprintf("flair>=%s", .pkgenv$package_constants$flair_min_version)
+#       ),
+#       embeddings = list(
+#         name = "Word Embeddings",
+#         packages = "flair[word-embeddings]"
+#       )
+#     )
+#   }
+#
+#   # Main installation process
+#   tryCatch({
+#     if (!check_python_environment()) {
+#       return(FALSE)
+#     }
+#
+#     in_docker <- is_docker()
+#     env_msg <- if (!is.null(venv)) {
+#       sprintf(" in %s", venv)
+#     } else {
+#       if (in_docker) " in Docker environment" else ""
+#     }
+#
+#     log_msg(sprintf("Installing dependencies%s...", env_msg))
+#
+#     # Get installation sequence
+#     install_sequence <- get_install_sequence()
+#
+#     if (in_docker) {
+#       # Docker environment installation
+#       pip_path <- "/opt/venv/bin/pip"
+#
+#       for (pkg in install_sequence) {
+#         result <- retry_install(function() {
+#           system2(pip_path, c("install", "--no-cache-dir", pkg$packages))
+#         }, pkg$name)
+#
+#         if (!result$success) {
+#           log_msg(result$error, TRUE)
+#           return(FALSE)
+#         }
+#       }
+#     } else {
+#       # Standard environment installation
+#       for (pkg in install_sequence) {
+#         result <- retry_install(function() {
+#           reticulate::py_install(
+#             packages = pkg$packages,
+#             pip = TRUE,
+#             envname = venv
+#           )
+#         }, pkg$name)
+#
+#         if (!result$success) {
+#           log_msg(result$error, TRUE)
+#           return(FALSE)
+#         }
+#       }
+#     }
+#
+#     log_msg("Successfully installed all dependencies")
+#     return(TRUE)
+#
+#   }, error = function(e) {
+#     log_msg(sprintf(
+#       "Error installing dependencies: %s\nPlease check:\n1. Internet connection\n2. Pip availability\n3. Python environment permissions",
+#       e$message
+#     ), TRUE)
+#     return(FALSE)
+#   })
+# }
 # install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
 #   # Helper functions remain unchanged...
 #   log_msg <- function(msg, is_error = FALSE) {
