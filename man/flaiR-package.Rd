@@ -4,11 +4,11 @@
 \name{flaiR-package}
 \alias{flaiR}
 \alias{flaiR-package}
-\title{flaiR: An R Wrapper for Accessing FLAIR}
+\title{flaiR: An R Wrapper for Accessing Flair NLP}
 \description{
 \if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
 
-Provides a suite of intuitive and flexible wrapper tools tailored for accessing FLAIR in Python data analysis. The package is an R wrapper designed to provide access to the primary features of Flair NLP.
+Provides an R interface to the Flair Natural Language Processing (NLP) library in Python. This package allows R users to access Flair's NLP capabilities including named entity recognition, part-of-speech tagging, text embeddings and word embeddings. The package handles the Python dependencies management and provides R-friendly wrappers for Flair's functionality. Users need Python (>= 3.9.0) with PyTorch (>= 2.2.0), Transformers (>= 4.37.2), and Flair (>= 0.11.3) installed in their system. The package automatically checks and validates the Python environment during loading, ensuring all required dependencies are properly configured. For Mac users, both CPU and GPU (MPS) modes are supported. For Linux and Windows users, both CPU and CUDA modes are available with compatible hardware.
 }
 \seealso{
 Useful links:
@@ -19,7 +19,7 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Yen-Chieh Liao \email{davidyclaio@gmail.com} [contributor]
+\strong{Maintainer}: Yen-Chieh Liao \email{davidycliao@gmail.com} [contributor]
 
 Authors:
 \itemize{

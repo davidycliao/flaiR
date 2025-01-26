@@ -88,17 +88,22 @@ may occur. It’s recommended to avoid these versions.*
 
 ## Fast Install flaiR with `remotes`
 
-<u>Step 1 </u>: Install and Load `reticulate` Package
+### Prerequisites
+
+Before installing flaiR, ensure you have Python (\>= 3.9.0) and the
+following Python dependencies: - PyTorch (\>= 2.2.0) - Transformers (\>=
+4.37.2) - Flair (\>= 0.11.3)
+
+<u>Step 1</u>: Install and Load `reticulate` Package
 
 ``` r
 # Install reticulate package
 install.packages("reticulate")
-
 # Load reticulate library
 library(reticulate)
 ```
 
-<u>Step 2 </u>: Check Existing Python Configuration
+<u>Step 2</u>: Check Existing Python Configuration
 
 If not, recommend referring to [the Quick Start-flaiR
 Installation](https://davidycliao.github.io/flaiR/articles/quickstart.html#option-1-fast-install-flair-and-python-with-reticulate).
@@ -131,7 +136,33 @@ library(flaiR)
 #> Transformers         ✓  4.40.1
 #> Flair NLP            ✓  0.13.1
 #> Word Embeddings      ✓  4.3.2
-flaiR: An R Wrapper for Accessing Flair NLP 0.13.1
+#> flaiR: An R Wrapper for Accessing Flair NLP 0.13.1
+```
+
+If you have never used gensim before and gensim dependencies are not
+detected, you will see a message like:
+
+``` bash
+#> Environment Information:
+#> OS: Darwin (15.2)
+#> Using existing Python: /usr/local/bin/python3.10
+#> Python               ✓  3.10
+#> GPU                  ✓  Mac MPS
+
+#> PyTorch              ✓  2.2.2
+#> Transformers         ✓  4.40.1
+#> Flair NLP            ✓  0.13.1
+#> Word Embeddings      ✗  Not Available
+#> Word embeddings feature is not detected.
+
+#> Install with:
+#> In R:
+#>  reticulate::py_install('flair[word-embeddings]', pip = TRUE)
+#>  system(paste(Sys.which('python3'), '-m pip install flair[word-embeddings]'))
+
+#> In terminal:
+#>  pip install flair[word-embeddings]
+#> flaiR: An R Wrapper for Accessing Flair NLP 0.13.1
 ```
 
 <br>
