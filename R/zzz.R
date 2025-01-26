@@ -197,7 +197,7 @@ get_system_info <- function() {
 #' @return logical TRUE if successful, FALSE otherwise
 #' @noRd
 install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
-  # Helper functions remain unchanged...
+  # Helper function to log messages
   log_msg <- function(msg, is_error = FALSE) {
     if (!quiet) {
       if (is_error) {
@@ -208,6 +208,7 @@ install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
     }
   }
 
+  # Helper function for installation retry logic
   retry_install <- function(install_fn, pkg_name) {
     for (i in 1:max_retries) {
       tryCatch({
@@ -227,6 +228,7 @@ install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
     }
   }
 
+  # Check Python environment
   check_python_environment <- function() {
     tryCatch({
       # Get Python config
@@ -267,6 +269,36 @@ install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
     })
   }
 
+  # Define package installation sequence
+  get_install_sequence <- function() {
+    list(
+      torch = list(
+        name = "PyTorch",
+        packages = c(
+          sprintf("torch>=%s", .pkgenv$package_constants$torch_version),
+          "torchvision"
+        )
+      ),
+      core = list(
+        name = "Core dependencies",
+        packages = c(
+          sprintf("numpy==%s", .pkgenv$package_constants$numpy_version),
+          sprintf("scipy==%s", .pkgenv$package_constants$scipy_version),
+          sprintf("transformers==%s", .pkgenv$package_constants$transformers_version),
+          "sentencepiece>=0.1.97,<0.2.0"
+        )
+      ),
+      flair = list(
+        name = "Flair",
+        packages = sprintf("flair>=%s", .pkgenv$package_constants$flair_min_version)
+      ),
+      embeddings = list(
+        name = "Word Embeddings",
+        packages = "flair[word-embeddings]"
+      )
+    )
+  }
+
   # Main installation process
   tryCatch({
     if (!check_python_environment()) {
@@ -282,71 +314,33 @@ install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
 
     log_msg(sprintf("Installing dependencies%s...", env_msg))
 
+    # Get installation sequence
+    install_sequence <- get_install_sequence()
+
     if (in_docker) {
       # Docker environment installation
       pip_path <- "/opt/venv/bin/pip"
 
-      # Install PyTorch packages
-      torch_result <- retry_install(function() {
-        system2(pip_path, c("install", "--no-cache-dir",
-                            sprintf("torch>=%s", .pkgenv$package_constants$torch_version),
-                            "torchvision"))
-      }, "PyTorch")
+      for (pkg in install_sequence) {
+        result <- retry_install(function() {
+          system2(pip_path, c("install", "--no-cache-dir", pkg$packages))
+        }, pkg$name)
 
-      if (!torch_result$success) {
-        log_msg(torch_result$error, TRUE)
-        return(FALSE)
+        if (!result$success) {
+          log_msg(result$error, TRUE)
+          return(FALSE)
+        }
       }
-
-      # Install other dependencies
-      deps_result <- retry_install(function() {
-        system2(pip_path, c("install", "--no-cache-dir",
-                            sprintf("numpy==%s", .pkgenv$package_constants$numpy_version),
-                            sprintf("scipy==%s", .pkgenv$package_constants$scipy_version),
-                            sprintf("transformers==%s", .pkgenv$package_constants$transformers_version),
-                            "sentencepiece>=0.1.97,<0.2.0"))
-      }, "Core dependencies")
-
-      if (!deps_result$success) {
-        log_msg(deps_result$error, TRUE)
-        return(FALSE)
-      }
-
-      # Install flair with word-embeddings
-      flair_result <- retry_install(function() {
-        system2(pip_path, c("install", "--no-cache-dir",
-                            sprintf("'flair[word-embeddings]>=%s'", .pkgenv$package_constants$flair_min_version)))
-      }, "Flair")
-
-      if (!flair_result$success) {
-        log_msg(flair_result$error, TRUE)
-        return(FALSE)
-      }
-
     } else {
       # Standard environment installation
-      packages <- list(
-        torch = c(
-          sprintf("torch>=%s", .pkgenv$package_constants$torch_version),
-          "torchvision"
-        ),
-        core = c(
-          sprintf("numpy==%s", .pkgenv$package_constants$numpy_version),
-          sprintf("scipy==%s", .pkgenv$package_constants$scipy_version),
-          sprintf("transformers==%s", .pkgenv$package_constants$transformers_version),
-          "sentencepiece>=0.1.97,<0.2.0"
-        ),
-        flair = sprintf("'flair[word-embeddings]>=%s'", .pkgenv$package_constants$flair_min_version)
-      )
-
-      for (pkg_type in names(packages)) {
+      for (pkg in install_sequence) {
         result <- retry_install(function() {
           reticulate::py_install(
-            packages = packages[[pkg_type]],
+            packages = pkg$packages,
             pip = TRUE,
             envname = venv
           )
-        }, pkg_type)
+        }, pkg$name)
 
         if (!result$success) {
           log_msg(result$error, TRUE)
@@ -367,7 +361,7 @@ install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
   })
 }
 # install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
-#   # Helper function to log messages
+#   # Helper functions remain unchanged...
 #   log_msg <- function(msg, is_error = FALSE) {
 #     if (!quiet) {
 #       if (is_error) {
@@ -378,7 +372,6 @@ install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
 #     }
 #   }
 #
-#   # Helper function for installation retry logic
 #   retry_install <- function(install_fn, pkg_name) {
 #     for (i in 1:max_retries) {
 #       tryCatch({
@@ -398,7 +391,6 @@ install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
 #     }
 #   }
 #
-#   # Check Python environment
 #   check_python_environment <- function() {
 #     tryCatch({
 #       # Get Python config
@@ -484,10 +476,10 @@ install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
 #         return(FALSE)
 #       }
 #
-#       # Install flair
+#       # Install flair with word-embeddings
 #       flair_result <- retry_install(function() {
 #         system2(pip_path, c("install", "--no-cache-dir",
-#                             sprintf("flair>=%s", .pkgenv$package_constants$flair_min_version)))
+#                             sprintf("'flair[word-embeddings]>=%s'", .pkgenv$package_constants$flair_min_version)))
 #       }, "Flair")
 #
 #       if (!flair_result$success) {
@@ -508,7 +500,7 @@ install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
 #           sprintf("transformers==%s", .pkgenv$package_constants$transformers_version),
 #           "sentencepiece>=0.1.97,<0.2.0"
 #         ),
-#         flair = sprintf("flair>=%s", .pkgenv$package_constants$flair_min_version)
+#         flair = sprintf("'flair[word-embeddings]>=%s'", .pkgenv$package_constants$flair_min_version)
 #       )
 #
 #       for (pkg_type in names(packages)) {
@@ -538,6 +530,7 @@ install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
 #     return(FALSE)
 #   })
 # }
+
 
 # Check and Setup Conda -----------------------------------------------------
 #' Check and setup conda environment
