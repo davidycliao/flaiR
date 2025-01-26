@@ -616,28 +616,33 @@ initialize_modules <- function() {
     Sys.unsetenv("VIRTUALENV")
     options(reticulate.python.initializing = TRUE)
 
+    # 環境資訊
     sys_info <- get_system_info()
     packageStartupMessage("\nEnvironment Information:")
     packageStartupMessage(sprintf("OS: %s (%s)",
                                   as.character(sys_info$name),
                                   as.character(sys_info$version)))
 
+    # Docker 狀態檢查
     if (is_docker()) {
       print_status("Docker", "Enabled", TRUE)
     }
 
+    # Python 環境設置
     env_setup <- check_conda_env()
     if (!env_setup) {
       return(invisible(NULL))
     }
 
+    # Python 版本檢查
     config <- reticulate::py_config()
     python_version <- as.character(config$version)
     print_status("Python", python_version, check_python_version(python_version))
 
+    # 模組初始化與狀態檢查
     init_result <- initialize_modules()
     if (init_result$status) {
-      # GPU check
+      # 1. GPU 狀態檢查
       cuda_info <- init_result$device$cuda
       mps_available <- init_result$device$mps
 
@@ -654,11 +659,15 @@ initialize_modules <- function() {
         print_status("GPU", "CPU Only", FALSE)
       }
 
+      # 2. 空一行後顯示套件資訊
       packageStartupMessage("")
+
+      # 3. 主要套件版本資訊
       print_status("PyTorch", init_result$versions$torch, TRUE)
       print_status("Transformers", init_result$versions$transformers, TRUE)
       print_status("Flair NLP", init_result$versions$flair, TRUE)
 
+      # 4. Word Embeddings 狀態
       if (verify_embeddings(quiet = TRUE)) {
         gensim_version <- tryCatch({
           gensim <- reticulate::import("gensim")
@@ -670,6 +679,7 @@ initialize_modules <- function() {
                      sprintf("Word embeddings feature is not detected.\n\nInstall with:\nIn R:\n  reticulate::py_install('flair[word-embeddings]', pip = TRUE)\n  system(paste(Sys.which('python3'), '-m pip install flair[word-embeddings]'))\n\nIn terminal:\n  pip install flair[word-embeddings]"))
       }
 
+      # 5. 歡迎訊息
       msg <- sprintf(
         "%s%sflaiR%s%s: %s%sAn R Wrapper for Accessing Flair NLP %s%s%s",
         .pkgenv$colors$bold, .pkgenv$colors$blue,
@@ -708,7 +718,6 @@ initialize_modules <- function() {
 #                                   as.character(sys_info$name),
 #                                   as.character(sys_info$version)))
 #
-#     # Print Docker status if in Docker environment
 #     if (is_docker()) {
 #       print_status("Docker", "Enabled", TRUE)
 #     }
@@ -721,27 +730,9 @@ initialize_modules <- function() {
 #     config <- reticulate::py_config()
 #     python_version <- as.character(config$version)
 #     print_status("Python", python_version, check_python_version(python_version))
-#     packageStartupMessage("")
 #
 #     init_result <- initialize_modules()
 #     if (init_result$status) {
-#       print_status("PyTorch", init_result$versions$torch, TRUE)
-#       print_status("Transformers", init_result$versions$transformers, TRUE)
-#       print_status("Flair NLP", init_result$versions$flair, TRUE)
-#
-#       # Add Word Embeddings status with gensim version
-#       if (verify_embeddings(quiet = TRUE)) {
-#         gensim_version <- tryCatch({
-#           gensim <- reticulate::import("gensim")
-#           reticulate::py_get_attr(gensim, "__version__")
-#         }, error = function(e) "Unknown")
-#         print_status("Word Embeddings", gensim_version, TRUE)
-#       } else {
-#         print_status("Word Embeddings", "Not Available", FALSE,
-#                      sprintf("Word embeddings feature is not detected.\n\nInstall with:\nIn R:\n  reticulate::py_install('flair[word-embeddings]', pip = TRUE)\n  system(paste(Sys.which('python3'), '-m pip install flair[word-embeddings]'))\n\nIn terminal:\n  pip install flair[word-embeddings]"))
-#       }
-#
-#
 #       # GPU check
 #       cuda_info <- init_result$device$cuda
 #       mps_available <- init_result$device$mps
@@ -759,7 +750,22 @@ initialize_modules <- function() {
 #         print_status("GPU", "CPU Only", FALSE)
 #       }
 #
-#       # Welcome messages
+#       packageStartupMessage("")
+#       print_status("PyTorch", init_result$versions$torch, TRUE)
+#       print_status("Transformers", init_result$versions$transformers, TRUE)
+#       print_status("Flair NLP", init_result$versions$flair, TRUE)
+#
+#       if (verify_embeddings(quiet = TRUE)) {
+#         gensim_version <- tryCatch({
+#           gensim <- reticulate::import("gensim")
+#           reticulate::py_get_attr(gensim, "__version__")
+#         }, error = function(e) "Unknown")
+#         print_status("Word Embeddings", gensim_version, TRUE)
+#       } else {
+#         print_status("Word Embeddings", "Not Available", FALSE,
+#                      sprintf("Word embeddings feature is not detected.\n\nInstall with:\nIn R:\n  reticulate::py_install('flair[word-embeddings]', pip = TRUE)\n  system(paste(Sys.which('python3'), '-m pip install flair[word-embeddings]'))\n\nIn terminal:\n  pip install flair[word-embeddings]"))
+#       }
+#
 #       msg <- sprintf(
 #         "%s%sflaiR%s%s: %s%sAn R Wrapper for Accessing Flair NLP %s%s%s",
 #         .pkgenv$colors$bold, .pkgenv$colors$blue,
