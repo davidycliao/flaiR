@@ -7,7 +7,7 @@ NULL
 # Package Environment Setup ----------------------------------------------------
 .pkgenv <- new.env(parent = emptyenv())
 
-# Version constants
+# Add gensim version to package constants
 .pkgenv$package_constants <- list(
   python_min_version = "3.9",
   python_max_version = "3.12",
@@ -15,8 +15,26 @@ NULL
   scipy_version = "1.12.0",
   flair_min_version = "0.11.3",
   torch_version = "2.2.0",
-  transformers_version = "4.37.2"
+  transformers_version = "4.37.2",
+  gensim_version = "4.0.0"  # Add gensim version
 )
+
+# Add embeddings verification function
+#' @noRd
+verify_embeddings <- function(quiet = FALSE) {
+  tryCatch({
+    if(!quiet) packageStartupMessage("Verifying word embeddings support...")
+    gensim <- reticulate::import("gensim.models")
+    if(!quiet) packageStartupMessage("Word embeddings support verified")
+    TRUE
+  }, error = function(e) {
+    if(!quiet) packageStartupMessage(
+      sprintf("%sWarning: Word embeddings support not available%s",
+              .pkgenv$colors$yellow,
+              .pkgenv$colors$reset))
+    FALSE
+  })
+}
 
 # ANSI color codes
 .pkgenv$colors <- list(
@@ -197,7 +215,7 @@ get_system_info <- function() {
 #' @return logical TRUE if successful, FALSE otherwise
 #' @noRd
 install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
-  # Helper functions remain the same...
+  # Helper functions remain the same
   log_msg <- function(msg, is_error = FALSE) {
     if (!quiet) {
       if (is_error) {
@@ -263,19 +281,7 @@ install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
     })
   }
 
-  verify_gensim <- function(quiet = FALSE) {
-    tryCatch({
-      if(!quiet) log_msg("Verifying gensim installation...")
-      reticulate::py_run_string("import gensim.models")
-      if(!quiet) log_msg("Gensim verification successful")
-      TRUE
-    }, error = function(e) {
-      if(!quiet) log_msg("Gensim verification failed", TRUE)
-      FALSE
-    })
-  }
-
-  # Define package installation sequence
+  # Modified installation sequence
   get_install_sequence <- function() {
     list(
       torch = list(
@@ -294,22 +300,39 @@ install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
           "sentencepiece>=0.1.97,<0.2.0"
         )
       ),
-      embeddings = list(
-        name = "Embeddings dependencies",
+      gensim = list(
+        name = "Gensim",
+        packages = "gensim>=4.0.0"
+      ),
+      embeddings_deps = list(
+        name = "Embeddings Dependencies",
         packages = c(
-          "gensim>=4.0.0",
           "smart-open>=1.8.1",
           "wikipedia-api>=0.5.4"
         )
       ),
       flair = list(
-        name = "Flair with Embeddings",
-        packages = c(
-          sprintf("'flair[embeddings]>=%s'", .pkgenv$package_constants$flair_min_version),
-          sprintf("'flair[word-embeddings]>=%s'", .pkgenv$package_constants$flair_min_version)
-        )
+        name = "Flair Base",
+        packages = sprintf("flair>=%s", .pkgenv$package_constants$flair_min_version)
+      ),
+      flair_embeddings = list(
+        name = "Flair Word Embeddings",
+        packages = "flair[word-embeddings]"
       )
     )
+  }
+
+  # Improved verification function
+  verify_embeddings <- function(quiet = FALSE) {
+    tryCatch({
+      if (!quiet) log_msg("Verifying word embeddings support...")
+      reticulate::py_run_string("import gensim.models")
+      if (!quiet) log_msg("Word embeddings support verified successfully")
+      TRUE
+    }, error = function(e) {
+      if (!quiet) log_msg("Word embeddings verification failed", TRUE)
+      FALSE
+    })
   }
 
   # Main installation process
@@ -332,45 +355,33 @@ install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
 
     if (in_docker) {
       pip_path <- "/opt/venv/bin/pip"
-      # Upgrade pip first
       system2(pip_path, c("install", "--upgrade", "pip"))
 
       # Install all packages
       for (pkg in install_sequence) {
+        log_msg(sprintf("Installing %s...", pkg$name))
         result <- retry_install(function() {
-          system2(pip_path, c("install", "--no-cache-dir", pkg$packages))
+          system2(pip_path, c("install", "--no-cache-dir", "--force-reinstall", pkg$packages))
         }, pkg$name)
 
         if (!result$success) {
           log_msg(result$error, TRUE)
-          return(FALSE)
-        }
-      }
-
-      # Verify gensim and retry if needed
-      if (!verify_gensim(quiet)) {
-        log_msg("Retrying gensim installation...", TRUE)
-        gensim_result <- retry_install(function() {
-          system2(pip_path, c("install", "--no-cache-dir", "--force-reinstall", "gensim>=4.0.0"))
-        }, "Gensim (retry)")
-
-        if (!gensim_result$success || !verify_gensim(quiet)) {
-          log_msg("Failed to install gensim properly", TRUE)
           return(FALSE)
         }
       }
 
     } else {
-      # Standard environment installation
       reticulate::py_install("pip", pip = TRUE, envname = venv)
 
       # Install all packages
       for (pkg in install_sequence) {
+        log_msg(sprintf("Installing %s...", pkg$name))
         result <- retry_install(function() {
           reticulate::py_install(
             packages = pkg$packages,
             pip = TRUE,
-            envname = venv
+            envname = venv,
+            ignore_installed = TRUE  # Force reinstall
           )
         }, pkg$name)
 
@@ -379,22 +390,28 @@ install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
           return(FALSE)
         }
       }
+    }
 
-      # Verify gensim and retry if needed
-      if (!verify_gensim(quiet)) {
-        log_msg("Retrying gensim installation...", TRUE)
-        gensim_result <- retry_install(function() {
-          reticulate::py_install(
-            packages = "gensim>=4.0.0",
-            pip = TRUE,
-            envname = venv
-          )
-        }, "Gensim (retry)")
+    # Final verification
+    if (!verify_embeddings(quiet = FALSE)) {
+      log_msg("Attempting one final word embeddings installation...", TRUE)
 
-        if (!gensim_result$success || !verify_gensim(quiet)) {
-          log_msg("Failed to install gensim properly", TRUE)
-          return(FALSE)
-        }
+      # One final attempt with direct pip install
+      if (in_docker) {
+        system2(pip_path, c("install", "--no-cache-dir", "--force-reinstall",
+                            "gensim>=4.0.0", "flair[word-embeddings]"))
+      } else {
+        reticulate::py_install(c("gensim>=4.0.0", "flair[word-embeddings]"),
+                               pip = TRUE,
+                               envname = venv,
+                               ignore_installed = TRUE)
+      }
+
+      if (!verify_embeddings(quiet = TRUE)) {
+        log_msg("Warning: Word embeddings support installation incomplete", TRUE)
+        log_msg("You may need to manually run: pip install flair[word-embeddings]", TRUE)
+      } else {
+        log_msg("Word embeddings support successfully installed")
       }
     }
 
@@ -409,341 +426,6 @@ install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
     return(FALSE)
   })
 }
-# install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
-#   # Helper function to log messages
-#   log_msg <- function(msg, is_error = FALSE) {
-#     if (!quiet) {
-#       if (is_error) {
-#         packageStartupMessage(.pkgenv$colors$red, msg, .pkgenv$colors$reset)
-#       } else {
-#         packageStartupMessage(msg)
-#       }
-#     }
-#   }
-#
-#   # Helper function for installation retry logic
-#   retry_install <- function(install_fn, pkg_name) {
-#     for (i in 1:max_retries) {
-#       tryCatch({
-#         if (i > 1) log_msg(sprintf("Retry attempt %d/%d for %s", i, max_retries, pkg_name))
-#         result <- install_fn()
-#         return(list(success = TRUE))
-#       }, error = function(e) {
-#         if (i == max_retries) {
-#           return(list(
-#             success = FALSE,
-#             error = sprintf("Failed to install %s: %s", pkg_name, e$message)
-#           ))
-#         }
-#         Sys.sleep(2 ^ i) # Exponential backoff
-#         NULL
-#       })
-#     }
-#   }
-#
-#   # Check Python environment
-#   check_python_environment <- function() {
-#     tryCatch({
-#       # Get Python config
-#       py_config <- reticulate::py_config()
-#       if (is.null(py_config)) {
-#         log_msg("Error: Could not detect Python configuration", TRUE)
-#         return(FALSE)
-#       }
-#
-#       # Check version
-#       python_version <- as.character(py_config$version)
-#       if (!check_python_version(python_version)) {
-#         log_msg(sprintf(
-#           "Warning: Python version %s might have compatibility issues",
-#           python_version
-#         ), TRUE)
-#       }
-#
-#       # Check pip availability
-#       pip_version <- tryCatch({
-#         if (in_docker) {
-#           system2("/opt/venv/bin/pip", "--version", stdout = TRUE)
-#         } else {
-#           reticulate::py_eval("import pip; pip.__version__", convert = TRUE)
-#         }
-#         TRUE
-#       }, error = function(e) {
-#         log_msg("Error: pip is not available in the Python environment", TRUE)
-#         FALSE
-#       })
-#
-#       if (!pip_version) return(FALSE)
-#
-#       return(TRUE)
-#     }, error = function(e) {
-#       log_msg(sprintf("Error checking Python environment: %s", e$message), TRUE)
-#       return(FALSE)
-#     })
-#   }
-#
-#   # Define package installation sequence
-#   get_install_sequence <- function() {
-#     list(
-#       torch = list(
-#         name = "PyTorch",
-#         packages = c(
-#           sprintf("torch>=%s", .pkgenv$package_constants$torch_version),
-#           "torchvision"
-#         )
-#       ),
-#       core = list(
-#         name = "Core dependencies",
-#         packages = c(
-#           sprintf("numpy==%s", .pkgenv$package_constants$numpy_version),
-#           sprintf("scipy==%s", .pkgenv$package_constants$scipy_version),
-#           sprintf("transformers==%s", .pkgenv$package_constants$transformers_version),
-#           "sentencepiece>=0.1.97,<0.2.0"
-#         )
-#       ),
-#       flair = list(
-#         name = "Flair",
-#         packages = sprintf("flair>=%s", .pkgenv$package_constants$flair_min_version)
-#       ),
-#       embeddings = list(
-#         name = "Word Embeddings",
-#         packages = "flair[word-embeddings]"
-#       )
-#     )
-#   }
-#
-#   # Main installation process
-#   tryCatch({
-#     if (!check_python_environment()) {
-#       return(FALSE)
-#     }
-#
-#     in_docker <- is_docker()
-#     env_msg <- if (!is.null(venv)) {
-#       sprintf(" in %s", venv)
-#     } else {
-#       if (in_docker) " in Docker environment" else ""
-#     }
-#
-#     log_msg(sprintf("Installing dependencies%s...", env_msg))
-#
-#     # Get installation sequence
-#     install_sequence <- get_install_sequence()
-#
-#     if (in_docker) {
-#       # Docker environment installation
-#       pip_path <- "/opt/venv/bin/pip"
-#
-#       for (pkg in install_sequence) {
-#         result <- retry_install(function() {
-#           system2(pip_path, c("install", "--no-cache-dir", pkg$packages))
-#         }, pkg$name)
-#
-#         if (!result$success) {
-#           log_msg(result$error, TRUE)
-#           return(FALSE)
-#         }
-#       }
-#     } else {
-#       # Standard environment installation
-#       for (pkg in install_sequence) {
-#         result <- retry_install(function() {
-#           reticulate::py_install(
-#             packages = pkg$packages,
-#             pip = TRUE,
-#             envname = venv
-#           )
-#         }, pkg$name)
-#
-#         if (!result$success) {
-#           log_msg(result$error, TRUE)
-#           return(FALSE)
-#         }
-#       }
-#     }
-#
-#     log_msg("Successfully installed all dependencies")
-#     return(TRUE)
-#
-#   }, error = function(e) {
-#     log_msg(sprintf(
-#       "Error installing dependencies: %s\nPlease check:\n1. Internet connection\n2. Pip availability\n3. Python environment permissions",
-#       e$message
-#     ), TRUE)
-#     return(FALSE)
-#   })
-# }
-# install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
-#   # Helper functions remain unchanged...
-#   log_msg <- function(msg, is_error = FALSE) {
-#     if (!quiet) {
-#       if (is_error) {
-#         packageStartupMessage(.pkgenv$colors$red, msg, .pkgenv$colors$reset)
-#       } else {
-#         packageStartupMessage(msg)
-#       }
-#     }
-#   }
-#
-#   retry_install <- function(install_fn, pkg_name) {
-#     for (i in 1:max_retries) {
-#       tryCatch({
-#         if (i > 1) log_msg(sprintf("Retry attempt %d/%d for %s", i, max_retries, pkg_name))
-#         result <- install_fn()
-#         return(list(success = TRUE))
-#       }, error = function(e) {
-#         if (i == max_retries) {
-#           return(list(
-#             success = FALSE,
-#             error = sprintf("Failed to install %s: %s", pkg_name, e$message)
-#           ))
-#         }
-#         Sys.sleep(2 ^ i) # Exponential backoff
-#         NULL
-#       })
-#     }
-#   }
-#
-#   check_python_environment <- function() {
-#     tryCatch({
-#       # Get Python config
-#       py_config <- reticulate::py_config()
-#       if (is.null(py_config)) {
-#         log_msg("Error: Could not detect Python configuration", TRUE)
-#         return(FALSE)
-#       }
-#
-#       # Check version
-#       python_version <- as.character(py_config$version)
-#       if (!check_python_version(python_version)) {
-#         log_msg(sprintf(
-#           "Warning: Python version %s might have compatibility issues",
-#           python_version
-#         ), TRUE)
-#       }
-#
-#       # Check pip availability
-#       pip_version <- tryCatch({
-#         if (in_docker) {
-#           system2("/opt/venv/bin/pip", "--version", stdout = TRUE)
-#         } else {
-#           reticulate::py_eval("import pip; pip.__version__", convert = TRUE)
-#         }
-#         TRUE
-#       }, error = function(e) {
-#         log_msg("Error: pip is not available in the Python environment", TRUE)
-#         FALSE
-#       })
-#
-#       if (!pip_version) return(FALSE)
-#
-#       return(TRUE)
-#     }, error = function(e) {
-#       log_msg(sprintf("Error checking Python environment: %s", e$message), TRUE)
-#       return(FALSE)
-#     })
-#   }
-#
-#   # Main installation process
-#   tryCatch({
-#     if (!check_python_environment()) {
-#       return(FALSE)
-#     }
-#
-#     in_docker <- is_docker()
-#     env_msg <- if (!is.null(venv)) {
-#       sprintf(" in %s", venv)
-#     } else {
-#       if (in_docker) " in Docker environment" else ""
-#     }
-#
-#     log_msg(sprintf("Installing dependencies%s...", env_msg))
-#
-#     if (in_docker) {
-#       # Docker environment installation
-#       pip_path <- "/opt/venv/bin/pip"
-#
-#       # Install PyTorch packages
-#       torch_result <- retry_install(function() {
-#         system2(pip_path, c("install", "--no-cache-dir",
-#                             sprintf("torch>=%s", .pkgenv$package_constants$torch_version),
-#                             "torchvision"))
-#       }, "PyTorch")
-#
-#       if (!torch_result$success) {
-#         log_msg(torch_result$error, TRUE)
-#         return(FALSE)
-#       }
-#
-#       # Install other dependencies
-#       deps_result <- retry_install(function() {
-#         system2(pip_path, c("install", "--no-cache-dir",
-#                             sprintf("numpy==%s", .pkgenv$package_constants$numpy_version),
-#                             sprintf("scipy==%s", .pkgenv$package_constants$scipy_version),
-#                             sprintf("transformers==%s", .pkgenv$package_constants$transformers_version),
-#                             "sentencepiece>=0.1.97,<0.2.0"))
-#       }, "Core dependencies")
-#
-#       if (!deps_result$success) {
-#         log_msg(deps_result$error, TRUE)
-#         return(FALSE)
-#       }
-#
-#       # Install flair with word-embeddings
-#       flair_result <- retry_install(function() {
-#         system2(pip_path, c("install", "--no-cache-dir",
-#                             sprintf("'flair[word-embeddings]>=%s'", .pkgenv$package_constants$flair_min_version)))
-#       }, "Flair")
-#
-#       if (!flair_result$success) {
-#         log_msg(flair_result$error, TRUE)
-#         return(FALSE)
-#       }
-#
-#     } else {
-#       # Standard environment installation
-#       packages <- list(
-#         torch = c(
-#           sprintf("torch>=%s", .pkgenv$package_constants$torch_version),
-#           "torchvision"
-#         ),
-#         core = c(
-#           sprintf("numpy==%s", .pkgenv$package_constants$numpy_version),
-#           sprintf("scipy==%s", .pkgenv$package_constants$scipy_version),
-#           sprintf("transformers==%s", .pkgenv$package_constants$transformers_version),
-#           "sentencepiece>=0.1.97,<0.2.0"
-#         ),
-#         flair = sprintf("'flair[word-embeddings]>=%s'", .pkgenv$package_constants$flair_min_version)
-#       )
-#
-#       for (pkg_type in names(packages)) {
-#         result <- retry_install(function() {
-#           reticulate::py_install(
-#             packages = packages[[pkg_type]],
-#             pip = TRUE,
-#             envname = venv
-#           )
-#         }, pkg_type)
-#
-#         if (!result$success) {
-#           log_msg(result$error, TRUE)
-#           return(FALSE)
-#         }
-#       }
-#     }
-#
-#     log_msg("Successfully installed all dependencies")
-#     return(TRUE)
-#
-#   }, error = function(e) {
-#     log_msg(sprintf(
-#       "Error installing dependencies: %s\nPlease check:\n1. Internet connection\n2. Pip availability\n3. Python environment permissions",
-#       e$message
-#     ), TRUE)
-#     return(FALSE)
-#   })
-# }
-
 
 # Check and Setup Conda -----------------------------------------------------
 #' Check and setup conda environment
@@ -960,6 +642,19 @@ initialize_modules <- function() {
       print_status("Transformers", init_result$versions$transformers, TRUE)
       print_status("Flair NLP", init_result$versions$flair, TRUE)
 
+      # Add Word Embeddings status with gensim version
+      if (verify_embeddings(quiet = TRUE)) {
+        gensim_version <- tryCatch({
+          gensim <- reticulate::import("gensim")
+          reticulate::py_get_attr(gensim, "__version__")
+        }, error = function(e) "Unknown")
+        print_status("Word Embeddings", gensim_version, TRUE)
+      } else {
+        print_status("Word Embeddings", "Not Available", FALSE,
+                     sprintf("Word embeddings feature is not detected.\n\nInstall with:\nIn R:\n  reticulate::py_install('flair[word-embeddings]', pip = TRUE)\n  system(paste(Sys.which('python3'), '-m pip install flair[word-embeddings]'))\n\nIn terminal:\n  pip install flair[word-embeddings]"))
+      }
+
+
       # GPU check
       cuda_info <- init_result$device$cuda
       mps_available <- init_result$device$mps
@@ -996,4 +691,3 @@ initialize_modules <- function() {
 
   invisible(NULL)
 }
-
