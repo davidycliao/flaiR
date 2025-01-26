@@ -197,7 +197,7 @@ get_system_info <- function() {
 #' @return logical TRUE if successful, FALSE otherwise
 #' @noRd
 install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
-  # Helper function to log messages
+  # Helper functions remain the same...
   log_msg <- function(msg, is_error = FALSE) {
     if (!quiet) {
       if (is_error) {
@@ -208,7 +208,6 @@ install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
     }
   }
 
-  # Helper function for installation retry logic
   retry_install <- function(install_fn, pkg_name) {
     for (i in 1:max_retries) {
       tryCatch({
@@ -228,17 +227,14 @@ install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
     }
   }
 
-  # Check Python environment
   check_python_environment <- function() {
     tryCatch({
-      # Get Python config
       py_config <- reticulate::py_config()
       if (is.null(py_config)) {
         log_msg("Error: Could not detect Python configuration", TRUE)
         return(FALSE)
       }
 
-      # Check version
       python_version <- as.character(py_config$version)
       if (!check_python_version(python_version)) {
         log_msg(sprintf(
@@ -247,7 +243,6 @@ install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
         ), TRUE)
       }
 
-      # Check pip availability
       pip_version <- tryCatch({
         if (in_docker) {
           system2("/opt/venv/bin/pip", "--version", stdout = TRUE)
@@ -261,11 +256,22 @@ install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
       })
 
       if (!pip_version) return(FALSE)
-
       return(TRUE)
     }, error = function(e) {
       log_msg(sprintf("Error checking Python environment: %s", e$message), TRUE)
       return(FALSE)
+    })
+  }
+
+  verify_gensim <- function(quiet = FALSE) {
+    tryCatch({
+      if(!quiet) log_msg("Verifying gensim installation...")
+      reticulate::py_run_string("import gensim.models")
+      if(!quiet) log_msg("Gensim verification successful")
+      TRUE
+    }, error = function(e) {
+      if(!quiet) log_msg("Gensim verification failed", TRUE)
+      FALSE
     })
   }
 
@@ -285,13 +291,13 @@ install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
           sprintf("numpy==%s", .pkgenv$package_constants$numpy_version),
           sprintf("scipy==%s", .pkgenv$package_constants$scipy_version),
           sprintf("transformers==%s", .pkgenv$package_constants$transformers_version),
-          "sentencepiece>=0.1.97,<0.2.0",
-          "gensim>=4.0.0"  # Add gensim for word embeddings
+          "sentencepiece>=0.1.97,<0.2.0"
         )
       ),
-      wordembeddings = list(
-        name = "Word Embeddings Base",
+      embeddings = list(
+        name = "Embeddings dependencies",
         packages = c(
+          "gensim>=4.0.0",
           "smart-open>=1.8.1",
           "wikipedia-api>=0.5.4"
         )
@@ -299,8 +305,8 @@ install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
       flair = list(
         name = "Flair with Embeddings",
         packages = c(
-          sprintf("flair[embeddings]>=%s", .pkgenv$package_constants$flair_min_version),
-          sprintf("flair[word-embeddings]>=%s", .pkgenv$package_constants$flair_min_version)
+          sprintf("'flair[embeddings]>=%s'", .pkgenv$package_constants$flair_min_version),
+          sprintf("'flair[word-embeddings]>=%s'", .pkgenv$package_constants$flair_min_version)
         )
       )
     )
@@ -325,12 +331,11 @@ install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
     install_sequence <- get_install_sequence()
 
     if (in_docker) {
-      # Docker environment installation
       pip_path <- "/opt/venv/bin/pip"
-
       # Upgrade pip first
       system2(pip_path, c("install", "--upgrade", "pip"))
 
+      # Install all packages
       for (pkg in install_sequence) {
         result <- retry_install(function() {
           system2(pip_path, c("install", "--no-cache-dir", pkg$packages))
@@ -342,22 +347,24 @@ install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
         }
       }
 
-      # Double-check flair installation with word embeddings
-      verify_result <- retry_install(function() {
-        system2(pip_path, c("install", "--no-cache-dir", "--force-reinstall",
-                            sprintf("'flair[word-embeddings]>=%s'", .pkgenv$package_constants$flair_min_version)))
-      }, "Flair word embeddings verification")
+      # Verify gensim and retry if needed
+      if (!verify_gensim(quiet)) {
+        log_msg("Retrying gensim installation...", TRUE)
+        gensim_result <- retry_install(function() {
+          system2(pip_path, c("install", "--no-cache-dir", "--force-reinstall", "gensim>=4.0.0"))
+        }, "Gensim (retry)")
 
-      if (!verify_result$success) {
-        log_msg(verify_result$error, TRUE)
-        return(FALSE)
+        if (!gensim_result$success || !verify_gensim(quiet)) {
+          log_msg("Failed to install gensim properly", TRUE)
+          return(FALSE)
+        }
       }
 
     } else {
       # Standard environment installation
-      # Upgrade pip first
       reticulate::py_install("pip", pip = TRUE, envname = venv)
 
+      # Install all packages
       for (pkg in install_sequence) {
         result <- retry_install(function() {
           reticulate::py_install(
@@ -373,18 +380,21 @@ install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
         }
       }
 
-      # Double-check flair installation with word embeddings
-      verify_result <- retry_install(function() {
-        reticulate::py_install(
-          packages = sprintf("flair[word-embeddings]>=%s", .pkgenv$package_constants$flair_min_version),
-          pip = TRUE,
-          envname = venv
-        )
-      }, "Flair word embeddings verification")
+      # Verify gensim and retry if needed
+      if (!verify_gensim(quiet)) {
+        log_msg("Retrying gensim installation...", TRUE)
+        gensim_result <- retry_install(function() {
+          reticulate::py_install(
+            packages = "gensim>=4.0.0",
+            pip = TRUE,
+            envname = venv
+          )
+        }, "Gensim (retry)")
 
-      if (!verify_result$success) {
-        log_msg(verify_result$error, TRUE)
-        return(FALSE)
+        if (!gensim_result$success || !verify_gensim(quiet)) {
+          log_msg("Failed to install gensim properly", TRUE)
+          return(FALSE)
+        }
       }
     }
 
