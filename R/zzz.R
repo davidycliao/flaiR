@@ -568,9 +568,15 @@ install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
 #' Check and setup conda environment
 #'
 #' @param show_status Show status messages if TRUE
+#' @param force_check Force check and reinstall if needed
 #' @return logical TRUE if successful, FALSE otherwise
 #' @noRd
-check_conda_env <- function(show_status = FALSE) {
+check_conda_env <- function(show_status = FALSE, force_check = FALSE) {
+  # Reset installation state if force check
+  if (force_check) {
+    .pkgenv$installation_state <- new.env(parent = emptyenv())
+  }
+
   # Check for Docker environment first
   if (is_docker()) {
     docker_python <- Sys.getenv("RETICULATE_PYTHON", "/opt/venv/bin/python")
@@ -578,7 +584,8 @@ check_conda_env <- function(show_status = FALSE) {
       packageStartupMessage(sprintf("Using Docker virtual environment: %s", docker_python))
       tryCatch({
         reticulate::use_python(docker_python, required = TRUE)
-        if (!reticulate::py_module_available("flair")) {
+        # Force check or check if flair is not available
+        if (force_check || !reticulate::py_module_available("flair")) {
           install_dependencies(NULL)
         }
         return(TRUE)
@@ -588,11 +595,10 @@ check_conda_env <- function(show_status = FALSE) {
     }
   }
 
-
   # Standard environment checks
   current_python <- tryCatch({
     config <- reticulate::py_config()
-    if (reticulate::py_module_available("flair")) {
+    if (!force_check && reticulate::py_module_available("flair")) {
       list(status = TRUE, path = config$python)
     } else {
       list(status = FALSE)
@@ -601,13 +607,12 @@ check_conda_env <- function(show_status = FALSE) {
     list(status = FALSE)
   })
 
-
   if (current_python$status) {
     packageStartupMessage(sprintf("Using existing Python: %s", current_python$path))
     return(TRUE)
   }
 
-
+  # Check Conda availability
   conda_available <- tryCatch({
     conda_bin <- reticulate::conda_binary()
     list(status = TRUE, path = conda_bin)
@@ -615,11 +620,9 @@ check_conda_env <- function(show_status = FALSE) {
     list(status = FALSE, error = e$message)
   })
 
-
   if (conda_available$status) {
     print_status("Conda", conda_available$path, TRUE)
     conda_envs <- reticulate::conda_list()
-
 
     if ("flair_env" %in% conda_envs$name) {
       flair_envs <- conda_envs[conda_envs$name == "flair_env", ]
@@ -630,12 +633,11 @@ check_conda_env <- function(show_status = FALSE) {
         flair_envs$python[1]
       }
 
-
       if (file.exists(selected_env)) {
         packageStartupMessage(sprintf("Using environment: %s", selected_env))
         tryCatch({
           reticulate::use_python(selected_env, required = TRUE)
-          if (!reticulate::py_module_available("flair")) {
+          if (force_check || !reticulate::py_module_available("flair")) {
             install_dependencies("flair_env")
           }
           return(TRUE)
@@ -647,16 +649,15 @@ check_conda_env <- function(show_status = FALSE) {
     }
   }
 
-
+  # Try system Python as last resort
   packageStartupMessage("Using system Python...")
   python_path <- Sys.which("python3")
   if (python_path == "") python_path <- Sys.which("python")
 
-
   if (python_path != "" && file.exists(python_path)) {
     tryCatch({
       reticulate::use_python(python_path, required = TRUE)
-      if (!reticulate::py_module_available("flair")) {
+      if (force_check || !reticulate::py_module_available("flair")) {
         install_dependencies(NULL)
       }
       return(TRUE)
@@ -666,10 +667,10 @@ check_conda_env <- function(show_status = FALSE) {
     })
   }
 
-
   packageStartupMessage("No suitable Python installation found")
   return(FALSE)
 }
+
 
 
 # Initialize Required Modules -----------------------------------------------
@@ -729,9 +730,11 @@ initialize_modules <- function() {
 
 
 # Package Initialization --------------------------------------------------
-
 #' @noRd
 .onLoad <- function(libname, pkgname) {
+  # 初始化標記
+  .pkgenv$initialized <- FALSE
+
   # Set KMP duplicate lib environment variable
   Sys.setenv(KMP_DUPLICATE_LIB_OK = "TRUE")
 
@@ -761,9 +764,9 @@ initialize_modules <- function() {
   options(reticulate.prompt = FALSE)
 }
 
-
 #' @noRd
 .onAttach <- function(libname, pkgname) {
+  # Store original environment settings
   original_python <- Sys.getenv("RETICULATE_PYTHON")
   original_virtualenv <- Sys.getenv("VIRTUALENV")
 
@@ -773,6 +776,11 @@ initialize_modules <- function() {
   })
 
   tryCatch({
+    # 檢查是否已經初始化，避免重複安裝
+    if (!is.null(.pkgenv$initialized) && .pkgenv$initialized) {
+      return(invisible(NULL))
+    }
+
     Sys.unsetenv("RETICULATE_PYTHON")
     Sys.unsetenv("VIRTUALENV")
     options(reticulate.python.initializing = TRUE)
@@ -785,13 +793,13 @@ initialize_modules <- function() {
                                   as.character(sys_info$version)))
 
     # M1 Mac specific message
-    if (Sys.info()["sysname"] == "Darwin" && Sys.info()["machine"] == "arm64") {
-      packageStartupMessage(sprintf(
-        "%sDetected Apple Silicon (M1/M2). MPS acceleration enabled.%s",
-        .pkgenv$colors$green,
-        .pkgenv$colors$reset
-      ))
-    }
+    # if (Sys.info()["sysname"] == "Darwin" && Sys.info()["machine"] == "arm64") {
+    #   packageStartupMessage(sprintf(
+    #     "%sDetected Apple Silicon (M1/M2). MPS acceleration enabled.%s",
+    #     .pkgenv$colors$green,
+    #     .pkgenv$colors$reset
+    #   ))
+    # }
 
     # Docker status check
     if (is_docker()) {
@@ -861,6 +869,9 @@ initialize_modules <- function() {
         .pkgenv$colors$reset, .pkgenv$colors$reset_bold
       )
       packageStartupMessage(msg)
+
+      # 設置初始化標記
+      .pkgenv$initialized <- TRUE
     }
   }, error = function(e) {
     packageStartupMessage("Error during initialization: ", as.character(e$message))
