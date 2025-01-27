@@ -42,9 +42,10 @@ NULL
   torch = NULL
 )
 
-# Utility Functions ----------------------------------------------------------
+# Utility Functions ------------------------------------------------------------
 
-#' Safe Environment Variable Setting
+## Safe Environment Variable Setting -------------------------------------------
+#' @title Safe Environment Variable Setting
 #' @noRd
 safe_setenv <- function(name, value) {
   current <- Sys.getenv(name, unset = NA)
@@ -56,7 +57,8 @@ safe_setenv <- function(name, value) {
   return(FALSE)
 }
 
-#' Check if running in Docker
+## Check if running in Docker --------------------------------------------------
+#' @title Check if running in Docker
 #' @noRd
 is_docker <- function() {
   if (!is.null(.pkgenv$is_docker_cache)) {
@@ -81,7 +83,8 @@ is_docker <- function() {
   return(result)
 }
 
-#' Print Formatted Messages
+## Print Formatted Messages ----------------------------------------------------
+#' @title Print Formatted Messages
 #' @noRd
 print_status <- function(component, version, status = TRUE, extra_message = NULL) {
   symbol <- if (status) "\u2713" else "\u2717"
@@ -121,7 +124,26 @@ print_status <- function(component, version, status = TRUE, extra_message = NULL
   }
 }
 
-#' Get System Information
+##  Embeddings Verification ----------------------------------------------------
+#' @title  Embeddings Verification
+#' @noRd
+verify_embeddings <- function(quiet = FALSE) {
+  tryCatch({
+    if(!quiet) packageStartupMessage("Verifying word embeddings support...")
+    gensim <- reticulate::import("gensim.models")
+    if(!quiet) packageStartupMessage("Word embeddings support verified")
+    TRUE
+  }, error = function(e) {
+    if(!quiet) packageStartupMessage(
+      sprintf("%sWarning: Word embeddings support not available%s",
+              .pkgenv$colors$yellow,
+              .pkgenv$colors$reset))
+    FALSE
+  })
+}
+
+## Get System Information ------------------------------------------------------
+#' @title Get System Information
 #' @noRd
 get_system_info <- function() {
   os_name <- Sys.info()["sysname"]
@@ -134,7 +156,8 @@ get_system_info <- function() {
   list(name = os_name, version = os_version)
 }
 
-#' Compare version numbers
+## Compare Version Numbers ---
+#' @title Compare version numbers
 #' @noRd
 check_version <- function(pkg_name, required_version) {
   cache_key <- paste(pkg_name, required_version, sep = "_")
