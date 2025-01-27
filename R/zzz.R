@@ -49,7 +49,8 @@ NULL
 safe_setenv <- function(name, value) {
   current <- Sys.getenv(name, unset = NA)
   if (is.na(current) || current != value) {
-    Sys.setenv(!!name := value)  # 使用命名參數
+    # 使用最基本的方式設置環境變量
+    do.call(Sys.setenv, stats::setNames(list(value), name))
     return(TRUE)
   }
   return(FALSE)
