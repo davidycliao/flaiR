@@ -1,13 +1,16 @@
 #' @keywords internal
 "_PACKAGE"
 
+
 #' @import reticulate
 NULL
+
 
 # Package Environment Setup ----------------------------------------------------
 .pkgenv <- new.env(parent = emptyenv())
 
-# Version constants
+
+# Add gensim version to package constants
 .pkgenv$package_constants <- list(
   python_min_version = "3.9",
   python_max_version = "3.12",
@@ -15,8 +18,28 @@ NULL
   scipy_version = "1.12.0",
   flair_min_version = "0.11.3",
   torch_version = "2.2.0",
-  transformers_version = "4.37.2"
+  transformers_version = "4.37.2",
+  gensim_version = "4.0.0"  # Add gensim version
 )
+
+
+# Add embeddings verification function
+#' @noRd
+verify_embeddings <- function(quiet = FALSE) {
+  tryCatch({
+    if(!quiet) packageStartupMessage("Verifying word embeddings support...")
+    gensim <- reticulate::import("gensim.models")
+    if(!quiet) packageStartupMessage("Word embeddings support verified")
+    TRUE
+  }, error = function(e) {
+    if(!quiet) packageStartupMessage(
+      sprintf("%sWarning: Word embeddings support not available%s",
+              .pkgenv$colors$yellow,
+              .pkgenv$colors$reset))
+    FALSE
+  })
+}
+
 
 # ANSI color codes
 .pkgenv$colors <- list(
@@ -29,12 +52,14 @@ NULL
   reset_bold = "\033[22m"
 )
 
+
 # Initialize module storage
 .pkgenv$modules <- list(
   flair = NULL,
   flair_embeddings = NULL,
   torch = NULL
 )
+
 
 # Check Docker -----------------------------------------------------------------
 #' Check if running in Docker
@@ -45,6 +70,7 @@ is_docker <- function() {
   if (file.exists("/.dockerenv")) {
     return(TRUE)
   }
+
 
   # Then check cgroup on Linux systems only
   if (Sys.info()["sysname"] == "Linux") {
@@ -58,8 +84,10 @@ is_docker <- function() {
     })
   }
 
+
   return(FALSE)
 }
+
 
 # Check Python Version ---------------------------------------------------------
 #' Compare version numbers
@@ -72,8 +100,10 @@ check_python_version <- function(version) {
     return(FALSE)
   }
 
+
   min_v <- .pkgenv$package_constants$python_min_version
   max_v <- .pkgenv$package_constants$python_max_version
+
 
   # Improved version parsing
   parse_version <- function(v) {
@@ -82,22 +112,26 @@ check_python_version <- function(version) {
     c(as.numeric(ver_parts[1]), as.numeric(ver_parts[2]))
   }
 
+
   # Handle potential errors
   tryCatch({
     ver <- parse_version(version)
     min_ver <- parse_version(min_v)
     max_ver <- parse_version(max_v)
 
+
     if (is.na(ver[1]) || is.na(ver[2])) return(FALSE)
     if (ver[1] < min_ver[1] || ver[1] > max_ver[1]) return(FALSE)
     if (ver[1] == min_ver[1] && ver[2] < min_ver[2]) return(FALSE)
     if (ver[1] == max_ver[1] && ver[2] > max_ver[2]) return(FALSE)
+
 
     return(TRUE)
   }, error = function(e) {
     return(FALSE)
   })
 }
+
 
 # Print Messages --------------------------------------------------------------
 #' Print Formatted Messages
@@ -111,7 +145,9 @@ print_status <- function(component, version, status = TRUE, extra_message = NULL
   symbol <- if (status) "\u2713" else "\u2717"  # ✓ or ✗
   color <- if (status) .pkgenv$colors$green else .pkgenv$colors$red
 
+
   formatted_component <- sprintf("%-20s", component)
+
 
   # Basic message
   msg <- sprintf("%s %s%s%s  %s",
@@ -121,11 +157,13 @@ print_status <- function(component, version, status = TRUE, extra_message = NULL
                  .pkgenv$colors$reset,
                  if(!is.null(version)) version else "")
 
+
   # Version-specific warnings
   if (component == "Python") {
     ver_num <- as.numeric(strsplit(version, "\\.")[[1]][1:2])
     ver_major <- ver_num[1]
     ver_minor <- ver_num[2]
+
 
     if (ver_major == 3 && ver_minor < 9) {
       msg <- paste0(msg, sprintf(
@@ -145,6 +183,7 @@ print_status <- function(component, version, status = TRUE, extra_message = NULL
       ))
     }
 
+
     if (!status) {
       msg <- paste0(msg, sprintf(
         "\n%sRecommended Python version: %s - %s for optimal stability%s",
@@ -156,11 +195,13 @@ print_status <- function(component, version, status = TRUE, extra_message = NULL
     }
   }
 
+
   packageStartupMessage(msg)
   if (!is.null(extra_message)) {
     packageStartupMessage(extra_message)
   }
 }
+
 
 # Get System Information -----------------------------------------------------
 #' Get System Information
@@ -185,10 +226,12 @@ get_system_info <- function() {
     )
   )
 
+
   list(name = os_name, version = os_version)
 }
 
-# Install Required Dependencies ----------------------------------------------
+
+# Install Dependencies ---------------------------------------------------------
 #' Install Required Dependencies
 #'
 #' @param venv Virtual environment name or NULL for system Python
@@ -197,7 +240,7 @@ get_system_info <- function() {
 #' @return logical TRUE if successful, FALSE otherwise
 #' @noRd
 install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
-  # Helper function to log messages
+  # Helper functions
   log_msg <- function(msg, is_error = FALSE) {
     if (!quiet) {
       if (is_error) {
@@ -208,7 +251,31 @@ install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
     }
   }
 
-  # Helper function for installation retry logic
+
+  # Check package version
+  check_version <- function(pkg_name, required_version) {
+    tryCatch({
+      if(required_version == "") return(TRUE)
+      cmd <- sprintf("import %s; print(%s.__version__)", pkg_name, pkg_name)
+      installed <- reticulate::py_eval(cmd)
+      if(is.null(installed)) return(FALSE)
+      package_version(installed) >= package_version(required_version)
+    }, error = function(e) FALSE)
+  }
+
+
+  # Get required version from package name
+  parse_requirement <- function(pkg_req) {
+    if(grepl(">=|==|<=", pkg_req)) {
+      parts <- strsplit(pkg_req, ">=|==|<=")[[1]]
+      list(name = trimws(parts[1]), version = trimws(parts[2]))
+    } else {
+      list(name = trimws(pkg_req), version = "")
+    }
+  }
+
+
+  # Retry installation with backoff
   retry_install <- function(install_fn, pkg_name) {
     for (i in 1:max_retries) {
       tryCatch({
@@ -228,53 +295,51 @@ install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
     }
   }
 
-  # Check Python environment
-  check_python_environment <- function() {
-    tryCatch({
-      # Get Python config
-      py_config <- reticulate::py_config()
-      if (is.null(py_config)) {
-        log_msg("Error: Could not detect Python configuration", TRUE)
-        return(FALSE)
-      }
 
-      # Check version
-      python_version <- as.character(py_config$version)
-      if (!check_python_version(python_version)) {
-        log_msg(sprintf(
-          "Warning: Python version %s might have compatibility issues",
-          python_version
-        ), TRUE)
-      }
-
-      # Check pip availability
-      pip_version <- tryCatch({
-        if (in_docker) {
-          system2("/opt/venv/bin/pip", "--version", stdout = TRUE)
-        } else {
-          reticulate::py_eval("import pip; pip.__version__", convert = TRUE)
-        }
-        TRUE
-      }, error = function(e) {
-        log_msg("Error: pip is not available in the Python environment", TRUE)
-        FALSE
-      })
-
-      if (!pip_version) return(FALSE)
-
-      return(TRUE)
-    }, error = function(e) {
-      log_msg(sprintf("Error checking Python environment: %s", e$message), TRUE)
-      return(FALSE)
-    })
+  # Modified installation sequence
+  get_install_sequence <- function() {
+    list(
+      torch = list(
+        name = "PyTorch",
+        packages = c(
+          sprintf("torch>=%s", .pkgenv$package_constants$torch_version),
+          "torchvision"
+        )
+      ),
+      core = list(
+        name = "Core dependencies",
+        packages = c(
+          sprintf("numpy==%s", .pkgenv$package_constants$numpy_version),
+          sprintf("scipy==%s", .pkgenv$package_constants$scipy_version),
+          sprintf("transformers==%s", .pkgenv$package_constants$transformers_version),
+          "sentencepiece>=0.1.97,<0.2.0"
+        )
+      ),
+      gensim = list(
+        name = "Gensim",
+        packages = sprintf("gensim>=%s", .pkgenv$package_constants$gensim_version)
+      ),
+      embeddings_deps = list(
+        name = "Embeddings Dependencies",
+        packages = c(
+          "smart-open>=1.8.1",
+          "wikipedia-api>=0.5.4"
+        )
+      ),
+      flair = list(
+        name = "Flair Base",
+        packages = sprintf("flair>=%s", .pkgenv$package_constants$flair_min_version)
+      ),
+      flair_embeddings = list(
+        name = "Flair Word Embeddings",
+        packages = "flair[word-embeddings]"
+      )
+    )
   }
+
 
   # Main installation process
   tryCatch({
-    if (!check_python_environment()) {
-      return(FALSE)
-    }
-
     in_docker <- is_docker()
     env_msg <- if (!is.null(venv)) {
       sprintf(" in %s", venv)
@@ -282,92 +347,300 @@ install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
       if (in_docker) " in Docker environment" else ""
     }
 
-    log_msg(sprintf("Installing dependencies%s...", env_msg))
+
+    log_msg(sprintf("Checking dependencies%s...", env_msg))
+
+
+    # Get installation sequence
+    install_sequence <- get_install_sequence()
+
 
     if (in_docker) {
-      # Docker environment installation
       pip_path <- "/opt/venv/bin/pip"
 
-      # Install PyTorch packages
-      torch_result <- retry_install(function() {
-        system2(pip_path, c("install", "--no-cache-dir",
-                            sprintf("torch>=%s", .pkgenv$package_constants$torch_version),
-                            "torchvision"))
-      }, "PyTorch")
 
-      if (!torch_result$success) {
-        log_msg(torch_result$error, TRUE)
-        return(FALSE)
+      # Install packages only if needed
+      for (pkg in install_sequence) {
+        log_msg(sprintf("Checking %s...", pkg$name))
+
+
+        for (pkg_req in pkg$packages) {
+          req <- parse_requirement(pkg_req)
+          if (!check_version(req$name, req$version)) {
+            log_msg(sprintf("Installing %s...", pkg_req))
+            result <- retry_install(function() {
+              system2(pip_path, c("install", pkg_req))
+            }, pkg_req)
+
+
+            if (!result$success) {
+              log_msg(result$error, TRUE)
+              return(FALSE)
+            }
+          } else {
+            log_msg(sprintf("%s is already installed with required version", req$name))
+          }
+        }
       }
 
-      # Install other dependencies
-      deps_result <- retry_install(function() {
-        system2(pip_path, c("install", "--no-cache-dir",
-                            sprintf("numpy==%s", .pkgenv$package_constants$numpy_version),
-                            sprintf("scipy==%s", .pkgenv$package_constants$scipy_version),
-                            sprintf("transformers==%s", .pkgenv$package_constants$transformers_version),
-                            "sentencepiece>=0.1.97,<0.2.0"))
-      }, "Core dependencies")
-
-      if (!deps_result$success) {
-        log_msg(deps_result$error, TRUE)
-        return(FALSE)
-      }
-
-      # Install flair
-      flair_result <- retry_install(function() {
-        system2(pip_path, c("install", "--no-cache-dir",
-                            sprintf("flair>=%s", .pkgenv$package_constants$flair_min_version)))
-      }, "Flair")
-
-      if (!flair_result$success) {
-        log_msg(flair_result$error, TRUE)
-        return(FALSE)
-      }
 
     } else {
-      # Standard environment installation
-      packages <- list(
-        torch = c(
-          sprintf("torch>=%s", .pkgenv$package_constants$torch_version),
-          "torchvision"
-        ),
-        core = c(
-          sprintf("numpy==%s", .pkgenv$package_constants$numpy_version),
-          sprintf("scipy==%s", .pkgenv$package_constants$scipy_version),
-          sprintf("transformers==%s", .pkgenv$package_constants$transformers_version),
-          "sentencepiece>=0.1.97,<0.2.0"
-        ),
-        flair = sprintf("flair>=%s", .pkgenv$package_constants$flair_min_version)
-      )
+      # Regular installation
+      for (pkg in install_sequence) {
+        log_msg(sprintf("Checking %s...", pkg$name))
 
-      for (pkg_type in names(packages)) {
-        result <- retry_install(function() {
-          reticulate::py_install(
-            packages = packages[[pkg_type]],
-            pip = TRUE,
-            envname = venv
-          )
-        }, pkg_type)
 
-        if (!result$success) {
-          log_msg(result$error, TRUE)
-          return(FALSE)
+        for (pkg_req in pkg$packages) {
+          req <- parse_requirement(pkg_req)
+          if (!check_version(req$name, req$version)) {
+            log_msg(sprintf("Installing %s...", pkg_req))
+            result <- retry_install(function() {
+              reticulate::py_install(
+                packages = pkg_req,
+                pip = TRUE,
+                envname = venv,
+                ignore_installed = FALSE
+              )
+            }, pkg_req)
+
+
+            if (!result$success) {
+              log_msg(result$error, TRUE)
+              return(FALSE)
+            }
+          } else {
+            log_msg(sprintf("%s is already installed with required version", req$name))
+          }
         }
       }
     }
 
-    log_msg("Successfully installed all dependencies")
+
+    log_msg("All dependencies are installed and up to date")
     return(TRUE)
+
 
   }, error = function(e) {
     log_msg(sprintf(
-      "Error installing dependencies: %s\nPlease check:\n1. Internet connection\n2. Pip availability\n3. Python environment permissions",
+      "Error checking/installing dependencies: %s\nPlease check:\n1. Internet connection\n2. Pip availability\n3. Python environment permissions",
       e$message
     ), TRUE)
     return(FALSE)
   })
 }
+# install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
+#   # Helper functions remain the same
+#   log_msg <- function(msg, is_error = FALSE) {
+#     if (!quiet) {
+#       if (is_error) {
+#         packageStartupMessage(.pkgenv$colors$red, msg, .pkgenv$colors$reset)
+#       } else {
+#         packageStartupMessage(msg)
+#       }
+#     }
+#   }
+#
+#   retry_install <- function(install_fn, pkg_name) {
+#     for (i in 1:max_retries) {
+#       tryCatch({
+#         if (i > 1) log_msg(sprintf("Retry attempt %d/%d for %s", i, max_retries, pkg_name))
+#         result <- install_fn()
+#         return(list(success = TRUE))
+#       }, error = function(e) {
+#         if (i == max_retries) {
+#           return(list(
+#             success = FALSE,
+#             error = sprintf("Failed to install %s: %s", pkg_name, e$message)
+#           ))
+#         }
+#         Sys.sleep(2 ^ i) # Exponential backoff
+#         NULL
+#       })
+#     }
+#   }
+#
+#   check_python_environment <- function() {
+#     tryCatch({
+#       py_config <- reticulate::py_config()
+#       if (is.null(py_config)) {
+#         log_msg("Error: Could not detect Python configuration", TRUE)
+#         return(FALSE)
+#       }
+#
+#       python_version <- as.character(py_config$version)
+#       if (!check_python_version(python_version)) {
+#         log_msg(sprintf(
+#           "Warning: Python version %s might have compatibility issues",
+#           python_version
+#         ), TRUE)
+#       }
+#
+#       pip_version <- tryCatch({
+#         if (in_docker) {
+#           system2("/opt/venv/bin/pip", "--version", stdout = TRUE)
+#         } else {
+#           reticulate::py_eval("import pip; pip.__version__", convert = TRUE)
+#         }
+#         TRUE
+#       }, error = function(e) {
+#         log_msg("Error: pip is not available in the Python environment", TRUE)
+#         FALSE
+#       })
+#
+#       if (!pip_version) return(FALSE)
+#       return(TRUE)
+#     }, error = function(e) {
+#       log_msg(sprintf("Error checking Python environment: %s", e$message), TRUE)
+#       return(FALSE)
+#     })
+#   }
+#
+#   # Modified installation sequence
+#   get_install_sequence <- function() {
+#     list(
+#       torch = list(
+#         name = "PyTorch",
+#         packages = c(
+#           sprintf("torch>=%s", .pkgenv$package_constants$torch_version),
+#           "torchvision"
+#         )
+#       ),
+#       core = list(
+#         name = "Core dependencies",
+#         packages = c(
+#           sprintf("numpy==%s", .pkgenv$package_constants$numpy_version),
+#           sprintf("scipy==%s", .pkgenv$package_constants$scipy_version),
+#           sprintf("transformers==%s", .pkgenv$package_constants$transformers_version),
+#           "sentencepiece>=0.1.97,<0.2.0"
+#         )
+#       ),
+#       gensim = list(
+#         name = "Gensim",
+#         packages = "gensim>=4.0.0"
+#       ),
+#       embeddings_deps = list(
+#         name = "Embeddings Dependencies",
+#         packages = c(
+#           "smart-open>=1.8.1",
+#           "wikipedia-api>=0.5.4"
+#         )
+#       ),
+#       flair = list(
+#         name = "Flair Base",
+#         packages = sprintf("flair>=%s", .pkgenv$package_constants$flair_min_version)
+#       ),
+#       flair_embeddings = list(
+#         name = "Flair Word Embeddings",
+#         packages = "flair[word-embeddings]"
+#       )
+#     )
+#   }
+#
+#   # Improved verification function
+#   verify_embeddings <- function(quiet = FALSE) {
+#     tryCatch({
+#       if (!quiet) log_msg("Verifying word embeddings support...")
+#       reticulate::py_run_string("import gensim.models")
+#       if (!quiet) log_msg("Word embeddings support verified successfully")
+#       TRUE
+#     }, error = function(e) {
+#       if (!quiet) log_msg("Word embeddings verification failed", TRUE)
+#       FALSE
+#     })
+#   }
+#
+#   # Main installation process
+#   tryCatch({
+#     if (!check_python_environment()) {
+#       return(FALSE)
+#     }
+#
+#     in_docker <- is_docker()
+#     env_msg <- if (!is.null(venv)) {
+#       sprintf(" in %s", venv)
+#     } else {
+#       if (in_docker) " in Docker environment" else ""
+#     }
+#
+#     log_msg(sprintf("Installing dependencies%s...", env_msg))
+#
+#     # Get installation sequence
+#     install_sequence <- get_install_sequence()
+#
+#     if (in_docker) {
+#       pip_path <- "/opt/venv/bin/pip"
+#       system2(pip_path, c("install", "--upgrade", "pip"))
+#
+#       # Install all packages
+#       for (pkg in install_sequence) {
+#         log_msg(sprintf("Installing %s...", pkg$name))
+#         result <- retry_install(function() {
+#           system2(pip_path, c("install", "--no-cache-dir", "--force-reinstall", pkg$packages))
+#         }, pkg$name)
+#
+#         if (!result$success) {
+#           log_msg(result$error, TRUE)
+#           return(FALSE)
+#         }
+#       }
+#
+#     } else {
+#       reticulate::py_install("pip", pip = TRUE, envname = venv)
+#
+#       # Install all packages
+#       for (pkg in install_sequence) {
+#         log_msg(sprintf("Installing %s...", pkg$name))
+#         result <- retry_install(function() {
+#           reticulate::py_install(
+#             packages = pkg$packages,
+#             pip = TRUE,
+#             envname = venv,
+#             ignore_installed = FALSE  # avoid force reinstall
+#           )
+#         }, pkg$name)
+#
+#         if (!result$success) {
+#           log_msg(result$error, TRUE)
+#           return(FALSE)
+#         }
+#       }
+#     }
+#
+#     # Final verification
+#     if (!verify_embeddings(quiet = FALSE)) {
+#       log_msg("Attempting one final word embeddings installation...", TRUE)
+#
+#       # One final attempt with direct pip install
+#       if (in_docker) {
+#         system2(pip_path, c("install", "--no-cache-dir", "--force-reinstall",
+#                             "gensim>=4.0.0", "flair[word-embeddings]"))
+#       } else {
+#         reticulate::py_install(c("gensim>=4.0.0", "flair[word-embeddings]"),
+#                                pip = TRUE,
+#                                envname = venv,
+#                                ignore_installed = TRUE)
+#       }
+#
+#       if (!verify_embeddings(quiet = TRUE)) {
+#         log_msg("Warning: Word embeddings support installation incomplete", TRUE)
+#         log_msg("You may need to manually run: pip install flair[word-embeddings]", TRUE)
+#       } else {
+#         log_msg("Word embeddings support successfully installed")
+#       }
+#     }
+#
+#     log_msg("Successfully installed all dependencies")
+#     return(TRUE)
+#
+#   }, error = function(e) {
+#     log_msg(sprintf(
+#       "Error installing dependencies: %s\nPlease check:\n1. Internet connection\n2. Pip availability\n3. Python environment permissions",
+#       e$message
+#     ), TRUE)
+#     return(FALSE)
+#   })
+# }
+
 
 # Check and Setup Conda -----------------------------------------------------
 #' Check and setup conda environment
@@ -393,6 +666,7 @@ check_conda_env <- function(show_status = FALSE) {
     }
   }
 
+
   # Standard environment checks
   current_python <- tryCatch({
     config <- reticulate::py_config()
@@ -405,10 +679,12 @@ check_conda_env <- function(show_status = FALSE) {
     list(status = FALSE)
   })
 
+
   if (current_python$status) {
     packageStartupMessage(sprintf("Using existing Python: %s", current_python$path))
     return(TRUE)
   }
+
 
   conda_available <- tryCatch({
     conda_bin <- reticulate::conda_binary()
@@ -417,55 +693,62 @@ check_conda_env <- function(show_status = FALSE) {
     list(status = FALSE, error = e$message)
   })
 
-    if (conda_available$status) {
-      print_status("Conda", conda_available$path, TRUE)
-      conda_envs <- reticulate::conda_list()
 
-      if ("flair_env" %in% conda_envs$name) {
-        flair_envs <- conda_envs[conda_envs$name == "flair_env", ]
-        miniconda_path <- grep("miniconda", flair_envs$python, value = TRUE)
-        selected_env <- if (length(miniconda_path) > 0) {
-          miniconda_path[1]
-        } else {
-          flair_envs$python[1]
-        }
+  if (conda_available$status) {
+    print_status("Conda", conda_available$path, TRUE)
+    conda_envs <- reticulate::conda_list()
 
-        if (file.exists(selected_env)) {
-          packageStartupMessage(sprintf("Using environment: %s", selected_env))
-          tryCatch({
-            reticulate::use_python(selected_env, required = TRUE)
-            if (!reticulate::py_module_available("flair")) {
-              install_dependencies("flair_env")
-            }
-            return(TRUE)
-          }, error = function(e) {
-            packageStartupMessage(sprintf("Error using environment: %s", e$message))
-            FALSE
-          })
-        }
+
+    if ("flair_env" %in% conda_envs$name) {
+      flair_envs <- conda_envs[conda_envs$name == "flair_env", ]
+      miniconda_path <- grep("miniconda", flair_envs$python, value = TRUE)
+      selected_env <- if (length(miniconda_path) > 0) {
+        miniconda_path[1]
+      } else {
+        flair_envs$python[1]
+      }
+
+
+      if (file.exists(selected_env)) {
+        packageStartupMessage(sprintf("Using environment: %s", selected_env))
+        tryCatch({
+          reticulate::use_python(selected_env, required = TRUE)
+          if (!reticulate::py_module_available("flair")) {
+            install_dependencies("flair_env")
+          }
+          return(TRUE)
+        }, error = function(e) {
+          packageStartupMessage(sprintf("Error using environment: %s", e$message))
+          FALSE
+        })
       }
     }
+  }
 
-    packageStartupMessage("Using system Python...")
-    python_path <- Sys.which("python3")
-    if (python_path == "") python_path <- Sys.which("python")
 
-    if (python_path != "" && file.exists(python_path)) {
-      tryCatch({
-        reticulate::use_python(python_path, required = TRUE)
-        if (!reticulate::py_module_available("flair")) {
-          install_dependencies(NULL)
-        }
-        return(TRUE)
-      }, error = function(e) {
-        packageStartupMessage(sprintf("Error using system Python: %s", e$message))
-        FALSE
-      })
-    }
+  packageStartupMessage("Using system Python...")
+  python_path <- Sys.which("python3")
+  if (python_path == "") python_path <- Sys.which("python")
 
-    packageStartupMessage("No suitable Python installation found")
-    return(FALSE)
+
+  if (python_path != "" && file.exists(python_path)) {
+    tryCatch({
+      reticulate::use_python(python_path, required = TRUE)
+      if (!reticulate::py_module_available("flair")) {
+        install_dependencies(NULL)
+      }
+      return(TRUE)
+    }, error = function(e) {
+      packageStartupMessage(sprintf("Error using system Python: %s", e$message))
+      FALSE
+    })
+  }
+
+
+  packageStartupMessage("No suitable Python installation found")
+  return(FALSE)
 }
+
 
 # Initialize Required Modules -----------------------------------------------
 #' Initialize Required Modules
@@ -478,9 +761,11 @@ initialize_modules <- function() {
     transformers <- reticulate::import("transformers", delay_load = TRUE)
     flair <- reticulate::import("flair", delay_load = TRUE)
 
+
     torch_version <- reticulate::py_get_attr(torch, "__version__")
     transformers_version <- reticulate::py_get_attr(transformers, "__version__")
     flair_version <- reticulate::py_get_attr(flair, "__version__")
+
 
     cuda_info <- list(
       available = torch$cuda$is_available(),
@@ -493,12 +778,15 @@ initialize_modules <- function() {
       version = tryCatch(torch$version$cuda, error = function(e) NULL)
     )
 
+
     mps_available <- if(Sys.info()["sysname"] == "Darwin") {
       torch$backends$mps$is_available()
     } else FALSE
 
+
     .pkgenv$modules$flair <- flair
     .pkgenv$modules$torch <- torch
+
 
     list(
       versions = list(
@@ -517,11 +805,14 @@ initialize_modules <- function() {
   })
 }
 
+
 # Package Initialization --------------------------------------------------
+
 
 #' @noRd
 .onLoad <- function(libname, pkgname) {
   Sys.setenv(KMP_DUPLICATE_LIB_OK = "TRUE")
+
 
   if (is_docker()) {
     Sys.setenv(PYTHONNOUSERSITE = "1")
@@ -531,6 +822,7 @@ initialize_modules <- function() {
     }
   }
 
+
   if (Sys.info()["sysname"] == "Darwin") {
     if (Sys.info()["machine"] == "arm64") {
       Sys.setenv(PYTORCH_ENABLE_MPS_FALLBACK = 1)
@@ -539,54 +831,64 @@ initialize_modules <- function() {
     Sys.setenv(MKL_NUM_THREADS = 1)
   }
 
+
   options(reticulate.prompt = FALSE)
 }
 
+
+#' @noRd
 #' @noRd
 .onAttach <- function(libname, pkgname) {
   original_python <- Sys.getenv("RETICULATE_PYTHON")
   original_virtualenv <- Sys.getenv("VIRTUALENV")
+
 
   on.exit({
     if (original_python != "") Sys.setenv(RETICULATE_PYTHON = original_python)
     if (original_virtualenv != "") Sys.setenv(VIRTUALENV = original_virtualenv)
   })
 
+
   tryCatch({
     Sys.unsetenv("RETICULATE_PYTHON")
     Sys.unsetenv("VIRTUALENV")
     options(reticulate.python.initializing = TRUE)
 
+
+    # 環境資訊
     sys_info <- get_system_info()
     packageStartupMessage("\nEnvironment Information:")
     packageStartupMessage(sprintf("OS: %s (%s)",
                                   as.character(sys_info$name),
                                   as.character(sys_info$version)))
 
-    # Print Docker status if in Docker environment
+
+    # Docker 狀態檢查
     if (is_docker()) {
       print_status("Docker", "Enabled", TRUE)
     }
 
+
+    # Python 環境設置
     env_setup <- check_conda_env()
     if (!env_setup) {
       return(invisible(NULL))
     }
 
+
+    # Python 版本檢查
     config <- reticulate::py_config()
     python_version <- as.character(config$version)
     print_status("Python", python_version, check_python_version(python_version))
-    packageStartupMessage("")
 
+
+    # 模組初始化與狀態檢查
     init_result <- initialize_modules()
     if (init_result$status) {
-      print_status("PyTorch", init_result$versions$torch, TRUE)
-      print_status("Transformers", init_result$versions$transformers, TRUE)
-      print_status("Flair NLP", init_result$versions$flair, TRUE)
-
-      # GPU check
+      # 1. GPU 狀態檢查
       cuda_info <- init_result$device$cuda
       mps_available <- init_result$device$mps
+
 
       if (!is.null(cuda_info$available) && cuda_info$available) {
         gpu_name <- if (!is.null(cuda_info$device_name)) {
@@ -601,7 +903,31 @@ initialize_modules <- function() {
         print_status("GPU", "CPU Only", FALSE)
       }
 
-      # Welcome messages
+
+      # 2. 空一行後顯示套件資訊
+      packageStartupMessage("")
+
+
+      # 3. 主要套件版本資訊
+      print_status("PyTorch", init_result$versions$torch, TRUE)
+      print_status("Transformers", init_result$versions$transformers, TRUE)
+      print_status("Flair NLP", init_result$versions$flair, TRUE)
+
+
+      # 4. Word Embeddings 狀態
+      if (verify_embeddings(quiet = TRUE)) {
+        gensim_version <- tryCatch({
+          gensim <- reticulate::import("gensim")
+          reticulate::py_get_attr(gensim, "__version__")
+        }, error = function(e) "Unknown")
+        print_status("Word Embeddings", gensim_version, TRUE)
+      } else {
+        print_status("Word Embeddings", "Not Available", FALSE,
+                     sprintf("Word embeddings feature is not detected.\n\nInstall with:\nIn R:\n  reticulate::py_install('flair[word-embeddings]', pip = TRUE)\n  system(paste(Sys.which('python3'), '-m pip install flair[word-embeddings]'))\n\nIn terminal:\n  pip install flair[word-embeddings]"))
+      }
+
+
+      # 5. 歡迎訊息
       msg <- sprintf(
         "%s%sflaiR%s%s: %s%sAn R Wrapper for Accessing Flair NLP %s%s%s",
         .pkgenv$colors$bold, .pkgenv$colors$blue,
@@ -618,7 +944,93 @@ initialize_modules <- function() {
     options(reticulate.python.initializing = FALSE)
   })
 
+
   invisible(NULL)
 }
-
+# .onAttach <- function(libname, pkgname) {
+#   original_python <- Sys.getenv("RETICULATE_PYTHON")
+#   original_virtualenv <- Sys.getenv("VIRTUALENV")
+#
+#   on.exit({
+#     if (original_python != "") Sys.setenv(RETICULATE_PYTHON = original_python)
+#     if (original_virtualenv != "") Sys.setenv(VIRTUALENV = original_virtualenv)
+#   })
+#
+#   tryCatch({
+#     Sys.unsetenv("RETICULATE_PYTHON")
+#     Sys.unsetenv("VIRTUALENV")
+#     options(reticulate.python.initializing = TRUE)
+#
+#     sys_info <- get_system_info()
+#     packageStartupMessage("\nEnvironment Information:")
+#     packageStartupMessage(sprintf("OS: %s (%s)",
+#                                   as.character(sys_info$name),
+#                                   as.character(sys_info$version)))
+#
+#     if (is_docker()) {
+#       print_status("Docker", "Enabled", TRUE)
+#     }
+#
+#     env_setup <- check_conda_env()
+#     if (!env_setup) {
+#       return(invisible(NULL))
+#     }
+#
+#     config <- reticulate::py_config()
+#     python_version <- as.character(config$version)
+#     print_status("Python", python_version, check_python_version(python_version))
+#
+#     init_result <- initialize_modules()
+#     if (init_result$status) {
+#       # GPU check
+#       cuda_info <- init_result$device$cuda
+#       mps_available <- init_result$device$mps
+#
+#       if (!is.null(cuda_info$available) && cuda_info$available) {
+#         gpu_name <- if (!is.null(cuda_info$device_name)) {
+#           paste("CUDA", cuda_info$device_name)
+#         } else {
+#           "CUDA"
+#         }
+#         print_status("GPU", gpu_name, TRUE)
+#       } else if (!is.null(mps_available) && mps_available) {
+#         print_status("GPU", "Mac MPS", TRUE)
+#       } else {
+#         print_status("GPU", "CPU Only", FALSE)
+#       }
+#
+#       packageStartupMessage("")
+#       print_status("PyTorch", init_result$versions$torch, TRUE)
+#       print_status("Transformers", init_result$versions$transformers, TRUE)
+#       print_status("Flair NLP", init_result$versions$flair, TRUE)
+#
+#       if (verify_embeddings(quiet = TRUE)) {
+#         gensim_version <- tryCatch({
+#           gensim <- reticulate::import("gensim")
+#           reticulate::py_get_attr(gensim, "__version__")
+#         }, error = function(e) "Unknown")
+#         print_status("Word Embeddings", gensim_version, TRUE)
+#       } else {
+#         print_status("Word Embeddings", "Not Available", FALSE,
+#                      sprintf("Word embeddings feature is not detected.\n\nInstall with:\nIn R:\n  reticulate::py_install('flair[word-embeddings]', pip = TRUE)\n  system(paste(Sys.which('python3'), '-m pip install flair[word-embeddings]'))\n\nIn terminal:\n  pip install flair[word-embeddings]"))
+#       }
+#
+#       msg <- sprintf(
+#         "%s%sflaiR%s%s: %s%sAn R Wrapper for Accessing Flair NLP %s%s%s",
+#         .pkgenv$colors$bold, .pkgenv$colors$blue,
+#         .pkgenv$colors$reset, .pkgenv$colors$reset_bold,
+#         .pkgenv$colors$bold, .pkgenv$colors$yellow,
+#         init_result$versions$flair,
+#         .pkgenv$colors$reset, .pkgenv$colors$reset_bold
+#       )
+#       packageStartupMessage(msg)
+#     }
+#   }, error = function(e) {
+#     packageStartupMessage("Error during initialization: ", as.character(e$message))
+#   }, finally = {
+#     options(reticulate.python.initializing = FALSE)
+#   })
+#
+#   invisible(NULL)
+# }
 
