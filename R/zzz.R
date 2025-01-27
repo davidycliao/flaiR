@@ -156,7 +156,7 @@ get_system_info <- function() {
   list(name = os_name, version = os_version)
 }
 
-## Compare Version Numbers ---
+## Compare Version Numbers -----------------------------------------------------
 #' @title Compare version numbers
 #' @noRd
 check_version <- function(pkg_name, required_version) {
@@ -178,7 +178,10 @@ check_version <- function(pkg_name, required_version) {
   return(result)
 }
 
-#' Install Dependencies
+
+## Install Dependencies --------------------------------------------------------
+
+#' @title Install Dependencies
 #' @noRd
 install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
   if (!is.null(.pkgenv$env_setup_complete) && .pkgenv$env_setup_complete) {
@@ -223,8 +226,10 @@ install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
   return(TRUE)
 }
 
-#' Initialize Required Modules
+## Initialize Required Modules -------------------------------------------------
+#' @title Initialize Required Modules
 #' @noRd
+
 initialize_modules <- function() {
   if (!is.null(.pkgenv$modules$initialized)) {
     return(.pkgenv$modules)
@@ -276,7 +281,142 @@ initialize_modules <- function() {
 }
 
 
-#' Compare version numbers
+## Check and Setup Conda -----------------------------------------------------
+#' @title Check and setup conda environment
+#'
+#' @param show_status Show status messages if TRUE
+#' @return logical TRUE if successful, FALSE otherwise
+#' @noRd
+check_conda_env <- function(show_status = FALSE) {
+  # 設定預設虛擬環境名稱
+  venv_name <- "r-reticulate"
+  venv_path <- file.path(Sys.getenv("HOME"), ".virtualenvs", venv_name)
+
+  # 先檢查是否已經有可用的 Python 環境
+  current_python <- tryCatch({
+    config <- reticulate::py_config()
+    # 檢查必要套件是否已安裝
+    if (reticulate::py_module_available("flair") &&
+        reticulate::py_module_available("torch") &&
+        reticulate::py_module_available("transformers")) {
+      list(status = TRUE, path = config$python)
+    } else {
+      list(status = FALSE)
+    }
+  }, error = function(e) {
+    list(status = FALSE)
+  })
+
+  # 如果已經有可用環境，直接使用
+  if (current_python$status) {
+    packageStartupMessage(sprintf("Using existing Python: %s", current_python$path))
+    return(TRUE)
+  }
+
+  # Docker 環境檢查
+  if (is_docker()) {
+    docker_python <- Sys.getenv("RETICULATE_PYTHON", "/opt/venv/bin/python")
+    if (file.exists(docker_python)) {
+      packageStartupMessage(sprintf("Using Docker virtual environment: %s", docker_python))
+      tryCatch({
+        reticulate::use_python(docker_python, required = TRUE)
+        if (!reticulate::py_module_available("flair")) {
+          install_dependencies(NULL)
+        }
+        return(TRUE)
+      }, error = function(e) {
+        packageStartupMessage(sprintf("Error using Docker environment: %s", e$message))
+      })
+    }
+  }
+
+  # 檢查 conda r-reticulate 環境
+  conda_available <- tryCatch({
+    conda_bin <- reticulate::conda_binary()
+    list(status = TRUE, path = conda_bin)
+  }, error = function(e) {
+    list(status = FALSE, error = e$message)
+  })
+
+  if (conda_available$status) {
+    print_status("Conda", conda_available$path, TRUE)
+    conda_envs <- reticulate::conda_list()
+
+    if ("r-reticulate" %in% conda_envs$name) {
+      r_reticulate_envs <- conda_envs[conda_envs$name == "r-reticulate", ]
+      miniconda_path <- grep("miniconda", r_reticulate_envs$python, value = TRUE)
+      selected_env <- if (length(miniconda_path) > 0) {
+        miniconda_path[1]
+      } else {
+        r_reticulate_envs$python[1]
+      }
+
+      if (file.exists(selected_env)) {
+        packageStartupMessage(sprintf("Using environment: %s", selected_env))
+        tryCatch({
+          reticulate::use_python(selected_env, required = TRUE)
+          if (!reticulate::py_module_available("flair")) {
+            install_dependencies("r-reticulate")
+          }
+          return(TRUE)
+        }, error = function(e) {
+          packageStartupMessage(sprintf("Error using environment: %s", e$message))
+          FALSE
+        })
+      }
+    }
+  }
+
+  # 檢查或創建 virtualenv r-reticulate
+  if (!dir.exists(venv_path)) {
+    packageStartupMessage(sprintf("Creating virtual environment '%s'...", venv_name))
+    tryCatch({
+      reticulate::virtualenv_create(venv_name)
+    }, error = function(e) {
+      packageStartupMessage(sprintf("Error creating virtual environment: %s", e$message))
+      return(FALSE)
+    })
+  }
+
+  # 使用 virtualenv
+  if (dir.exists(venv_path)) {
+    tryCatch({
+      packageStartupMessage(sprintf("Using virtual environment '%s'...", venv_name))
+      reticulate::use_virtualenv(venv_path, required = TRUE)
+      if (!reticulate::py_module_available("flair")) {
+        install_dependencies(venv_name)
+      }
+      return(TRUE)
+    }, error = function(e) {
+      packageStartupMessage(sprintf("Error using virtual environment: %s", e$message))
+    })
+  }
+
+  # 最後嘗試系統 Python
+  packageStartupMessage("Using system Python...")
+  python_path <- Sys.which("python3")
+  if (python_path == "") python_path <- Sys.which("python")
+
+  if (python_path != "" && file.exists(python_path)) {
+    tryCatch({
+      reticulate::use_python(python_path, required = TRUE)
+      if (!reticulate::py_module_available("flair")) {
+        install_dependencies(NULL)
+      }
+      return(TRUE)
+    }, error = function(e) {
+      packageStartupMessage(sprintf("Error using system Python: %s", e$message))
+      FALSE
+    })
+  }
+
+  packageStartupMessage("No suitable Python installation found")
+  return(FALSE)
+}
+
+
+## Check Python Version --------------------------------------------------------
+#' @title Check Python Version
 #'
 #' @param version Character string of version number to check
 #' @return logical TRUE if version is in supported range
@@ -314,8 +454,9 @@ check_python_version <- function(version) {
 }
 
 
-# Package Initialization ----------------------------------------------------
+# Package Initialization -------------------------------------------------------
 
+## .onLoad ---------------------------------------------------------------------
 #' @noRd
 .onLoad <- function(libname, pkgname) {
   # Set environment variables only if needed
@@ -340,7 +481,8 @@ check_python_version <- function(version) {
   options(reticulate.prompt = FALSE)
 }
 
-#' @noRd
+## .onAttach -------------------------------------------------------------------
+
 #' @noRd
 .onAttach <- function(libname, pkgname) {
   original_python <- Sys.getenv("RETICULATE_PYTHON")
