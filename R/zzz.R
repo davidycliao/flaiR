@@ -20,7 +20,10 @@ NULL
   torch_version = "2.2.0",
   transformers_version = "4.37.2",
   gensim_version = "4.0.0",
-  sentencepiece_version = "0.1.97"  # Add explicit sentencepiece version
+  sentencepiece_version = "0.1.97",
+  install_options = list(
+    sentencepiece = "--no-deps"  # 新增這行
+  )
 )
 
 # Add embeddings verification function
@@ -278,12 +281,19 @@ install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
       tryCatch({
         if (i > 1) log_msg(sprintf("Retry attempt %d/%d for %s", i, max_retries, pkg_name))
 
-        # Special handling for M1 Mac
-        if (Sys.info()["sysname"] == "Darwin" && Sys.info()["machine"] == "arm64") {
-          Sys.setenv(PYTORCH_ENABLE_MPS_FALLBACK = 1)
+        # 新增 sentencepiece 特殊處理
+        if (pkg_name == "sentencepiece") {
+          install_opts <- .pkgenv$package_constants$install_options$sentencepiece
+          result <- reticulate::py_install(
+            packages = pkg_name,
+            pip = TRUE,
+            envname = venv,
+            pip_options = install_opts
+          )
+        } else {
+          result <- install_fn()
         }
 
-        result <- install_fn()
         return(list(success = TRUE))
       }, error = function(e) {
         if (i == max_retries) {
@@ -292,11 +302,35 @@ install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
             error = sprintf("Failed to install %s: %s", pkg_name, e$message)
           ))
         }
-        Sys.sleep(2 ^ i) # Exponential backoff
+        Sys.sleep(2 ^ i)
         NULL
       })
     }
   }
+  # retry_install <- function(install_fn, pkg_name) {
+  #   for (i in 1:max_retries) {
+  #     tryCatch({
+  #       if (i > 1) log_msg(sprintf("Retry attempt %d/%d for %s", i, max_retries, pkg_name))
+  #
+  #       # Special handling for M1 Mac
+  #       if (Sys.info()["sysname"] == "Darwin" && Sys.info()["machine"] == "arm64") {
+  #         Sys.setenv(PYTORCH_ENABLE_MPS_FALLBACK = 1)
+  #       }
+  #
+  #       result <- install_fn()
+  #       return(list(success = TRUE))
+  #     }, error = function(e) {
+  #       if (i == max_retries) {
+  #         return(list(
+  #           success = FALSE,
+  #           error = sprintf("Failed to install %s: %s", pkg_name, e$message)
+  #         ))
+  #       }
+  #       Sys.sleep(2 ^ i) # Exponential backoff
+  #       NULL
+  #     })
+  #   }
+  # }
 
   # Get installation sequence based on system
   get_install_sequence <- function() {
@@ -584,7 +618,6 @@ initialize_modules <- function() {
 
 # Package Initialization --------------------------------------------------
 
-
 #' @noRd
 .onLoad <- function(libname, pkgname) {
   # Set KMP duplicate lib environment variable
@@ -618,7 +651,6 @@ initialize_modules <- function() {
 
 
 #' @noRd
-
 .onAttach <- function(libname, pkgname) {
   original_python <- Sys.getenv("RETICULATE_PYTHON")
   original_virtualenv <- Sys.getenv("VIRTUALENV")
