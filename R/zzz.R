@@ -26,6 +26,9 @@ NULL
   )
 )
 
+# Add installation state tracking
+.pkgenv$installation_state <- new.env(parent = emptyenv())   # 加在這裡
+
 # Add embeddings verification function
 #' @noRd
 verify_embeddings <- function(quiet = FALSE) {
@@ -234,9 +237,47 @@ get_system_info <- function() {
 }
 
 
-# Install Dependencies ---------------------------------------------------------
+#' Check package installation state
+#' @noRd
+check_package_state <- function(pkg_name, required_version, quiet = FALSE) {
+  tryCatch({
+    # First check if we have a cached state
+    state_key <- paste0(pkg_name, "_", required_version)
+    if (!is.null(.pkgenv$installation_state[[state_key]])) {
+      return(TRUE)
+    }
+
+    # Try importing the package
+    if (!reticulate::py_module_available(pkg_name)) {
+      return(FALSE)
+    }
+
+    # Check version if required
+    if (required_version != "") {
+      cmd <- sprintf("import %s; print(%s.__version__)", pkg_name, pkg_name)
+      installed <- reticulate::py_eval(cmd)
+      if (is.null(installed)) return(FALSE)
+
+      version_ok <- package_version(installed) >= package_version(required_version)
+      if (version_ok) {
+        # Cache the successful state
+        .pkgenv$installation_state[[state_key]] <- TRUE
+      }
+      return(version_ok)
+    }
+
+    # If no version specified, just cache that it's available
+    .pkgenv$installation_state[[state_key]] <- TRUE
+    return(TRUE)
+  }, error = function(e) {
+    if (!quiet) {
+      warning(sprintf("Error checking %s: %s", pkg_name, e$message))
+    }
+    return(FALSE)
+  })
+}
+
 #' Install Required Dependencies
-#'
 #' @param venv Virtual environment name or NULL for system Python
 #' @param max_retries Maximum number of retry attempts for failed installations
 #' @param quiet Suppress status messages if TRUE
@@ -254,18 +295,7 @@ install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
     }
   }
 
-  # Check package version
-  check_version <- function(pkg_name, required_version) {
-    tryCatch({
-      if(required_version == "") return(TRUE)
-      cmd <- sprintf("import %s; print(%s.__version__)", pkg_name, pkg_name)
-      installed <- reticulate::py_eval(cmd)
-      if(is.null(installed)) return(FALSE)
-      package_version(installed) >= package_version(required_version)
-    }, error = function(e) FALSE)
-  }
-
-  # Get required version from package name
+  # Parse requirement string to name and version
   parse_requirement <- function(pkg_req) {
     if(grepl(">=|==|<=", pkg_req)) {
       parts <- strsplit(pkg_req, ">=|==|<=")[[1]]
@@ -281,7 +311,7 @@ install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
       tryCatch({
         if (i > 1) log_msg(sprintf("Retry attempt %d/%d for %s", i, max_retries, pkg_name))
 
-        # 新增 sentencepiece 特殊處理
+        # Special handling for sentencepiece
         if (pkg_name == "sentencepiece") {
           install_opts <- .pkgenv$package_constants$install_options$sentencepiece
           result <- reticulate::py_install(
@@ -307,30 +337,6 @@ install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
       })
     }
   }
-  # retry_install <- function(install_fn, pkg_name) {
-  #   for (i in 1:max_retries) {
-  #     tryCatch({
-  #       if (i > 1) log_msg(sprintf("Retry attempt %d/%d for %s", i, max_retries, pkg_name))
-  #
-  #       # Special handling for M1 Mac
-  #       if (Sys.info()["sysname"] == "Darwin" && Sys.info()["machine"] == "arm64") {
-  #         Sys.setenv(PYTORCH_ENABLE_MPS_FALLBACK = 1)
-  #       }
-  #
-  #       result <- install_fn()
-  #       return(list(success = TRUE))
-  #     }, error = function(e) {
-  #       if (i == max_retries) {
-  #         return(list(
-  #           success = FALSE,
-  #           error = sprintf("Failed to install %s: %s", pkg_name, e$message)
-  #         ))
-  #       }
-  #       Sys.sleep(2 ^ i) # Exponential backoff
-  #       NULL
-  #     })
-  #   }
-  # }
 
   # Get installation sequence based on system
   get_install_sequence <- function() {
@@ -374,67 +380,73 @@ install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
   # Main installation process
   tryCatch({
     in_docker <- is_docker()
+
+    # Quick check if all dependencies are already installed
+    install_sequence <- get_install_sequence()
+    all_installed <- TRUE
+    missing_packages <- character(0)
+
+    # Check all packages first
+    for (pkg in install_sequence) {
+      for (pkg_req in pkg$packages) {
+        req <- parse_requirement(pkg_req)
+        if (!check_package_state(req$name, req$version, quiet = TRUE)) {
+          all_installed <- FALSE
+          missing_packages <- c(missing_packages, pkg_req)
+        }
+      }
+    }
+
+    # If everything is installed, return early
+    if (all_installed) {
+      if (!quiet) log_msg("All dependencies are already installed and up to date")
+      return(TRUE)
+    }
+
+    # If not all installed, proceed with installation
     env_msg <- if (!is.null(venv)) {
       sprintf(" in %s", venv)
     } else {
       if (in_docker) " in Docker environment" else ""
     }
 
-    log_msg(sprintf("Checking dependencies%s...", env_msg))
-
-    # Get installation sequence
-    install_sequence <- get_install_sequence()
+    log_msg(sprintf("Installing missing dependencies%s: %s",
+                    env_msg,
+                    paste(missing_packages, collapse = ", ")))
 
     if (in_docker) {
       pip_path <- "/opt/venv/bin/pip"
 
-      # Install packages only if needed
-      for (pkg in install_sequence) {
-        log_msg(sprintf("Checking %s...", pkg$name))
+      # Install missing packages
+      for (pkg_req in missing_packages) {
+        req <- parse_requirement(pkg_req)
+        log_msg(sprintf("Installing %s...", pkg_req))
+        result <- retry_install(function() {
+          system2("sudo", c("-H", "pip", "install", "--no-cache-dir", pkg_req))
+        }, req$name)
 
-        for (pkg_req in pkg$packages) {
-          req <- parse_requirement(pkg_req)
-          if (!check_version(req$name, req$version)) {
-            log_msg(sprintf("Installing %s...", pkg_req))
-            result <- retry_install(function() {
-              system2("sudo", c("-H", "pip", "install", "--no-cache-dir", pkg_req))
-            }, pkg_req)
-
-            if (!result$success) {
-              log_msg(result$error, TRUE)
-              return(FALSE)
-            }
-          } else {
-            log_msg(sprintf("%s is already installed with required version", req$name))
-          }
+        if (!result$success) {
+          log_msg(result$error, TRUE)
+          return(FALSE)
         }
       }
-
     } else {
       # Regular installation
-      for (pkg in install_sequence) {
-        log_msg(sprintf("Checking %s...", pkg$name))
+      for (pkg_req in missing_packages) {
+        req <- parse_requirement(pkg_req)
+        log_msg(sprintf("Installing %s...", pkg_req))
+        result <- retry_install(function() {
+          reticulate::py_install(
+            packages = pkg_req,
+            pip = TRUE,
+            envname = venv,
+            ignore_installed = FALSE
+          )
+        }, req$name)
 
-        for (pkg_req in pkg$packages) {
-          req <- parse_requirement(pkg_req)
-          if (!check_version(req$name, req$version)) {
-            log_msg(sprintf("Installing %s...", pkg_req))
-            result <- retry_install(function() {
-              reticulate::py_install(
-                packages = pkg_req,
-                pip = TRUE,
-                envname = venv,
-                ignore_installed = FALSE
-              )
-            }, pkg_req)
-
-            if (!result$success) {
-              log_msg(result$error, TRUE)
-              return(FALSE)
-            }
-          } else {
-            log_msg(sprintf("%s is already installed with required version", req$name))
-          }
+        if (!result$success) {
+          log_msg(result$error, TRUE)
+          return(FALSE)
         }
       }
     }
@@ -450,7 +462,6 @@ install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
     return(FALSE)
   })
 }
-
 
 # Check and Setup Conda -----------------------------------------------------
 #' Check and setup conda environment
