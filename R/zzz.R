@@ -212,7 +212,7 @@ get_system_info <- function() {
 }
 
 
-# Install Dependencies ---------------------------------------------------------
+# Install Required Dependencies ----------------------------------------------
 #' Install Required Dependencies
 #'
 #' @param venv Virtual environment name or NULL for system Python
@@ -221,7 +221,7 @@ get_system_info <- function() {
 #' @return logical TRUE if successful, FALSE otherwise
 #' @noRd
 install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
-  # Helper functions remain unchanged...
+  # Helper function to log messages
   log_msg <- function(msg, is_error = FALSE) {
     if (!quiet) {
       if (is_error) {
@@ -233,6 +233,7 @@ install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
   }
 
 
+  # Helper function for installation retry logic
   retry_install <- function(install_fn, pkg_name) {
     for (i in 1:max_retries) {
       tryCatch({
@@ -253,6 +254,7 @@ install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
   }
 
 
+  # Check Python environment
   check_python_environment <- function() {
     tryCatch({
       # Get Python config
@@ -351,10 +353,10 @@ install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
       }
 
 
-      # Install flair with word-embeddings
+      # Install flair
       flair_result <- retry_install(function() {
         system2(pip_path, c("install", "--no-cache-dir",
-                            sprintf("'flair[word-embeddings]>=%s'", .pkgenv$package_constants$flair_min_version)))
+                            sprintf("flair>=%s", .pkgenv$package_constants$flair_min_version)))
       }, "Flair")
 
 
@@ -377,7 +379,7 @@ install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
           sprintf("transformers==%s", .pkgenv$package_constants$transformers_version),
           "sentencepiece>=0.1.97,<0.2.0"
         ),
-        flair = sprintf("'flair[word-embeddings]>=%s'", .pkgenv$package_constants$flair_min_version)
+        flair = sprintf("flair>=%s", .pkgenv$package_constants$flair_min_version)
       )
 
 
@@ -411,8 +413,6 @@ install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
     return(FALSE)
   })
 }
-
-
 
 
 # Check and Setup Conda -----------------------------------------------------
@@ -698,4 +698,7 @@ initialize_modules <- function() {
 
   invisible(NULL)
 }
+
+
+
 
