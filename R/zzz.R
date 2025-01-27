@@ -252,6 +252,45 @@ initialize_modules <- function() {
   })
 }
 
+
+#' Compare version numbers
+#'
+#' @param version Character string of version number to check
+#' @return logical TRUE if version is in supported range
+#' @noRd
+check_python_version <- function(version) {
+  if (!is.character(version)) {
+    return(FALSE)
+  }
+
+  min_v <- .pkgenv$package_constants$python_min_version
+  max_v <- .pkgenv$package_constants$python_max_version
+
+  # Improved version parsing
+  parse_version <- function(v) {
+    ver_parts <- strsplit(v, "\\.")[[1]]
+    if (length(ver_parts) < 2) return(c(0, 0))
+    c(as.numeric(ver_parts[1]), as.numeric(ver_parts[2]))
+  }
+
+  # Handle potential errors
+  tryCatch({
+    ver <- parse_version(version)
+    min_ver <- parse_version(min_v)
+    max_ver <- parse_version(max_v)
+
+    if (is.na(ver[1]) || is.na(ver[2])) return(FALSE)
+    if (ver[1] < min_ver[1] || ver[1] > max_ver[1]) return(FALSE)
+    if (ver[1] == min_ver[1] && ver[2] < min_ver[2]) return(FALSE)
+    if (ver[1] == max_ver[1] && ver[2] > max_ver[2]) return(FALSE)
+
+    return(TRUE)
+  }, error = function(e) {
+    return(FALSE)
+  })
+}
+
+
 # Package Initialization ----------------------------------------------------
 
 #' @noRd
