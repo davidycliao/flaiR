@@ -8,6 +8,17 @@ NULL
 .pkgenv <- new.env(parent = emptyenv())
 
 # Add gensim version to package constants
+# .pkgenv$package_constants <- list(
+#   python_min_version = "3.9",
+#   python_max_version = "3.12",
+#   numpy_version = "1.26.4",
+#   scipy_version = "1.12.0",
+#   flair_min_version = "0.11.3",
+#   torch_version = "2.2.0",
+#   transformers_version = "4.37.2",
+#   gensim_version = "4.0.0"  # Add gensim version
+# )
+
 .pkgenv$package_constants <- list(
   python_min_version = "3.9",
   python_max_version = "3.12",
@@ -16,9 +27,10 @@ NULL
   flair_min_version = "0.11.3",
   torch_version = "2.2.0",
   transformers_version = "4.37.2",
-  gensim_version = "4.0.0"  # Add gensim version
+  gensim_version = "4.0.0",
+  sentencepiece_version = "0.1.99",  # Add specific sentencepiece version
+  setuptools_version = "41.0.0"      # Add setuptools version
 )
-
 # Add embeddings verification function
 #' @noRd
 verify_embeddings <- function(quiet = FALSE) {
@@ -312,7 +324,7 @@ install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
         name = "Build tools",
         packages = c(
           "wheel",
-          "setuptools>=41.0.0"
+          sprintf("setuptools>=%s", .pkgenv$package_constants$setuptools_version)
         )
       ),
       core = list(
@@ -335,7 +347,7 @@ install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
       ),
       sentencepiece = list(
         name = "Sentencepiece",
-        packages = "sentencepiece>=0.1.97"
+        packages = sprintf("sentencepiece==%s", .pkgenv$package_constants$sentencepiece_version)
       ),
       gensim = list(
         name = "Gensim",
@@ -351,6 +363,7 @@ install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
       )
     )
   }
+
   # Main installation process
   tryCatch({
     # Check system dependencies first
