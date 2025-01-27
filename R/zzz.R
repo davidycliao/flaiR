@@ -10,7 +10,7 @@ NULL
 .pkgenv <- new.env(parent = emptyenv())
 
 
-# Add gensim version to package constants
+# Add version constants
 .pkgenv$package_constants <- list(
   python_min_version = "3.9",
   python_max_version = "3.12",
@@ -19,9 +19,9 @@ NULL
   flair_min_version = "0.11.3",
   torch_version = "2.2.0",
   transformers_version = "4.37.2",
-  gensim_version = "4.0.0"  # Add gensim version
+  gensim_version = "4.0.0",
+  sentencepiece_version = "0.1.97"  # Add explicit sentencepiece version
 )
-
 
 # Add embeddings verification function
 #' @noRd
@@ -251,7 +251,6 @@ install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
     }
   }
 
-
   # Check package version
   check_version <- function(pkg_name, required_version) {
     tryCatch({
@@ -263,7 +262,6 @@ install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
     }, error = function(e) FALSE)
   }
 
-
   # Get required version from package name
   parse_requirement <- function(pkg_req) {
     if(grepl(">=|==|<=", pkg_req)) {
@@ -274,12 +272,17 @@ install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
     }
   }
 
-
   # Retry installation with backoff
   retry_install <- function(install_fn, pkg_name) {
     for (i in 1:max_retries) {
       tryCatch({
         if (i > 1) log_msg(sprintf("Retry attempt %d/%d for %s", i, max_retries, pkg_name))
+
+        # Special handling for M1 Mac
+        if (Sys.info()["sysname"] == "Darwin" && Sys.info()["machine"] == "arm64") {
+          Sys.setenv(PYTORCH_ENABLE_MPS_FALLBACK = 1)
+        }
+
         result <- install_fn()
         return(list(success = TRUE))
       }, error = function(e) {
@@ -295,16 +298,19 @@ install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
     }
   }
 
-
-  # Modified installation sequence
+  # Get installation sequence based on system
   get_install_sequence <- function() {
-    list(
+    is_m1 <- Sys.info()["sysname"] == "Darwin" && Sys.info()["machine"] == "arm64"
+
+    base_sequence <- list(
       torch = list(
         name = "PyTorch",
-        packages = c(
-          sprintf("torch>=%s", .pkgenv$package_constants$torch_version),
-          "torchvision"
-        )
+        packages = if(is_m1) {
+          c(sprintf("torch>=%s", .pkgenv$package_constants$torch_version))
+        } else {
+          c(sprintf("torch>=%s", .pkgenv$package_constants$torch_version),
+            "torchvision")
+        }
       ),
       core = list(
         name = "Core dependencies",
@@ -312,31 +318,24 @@ install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
           sprintf("numpy==%s", .pkgenv$package_constants$numpy_version),
           sprintf("scipy==%s", .pkgenv$package_constants$scipy_version),
           sprintf("transformers==%s", .pkgenv$package_constants$transformers_version),
-          "sentencepiece>=0.1.97,<0.2.0"
-        )
-      ),
-      gensim = list(
-        name = "Gensim",
-        packages = sprintf("gensim>=%s", .pkgenv$package_constants$gensim_version)
-      ),
-      embeddings_deps = list(
-        name = "Embeddings Dependencies",
-        packages = c(
-          "smart-open>=1.8.1",
-          "wikipedia-api>=0.5.4"
+          sprintf("sentencepiece==%s", .pkgenv$package_constants$sentencepiece_version)
         )
       ),
       flair = list(
         name = "Flair Base",
         packages = sprintf("flair>=%s", .pkgenv$package_constants$flair_min_version)
-      ),
-      flair_embeddings = list(
-        name = "Flair Word Embeddings",
-        packages = "flair[word-embeddings]"
       )
     )
-  }
 
+    if (!is_m1) {
+      base_sequence$gensim <- list(
+        name = "Gensim",
+        packages = sprintf("gensim>=%s", .pkgenv$package_constants$gensim_version)
+      )
+    }
+
+    return(base_sequence)
+  }
 
   # Main installation process
   tryCatch({
@@ -347,31 +346,25 @@ install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
       if (in_docker) " in Docker environment" else ""
     }
 
-
     log_msg(sprintf("Checking dependencies%s...", env_msg))
-
 
     # Get installation sequence
     install_sequence <- get_install_sequence()
 
-
     if (in_docker) {
       pip_path <- "/opt/venv/bin/pip"
-
 
       # Install packages only if needed
       for (pkg in install_sequence) {
         log_msg(sprintf("Checking %s...", pkg$name))
-
 
         for (pkg_req in pkg$packages) {
           req <- parse_requirement(pkg_req)
           if (!check_version(req$name, req$version)) {
             log_msg(sprintf("Installing %s...", pkg_req))
             result <- retry_install(function() {
-              system2(pip_path, c("install", pkg_req))
+              system2("sudo", c("-H", "pip", "install", "--no-cache-dir", pkg_req))
             }, pkg_req)
-
 
             if (!result$success) {
               log_msg(result$error, TRUE)
@@ -383,12 +376,10 @@ install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
         }
       }
 
-
     } else {
       # Regular installation
       for (pkg in install_sequence) {
         log_msg(sprintf("Checking %s...", pkg$name))
-
 
         for (pkg_req in pkg$packages) {
           req <- parse_requirement(pkg_req)
@@ -403,7 +394,6 @@ install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
               )
             }, pkg_req)
 
-
             if (!result$success) {
               log_msg(result$error, TRUE)
               return(FALSE)
@@ -415,10 +405,8 @@ install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
       }
     }
 
-
     log_msg("All dependencies are installed and up to date")
     return(TRUE)
-
 
   }, error = function(e) {
     log_msg(sprintf(
@@ -599,9 +587,24 @@ initialize_modules <- function() {
 
 #' @noRd
 .onLoad <- function(libname, pkgname) {
+  # Set KMP duplicate lib environment variable
   Sys.setenv(KMP_DUPLICATE_LIB_OK = "TRUE")
 
+  # M1 Mac specific settings
+  if (Sys.info()["sysname"] == "Darwin" && Sys.info()["machine"] == "arm64") {
+    Sys.setenv(PYTORCH_ENABLE_MPS_FALLBACK = 1)
+    # Add additional M1-specific environment variables
+    Sys.setenv(GRPC_PYTHON_BUILD_SYSTEM_OPENSSL = 1)
+    Sys.setenv(GRPC_PYTHON_BUILD_SYSTEM_ZLIB = 1)
+  }
 
+  # General Mac settings
+  if (Sys.info()["sysname"] == "Darwin") {
+    Sys.setenv(OMP_NUM_THREADS = 1)
+    Sys.setenv(MKL_NUM_THREADS = 1)
+  }
+
+  # Docker specific settings
   if (is_docker()) {
     Sys.setenv(PYTHONNOUSERSITE = "1")
     docker_python <- Sys.getenv("RETICULATE_PYTHON", "/opt/venv/bin/python")
@@ -610,73 +613,64 @@ initialize_modules <- function() {
     }
   }
 
-
-  if (Sys.info()["sysname"] == "Darwin") {
-    if (Sys.info()["machine"] == "arm64") {
-      Sys.setenv(PYTORCH_ENABLE_MPS_FALLBACK = 1)
-    }
-    Sys.setenv(OMP_NUM_THREADS = 1)
-    Sys.setenv(MKL_NUM_THREADS = 1)
-  }
-
-
   options(reticulate.prompt = FALSE)
 }
 
 
 #' @noRd
-#' @noRd
+
 .onAttach <- function(libname, pkgname) {
   original_python <- Sys.getenv("RETICULATE_PYTHON")
   original_virtualenv <- Sys.getenv("VIRTUALENV")
-
 
   on.exit({
     if (original_python != "") Sys.setenv(RETICULATE_PYTHON = original_python)
     if (original_virtualenv != "") Sys.setenv(VIRTUALENV = original_virtualenv)
   })
 
-
   tryCatch({
     Sys.unsetenv("RETICULATE_PYTHON")
     Sys.unsetenv("VIRTUALENV")
     options(reticulate.python.initializing = TRUE)
 
-
-    # 環境資訊
+    # Environment Information
     sys_info <- get_system_info()
     packageStartupMessage("\nEnvironment Information:")
     packageStartupMessage(sprintf("OS: %s (%s)",
                                   as.character(sys_info$name),
                                   as.character(sys_info$version)))
 
+    # M1 Mac specific message
+    if (Sys.info()["sysname"] == "Darwin" && Sys.info()["machine"] == "arm64") {
+      packageStartupMessage(sprintf(
+        "%sDetected Apple Silicon (M1/M2). MPS acceleration enabled.%s",
+        .pkgenv$colors$green,
+        .pkgenv$colors$reset
+      ))
+    }
 
-    # Docker 狀態檢查
+    # Docker status check
     if (is_docker()) {
       print_status("Docker", "Enabled", TRUE)
     }
 
-
-    # Python 環境設置
+    # Python environment setup
     env_setup <- check_conda_env()
     if (!env_setup) {
       return(invisible(NULL))
     }
 
-
-    # Python 版本檢查
+    # Python version check
     config <- reticulate::py_config()
     python_version <- as.character(config$version)
     print_status("Python", python_version, check_python_version(python_version))
 
-
-    # 模組初始化與狀態檢查
+    # Module initialization and status check
     init_result <- initialize_modules()
     if (init_result$status) {
-      # 1. GPU 狀態檢查
+      # GPU status check
       cuda_info <- init_result$device$cuda
       mps_available <- init_result$device$mps
-
 
       if (!is.null(cuda_info$available) && cuda_info$available) {
         gpu_name <- if (!is.null(cuda_info$device_name)) {
@@ -691,18 +685,15 @@ initialize_modules <- function() {
         print_status("GPU", "CPU Only", FALSE)
       }
 
-
-      # 2. 空一行後顯示套件資訊
+      # Add blank line before package info
       packageStartupMessage("")
 
-
-      # 3. 主要套件版本資訊
+      # Main package version info
       print_status("PyTorch", init_result$versions$torch, TRUE)
       print_status("Transformers", init_result$versions$transformers, TRUE)
       print_status("Flair NLP", init_result$versions$flair, TRUE)
 
-
-      # 4. Word Embeddings 狀態
+      # Word Embeddings status
       if (verify_embeddings(quiet = TRUE)) {
         gensim_version <- tryCatch({
           gensim <- reticulate::import("gensim")
@@ -711,11 +702,12 @@ initialize_modules <- function() {
         print_status("Word Embeddings", gensim_version, TRUE)
       } else {
         print_status("Word Embeddings", "Not Available", FALSE,
-                     sprintf("Word embeddings feature is not detected.\n\nInstall with:\nIn R:\n  reticulate::py_install('flair[word-embeddings]', pip = TRUE)\n  system(paste(Sys.which('python3'), '-m pip install flair[word-embeddings]'))\n\nIn terminal:\n  pip install flair[word-embeddings]"))
+                     sprintf(
+                       "Word embeddings feature is not detected.\n\nInstall with:\nIn R:\n  reticulate::py_install('flair[word-embeddings]', pip = TRUE)\n  system(paste(Sys.which('python3'), '-m pip install flair[word-embeddings]'))\n\nIn terminal:\n  pip install flair[word-embeddings]"
+                     ))
       }
 
-
-      # 5. 歡迎訊息
+      # Welcome message
       msg <- sprintf(
         "%s%sflaiR%s%s: %s%sAn R Wrapper for Accessing Flair NLP %s%s%s",
         .pkgenv$colors$bold, .pkgenv$colors$blue,
@@ -731,7 +723,6 @@ initialize_modules <- function() {
   }, finally = {
     options(reticulate.python.initializing = FALSE)
   })
-
 
   invisible(NULL)
 }
