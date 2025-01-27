@@ -268,8 +268,53 @@ install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
   }
 
   # Define installation sequence
+  # get_install_sequence <- function() {
+  #   list(
+  #     core = list(
+  #       name = "Core dependencies",
+  #       packages = c(
+  #         sprintf("numpy==%s", .pkgenv$package_constants$numpy_version),
+  #         sprintf("scipy==%s", .pkgenv$package_constants$scipy_version)
+  #       )
+  #     ),
+  #     torch = list(
+  #       name = "PyTorch",
+  #       packages = c(
+  #         sprintf("torch>=%s", .pkgenv$package_constants$torch_version),
+  #         "torchvision"
+  #       )
+  #     ),
+  #     transformers = list(
+  #       name = "Transformers",
+  #       packages = sprintf("transformers==%s", .pkgenv$package_constants$transformers_version)
+  #     ),
+  #     sentencepiece = list(
+  #       name = "Sentencepiece",
+  #       packages = "sentencepiece>=0.1.97"
+  #     ),
+  #     gensim = list(
+  #       name = "Gensim",
+  #       packages = sprintf("gensim>=%s", .pkgenv$package_constants$gensim_version)
+  #     ),
+  #     flair = list(
+  #       name = "Flair",
+  #       packages = sprintf("flair>=%s", .pkgenv$package_constants$flair_min_version)
+  #     ),
+  #     embeddings = list(
+  #       name = "Word Embeddings",
+  #       packages = "flair[word-embeddings]"
+  #     )
+  #   )
+  # }
   get_install_sequence <- function() {
     list(
+      build_tools = list(
+        name = "Build tools",
+        packages = c(
+          "wheel",
+          "setuptools>=41.0.0"
+        )
+      ),
       core = list(
         name = "Core dependencies",
         packages = c(
@@ -306,7 +351,6 @@ install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
       )
     )
   }
-
   # Main installation process
   tryCatch({
     # Check system dependencies first
