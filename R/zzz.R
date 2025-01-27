@@ -230,6 +230,7 @@ get_system_info <- function() {
 #' @return logical TRUE if successful, FALSE otherwise
 #' @noRd
 
+# Improved Dependency Installation Function
 install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
   # Helper function to log messages
   log_msg <- function(msg, is_error = FALSE) {
@@ -242,59 +243,7 @@ install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
     }
   }
 
-  # Helper function for system dependencies check
-  check_system_dependencies <- function() {
-    if (Sys.info()["sysname"] == "Darwin") {  # Mac OS
-      # 檢查 homebrew
-      if (!system("which brew > /dev/null 2>&1", ignore.stdout = TRUE) == 0) {
-        log_msg("Homebrew not found. Please install Homebrew first: https://brew.sh", TRUE)
-        return(FALSE)
-      }
-
-      # 檢查必要的系統套件
-      required_packages <- c("cmake", "pkg-config")
-      for (pkg in required_packages) {
-        if (system(sprintf("which %s > /dev/null 2>&1", pkg), ignore.stdout = TRUE) != 0) {
-          log_msg(sprintf("Installing required system package: %s", pkg))
-          system(sprintf("brew install %s", pkg))
-        }
-      }
-    }
-    return(TRUE)
-  }
-
-  # Check package version
-  check_package_version <- function(package_name, required_version) {
-    tryCatch({
-      if (!reticulate::py_module_available(package_name)) {
-        return(FALSE)
-      }
-      installed_version <- reticulate::py_eval(sprintf("__import__('%s').__version__", package_name))
-      package_version(installed_version) >= package_version(required_version)
-    }, error = function(e) FALSE)
-  }
-
-  # Retry installation with backoff
-  retry_install <- function(install_fn, pkg_name) {
-    for (i in 1:max_retries) {
-      tryCatch({
-        if (i > 1) log_msg(sprintf("Retry attempt %d/%d for %s", i, max_retries, pkg_name))
-        result <- install_fn()
-        return(list(success = TRUE))
-      }, error = function(e) {
-        if (i == max_retries) {
-          return(list(
-            success = FALSE,
-            error = sprintf("Failed to install %s: %s", pkg_name, e$message)
-          ))
-        }
-        Sys.sleep(2 ^ i) # Exponential backoff
-        NULL
-      })
-    }
-  }
-
-  # Define installation sequence
+  # Simplified dependency sequence with more robust handling
   get_install_sequence <- function() {
     list(
       build_tools = list(
@@ -324,7 +273,12 @@ install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
       ),
       sentencepiece = list(
         name = "Sentencepiece",
-        packages = sprintf("sentencepiece==%s", .pkgenv$package_constants$sentencepiece_version)
+        packages = sprintf("sentencepiece==%s", .pkgenv$package_constants$sentencepiece_version),
+        # For macOS: add pre-built wheel option
+        macos_options = c(
+          "--no-binary=:all:",   # Force source build
+          "--no-use-pep517"      # Bypass modern build system
+        )
       ),
       gensim = list(
         name = "Gensim",
@@ -341,92 +295,76 @@ install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
     )
   }
 
+  # Retry installation with special handling for macOS
+  retry_install <- function(packages, is_macos = FALSE) {
+    for (attempt in 1:max_retries) {
+      tryCatch({
+        if (is_macos) {
+          # Special macOS installation method
+          macos_opts <- c(
+            "--no-binary=:all:",   # Force source build
+            "--no-use-pep517",     # Bypass modern build system
+            "--no-deps"            # Skip dependency resolution
+          )
+
+          # Try different installation approaches
+          install_methods <- list(
+            function() reticulate::py_install(packages, pip = TRUE, envname = venv,
+                                              ignore_installed = TRUE,
+                                              pip_options = macos_opts),
+            function() system2(
+              Sys.which("python3"),
+              c("-m", "pip", "install", macos_opts, packages)
+            )
+          )
+
+          for (method in install_methods) {
+            result <- tryCatch(method(), error = function(e) NULL)
+            if (!is.null(result)) return(TRUE)
+          }
+          stop("All macOS installation methods failed")
+        } else {
+          # Standard installation
+          reticulate::py_install(
+            packages,
+            pip = TRUE,
+            envname = venv,
+            ignore_installed = FALSE
+          )
+        }
+        return(TRUE)
+      }, error = function(e) {
+        log_msg(sprintf("Installation attempt %d failed: %s", attempt, e$message), TRUE)
+        if (attempt < max_retries) Sys.sleep(2^attempt)
+        FALSE
+      })
+    }
+    FALSE
+  }
+
   # Main installation process
   tryCatch({
-    # Check if already initialized and packages are installed
-    if (.pkgenv$initialized) {
-      needs_update <- FALSE
-      for (pkg in c("flair", "torch", "transformers", "sentencepiece", "gensim")) {
-        version_const <- paste0(ifelse(pkg == "flair", "flair_min", pkg), "_version")
-        if (version_const %in% names(.pkgenv$package_constants)) {
-          if (!check_package_version(pkg, .pkgenv$package_constants[[version_const]])) {
-            needs_update <- TRUE
-            break
-          }
-        }
-      }
-      if (!needs_update) {
-        return(TRUE)
-      }
-    }
-
-    # Check system dependencies first
-    if (!check_system_dependencies()) {
-      return(FALSE)
-    }
-
-    in_docker <- is_docker()
-    env_msg <- if (!is.null(venv)) {
-      sprintf(" in %s", venv)
-    } else {
-      if (in_docker) " in Docker environment" else ""
-    }
-
-    log_msg(sprintf("Installing dependencies%s...", env_msg))
-
     # Get installation sequence
     install_sequence <- get_install_sequence()
 
-    if (in_docker) {
-      pip_path <- "/opt/venv/bin/pip"
-      # Upgrade pip first
-      system2(pip_path, c("install", "--upgrade", "pip"))
+    # Determine if running on macOS
+    is_macos <- Sys.info()['sysname'] == 'Darwin'
 
-      for (pkg in install_sequence) {
-        log_msg(sprintf("Installing %s...", pkg$name))
-        result <- retry_install(function() {
-          if (pkg$name == "Sentencepiece") {
-            system2(pip_path, c("install", "--no-cache-dir", "--no-deps",
-                                "--force-reinstall", "--no-binary=:all:", pkg$packages))
-          } else {
-            system2(pip_path, c("install", "--no-cache-dir", "--force-reinstall", pkg$packages))
-          }
-        }, pkg$name)
+    # Retry installation with special macOS handling
+    for (pkg in install_sequence) {
+      log_msg(sprintf("Installing %s...", pkg$name))
 
-        if (!result$success) {
-          log_msg(result$error, TRUE)
-          return(FALSE)
-        }
-      }
-    } else {
-      # Standard environment installation
-      reticulate::py_install("pip", pip = TRUE, envname = venv)
+      # Determine if this is a macOS-specific package needing special handling
+      is_macos_special <- is_macos && !is.null(pkg$macos_options)
 
-      for (pkg in install_sequence) {
-        log_msg(sprintf("Installing %s...", pkg$name))
-        result <- retry_install(function() {
-          if (pkg$name == "Sentencepiece") {
-            reticulate::py_install(
-              packages = pkg$packages,
-              pip = TRUE,
-              envname = venv,
-              ignore_installed = TRUE,
-              pip_options = c("--no-deps", "--no-binary=:all:")
-            )
-          } else {
-            reticulate::py_install(
-              packages = pkg$packages,
-              pip = TRUE,
-              envname = venv,
-              ignore_installed = FALSE
-            )
-          }
-        }, pkg$name)
+      success <- retry_install(
+        packages = pkg$packages,
+        is_macos = is_macos_special
+      )
 
-        if (!result$success) {
-          log_msg(result$error, TRUE)
-          return(FALSE)
-        }
+      if (!success) {
+        log_msg(sprintf("Failed to install %s", pkg$name), TRUE)
+        return(FALSE)
       }
     }
 
