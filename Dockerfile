@@ -26,7 +26,8 @@ RUN wget https://download2.rstudio.org/server/jammy/amd64/rstudio-server-2023.12
 
 # Create and configure Python virtual environment
 RUN python3 -m venv /opt/venv && \
-    chown -R $USER:$USER /opt/venv
+    chown -R $USER:$USER /opt/venv && \
+    chmod -R 775 /opt/venv  # 添加執行權限
 
 ENV PATH="/opt/venv/bin:$PATH"
 ENV RETICULATE_PYTHON="/opt/venv/bin/python"
@@ -36,7 +37,8 @@ RUN mkdir -p /usr/local/lib/R/etc && \
     echo "RETICULATE_PYTHON=/opt/venv/bin/python" >> /usr/local/lib/R/etc/Renviron.site && \
     echo "options(reticulate.prompt = FALSE)" >> /usr/local/lib/R/etc/Rprofile.site
 
-# Install Python packages
+# Install Python packages as rstudio user
+USER $USER
 RUN /opt/venv/bin/pip install --no-cache-dir \
     numpy==1.26.4 \
     scipy==1.12.0 \
@@ -44,7 +46,7 @@ RUN /opt/venv/bin/pip install --no-cache-dir \
     torch \
     flair
 
-# Install R packages with proper setup
+# Install R packages
 RUN R -e 'install.packages("reticulate", repos="https://cloud.r-project.org/", dependencies=TRUE)' && \
     R -e 'if(require(reticulate)) { \
           Sys.setenv(RETICULATE_PYTHON="/opt/venv/bin/python"); \
@@ -54,7 +56,5 @@ RUN R -e 'install.packages("reticulate", repos="https://cloud.r-project.org/", d
         }'
 
 WORKDIR /home/$USER
-USER $USER
 EXPOSE 8787
-
 CMD ["/usr/lib/rstudio-server/bin/rserver", "--server-daemonize=0"]
