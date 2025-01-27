@@ -241,32 +241,49 @@ get_system_info <- function() {
 #' @noRd
 check_package_state <- function(pkg_name, required_version, quiet = FALSE) {
   tryCatch({
-    # First check if we have a cached state
+    # 特殊处理 sentencepiece 在 M1 Mac 上的情况
+    if (pkg_name == "sentencepiece" &&
+        Sys.info()["sysname"] == "Darwin" &&
+        Sys.info()["machine"] == "arm64") {
+
+      # 如果已经有任何版本的 sentencepiece 存在，就认为它是可用的
+      if (reticulate::py_module_available("sentencepiece")) {
+        return(TRUE)
+      }
+    }
+
+    # 检查缓存状态
     state_key <- paste0(pkg_name, "_", required_version)
     if (!is.null(.pkgenv$installation_state[[state_key]])) {
       return(TRUE)
     }
 
-    # Try importing the package
+    # 尝试导入包
     if (!reticulate::py_module_available(pkg_name)) {
       return(FALSE)
     }
 
-    # Check version if required
+    # 检查版本
     if (required_version != "") {
       cmd <- sprintf("import %s; print(%s.__version__)", pkg_name, pkg_name)
       installed <- reticulate::py_eval(cmd)
       if (is.null(installed)) return(FALSE)
 
+      # 对于 sentencepiece，只要版本存在就接受
+      if (pkg_name == "sentencepiece" &&
+          Sys.info()["sysname"] == "Darwin" &&
+          Sys.info()["machine"] == "arm64") {
+        .pkgenv$installation_state[[state_key]] <- TRUE
+        return(TRUE)
+      }
+
       version_ok <- package_version(installed) >= package_version(required_version)
       if (version_ok) {
-        # Cache the successful state
         .pkgenv$installation_state[[state_key]] <- TRUE
       }
       return(version_ok)
     }
 
-    # If no version specified, just cache that it's available
     .pkgenv$installation_state[[state_key]] <- TRUE
     return(TRUE)
   }, error = function(e) {
@@ -276,6 +293,43 @@ check_package_state <- function(pkg_name, required_version, quiet = FALSE) {
     return(FALSE)
   })
 }
+# check_package_state <- function(pkg_name, required_version, quiet = FALSE) {
+#   tryCatch({
+#     # First check if we have a cached state
+#     state_key <- paste0(pkg_name, "_", required_version)
+#     if (!is.null(.pkgenv$installation_state[[state_key]])) {
+#       return(TRUE)
+#     }
+#
+#     # Try importing the package
+#     if (!reticulate::py_module_available(pkg_name)) {
+#       return(FALSE)
+#     }
+#
+#     # Check version if required
+#     if (required_version != "") {
+#       cmd <- sprintf("import %s; print(%s.__version__)", pkg_name, pkg_name)
+#       installed <- reticulate::py_eval(cmd)
+#       if (is.null(installed)) return(FALSE)
+#
+#       version_ok <- package_version(installed) >= package_version(required_version)
+#       if (version_ok) {
+#         # Cache the successful state
+#         .pkgenv$installation_state[[state_key]] <- TRUE
+#       }
+#       return(version_ok)
+#     }
+#
+#     # If no version specified, just cache that it's available
+#     .pkgenv$installation_state[[state_key]] <- TRUE
+#     return(TRUE)
+#   }, error = function(e) {
+#     if (!quiet) {
+#       warning(sprintf("Error checking %s: %s", pkg_name, e$message))
+#     }
+#     return(FALSE)
+#   })
+# }
 
 #' Install Required Dependencies
 #' @param venv Virtual environment name or NULL for system Python
@@ -339,8 +393,23 @@ install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
   }
 
   # Get installation sequence based on system
+  # 在 install_dependencies 函数中修改 get_install_sequence
+  # 在 install_dependencies 函数中修改 get_install_sequence
   get_install_sequence <- function() {
     is_m1 <- Sys.info()["sysname"] == "Darwin" && Sys.info()["machine"] == "arm64"
+
+    # 先準備 core packages
+    core_packages <- c(
+      sprintf("numpy==%s", .pkgenv$package_constants$numpy_version),
+      sprintf("scipy==%s", .pkgenv$package_constants$scipy_version),
+      sprintf("transformers==%s", .pkgenv$package_constants$transformers_version)
+    )
+
+    # 如果不是 M1，添加 sentencepiece
+    if (!is_m1) {
+      core_packages <- c(core_packages,
+                         sprintf("sentencepiece==%s", .pkgenv$package_constants$sentencepiece_version))
+    }
 
     base_sequence <- list(
       torch = list(
@@ -354,12 +423,7 @@ install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
       ),
       core = list(
         name = "Core dependencies",
-        packages = c(
-          sprintf("numpy==%s", .pkgenv$package_constants$numpy_version),
-          sprintf("scipy==%s", .pkgenv$package_constants$scipy_version),
-          sprintf("transformers==%s", .pkgenv$package_constants$transformers_version),
-          sprintf("sentencepiece==%s", .pkgenv$package_constants$sentencepiece_version)
-        )
+        packages = core_packages
       ),
       flair = list(
         name = "Flair Base",
@@ -376,6 +440,43 @@ install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
 
     return(base_sequence)
   }
+  # get_install_sequence <- function() {
+  #   is_m1 <- Sys.info()["sysname"] == "Darwin" && Sys.info()["machine"] == "arm64"
+  #
+  #   base_sequence <- list(
+  #     torch = list(
+  #       name = "PyTorch",
+  #       packages = if(is_m1) {
+  #         c(sprintf("torch>=%s", .pkgenv$package_constants$torch_version))
+  #       } else {
+  #         c(sprintf("torch>=%s", .pkgenv$package_constants$torch_version),
+  #           "torchvision")
+  #       }
+  #     ),
+  #     core = list(
+  #       name = "Core dependencies",
+  #       packages = c(
+  #         sprintf("numpy==%s", .pkgenv$package_constants$numpy_version),
+  #         sprintf("scipy==%s", .pkgenv$package_constants$scipy_version),
+  #         sprintf("transformers==%s", .pkgenv$package_constants$transformers_version),
+  #         sprintf("sentencepiece==%s", .pkgenv$package_constants$sentencepiece_version)
+  #       )
+  #     ),
+  #     flair = list(
+  #       name = "Flair Base",
+  #       packages = sprintf("flair>=%s", .pkgenv$package_constants$flair_min_version)
+  #     )
+  #   )
+  #
+  #   if (!is_m1) {
+  #     base_sequence$gensim <- list(
+  #       name = "Gensim",
+  #       packages = sprintf("gensim>=%s", .pkgenv$package_constants$gensim_version)
+  #     )
+  #   }
+  #
+  #   return(base_sequence)
+  # }
 
   # Main installation process
   tryCatch({
