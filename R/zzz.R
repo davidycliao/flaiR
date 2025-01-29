@@ -1493,69 +1493,117 @@ initialize_modules <- function() {
 
 ## .onAttach -------------------------------------------------------------------
 #' @noRd
+
 .onAttach <- function(libname, pkgname) {
   original_python <- Sys.getenv("RETICULATE_PYTHON")
   original_virtualenv <- Sys.getenv("VIRTUALENV")
-
   on.exit({
     if (original_python != "") Sys.setenv(RETICULATE_PYTHON = original_python)
     if (original_virtualenv != "") Sys.setenv(VIRTUALENV = original_virtualenv)
   })
 
+  # 統一的打印函數
+  print_environment_info <- function(sys_info, config) {
+    packageStartupMessage("\nEnvironment Information:")
+    packageStartupMessage(sprintf("OS: %s (%s)",
+                                  as.character(sys_info$name),
+                                  as.character(sys_info$version)))
+
+    # Python環境信息
+    env_type <- if(!is.null(config$virtualenv)) {
+      "virtualenv"
+    } else if(!is.null(config$conda)) {
+      "conda"
+    } else {
+      "system"
+    }
+    packageStartupMessage(sprintf("\nPython Environment:"))
+    packageStartupMessage(sprintf("  - Type: %s", env_type))
+    packageStartupMessage(sprintf("  - Path: %s", config$python))
+  }
+
+  # 打印GPU狀態
+  print_gpu_status <- function(cuda_info, mps_available) {
+    if (!is.null(cuda_info$available) && cuda_info$available) {
+      gpu_name <- if (!is.null(cuda_info$device_name)) {
+        paste("CUDA", cuda_info$device_name)
+      } else {
+        "CUDA"
+      }
+      print_status("GPU", gpu_name, TRUE)
+    } else if (!is.null(mps_available) && mps_available) {
+      print_status("GPU", "Mac MPS", TRUE)
+    } else {
+      print_status("GPU", "CPU Only", FALSE)
+    }
+  }
+
+  # 打印版本信息
+  print_version_info <- function(init_result) {
+    packageStartupMessage("")
+    print_status("PyTorch", init_result$versions$torch, TRUE)
+    print_status("Transformers", init_result$versions$transformers, TRUE)
+    print_status("Flair NLP", init_result$versions$flair, TRUE)
+  }
+
+  # 檢查並打印 Word Embeddings 狀態
+  print_word_embeddings_status <- function() {
+    if (verify_embeddings(quiet = TRUE)) {
+      gensim_version <- tryCatch({
+        gensim <- reticulate::import("gensim")
+        reticulate::py_get_attr(gensim, "__version__")
+      }, error = function(e) "Unknown")
+      print_status("Word Embeddings", gensim_version, TRUE)
+    } else {
+      print_status("Word Embeddings", "Not Available", FALSE,
+                   sprintf("Word embeddings feature is not detected.\n\nInstall with:\nIn R:\n  reticulate::py_install('flair[word-embeddings]', pip = TRUE)\n  system(paste(Sys.which('python3'), '-m pip install flair[word-embeddings]'))\n\nIn terminal:\n  pip install flair[word-embeddings]"))
+    }
+  }
+
+  # 打印歡迎信息
+  print_welcome_message <- function(flair_version) {
+    packageStartupMessage("")
+    msg <- sprintf("%s%sflaiR%s%s: %s%sAn R Wrapper for Accessing Flair NLP %s%s%s",
+                   .pkgenv$colors$bold, .pkgenv$colors$blue,
+                   .pkgenv$colors$reset, .pkgenv$colors$reset_bold,
+                   .pkgenv$colors$bold, .pkgenv$colors$yellow,
+                   flair_version,
+                   .pkgenv$colors$reset, .pkgenv$colors$reset_bold)
+    packageStartupMessage(msg)
+  }
+
   tryCatch({
     # 先嘗試初始化模組
     init_result <- initialize_modules()
-
     if (init_result$status) {
-      # 如果初始化成功，直接顯示資訊
+      # 如果初始化成功，顯示所有信息
       sys_info <- get_system_info()
-      packageStartupMessage("\nEnvironment Information:")
-      packageStartupMessage(sprintf("OS: %s (%s)",
-                                    as.character(sys_info$name),
-                                    as.character(sys_info$version)))
+      config <- reticulate::py_config()
 
+      # 打印環境信息
+      print_environment_info(sys_info, config)
+
+      # Docker狀態
       if (is_docker()) {
         print_status("Docker", "Enabled", TRUE)
       }
 
-      # 顯示 Python 版本
-      config <- reticulate::py_config()
+      # Python版本
       python_version <- as.character(config$version)
       print_status("Python", python_version, check_python_version(python_version))
 
-      # GPU 狀態檢查
-      cuda_info <- init_result$device$cuda
-      mps_available <- init_result$device$mps
+      # GPU狀態
+      print_gpu_status(init_result$device$cuda, init_result$device$mps)
 
-      if (!is.null(cuda_info$available) && cuda_info$available) {
-        gpu_name <- if (!is.null(cuda_info$device_name)) {
-          paste("CUDA", cuda_info$device_name)
-        } else {
-          "CUDA"
-        }
-        print_status("GPU", gpu_name, TRUE)
-      } else if (!is.null(mps_available) && mps_available) {
-        print_status("GPU", "Mac MPS", TRUE)
-      } else {
-        print_status("GPU", "CPU Only", FALSE)
-      }
+      # 版本信息
+      print_version_info(init_result)
 
-      packageStartupMessage("")
-      print_status("PyTorch", init_result$versions$torch, TRUE)
-      print_status("Transformers", init_result$versions$transformers, TRUE)
-      print_status("Flair NLP", init_result$versions$flair, TRUE)
+      # Word Embeddings 狀態
+      print_word_embeddings_status()
 
-      # 檢查 Word Embeddings
-      if (verify_embeddings(quiet = TRUE)) {
-        gensim_version <- tryCatch({
-          gensim <- reticulate::import("gensim")
-          reticulate::py_get_attr(gensim, "__version__")
-        }, error = function(e) "Unknown")
-        print_status("Word Embeddings", gensim_version, TRUE)
-      } else {
-        print_status("Word Embeddings", "Not Available", FALSE,
-                     sprintf("Word embeddings feature is not detected..."))
-      }
+      # 歡迎信息
+      print_welcome_message(init_result$versions$flair)
+
     } else {
       # 如果初始化失敗，執行完整安裝流程
       Sys.unsetenv("RETICULATE_PYTHON")
@@ -1568,17 +1616,6 @@ initialize_modules <- function() {
         return(invisible(NULL))
       }
     }
-
-    # 歡迎訊息
-    packageStartupMessage("")
-    msg <- sprintf("%s%sflaiR%s%s: %s%sAn R Wrapper for Accessing Flair NLP %s%s%s",
-                   .pkgenv$colors$bold, .pkgenv$colors$blue,
-                   .pkgenv$colors$reset, .pkgenv$colors$reset_bold,
-                   .pkgenv$colors$bold, .pkgenv$colors$yellow,
-                   init_result$versions$flair,
-                   .pkgenv$colors$reset, .pkgenv$colors$reset_bold)
-    packageStartupMessage(msg)
-
   }, error = function(e) {
     packageStartupMessage("Error during initialization: ", as.character(e$message))
   }, finally = {
@@ -1587,7 +1624,101 @@ initialize_modules <- function() {
 
   invisible(NULL)
 }
-
+# .onAttach <- function(libname, pkgname) {
+#   original_python <- Sys.getenv("RETICULATE_PYTHON")
+#   original_virtualenv <- Sys.getenv("VIRTUALENV")
+#
+#   on.exit({
+#     if (original_python != "") Sys.setenv(RETICULATE_PYTHON = original_python)
+#     if (original_virtualenv != "") Sys.setenv(VIRTUALENV = original_virtualenv)
+#   })
+#
+#   tryCatch({
+#     # 先嘗試初始化模組
+#     init_result <- initialize_modules()
+#
+#     if (init_result$status) {
+#       # 如果初始化成功，直接顯示資訊
+#       sys_info <- get_system_info()
+#       packageStartupMessage("\nEnvironment Information:")
+#       packageStartupMessage(sprintf("OS: %s (%s)",
+#                                     as.character(sys_info$name),
+#                                     as.character(sys_info$version)))
+#
+#       if (is_docker()) {
+#         print_status("Docker", "Enabled", TRUE)
+#       }
+#
+#       # 顯示 Python 版本
+#       config <- reticulate::py_config()
+#       python_version <- as.character(config$version)
+#       print_status("Python", python_version, check_python_version(python_version))
+#
+#       # GPU 狀態檢查
+#       cuda_info <- init_result$device$cuda
+#       mps_available <- init_result$device$mps
+#
+#       if (!is.null(cuda_info$available) && cuda_info$available) {
+#         gpu_name <- if (!is.null(cuda_info$device_name)) {
+#           paste("CUDA", cuda_info$device_name)
+#         } else {
+#           "CUDA"
+#         }
+#         print_status("GPU", gpu_name, TRUE)
+#       } else if (!is.null(mps_available) && mps_available) {
+#         print_status("GPU", "Mac MPS", TRUE)
+#       } else {
+#         print_status("GPU", "CPU Only", FALSE)
+#       }
+#
+#       packageStartupMessage("")
+#       print_status("PyTorch", init_result$versions$torch, TRUE)
+#       print_status("Transformers", init_result$versions$transformers, TRUE)
+#       print_status("Flair NLP", init_result$versions$flair, TRUE)
+#
+#       # 檢查 Word Embeddings
+#       if (verify_embeddings(quiet = TRUE)) {
+#         gensim_version <- tryCatch({
+#           gensim <- reticulate::import("gensim")
+#           reticulate::py_get_attr(gensim, "__version__")
+#         }, error = function(e) "Unknown")
+#         print_status("Word Embeddings", gensim_version, TRUE)
+#       } else {
+#         print_status("Word Embeddings", "Not Available", FALSE,
+#                      sprintf("Word embeddings feature is not detected..."))
+#       }
+#     } else {
+#       # 如果初始化失敗，執行完整安裝流程
+#       Sys.unsetenv("RETICULATE_PYTHON")
+#       Sys.unsetenv("VIRTUALENV")
+#       options(reticulate.python.initializing = TRUE)
+#
+#       # 執行環境設置
+#       env_setup <- check_conda_env()
+#       if (!env_setup) {
+#         return(invisible(NULL))
+#       }
+#     }
+#
+#     # 歡迎訊息
+#     packageStartupMessage("")
+#     msg <- sprintf("%s%sflaiR%s%s: %s%sAn R Wrapper for Accessing Flair NLP %s%s%s",
+#                    .pkgenv$colors$bold, .pkgenv$colors$blue,
+#                    .pkgenv$colors$reset, .pkgenv$colors$reset_bold,
+#                    .pkgenv$colors$bold, .pkgenv$colors$yellow,
+#                    init_result$versions$flair,
+#                    .pkgenv$colors$reset, .pkgenv$colors$reset_bold)
+#     packageStartupMessage(msg)
+#
+#   }, error = function(e) {
+#     packageStartupMessage("Error during initialization: ", as.character(e$message))
+#   }, finally = {
+#     options(reticulate.python.initializing = FALSE)
+#   })
+#
+#   invisible(NULL)
+# }
+#
 # .onAttach <- function(libname, pkgname) {
 #   original_python <- Sys.getenv("RETICULATE_PYTHON")
 #   original_virtualenv <- Sys.getenv("VIRTUALENV")
