@@ -311,6 +311,34 @@ install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
     }
   }
 
+  # Docker installation function
+  docker_install <- function(pkg_req) {
+    # 特別處理 sentencepiece
+    if (grepl("sentencepiece", pkg_req)) {
+      # 先安裝編譯工具
+      system2("sudo", c("apt-get", "update"))
+      system2("sudo", c("apt-get", "install", "-y",
+                        "pkg-config", "git", "cmake",
+                        "build-essential", "g++"))
+    }
+
+    # 首先嘗試使用 sudo pip install
+    result <- system2("sudo", c("/opt/venv/bin/pip", "install",
+                                "--force-reinstall",
+                                "--no-deps",
+                                pkg_req))
+
+    if (result != 0) {
+      # 如果失敗，嘗試使用 python -m pip
+      result <- system2("sudo", c("python3", "-m", "pip", "install",
+                                  "--force-reinstall",
+                                  "--no-deps",
+                                  pkg_req))
+    }
+
+    return(result == 0)
+  }
+
   # Check package version
   check_version <- function(pkg_name, required_version) {
     tryCatch({
@@ -330,25 +358,6 @@ install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
     } else {
       list(name = trimws(pkg_req), version = "")
     }
-  }
-
-  # Docker installation function
-  docker_install <- function(pkg_req) {
-    # 首先嘗試使用 sudo pip install
-    result <- system2("sudo", c("/opt/venv/bin/pip", "install",
-                                "--force-reinstall",
-                                "--no-deps",
-                                pkg_req))
-
-    if (result != 0) {
-      # 如果失敗，嘗試使用 python -m pip
-      result <- system2("sudo", c("python3", "-m", "pip", "install",
-                                  "--force-reinstall",
-                                  "--no-deps",
-                                  pkg_req))
-    }
-
-    return(result == 0)
   }
 
   # Retry installation with backoff
@@ -471,6 +480,178 @@ install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
     return(FALSE)
   })
 }
+# install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
+#   # Helper functions
+#   log_msg <- function(msg, is_error = FALSE) {
+#     if (!quiet) {
+#       if (is_error) {
+#         packageStartupMessage(.pkgenv$colors$red, msg, .pkgenv$colors$reset)
+#       } else {
+#         packageStartupMessage(msg)
+#       }
+#     }
+#   }
+#
+#   # Check package version
+#   check_version <- function(pkg_name, required_version) {
+#     tryCatch({
+#       if(required_version == "") return(TRUE)
+#       cmd <- sprintf("import %s; print(%s.__version__)", pkg_name, pkg_name)
+#       installed <- reticulate::py_eval(cmd)
+#       if(is.null(installed)) return(FALSE)
+#       package_version(installed) >= package_version(required_version)
+#     }, error = function(e) FALSE)
+#   }
+#
+#   # Parse requirement function
+#   parse_requirement <- function(pkg_req) {
+#     if(grepl(">=|==|<=", pkg_req)) {
+#       parts <- strsplit(pkg_req, ">=|==|<=")[[1]]
+#       list(name = trimws(parts[1]), version = trimws(parts[2]))
+#     } else {
+#       list(name = trimws(pkg_req), version = "")
+#     }
+#   }
+#
+#   # Docker installation function
+#   docker_install <- function(pkg_req) {
+#     # 首先嘗試使用 sudo pip install
+#     result <- system2("sudo", c("/opt/venv/bin/pip", "install",
+#                                 "--force-reinstall",
+#                                 "--no-deps",
+#                                 pkg_req))
+#
+#     if (result != 0) {
+#       # 如果失敗，嘗試使用 python -m pip
+#       result <- system2("sudo", c("python3", "-m", "pip", "install",
+#                                   "--force-reinstall",
+#                                   "--no-deps",
+#                                   pkg_req))
+#     }
+#
+#     return(result == 0)
+#   }
+#
+#   # Retry installation with backoff
+#   retry_install <- function(install_fn, pkg_name) {
+#     for (i in 1:max_retries) {
+#       tryCatch({
+#         if (i > 1) log_msg(sprintf("Retry attempt %d/%d for %s", i, max_retries, pkg_name))
+#         result <- install_fn()
+#         return(list(success = TRUE))
+#       }, error = function(e) {
+#         if (i == max_retries) {
+#           return(list(
+#             success = FALSE,
+#             error = sprintf("Failed to install %s: %s", pkg_name, e$message)
+#           ))
+#         }
+#         Sys.sleep(2 ^ i)
+#         NULL
+#       })
+#     }
+#   }
+#
+#   # Get installation sequence
+#   get_install_sequence <- function() {
+#     list(
+#       torch = list(
+#         name = "PyTorch",
+#         packages = c(
+#           sprintf("torch>=%s", .pkgenv$package_constants$torch_version),
+#           "torchvision"
+#         )
+#       ),
+#       core = list(
+#         name = "Core dependencies",
+#         packages = c(
+#           sprintf("numpy==%s", .pkgenv$package_constants$numpy_version),
+#           sprintf("scipy==%s", .pkgenv$package_constants$scipy_version),
+#           sprintf("transformers==%s", .pkgenv$package_constants$transformers_version)
+#         )
+#       ),
+#       flair = list(
+#         name = "Flair Base",
+#         packages = sprintf("flair>=%s", .pkgenv$package_constants$flair_min_version)
+#       )
+#     )
+#   }
+#
+#   # Main installation process
+#   tryCatch({
+#     # Check system type and set environment variables
+#     is_arm_mac <- Sys.info()["sysname"] == "Darwin" &&
+#       Sys.info()["machine"] == "arm64"
+#     if(is_arm_mac) {
+#       Sys.setenv(PYTORCH_ENABLE_MPS_FALLBACK = "1")
+#     }
+#
+#     in_docker <- is_docker()
+#     env_msg <- if (!is.null(venv)) {
+#       sprintf(" in %s", venv)
+#     } else {
+#       if (in_docker) " in Docker environment" else ""
+#     }
+#
+#     log_msg(sprintf("Checking dependencies%s...", env_msg))
+#     install_sequence <- get_install_sequence()
+#
+#     if (in_docker) {
+#       for (pkg in install_sequence) {
+#         log_msg(sprintf("Checking %s...", pkg$name))
+#         for (pkg_req in pkg$packages) {
+#           req <- parse_requirement(pkg_req)
+#           if (!check_version(req$name, req$version)) {
+#             log_msg(sprintf("Installing %s...", pkg_req))
+#             result <- retry_install(function() {
+#               docker_install(pkg_req)
+#             }, pkg_req)
+#             if (!result$success) {
+#               log_msg(result$error, TRUE)
+#               return(FALSE)
+#             }
+#           } else {
+#             log_msg(sprintf("%s is already installed with required version", req$name))
+#           }
+#         }
+#       }
+#     } else {
+#       for (pkg in install_sequence) {
+#         log_msg(sprintf("Checking %s...", pkg$name))
+#         for (pkg_req in pkg$packages) {
+#           req <- parse_requirement(pkg_req)
+#           if (!check_version(req$name, req$version)) {
+#             log_msg(sprintf("Installing %s...", pkg_req))
+#             result <- retry_install(function() {
+#               reticulate::py_install(
+#                 packages = pkg_req,
+#                 pip = TRUE,
+#                 envname = venv,
+#                 ignore_installed = FALSE
+#               )
+#             }, pkg_req)
+#             if (!result$success) {
+#               log_msg(result$error, TRUE)
+#               return(FALSE)
+#             }
+#           } else {
+#             log_msg(sprintf("%s is already installed with required version", req$name))
+#           }
+#         }
+#       }
+#     }
+#
+#     log_msg("All dependencies are installed and up to date")
+#     return(TRUE)
+#
+#   }, error = function(e) {
+#     log_msg(sprintf(
+#       "Error checking/installing dependencies: %s\nPlease check:\n1. Internet connection\n2. Pip availability\n3. Python environment permissions",
+#       e$message
+#     ), TRUE)
+#     return(FALSE)
+#   })
+# }
 
 # install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
 #   # Helper functions
