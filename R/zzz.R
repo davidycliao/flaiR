@@ -725,26 +725,7 @@ initialize_modules <- function() {
   # 確保 reticulate 配置
   options(reticulate.prompt = FALSE)
 }
-# .onLoad <- function(libname, pkgname) {
-#   Sys.setenv(KMP_DUPLICATE_LIB_OK = "TRUE")
-#
-#   if (is_docker()) {
-#     Sys.setenv(PYTHONNOUSERSITE = "1")
-#     docker_python <- Sys.getenv("RETICULATE_PYTHON", "/opt/venv/bin/python")
-#     if (file.exists(docker_python)) {
-#       Sys.setenv(RETICULATE_PYTHON = docker_python)
-#     }
-#   }
-#
-#   if (Sys.info()["sysname"] == "Darwin") {
-#     if (Sys.info()["machine"] == "arm64") {
-#       Sys.setenv(PYTORCH_ENABLE_MPS_FALLBACK = 1)
-#     }
-#     Sys.setenv(OMP_NUM_THREADS = 1)
-#     Sys.setenv(MKL_NUM_THREADS = 1)
-#   }
-#   options(reticulate.prompt = FALSE)
-# }
+
 
 ## .onAttach -------------------------------------------------------------------
 #' @noRd
@@ -759,13 +740,6 @@ initialize_modules <- function() {
   tryCatch({
     options(reticulate.python.initializing = TRUE)
 
-    # 改進的模組檢查邏輯
-    modules_available <- tryCatch({
-      # 使用更可靠的檢查方法
-      check_result <- initialize_modules()
-      check_result$status
-    }, error = function(e) FALSE)
-
     # 環境資訊
     sys_info <- get_system_info()
     packageStartupMessage("\n")
@@ -774,7 +748,7 @@ initialize_modules <- function() {
                                   as.character(sys_info$name),
                                   as.character(sys_info$version)))
 
-    # 顯示 Python 環境信息
+    # 打印當前 Python 環境信息
     current_env <- tryCatch({
       py_config <- reticulate::py_config()
       sprintf("\nPython Environment:\n  - Path: %s\n  - Type: %s\n  - Version: %s",
@@ -791,81 +765,77 @@ initialize_modules <- function() {
       print_status("Docker", "Enabled", TRUE)
     }
 
-    if (modules_available) {
-      # 初始化並顯示資訊
-      init_result <- initialize_modules()
-      if (init_result$status) {
-        # Python 版本檢查
-        config <- reticulate::py_config()
-        python_version <- as.character(config$version)
-        print_status("Python", python_version, check_python_version(python_version))
+    # 先檢查必要模組
+    init_result <- initialize_modules()
+    if (!init_result$status) {
+      packageStartupMessage("\nSome required modules are missing. Installing necessary packages...")
 
-        # 主要模組版本資訊
-        packageStartupMessage("\nCore Modules Status:")
-        print_status("PyTorch", init_result$versions$torch, TRUE)
-        print_status("Transformers", init_result$versions$transformers, TRUE)
-        print_status("Flair NLP", init_result$versions$flair, TRUE)
-
-        # GPU 狀態檢查
-        cuda_info <- init_result$device$cuda
-        mps_available <- init_result$device$mps
-
-        if (!is.null(cuda_info$available) && cuda_info$available) {
-          gpu_name <- if (!is.null(cuda_info$device_name)) {
-            paste("CUDA", cuda_info$device_name)
-          } else {
-            "CUDA"
-          }
-          print_status("GPU", gpu_name, TRUE)
-        } else if (!is.null(mps_available) && mps_available) {
-          print_status("GPU", "Mac MPS", TRUE)
-        } else {
-          print_status("GPU", "CPU Only", FALSE)
-        }
-
-        # Word Embeddings 狀態檢查
-        if (verify_embeddings(quiet = TRUE)) {
-          gensim_version <- tryCatch({
-            gensim <- reticulate::import("gensim")
-            reticulate::py_get_attr(gensim, "__version__")
-          }, error = function(e) "Unknown")
-          print_status("Word Embeddings", gensim_version, TRUE)
-        } else {
-          print_status("Word Embeddings", "Not Available", FALSE,
-                       sprintf("Word embeddings feature is not detected.\n\nInstall with:\nIn R:\n  reticulate::py_install('flair[word-embeddings]', pip = TRUE)\n  system(paste(Sys.which('python3'), '-m pip install flair[word-embeddings]'))\n\nIn terminal:\n  pip install flair[word-embeddings]"))
-        }
-      }
-    } else {
-      # 如果模組未完全安裝，執行安裝流程
-      packageStartupMessage("\nRequired modules not found. Installing dependencies...")
+      # 使用 check_conda_env 安裝所需套件
       env_setup <- check_conda_env()
+      if (!env_setup) {
+        packageStartupMessage("Failed to install required packages.")
+        return(invisible(NULL))
+      }
 
-      if (env_setup) {
-        # 重新初始化檢查
-        init_result <- initialize_modules()
-        if (init_result$status) {
-          modules_available <- TRUE
-          # 這裡不需要重複輸出狀態，因為安裝成功會在下次載入時顯示
-        }
-      } else {
-        packageStartupMessage("Failed to set up environment.")
+      # 重新檢查模組
+      init_result <- initialize_modules()
+      if (!init_result$status) {
+        packageStartupMessage("Module installation failed. Please check your Python environment.")
         return(invisible(NULL))
       }
     }
 
-    # 歡迎訊息
-    packageStartupMessage("\n")
-    if (exists("init_result") && init_result$status) {
-      msg <- sprintf(
-        "%s%sflaiR%s%s: %s%sAn R Wrapper for Accessing Flair NLP %s%s%s",
-        .pkgenv$colors$bold, .pkgenv$colors$blue,
-        .pkgenv$colors$reset, .pkgenv$colors$reset_bold,
-        .pkgenv$colors$bold, .pkgenv$colors$yellow,
-        init_result$versions$flair,
-        .pkgenv$colors$reset, .pkgenv$colors$reset_bold
-      )
-      packageStartupMessage(msg)
+    # Python version check
+    config <- reticulate::py_config()
+    python_version <- as.character(config$version)
+    print_status("Python", python_version, check_python_version(python_version))
+
+    # 主要模組版本資訊
+    packageStartupMessage("\nCore Modules Status:")
+    print_status("PyTorch", init_result$versions$torch, TRUE)
+    print_status("Transformers", init_result$versions$transformers, TRUE)
+    print_status("Flair NLP", init_result$versions$flair, TRUE)
+
+    # GPU status check
+    cuda_info <- init_result$device$cuda
+    mps_available <- init_result$device$mps
+
+    if (!is.null(cuda_info$available) && cuda_info$available) {
+      gpu_name <- if (!is.null(cuda_info$device_name)) {
+        paste("CUDA", cuda_info$device_name)
+      } else {
+        "CUDA"
+      }
+      print_status("GPU", gpu_name, TRUE)
+    } else if (!is.null(mps_available) && mps_available) {
+      print_status("GPU", "Mac MPS", TRUE)
+    } else {
+      print_status("GPU", "CPU Only", FALSE)
     }
+
+    # Word Embeddings status check
+    if (verify_embeddings(quiet = TRUE)) {
+      gensim_version <- tryCatch({
+        gensim <- reticulate::import("gensim")
+        reticulate::py_get_attr(gensim, "__version__")
+      }, error = function(e) "Unknown")
+      print_status("Word Embeddings", gensim_version, TRUE)
+    } else {
+      print_status("Word Embeddings", "Not Available", FALSE,
+                   sprintf("Word embeddings feature is not detected.\n\nInstall with:\nIn R:\n  reticulate::py_install('flair[word-embeddings]', pip = TRUE)\n  system(paste(Sys.which('python3'), '-m pip install flair[word-embeddings]'))\n\nIn terminal:\n  pip install flair[word-embeddings]"))
+    }
+
+    packageStartupMessage("\n")
+    # Welcome message
+    msg <- sprintf(
+      "%s%sflaiR%s%s: %s%sAn R Wrapper for Accessing Flair NLP %s%s%s",
+      .pkgenv$colors$bold, .pkgenv$colors$blue,
+      .pkgenv$colors$reset, .pkgenv$colors$reset_bold,
+      .pkgenv$colors$bold, .pkgenv$colors$yellow,
+      init_result$versions$flair,
+      .pkgenv$colors$reset, .pkgenv$colors$reset_bold
+    )
+    packageStartupMessage(msg)
 
   }, error = function(e) {
     packageStartupMessage("Error during initialization: ", as.character(e$message))
