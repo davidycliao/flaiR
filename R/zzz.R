@@ -1493,7 +1493,108 @@ initialize_modules <- function() {
 
 ## .onAttach -------------------------------------------------------------------
 #' @noRd
+.onAttach <- function(libname, pkgname) {
+  original_python <- Sys.getenv("RETICULATE_PYTHON")
+  original_virtualenv <- Sys.getenv("VIRTUALENV")
+  on.exit({
+    if (original_python != "") Sys.setenv(RETICULATE_PYTHON = original_python)
+    if (original_virtualenv != "") Sys.setenv(VIRTUALENV = original_virtualenv)
+  })
 
+  tryCatch({
+    # 先嘗試初始化模組
+    init_result <- initialize_modules()
+    if (init_result$status) {
+      # 如果初始化成功，直接顯示資訊
+      sys_info <- get_system_info()
+      packageStartupMessage("\nEnvironment Information:")
+      packageStartupMessage(sprintf("OS: %s (%s)",
+                                    as.character(sys_info$name),
+                                    as.character(sys_info$version)))
+
+      # 顯示環境信息
+      config <- reticulate::py_config()
+      env_type <- if(!is.null(config$virtualenv)) {
+        "virtualenv"
+      } else if(!is.null(config$conda)) {
+        "conda"
+      } else {
+        "system"
+      }
+      packageStartupMessage(sprintf("\nPython Environment:"))
+      packageStartupMessage(sprintf("  - Type: %s", env_type))
+      packageStartupMessage(sprintf("  - Path: %s", config$python))
+
+      if (is_docker()) {
+        print_status("Docker", "Enabled", TRUE)
+      }
+
+      # Python 版本檢查
+      python_version <- as.character(config$version)
+      print_status("Python", python_version, check_python_version(python_version))
+
+      # GPU 狀態檢查
+      cuda_info <- init_result$device$cuda
+      mps_available <- init_result$device$mps
+      if (!is.null(cuda_info$available) && cuda_info$available) {
+        gpu_name <- if (!is.null(cuda_info$device_name)) {
+          paste("CUDA", cuda_info$device_name)
+        } else {
+          "CUDA"
+        }
+        print_status("GPU", gpu_name, TRUE)
+      } else if (!is.null(mps_available) && mps_available) {
+        print_status("GPU", "Mac MPS", TRUE)
+      } else {
+        print_status("GPU", "CPU Only", FALSE)
+      }
+
+      # 版本信息
+      packageStartupMessage("")
+      print_status("PyTorch", init_result$versions$torch, TRUE)
+      print_status("Transformers", init_result$versions$transformers, TRUE)
+      print_status("Flair NLP", init_result$versions$flair, TRUE)
+
+      # Word Embeddings 檢查
+      if (verify_embeddings(quiet = TRUE)) {
+        gensim_version <- tryCatch({
+          gensim <- reticulate::import("gensim")
+          reticulate::py_get_attr(gensim, "__version__")
+        }, error = function(e) "Unknown")
+        print_status("Word Embeddings", gensim_version, TRUE)
+      } else {
+        print_status("Word Embeddings", "Not Available", FALSE,
+                     sprintf("Word embeddings feature is not detected.\n\nInstall with:\nIn R:\n  reticulate::py_install('flair[word-embeddings]', pip = TRUE)\n  system(paste(Sys.which('python3'), '-m pip install flair[word-embeddings]'))\n\nIn terminal:\n  pip install flair[word-embeddings]"))
+      }
+
+      # 歡迎訊息
+      packageStartupMessage("")
+      msg <- sprintf("%s%sflaiR%s%s: %s%sAn R Wrapper for Accessing Flair NLP %s%s%s",
+                     .pkgenv$colors$bold, .pkgenv$colors$blue,
+                     .pkgenv$colors$reset, .pkgenv$colors$reset_bold,
+                     .pkgenv$colors$bold, .pkgenv$colors$yellow,
+                     init_result$versions$flair,
+                     .pkgenv$colors$reset, .pkgenv$colors$reset_bold)
+      packageStartupMessage(msg)
+
+    } else {
+      # 原有的安裝流程保持不變
+      Sys.unsetenv("RETICULATE_PYTHON")
+      Sys.unsetenv("VIRTUALENV")
+      options(reticulate.python.initializing = TRUE)
+      env_setup <- check_conda_env()
+      if (!env_setup) {
+        return(invisible(NULL))
+      }
+    }
+  }, error = function(e) {
+    packageStartupMessage("Error during initialization: ", as.character(e$message))
+  }, finally = {
+    options(reticulate.python.initializing = FALSE)
+  })
+
+  invisible(NULL)
+}
 
 
 # .onAttach <- function(libname, pkgname) {
