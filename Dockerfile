@@ -29,28 +29,27 @@ RUN wget https://download2.rstudio.org/server/jammy/amd64/rstudio-server-2023.12
     gdebi -n rstudio-server-2023.12.1-402-amd64.deb && \
     rm rstudio-server-*.deb
 
-# Python 虛擬環境設置
+# 創建並配置 Python 虛擬環境
 RUN python3 -m venv /opt/venv && \
     chown -R $USER:$USER /opt/venv && \
     chmod -R 775 /opt/venv
 
-# 環境變量設置
+# 設置環境變量
 ENV PATH="/opt/venv/bin:$PATH"
 ENV RETICULATE_PYTHON="/opt/venv/bin/python"
 ENV PYTHONPATH="/opt/venv/lib/python3.12/site-packages"
 
-# R 環境配置
+# 設置 R 環境配置
 RUN mkdir -p /usr/local/lib/R/etc && \
     echo "RETICULATE_PYTHON=/opt/venv/bin/python" >> /usr/local/lib/R/etc/Renviron.site && \
     echo "options(reticulate.prompt = FALSE)" >> /usr/local/lib/R/etc/Rprofile.site
 
-# R 庫目錄設置
+# 創建並設置 R 庫目錄權限
 RUN mkdir -p /usr/local/lib/R/site-library && \
     chown -R $USER:$USER /usr/local/lib/R/site-library && \
     chmod -R 775 /usr/local/lib/R/site-library
 
-# 切換到 rstudio 用戶安裝 Python 包
-USER $USER
+# 切換到 root 用戶安裝 Python 包
 RUN /opt/venv/bin/pip install --no-cache-dir \
     numpy==1.26.4 \
     scipy==1.12.0 \
@@ -59,7 +58,8 @@ RUN /opt/venv/bin/pip install --no-cache-dir \
     flair>=0.11.3 \
     sentencepiece>=0.1.99
 
-# 安裝 R 包
+# 切換到 rstudio 用戶安裝 R 包
+USER $USER
 RUN R -e 'install.packages("reticulate", repos="https://cloud.r-project.org/", dependencies=TRUE)' && \
     R -e 'if(require(reticulate)) { \
           Sys.setenv(RETICULATE_PYTHON="/opt/venv/bin/python"); \
@@ -68,7 +68,12 @@ RUN R -e 'install.packages("reticulate", repos="https://cloud.r-project.org/", d
           remotes::install_github("davidycliao/flaiR", dependencies=TRUE) \
         }'
 
+# 設置工作目錄
 WORKDIR /home/$USER
+
+# 暴露 RStudio Server 端口
 EXPOSE 8787
+
+# 切換回 root 運行 RStudio Server
 USER root
 CMD ["/usr/lib/rstudio-server/bin/rserver", "--server-daemonize=0"]
