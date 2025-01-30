@@ -19,6 +19,7 @@ NULL
   gensim_version = "4.0.0"
 )
 
+
 # ANSI Color Codes ----------------------------------------------------------
 .pkgenv$colors <- list(
   green = "\033[32m",
@@ -29,6 +30,31 @@ NULL
   bold = "\033[1m",
   reset_bold = "\033[22m"
 )
+
+# 2. Configuration Management
+save_python_config <- function(python_path) {
+  config_file <- file.path(path.expand("~"), ".flair_config")
+  if (!file.exists(config_file)) {
+    renviron_path <- file.path(path.expand("~"), ".Renviron")
+    python_config <- sprintf('RETICULATE_PYTHON="%s"', python_path)
+
+    # Update .Renviron
+    if (file.exists(renviron_path)) {
+      current_config <- readLines(renviron_path)
+      if (!any(grepl("^RETICULATE_PYTHON=", current_config))) {
+        cat(python_config, file = renviron_path, append = TRUE, sep = "\n")
+      }
+    } else {
+      cat(python_config, file = renviron_path, sep = "\n")
+    }
+
+    # Save configuration
+    writeLines(python_path, config_file)
+    packageStartupMessage(sprintf("Python configuration saved: %s", python_path))
+    return(TRUE)
+  }
+  return(FALSE)
+}
 
 # Module Storage -----------------------------------------------------------
 .pkgenv$modules <- list(
@@ -41,15 +67,36 @@ NULL
 
 #' @noRd
 is_docker <- function() {
-  if (file.exists("/.dockerenv")) return(TRUE)
-  if (Sys.info()["sysname"] == "Linux") {
-    if (file.exists("/proc/1/cgroup")) {
-      cgroup_content <- readLines("/proc/1/cgroup", n = 1)
-      return(grepl("docker", cgroup_content))
-    }
-  }
-  return(FALSE)
+  file.exists("/.dockerenv") ||
+    (Sys.info()["sysname"] == "Linux" &&
+       grepl("docker", readLines("/proc/1/cgroup", n = 1)))
 }
+
+verify_embeddings <- function(quiet = FALSE) {
+  tryCatch({
+    if(!quiet) packageStartupMessage("Checking word embeddings...")
+    gensim <- reticulate::import("gensim.models")
+    if(!quiet) packageStartupMessage("Word embeddings verified")
+    TRUE
+  }, error = function(e) {
+    if(!quiet) packageStartupMessage(sprintf("%sWarning: Word embeddings unavailable%s",
+                                             .pkgenv$colors$yellow,
+                                             .pkgenv$colors$reset))
+    FALSE
+  })
+}
+
+# is_docker <- function() {
+#   if (file.exists("/.dockerenv")) return(TRUE)
+#   if (Sys.info()["sysname"] == "Linux") {
+#     if (file.exists("/proc/1/cgroup")) {
+#       cgroup_content <- readLines("/proc/1/cgroup", n = 1)
+#       return(grepl("docker", cgroup_content))
+#     }
+#   }
+#   return(FALSE)
+# }
+
 
 #' @noRd
 check_python_version <- function(version) {
@@ -131,7 +178,7 @@ initialize_modules <- function() {
   required_modules <- c("torch", "transformers", "flair")
   missing_modules <- character(0)
 
-  # Check availability
+  # Check modules
   for (module in required_modules) {
     if (!reticulate::py_module_available(module)) {
       missing_modules <- c(missing_modules, module)
@@ -146,19 +193,20 @@ initialize_modules <- function() {
     ))
   }
 
-  # Load and check modules
+  # Load and verify modules
   tryCatch({
     torch <- reticulate::import("torch", delay_load = TRUE)
     transformers <- reticulate::import("transformers", delay_load = TRUE)
     flair <- reticulate::import("flair", delay_load = TRUE)
 
+    # Store versions
     versions <- list(
       torch = reticulate::py_get_attr(torch, "__version__"),
       transformers = reticulate::py_get_attr(transformers, "__version__"),
       flair = reticulate::py_get_attr(flair, "__version__")
     )
 
-    # GPU support check
+    # Check GPU support
     cuda_info <- list(
       available = torch$cuda$is_available(),
       device_name = if (torch$cuda$is_available()) {
@@ -166,14 +214,14 @@ initialize_modules <- function() {
           props <- torch$cuda$get_device_properties(0)
           props$name
         }, error = function(e) NULL)
-      } else NULL,
-      version = tryCatch(torch$version$cuda, error = function(e) NULL)
+      } else NULL
     )
 
     mps_available <- if(Sys.info()["sysname"] == "Darwin") {
       torch$backends$mps$is_available()
     } else FALSE
 
+    # Save to package environment
     .pkgenv$modules$flair <- flair
     .pkgenv$modules$torch <- torch
 
@@ -187,6 +235,67 @@ initialize_modules <- function() {
     list(status = FALSE, error = e$message, missing = missing_modules)
   })
 }
+
+# initialize_modules <- function() {
+#   required_modules <- c("torch", "transformers", "flair")
+#   missing_modules <- character(0)
+#
+#   # Check availability
+#   for (module in required_modules) {
+#     if (!reticulate::py_module_available(module)) {
+#       missing_modules <- c(missing_modules, module)
+#     }
+#   }
+#
+#   if (length(missing_modules) > 0) {
+#     return(list(
+#       status = FALSE,
+#       error = sprintf("Missing modules: %s", paste(missing_modules, collapse = ", ")),
+#       missing = missing_modules
+#     ))
+#   }
+#
+#   # Load and check modules
+#   tryCatch({
+#     torch <- reticulate::import("torch", delay_load = TRUE)
+#     transformers <- reticulate::import("transformers", delay_load = TRUE)
+#     flair <- reticulate::import("flair", delay_load = TRUE)
+#
+#     versions <- list(
+#       torch = reticulate::py_get_attr(torch, "__version__"),
+#       transformers = reticulate::py_get_attr(transformers, "__version__"),
+#       flair = reticulate::py_get_attr(flair, "__version__")
+#     )
+#
+#     # GPU support check
+#     cuda_info <- list(
+#       available = torch$cuda$is_available(),
+#       device_name = if (torch$cuda$is_available()) {
+#         tryCatch({
+#           props <- torch$cuda$get_device_properties(0)
+#           props$name
+#         }, error = function(e) NULL)
+#       } else NULL,
+#       version = tryCatch(torch$version$cuda, error = function(e) NULL)
+#     )
+#
+#     mps_available <- if(Sys.info()["sysname"] == "Darwin") {
+#       torch$backends$mps$is_available()
+#     } else FALSE
+#
+#     .pkgenv$modules$flair <- flair
+#     .pkgenv$modules$torch <- torch
+#
+#     list(
+#       status = TRUE,
+#       versions = versions,
+#       device = list(cuda = cuda_info, mps = mps_available),
+#       missing = character(0)
+#     )
+#   }, error = function(e) {
+#     list(status = FALSE, error = e$message, missing = missing_modules)
+#   })
+# }
 
 #' @noRd
 check_conda_env <- function(show_status = FALSE, missing_modules = NULL) {
@@ -373,8 +482,10 @@ install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
 # Package Initialization -------------------------------------------------
 #' @noRd
 .onLoad <- function(libname, pkgname) {
+  # Set environment variables
   Sys.setenv(KMP_DUPLICATE_LIB_OK = "TRUE")
 
+  # Docker environment
   if (is_docker()) {
     Sys.setenv(PYTHONNOUSERSITE = "1")
     docker_python <- Sys.getenv("RETICULATE_PYTHON", "/opt/venv/bin/python")
@@ -383,6 +494,7 @@ install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
     }
   }
 
+  # Mac specific settings
   if (Sys.info()["sysname"] == "Darwin") {
     if (Sys.info()["machine"] == "arm64") {
       Sys.setenv(PYTORCH_ENABLE_MPS_FALLBACK = 1)
@@ -396,6 +508,7 @@ install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
 
 #' @noRd
 .onAttach <- function(libname, pkgname) {
+  # 保存原始環境設置
   original_python <- Sys.getenv("RETICULATE_PYTHON")
   original_virtualenv <- Sys.getenv("VIRTUALENV")
   on.exit({
@@ -403,66 +516,89 @@ install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
     if (original_virtualenv != "") Sys.setenv(VIRTUALENV = original_virtualenv)
   })
 
+  # roxygen2 文檔生成時的特別處理
+  if (identical(Sys.getenv("ROXYGEN2_LOAD"), "true")) {
+    return(invisible(NULL))
+  }
+
   tryCatch({
     options(reticulate.python.initializing = TRUE)
 
-    # 1. Display Environment Information
-    sys_info <- get_system_info()
-    packageStartupMessage("\n")
-    packageStartupMessage("Environment Information:")
+    # 1. 獲取系統信息
+    sys_info <- tryCatch({
+      info <- get_system_info()
+      list(
+        name = as.character(info$name),
+        version = as.character(info$version)
+      )
+    }, error = function(e) {
+      list(
+        name = "Unknown",
+        version = "Unknown"
+      )
+    })
+
+    # 2. 顯示初始信息
+    packageStartupMessage("\nEnvironment Information:")
     packageStartupMessage(sprintf("OS: %s (%s)",
-                                  as.character(sys_info$name),
-                                  as.character(sys_info$version)))
+                                  sys_info$name,
+                                  sys_info$version))
 
-    # 2. Display Python Environment
-    current_env <- tryCatch({
-      py_config <- reticulate::py_config()
+    # 3. 獲取 Python 環境信息
+    python_env <- tryCatch({
+      config <- reticulate::py_config()
       sprintf("\nPython Environment:\n  - Path: %s\n  - Type: %s\n  - Version: %s",
-              py_config$python,
-              if(!is.null(py_config$virtualenv)) "virtualenv" else
-                if(!is.null(py_config$conda)) "conda" else "system",
-              py_config$version)
-    }, error = function(e) "\nUnable to detect Python environment")
+              as.character(config$python),
+              if(!is.null(config$virtualenv)) "virtualenv" else
+                if(!is.null(config$conda)) "conda" else "system",
+              as.character(config$version))
+    }, error = function(e) NULL)
 
-    packageStartupMessage(current_env)
+    if (!is.null(python_env)) {
+      packageStartupMessage(python_env)
+    }
 
-    # 3. Check Docker Status
+    # 4. 檢查 Docker 環境
     if (is_docker()) {
       print_status("Docker", "Enabled", TRUE)
     }
 
-    # 4. Initialize and Check Modules
+    # 5. 初始化並檢查模組
     init_result <- initialize_modules()
     if (!init_result$status) {
-      packageStartupMessage("\nRequired modules check failed. Starting installation...")
+      packageStartupMessage("\nRequired modules missing. Starting installation...")
 
-      # Install missing packages
       env_setup <- check_conda_env(missing_modules = init_result$missing)
       if (!env_setup) {
         packageStartupMessage("Failed to install required packages.")
         return(invisible(NULL))
       }
 
-      # Recheck modules
+      # 重新檢查模組
       init_result <- initialize_modules()
       if (!init_result$status) {
-        packageStartupMessage("Module installation failed. Please check your Python environment.")
+        packageStartupMessage("Module initialization failed. Please check Python environment.")
         return(invisible(NULL))
       }
     }
 
-    # 5. Display Python Version Status
+    # 6. 保存成功的配置
     config <- reticulate::py_config()
+    if (!is.null(config$python)) {
+      save_python_config(as.character(config$python))
+    }
+
+    # 7. 顯示 Python 版本狀態
     python_version <- as.character(config$version)
     print_status("Python", python_version, check_python_version(python_version))
 
-    # 6. Display Core Module Status
+    # 8. 顯示核心模組狀態
     packageStartupMessage("\nCore Modules Status:")
     print_status("PyTorch", init_result$versions$torch, TRUE)
     print_status("Transformers", init_result$versions$transformers, TRUE)
     print_status("Flair NLP", init_result$versions$flair, TRUE)
 
-    # 7. Check and Display GPU Status
+    # 9. 檢查並顯示 GPU 狀態
     cuda_info <- init_result$device$cuda
     mps_available <- init_result$device$mps
 
@@ -479,20 +615,20 @@ install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
       print_status("GPU", "CPU Only", FALSE)
     }
 
-    # 8. Check Word Embeddings Status
+    # 10. 檢查 Word Embeddings
     packageStartupMessage("\nOptional Features:")
     if (verify_embeddings(quiet = TRUE)) {
       gensim_version <- tryCatch({
         gensim <- reticulate::import("gensim")
-        reticulate::py_get_attr(gensim, "__version__")
+        as.character(reticulate::py_get_attr(gensim, "__version__"))
       }, error = function(e) "Unknown")
       print_status("Word Embeddings", gensim_version, TRUE)
     } else {
       print_status("Word Embeddings", "Not Available", FALSE,
-                   sprintf("Word embeddings feature is not detected.\n\nInstall with:\nIn R:\n  reticulate::py_install('flair[word-embeddings]', pip = TRUE)\n  system(paste(Sys.which('python3'), '-m pip install flair[word-embeddings]'))\n\nIn terminal:\n  pip install flair[word-embeddings]"))
+                   "Word embeddings not detected. Install with:\n  reticulate::py_install('flair[word-embeddings]', pip = TRUE)")
     }
 
-    # 9. Display Welcome Message
+    # 11. 顯示歡迎信息
     packageStartupMessage("\n")
     msg <- sprintf(
       "%s%sflaiR%s%s: %s%sAn R Wrapper for Accessing Flair NLP %s%s%s",
@@ -505,27 +641,226 @@ install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
     packageStartupMessage(msg)
 
   }, error = function(e) {
-    packageStartupMessage("Error during initialization: ", as.character(e$message))
+    # 確保錯誤消息是字符型
+    msg <- if (is.character(e$message)) e$message else "Unknown error occurred"
+    packageStartupMessage("Error during initialization: ", msg)
   }, finally = {
     options(reticulate.python.initializing = FALSE)
   })
 
   invisible(NULL)
 }
-
-# Function to verify embeddings support
-#' @noRd
-verify_embeddings <- function(quiet = FALSE) {
-  tryCatch({
-    if(!quiet) packageStartupMessage("Verifying word embeddings support...")
-    gensim <- reticulate::import("gensim.models")
-    if(!quiet) packageStartupMessage("Word embeddings support verified")
-    TRUE
-  }, error = function(e) {
-    if(!quiet) packageStartupMessage(
-      sprintf("%sWarning: Word embeddings support not available%s",
-              .pkgenv$colors$yellow,
-              .pkgenv$colors$reset))
-    FALSE
-  })
-}
+# .onAttach <- function(libname, pkgname) {
+#   # Save original environment
+#   original_python <- Sys.getenv("RETICULATE_PYTHON")
+#   original_virtualenv <- Sys.getenv("VIRTUALENV")
+#   on.exit({
+#     if (original_python != "") Sys.setenv(RETICULATE_PYTHON = original_python)
+#     if (original_virtualenv != "") Sys.setenv(VIRTUALENV = original_virtualenv)
+#   })
+#
+#   tryCatch({
+#     options(reticulate.python.initializing = TRUE)
+#
+#     # Display environment info
+#     sys_info <- get_system_info()
+#     config <- reticulate::py_config()
+#
+#     # Check modules
+#     init_result <- initialize_modules()
+#     if (!init_result$status) {
+#       # Install missing packages
+#       packageStartupMessage("\nInstalling missing packages...")
+#       if (!check_conda_env(missing_modules = init_result$missing)) {
+#         return(invisible(NULL))
+#       }
+#       init_result <- initialize_modules()
+#     }
+#
+#     if (init_result$status) {
+#       # Save configuration
+#       save_python_config(config$python)
+#
+#       # Display status
+#       print_status("Python", config$version, check_python_version(config$version))
+#       print_status("PyTorch", init_result$versions$torch, TRUE)
+#       print_status("Transformers", init_result$versions$transformers, TRUE)
+#       print_status("Flair NLP", init_result$versions$flair, TRUE)
+#
+#       # GPU status
+#       gpu_info <- if (!is.null(init_result$device$cuda$available) &&
+#                       init_result$device$cuda$available) {
+#         list(name = paste("CUDA", init_result$device$cuda$device_name), available = TRUE)
+#       } else if (!is.null(init_result$device$mps) && init_result$device$mps) {
+#         list(name = "Mac MPS", available = TRUE)
+#       } else {
+#         list(name = "CPU Only", available = FALSE)
+#       }
+#       print_status("GPU", gpu_info$name, gpu_info$available)
+#     }
+#
+#   }, error = function(e) {
+#     packageStartupMessage("Error during initialization: ", e$message)
+#   }, finally = {
+#     options(reticulate.python.initializing = FALSE)
+#   })
+#
+#   invisible(NULL)
+# }
+#' .onLoad <- function(libname, pkgname) {
+#'   Sys.setenv(KMP_DUPLICATE_LIB_OK = "TRUE")
+#'
+#'   if (is_docker()) {
+#'     Sys.setenv(PYTHONNOUSERSITE = "1")
+#'     docker_python <- Sys.getenv("RETICULATE_PYTHON", "/opt/venv/bin/python")
+#'     if (file.exists(docker_python)) {
+#'       Sys.setenv(RETICULATE_PYTHON = docker_python)
+#'     }
+#'   }
+#'
+#'   if (Sys.info()["sysname"] == "Darwin") {
+#'     if (Sys.info()["machine"] == "arm64") {
+#'       Sys.setenv(PYTORCH_ENABLE_MPS_FALLBACK = 1)
+#'     }
+#'     Sys.setenv(OMP_NUM_THREADS = 1)
+#'     Sys.setenv(MKL_NUM_THREADS = 1)
+#'   }
+#'
+#'   options(reticulate.prompt = FALSE)
+#' }
+#'
+#' #' @noRd
+#' .onAttach <- function(libname, pkgname) {
+#'   original_python <- Sys.getenv("RETICULATE_PYTHON")
+#'   original_virtualenv <- Sys.getenv("VIRTUALENV")
+#'   on.exit({
+#'     if (original_python != "") Sys.setenv(RETICULATE_PYTHON = original_python)
+#'     if (original_virtualenv != "") Sys.setenv(VIRTUALENV = original_virtualenv)
+#'   })
+#'
+#'   tryCatch({
+#'     options(reticulate.python.initializing = TRUE)
+#'
+#'     # 1. Display Environment Information
+#'     sys_info <- get_system_info()
+#'     packageStartupMessage("\n")
+#'     packageStartupMessage("Environment Information:")
+#'     packageStartupMessage(sprintf("OS: %s (%s)",
+#'                                   as.character(sys_info$name),
+#'                                   as.character(sys_info$version)))
+#'
+#'     # 2. Display Python Environment
+#'     current_env <- tryCatch({
+#'       py_config <- reticulate::py_config()
+#'       sprintf("\nPython Environment:\n  - Path: %s\n  - Type: %s\n  - Version: %s",
+#'               py_config$python,
+#'               if(!is.null(py_config$virtualenv)) "virtualenv" else
+#'                 if(!is.null(py_config$conda)) "conda" else "system",
+#'               py_config$version)
+#'     }, error = function(e) "\nUnable to detect Python environment")
+#'
+#'     packageStartupMessage(current_env)
+#'
+#'     # 3. Check Docker Status
+#'     if (is_docker()) {
+#'       print_status("Docker", "Enabled", TRUE)
+#'     }
+#'
+#'     # 4. Initialize and Check Modules
+#'     init_result <- initialize_modules()
+#'     if (!init_result$status) {
+#'       packageStartupMessage("\nRequired modules check failed. Starting installation...")
+#'
+#'       # Install missing packages
+#'       env_setup <- check_conda_env(missing_modules = init_result$missing)
+#'       if (!env_setup) {
+#'         packageStartupMessage("Failed to install required packages.")
+#'         return(invisible(NULL))
+#'       }
+#'
+#'       # Recheck modules
+#'       init_result <- initialize_modules()
+#'       if (!init_result$status) {
+#'         packageStartupMessage("Module installation failed. Please check your Python environment.")
+#'         return(invisible(NULL))
+#'       }
+#'     }
+#'
+#'     # 5. Display Python Version Status
+#'     config <- reticulate::py_config()
+#'     python_version <- as.character(config$version)
+#'     print_status("Python", python_version, check_python_version(python_version))
+#'
+#'     # 6. Display Core Module Status
+#'     packageStartupMessage("\nCore Modules Status:")
+#'     print_status("PyTorch", init_result$versions$torch, TRUE)
+#'     print_status("Transformers", init_result$versions$transformers, TRUE)
+#'     print_status("Flair NLP", init_result$versions$flair, TRUE)
+#'
+#'     # 7. Check and Display GPU Status
+#'     cuda_info <- init_result$device$cuda
+#'     mps_available <- init_result$device$mps
+#'
+#'     if (!is.null(cuda_info$available) && cuda_info$available) {
+#'       gpu_name <- if (!is.null(cuda_info$device_name)) {
+#'         paste("CUDA", cuda_info$device_name)
+#'       } else {
+#'         "CUDA"
+#'       }
+#'       print_status("GPU", gpu_name, TRUE)
+#'     } else if (!is.null(mps_available) && mps_available) {
+#'       print_status("GPU", "Mac MPS", TRUE)
+#'     } else {
+#'       print_status("GPU", "CPU Only", FALSE)
+#'     }
+#'
+#'     # 8. Check Word Embeddings Status
+#'     packageStartupMessage("\nOptional Features:")
+#'     if (verify_embeddings(quiet = TRUE)) {
+#'       gensim_version <- tryCatch({
+#'         gensim <- reticulate::import("gensim")
+#'         reticulate::py_get_attr(gensim, "__version__")
+#'       }, error = function(e) "Unknown")
+#'       print_status("Word Embeddings", gensim_version, TRUE)
+#'     } else {
+#'       print_status("Word Embeddings", "Not Available", FALSE,
+#'                    sprintf("Word embeddings feature is not detected.\n\nInstall with:\nIn R:\n  reticulate::py_install('flair[word-embeddings]', pip = TRUE)\n  system(paste(Sys.which('python3'), '-m pip install flair[word-embeddings]'))\n\nIn terminal:\n  pip install flair[word-embeddings]"))
+#'     }
+#'
+#'     # 9. Display Welcome Message
+#'     packageStartupMessage("\n")
+#'     msg <- sprintf(
+#'       "%s%sflaiR%s%s: %s%sAn R Wrapper for Accessing Flair NLP %s%s%s",
+#'       .pkgenv$colors$bold, .pkgenv$colors$blue,
+#'       .pkgenv$colors$reset, .pkgenv$colors$reset_bold,
+#'       .pkgenv$colors$bold, .pkgenv$colors$yellow,
+#'       init_result$versions$flair,
+#'       .pkgenv$colors$reset, .pkgenv$colors$reset_bold
+#'     )
+#'     packageStartupMessage(msg)
+#'
+#'   }, error = function(e) {
+#'     packageStartupMessage("Error during initialization: ", as.character(e$message))
+#'   }, finally = {
+#'     options(reticulate.python.initializing = FALSE)
+#'   })
+#'
+#'   invisible(NULL)
+#' }
+#'
+#' # Function to verify embeddings support
+#' #' @noRd
+#' verify_embeddings <- function(quiet = FALSE) {
+#'   tryCatch({
+#'     if(!quiet) packageStartupMessage("Verifying word embeddings support...")
+#'     gensim <- reticulate::import("gensim.models")
+#'     if(!quiet) packageStartupMessage("Word embeddings support verified")
+#'     TRUE
+#'   }, error = function(e) {
+#'     if(!quiet) packageStartupMessage(
+#'       sprintf("%sWarning: Word embeddings support not available%s",
+#'               .pkgenv$colors$yellow,
+#'               .pkgenv$colors$reset))
+#'     FALSE
+#'   })
+#' }
