@@ -806,10 +806,10 @@ initialize_modules <- function() {
     }
 
     # Python environment setup
-    env_setup <- check_conda_env()
-    if (!env_setup) {
-      return(invisible(NULL))
-    }
+    # env_setup <- check_conda_env()
+    # if (!env_setup) {
+    #   return(invisible(NULL))
+    # }
 
     # Python version check
     config <- reticulate::py_config()
