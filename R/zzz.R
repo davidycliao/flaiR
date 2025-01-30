@@ -21,7 +21,7 @@ NULL
 )
 
 ## Embeddings Verification -----------------------------------------------------
-#' @title Embeddings Verification Function
+#' @title Embeddings Verification
 #' @noRd
 verify_embeddings <- function(quiet = FALSE) {
   tryCatch({
@@ -39,7 +39,6 @@ verify_embeddings <- function(quiet = FALSE) {
 }
 
 ## ANSI Color Codes ------------------------------------------------------------
-
 .pkgenv$colors <- list(
   green = "\033[32m",
   red = "\033[31m",
@@ -1601,24 +1600,24 @@ initialize_modules <- function() {
                                   as.character(sys_info$version)))
 
     # 打印當前 Python 環境信息
-    # current_env <- tryCatch({
-    #   py_config <- reticulate::py_config()
-    #   sprintf("\nCurrent Python Environment:\n  - Path: %s\n  - Type: %s\n  - Version: %s",
-    #           py_config$python,
-    #           if(!is.null(py_config$virtualenv)) "virtualenv" else
-    #             if(!is.null(py_config$conda)) "conda" else "system",
-    #           py_config$version)
-    # }, error = function(e) "\nUnable to detect Python environment")
-    # current_env <- tryCatch({
-    #   py_config <- reticulate::py_config()
-    #   sprintf("\nCurrent Python Environment:\n  - Path: %s\n  - Type: %s\n  - Version: %s",
-    #           py_config$python,
-    #           if(!is.null(py_config$virtualenv)) "virtualenv" else
-    #             if(!is.null(py_config$conda)) "conda" else "system",
-    #           py_config$version)
-    # }, error = function(e) "\nUnable to detect Python environment")
+    current_env <- tryCatch({
+      py_config <- reticulate::py_config()
+      sprintf("\nCurrent Python Environment:\n  - Path: %s\n  - Type: %s\n  - Version: %s",
+              py_config$python,
+              if(!is.null(py_config$virtualenv)) "virtualenv" else
+                if(!is.null(py_config$conda)) "conda" else "system",
+              py_config$version)
+    }, error = function(e) "\nUnable to detect Python environment")
+    current_env <- tryCatch({
+      py_config <- reticulate::py_config()
+      sprintf("\nPython Environment:\n  - Path: %s\n  - Type: %s\n  - Version: %s",
+              py_config$python,
+              if(!is.null(py_config$virtualenv)) "virtualenv" else
+                if(!is.null(py_config$conda)) "conda" else "system",
+              py_config$version)
+    }, error = function(e) "\nUnable to detect Python environment")
 
-    # packageStartupMessage(current_env)
+    packageStartupMessage(current_env)
 
     # Docker 狀態檢查
     if (is_docker()) {
@@ -1657,6 +1656,7 @@ initialize_modules <- function() {
       }
 
       packageStartupMessage("")
+
       # version information
       print_status("PyTorch", init_result$versions$torch, TRUE)
       print_status("Transformers", init_result$versions$transformers, TRUE)
@@ -1695,107 +1695,3 @@ initialize_modules <- function() {
   invisible(NULL)
 }
 
-
-# .onAttach <- function(libname, pkgname) {
-#   original_python <- Sys.getenv("RETICULATE_PYTHON")
-#   original_virtualenv <- Sys.getenv("VIRTUALENV")
-#
-#   on.exit({
-#     if (original_python != "") Sys.setenv(RETICULATE_PYTHON = original_python)
-#     if (original_virtualenv != "") Sys.setenv(VIRTUALENV = original_virtualenv)
-#   })
-#
-#   tryCatch({
-#     Sys.unsetenv("RETICULATE_PYTHON")
-#     Sys.unsetenv("VIRTUALENV")
-#     options(reticulate.python.initializing = TRUE)
-#
-#
-#     # 環境資訊
-#     sys_info <- get_system_info()
-#     packageStartupMessage("\n")
-#     packageStartupMessage("\nEnvironment Information:")
-#     packageStartupMessage(sprintf("OS: %s (%s)",
-#                                   as.character(sys_info$name),
-#                                   as.character(sys_info$version)))
-#
-#
-#     # Docker 狀態檢查
-#     if (is_docker()) {
-#       print_status("Docker", "Enabled", TRUE)
-#     }
-#     # Python enviroment setting
-#     env_setup <- check_conda_env()
-#     if (!env_setup) {
-#       return(invisible(NULL))
-#     }
-#
-#
-#     # Python version check
-#     config <- reticulate::py_config()
-#     python_version <- as.character(config$version)
-#     print_status("Python", python_version, check_python_version(python_version))
-#
-#
-#     # init modules and status check
-#     init_result <- initialize_modules()
-#     if (init_result$status) {
-#       # 1. GPU status check
-#       cuda_info <- init_result$device$cuda
-#       mps_available <- init_result$device$mps
-#
-#
-#       if (!is.null(cuda_info$available) && cuda_info$available) {
-#         gpu_name <- if (!is.null(cuda_info$device_name)) {
-#           paste("CUDA", cuda_info$device_name)
-#         } else {
-#           "CUDA"
-#         }
-#         print_status("GPU", gpu_name, TRUE)
-#       } else if (!is.null(mps_available) && mps_available) {
-#         print_status("GPU", "Mac MPS", TRUE)
-#       } else {
-#         print_status("GPU", "CPU Only", FALSE)
-#       }
-#
-#       packageStartupMessage("")
-#
-#       # version information
-#       print_status("PyTorch", init_result$versions$torch, TRUE)
-#       print_status("Transformers", init_result$versions$transformers, TRUE)
-#       print_status("Flair NLP", init_result$versions$flair, TRUE)
-#
-#
-#       # Word Embeddings status check
-#       if (verify_embeddings(quiet = TRUE)) {
-#         gensim_version <- tryCatch({
-#           gensim <- reticulate::import("gensim")
-#           reticulate::py_get_attr(gensim, "__version__")
-#         }, error = function(e) "Unknown")
-#         print_status("Word Embeddings", gensim_version, TRUE)
-#       } else {
-#         print_status("Word Embeddings", "Not Available", FALSE,
-#                      sprintf("Word embeddings feature is not detected.\n\nInstall with:\nIn R:\n  reticulate::py_install('flair[word-embeddings]', pip = TRUE)\n  system(paste(Sys.which('python3'), '-m pip install flair[word-embeddings]'))\n\nIn terminal:\n  pip install flair[word-embeddings]"))
-#       }
-#
-#       packageStartupMessage("")
-#       # Welcome messeges
-#       msg <- sprintf(
-#         "%s%sflaiR%s%s: %s%sAn R Wrapper for Accessing Flair NLP %s%s%s",
-#         .pkgenv$colors$bold, .pkgenv$colors$blue,
-#         .pkgenv$colors$reset, .pkgenv$colors$reset_bold,
-#         .pkgenv$colors$bold, .pkgenv$colors$yellow,
-#         init_result$versions$flair,
-#         .pkgenv$colors$reset, .pkgenv$colors$reset_bold
-#       )
-#       packageStartupMessage(msg)
-#     }
-#   }, error = function(e) {
-#     packageStartupMessage("Error during initialization: ", as.character(e$message))
-#   }, finally = {
-#     options(reticulate.python.initializing = FALSE)
-#   })
-#
-#
-#   invisible(NULL)
-# }
