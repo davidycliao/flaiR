@@ -1681,7 +1681,6 @@ initialize_modules <- function() {
         return(invisible(NULL))
       }
     }
-
     # Python version check
     config <- reticulate::py_config()
     python_version <- as.character(config$version)
