@@ -1,16 +1,14 @@
 #' @keywords internal
 "_PACKAGE"
 
-
 #' @import reticulate
 NULL
-
 
 # Package Environment Setup ----------------------------------------------------
 .pkgenv <- new.env(parent = emptyenv())
 
 
-# Add version constants
+### Add Version Constants ------------------------------------------------------
 .pkgenv$package_constants <- list(
   python_min_version = "3.9",
   python_max_version = "3.12",
@@ -26,10 +24,30 @@ NULL
   )
 )
 
-# Add installation state tracking
+### Add installation state tracking
 .pkgenv$installation_state <- new.env(parent = emptyenv())
 
-# Embeddings Verification function ---------------------------------------------
+
+### ANSI Color Codes -----------------------------------------------------------
+.pkgenv$colors <- list(
+  green = "\033[32m",
+  red = "\033[31m",
+  blue = "\033[34m",
+  yellow = "\033[33m",
+  reset = "\033[39m",
+  bold = "\033[1m",
+  reset_bold = "\033[22m"
+)
+
+### Initialize Module Storage --------------------------------------------------
+.pkgenv$modules <- list(
+  flair = NULL,
+  flair_embeddings = NULL,
+  torch = NULL
+)
+
+# Utilities  -------------------------------------------------------------------
+### Embeddings Verification function -------------------------------------------
 #' @noRd
 verify_embeddings <- function(quiet = FALSE) {
   tryCatch({
@@ -47,28 +65,9 @@ verify_embeddings <- function(quiet = FALSE) {
 }
 
 
-# ANSI color codes
-.pkgenv$colors <- list(
-  green = "\033[32m",
-  red = "\033[31m",
-  blue = "\033[34m",
-  yellow = "\033[33m",
-  reset = "\033[39m",
-  bold = "\033[1m",
-  reset_bold = "\033[22m"
-)
+### Check Docker ---------------------------------------------------------------
 
-
-# Initialize module storage
-.pkgenv$modules <- list(
-  flair = NULL,
-  flair_embeddings = NULL,
-  torch = NULL
-)
-
-
-# Check Docker -----------------------------------------------------------------
-#' Check if running in Docker
+#' @title Check Docker
 #'
 #' @noRd
 is_docker <- function() {
@@ -96,7 +95,7 @@ is_docker <- function() {
 
 
 # Check Python Version ---------------------------------------------------------
-#' Compare version numbers
+#' @title Compare Version Numbers
 #'
 #' @param version Character string of version number to check
 #' @return logical TRUE if version is in supported range
@@ -139,8 +138,8 @@ check_python_version <- function(version) {
 }
 
 
-# Print Messages ---------------------------------------------------------------
-#' Print Formatted Messages
+### Print Messages -------------------------------------------------------------
+#' @title Print Formatted Messages
 #'
 #' @param component Component name to display
 #' @param version Version string to display
@@ -210,7 +209,7 @@ print_status <- function(component, version, status = TRUE, extra_message = NULL
 
 
 # Get System Information -----------------------------------------------------
-#' Get System Information
+#' @title Get System Information
 #'
 #' @return List containing system name and version
 #' @noRd
@@ -237,39 +236,49 @@ get_system_info <- function() {
 }
 
 
-#' Check package installation state
+#' Check if a Python package is installed and meets version requirements
+#'
+#' @param pkg_name Character string specifying the name of the Python package to check
+#' @param required_version Character string specifying the minimum required version.
+#'        Use empty string ("") to skip version checking.
+#' @param quiet Logical indicating whether to suppress warning messages (default: FALSE)
+#' @return Logical indicating whether the package is available and meets version requirements
 #' @noRd
 check_package_state <- function(pkg_name, required_version, quiet = FALSE) {
   tryCatch({
-    # 特殊处理 sentencepiece 在 M1 Mac 上的情况
+    # Special handling for sentencepiece on M1 Mac
     if (pkg_name == "sentencepiece" &&
         Sys.info()["sysname"] == "Darwin" &&
         Sys.info()["machine"] == "arm64") {
-
-      # 如果已经有任何版本的 sentencepiece 存在，就认为它是可用的
       if (reticulate::py_module_available("sentencepiece")) {
         return(TRUE)
       }
     }
 
-    # 检查缓存状态
+    # Check cache state
     state_key <- paste0(pkg_name, "_", required_version)
     if (!is.null(.pkgenv$installation_state[[state_key]])) {
       return(TRUE)
     }
 
-    # 尝试导入包
+    # Check if module is available
     if (!reticulate::py_module_available(pkg_name)) {
       return(FALSE)
     }
 
-    # 检查版本
+    # Check version if required
     if (required_version != "") {
-      cmd <- sprintf("import %s; print(%s.__version__)", pkg_name, pkg_name)
-      installed <- reticulate::py_eval(cmd)
+      # Use py_run_string instead of py_eval for more complex Python code
+      version_check <- paste0(
+        'import ', pkg_name, '; ',
+        'version = getattr(', pkg_name, ', "__version__", None)'
+      )
+
+      installed <- reticulate::py_run_string(version_check)$get('version')
+
       if (is.null(installed)) return(FALSE)
 
-      # 对于 sentencepiece，只要版本存在就接受
+      # Special handling for sentencepiece on M1 Mac
       if (pkg_name == "sentencepiece" &&
           Sys.info()["sysname"] == "Darwin" &&
           Sys.info()["machine"] == "arm64") {
@@ -286,6 +295,7 @@ check_package_state <- function(pkg_name, required_version, quiet = FALSE) {
 
     .pkgenv$installation_state[[state_key]] <- TRUE
     return(TRUE)
+
   }, error = function(e) {
     if (!quiet) {
       warning(sprintf("Error checking %s: %s", pkg_name, e$message))
@@ -293,34 +303,52 @@ check_package_state <- function(pkg_name, required_version, quiet = FALSE) {
     return(FALSE)
   })
 }
+
 # check_package_state <- function(pkg_name, required_version, quiet = FALSE) {
 #   tryCatch({
-#     # First check if we have a cached state
+#     # 特殊处理 sentencepiece 在 M1 Mac 上的情况
+#     if (pkg_name == "sentencepiece" &&
+#         Sys.info()["sysname"] == "Darwin" &&
+#         Sys.info()["machine"] == "arm64") {
+#
+#       # 如果已经有任何版本的 sentencepiece 存在，就认为它是可用的
+#       if (reticulate::py_module_available("sentencepiece")) {
+#         return(TRUE)
+#       }
+#     }
+#
+#     # 检查缓存状态
 #     state_key <- paste0(pkg_name, "_", required_version)
 #     if (!is.null(.pkgenv$installation_state[[state_key]])) {
 #       return(TRUE)
 #     }
 #
-#     # Try importing the package
+#     # 尝试导入包
 #     if (!reticulate::py_module_available(pkg_name)) {
 #       return(FALSE)
 #     }
 #
-#     # Check version if required
+#     # 检查版本
 #     if (required_version != "") {
 #       cmd <- sprintf("import %s; print(%s.__version__)", pkg_name, pkg_name)
 #       installed <- reticulate::py_eval(cmd)
 #       if (is.null(installed)) return(FALSE)
 #
+#       # 对于 sentencepiece，只要版本存在就接受
+#       if (pkg_name == "sentencepiece" &&
+#           Sys.info()["sysname"] == "Darwin" &&
+#           Sys.info()["machine"] == "arm64") {
+#         .pkgenv$installation_state[[state_key]] <- TRUE
+#         return(TRUE)
+#       }
+#
 #       version_ok <- package_version(installed) >= package_version(required_version)
 #       if (version_ok) {
-#         # Cache the successful state
 #         .pkgenv$installation_state[[state_key]] <- TRUE
 #       }
 #       return(version_ok)
 #     }
 #
-#     # If no version specified, just cache that it's available
 #     .pkgenv$installation_state[[state_key]] <- TRUE
 #     return(TRUE)
 #   }, error = function(e) {
@@ -331,7 +359,10 @@ check_package_state <- function(pkg_name, required_version, quiet = FALSE) {
 #   })
 # }
 
-#' Install Required Dependencies
+
+
+# Install Required Dependencies -----------------------------------------------
+#' @title Install Dependencies
 #' @param venv Virtual environment name or NULL for system Python
 #' @param max_retries Maximum number of retry attempts for failed installations
 #' @param quiet Suppress status messages if TRUE
@@ -341,10 +372,9 @@ install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
   # Helper functions
   log_msg <- function(msg, is_error = FALSE) {
     if (!quiet) {
-      if (is_error) {
+      # 只有在是錯誤信息時才顯示
+      if (is_error || grepl("error|Error|ERROR|failed|Failed|FAILED|Building wheel", msg, ignore.case = TRUE)) {
         packageStartupMessage(.pkgenv$colors$red, msg, .pkgenv$colors$reset)
-      } else {
-        packageStartupMessage(msg)
       }
     }
   }
@@ -393,8 +423,6 @@ install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
   }
 
   # Get installation sequence based on system
-  # 在 install_dependencies 函数中修改 get_install_sequence
-  # 在 install_dependencies 函数中修改 get_install_sequence
   get_install_sequence <- function() {
     is_m1 <- Sys.info()["sysname"] == "Darwin" && Sys.info()["machine"] == "arm64"
 
@@ -440,44 +468,6 @@ install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
 
     return(base_sequence)
   }
-  # get_install_sequence <- function() {
-  #   is_m1 <- Sys.info()["sysname"] == "Darwin" && Sys.info()["machine"] == "arm64"
-  #
-  #   base_sequence <- list(
-  #     torch = list(
-  #       name = "PyTorch",
-  #       packages = if(is_m1) {
-  #         c(sprintf("torch>=%s", .pkgenv$package_constants$torch_version))
-  #       } else {
-  #         c(sprintf("torch>=%s", .pkgenv$package_constants$torch_version),
-  #           "torchvision")
-  #       }
-  #     ),
-  #     core = list(
-  #       name = "Core dependencies",
-  #       packages = c(
-  #         sprintf("numpy==%s", .pkgenv$package_constants$numpy_version),
-  #         sprintf("scipy==%s", .pkgenv$package_constants$scipy_version),
-  #         sprintf("transformers==%s", .pkgenv$package_constants$transformers_version),
-  #         sprintf("sentencepiece==%s", .pkgenv$package_constants$sentencepiece_version)
-  #       )
-  #     ),
-  #     flair = list(
-  #       name = "Flair Base",
-  #       packages = sprintf("flair>=%s", .pkgenv$package_constants$flair_min_version)
-  #     )
-  #   )
-  #
-  #   if (!is_m1) {
-  #     base_sequence$gensim <- list(
-  #       name = "Gensim",
-  #       packages = sprintf("gensim>=%s", .pkgenv$package_constants$gensim_version)
-  #     )
-  #   }
-  #
-  #   return(base_sequence)
-  # }
-
   # Main installation process
   tryCatch({
     in_docker <- is_docker()
@@ -564,8 +554,8 @@ install_dependencies <- function(venv = NULL, max_retries = 3, quiet = FALSE) {
   })
 }
 
-# Check and Setup Conda -----------------------------------------------------
-#' Check and setup conda environment
+# Check and Setup Conda --------------------------------------------------------
+#' @title Check and setup conda environment
 #'
 #' @param show_status Show status messages if TRUE
 #' @param force_check Force check and reinstall if needed
@@ -672,7 +662,7 @@ check_conda_env <- function(show_status = FALSE, force_check = FALSE) {
 }
 
 
-# Initialize Required Modules -----------------------------------------------
+# Initialize Required Modules --------------------------------------------------
 #' @title Initialize Required Modules
 #'
 #' @return List containing version information and initialization status
@@ -729,6 +719,7 @@ initialize_modules <- function() {
 
 
 # Package Initialization --------------------------------------------------
+
 #' @noRd
 .onLoad <- function(libname, pkgname) {
   # 初始化標記
