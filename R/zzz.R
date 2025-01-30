@@ -703,8 +703,17 @@ initialize_modules <- function() {
 ## .onLoad ---------------------------------------------------------------------
 #' @noRd
 .onLoad <- function(libname, pkgname) {
+  # 基本環境設置
   Sys.setenv(KMP_DUPLICATE_LIB_OK = "TRUE")
 
+  # 針對 M1/M2 的特殊處理
+  if (Sys.info()["sysname"] == "Darwin" &&
+      Sys.info()["machine"] == "arm64") {
+    Sys.setenv(PYTORCH_ENABLE_MPS_FALLBACK = "1")
+    Sys.setenv(RETICULATE_PYTHON_ENV_PREFIXES = Sys.getenv("HOME"))
+  }
+
+  # Docker 環境處理
   if (is_docker()) {
     Sys.setenv(PYTHONNOUSERSITE = "1")
     docker_python <- Sys.getenv("RETICULATE_PYTHON", "/opt/venv/bin/python")
@@ -713,15 +722,29 @@ initialize_modules <- function() {
     }
   }
 
-  if (Sys.info()["sysname"] == "Darwin") {
-    if (Sys.info()["machine"] == "arm64") {
-      Sys.setenv(PYTORCH_ENABLE_MPS_FALLBACK = 1)
-    }
-    Sys.setenv(OMP_NUM_THREADS = 1)
-    Sys.setenv(MKL_NUM_THREADS = 1)
-  }
+  # 確保 reticulate 配置
   options(reticulate.prompt = FALSE)
 }
+# .onLoad <- function(libname, pkgname) {
+#   Sys.setenv(KMP_DUPLICATE_LIB_OK = "TRUE")
+#
+#   if (is_docker()) {
+#     Sys.setenv(PYTHONNOUSERSITE = "1")
+#     docker_python <- Sys.getenv("RETICULATE_PYTHON", "/opt/venv/bin/python")
+#     if (file.exists(docker_python)) {
+#       Sys.setenv(RETICULATE_PYTHON = docker_python)
+#     }
+#   }
+#
+#   if (Sys.info()["sysname"] == "Darwin") {
+#     if (Sys.info()["machine"] == "arm64") {
+#       Sys.setenv(PYTORCH_ENABLE_MPS_FALLBACK = 1)
+#     }
+#     Sys.setenv(OMP_NUM_THREADS = 1)
+#     Sys.setenv(MKL_NUM_THREADS = 1)
+#   }
+#   options(reticulate.prompt = FALSE)
+# }
 
 ## .onAttach -------------------------------------------------------------------
 #' @noRd
