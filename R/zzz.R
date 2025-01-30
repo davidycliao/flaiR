@@ -727,12 +727,12 @@ initialize_modules <- function() {
 #' @noRd
 
 .onAttach <- function(libname, pkgname) {
-  # original_python <- Sys.getenv("RETICULATE_PYTHON")
-  # original_virtualenv <- Sys.getenv("VIRTUALENV")
-  # on.exit({
-  #   if (original_python != "") Sys.setenv(RETICULATE_PYTHON = original_python)
-  #   if (original_virtualenv != "") Sys.setenv(VIRTUALENV = original_virtualenv)
-  # })
+  original_python <- Sys.getenv("RETICULATE_PYTHON")
+  original_virtualenv <- Sys.getenv("VIRTUALENV")
+  on.exit({
+    if (original_python != "") Sys.setenv(RETICULATE_PYTHON = original_python)
+    if (original_virtualenv != "") Sys.setenv(VIRTUALENV = original_virtualenv)
+  })
 
   tryCatch({
     options(reticulate.python.initializing = TRUE)
