@@ -9,21 +9,75 @@ NULL
 
 
 ### Add Version Constants ------------------------------------------------------
+# .pkgenv$package_constants <- list(
+#   python_min_version = "3.9",
+#   python_max_version = "3.12",
+#   numpy_version = "1.26.4",
+#   scipy_version = "1.12.0",
+#   flair_min_version = "0.11.3",
+#   torch_version = "2.2.0",
+#   transformers_version = "4.37.2",
+#   gensim_version = "4.0.0",
+#   sentencepiece_version = "0.1.97",
+#   install_options = list(
+#     sentencepiece = "--no-deps"
+#   )
+# )
+
 .pkgenv$package_constants <- list(
+  # Python 版本限制
   python_min_version = "3.9",
   python_max_version = "3.12",
+
+  # 核心套件版本
   numpy_version = "1.26.4",
   scipy_version = "1.12.0",
+
+  # Flair 和主要 ML 套件版本
   flair_min_version = "0.11.3",
-  torch_version = "2.2.0",
-  transformers_version = "4.37.2",
+  torch_version = "2.2.0",                            # 符合 torch>=1.5.0,!=1.8
+  transformers_min_version = "4.25.0",
+  transformers_max_version = "5.0.0",
+
+  # NLP 相關套件
   gensim_version = "4.0.0",
   sentencepiece_version = "0.1.97",
+  tokenizers_min_version = "0.14.0",
+  tokenizers_max_version = "0.19.0",
+
+  # 其他必要套件最低版本
+  boto3_min_version = "1.20.27",
+  conllu_min_version = "4.0",
+  conllu_max_version = "5.0.0",
+  deprecated_min_version = "1.2.13",
+  ftfy_min_version = "6.1.0",
+  gdown_min_version = "4.4.0",
+  huggingface_hub_min_version = "0.10.0",
+  langdetect_min_version = "1.0.9",
+  lxml_min_version = "4.8.0",
+  matplotlib_min_version = "2.2.3",
+  more_itertools_min_version = "8.13.0",
+  mpld3_min_version = "0.3",
+  pptree_min_version = "3.1",
+  dateutil_min_version = "2.8.2",
+  pytorch_revgrad_min_version = "0.2.0",
+  regex_min_version = "2022.1.18",
+  scikit_learn_min_version = "1.0.2",
+  segtok_min_version = "1.5.11",
+  sqlitedict_min_version = "2.0.0",
+  tabulate_min_version = "0.8.10",
+  tqdm_min_version = "4.63.0",
+  transformer_vocab_min_version = "0.2.3",
+  wikipedia_api_min_version = "0.5.7",
+  bioc_min_version = "2.0.0",
+  bioc_max_version = "3.0.0",
+
+  # 安裝選項
   install_options = list(
-    sentencepiece = "--no-deps"
+    sentencepiece = "--no-deps",
+    transformers = "sentencepiece"  # 表示安裝時要包含 sentencepiece
   )
 )
-
 ### Add installation state tracking
 .pkgenv$installation_state <- new.env(parent = emptyenv())
 
