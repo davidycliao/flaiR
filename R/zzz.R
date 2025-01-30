@@ -1823,13 +1823,6 @@ initialize_modules <- function() {
     Sys.unsetenv("VIRTUALENV")
     options(reticulate.python.initializing = TRUE)
 
-    # Environment Information
-    sys_info <- get_system_info()
-    packageStartupMessage("\nEnvironment Information:")
-    packageStartupMessage(sprintf("OS: %s (%s)",
-                                  as.character(sys_info$name),
-                                  as.character(sys_info$version)))
-
     # Docker status check
     if (is_docker()) {
       packageStartupMessage("")
@@ -1842,10 +1835,15 @@ initialize_modules <- function() {
       return(invisible(NULL))
     }
 
-    # Python version check
-    config <- reticulate::py_config()
-    python_version <- as.character(config$version)
-    print_status("Python", python_version, check_python_version(python_version), quiet = FALSE)
+    # Environment Information
+    packageStartupMessage(strrep("\n", 12))
+    packageStartupMessage("Loading flaiR R package Configuration...")
+    packageStartupMessage("----------------------------------------")
+    packageStartupMessage("\nEnvironment Information:")
+    sys_info <- get_system_info()
+    packageStartupMessage(sprintf("OS: %s (%s)",
+                                  as.character(sys_info$name),
+                                  as.character(sys_info$version)))
 
     # Module initialization and status check
     init_result <- initialize_modules()
@@ -1867,6 +1865,26 @@ initialize_modules <- function() {
         print_status("GPU", "CPU Only", FALSE, quiet = FALSE)
       }
 
+      # Python version check
+      config <- reticulate::py_config()
+      python_version <- as.character(config$version)
+      python_path <- config$python
+      print_status("Python", python_version, check_python_version(python_version), quiet = FALSE)
+      packageStartupMessage(sprintf("Using Python: %s", python_path))
+
+      # Core dependencies versions
+      tryCatch({
+        numpy <- reticulate::import("numpy")
+        torch <- reticulate::import("torch")
+        transformers <- reticulate::import("transformers")
+
+        print_status("NumPy", reticulate::py_get_attr(numpy, "__version__"), TRUE, quiet = FALSE)
+        print_status("PyTorch", reticulate::py_get_attr(torch, "__version__"), TRUE, quiet = FALSE)
+        print_status("Transformers", reticulate::py_get_attr(transformers, "__version__"), TRUE, quiet = FALSE)
+      }, error = function(e) {
+        print_status("Core Dependencies", "Not all core packages are available", FALSE, quiet = FALSE)
+      })
+
       # Word Embeddings status - 只檢查一次
       embeddings_status <- verify_embeddings(quiet = TRUE)  # 先靜默檢查
       gensim_version <- if (embeddings_status) {
@@ -1886,7 +1904,7 @@ initialize_modules <- function() {
       }
 
       # Welcome message
-      packageStartupMessage("\n")
+      packageStartupMessage("")
       msg <- sprintf(
         "%s%sflaiR%s%s: %s%sAn R Wrapper for Accessing Flair NLP %s%s%s",
         .pkgenv$colors$bold, .pkgenv$colors$blue,
