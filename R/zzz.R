@@ -725,7 +725,6 @@ initialize_modules <- function() {
 
 ## .onAttach -------------------------------------------------------------------
 #' @noRd
-
 .onAttach <- function(libname, pkgname) {
   original_python <- Sys.getenv("RETICULATE_PYTHON")
   original_virtualenv <- Sys.getenv("VIRTUALENV")
@@ -737,14 +736,11 @@ initialize_modules <- function() {
   tryCatch({
     options(reticulate.python.initializing = TRUE)
 
-    # 先檢查是否已經有可用的環境
+    # 改進的模組檢查邏輯
     modules_available <- tryCatch({
-      # 檢查核心模組是否已載入且可用
-      torch_ok <- reticulate::py_module_available("torch")
-      flair_ok <- reticulate::py_module_available("flair")
-      transformers_ok <- reticulate::py_module_available("transformers")
-
-      all(c(torch_ok, flair_ok, transformers_ok))
+      # 使用更可靠的檢查方法
+      check_result <- initialize_modules()
+      check_result$status
     }, error = function(e) FALSE)
 
     # 環境資訊
@@ -773,7 +769,7 @@ initialize_modules <- function() {
     }
 
     if (modules_available) {
-      # 如果模組已安裝，初始化並顯示資訊
+      # 初始化並顯示資訊
       init_result <- initialize_modules()
       if (init_result$status) {
         # Python 版本檢查
@@ -817,21 +813,26 @@ initialize_modules <- function() {
         }
       }
     } else {
-      # 如果模組未安裝，執行安裝流程
+      # 如果模組未完全安裝，執行安裝流程
       packageStartupMessage("\nRequired modules not found. Installing dependencies...")
       env_setup <- check_conda_env()
-      if (!env_setup) {
+
+      if (env_setup) {
+        # 重新初始化檢查
+        init_result <- initialize_modules()
+        if (init_result$status) {
+          modules_available <- TRUE
+          # 這裡不需要重複輸出狀態，因為安裝成功會在下次載入時顯示
+        }
+      } else {
         packageStartupMessage("Failed to set up environment.")
         return(invisible(NULL))
       }
-
-      # 重新初始化模組
-      init_result <- initialize_modules()
     }
 
     # 歡迎訊息
     packageStartupMessage("\n")
-    if (init_result$status) {
+    if (exists("init_result") && init_result$status) {
       msg <- sprintf(
         "%s%sflaiR%s%s: %s%sAn R Wrapper for Accessing Flair NLP %s%s%s",
         .pkgenv$colors$bold, .pkgenv$colors$blue,
