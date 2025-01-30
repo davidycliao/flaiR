@@ -806,10 +806,10 @@ initialize_modules <- function() {
     }
 
     # Python environment setup
-    # env_setup <- check_conda_env()
-    # if (!env_setup) {
-    #   return(invisible(NULL))
-    # }
+    env_setup <- check_conda_env()
+    if (!env_setup) {
+      return(invisible(NULL))
+    }
 
     # Python version check
     config <- reticulate::py_config()
@@ -859,7 +859,7 @@ initialize_modules <- function() {
       }
 
       # Welcome message
-      packageStartupMessage("\n\n")
+      packageStartupMessage("\n")
       msg <- sprintf(
         "%s%sflaiR%s%s: %s%sAn R Wrapper for Accessing Flair NLP %s%s%s",
         .pkgenv$colors$bold, .pkgenv$colors$blue,
