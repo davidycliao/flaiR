@@ -1836,7 +1836,7 @@ initialize_modules <- function() {
     }
 
     # Environment Information
-    packageStartupMessage(strrep("\n", 12))
+    packageStartupMessage(strrep("\n", 18))
     packageStartupMessage("Loading flaiR R package Configuration...")
     packageStartupMessage("----------------------------------------")
     packageStartupMessage("\nEnvironment Information:")
