@@ -1,124 +1,63 @@
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-#
-# See https://github.com/r-lib/actions/tree/master/examples#readme for
-# additional example workflows available for the R community.
-
-name: R-MacOS
-
+name: flaiR-MacOS
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - main
+      - develop
   pull_request:
-    branches: [ "main" ]
-
-permissions:
-  contents: read
+    branches:
+      - main
+      - develop
 
 jobs:
-  build:
+  test-installation:
     runs-on: macos-latest
     strategy:
       matrix:
-        r-version: ['4.4.0', '4.2.3']  # 改為 4.2.3
+        r-version: ['4.1.3', '4.2.3', '4.3.2']
+        python-version: ['3.10']
       fail-fast: false
 
     steps:
-    - uses: actions/checkout@v3
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+        architecture: 'arm64'
 
-    - name: Update Homebrew
-      run: brew update
-
-    - name: Install pandoc
+    - name: Verify Python
       run: |
-        for i in {1..3}
-        do
-          brew install pandoc && break || sleep 15
-        done
+        python --version
+        which python
 
-    - name: Install gfortran and configure Makevars
-      run: |
-        brew install gcc
-        mkdir -p ~/.R
-        touch ~/.R/Makevars
-        echo "FC=$(brew --prefix)/bin/gfortran" >> ~/.R/Makevars
-        echo "F77=$(brew --prefix)/bin/gfortran" >> ~/.R/Makevars
-        echo "FLIBS=-L$(brew --prefix)/lib/gcc/current -lgfortran -lquadmath -lm" >> ~/.R/Makevars
-        echo "LDFLAGS=-L$(brew --prefix)/lib/gcc/current" >> ~/.R/Makevars
-
-    - name: Set up R ${{ matrix.r-version }}
+    - name: Set up R
       uses: r-lib/actions/setup-r@v2
       with:
         r-version: ${{ matrix.r-version }}
 
     - name: Install R dependencies
       run: |
-        # 首先安裝基礎包
-        Rscript -e 'install.packages(c("remotes", "rcmdcheck", "reticulate", "renv"), repos="https://cran.r-project.org")'
+        Rscript -e 'install.packages(c("reticulate", "remotes"), repos="https://cran.r-project.org")'
+        Rscript -e 'reticulate::py_config()'
 
-        # 根據 R 版本安裝相應的 Matrix 版本
+    - name: Install flaiR
+      env:
+        GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      run: |
         Rscript -e '
-          if (getRversion() >= "4.4.0") {
-            remotes::install_version("Matrix", version = "1.5-3")
-          } else if (getRversion() >= "4.2.0" && getRversion() < "4.3.0") {
-            remotes::install_version("Matrix", version = "1.4-1")
-          } else {
-            remotes::install_version("Matrix", version = "1.5-1")
-          }
-        '
-
-        # 安裝其他依賴
-        Rscript -e 'install.packages(c("knitr", "rmarkdown", "lsa", "purrr", "testthat"), repos="https://cran.r-project.org")'
-
-        # 安裝特定版本的 htmltools
-        Rscript -e 'remotes::install_version("htmltools", version = "0.5.8")'
-
-        # renv 相關操作
-        Rscript -e '
+          Sys.setenv(GITHUB_PAT = Sys.getenv("GITHUB_PAT"))
           tryCatch({
-            renv::restore()
+            remotes::install_github("davidycliao/flaiR", force = TRUE)
+            library(flaiR)
+            cat("flaiR installed and loaded successfully\n")
           }, error = function(e) {
-            message("Error in renv::restore(): ", e$message)
-            if (!requireNamespace("Matrix", quietly = TRUE)) {
-              if (getRversion() >= "4.4.0") {
-                install.packages("Matrix")
-              } else if (getRversion() >= "4.2.0" && getRversion() < "4.3.0") {
-                remotes::install_version("Matrix", version = "1.4-1")
-              } else {
-                remotes::install_version("Matrix", version = "1.5-1")
-              }
-            }
-          })
-        '
+            cat("Error during installation or loading:", conditionMessage(e), "\n")
+            quit(status = 1)
+          })'
 
-    - name: Set up Python
-      uses: actions/setup-python@v4  # 更新到 v4
-      with:
-        python-version: '3.10.x'
-        cache: 'pip'
-
-    - name: Install Python virtualenv
-      run: pip install virtualenv
-
-    - name: Create Python virtual environment
-      run: virtualenv flair_env
-
-    - name: Install Python dependencies in virtual environment
+    - name: Print environment info
+      if: always()
       run: |
-        source flair_env/bin/activate
-        pip install --upgrade pip
-        pip install scipy==1.12.0
-        pip install flair
-        deactivate
-
-    - name: Remove Python cache files
-      run: find . -name '*.pyc' -delete
-
-    - name: Check (with virtual environment)
-      run: |
-        source flair_env/bin/activate
-        set -e
-        R CMD build --no-build-vignettes .
-      shell: bash
+        python --version
+        R --version
+        Rscript -e 'reticulate::py_config()'

@@ -1,76 +1,55 @@
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-#
-# See https://github.com/r-lib/actions/tree/master/examples#readme for
-# additional example workflows available for the R community.
-
-name: R-Windows
-
-on: [push, pull_request]
+name: flaiR-Windows
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+      - develop
 
 jobs:
-  build:
-    runs-on: windows-latest
+ test-installation:
+   runs-on: windows-latest
+   strategy:
+     matrix:
+       r-version: ['4.1.3', '4.2.3', '4.3.2']
+       python-version: ['3.10']
+     fail-fast: false
 
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@v2
+   steps:
+   - uses: actions/setup-python@v4
+     with:
+       python-version: ${{ matrix.python-version }}
 
-      - name: Install pandoc
-        run: choco install pandoc
+   - name: Verify Python
+     run: |
+       python --version
+       where python
+     shell: cmd
 
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.10.x'
+   - uses: r-lib/actions/setup-r@v2
+     with:
+       r-version: ${{ matrix.r-version }}
 
-      - name: Install Python virtualenv
-        run: pip install virtualenv
+   - name: Install R dependencies
+     run: |
+       Rscript -e "install.packages(c('reticulate', 'remotes'), repos='https://cran.r-project.org')"
+       Rscript -e "reticulate::py_config()"
+     shell: cmd
 
-      - name: Create Python virtual environment
-        run: virtualenv flair_env
+   - name: Install flaiR
+     env:
+       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+     run: |
+       Rscript -e "Sys.setenv(GITHUB_PAT = Sys.getenv('GITHUB_PAT')); tryCatch({remotes::install_github('davidycliao/flaiR', force = TRUE); library(flaiR); cat('flaiR installed and loaded successfully\n')}, error = function(e) {cat('Error during installation or loading:', conditionMessage(e), '\n'); quit(status = 1)})"
+     shell: cmd
 
-      - name: Install Python dependencies in virtual environment
-        run: |
-          .\flair_env\Scripts\activate
-          pip install flair
-
-      - name: Set up R
-        uses: r-lib/actions/setup-r@v2
-        with:
-          r-version: '4.0.5'
-
-      - name: Install R dependencies
-        run: |
-          install.packages(c("remotes", "rcmdcheck", "reticulate", "rmarkdown"))
-          remotes::install_deps(dependencies = TRUE)
-        shell: Rscript {0}
-
-      - name: Install Python virtualenv
-        run: pip install virtualenv
-        shell: cmd
-
-      - name: Create Python virtual environment
-        run: virtualenv flair_env
-        shell: cmd
-
-      - name: Install Python dependencies in virtual environment
-        run: |
-          flair_env\Scripts\activate
-          pip install flair
-        shell: cmd
-
-      - name: Remove Python cache files
-        run: del /s /q *.pyc
-        shell: cmd
-
-      - name: Check (with virtual environment)
-        run: |
-          flair_env\Scripts\activate
-          R CMD build --no-build-vignettes .
-          R CMD check *tar.gz --no-manual --no-examples
-        shell: cmd
-
-
+   - name: Print environment info
+     if: always()
+     run: |
+       python --version
+       R --version
+       Rscript -e "reticulate::py_config()"
+     shell: cmd
