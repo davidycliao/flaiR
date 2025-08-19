@@ -24,7 +24,7 @@ clear_flair_cache <- function(...) {
 
   # List files in the flair cache directory
   cache_files <- list.files(flair_cache_dir)
-  if(length(cache_files) > 0) {
+  if (length(cache_files) > 0) {
     cat("Files in flair cache directory:\n")
     print(cache_files)
   } else {

@@ -82,11 +82,11 @@ embeddings_to_matrix <- function(embeddings, strategy = "average") {
 #' @export
 highlight_text <- function(text, entities_mapping, font_family = "Arial") {
   # Ensure 'entities_mapping' and 'font_family' are not used directly without being checked
-  if(!is.list(entities_mapping) || !all(c("words", "background_color", "font_color", "label", "label_color") %in% names(entities_mapping[[1]]))) {
+  if (!is.list(entities_mapping) || !all(c("words", "background_color", "font_color", "label", "label_color") %in% names(entities_mapping[[1]]))) {
     stop("'entities_mapping' must be a list with specific structure.")
   }
 
-  if(!is.character(font_family) || length(font_family) != 1) {
+  if (!is.character(font_family) || length(font_family) != 1) {
     stop("'font_family' must be a single character string.")
   }
 
@@ -105,7 +105,7 @@ highlight_text <- function(text, entities_mapping, font_family = "Arial") {
       word_tag_identifier <- paste(word, label, sep = "_")
 
       # Check if this word+tag has not been replaced already
-      if(!(word_tag_identifier %in% already_replaced)) {
+      if (!(word_tag_identifier %in% already_replaced)) {
         replacement <- sprintf('<span style="background-color: %s; color: %s; font-family: %s">%s</span> <span style="color: %s; font-family: %s">(%s)</span>', background_color, font_color, font_family, word, label_color, font_family, label)
         text <- gsub(paste0("\\b", word, "\\b"), replacement, text)
 
