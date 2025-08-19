@@ -138,7 +138,7 @@ check_device <- function(device) {
     }
   }
   else if (device == "cpu" ) {
-    message("CPU is used.")
+    message("CPU is use")
     return(pytorch$device(device))
   }
   else if (device != "mps" && !pytorch$cuda$is_available()) {
@@ -177,7 +177,7 @@ check_batch_size <- function(batch_size) {
 #' @keywords internal
 check_texts_and_ids <- function(texts, doc_ids) {
   if (is.null(texts) || length(texts) == 0) {
-    stop("The texts cannot be NULL or empty.")
+    stop("texts cannot be NULL or empty.")
   }
 
   if (is.null(doc_ids)) {

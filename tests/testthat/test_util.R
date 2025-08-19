@@ -11,7 +11,7 @@
 
 # Test 2: Similar test as above, but without explicitly specifying the language
 # for the tagger. This tests the default behavior.
-test_that("get_entities throws an error for unsupported languages", {
+test_that("get_entities returns expected row count", {
   expect_equal(nrow(get_entities(
     texts = c("UCD is one of the best university in Ireland. ",
               "TCD in less better than Oxford"),
@@ -21,48 +21,44 @@ test_that("get_entities throws an error for unsupported languages", {
 
 
 # Test 3: Test the `get_flair_version` function to ensure it returns a character type.
-test_that("is.character", {
+test_that("get_flair_version returns character", {
   expect_equal(is.character(get_flair_version()), TRUE)
 })
 
-# Test 4: Duplicate of the above test; testing `get_flair_version`
-# for character type return.
-test_that("get_flair_version", {
-  expect_equal(is.character(get_flair_version()), TRUE)
-})
+# Test 4: Duplicate test removed - was testing the same thing as Test 3
 
 # Test 5: Check if the `check_python_installed` function returns a non-character.
-test_that("check_python_installed", {
+test_that("check_python_installed returns logical", {
   expect_equal(is.character(check_python_installed()), FALSE)
 })
 
 # Test 6: Test to see if `check_python_installed` is a function.
-test_that("check_python_installed", {
+test_that("check_python_installed is a function", {
   expect_equal(is.function(check_python_installed), TRUE)
 })
 
 # Test 7: Ensure `clear_flair_cache` is recognized as a function.
-test_that("clear_flair_cache", {
+test_that("clear_flair_cache is a function", {
   expect_equal(is.function(clear_flair_cache), TRUE)
 })
 
 # Test 8: Ensure `check_and_gc` is recognized as a function.
-test_that("check_and_gc", {
+test_that("check_and_gc is a function", {
   expect_equal(is.function(check_and_gc), TRUE)
 })
 
-# Test 9: Ensure `check_device` returns "CPU is in use."
-test_that("Ensure `check_device` returns 'CPU is use'", {
+# Test 9: Ensure `check_device` returns "CPU is use" message.
+test_that("check_device returns CPU is use message", {
   expect_message(check_device("cpu"), "CPU is use")
 })
 
 # Test 10: Ensure `check_batch_size` returns an error when provided with characters.
-test_that("check_batch_size", {
+test_that("check_batch_size throws error for invalid input", {
   expect_error(check_batch_size("1"), "Invalid batch size. It must be a positive integer.")
 })
 
-# Test 11: Ensure `check_batch_size` returns an error when provided with characters.
-test_that("check_batch_size", {
+# Test 11: Ensure `check_texts_and_ids` returns an error when texts is NULL.
+test_that("check_texts_and_ids throws error for NULL texts", {
   expect_error(check_texts_and_ids(NULL, NULL), "texts cannot be NULL or empty.")
 })
 
@@ -99,8 +95,8 @@ test_that("check_show.text_id throws error for non-logical input", {
 
 test_that("check_texts_and_ids handles input correctly", {
   # Check that the function stops if texts is NULL or empty
-  expect_error(check_texts_and_ids(NULL, c("id1", "id2")), "The texts cannot be NULL or empty.")
-  expect_error(check_texts_and_ids(character(0), c("id1", "id2")), "The texts cannot be NULL or empty.")
+  expect_error(check_texts_and_ids(NULL, c("id1", "id2")), "texts cannot be NULL or empty.")
+  expect_error(check_texts_and_ids(character(0), c("id1", "id2")), "texts cannot be NULL or empty.")
 
   # Check that the function warns if doc_ids is NULL, and generates a sequence
   expect_warning(res <- check_texts_and_ids(c("text1", "text2"), NULL), "doc_ids is NULL. Auto-assigning doc_ids.")
