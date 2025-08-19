@@ -64,7 +64,7 @@ test_that("get_entities error handling", {
 
   expect_error(
     get_entities(texts = character(0), tagger = tagger_std),
-    "The texts cannot be NULL or empty."
+    "texts cannot be NULL or empty."
   )
 
   # 測試 texts 和 doc_ids 長度不匹配
