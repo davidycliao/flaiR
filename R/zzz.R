@@ -8,39 +8,16 @@ NULL
 .pkgenv <- new.env(parent = emptyenv())
 
 ### Add Version Constants ------------------------------------------------------
-# .pkgenv$package_constants <- list(
-#   python_min_version = "3.9",
-#   python_max_version = "3.12",
-#
-#   # Core Dependencies
-#   numpy_version = ">=1.22.4,<1.29.0",
-#   scipy_version = "1.12.0",
-#
-#   # Core Python Packages
-#   torch_version = ">=2.0.0,<2.6.0",
-#   transformers_version = ">=4.30.0",
-#   flair_min_version = "0.15.0",
-#   gensim_version = ">=4.3.2",
-#
-#   # transformers
-#   install_configs = list(
-#     transformers = list(
-#       name = "transformers[sentencepiece]",
-#       version = ">=4.30.0",
-#       options = NULL  # removed --no-deps
-#     )
-#   )
-# )
 
 .pkgenv$package_constants <- list(
   python_min_version = "3.9",
   python_max_version = "3.12",
 
-  # Core Dependencies
+  # Core Python Dependencies
   numpy_version = ">=1.22.4,<1.29.0",
   scipy_version = "1.12.0",
 
-  # Core Python Packages
+  # Core Flair NLP Packages & Dependencies
   torch_version = ">=2.0.0,<2.6.0",
   transformers_version = ">=4.30.0",
   flair_min_version = "0.15.0",
@@ -55,10 +32,12 @@ NULL
     )
   )
 )
-### Add installation state tracking
+
+### Add Installation State Tracking --------------------------------------------
+
 .pkgenv$installation_state <- new.env(parent = emptyenv())
 
-### ANSI Color Codes
+### ANSI Color Codes -----------------------------------------------------------
 .pkgenv$colors <- list(
   green = "\033[32m",
   red = "\033[31m",
@@ -939,7 +918,7 @@ initialize_modules <- function() {
     }
 
     # Configuration header
-    packageStartupMessage(strrep("\n", 2))
+    packageStartupMessage(strrep("\n", 15))
     packageStartupMessage("Loading flaiR R package Configuration...")
     packageStartupMessage("----------------------------------------")
     packageStartupMessage("\nEnvironment Information:")
@@ -1031,6 +1010,7 @@ initialize_modules <- function() {
 
   invisible(NULL)
 }
+
 # .onAttach <- function(libname, pkgname) {
 #   # 儲存原始環境設定
 #   original_python <- Sys.getenv("RETICULATE_PYTHON")

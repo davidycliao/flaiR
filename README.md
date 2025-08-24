@@ -29,12 +29,6 @@ Image](https://img.shields.io/badge/Docker-ghcr.io-blue?logo=docker)](https://gi
 [flairNLP/flair](https://github.com/flairNLP/flair), a powerful
 Python-based NLP toolkit developed [Zalando
 Research](https://engineering.zalando.com/posts/2018/11/zalando-research-releases-flair.html).
-**flaiR** package is maintained by [Yen-Chieh
-Liao](https://davidycliao.github.io) ([University of
-Birmingham](https://www.birmingham.ac.uk/research/centres-institutes/centre-for-artificial-intelligence-in-government))
-and [Stefan Müller](https://muellerstefan.net) from [Next Generation
-Energy Systems](https://www.nexsys-energy.ie) and [Text and Policy
-Research Group](https://text-and-policy.com) at UCD.
 
 flaiR R package provides R-friendly wrapper functions integrated with R
 community packages for quantitative text analysis.

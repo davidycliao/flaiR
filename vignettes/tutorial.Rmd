@@ -26,6 +26,7 @@ knitr::opts_chunk$set(
 library(flaiR)
 library(reticulate)
 remotes::install_github("prodriguezsosa/conText", force = TRUE)
+# renv::install("prodriguezsosa/conText")
 
 # system(paste(reticulate::py_config()$python, "-m pip install flair"))
 # reticulate::py_install("flair")
@@ -2366,7 +2367,8 @@ toks <- tokens(cr_sample_corpus, remove_punct=T, remove_symbols=T, remove_number
 toks_nostop <- tokens_select(toks, pattern = stopwords("en"), selection = "remove", min_nchar=3)
 
 # only use features that appear at least 5 times in the corpus
-feats <- dfm(toks_nostop, tolower=T, verbose = FALSE) %>% dfm_trim(min_termfreq = 5) %>% featnames()
+feats <- dfm(toks_nostop, tolower=T, verbose = FALSE) %>% 
+  dfm_trim(min_termfreq = 5) %>% featnames()
 
 # leave the pads so that non-adjacent words will not become adjacent
 toks_nostop_feats <- tokens_select(toks_nostop, feats, padding = TRUE)
@@ -2466,7 +2468,7 @@ head(immig_dem_ft@docvars)
 ```
 
 
-<u>**Step 4**</u> Embedding Eegression
+<u>**Step 4**</u> Embedding Regression
 
 ```{r}
 set.seed(2021L)
@@ -2496,8 +2498,18 @@ RM_wv <- ft_model['(Intercept)',] + ft_model['party_R',] + ft_model['gender_M',]
 ```
 
 nearest neighbors
+
+
 ```{r}
 nns(rbind(DF_wv,DM_wv), 
+    N = 10, 
+    pre_trained = fasttext_subset, 
+    candidates = ft_model@features)
+```
+
+
+```{r}
+nns(rbind(RF_wv,RM_wv), 
     N = 10, 
     pre_trained = fasttext_subset, 
     candidates = ft_model@features)
@@ -2831,8 +2843,8 @@ ggplot(merged_df, aes(x = coefficient, y = normed.estimate)) +
 ```
 @Manual{,
   title = {Flair NLP and flaiR for Social Science},
-  author = {Yen-Chieh Liao, Sohini Timbadia and Stefan Müller},
-  year = {2024},
+  author = {Yen-Chieh Liao},
+  year = {2025},
   url = {https://davidycliao.github.io/flaiR/articles/tutorial.html}
 }
 ```
