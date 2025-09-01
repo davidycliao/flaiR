@@ -1,11 +1,11 @@
 
 ## <u>`flairR`</u>: An R Wrapper for Accessing Flair NLP Library <img src="man/figures/logo.png" align="right" width="180"/>
 
-[![flaiR-Python3.9](https://github.com/davidycliao/flaiR/actions/workflows/r-python-3-9.yml/badge.svg)](https://github.com/davidycliao/flaiR/actions/workflows/r-python-3-9.yml)
-[![flaiR-Python-3.10](https://github.com/davidycliao/flaiR/actions/workflows/r-python-3-10.yml/badge.svg)](https://github.com/davidycliao/flaiR/actions/workflows/r-python-3-10.yml)
-[![flaiR-Python3.11](https://github.com/davidycliao/flaiR/actions/workflows/r-python-3-11.yml/badge.svg)](https://github.com/davidycliao/flaiR/actions/workflows/r-python-3-11.yml)
+[![R-MacOS](https://github.com/davidycliao/flaiR/actions/workflows/r_macos.yml/badge.svg)](https://github.com/davidycliao/flaiR/actions/workflows/r_macos.yml)
+[![R-ubuntu](https://github.com/davidycliao/flaiR/actions/workflows/r_ubuntu.yaml/badge.svg)](https://github.com/davidycliao/flaiR/actions/workflows/r_ubuntu.yaml)
+[![R-Windows](https://github.com/davidycliao/flaiR/actions/workflows/r_window.yml/badge.svg)](https://github.com/davidycliao/flaiR/actions/workflows/r_window.yml)
 [![R-CMD-Check](https://github.com/davidycliao/flaiR/actions/workflows/r.yml/badge.svg)](https://github.com/davidycliao/flaiR/actions/workflows/r.yml)
-[![flaiR-Installation-Check](https://github.com/davidycliao/flaiR/actions/workflows/R-CMD-check.yml/badge.svg)](https://github.com/davidycliao/flaiR/actions/workflows/R-CMD-check.yml)
+[![R](https://img.shields.io/badge/R-package-blue)](https://github.com/davidycliao/flaiR)
 [![Docker
 Image](https://img.shields.io/badge/Docker-ghcr.io-blue?logo=docker)](https://github.com/davidycliao/flaiR/pkgs/container/flair-rstudio)
 [![codecov](https://codecov.io/gh/davidycliao/flaiR/graph/badge.svg?token=CPIBIB6L78)](https://codecov.io/gh/davidycliao/flaiR)
