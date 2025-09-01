@@ -44,22 +44,13 @@ jobs:
       run: |
         # 設定 reticulate 使用指定的 Python
         $pythonPath = (where.exe python)[0]
-        [System.Environment]::SetEnvironmentVariable('RETICULATE_PYTHON', $pythonPath, 'Process')
+        $env:RETICULATE_PYTHON = $pythonPath
         Write-Host "Setting RETICULATE_PYTHON to: $pythonPath"
 
-        # 安裝 R 套件
-        Rscript -e "
-          # 設定 Python 路徑
-          Sys.setenv(RETICULATE_PYTHON = '$pythonPath')
-
-          # 安裝套件
-          install.packages(c('reticulate', 'remotes'), repos='https://cran.r-project.org')
-
-          # 驗證安裝
-          library(reticulate)
-          cat('Using Python at:', Sys.getenv('RETICULATE_PYTHON'), '\n')
-          py_config()
-        "
+        # 安裝 R 套件 - 分步驟執行避免多行字符串問題
+        Rscript -e "Sys.setenv(RETICULATE_PYTHON = '$pythonPath')"
+        Rscript -e "install.packages(c('reticulate', 'remotes'), repos='https://cran.r-project.org')"
+        Rscript -e "library(reticulate); cat('Using Python at:', Sys.getenv('RETICULATE_PYTHON'), '\n'); py_config()"
       shell: powershell
 
     - name: Install Python dependencies
@@ -74,43 +65,21 @@ jobs:
       run: |
         # 重新設定 Python 路徑
         $pythonPath = (where.exe python)[0]
-        [System.Environment]::SetEnvironmentVariable('RETICULATE_PYTHON', $pythonPath, 'Process')
+        $env:RETICULATE_PYTHON = $pythonPath
 
-        Rscript -e "
-          # 設定環境變數
-          Sys.setenv(RETICULATE_PYTHON = '$pythonPath')
-          Sys.setenv(GITHUB_PAT = Sys.getenv('GITHUB_PAT'))
-
-          # 載入 reticulate
-          library(reticulate)
-          cat('Python path:', Sys.getenv('RETICULATE_PYTHON'), '\n')
-
-          # 安裝 flaiR
-          tryCatch({
-            remotes::install_github('davidycliao/flaiR', force = TRUE)
-            library(flaiR)
-            cat('flaiR installed and loaded successfully\n')
-          }, error = function(e) {
-            cat('Error during installation or loading:', conditionMessage(e), '\n')
-            quit(status = 1)
-          })
-        "
+        # 分步驟執行安裝
+        Rscript -e "Sys.setenv(RETICULATE_PYTHON = '$pythonPath'); Sys.setenv(GITHUB_PAT = Sys.getenv('GITHUB_PAT'))"
+        Rscript -e "library(reticulate); cat('Python path:', Sys.getenv('RETICULATE_PYTHON'), '\n')"
+        Rscript -e "tryCatch({remotes::install_github('davidycliao/flaiR', force = TRUE); library(flaiR); cat('flaiR installed and loaded successfully\n')}, error = function(e) {cat('Error during installation or loading:', conditionMessage(e), '\n'); quit(status = 1)})"
       shell: powershell
 
     - name: Run basic test
       run: |
         # 設定 Python 路徑
         $pythonPath = (where.exe python)[0]
-        [System.Environment]::SetEnvironmentVariable('RETICULATE_PYTHON', $pythonPath, 'Process')
+        $env:RETICULATE_PYTHON = $pythonPath
 
-        Rscript -e "
-          Sys.setenv(RETICULATE_PYTHON = '$pythonPath')
-          library(flaiR)
-          library(reticulate)
-
-          # 驗證功能
-          cat('flaiR and reticulate working correctly\n')
-          py_config()
-          cat('Test completed successfully\n')
-        "
+        # 執行測試
+        Rscript -e "Sys.setenv(RETICULATE_PYTHON = '$pythonPath')"
+        Rscript -e "library(flaiR); library(reticulate); cat('flaiR and reticulate working correctly\n'); py_config(); cat('Test completed successfully\n')"
       shell: powershell
