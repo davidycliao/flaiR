@@ -15,7 +15,7 @@ jobs:
     strategy:
       matrix:
         r-version: ['4.1.3', '4.2.3', '4.3.2']
-        python-version: ['3.10']
+        python-version: ['3.10.11']
       fail-fast: false
 
     steps:
@@ -23,10 +23,9 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Set up Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: ${{ matrix.python-version }}
-        architecture: 'x64'  # Changed from 'arm64' to 'x64' for better compatibility
 
     - name: Verify Python installation
       run: |
@@ -40,9 +39,13 @@ jobs:
         r-version: ${{ matrix.r-version }}
         use-public-rspm: true
 
+    - name: Add R to PATH
+      run: |
+        echo "/Library/Frameworks/R.framework/Resources/bin" >> $GITHUB_PATH
+        echo "R_HOME=/Library/Frameworks/R.framework/Resources" >> $GITHUB_ENV
+
     - name: Install system dependencies
       run: |
-        # Install any system dependencies if needed
         echo "Installing system dependencies..."
 
     - name: Install R dependencies and configure Python
@@ -104,20 +107,4 @@ jobs:
           cat("flaiR version and Python config:\n")
           py_config()
           cat("Test completed successfully\n")
-        '
-
-    - name: Print environment info
-      if: always()
-      run: |
-        echo "=== Environment Information ==="
-        python --version
-        which python
-        echo "Python path: $PYTHON_PATH"
-        R --version
-        Rscript -e '
-          cat("R session info:\n")
-          sessionInfo()
-          cat("\nReticulate config:\n")
-          library(reticulate)
-          py_config()
         '
