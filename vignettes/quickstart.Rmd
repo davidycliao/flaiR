@@ -22,68 +22,65 @@ knitr::opts_chunk$set(
 # library(flaiR)
 # # reticulate::py_install("flair")
 # system(paste(reticulate::py_config()$python, "-m pip install flair"))
-system(paste(Sys.which("python3"), "-m pip install --upgrade pip"))
-system(paste(Sys.which("python3"), "-m pip install torch"))
-system(paste(Sys.which("python3"), "-m pip install flair"))
-Sys.setenv(RETICULATE_PYTHON = Sys.which("python3"))
+# system(paste(Sys.which("python3"), "-m pip install --upgrade pip"))
+# system(paste(Sys.which("python3"), "-m pip install torch"))
+# system(paste(Sys.which("python3"), "-m pip install flair"))
+# Sys.setenv(RETICULATE_PYTHON = Sys.which("python3"))
 library(flaiR)
 ```
 
 
 <div style="text-align: justify">
 
-Flair is a Python library developed by [Zalando Research](https://engineering.zalando.com/posts/2018/11/zalando-research-releases-flair.html) that stands out as a notably user-friendly NLP framework. Flair NLP provides intuitive interfaces with exceptional multilingual embeddings, especially for various multilingual embedding frameworks like GloVe and transformer-based models on Hugging Face.
+Flair is a Python library developed by [Zalando Research](https://engineering.zalando.com/posts/2018/11/zalando-research-releases-flair.html)  that stands out as a notably user-friendly NLP framework. It provides exceptional multilingual embeddings, especially for various multilingual embedding frameworks like GloVe and transformer-based models on Hugging Face. flaiR R package provides R-friendly wrapper functions integrated with R community packages for quantitative text analysis.
+
 
 </div>
 
 
-## flaiR Installation
-
-### Option 1: Direct Installation
+# `flaiR` Installation 
 
 __System Requirements:__
 
-- Python >= 3.10
+- Python >= 3.9
 - R >= 4.2.0
 - Rstudio
 
-#### macOS Terminal
+## Option 1: Fast Install Python with `reticulate` 
 
-```bash
-# Install Python 3.10 or higher.
-brew install python@3.10
-
-# Verify Python installation
-python3 --version
-
-# Install R
-brew install R
-
-# Verify R installation
-R --version
-
-# Install RStudio
-brew install --cask rstudio
+1. Install Python automatically through R reticulate:
+```
+# Install and load reticulate package
+install.packages("reticulate")
+library(reticulate)
 ```
 
-#### PowerShell for Windows
-
-```bash
-# Download Python installer from python.org and run:
-# https://www.python.org/downloads/
-
-# Verify Python installation
-python --version
-
-# Install R
-# Download R installer from CRAN and run:
-# https://cran.r-project.org/bin/windows/base/
-
-# Verify R installation
-R --version
+2. Install Python using reticulate:
+```
+install_python(version = "3.10")
 ```
 
-### Option 2: Docker Setup 
+3. Verify the Python installation and see which version is being used:
+```
+py_config()  # Shows Python configuration details
+```
+
+4. To install flaiR package:
+```
+install.packages("remotes")
+remotes::install_github("davidycliao/flaiR", force = TRUE)
+```
+
+5. Load the flaiR package (when the message is printed showing the corresponding flair NLP python version, it indicates successful attachment of Flair NLP python to your R):
+```
+library(flaiR)
+```
+
+```
+#> flaiR: An R Wrapper for Accessing Flair NLP 0.13.1
+```
+
+## Option 2: Docker Setup 
 
 The Docker image (12.5GB) includes a complete R/Python development environment with RStudio Server + R environments and Python 3.9 with flair NLP and its dependencies (PyTorch, models).
 
@@ -108,7 +105,8 @@ docker run -d \
   ghcr.io/davidycliao/flair-rstudio:latest
 ```
 
-- Apple Silicon (M1/M2 Mac):
+__Apple Silicon (M1 Series MacOS):__
+
 
 ```bash
 # Pull and run with platform specification
@@ -129,8 +127,49 @@ __Access RStudio Server:__
 - Username: `rstudio`
 - Password: `rstudio123`
 
+&nbsp;
+-----
 
-### Troubleshooting Guide 
+# NLP Tasks
+
+
+<div style="text-align: justify">
+
+For R users, flairR extends FlairNLP with three NLP task functions to extract features in a neat format with [data.table](https://cran.r-project.org/web/packages/data.table/index.html). Through these featured functions, you don't have to write loops to format parsed output on your own. The main features include part-of-speech tagging, named entity recognition and sentiment analysis. Additionally, to handle the load on RAM when dealing with larger corpora, flairR supports batch processing to handle texts in batches, which is especially useful when dealing with large datasets, to optimize memory usage and performance.
+
+| **Core  Featured Functions**    | Loader                     | Supported Models from Flair NLP  |
+|---------------------------------|----------------------------|----------------------------------|
+| `get_entities()`                | `load_tagger_ner()`        | `en` (English), `fr` (French), `da` (Danish), `nl` (Dutch), and more.                                                    |
+| `get_pos()`                     | `load_tagger_pos()`        | `pos` (English POS), `fr-pos` (French POS), `de-pos` (German POS), `nl-pos` (Dutch POS), and more.                       |
+
+</div>
+
+&nbsp;
+
+
+## Training and Fine-tuning
+
+<div style="text-align: justify">
+
+In __flairR__, we use the simplest __S3__ method to wrap major modules. All modules will work like [R6](https://bookdown.dongzhuoer.com/hadley/adv-r/s3-r6) in the R environment when loaded from Flair NLP. In Python, both functions and methods (sometimes referred to as functions in R) within a class can be accessed using the `$` operator. For example, `from flair.trainers import ModelTrainer` in Python is equivalent to `ModelTrainer <- flair_trainers()$ModelTrainer` in  R environment with __flairR__.
+
+</div>
+
+| **Wrapped Flair NLP Modules with S3**             | Corresponding Code Practices When Loading Modules from FlairNLP  | 
+|---------------------------------------------------|------------------------------------------------------------------|
+| `flair_datasets()`                                | from flair.datasets import *                                     |
+| `flair_nn()`                                      | from flair.nn import *                                           |
+| `flair_splitter()`                                | from flair.splitter import *                                     |
+| `flair_trainers()`                                | from flair.trainers import *                                     |
+| `flair_models()`                                  | from flair.models import *                                       |
+ 
+
+&nbsp;
+
+-----
+
+
+# Troubleshooting Guide 
 
 The `faiR` Will:
 
@@ -148,7 +187,7 @@ remotes::install_github("davidycliao/flaiR", force = TRUE)
 Installation typically proceeds automatically with RStudio and R handling dependencies. However, users (particularly those with Mac ARM64 systems) may encounter compilation issues. Here's a comprehensive guide to resolve common problems:
 
 
-__Mac M1/M2 (Apple Silicon) Specific Setup__
+##  __Mac M1/M2 (Apple Silicon) Specific Setup__
 
 1 Architecture Options
 
@@ -160,16 +199,7 @@ __Mac M1/M2 (Apple Silicon) Specific Setup__
   - Requires specific compiler setup
   - May encounter additional compatibility issues
 
-__Version Compatibility__
-
-R Version Requirements:
-
-- R 4.5.0+: Matrix 1.7-0 or newer
-- R 4.4.x: Matrix 1.6-x
-- R 4.3.x: Matrix 1.5-1
-- R 4.2.x: Matrix 1.4-1
-
-__Compiler Setup for ARM64 Systems__
+###   __Compiler Setup for ARM64 Systems__
 
 Required Steps:
 
@@ -183,21 +213,32 @@ Required Steps:
     + [GitHub R-macos GNU Fortran releases](https://github.com/fxcoudert/gfortran-for-macOS/releases)
 </div>
 
-__Automatic Dependencies (Python)__
+### __Automatic Dependencies (Python)__
 
 <div style="text-align: justify">
 
 
-flaiR will automatically install the following Python packages during setup:
+`flaiR` R package will automatically install the following Python packages during setup:
 
-- flair (with default dependencies)
-- scipy (1.12.0)
-- gensim (4.3.2)
+__Core Dependencies__
+- Python (3.9 or 3.10 recommended)
+- flair[word-embeddings] (>=0.11.3)
+- numpy (>=1.22.4, <1.29.0)
+- PyTorch (>=2.0.0, <2.6.0)
+- scipy (==1.12.0)
 
-__Note__: No manual installation required. These packages will be handled automatically during flaiR installation. 
+__Additional Dependencies__
 
+- gensim (>=4.3.2)
+- transformers (>=4.30.0)
+- sentencepiece (>=0.1.99)
+- bpemb (>=0.3.5)
 
-You can manage Python settings in RStudio through _Tools -> Global Options -> Python_. To check your Python configuration, use:
+All other required dependencies will be automatically handled during the installation process.
+You can manage Python settings in RStudio through `Tools -> Global Options -> Python`.
+
+To check your Python configuration, use:
+
 
 </div>
 
@@ -205,7 +246,7 @@ You can manage Python settings in RStudio through _Tools -> Global Options -> Py
 reticulate::py_config()
 ```
 
-__Recommended Configurations__
+### __Recommended Configurations__
 
 For stable usage, we strongly recommend installing these specific versions.
 
@@ -215,8 +256,18 @@ For stable usage, we strongly recommend installing these specific versions.
 | Windows | 4.0.5, Latest              | 3.10.x, 3.9    |
 | Ubuntu  | 4.3.2, 4.2.0, 4.2.1        | 3.10.x, 3.9    |
 
-*: _On R 4.2.1, particularly when using the Matrix package on ARM 64 architecture Macs (M1/M2), compatibility issues with gfortran may occur. It's recommended to avoid this combination._
 
+### __R Version Requirements__
+
+The flaiR package has specific R version requirements based on Matrix package compatibility:
+
+- R 4.5.0+: Matrix 1.7-0 or newer
+- R 4.4.x: Matrix 1.6-x
+- R 4.3.x: Matrix 1.5-1
+- R 4.2.x: Matrix 1.4-1
+
+
+*: _On R 4.2.1, particularly when using the Matrix package on ARM 64 architecture Macs (M1/M2), compatibility issues with gfortran may occur. It's recommended to avoid this combination._
 
 
 &nbsp;
@@ -233,7 +284,7 @@ If you encounter any problems or have questions:
 </div>
 
 
-__Troubleshooting for Docker__
+###  __Troubleshooting for Docker__
 
 1. If you encounter any issues:
 
@@ -271,51 +322,5 @@ docker logs flair-rstudio
 
 
 
-
-
-
-
-
-
-
------
-
-## NLP Tasks
-
-
-<div style="text-align: justify">
-
-For R users, flairR extends FlairNLP with three NLP task functions to extract features in a neat format with [data.table](https://cran.r-project.org/web/packages/data.table/index.html). Through these featured functions, you don't have to write loops to format parsed output on your own. The main features include part-of-speech tagging, named entity recognition and sentiment analysis. Additionally, to handle the load on RAM when dealing with larger corpora, flairR supports batch processing to handle texts in batches, which is especially useful when dealing with large datasets, to optimize memory usage and performance.
-
-| **Core  Featured Functions**    | Loader                     | Supported Models from Flair NLP  |
-|---------------------------------|----------------------------|----------------------------------|
-| `get_entities()`                | `load_tagger_ner()`        | `en` (English), `fr` (French), `da` (Danish), `nl` (Dutch), and more.                                                    |
-| `get_pos()`                     | `load_tagger_pos()`        | `pos` (English POS), `fr-pos` (French POS), `de-pos` (German POS), `nl-pos` (Dutch POS), and more.                       |
-
-</div>
-
-&nbsp;
-
-
-## Training and Fine-tuning
-
-<div style="text-align: justify">
-
-In __flairR__, we use the simplest __S3__ method to wrap major modules. All modules will work like [R6](https://bookdown.dongzhuoer.com/hadley/adv-r/s3-r6) in the R environment when loaded from Flair NLP. In Python, both functions and methods (sometimes referred to as functions in R) within a class can be accessed using the `$` operator. For example, `from flair.trainers import ModelTrainer` in Python is equivalent to `ModelTrainer <- flair_trainers()$ModelTrainer` in  R environment with __flairR__.
-
-</div>
-
-| **Wrapped Flair NLP Modules with S3**             | Corresponding Code Practices When Loading Modules from FlairNLP  | 
-|---------------------------------------------------|------------------------------------------------------------------|
-| `flair_datasets()`                                | from flair.datasets import *                                     |
-| `flair_nn()`                                      | from flair.nn import *                                           |
-| `flair_splitter()`                                | from flair.splitter import *                                     |
-| `flair_trainers()`                                | from flair.trainers import *                                     |
-| `flair_models()`                                  | from flair.models import *                                       |
- 
-
-&nbsp;
-
------
 
 
