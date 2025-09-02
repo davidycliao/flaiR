@@ -15,37 +15,78 @@ jobs:
     strategy:
       matrix:
         r-version: ['4.1.3', '4.2.3', '4.3.2']
-        python-version: ['3.10']
+        python-version: ['3.10.11']
       fail-fast: false
 
     steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
     - name: Set up Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: ${{ matrix.python-version }}
-        architecture: 'arm64'
 
-    - name: Verify Python
+    - name: Verify Python installation
       run: |
         python --version
         which python
+        echo "PYTHON_PATH=$(which python)" >> $GITHUB_ENV
 
     - name: Set up R
       uses: r-lib/actions/setup-r@v2
       with:
         r-version: ${{ matrix.r-version }}
+        use-public-rspm: true
 
-    - name: Install R dependencies
+    - name: Add R to PATH
       run: |
-        Rscript -e 'install.packages(c("reticulate", "remotes"), repos="https://cran.r-project.org")'
-        Rscript -e 'reticulate::py_config()'
+        echo "/Library/Frameworks/R.framework/Resources/bin" >> $GITHUB_PATH
+        echo "R_HOME=/Library/Frameworks/R.framework/Resources" >> $GITHUB_ENV
+
+    - name: Install system dependencies
+      run: |
+        echo "Installing system dependencies..."
+
+    - name: Install R dependencies and configure Python
+      env:
+        RETICULATE_PYTHON: ${{ env.PYTHON_PATH }}
+      run: |
+        # 強制 reticulate 使用 GitHub Actions 的 Python
+        export RETICULATE_PYTHON=$(which python)
+        echo "RETICULATE_PYTHON=$RETICULATE_PYTHON" >> $GITHUB_ENV
+
+        Rscript -e '
+          # 安裝套件前先設定 Python 路徑
+          Sys.setenv(RETICULATE_PYTHON = Sys.which("python"))
+          install.packages(c("reticulate", "remotes"), repos="https://cran.r-project.org")
+
+          # 載入並驗證 reticulate 配置
+          library(reticulate)
+          cat("Using Python at:", Sys.which("python"), "\n")
+          py_config()
+        '
+
+    - name: Install Python dependencies
+      run: |
+        python -m pip install --upgrade pip
+        # Add any Python dependencies that flaiR might need
+        # python -m pip install numpy pandas scikit-learn
 
     - name: Install flaiR
       env:
         GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+        RETICULATE_PYTHON: ${{ env.RETICULATE_PYTHON }}
       run: |
         Rscript -e '
+          # 在載入任何套件前就設定 Python 路徑
+          Sys.setenv(RETICULATE_PYTHON = Sys.getenv("RETICULATE_PYTHON"))
           Sys.setenv(GITHUB_PAT = Sys.getenv("GITHUB_PAT"))
+
+          library(reticulate)
+          cat("Python path:", Sys.getenv("RETICULATE_PYTHON"), "\n")
+
+          # 安裝 flaiR
           tryCatch({
             remotes::install_github("davidycliao/flaiR", force = TRUE)
             library(flaiR)
@@ -53,11 +94,17 @@ jobs:
           }, error = function(e) {
             cat("Error during installation or loading:", conditionMessage(e), "\n")
             quit(status = 1)
-          })'
+          })
+        '
 
-    - name: Print environment info
-      if: always()
+    - name: Run basic test
       run: |
-        python --version
-        R --version
-        Rscript -e 'reticulate::py_config()'
+        Rscript -e '
+          library(flaiR)
+          library(reticulate)
+
+          # Verify everything is working
+          cat("flaiR version and Python config:\n")
+          py_config()
+          cat("Test completed successfully\n")
+        '
