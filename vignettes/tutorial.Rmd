@@ -2346,7 +2346,8 @@ First of all, when loading the conText package, you'll find three pre-loaded dat
 
 ## Build Document-Embedding-Matrix with Other Embedding Frameworks
 
-```{r include=FALSE}
+```{r warning=FALSE, include=FALSE}
+remotes::install_github("prodriguezsosa/conText", force = TRUE)
 library(conText)
 library(quanteda)
 library(dplyr)
