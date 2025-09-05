@@ -108,6 +108,7 @@
 #       shell: cmd
 
 
+
 name: flaiR-Windows
 on:
   push:
@@ -168,43 +169,12 @@ jobs:
       env:
         GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        Rscript -e "
-        python_path <- shell('where python', intern = TRUE)[1];
-        python_path <- gsub('\\\\\\\\', '/', python_path);
-        Sys.setenv(RETICULATE_PYTHON = python_path);
-        Sys.setenv(GITHUB_PAT = Sys.getenv('GITHUB_PAT'));
-        library(reticulate);
-        cat('Installing flaiR from GitHub...\n');
-        tryCatch({
-          remotes::install_github('davidycliao/flaiR', force = TRUE, dependencies = TRUE, upgrade = 'never');
-          library(flaiR);
-          cat('flaiR installed successfully\n');
-          cat('flaiR version:', packageVersion('flaiR'), '\n')
-        }, error = function(e) {
-          cat('Error:', conditionMessage(e), '\n');
-          quit(status = 1)
-        })
-        "
+        Rscript -e "python_path <- shell('where python', intern = TRUE)[1]; python_path <- gsub('\\\\\\\\', '/', python_path); Sys.setenv(RETICULATE_PYTHON = python_path); Sys.setenv(GITHUB_PAT = Sys.getenv('GITHUB_PAT')); library(reticulate); cat('Installing flaiR from GitHub...\n'); tryCatch({ remotes::install_github('davidycliao/flaiR', force = TRUE, dependencies = TRUE, upgrade = 'never'); library(flaiR); cat('flaiR installed successfully\n'); cat('flaiR version:', packageVersion('flaiR'), '\n') }, error = function(e) { cat('Error:', conditionMessage(e), '\n'); quit(status = 1) })"
       shell: powershell
 
     - name: Run basic test
       run: |
-        Rscript -e "
-        python_path <- shell('where python', intern = TRUE)[1];
-        python_path <- gsub('\\\\\\\\', '/', python_path);
-        Sys.setenv(RETICULATE_PYTHON = python_path);
-        library(flaiR);
-        library(reticulate);
-        cat('=== Environment Information ===\n');
-        cat('R version:', R.version.string, '\n');
-        cat('Python path:', python_path, '\n');
-        cat('Python version:', py_version(), '\n');
-        cat('flaiR version:', packageVersion('flaiR'), '\n');
-        cat('Reticulate version:', packageVersion('reticulate'), '\n');
-        cat('\n=== Python Configuration ===\n');
-        py_config();
-        cat('Test completed successfully\n')
-        "
+        Rscript -e "python_path <- shell('where python', intern = TRUE)[1]; python_path <- gsub('\\\\\\\\', '/', python_path); Sys.setenv(RETICULATE_PYTHON = python_path); library(flaiR); library(reticulate); cat('=== Environment Information ===\n'); cat('R version:', R.version.string, '\n'); cat('Python path:', python_path, '\n'); cat('Python version:', py_version(), '\n'); cat('flaiR version:', packageVersion('flaiR'), '\n'); cat('Reticulate version:', packageVersion('reticulate'), '\n'); cat('\n=== Python Configuration ===\n'); py_config(); cat('Test completed successfully\n')"
       shell: powershell
 
     - name: Upload logs on failure
