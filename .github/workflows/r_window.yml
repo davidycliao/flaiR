@@ -108,7 +108,6 @@
 #       shell: cmd
 
 
-
 name: flaiR-Windows
 on:
   push:
@@ -142,9 +141,6 @@ jobs:
       run: |
         python --version
         where python
-        $pythonPath = (where python | Select-Object -First 1)
-        echo "PYTHON_PATH=$pythonPath" >> $env:GITHUB_ENV
-        echo "Setting PYTHON_PATH to: $pythonPath"
       shell: powershell
 
     - name: Set up R
@@ -155,114 +151,60 @@ jobs:
 
     - name: Install system dependencies
       run: |
-        echo "Installing system dependencies..."
         python -m pip install --upgrade pip setuptools wheel
       shell: powershell
 
-    - name: Create R setup script
+    - name: Install R dependencies
       run: |
-        @'
-        # Set binary package options for Windows optimization
-        options(install.packages.compile.from.source = "never")
-        options(pkgType = "win.binary")
-
-        # Configure Python path
-        python_path <- shell("where python", intern = TRUE)[1]
-        python_path <- gsub("\\\\", "/", python_path)
-        Sys.setenv(RETICULATE_PYTHON = python_path)
-        cat("Setting Python path to:", python_path, "\n")
-
-        # Install required packages
-        install.packages(c("reticulate", "remotes"),
-                        repos = "https://cran.r-project.org",
-                        type = "binary",
-                        dependencies = TRUE)
-
-        # Load and verify reticulate configuration
-        library(reticulate)
-        cat("Using Python at:", python_path, "\n")
-        cat("Reticulate version:", packageVersion("reticulate"), "\n")
-        py_config()
-        '@ | Out-File -FilePath "setup.R" -Encoding utf8
+        Rscript -e "options(install.packages.compile.from.source = 'never'); options(pkgType = 'win.binary'); install.packages(c('reticulate', 'remotes'), repos='https://cran.r-project.org', type='binary')"
       shell: powershell
 
-    - name: Run R setup script
-      run: Rscript setup.R
-      shell: powershell
-
-    - name: Create flaiR installation script
-      env:
-        GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+    - name: Configure reticulate
       run: |
-        @'
-        # Configure environment
-        python_path <- shell("where python", intern = TRUE)[1]
-        python_path <- gsub("\\\\", "/", python_path)
-        Sys.setenv(RETICULATE_PYTHON = python_path)
-        Sys.setenv(GITHUB_PAT = Sys.getenv("GITHUB_PAT"))
-
-        library(reticulate)
-        cat("Python path:", python_path, "\n")
-        cat("Python version:", py_version(), "\n")
-
-        # Install flaiR with error handling
-        tryCatch({
-          cat("Installing flaiR from GitHub...\n")
-          remotes::install_github("davidycliao/flaiR",
-                                 force = TRUE,
-                                 dependencies = TRUE,
-                                 upgrade = "never")
-
-          cat("Loading flaiR...\n")
-          library(flaiR)
-          cat("flaiR installed and loaded successfully\n")
-          cat("flaiR version:", packageVersion("flaiR"), "\n")
-
-        }, error = function(e) {
-          cat("Error during installation or loading:", conditionMessage(e), "\n")
-          cat("Traceback:\n")
-          traceback()
-          quit(status = 1)
-        })
-        '@ | Out-File -FilePath "install_flair.R" -Encoding utf8
+        Rscript -e "python_path <- shell('where python', intern = TRUE)[1]; python_path <- gsub('\\\\\\\\', '/', python_path); Sys.setenv(RETICULATE_PYTHON = python_path); library(reticulate); cat('Python path:', python_path, '\n'); py_config()"
       shell: powershell
 
     - name: Install flaiR
-      run: Rscript install_flair.R
-      shell: powershell
-
-    - name: Create test script
+      env:
+        GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        @'
-        # Configure environment
-        python_path <- shell("where python", intern = TRUE)[1]
-        python_path <- gsub("\\\\", "/", python_path)
-        Sys.setenv(RETICULATE_PYTHON = python_path)
-
-        # Load packages
-        library(flaiR)
-        library(reticulate)
-
-        # Display environment information
-        cat("=== Environment Information ===\n")
-        cat("R version:", R.version.string, "\n")
-        cat("Python path:", python_path, "\n")
-        cat("Python version:", py_version(), "\n")
-        cat("flaiR version:", packageVersion("flaiR"), "\n")
-        cat("Reticulate version:", packageVersion("reticulate"), "\n")
-
-        cat("\n=== Python Configuration ===\n")
-        py_config()
-
-        cat("\n=== Basic Functionality Test ===\n")
-        # Add flaiR core functionality tests here
-
-        cat("Test completed successfully\n")
-        '@ | Out-File -FilePath "test.R" -Encoding utf8
+        Rscript -e "
+        python_path <- shell('where python', intern = TRUE)[1];
+        python_path <- gsub('\\\\\\\\', '/', python_path);
+        Sys.setenv(RETICULATE_PYTHON = python_path);
+        Sys.setenv(GITHUB_PAT = Sys.getenv('GITHUB_PAT'));
+        library(reticulate);
+        cat('Installing flaiR from GitHub...\n');
+        tryCatch({
+          remotes::install_github('davidycliao/flaiR', force = TRUE, dependencies = TRUE, upgrade = 'never');
+          library(flaiR);
+          cat('flaiR installed successfully\n');
+          cat('flaiR version:', packageVersion('flaiR'), '\n')
+        }, error = function(e) {
+          cat('Error:', conditionMessage(e), '\n');
+          quit(status = 1)
+        })
+        "
       shell: powershell
 
     - name: Run basic test
-      run: Rscript test.R
+      run: |
+        Rscript -e "
+        python_path <- shell('where python', intern = TRUE)[1];
+        python_path <- gsub('\\\\\\\\', '/', python_path);
+        Sys.setenv(RETICULATE_PYTHON = python_path);
+        library(flaiR);
+        library(reticulate);
+        cat('=== Environment Information ===\n');
+        cat('R version:', R.version.string, '\n');
+        cat('Python path:', python_path, '\n');
+        cat('Python version:', py_version(), '\n');
+        cat('flaiR version:', packageVersion('flaiR'), '\n');
+        cat('Reticulate version:', packageVersion('reticulate'), '\n');
+        cat('\n=== Python Configuration ===\n');
+        py_config();
+        cat('Test completed successfully\n')
+        "
       shell: powershell
 
     - name: Upload logs on failure
