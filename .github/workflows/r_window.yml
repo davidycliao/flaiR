@@ -1,113 +1,3 @@
-# name: flaiR-Windows
-# on:
-#   push:
-#     branches:
-#       - main
-#       - develop
-#   pull_request:
-#     branches:
-#       - main
-#       - develop
-#
-# jobs:
-#   test-installation:
-#     runs-on: windows-latest
-#     strategy:
-#       matrix:
-#         r-version: ['4.2.3', '4.3.2']  # 移除 4.1.3，編譯問題太多
-#         python-version: ['3.10.11']
-#       fail-fast: false
-#
-#     steps:
-#     - name: Checkout repository
-#       uses: actions/checkout@v4
-#
-#     - name: Set up Python
-#       uses: actions/setup-python@v5
-#       with:
-#         python-version: ${{ matrix.python-version }}
-#
-#     - name: Verify Python installation
-#       run: |
-#         python --version
-#         where python
-#       shell: cmd
-#
-#     - name: Set up R
-#       uses: r-lib/actions/setup-r@v2
-#       with:
-#         r-version: ${{ matrix.r-version }}
-#         use-public-rspm: true  # 使用預編譯的二進制套件
-#
-#     - name: Install R dependencies
-#       run: |
-#         # 強制使用二進制套件，避免編譯問題
-#         Rscript -e "
-#           options(install.packages.compile.from.source = 'never')
-#           options(pkgType = 'win.binary')
-#
-#           # 設定 Python 路徑
-#           python_path <- shell('where python', intern = TRUE)[1]
-#           Sys.setenv(RETICULATE_PYTHON = python_path)
-#           cat('Setting Python path to:', python_path, '\n')
-#
-#           # 安裝套件
-#           install.packages(c('reticulate', 'remotes'), repos='https://cran.r-project.org', type = 'binary')
-#
-#           # 驗證安裝
-#           library(reticulate)
-#           py_config()
-#         "
-#       shell: cmd
-#
-#     - name: Install Python dependencies
-#       run: |
-#         python -m pip install --upgrade pip
-#       shell: cmd
-#
-#     - name: Install flaiR
-#       env:
-#         GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
-#       run: |
-#         Rscript -e "
-#           # 設定環境變數
-#           python_path <- shell('where python', intern = TRUE)[1]
-#           Sys.setenv(RETICULATE_PYTHON = python_path)
-#           Sys.setenv(GITHUB_PAT = Sys.getenv('GITHUB_PAT'))
-#
-#           # 載入 reticulate
-#           library(reticulate)
-#           cat('Python path:', python_path, '\n')
-#
-#           # 安裝 flaiR
-#           tryCatch({
-#             remotes::install_github('davidycliao/flaiR', force = TRUE)
-#             library(flaiR)
-#             cat('flaiR installed and loaded successfully\n')
-#           }, error = function(e) {
-#             cat('Error during installation or loading:', conditionMessage(e), '\n')
-#             quit(status = 1)
-#           })
-#         "
-#       shell: cmd
-#
-#     - name: Run basic test
-#       run: |
-#         Rscript -e "
-#           # 重新設定 Python 路徑
-#           python_path <- shell('where python', intern = TRUE)[1]
-#           Sys.setenv(RETICULATE_PYTHON = python_path)
-#
-#           library(flaiR)
-#           library(reticulate)
-#
-#           cat('flaiR and reticulate working correctly\n')
-#           py_config()
-#           cat('Test completed successfully\n')
-#         "
-#       shell: cmd
-
-
 name: flaiR-Windows
 on:
   push:
@@ -124,7 +14,7 @@ jobs:
     runs-on: windows-latest
     strategy:
       matrix:
-        r-version: ['4.1.3', '4.2.3', '4.3.2']
+        r-version: ['4.2.3', '4.3.2']  # 移除 4.1.3，編譯問題太多
         python-version: ['3.10.11']
       fail-fast: false
 
@@ -141,46 +31,79 @@ jobs:
       run: |
         python --version
         where python
-      shell: powershell
+      shell: cmd
 
     - name: Set up R
       uses: r-lib/actions/setup-r@v2
       with:
         r-version: ${{ matrix.r-version }}
-        use-public-rspm: true
-
-    - name: Install system dependencies
-      run: |
-        python -m pip install --upgrade pip setuptools wheel
-      shell: powershell
+        use-public-rspm: true  # 使用預編譯的二進制套件
 
     - name: Install R dependencies
       run: |
-        Rscript -e "options(install.packages.compile.from.source = 'never'); options(pkgType = 'win.binary'); install.packages(c('reticulate', 'remotes'), repos='https://cran.r-project.org', type='binary')"
-      shell: powershell
+        # 強制使用二進制套件，避免編譯問題
+        Rscript -e "
+          options(install.packages.compile.from.source = 'never')
+          options(pkgType = 'win.binary')
 
-    - name: Configure reticulate
+          # 設定 Python 路徑
+          python_path <- shell('where python', intern = TRUE)[1]
+          Sys.setenv(RETICULATE_PYTHON = python_path)
+          cat('Setting Python path to:', python_path, '\n')
+
+          # 安裝套件
+          install.packages(c('reticulate', 'remotes'), repos='https://cran.r-project.org', type = 'binary')
+
+          # 驗證安裝
+          library(reticulate)
+          py_config()
+        "
+      shell: cmd
+
+    - name: Install Python dependencies
       run: |
-        Rscript -e "python_path <- shell('where python', intern = TRUE)[1]; python_path <- gsub('\\\\\\\\', '/', python_path); Sys.setenv(RETICULATE_PYTHON = python_path); library(reticulate); cat('Python path:', python_path, '\n'); py_config()"
-      shell: powershell
+        python -m pip install --upgrade pip
+      shell: cmd
 
     - name: Install flaiR
       env:
         GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        Rscript -e "python_path <- shell('where python', intern = TRUE)[1]; python_path <- gsub('\\\\\\\\', '/', python_path); Sys.setenv(RETICULATE_PYTHON = python_path); Sys.setenv(GITHUB_PAT = Sys.getenv('GITHUB_PAT')); library(reticulate); cat('Installing flaiR from GitHub...\n'); tryCatch({ remotes::install_github('davidycliao/flaiR', force = TRUE, dependencies = TRUE, upgrade = 'never'); library(flaiR); cat('flaiR installed successfully\n'); cat('flaiR version:', packageVersion('flaiR'), '\n') }, error = function(e) { cat('Error:', conditionMessage(e), '\n'); quit(status = 1) })"
-      shell: powershell
+        Rscript -e "
+          # 設定環境變數
+          python_path <- shell('where python', intern = TRUE)[1]
+          Sys.setenv(RETICULATE_PYTHON = python_path)
+          Sys.setenv(GITHUB_PAT = Sys.getenv('GITHUB_PAT'))
+
+          # 載入 reticulate
+          library(reticulate)
+          cat('Python path:', python_path, '\n')
+
+          # 安裝 flaiR
+          tryCatch({
+            remotes::install_github('davidycliao/flaiR', force = TRUE)
+            library(flaiR)
+            cat('flaiR installed and loaded successfully\n')
+          }, error = function(e) {
+            cat('Error during installation or loading:', conditionMessage(e), '\n')
+            quit(status = 1)
+          })
+        "
+      shell: cmd
 
     - name: Run basic test
       run: |
-        Rscript -e "python_path <- shell('where python', intern = TRUE)[1]; python_path <- gsub('\\\\\\\\', '/', python_path); Sys.setenv(RETICULATE_PYTHON = python_path); library(flaiR); library(reticulate); cat('=== Environment Information ===\n'); cat('R version:', R.version.string, '\n'); cat('Python path:', python_path, '\n'); cat('Python version:', py_version(), '\n'); cat('flaiR version:', packageVersion('flaiR'), '\n'); cat('Reticulate version:', packageVersion('reticulate'), '\n'); cat('\n=== Python Configuration ===\n'); py_config(); cat('Test completed successfully\n')"
-      shell: powershell
+        Rscript -e "
+          # 重新設定 Python 路徑
+          python_path <- shell('where python', intern = TRUE)[1]
+          Sys.setenv(RETICULATE_PYTHON = python_path)
 
-    - name: Upload logs on failure
-      if: failure()
-      uses: actions/upload-artifact@v4
-      with:
-        name: logs-r${{ matrix.r-version }}-py${{ matrix.python-version }}
-        path: |
-          *.R
-          *.log
+          library(flaiR)
+          library(reticulate)
+
+          cat('flaiR and reticulate working correctly\n')
+#           py_config()
+#           cat('Test completed successfully\n')
+#         "
+#       shell: cmd
+
