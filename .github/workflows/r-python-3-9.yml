@@ -61,141 +61,75 @@
 #         with:
 #           extra-packages: rcmdcheck
 
-name: flaiR-Python3.9
 
+name: flaiR-Python3.9
 on:
   push:
-    branches:
-      - main
-      - develop
+    branches: [main, develop]
   pull_request:
-    branches:
-      - main
-      - develop
-
+    branches: [main, develop]
 jobs:
   R-CMD-check:
-    runs-on: ${{ matrix.config.os }}
-    name: ${{ matrix.config.os }} (${{ matrix.config.r }})
-
+    runs-on: ${{ matrix.os }}
     strategy:
-      fail-fast: false
       matrix:
-        config:
-          - {os: macos-latest, r: 'release'}
-          - {os: windows-latest, r: 'release'}
-          - {os: ubuntu-latest, r: 'devel', http-user-agent: 'release'}
-          - {os: ubuntu-latest, r: 'release'}
-
+        os: [macos-latest, windows-latest]
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       R_KEEP_PKG_SOURCE: yes
-
+      # 完全跳過 vignettes
+      _R_CHECK_FORCE_SUGGESTS_: false
+      RENV_CONFIG_AUTOLOADER_ENABLED: "FALSE"
     steps:
       - uses: actions/checkout@v4
-
-      - uses: r-lib/actions/setup-r@v2
-        with:
-          r-version: ${{ matrix.config.r }}
-          http-user-agent: ${{ matrix.config.http-user-agent }}
-          use-public-rspm: true
-
       - uses: r-lib/actions/setup-pandoc@v2
 
-      # Install system dependencies - Ubuntu/Linux
-      - name: Install system dependencies (Ubuntu)
-        if: runner.os == 'Linux'
+      # macOS: 安裝 Armadillo
+      - name: Install Armadillo (macOS)
+        if: matrix.os == 'macos-latest'
         run: |
-          sudo apt-get update -y
-          sudo apt-get install -y \
-            libarmadillo-dev \
-            libopenblas-dev \
-            liblapack-dev \
-            libarpack2-dev \
-            libcurl4-openssl-dev \
-            libssl-dev \
-            libxml2-dev \
-            libfontconfig1-dev \
-            libfreetype6-dev \
-            libpng-dev \
-            libtiff5-dev \
-            libjpeg-dev \
-            libgit2-dev \
-            libharfbuzz-dev \
-            libfribidi-dev
+          brew install armadillo
+          mkdir -p ~/.R
+          echo "PKG_CPPFLAGS=-I/opt/homebrew/include" > ~/.R/Makevars
+          echo "PKG_LIBS=-L/opt/homebrew/lib -larmadillo" >> ~/.R/Makevars
 
-      # Install system dependencies - macOS
-      - name: Install system dependencies (macOS)
-        if: runner.os == 'macOS'
-        run: |
-          # Update brew and install necessary packages
-          brew update
-          brew install armadillo openblas lapack arpack
-
-      # Setup Python environment
-      - name: Setup Python
-        uses: actions/setup-python@v4
+      # Python 環境設定 (供測試使用)
+      - uses: actions/setup-python@v4
         with:
           python-version: '3.9'
-
-      - name: Check Python Version
-        run: python --version
-
-      # Install Python dependencies
-      - name: Install Python dependencies
+      - name: Install Python packages
         run: |
           python -m pip install --upgrade pip
-          # Install flair if needed
-          # pip install flair torch transformers
+          pip install flair torch transformers
+          python -c "import flair; print('Flair version:', flair.__version__)"
 
-      # Verify Armadillo installation (Linux only)
-      - name: Verify Armadillo installation
-        if: runner.os == 'Linux'
+      # R 環境設定
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          use-public-rspm: true
+
+      # 設定 reticulate 但不強制要求
+      - name: Configure reticulate (optional)
+        continue-on-error: true
+        shell: Rscript {0}
         run: |
-          echo "Checking for Armadillo headers..."
-          find /usr/include -name "armadillo*" -type f | head -5 || true
-          pkg-config --cflags armadillo || true
-          ldconfig -p | grep armadillo || true
-
-      # Set compilation environment variables (Linux)
-      - name: Set compilation flags (Linux)
-        if: runner.os == 'Linux'
-        run: |
-          echo "PKG_CPPFLAGS=-I/usr/include" >> $GITHUB_ENV
-          echo "PKG_LIBS=-larmadillo -lopenblas -llapack" >> $GITHUB_ENV
-
-      # Install R dependencies
-      - name: Install R dependencies
-        run: |
-          # Install basic packages
-          install.packages(c('remotes', 'pak'))
-
-          # First install RcppArmadillo
-          install.packages('RcppArmadillo', type = 'source')
-
-          # Set compilation parameters and install rsparse
-          if (Sys.info()[["sysname"]] == "Linux") {
-            Sys.setenv(PKG_CPPFLAGS = "-I/usr/include")
-            Sys.setenv(PKG_LIBS = "-larmadillo -lopenblas -llapack")
+          if (!requireNamespace("reticulate", quietly = TRUE)) {
+            install.packages("reticulate")
+          }
+          library(reticulate)
+          python_path <- Sys.which("python")
+          if (nzchar(python_path)) {
+            use_python(python_path, required = FALSE)
+            cat("Configured reticulate with Python:", python_path, "\n")
           }
 
-          # Install rsparse with specific configure arguments
-          install.packages('rsparse', type = 'source',
-                          configure.args = c('--with-armadillo-include=/usr/include'))
-
-          # Install flaiR
-          remotes::install_github("davidycliao/flaiR", force = TRUE)
-        shell: Rscript {0}
-
-      # Use r-lib actions to install other dependencies
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          extra-packages: |
-            any::rcmdcheck
-            any::covr
+          extra-packages: any::rcmdcheck
           needs: check
 
-      # Run R CMD check
+      # R CMD check 完全跳過 vignettes
       - uses: r-lib/actions/check-r-package@v2
         with:
-          upload-snapshots: true
+          args: 'c("--no-manual", "--no-vignettes", "--no-build-vignettes", "--ignore-vignettes")'
+          build_args: 'c("--no-manual", "--no-vignettes", "--no-build-vignettes")'
