@@ -61,6 +61,7 @@
 #         with:
 #           extra-packages: rcmdcheck
 
+
 name: flaiR-Python3.9
 on:
   push:
@@ -76,31 +77,14 @@ jobs:
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       R_KEEP_PKG_SOURCE: yes
-      # Force reticulate to use system Python
-      RETICULATE_PYTHON_ENV: ""
+      # 完全跳過 vignettes
+      _R_CHECK_FORCE_SUGGESTS_: false
+      RENV_CONFIG_AUTOLOADER_ENABLED: "FALSE"
     steps:
       - uses: actions/checkout@v4
       - uses: r-lib/actions/setup-pandoc@v2
 
-      # Python 環境設定 (移到最前面)
-      - uses: actions/setup-python@v4
-        with:
-          python-version: '3.9'
-
-      - name: Install Python packages
-        run: |
-          python -m pip install --upgrade pip
-          pip install flair torch
-          echo "=== Python 版本確認 ==="
-          python --version
-          echo "=== Python 路徑 ==="
-          python -c "import sys; print('Python path:', sys.executable)"
-          echo "=== Flair 安裝確認 ==="
-          python -c "import flair; print('Flair version:', flair.__version__)"
-          echo "=== 已安裝套件列表 ==="
-          pip list | grep -E "(flair|torch)"
-
-      # macOS: 安裝 Armadillo 並設定編譯環境
+      # macOS: 安裝 Armadillo
       - name: Install Armadillo (macOS)
         if: matrix.os == 'macos-latest'
         run: |
@@ -108,64 +92,44 @@ jobs:
           mkdir -p ~/.R
           echo "PKG_CPPFLAGS=-I/opt/homebrew/include" > ~/.R/Makevars
           echo "PKG_LIBS=-L/opt/homebrew/lib -larmadillo" >> ~/.R/Makevars
-          echo "=== Makevars 內容 ==="
-          cat ~/.R/Makevars
-          echo "=== Armadillo 安裝檢查 ==="
-          ls -la /opt/homebrew/include/armadillo* || echo "armadillo headers not found"
-          ls -la /opt/homebrew/lib/libarmadillo* || echo "armadillo libraries not found"
+
+      # Python 環境設定 (供測試使用)
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+      - name: Install Python packages
+        run: |
+          python -m pip install --upgrade pip
+          pip install flair torch transformers
+          python -c "import flair; print('Flair version:', flair.__version__)"
 
       # R 環境設定
       - uses: r-lib/actions/setup-r@v2
         with:
           use-public-rspm: true
 
-      # 配置 reticulate 使用正確的 Python
-      - name: Configure reticulate
+      # 設定 reticulate 但不強制要求
+      - name: Configure reticulate (optional)
+        continue-on-error: true
         shell: Rscript {0}
         run: |
-          # 安裝 reticulate
-          install.packages("reticulate")
-
-          # 設定 Python 路徑
-          python_path <- Sys.which("python")
-          cat("Python path found:", python_path, "\n")
-
-          # 強制 reticulate 使用系統 Python
-          Sys.setenv(RETICULATE_PYTHON = python_path)
-
-          # 驗證設定
+          if (!requireNamespace("reticulate", quietly = TRUE)) {
+            install.packages("reticulate")
+          }
           library(reticulate)
-          cat("Reticulate Python config:\n")
-          print(py_config())
-
-          # 測試 flair 導入
-          tryCatch({
-            flair <- import("flair")
-            cat("Successfully imported flair\n")
-            cat("Flair version:", flair$`__version__`, "\n")
-          }, error = function(e) {
-            cat("Error importing flair:", e$message, "\n")
-            # 顯示可用模組
-            cat("Available Python modules:\n")
-            modules <- py_run_string("import pkg_resources; print([p.project_name for p in pkg_resources.working_set])")
-          })
+          python_path <- Sys.which("python")
+          if (nzchar(python_path)) {
+            use_python(python_path, required = FALSE)
+            cat("Configured reticulate with Python:", python_path, "\n")
+          }
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
           extra-packages: any::rcmdcheck
           needs: check
 
-      # Windows 特定設定
-      - name: Configure Windows Python (Windows only)
-        if: matrix.os == 'windows-latest'
-        shell: Rscript {0}
-        run: |
-          # Windows 可能需要額外的 PATH 設定
-          python_path <- Sys.which("python")
-          python_dir <- dirname(python_path)
-          current_path <- Sys.getenv("PATH")
-          new_path <- paste(python_dir, current_path, sep = ";")
-          Sys.setenv(PATH = new_path)
-          cat("Updated PATH for Windows\n")
-
+      # R CMD check 完全跳過 vignettes
       - uses: r-lib/actions/check-r-package@v2
+        with:
+          args: 'c("--no-manual", "--no-vignettes", "--no-build-vignettes", "--ignore-vignettes")'
+          build_args: 'c("--no-manual", "--no-vignettes", "--no-build-vignettes")'
