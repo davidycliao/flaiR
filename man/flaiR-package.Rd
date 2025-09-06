@@ -23,15 +23,9 @@ Useful links:
 
 Authors:
 \itemize{
-  \item Stefan Müller \email{stefan.mueller@ucd.ie} [contributor]
   \item Akbik Alan \email{alan.akbik@zalando.de} [contributor]
   \item Blythe Duncan \email{blythe.duncan@zalando.de} [contributor]
   \item Vollgraf Roland \email{vollgraf.roland@zalando.de} [contributor]
-}
-
-Other contributors:
-\itemize{
-  \item Sohini Timbadia [contributor]
 }
 
 }

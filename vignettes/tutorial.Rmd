@@ -25,7 +25,7 @@ knitr::opts_chunk$set(
 # Sys.setenv(RETICULATE_PYTHON = Sys.which("python3"))
 library(flaiR)
 library(reticulate)
-remotes::install_github("prodriguezsosa/conText", force = TRUE)
+# remotes::install_github("prodriguezsosa/conText", force = TRUE)
 # renv::install("prodriguezsosa/conText")
 
 # system(paste(reticulate::py_config()$python, "-m pip install flair"))
@@ -1003,7 +1003,7 @@ instead:
 ```{r}
 TransformerDocumentEmbeddings <- flair_embeddings()$TransformerDocumentEmbeddings
 embedding <- TransformerDocumentEmbeddings('roberta-base')
-sentence <- Sentence('The grass is green .')
+sentence <- Sentence('The grass is green.')
 embedding$embed(sentence)
 ```
 
@@ -2346,11 +2346,11 @@ First of all, when loading the conText package, you'll find three pre-loaded dat
 
 ## Build Document-Embedding-Matrix with Other Embedding Frameworks
 
-```{r include=FALSE}
+```{r warning=FALSE, include=FALSE}
+remotes::install_github("prodriguezsosa/conText", force = TRUE)
 library(conText)
 library(quanteda)
 library(dplyr)
-library(text2vec)
 library(flaiR)
 ```
 
@@ -2361,13 +2361,20 @@ First, let's tokenize `cr_sample_corpus` using the tokens_context function from 
 
 ```{r}
 # tokenize corpus removing unnecessary (i.e. semantically uninformative) elements
-toks <- tokens(cr_sample_corpus, remove_punct=T, remove_symbols=T, remove_numbers=T, remove_separators=T)
+toks <- tokens(cr_sample_corpus, 
+               remove_punct = TRUE, 
+               remove_symbols = TRUE, 
+               remove_numbers = TRUE,
+               remove_separators  = TRUE)
 
 # clean out stopwords and words with 2 or fewer characters
-toks_nostop <- tokens_select(toks, pattern = stopwords("en"), selection = "remove", min_nchar=3)
+toks_nostop <- tokens_select(toks, 
+                             pattern = stopwords("en"), 
+                             selection = "remove", 
+                             min_nchar=3)
 
 # only use features that appear at least 5 times in the corpus
-feats <- dfm(toks_nostop, tolower=T, verbose = FALSE) %>% 
+feats <- dfm(toks_nostop, tolower = TRUE, verbose = FALSE) %>% 
   dfm_trim(min_termfreq = 5) %>% featnames()
 
 # leave the pads so that non-adjacent words will not become adjacent
@@ -2476,13 +2483,14 @@ library(conText)
 ft_model <- conText(formula = immigration ~ party + gender,
                     data = toks_nostop_feats,
                     pre_trained = fasttext_subset,
-                    transform = TRUE, 
-                    transform_matrix = ft_transform, 
+                    transform = TRUE,
+                    transform_matrix = ft_transform,
                     confidence_level = 0.95,
-                    permute = TRUE, 
-                    jackknife = TRUE,
+                    permute = FALSE,
+                    jackknife = FALSE,
                     num_permutations = 100,
-                    window = 6, case_insensitive = TRUE,
+                    window = 6,
+                    case_insensitive = TRUE,
                     verbose = FALSE)
 ```
 
@@ -2513,22 +2521,6 @@ nns(rbind(RF_wv,RM_wv),
     N = 10, 
     pre_trained = fasttext_subset, 
     candidates = ft_model@features)
-```
-
-```{r}
-library(ggplot2)
-ggplot(ft_model@normed_coefficients, aes(x = coefficient, y = normed.estimate)) +
-  geom_errorbar(aes(ymin = lower.ci, ymax = upper.ci), width = 0.2) +
-  geom_point(size = 3) +
-  geom_hline(yintercept = 0, linetype = "dashed", color = "gray50") +
-  theme_minimal() +
-  labs(
-    title = "Estimated Coefficients with 95% CIs",
-    x = "Variables",
-    y = "Normalized Estimate"
-  ) +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
-
 ```
 
 ## Exploring Document-Embedding Matrix with conText Functions
@@ -2615,226 +2607,226 @@ immig_ncs[["R"]]
 immig_ncs[["D"]]
 ```
 
-## Comparative Analysis of A La Carte, Flair Stacked, and BERT Embeddings
+<!-- ## Comparative Analysis of A La Carte, Flair Stacked, and BERT Embeddings -->
 
-### Build A La Carte Document-Embedding-Matrix  
+<!-- ### Build A La Carte Document-Embedding-Matrix   -->
 
-```{r}
-# build a document-embedding-matrix
-immig_dem <- dem(x = immig_dfm, pre_trained = cr_glove_subset, transform = TRUE, transform_matrix = cr_transform, verbose = TRUE)
+<!-- ```{r} -->
+<!-- # build a document-embedding-matrix -->
+<!-- immig_dem <- dem(x = immig_dfm, pre_trained = cr_glove_subset, transform = TRUE, transform_matrix = cr_transform, verbose = TRUE) -->
 
-set.seed(2021L)
-alc_model <- conText(formula = immigration ~ party + gender,
-                     data = toks_nostop_feats,
-                     pre_trained = cr_glove_subset,
-                     transform = TRUE, 
-                     transform_matrix = cr_transform,
-                     jackknife = TRUE, 
-                     confidence_level = 0.95,
-                     permute = TRUE, 
-                     num_permutations = 100,
-                     window = 6, 
-                     case_insensitive = TRUE,
-                     verbose = FALSE)
-```
+<!-- set.seed(2021L) -->
+<!-- alc_model <- conText(formula = immigration ~ party + gender, -->
+<!--                      data = toks_nostop_feats, -->
+<!--                      pre_trained = cr_glove_subset, -->
+<!--                      transform = TRUE,  -->
+<!--                      transform_matrix = cr_transform, -->
+<!--                      jackknife = TRUE,  -->
+<!--                      confidence_level = 0.95, -->
+<!--                      permute = TRUE,  -->
+<!--                      num_permutations = 100, -->
+<!--                      window = 6,  -->
+<!--                      case_insensitive = TRUE, -->
+<!--                      verbose = FALSE) -->
+<!-- ``` -->
 
-### Document Embedding Matrix Construction Using Flair Contextual Stacked Embeddings
+<!-- ### Document Embedding Matrix Construction Using Flair Contextual Stacked Embeddings -->
 
-<div style="text-align: justify;">
+<!-- <div style="text-align: justify;"> -->
 
-To facilitate the loading of different embedding types, I'll import the following __classes__ and __functions__ from flaiF: `WordEmbeddings`, `FlairEmbeddings`, `TransformerWordEmbeddings`, `StackedEmbeddings`, and `Sentence`. These components enable us to work with GloVe embeddings, Flair's contextual embeddings, and transformer-based embeddings from the HuggingFace library.
+<!-- To facilitate the loading of different embedding types, I'll import the following __classes__ and __functions__ from flaiF: `WordEmbeddings`, `FlairEmbeddings`, `TransformerWordEmbeddings`, `StackedEmbeddings`, and `Sentence`. These components enable us to work with GloVe embeddings, Flair's contextual embeddings, and transformer-based embeddings from the HuggingFace library. -->
 
-</div>
+<!-- </div> -->
 
-```{r include=FALSE}
-# Load the flaiR library
-library(flaiR)
+<!-- ```{r include=FALSE} -->
+<!-- # Load the flaiR library -->
+<!-- library(flaiR) -->
 
-# Import embedding classes from flair
-WordEmbeddings <- flair_embeddings()$WordEmbeddings 
-FlairEmbeddings <- flair_embeddings()$FlairEmbeddings
-TransformerWordEmbeddings <- flair_embeddings()$TransformerWordEmbeddings
-StackedEmbeddings <- flair_embeddings()$StackedEmbeddings
+<!-- # Import embedding classes from flair -->
+<!-- WordEmbeddings <- flair_embeddings()$WordEmbeddings  -->
+<!-- FlairEmbeddings <- flair_embeddings()$FlairEmbeddings -->
+<!-- TransformerWordEmbeddings <- flair_embeddings()$TransformerWordEmbeddings -->
+<!-- StackedEmbeddings <- flair_embeddings()$StackedEmbeddings -->
 
-# Import Sentence class for text processing
-Sentence <- flair_data()$Sentence
+<!-- # Import Sentence class for text processing -->
+<!-- Sentence <- flair_data()$Sentence -->
 
-# Initialize FastText embeddings trained on Common Crawl
-fasttext_embeddings <- WordEmbeddings('en-crawl')
+<!-- # Initialize FastText embeddings trained on Common Crawl -->
+<!-- fasttext_embeddings <- WordEmbeddings('en-crawl') -->
 
-# Initialize Flair's forward language model embeddings trained on news data
-flair_forward <- FlairEmbeddings('news-forward')
+<!-- # Initialize Flair's forward language model embeddings trained on news data -->
+<!-- flair_forward <- FlairEmbeddings('news-forward') -->
 
-# Initialize Flair's backward language model embeddings trained on news data  
-flair_backward <- FlairEmbeddings('news-backward')
+<!-- # Initialize Flair's backward language model embeddings trained on news data   -->
+<!-- flair_backward <- FlairEmbeddings('news-backward') -->
 
-```
+<!-- ``` -->
 
-Combine three different types of embeddings into a stacked embedding model.
+<!-- Combine three different types of embeddings into a stacked embedding model. -->
 
-This creates a stacked embedding model that combines:
+<!-- This creates a stacked embedding model that combines: -->
 
-- `FastText embeddings`: Captures general word semantics
-- `Forward Flair`: Captures contextual information reading text left-to-right
-- `Backward Flair`: Captures contextual information reading text right-to-left
-
-
-```{r}
-stacked_embeddings  <- StackedEmbeddings(list(
-  fasttext_embeddings,    
-  flair_forward,          
-  flair_backward        
-))
-```
-
-```{r}
-# Step 1: Create a Flair Sentence object from the text
-sentence <- Sentence(paste(rownames(cr_glove_subset), collapse = " "))
-
-# Step 2: Generate embeddings using our stacked model
-stacked_embeddings$embed(sentence)
-
-# Step 3: Extract and store embeddings for each token
-stacked_subset <- process_embeddings(sentence, verbose = TRUE)
-
-# Step 4: Compute transformation matrix
-
-st_transform <- compute_transform(
-   x = toks_fcm,               
-   pre_trained = stacked_subset,
-   weighting = 'log'          
-)
-
-# Step 5: Generate document embeddings matrix
-immig_dem_st <- dem(
-   x = immig_dfm,              
-   pre_trained = stacked_subset,
-   transform = TRUE,          
-   transform_matrix = st_transform,
-   verbose = TRUE             
-)
-
-# Step 6: Fit conText model for analysis
-set.seed(2021L)                 
-st_model <- conText(formula = immigration ~ party + gender,  
-                    data = toks_nostop_feats,                
-                    pre_trained = stacked_subset,          
-                    transform = TRUE,                      
-                    transform_matrix = st_transform,       
-                    jackknife = TRUE,                      
-                    confidence_level = 0.95,             
-                    permute = TRUE,                      
-                    num_permutations = 100,               
-                    window = 6,                          
-                    case_insensitive = TRUE,              
-                    verbose = FALSE)
-```
-
-### Document Embedding Matrix Construction with BERT
-
-<div style="text-align: justify;">
-BERT embeddings provide powerful contextual representations through their bidirectional transformer architecture. These embeddings are good at understanding context from both directions within text, generating deep contextual representations through multiple transformer layers, and leveraging pre-training on large text corpora to achieve strong performance across NLP tasks.  The classic BERT base model generates 768-dimensional embeddings for each token, providing rich semantic representations.
-
-</div>
-
-By utilizing the Flair framework, we also can seamlessly integrate:
-
-- Multiple BERT variants like RoBERTa and DistilBERT
-- Cross-lingual models such as XLM-RoBERTa  
-- Domain-adapted BERT models
-- Any transformer model available on HuggingFace
+<!-- - `FastText embeddings`: Captures general word semantics -->
+<!-- - `Forward Flair`: Captures contextual information reading text left-to-right -->
+<!-- - `Backward Flair`: Captures contextual information reading text right-to-left -->
 
 
+<!-- ```{r} -->
+<!-- stacked_embeddings  <- StackedEmbeddings(list( -->
+<!--   fasttext_embeddings,     -->
+<!--   flair_forward,           -->
+<!--   flair_backward         -->
+<!-- )) -->
+<!-- ``` -->
 
-```{r}
-# Initialize BERT base uncased model embeddings from HuggingFace
-bert_embeddings <- TransformerWordEmbeddings('bert-base-uncased')
-```
+<!-- ```{r} -->
+<!-- # Step 1: Create a Flair Sentence object from the text -->
+<!-- sentence <- Sentence(paste(rownames(cr_glove_subset), collapse = " ")) -->
 
-```{r}
-# Step 1: Create a Flair Sentence object from the text
-sentence <- Sentence(paste(rownames(cr_glove_subset), collapse = " "))
+<!-- # Step 2: Generate embeddings using our stacked model -->
+<!-- stacked_embeddings$embed(sentence) -->
 
-# Step 2: Generate embeddings using BERT model from HugginFace
-bert_embeddings$embed(sentence)
+<!-- # Step 3: Extract and store embeddings for each token -->
+<!-- stacked_subset <- process_embeddings(sentence, verbose = TRUE) -->
 
-# Step 3: Extract and store embeddings for each token
-bert_subset <- process_embeddings(sentence, verbose = TRUE)
+<!-- # Step 4: Compute transformation matrix -->
 
-# Step 4: Compute transformation matrix 
-bt_transform <- compute_transform(x = toks_fcm,     
-                                  pre_trained = bert_subset,
-                                  weighting = 'log')
+<!-- st_transform <- compute_transform( -->
+<!--    x = toks_fcm,                -->
+<!--    pre_trained = stacked_subset, -->
+<!--    weighting = 'log'           -->
+<!-- ) -->
 
-# Step 5: Generate document embeddings matrix
-immig_dem_bt <- dem(x = immig_dfm,
-                    pre_trained = bert_subset,
-                    transform = TRUE,          
-                    transform_matrix = bt_transform,
-                    verbose = TRUE)
+<!-- # Step 5: Generate document embeddings matrix -->
+<!-- immig_dem_st <- dem( -->
+<!--    x = immig_dfm,               -->
+<!--    pre_trained = stacked_subset, -->
+<!--    transform = TRUE,           -->
+<!--    transform_matrix = st_transform, -->
+<!--    verbose = TRUE              -->
+<!-- ) -->
 
-# Step 6: Fit conText model for analysis
-set.seed(2021L)                 
-bt_model <- conText(formula = immigration ~ party + gender,  
-                    data = toks_nostop_feats,                
-                    pre_trained = bert_subset,          
-                    transform = TRUE,                      
-                    transform_matrix = bt_transform,       
-                    jackknife = TRUE,                      
-                    confidence_level = 0.95,             
-                    permute = TRUE,                      
-                    num_permutations = 100,               
-                    window = 6,                          
-                    case_insensitive = TRUE,              
-                    verbose = FALSE)
-```
+<!-- # Step 6: Fit conText model for analysis -->
+<!-- set.seed(2021L)                  -->
+<!-- st_model <- conText(formula = immigration ~ party + gender,   -->
+<!--                     data = toks_nostop_feats,                 -->
+<!--                     pre_trained = stacked_subset,           -->
+<!--                     transform = TRUE,                       -->
+<!--                     transform_matrix = st_transform,        -->
+<!--                     jackknife = TRUE,                       -->
+<!--                     confidence_level = 0.95,              -->
+<!--                     permute = TRUE,                       -->
+<!--                     num_permutations = 100,                -->
+<!--                     window = 6,                           -->
+<!--                     case_insensitive = TRUE,               -->
+<!--                     verbose = FALSE) -->
+<!-- ``` -->
 
-### Comparision of Different Embedding Approaches
+<!-- ### Document Embedding Matrix Construction with BERT -->
 
-<div style="text-align: justify;">
+<!-- <div style="text-align: justify;"> -->
+<!-- BERT embeddings provide powerful contextual representations through their bidirectional transformer architecture. These embeddings are good at understanding context from both directions within text, generating deep contextual representations through multiple transformer layers, and leveraging pre-training on large text corpora to achieve strong performance across NLP tasks.  The classic BERT base model generates 768-dimensional embeddings for each token, providing rich semantic representations. -->
 
-While this tutorial doesn't determine a definitive best approach, it's important to understand the key distinctions between word embedding methods. BERT, FastText, Flair Stacked Embeddings, and GloVe can be categorized into two groups: dynamic and static embeddings.
+<!-- </div> -->
 
-Dynamic embeddings, particularly BERT and Flair, adapt their word representations based on context using high-dimensional vector spaces (BERT uses 768 dimensions in its base model). BERT employs self-attention mechanisms and subword tokenization, while Flair uses character-level modeling. Both effectively handle out-of-vocabulary words through these mechanisms.
+<!-- By utilizing the Flair framework, we also can seamlessly integrate: -->
 
-However, there is a notable difference between their case study and here. While they provide selected words, we directly extract individual word vectors from BERT and Flair (forward/backward) embeddings using the same set of words. This doesn't truly utilize BERT and Flair embeddings' capability of modeling context. A more meaningful approach would be to extract embeddings at the quasi-sentence or paragraph level, or alternatively, to pool the entire document before extracting embeddings.
+<!-- - Multiple BERT variants like RoBERTa and DistilBERT -->
+<!-- - Cross-lingual models such as XLM-RoBERTa   -->
+<!-- - Domain-adapted BERT models -->
+<!-- - Any transformer model available on HuggingFace -->
 
-These context-based approaches stand in stark contrast to GloVe's methodology, which relies on pre-computed global word-word co-occurrence statistics to generate static word vectors.
-
-</div>
 
 
-```{r echo=FALSE, message = TRUE, warning = TRUE, out.width="95%"}
+<!-- ```{r} -->
+<!-- # Initialize BERT base uncased model embeddings from HuggingFace -->
+<!-- bert_embeddings <- TransformerWordEmbeddings('bert-base-uncased') -->
+<!-- ``` -->
 
-st <- as.data.frame(st_model@normed_coefficients)
-st["model"] <- "Flair Stacked Embeddings"
-ft <- as.data.frame(ft_model@normed_coefficients)
-ft["model"] <- "FastTest"
-bt <- as.data.frame(bt_model@normed_coefficients)
-bt["model"] <- "BERT"
-ac <- as.data.frame(alc_model@normed_coefficients)
-ac["model"] <- "Glove"
+<!-- ```{r} -->
+<!-- # Step 1: Create a Flair Sentence object from the text -->
+<!-- sentence <- Sentence(paste(rownames(cr_glove_subset), collapse = " ")) -->
 
-merged_df <- rbind(st,ft,bt,ac)
+<!-- # Step 2: Generate embeddings using BERT model from HugginFace -->
+<!-- bert_embeddings$embed(sentence) -->
 
-library(ggplot2)
-# Create a faceted plot comparing different embedding results in a 2x2 grid
-ggplot(merged_df, aes(x = coefficient, y = normed.estimate)) +
- geom_errorbar(aes(ymin = lower.ci, ymax = upper.ci), width = 0.2) +
- geom_point(size = 3) +
- # Add reference line at y=0
- geom_hline(yintercept = 0, linetype = "dashed", color = "gray50") +
- theme_minimal() +
- labs(
-   title = "Estimated Coefficients with 95% CIs",
-   x = "",
-   y = "Normalized Estimate"
- ) +
- theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
- facet_wrap(~model, nrow = 2, ncol = 2, scales = "free_y")
-```
+<!-- # Step 3: Extract and store embeddings for each token -->
+<!-- bert_subset <- process_embeddings(sentence, verbose = TRUE) -->
 
-&nbsp;
+<!-- # Step 4: Compute transformation matrix  -->
+<!-- bt_transform <- compute_transform(x = toks_fcm,      -->
+<!--                                   pre_trained = bert_subset, -->
+<!--                                   weighting = 'log') -->
+
+<!-- # Step 5: Generate document embeddings matrix -->
+<!-- immig_dem_bt <- dem(x = immig_dfm, -->
+<!--                     pre_trained = bert_subset, -->
+<!--                     transform = TRUE,           -->
+<!--                     transform_matrix = bt_transform, -->
+<!--                     verbose = TRUE) -->
+
+<!-- # Step 6: Fit conText model for analysis -->
+<!-- set.seed(2021L)                  -->
+<!-- bt_model <- conText(formula = immigration ~ party + gender,   -->
+<!--                     data = toks_nostop_feats,                 -->
+<!--                     pre_trained = bert_subset,           -->
+<!--                     transform = TRUE,                       -->
+<!--                     transform_matrix = bt_transform,        -->
+<!--                     jackknife = TRUE,                       -->
+<!--                     confidence_level = 0.95,              -->
+<!--                     permute = TRUE,                       -->
+<!--                     num_permutations = 100,                -->
+<!--                     window = 6,                           -->
+<!--                     case_insensitive = TRUE,               -->
+<!--                     verbose = FALSE) -->
+<!-- ``` -->
+
+<!-- ### Comparision of Different Embedding Approaches -->
+
+<!-- <div style="text-align: justify;"> -->
+
+<!-- While this tutorial doesn't determine a definitive best approach, it's important to understand the key distinctions between word embedding methods. BERT, FastText, Flair Stacked Embeddings, and GloVe can be categorized into two groups: dynamic and static embeddings. -->
+
+<!-- Dynamic embeddings, particularly BERT and Flair, adapt their word representations based on context using high-dimensional vector spaces (BERT uses 768 dimensions in its base model). BERT employs self-attention mechanisms and subword tokenization, while Flair uses character-level modeling. Both effectively handle out-of-vocabulary words through these mechanisms. -->
+
+<!-- However, there is a notable difference between their case study and here. While they provide selected words, we directly extract individual word vectors from BERT and Flair (forward/backward) embeddings using the same set of words. This doesn't truly utilize BERT and Flair embeddings' capability of modeling context. A more meaningful approach would be to extract embeddings at the quasi-sentence or paragraph level, or alternatively, to pool the entire document before extracting embeddings. -->
+
+<!-- These context-based approaches stand in stark contrast to GloVe's methodology, which relies on pre-computed global word-word co-occurrence statistics to generate static word vectors. -->
+
+<!-- </div> -->
+
+
+<!-- ```{r echo=FALSE, message = TRUE, warning = TRUE, out.width="95%"} -->
+
+<!-- st <- as.data.frame(st_model@normed_coefficients) -->
+<!-- st["model"] <- "Flair Stacked Embeddings" -->
+<!-- ft <- as.data.frame(ft_model@normed_coefficients) -->
+<!-- ft["model"] <- "FastTest" -->
+<!-- bt <- as.data.frame(bt_model@normed_coefficients) -->
+<!-- bt["model"] <- "BERT" -->
+<!-- ac <- as.data.frame(alc_model@normed_coefficients) -->
+<!-- ac["model"] <- "Glove" -->
+
+<!-- merged_df <- rbind(st,ft,bt,ac) -->
+
+<!-- library(ggplot2) -->
+<!-- # Create a faceted plot comparing different embedding results in a 2x2 grid -->
+<!-- ggplot(merged_df, aes(x = coefficient, y = normed.estimate)) + -->
+<!--  geom_errorbar(aes(ymin = lower.ci, ymax = upper.ci), width = 0.2) + -->
+<!--  geom_point(size = 3) + -->
+<!--  # Add reference line at y=0 -->
+<!--  geom_hline(yintercept = 0, linetype = "dashed", color = "gray50") + -->
+<!--  theme_minimal() + -->
+<!--  labs( -->
+<!--    title = "Estimated Coefficients with 95% CIs", -->
+<!--    x = "", -->
+<!--    y = "Normalized Estimate" -->
+<!--  ) + -->
+<!--  theme(axis.text.x = element_text(angle = 45, hjust = 1)) + -->
+<!--  facet_wrap(~model, nrow = 2, ncol = 2, scales = "free_y") -->
+<!-- ``` -->
+
+<!-- &nbsp; -->
 
 -----
 
