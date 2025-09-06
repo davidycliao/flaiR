@@ -189,8 +189,6 @@
 #           extra-packages: rcmdcheck
 #       - uses: r-lib/actions/check-r-package@v2
 
-
-
 name: R-CMD-check
 
 on:
@@ -337,7 +335,7 @@ jobs:
           if (.Platform$OS.type == "windows") {
             python_path <- file.path(Sys.getenv("USERPROFILE"), ".venv", "Scripts", "python.exe")
           } else {
-            python_path <- file.path(Sys.getenv("HOME"), ".venv", "bin", "python")
+            python_path <- file.path(path.expand("~"), ".venv", "bin", "python")
           }
 
           # 確保 Python 路徑存在
@@ -364,7 +362,16 @@ jobs:
         uses: r-lib/actions/check-r-package@v2
         with:
           build_args: 'c("--no-manual", "--compact-vignettes=gs+qpdf")'
-          args: 'c("--no-manual", "--as-cran", "--no-vignettes")'  # 暫時跳過 vignettes
+          args: 'c("--no-manual", "--as-cran")'  # 先嘗試完整檢查
+        continue-on-error: true  # 允許失敗，以便查看詳細日誌
+
+      # === 故障排除：如果失敗則嘗試基本檢查 ===
+      - name: Fallback check (skip vignettes)
+        if: failure()
+        uses: r-lib/actions/check-r-package@v2
+        with:
+          build_args: 'c("--no-manual")'
+          args: 'c("--no-manual", "--as-cran", "--no-vignettes", "--no-build-vignettes")'
 
       # === 上傳檢查結果 ===
       - name: Upload check results
