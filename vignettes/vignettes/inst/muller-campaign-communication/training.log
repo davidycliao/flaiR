@@ -1,0 +1,101 @@
+2025-10-29 02:12:38,975 ----------------------------------------------------------------------------------------------------
+2025-10-29 02:12:38,976 Model: "TextClassifier(
+  (embeddings): TransformerDocumentEmbeddings(
+    (model): DistilBertModel(
+      (embeddings): Embeddings(
+        (word_embeddings): Embedding(30523, 768, padding_idx=0)
+        (position_embeddings): Embedding(512, 768)
+        (LayerNorm): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+        (dropout): Dropout(p=0.1, inplace=False)
+      )
+      (transformer): Transformer(
+        (layer): ModuleList(
+          (0-5): 6 x TransformerBlock(
+            (attention): DistilBertSdpaAttention(
+              (dropout): Dropout(p=0.1, inplace=False)
+              (q_lin): Linear(in_features=768, out_features=768, bias=True)
+              (k_lin): Linear(in_features=768, out_features=768, bias=True)
+              (v_lin): Linear(in_features=768, out_features=768, bias=True)
+              (out_lin): Linear(in_features=768, out_features=768, bias=True)
+            )
+            (sa_layer_norm): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+            (ffn): FFN(
+              (dropout): Dropout(p=0.1, inplace=False)
+              (lin1): Linear(in_features=768, out_features=3072, bias=True)
+              (lin2): Linear(in_features=3072, out_features=768, bias=True)
+              (activation): GELUActivation()
+            )
+            (output_layer_norm): LayerNorm((768,), eps=1e-12, elementwise_affine=True)
+          )
+        )
+      )
+    )
+  )
+  (decoder): Linear(in_features=768, out_features=3, bias=True)
+  (dropout): Dropout(p=0.0, inplace=False)
+  (locked_dropout): LockedDropout(p=0.0)
+  (word_dropout): WordDropout(p=0.0)
+  (loss_function): CrossEntropyLoss()
+  (weights): None
+  (weight_tensor) None
+)"
+2025-10-29 02:12:38,976 ----------------------------------------------------------------------------------------------------
+2025-10-29 02:12:38,976 Corpus: 723 train + 80 dev + 85 test sentences
+2025-10-29 02:12:38,976 ----------------------------------------------------------------------------------------------------
+2025-10-29 02:12:38,976 Train:  723 sentences
+2025-10-29 02:12:38,976         (train_with_dev=False, train_with_test=False)
+2025-10-29 02:12:38,976 ----------------------------------------------------------------------------------------------------
+2025-10-29 02:12:38,976 Training Params:
+2025-10-29 02:12:38,976  - learning_rate: "0.02" 
+2025-10-29 02:12:38,976  - mini_batch_size: "8"
+2025-10-29 02:12:38,976  - max_epochs: "1"
+2025-10-29 02:12:38,976  - shuffle: "True"
+2025-10-29 02:12:38,976 ----------------------------------------------------------------------------------------------------
+2025-10-29 02:12:38,976 Plugins:
+2025-10-29 02:12:38,976  - AnnealOnPlateau | patience: '3', anneal_factor: '0.5', min_learning_rate: '0.0001'
+2025-10-29 02:12:38,976 ----------------------------------------------------------------------------------------------------
+2025-10-29 02:12:38,976 Final evaluation on model from best epoch (best-model.pt)
+2025-10-29 02:12:38,976  - metric: "('micro avg', 'f1-score')"
+2025-10-29 02:12:38,976 ----------------------------------------------------------------------------------------------------
+2025-10-29 02:12:38,976 Computation:
+2025-10-29 02:12:38,976  - compute on device: cpu
+2025-10-29 02:12:38,977  - embedding storage: cpu
+2025-10-29 02:12:38,977 ----------------------------------------------------------------------------------------------------
+2025-10-29 02:12:38,977 Model training base path: "vignettes/inst/muller-campaign-communication"
+2025-10-29 02:12:38,977 ----------------------------------------------------------------------------------------------------
+2025-10-29 02:12:38,977 ----------------------------------------------------------------------------------------------------
+2025-10-29 02:12:41,827 epoch 1 - iter 9/91 - loss 1.15913798 - time (sec): 2.85 - samples/sec: 25.26 - lr: 0.020000 - momentum: 0.000000
+2025-10-29 02:12:44,576 epoch 1 - iter 18/91 - loss 1.09388578 - time (sec): 5.60 - samples/sec: 25.72 - lr: 0.020000 - momentum: 0.000000
+2025-10-29 02:12:47,332 epoch 1 - iter 27/91 - loss 0.98490597 - time (sec): 8.36 - samples/sec: 25.85 - lr: 0.020000 - momentum: 0.000000
+2025-10-29 02:12:49,987 epoch 1 - iter 36/91 - loss 0.90666182 - time (sec): 11.01 - samples/sec: 26.16 - lr: 0.020000 - momentum: 0.000000
+2025-10-29 02:12:52,226 epoch 1 - iter 45/91 - loss 0.86723306 - time (sec): 13.25 - samples/sec: 27.17 - lr: 0.020000 - momentum: 0.000000
+2025-10-29 02:12:54,546 epoch 1 - iter 54/91 - loss 0.82877370 - time (sec): 15.57 - samples/sec: 27.75 - lr: 0.020000 - momentum: 0.000000
+2025-10-29 02:12:57,351 epoch 1 - iter 63/91 - loss 0.82633138 - time (sec): 18.37 - samples/sec: 27.43 - lr: 0.020000 - momentum: 0.000000
+2025-10-29 02:12:59,625 epoch 1 - iter 72/91 - loss 0.77545717 - time (sec): 20.65 - samples/sec: 27.90 - lr: 0.020000 - momentum: 0.000000
+2025-10-29 02:13:02,123 epoch 1 - iter 81/91 - loss 0.75503448 - time (sec): 23.15 - samples/sec: 28.00 - lr: 0.020000 - momentum: 0.000000
+2025-10-29 02:13:04,835 epoch 1 - iter 90/91 - loss 0.73309232 - time (sec): 25.86 - samples/sec: 27.84 - lr: 0.020000 - momentum: 0.000000
+2025-10-29 02:13:04,959 ----------------------------------------------------------------------------------------------------
+2025-10-29 02:13:04,959 EPOCH 1 done: loss 0.7313 - lr: 0.020000
+2025-10-29 02:13:05,952 DEV : loss 0.42103520035743713 - f1-score (micro avg)  0.8375
+2025-10-29 02:13:05,954  - 0 epochs without improvement
+2025-10-29 02:13:05,955 saving best model
+2025-10-29 02:13:06,791 ----------------------------------------------------------------------------------------------------
+2025-10-29 02:13:06,793 Loading model from best epoch ...
+2025-10-29 02:13:08,916 
+Results:
+- F-score (micro) 0.8235
+- F-score (macro) 0.8246
+- Accuracy 0.8235
+
+By class:
+              precision    recall  f1-score   support
+
+      Future     0.8125    0.9070    0.8571        43
+     Present     0.7826    0.6667    0.7200        27
+        Past     0.9286    0.8667    0.8966        15
+
+    accuracy                         0.8235        85
+   macro avg     0.8412    0.8134    0.8246        85
+weighted avg     0.8235    0.8235    0.8205        85
+
+2025-10-29 02:13:08,916 ----------------------------------------------------------------------------------------------------
