@@ -6,21 +6,20 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>An R Wrapper for Accessing Flair NLP Library • flaiR</title>
-<!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
-<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="apple-touch-icon.png">
-<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="apple-touch-icon-120x120.png">
-<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="apple-touch-icon-76x76.png">
-<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="apple-touch-icon-60x60.png">
+<!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="favicon-96x96.png">
+<link rel="icon" type="”image/svg+xml”" href="favicon.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="icon" sizes="any" href="favicon.ico">
+<link rel="manifest" href="site.webmanifest">
 <script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/Source_Sans_Pro-0.4.9/font.css" rel="stylesheet">
-<link href="deps/Source_Code_Pro-0.4.9/font.css" rel="stylesheet">
+<script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/Source_Sans_Pro-0.4.10/font.css" rel="stylesheet">
+<link href="deps/Source_Code_Pro-0.4.10/font.css" rel="stylesheet">
 <link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="An R Wrapper for Accessing Flair NLP Library">
-<meta name="description" content="Provides a suite of intuitive and flexible wrapper tools tailored for accessing FLAIR in Python data analysis. The package is an R wrapper designed to provide access to the primary features of FLAIR.">
-<meta property="og:description" content="Provides a suite of intuitive and flexible wrapper tools tailored for accessing FLAIR in Python data analysis. The package is an R wrapper designed to provide access to the primary features of FLAIR.">
+<meta name="description" content="Provides an R interface to the Flair Natural Language Processing library in Python. This package allows R users to access Flairs NLP important features including named entity recognition, part-of-speech tagging, text embeddings and word embeddings. The package handles the Python dependencies management and provides R-friendly wrappers for Flairs functionality. Users need Python (&gt;= 3.9.0) with PyTorch (&gt;= 2.2.0), Transformers (&gt;= 4.37.2), and Flair (&gt;= 0.11.3) installed in their system. The package automatically checks and validates the Python environment during loading, ensuring all required dependencies are properly configured.">
+<meta property="og:description" content="Provides an R interface to the Flair Natural Language Processing library in Python. This package allows R users to access Flairs NLP important features including named entity recognition, part-of-speech tagging, text embeddings and word embeddings. The package handles the Python dependencies management and provides R-friendly wrappers for Flairs functionality. Users need Python (&gt;= 3.9.0) with PyTorch (&gt;= 2.2.0), Transformers (&gt;= 4.37.2), and Flair (&gt;= 0.11.3) installed in their system. The package automatically checks and validates the Python environment during loading, ensuring all required dependencies are properly configured.">
 <meta property="og:image" content="https://davidycliao.github.io/flaiR/logo.png">
 <!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=G-3ZG40PPG98"></script><script>
   window.dataLayer = window.dataLayer || [];
@@ -38,7 +37,7 @@
 
     <a class="navbar-brand me-2" href="index.html">flaiR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.7</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.8</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -47,7 +46,7 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
-<li class="active nav-item"><a class="nav-link" href="index.html"><span class="fa fa-home"></span></a></li>
+<li class="active nav-item"><a class="nav-link" href="index.html" aria-label="Home"><span class="fa fa-home"></span></a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-quick-start" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true"><span class="fa fa-rocket"></span> Quick Start</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-quick-start">
@@ -102,119 +101,18 @@
 <h2 id="flairr-an-r-wrapper-for-accessing-flair-nlp-library-">
 <u><code>flairR</code></u>: An R Wrapper for Accessing Flair NLP Library <img src="reference/figures/logo.png" align="right" width="180"><a class="anchor" aria-label="anchor" href="#flairr-an-r-wrapper-for-accessing-flair-nlp-library-"></a>
 </h2>
-<p><a href="https://github.com/davidycliao/flaiR/actions/workflows/r_macos.yml" class="external-link"><img src="https://github.com/davidycliao/flaiR/actions/workflows/r_macos.yml/badge.svg" alt="R-MacOS"></a> <a href="https://github.com/davidycliao/flaiR/actions/workflows/r_ubuntu.yaml" class="external-link"><img src="https://github.com/davidycliao/flaiR/actions/workflows/r_ubuntu.yaml/badge.svg" alt="R-ubuntu"></a> <a href="https://github.com/davidycliao/flaiR/actions/workflows/r_window.yml" class="external-link"><img src="https://github.com/davidycliao/flaiR/actions/workflows/r_window.yml/badge.svg" alt="R-Windows"></a> <a href="https://github.com/davidycliao/flaiR/actions/workflows/r.yml" class="external-link"><img src="https://github.com/davidycliao/flaiR/actions/workflows/r.yml/badge.svg" alt="R-CMD-Check"></a> <a href="https://github.com/davidycliao/flaiR/actions/workflows/R-CMD-check.yml" class="external-link"><img src="https://github.com/davidycliao/flaiR/actions/workflows/R-CMD-check.yml/badge.svg" alt="flaiR-Installation-Check"></a> <a href="https://github.com/davidycliao/flaiR" class="external-link"><img src="https://img.shields.io/badge/R-package-blue" alt="R"></a> <a href="https://github.com/davidycliao/flaiR/pkgs/container/flair-rstudio" class="external-link"><img src="https://img.shields.io/badge/Docker-ghcr.io-blue?logo=docker" alt="Docker Image"></a> <a href="https://codecov.io/gh/davidycliao/flaiR" class="external-link"><img src="https://codecov.io/gh/davidycliao/flaiR/graph/badge.svg?token=CPIBIB6L78" alt="codecov"></a> <a href="https://www.codefactor.io/repository/github/davidycliao/flair" class="external-link"><img src="https://www.codefactor.io/repository/github/davidycliao/flair/badge" alt="CodeFactor"></a></p>
+<p><a href="https://github.com/davidycliao/flaiR/actions/workflows/r_macos.yml" class="external-link"><img src="https://github.com/davidycliao/flaiR/actions/workflows/r_macos.yml/badge.svg" alt="R-MacOS"></a> <a href="https://github.com/davidycliao/flaiR/actions/workflows/r_ubuntu.yaml" class="external-link"><img src="https://github.com/davidycliao/flaiR/actions/workflows/r_ubuntu.yaml/badge.svg" alt="R-ubuntu"></a> <a href="https://github.com/davidycliao/flaiR/actions/workflows/r_window.yml" class="external-link"><img src="https://github.com/davidycliao/flaiR/actions/workflows/r_window.yml/badge.svg" alt="R-Windows"></a> <a href="https://github.com/davidycliao/flaiR" class="external-link"><img src="https://img.shields.io/badge/R-package-blue" alt="R"></a> <a href="https://github.com/davidycliao/flaiR/pkgs/container/flair-rstudio" class="external-link"><img src="https://img.shields.io/badge/Docker-ghcr.io-blue?logo=docker" alt="Docker Image"></a> <a href="https://codecov.io/gh/davidycliao/flaiR" class="external-link"><img src="https://codecov.io/gh/davidycliao/flaiR/graph/badge.svg?token=CPIBIB6L78" alt="codecov"></a> <a href="https://www.codefactor.io/repository/github/davidycliao/flair" class="external-link"><img src="https://www.codefactor.io/repository/github/davidycliao/flair/badge" alt="CodeFactor"></a></p>
+<!-- [![R](https://img.shields.io/badge/R-package-blue)](https://github.com/davidycliao/flaiR) -->
 <!-- [![flaiR-Docker](https://github.com/davidycliao/flaiR/actions/workflows/docker-publish.yml/badge.svg)](https://github.com/davidycliao/flaiR/actions/workflows/docker-publish.yml) -->
 <!-- <!-- ![ARM64](https://img.shields.io/badge/ARM64-M1|M2-success?logo=arm) -->
 <!-- [![R](https://img.shields.io/badge/R-package-blue)](https://github.com/davidycliao/flaiR) -->
 <!-- [![Docker Image](https://img.shields.io/badge/Docker-ghcr.io-blue?logo=docker)](https://github.com/davidycliao/flaiR/pkgs/container/flair) -->
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 <div style="text-align: justify">
-<p><strong>flaiR</strong> is an R package that provides convenient access to <a href="https://github.com/flairNLP/flair" class="external-link">flairNLP/flair</a>, a powerful Python-based NLP toolkit developed by Humboldt University of Berlin. <strong>flaiR</strong> package is maintained by <a href="https://davidycliao.github.io" class="external-link">Yen-Chieh Liao</a> (<a href="https://www.birmingham.ac.uk/research/centres-institutes/centre-for-artificial-intelligence-in-government" class="external-link">University of Birmingham</a>) and <a href="https://muellerstefan.net" class="external-link">Stefan Müller</a> from <a href="https://www.nexsys-energy.ie" class="external-link">Next Generation Energy Systems</a> and <a href="https://text-and-policy.com" class="external-link">Text and Policy Research Group</a> at UCD.</p>
-<p>Through <strong>flaiR</strong>, R users can easily utilize and combine various word embeddings, train deep learning models, and fine-tune the latest transformer models from Hugging Face, bridging advanced NLP techniques with popular quantitative text analysis toolkits like quanteda in the R environment.</p>
+<p><strong>flaiR</strong> is an R package that provides convenient access to <a href="https://github.com/flairNLP/flair" class="external-link">flairNLP/flair</a>, a powerful Python-based NLP toolkit developed <a href="https://engineering.zalando.com/posts/2018/11/zalando-research-releases-flair.html" class="external-link">Zalando Research</a>.</p>
+<p>flaiR R package provides R-friendly wrapper functions integrated with R community packages for quantitative text analysis.</p>
+<!-- Through **flaiR**, R users can easily utilize and combine various word embeddings, train deep learning models, and fine-tune the latest transformer models from Hugging Face, bridging advanced NLP techniques with popular quantitative text analysis toolkits like quanteda in the R environment. -->
 <!-- Our team trains and fine-tunes the models with Flair in [our projects](). -->
-</div>
-<p><br></p>
-</div>
-<div class="section level2">
-<h2 id="required-software">Required Software<a class="anchor" aria-label="anchor" href="#required-software"></a>
-</h2>
-<div style="text-align: justify">
-<ul>
-<li>Python 3.9 - 3.11 (Python 3.10 recommended and Python 3.8 is deprecated for Flair NLP usage.)</li>
-<li>R &gt;= 4.2.0</li>
-<li>Rstudio</li>
-</ul>
-<p><strong>Note:</strong></p>
-<p>Python 3.10 is recommended for flaiR R package due to its stable compatibility with <a href="https://github.com/flairNLP/flair/releases/tag/v0.15.0" class="external-link">the latest official Flair NLP release</a> and <a href="https://github.com/flairNLP/flair/pull/3560" class="external-link">#3560</a>. While Flair NLP, which is built on PyTorch, supports Python 3.9 - 3.12, we specifically recommend Python 3.10 for optimal stability with PyTorch. Python 3.8 is deprecated for Flair NLP usage, and Python 3.12+ is not recommended due to compatibility issues, as noted in the <a href="https://pytorch.org/get-started/locally/#mac-python" class="external-link">PyTorch installation guide</a> and Python’s <a href="https://devguide.python.org/versions/" class="external-link">official development guide</a>.</p>
-<p><strong>Operation Systems</strong></p>
-<table class="table">
-<thead><tr>
-<th>OS</th>
-<th>R Versions</th>
-<th>Python Version</th>
-</tr></thead>
-<tbody>
-<tr>
-<td>Mac</td>
-<td>4.3.2, 4.2.0, <del>4.2.1</del>*</td>
-<td>3.10.x, 3.9</td>
-</tr>
-<tr>
-<td>Windows</td>
-<td>4.0.5, Latest</td>
-<td>3.10.x, 3.9</td>
-</tr>
-<tr>
-<td>Ubuntu</td>
-<td>4.3.2, 4.2.0, 4.2.1</td>
-<td>3.10.x, 3.9</td>
-</tr>
-</tbody>
-</table>
-<p>*: <em>On R 4.2.1, particularly when using the Matrix package on ARM 64 architecture Macs (M1/M2), compatibility issues with gfortran may occur. It’s recommended to avoid this combination.</em></p>
-<p><br></p>
-<div class="section level2">
-<h2 id="fast-install-python-and-flair-with-reticulate">Fast Install Python and <code>flaiR</code> with <code>reticulate</code>
-<a class="anchor" aria-label="anchor" href="#fast-install-python-and-flair-with-reticulate"></a>
-</h2>
-<p>If you haven’t installed Python or have an incompatible Python version:</p>
-<p><strong>Step 1</strong> Check Python configuration:</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Check Python version and configuration</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"reticulate"</span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rstudio.github.io/reticulate/" class="external-link">reticulate</a></span><span class="op">)</span></span>
-<span><span class="fu">reticulate</span><span class="fu">::</span><span class="fu"><a href="https://rstudio.github.io/reticulate/reference/py_config.html" class="external-link">py_config</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p>Example output showing incompatible Python version: Version 3.8 is deprecated, needs upgrade</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>python<span class="sc">:</span>         <span class="er">/</span>Users<span class="sc">/</span>username<span class="sc">/</span>Library<span class="sc">/</span>r<span class="sc">-</span>miniconda<span class="sc">/</span>bin<span class="sc">/</span>python</span>
-<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>libpython<span class="sc">:</span>      <span class="er">/</span>Users<span class="sc">/</span>username<span class="sc">/</span>Library<span class="sc">/</span>r<span class="sc">-</span>miniconda<span class="sc">/</span>lib<span class="sc">/</span>libpython3.<span class="fl">10.</span>dylib</span>
-<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>pythonhome<span class="sc">:</span>     <span class="er">/</span>Users<span class="sc">/</span>username<span class="sc">/</span>Library<span class="sc">/</span>r<span class="sc">-</span>miniconda</span>
-<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>version<span class="sc">:</span>        <span class="fl">3.8</span></span></code></pre></div>
-<p><strong>Step 2</strong> Install Python 3.10 using reticulate:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Install and load reticulate package</span></span>
-<span><span class="fu"><a href="https://rstudio.github.io/reticulate/reference/install_python.html" class="external-link">install_python</a></span><span class="op">(</span>version <span class="op">=</span> <span class="st">"3.10"</span><span class="op">)</span></span></code></pre></div>
-<p>Verify the new Python installation:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>reticulate<span class="sc">::</span><span class="fu">py_config</span>()</span></code></pre></div>
-<p>Expected output after installation:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>python<span class="sc">:</span>         <span class="er">/</span>Users<span class="sc">/</span>username<span class="sc">/</span>Library<span class="sc">/</span>r<span class="sc">-</span>miniconda<span class="sc">/</span>bin<span class="sc">/</span>python</span>
-<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>libpython<span class="sc">:</span>      <span class="er">/</span>Users<span class="sc">/</span>username<span class="sc">/</span>Library<span class="sc">/</span>r<span class="sc">-</span>miniconda<span class="sc">/</span>lib<span class="sc">/</span>libpython3.<span class="fl">10.</span>dylib</span>
-<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>pythonhome<span class="sc">:</span>     <span class="er">/</span>Users<span class="sc">/</span>username<span class="sc">/</span>Library<span class="sc">/</span>r<span class="sc">-</span>miniconda</span>
-<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>version<span class="sc">:</span>        <span class="st">`</span><span class="at">3.10</span><span class="st">`</span>  </span></code></pre></div>
-<p><strong>Step 3</strong> To install flaiR R package</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Install remotes if not already installed</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Install flaiR from GitHub</span></span>
-<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"davidycliao/flaiR"</span>, force <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://davidycliao.github.io/flaiR">flaiR</a></span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">#&gt; flaiR: An R Wrapper for Accessing Flair NLP 0.13.1</span></span></code></pre></div>
-<p>This will ensure you have the correct Python version and all necessary dependencies for flaiR.</p>
-<!-- library(flaiR) -->
-<!-- #> Python               ✓  3.10 -->
-<!-- #> Flair NLP           ✓  0.15.0 -->
-<!-- #> flaiR: An R Wrapper for Accessing Flair NLP 0.15.0 -->
-<p><br></p>
-</div>
-<div class="section level2">
-<h2 id="installation-with-docker">Installation with Docker<a class="anchor" aria-label="anchor" href="#installation-with-docker"></a>
-</h2>
-<p><strong>Intel/AMD Processors:</strong></p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="co"># Pull image</span></span>
-<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a>docker pull ghcr.io<span class="sc">/</span>davidycliao<span class="sc">/</span>flair<span class="sc">-</span>rstudio<span class="sc">:</span>latest</span>
-<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a></span>
-<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a><span class="co"># Run container</span></span>
-<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a>docker run <span class="sc">-</span>d <span class="sc">-</span>p <span class="dv">8787</span><span class="sc">:</span><span class="dv">8787</span> <span class="sc">--</span>user root <span class="sc">--</span>name flair<span class="sc">-</span>rstudio ghcr.io<span class="sc">/</span>davidycliao<span class="sc">/</span>flair<span class="sc">-</span>rstudio<span class="sc">:</span>latest</span></code></pre></div>
-<p><strong>Apple Silicon (M1/M2 Mac):</strong></p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="co"># Pull image</span></span>
-<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a>docker pull <span class="sc">--</span>platform linux<span class="sc">/</span>amd64 ghcr.io<span class="sc">/</span>davidycliao<span class="sc">/</span>flair<span class="sc">-</span>rstudio<span class="sc">:</span>latest</span>
-<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a></span>
-<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a><span class="co"># Run container</span></span>
-<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a>docker run <span class="sc">-</span>d <span class="sc">-</span>p <span class="dv">8787</span><span class="sc">:</span><span class="dv">8787</span> <span class="sc">--</span>platform linux<span class="sc">/</span>amd64 <span class="sc">--</span>user root <span class="sc">--</span>name flair<span class="sc">-</span>rstudio ghcr.io<span class="sc">/</span>davidycliao<span class="sc">/</span>flair<span class="sc">-</span>rstudio<span class="sc">:</span>latest</span></code></pre></div>
-<p>After running these commands in terminal (or powershell), open your browser and navigate to <a href="http://localhost:8787" class="external-link"><code>http://localhost:8787</code></a> to access RStudio. For detailed installation instructions, please visit <a href="https://davidycliao.github.io/flaiR/articles/quickstart.html#flair-installation">Quick Start Guide</a>.</p>
-</div>
 </div>
 <p><br></p>
 </div>
@@ -227,6 +125,135 @@
 <li><p><a href="https://davidycliao.github.io/flaiR/articles/tutorial.html#finetune-transformers">Finetune Transformers in R</a></p></li>
 </ul>
 <p>For more detailed tutorial instructions, please visit <a href="https://davidycliao.github.io/flaiR/articles/tutorial.html#introduction">Flair NLP and flaiR for Social Science</a>.</p>
+<p><br></p>
+</div>
+<div class="section level2">
+<h2 id="required-softwares">Required Softwares<a class="anchor" aria-label="anchor" href="#required-softwares"></a>
+</h2>
+<div style="text-align: justify">
+<ul>
+<li>Python &gt;= 3.9 (Python 3.10 is recommended)</li>
+<li>R &gt;= 4.1.3</li>
+<li>Rstudio</li>
+</ul>
+<p><strong>Operation Systems</strong></p>
+<table class="table">
+<colgroup>
+<col width="25%">
+<col width="25%">
+<col width="25%">
+<col width="25%">
+</colgroup>
+<thead><tr>
+<th>OS</th>
+<th>R Versions</th>
+<th>Python Version</th>
+<th>CI Status</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Mac</td>
+<td>4.1.3, 4.2.3, 4.3.2 and recent</td>
+<td>3.10.x, 3.9</td>
+<td><a href="https://github.com/davidycliao/flaiR/actions/workflows/r_macos.yml" class="external-link"><img src="https://github.com/davidycliao/flaiR/actions/workflows/r_macos.yml/badge.svg" alt="R-MacOS"></a></td>
+</tr>
+<tr>
+<td>Windows</td>
+<td>4.1.3, 4.2.3, 4.3.2 and recent</td>
+<td>3.10.x, 3.9</td>
+<td><a href="https://github.com/davidycliao/flaiR/actions/workflows/r_window.yml" class="external-link"><img src="https://github.com/davidycliao/flaiR/actions/workflows/r_window.yml/badge.svg" alt="R-Windows"></a></td>
+</tr>
+<tr>
+<td>Ubuntu</td>
+<td>4.1.3, 4.2.3, 4.3.2 and recent</td>
+<td>3.10.x, 3.9</td>
+<td><a href="https://github.com/davidycliao/flaiR/actions/workflows/r_ubuntu.yaml" class="external-link"><img src="https://github.com/davidycliao/flaiR/actions/workflows/r_ubuntu.yaml/badge.svg" alt="R-ubuntu"></a></td>
+</tr>
+</tbody>
+</table>
+<p>*: <em>On R 4.2.1 and 4.0.5, particularly when using the Matrix package on ARM 64 architecture Macs (M1/M2/M3), compatibility issues with gfortran may occur. It’s recommended to avoid these versions.</em></p>
+<p><br></p>
+<div class="section level2">
+<h2 id="fast-install-flair-with-remotes">Fast Install flaiR with <code>remotes</code>
+<a class="anchor" aria-label="anchor" href="#fast-install-flair-with-remotes"></a>
+</h2>
+<div class="section level3">
+<h3 id="prerequisites">Prerequisites<a class="anchor" aria-label="anchor" href="#prerequisites"></a>
+</h3>
+<p>Before installing flaiR, ensure you have Python (&gt;= 3.9.0) and the following Python dependencies: - PyTorch (&gt;= 2.2.0) - Transformers (&gt;= 4.37.2) - Flair (&gt;= 0.11.3)</p>
+<p><u>Step 1</u>: Install and Load <code>reticulate</code> Package</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Install reticulate package</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"reticulate"</span><span class="op">)</span></span>
+<span><span class="co"># Load reticulate library</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rstudio.github.io/reticulate/" class="external-link">reticulate</a></span><span class="op">)</span></span></code></pre></div>
+<p><u>Step 2</u>: Check Existing Python Configuration</p>
+<p>If not, recommend referring to <a href="https://davidycliao.github.io/flaiR/articles/quickstart.html#option-1-fast-install-flair-and-python-with-reticulate">the Quick Start-flaiR Installation</a>. This quick install guide provides step-by-step instructions for installing recommended Python with reticulate.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rstudio.github.io/reticulate/reference/py_config.html" class="external-link">py_config</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p>To install flaiR package</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span></span>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"davidycliao/flaiR"</span>, force <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://davidycliao.github.io/flaiR">flaiR</a></span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="co">#&gt; Environment Information:</span></span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="co">#&gt; OS: Darwin (15.2)</span></span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a><span class="co">#&gt; Using existing Python: /usr/local/bin/python3.10</span></span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a><span class="co">#&gt; Python               ✓  3.10</span></span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a><span class="co">#&gt; GPU                  ✓  Mac MPS</span></span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a><span class="co">#&gt; PyTorch              ✓  2.2.2</span></span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a><span class="co">#&gt; Transformers         ✓  4.40.1</span></span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a><span class="co">#&gt; Flair NLP            ✓  0.13.1</span></span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a><span class="co">#&gt; Word Embeddings      ✓  4.3.2</span></span>
+<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a><span class="co">#&gt; flaiR: An R Wrapper for Accessing Flair NLP 0.13.1</span></span></code></pre></div>
+<p>If you have never used gensim before and gensim dependencies are not detected, you will see a message like:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="co">#&gt; Environment Information:</span></span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a><span class="co">#&gt; OS: Darwin (15.2)</span></span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a><span class="co">#&gt; Using existing Python: /usr/local/bin/python3.10</span></span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a><span class="co">#&gt; Python               ✓  3.10</span></span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a><span class="co">#&gt; GPU                  ✓  Mac MPS</span></span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a><span class="co">#&gt; PyTorch              ✓  2.2.2</span></span>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a><span class="co">#&gt; Transformers         ✓  4.40.1</span></span>
+<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a><span class="co">#&gt; Flair NLP            ✓  0.13.1</span></span>
+<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a><span class="co">#&gt; Word Embeddings      ✗  Not Available</span></span>
+<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a><span class="co">#&gt; Word embeddings feature is not detected.</span></span>
+<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a></span>
+<span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a><span class="co">#&gt; Install with:</span></span>
+<span id="cb6-14"><a href="#cb6-14" tabindex="-1"></a><span class="co">#&gt; In R:</span></span>
+<span id="cb6-15"><a href="#cb6-15" tabindex="-1"></a><span class="co">#&gt;  reticulate::py_install('flair[word-embeddings]', pip = TRUE)</span></span>
+<span id="cb6-16"><a href="#cb6-16" tabindex="-1"></a><span class="co">#&gt;  system(paste(Sys.which('python3'), '-m pip install flair[word-embeddings]'))</span></span>
+<span id="cb6-17"><a href="#cb6-17" tabindex="-1"></a></span>
+<span id="cb6-18"><a href="#cb6-18" tabindex="-1"></a><span class="co">#&gt; In terminal:</span></span>
+<span id="cb6-19"><a href="#cb6-19" tabindex="-1"></a><span class="co">#&gt;  pip install flair[word-embeddings]</span></span>
+<span id="cb6-20"><a href="#cb6-20" tabindex="-1"></a><span class="co">#&gt; flaiR: An R Wrapper for Accessing Flair NLP 0.13.1</span></span></code></pre></div>
+<p><br></p>
+</div>
+</div>
+<div class="section level2">
+<h2 id="installation-with-docker">Installation with Docker<a class="anchor" aria-label="anchor" href="#installation-with-docker"></a>
+</h2>
+<ul>
+<li><strong>Intel/AMD Processors:</strong></li>
+</ul>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="co"># Pull image</span></span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>docker pull ghcr.io<span class="sc">/</span>davidycliao<span class="sc">/</span>flair<span class="sc">-</span>rstudio<span class="sc">:</span>latest</span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a><span class="co"># Run container</span></span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a>docker run <span class="sc">-</span>d <span class="sc">-</span>p <span class="dv">8787</span><span class="sc">:</span><span class="dv">8787</span> <span class="sc">--</span>user root <span class="sc">--</span>name flair<span class="sc">-</span>rstudio ghcr.io<span class="sc">/</span>davidycliao<span class="sc">/</span>flair<span class="sc">-</span>rstudio<span class="sc">:</span>latest</span></code></pre></div>
+<ul>
+<li><strong>Apple Silicon (M1/M2 Mac):</strong></li>
+</ul>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="co"># Pull image</span></span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>docker pull <span class="sc">--</span>platform linux<span class="sc">/</span>amd64 ghcr.io<span class="sc">/</span>davidycliao<span class="sc">/</span>flair<span class="sc">-</span>rstudio<span class="sc">:</span>latest</span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a><span class="co"># Run container</span></span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a>docker run <span class="sc">-</span>d <span class="sc">-</span>p <span class="dv">8787</span><span class="sc">:</span><span class="dv">8787</span> <span class="sc">--</span>platform linux<span class="sc">/</span>amd64 <span class="sc">--</span>user root <span class="sc">--</span>name flair<span class="sc">-</span>rstudio ghcr.io<span class="sc">/</span>davidycliao<span class="sc">/</span>flair<span class="sc">-</span>rstudio<span class="sc">:</span>latest</span></code></pre></div>
+<p>After running these commands in terminal (or powershell), open your browser and navigate to <a href="http://localhost:8787" class="external-link"><code>http://localhost:8787</code></a> to access RStudio Server. For detailed installation instructions, please visit <a href="https://davidycliao.github.io/flaiR/articles/quickstart.html#flair-installation">Quick Start Guide</a>.</p>
+</div>
+</div>
 <p><br></p>
 </div>
 <div class="section level2">
@@ -273,13 +300,10 @@
 <h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
 <li>
-<a href="https://davidycliao.github.io" class="external-link">Yen-Chieh Liao</a> <br><small class="roles"> Maintainer, author, contributor </small>  </li>
-<li>
-<a href="https://muellerstefan.net" class="external-link">Stefan Müller</a> <br><small class="roles"> Author, contributor </small>  </li>
-<li>Akbik Alan <br><small class="roles"> Author, contributor </small>  </li>
-<li>Blythe Duncan <br><small class="roles"> Author, contributor </small>  </li>
-<li>Vollgraf Roland <br><small class="roles"> Author, contributor </small>  </li>
-<li><a href="authors.html">More about authors...</a></li>
+<a href="https://davidycliao.github.io" class="external-link">Yen-Chieh Liao</a> <br><small class="roles"> Maintainer, author, contributor </small>   </li>
+<li>Akbik Alan <br><small class="roles"> Author, contributor </small>   </li>
+<li>Blythe Duncan <br><small class="roles"> Author, contributor </small>   </li>
+<li>Vollgraf Roland <br><small class="roles"> Author, contributor </small>   </li>
 </ul>
 </div>
 
@@ -292,11 +316,11 @@
    </div>
   <footer><div class="container">
   <div class="pkgdown-footer-left">
-  <p>Developed by <a href="https://davidycliao.github.io" class="external-link">Yen-Chieh Liao</a>, <a href="https://muellerstefan.net" class="external-link">Stefan Müller</a>, Akbik Alan, Blythe Duncan, Vollgraf Roland.</p>
+  <p>Developed by <a href="https://davidycliao.github.io" class="external-link">Yen-Chieh Liao</a>, Akbik Alan, Blythe Duncan, Vollgraf Roland.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
 </div>
 
   </div></footer>

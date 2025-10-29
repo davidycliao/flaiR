@@ -6,16 +6,15 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Quick Start • flaiR</title>
-<!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
-<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
-<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png">
-<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png">
-<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
+<!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="../favicon-96x96.png">
+<link rel="icon" type="”image/svg+xml”" href="../favicon.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+<link rel="icon" sizes="any" href="../favicon.ico">
+<link rel="manifest" href="../site.webmanifest">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/Source_Sans_Pro-0.4.9/font.css" rel="stylesheet">
-<link href="../deps/Source_Code_Pro-0.4.9/font.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/Source_Sans_Pro-0.4.10/font.css" rel="stylesheet">
+<link href="../deps/Source_Code_Pro-0.4.10/font.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Quick Start">
@@ -35,7 +34,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">flaiR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.7</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.8</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -44,7 +43,7 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
-<li class="nav-item"><a class="nav-link" href="../index.html"><span class="fa fa-home"></span></a></li>
+<li class="nav-item"><a class="nav-link" href="../index.html" aria-label="Home"><span class="fa fa-home"></span></a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-quick-start" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true"><span class="fa fa-rocket"></span> Quick Start</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-quick-start">
@@ -112,12 +111,15 @@
 <div style="text-align: justify">
 <p>Flair is a Python library developed by <a href="https://engineering.zalando.com/posts/2018/11/zalando-research-releases-flair.html" class="external-link">Zalando
 Research</a> that stands out as a notably user-friendly NLP framework.
-Flair NLP provides intuitive interfaces with exceptional multilingual
-embeddings, especially for various multilingual embedding frameworks
-like GloVe and transformer-based models on Hugging Face.</p>
+It provides exceptional multilingual embeddings, especially for various
+multilingual embedding frameworks like GloVe and transformer-based
+models on Hugging Face. flaiR R package provides R-friendly wrapper
+functions integrated with R community packages for quantitative text
+analysis.</p>
 </div>
 <div class="section level2">
-<h2 id="flair-installation">flaiR Installation<a class="anchor" aria-label="anchor" href="#flair-installation"></a>
+<h2 id="flair-installation">
+<code>flaiR</code> Installation<a class="anchor" aria-label="anchor" href="#flair-installation"></a>
 </h2>
 <p><strong>System Requirements:</strong></p>
 <ul>
@@ -126,17 +128,16 @@ like GloVe and transformer-based models on Hugging Face.</p>
 <li>Rstudio</li>
 </ul>
 <div class="section level3">
-<h3 id="option-1-fast-install-flair-and-python-with-reticulate">Option 1: Fast Install <code>flaiR</code> and Python with
-<code>reticulate</code><a class="anchor" aria-label="anchor" href="#option-1-fast-install-flair-and-python-with-reticulate"></a>
+<h3 id="option-1-fast-install-python-with-reticulate">Option 1: Fast Install Python with <code>reticulate</code><a class="anchor" aria-label="anchor" href="#option-1-fast-install-python-with-reticulate"></a>
 </h3>
 <ol style="list-style-type: decimal">
-<li>Install Python automatically through R <code>reticulate</code>:</li>
+<li>Install Python automatically through R reticulate:</li>
 </ol>
 <pre><code><span><span class="co"># Install and load reticulate package</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"reticulate"</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rstudio.github.io/reticulate/" class="external-link">reticulate</a></span><span class="op">)</span></span></code></pre>
 <ol start="2" style="list-style-type: decimal">
-<li>Install Python 3.10 using reticulate:</li>
+<li>Install Python using reticulate:</li>
 </ol>
 <pre><code><span><span class="fu"><a href="https://rstudio.github.io/reticulate/reference/install_python.html" class="external-link">install_python</a></span><span class="op">(</span>version <span class="op">=</span> <span class="st">"3.10"</span><span class="op">)</span></span></code></pre>
 <ol start="3" style="list-style-type: decimal">
@@ -202,9 +203,108 @@ flair NLP and its dependencies (PyTorch, models).</p>
 </ul>
 </div>
 <div class="section level3">
-<h3 id="troubleshooting-guide">Troubleshooting Guide<a class="anchor" aria-label="anchor" href="#troubleshooting-guide"></a>
+<h3 id="section"> <a class="anchor" aria-label="anchor" href="#section"></a>
 </h3>
-<p>The <code>flaiR</code> will:</p>
+</div>
+</div>
+<div class="section level2">
+<h2 id="nlp-tasks">NLP Tasks<a class="anchor" aria-label="anchor" href="#nlp-tasks"></a>
+</h2>
+<div style="text-align: justify">
+<p>For R users, flairR extends FlairNLP with three NLP task functions to
+extract features in a neat format with <a href="https://cran.r-project.org/web/packages/data.table/index.html" class="external-link">data.table</a>.
+Through these featured functions, you don’t have to write loops to
+format parsed output on your own. The main features include
+part-of-speech tagging, named entity recognition and sentiment analysis.
+Additionally, to handle the load on RAM when dealing with larger
+corpora, flairR supports batch processing to handle texts in batches,
+which is especially useful when dealing with large datasets, to optimize
+memory usage and performance.</p>
+<table class="table">
+<colgroup>
+<col width="34%">
+<col width="29%">
+<col width="35%">
+</colgroup>
+<thead><tr class="header">
+<th><strong>Core Featured Functions</strong></th>
+<th>Loader</th>
+<th>Supported Models from Flair NLP</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td><code><a href="../reference/get_entities.html">get_entities()</a></code></td>
+<td><code><a href="../reference/load_tagger_ner.html">load_tagger_ner()</a></code></td>
+<td>
+<code>en</code> (English), <code>fr</code> (French), <code>da</code>
+(Danish), <code>nl</code> (Dutch), and more.</td>
+</tr>
+<tr class="even">
+<td><code><a href="../reference/get_pos.html">get_pos()</a></code></td>
+<td><code><a href="../reference/load_tagger_pos.html">load_tagger_pos()</a></code></td>
+<td>
+<code>pos</code> (English POS), <code>fr-pos</code> (French POS),
+<code>de-pos</code> (German POS), <code>nl-pos</code> (Dutch POS), and
+more.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p> </p>
+<div class="section level3">
+<h3 id="training-and-fine-tuning">Training and Fine-tuning<a class="anchor" aria-label="anchor" href="#training-and-fine-tuning"></a>
+</h3>
+<div style="text-align: justify">
+<p>In <strong>flairR</strong>, we use the simplest <strong>S3</strong>
+method to wrap major modules. All modules will work like <a href="https://bookdown.dongzhuoer.com/hadley/adv-r/s3-r6" class="external-link">R6</a> in the
+R environment when loaded from Flair NLP. In Python, both functions and
+methods (sometimes referred to as functions in R) within a class can be
+accessed using the <code>$</code> operator. For example,
+<code>from flair.trainers import ModelTrainer</code> in Python is
+equivalent to
+<code>ModelTrainer &lt;- flair_trainers()$ModelTrainer</code> in R
+environment with <strong>flairR</strong>.</p>
+</div>
+<table class="table">
+<colgroup>
+<col width="43%">
+<col width="56%">
+</colgroup>
+<thead><tr class="header">
+<th><strong>Wrapped Flair NLP Modules with S3</strong></th>
+<th>Corresponding Code Practices When Loading Modules from FlairNLP</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td><code><a href="../reference/flair_datasets.html">flair_datasets()</a></code></td>
+<td>from flair.datasets import *</td>
+</tr>
+<tr class="even">
+<td><code><a href="../reference/flair_nn.html">flair_nn()</a></code></td>
+<td>from flair.nn import *</td>
+</tr>
+<tr class="odd">
+<td><code><a href="../reference/flair_splitter.html">flair_splitter()</a></code></td>
+<td>from flair.splitter import *</td>
+</tr>
+<tr class="even">
+<td><code><a href="../reference/flair_trainers.html">flair_trainers()</a></code></td>
+<td>from flair.trainers import *</td>
+</tr>
+<tr class="odd">
+<td><code><a href="../reference/flair_models.html">flair_models()</a></code></td>
+<td>from flair.models import *</td>
+</tr>
+</tbody>
+</table>
+<p> </p>
+<hr>
+</div>
+</div>
+<div class="section level2">
+<h2 id="troubleshooting-guide">Troubleshooting Guide<a class="anchor" aria-label="anchor" href="#troubleshooting-guide"></a>
+</h2>
+<p>The <code>faiR</code> Will:</p>
 <ul>
 <li>Automatically check Python environment</li>
 <li>Install required Python packages (flair and its dependencies)</li>
@@ -218,13 +318,11 @@ flair NLP and its dependencies (PyTorch, models).</p>
 handling dependencies. However, users (particularly those with Mac ARM64
 systems) may encounter compilation issues. Here’s a comprehensive guide
 to resolve common problems:</p>
-<div class="section level4">
-<h4 id="mac-m1m2m3-apple-silicon-specific-setup">
-<strong>Mac M1/M2/M3 (Apple Silicon) Specific Setup</strong><a class="anchor" aria-label="anchor" href="#mac-m1m2m3-apple-silicon-specific-setup"></a>
-</h4>
-<ol style="list-style-type: decimal">
-<li>Architecture Options</li>
-</ol>
+<div class="section level3">
+<h3 id="mac-m1m2-apple-silicon-specific-setup">
+<strong>Mac M1/M2 (Apple Silicon) Specific Setup</strong><a class="anchor" aria-label="anchor" href="#mac-m1m2-apple-silicon-specific-setup"></a>
+</h3>
+<p>1 Architecture Options</p>
 <ul>
 <li>Requires specific compiler setup</li>
 <li>May encounter additional compatibility issues</li>
@@ -236,7 +334,6 @@ to resolve common problems:</p>
 <li>Requires specific compiler setup</li>
 <li>May encounter additional compatibility issues</li>
 </ul>
-</div>
 <div class="section level4">
 <h4 id="compiler-setup-for-arm64-systems">
 <strong>Compiler Setup for ARM64 Systems</strong><a class="anchor" aria-label="anchor" href="#compiler-setup-for-arm64-systems"></a>
@@ -260,6 +357,7 @@ R-macos GNU Fortran releases</a></li>
 </ul>
 </div>
 </div>
+</div>
 <div class="section level4">
 <h4 id="automatic-dependencies-python">
 <strong>Automatic Dependencies (Python)</strong><a class="anchor" aria-label="anchor" href="#automatic-dependencies-python"></a>
@@ -270,9 +368,13 @@ Python packages during setup:</p>
 <p><strong>Core Dependencies</strong> - Python (3.9 or 3.10 recommended)
 - flair[word-embeddings] (&gt;=0.11.3) - numpy (&gt;=1.22.4, &lt;1.29.0)
 - PyTorch (&gt;=2.0.0, &lt;2.6.0) - scipy (==1.12.0)</p>
-<p><strong>Additional Dependencies</strong> - gensim (&gt;=4.3.2) -
-transformers (&gt;=4.30.0) - sentencepiece (&gt;=0.1.99) - bpemb
-(&gt;=0.3.5)</p>
+<p><strong>Additional Dependencies</strong></p>
+<ul>
+<li>gensim (&gt;=4.3.2)</li>
+<li>transformers (&gt;=4.30.0)</li>
+<li>sentencepiece (&gt;=0.1.99)</li>
+<li>bpemb (&gt;=0.3.5)</li>
+</ul>
 <p>All other required dependencies will be automatically handled during
 the installation process. You can manage Python settings in RStudio
 through <code>Tools -&gt; Global Options -&gt; Python</code>.</p>
@@ -370,102 +472,6 @@ docker ps
 docker ps -a
 # View container logs
 docker logs flair-rstudio</code></pre>
-<hr>
-</div>
-</div>
-<div class="section level3">
-<h3 id="nlp-tasks">NLP Tasks<a class="anchor" aria-label="anchor" href="#nlp-tasks"></a>
-</h3>
-<div style="text-align: justify">
-<p>For R users, flairR extends FlairNLP with three NLP task functions to
-extract features in a neat format with <a href="https://cran.r-project.org/web/packages/data.table/index.html" class="external-link">data.table</a>.
-Through these featured functions, you don’t have to write loops to
-format parsed output on your own. The main features include
-part-of-speech tagging, named entity recognition and sentiment analysis.
-Additionally, to handle the load on RAM when dealing with larger
-corpora, flairR supports batch processing to handle texts in batches,
-which is especially useful when dealing with large datasets, to optimize
-memory usage and performance.</p>
-<table class="table">
-<colgroup>
-<col width="34%">
-<col width="29%">
-<col width="35%">
-</colgroup>
-<thead><tr class="header">
-<th><strong>Core Featured Functions</strong></th>
-<th>Loader</th>
-<th>Supported Models from Flair NLP</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td><code><a href="../reference/get_entities.html">get_entities()</a></code></td>
-<td><code><a href="../reference/load_tagger_ner.html">load_tagger_ner()</a></code></td>
-<td>
-<code>en</code> (English), <code>fr</code> (French), <code>da</code>
-(Danish), <code>nl</code> (Dutch), and more.</td>
-</tr>
-<tr class="even">
-<td><code><a href="../reference/get_pos.html">get_pos()</a></code></td>
-<td><code><a href="../reference/load_tagger_pos.html">load_tagger_pos()</a></code></td>
-<td>
-<code>pos</code> (English POS), <code>fr-pos</code> (French POS),
-<code>de-pos</code> (German POS), <code>nl-pos</code> (Dutch POS), and
-more.</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p> </p>
-</div>
-<div class="section level3">
-<h3 id="training-and-fine-tuning">Training and Fine-tuning<a class="anchor" aria-label="anchor" href="#training-and-fine-tuning"></a>
-</h3>
-<div style="text-align: justify">
-<p>In <strong>flairR</strong>, we use the simplest <strong>S3</strong>
-method to wrap major modules. All modules will work like <a href="https://bookdown.dongzhuoer.com/hadley/adv-r/s3-r6" class="external-link">R6</a> in the
-R environment when loaded from Flair NLP. In Python, both functions and
-methods (sometimes referred to as functions in R) within a class can be
-accessed using the <code>$</code> operator. For example,
-<code>from flair.trainers import ModelTrainer</code> in Python is
-equivalent to
-<code>ModelTrainer &lt;- flair_trainers()$ModelTrainer</code> in R
-environment with <strong>flairR</strong>.</p>
-</div>
-<table class="table">
-<colgroup>
-<col width="43%">
-<col width="56%">
-</colgroup>
-<thead><tr class="header">
-<th><strong>Wrapped Flair NLP Modules with S3</strong></th>
-<th>Corresponding Code Practices When Loading Modules from FlairNLP</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td><code><a href="../reference/flair_datasets.html">flair_datasets()</a></code></td>
-<td>from flair.datasets import *</td>
-</tr>
-<tr class="even">
-<td><code><a href="../reference/flair_nn.html">flair_nn()</a></code></td>
-<td>from flair.nn import *</td>
-</tr>
-<tr class="odd">
-<td><code><a href="../reference/flair_splitter.html">flair_splitter()</a></code></td>
-<td>from flair.splitter import *</td>
-</tr>
-<tr class="even">
-<td><code><a href="../reference/flair_trainers.html">flair_trainers()</a></code></td>
-<td>from flair.trainers import *</td>
-</tr>
-<tr class="odd">
-<td><code><a href="../reference/flair_models.html">flair_models()</a></code></td>
-<td>from flair.models import *</td>
-</tr>
-</tbody>
-</table>
-<p> </p>
-<hr>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
@@ -477,11 +483,11 @@ environment with <strong>flairR</strong>.</p>
    </div>
   <footer><div class="container">
   <div class="pkgdown-footer-left">
-  <p>Developed by <a href="https://davidycliao.github.io" class="external-link">Yen-Chieh Liao</a>, <a href="https://muellerstefan.net" class="external-link">Stefan Müller</a>, Akbik Alan, Blythe Duncan, Vollgraf Roland.</p>
+  <p>Developed by <a href="https://davidycliao.github.io" class="external-link">Yen-Chieh Liao</a>, Akbik Alan, Blythe Duncan, Vollgraf Roland.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
 </div>
 
   </div></footer>
