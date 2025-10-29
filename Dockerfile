@@ -20,7 +20,6 @@ RUN apt-get update && apt-get install -y \
     autoconf \
     automake \
     libtool \
-    # R package compilation dependencies
     libxml2-dev \
     libcurl4-openssl-dev \
     libfontconfig1-dev \
@@ -51,10 +50,13 @@ RUN python3 -m venv /opt/venv && \
     chown -R $USER:$USER /opt/venv && \
     chmod -R 775 /opt/venv
 
+# Get Python version dynamically for PYTHONPATH
+RUN PYTHON_VERSION=$(python3 -c 'import sys; print(f"{sys.version_info.major}.{sys.version_info.minor}")') && \
+    echo "export PYTHONPATH=\"/opt/venv/lib/python${PYTHON_VERSION}/site-packages\"" >> /etc/environment
+
 # Set environment variables for Python and reticulate
 ENV PATH="/opt/venv/bin:$PATH" \
-    RETICULATE_PYTHON="/opt/venv/bin/python" \
-    PYTHONPATH="/opt/venv/lib/python3.12/site-packages"
+    RETICULATE_PYTHON="/opt/venv/bin/python"
 
 # Configure R environment and library permissions
 RUN mkdir -p /usr/local/lib/R/etc /usr/local/lib/R/site-library && \
@@ -88,7 +90,3 @@ EXPOSE 8787
 # Switch back to root and start RStudio Server
 USER root
 CMD ["/usr/lib/rstudio-server/bin/rserver", "--server-daemonize=0"]
-CMD ["/usr/lib/rstudio-server/bin/rserver", "--server-daemonize=0"]
-
-
-
