@@ -20,6 +20,7 @@ RUN apt-get update && apt-get install -y \
     autoconf \
     automake \
     libtool \
+    # R package compilation dependencies
     libxml2-dev \
     libcurl4-openssl-dev \
     libfontconfig1-dev \
@@ -29,6 +30,10 @@ RUN apt-get update && apt-get install -y \
     libpng-dev \
     libtiff5-dev \
     libjpeg-dev \
+    # RStudio Server dependencies
+    psmisc \
+    lsof \
+    libclang-dev \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -50,13 +55,13 @@ RUN python3 -m venv /opt/venv && \
     chown -R $USER:$USER /opt/venv && \
     chmod -R 775 /opt/venv
 
-# Get Python version dynamically for PYTHONPATH
-RUN PYTHON_VERSION=$(python3 -c 'import sys; print(f"{sys.version_info.major}.{sys.version_info.minor}")') && \
-    echo "export PYTHONPATH=\"/opt/venv/lib/python${PYTHON_VERSION}/site-packages\"" >> /etc/environment
-
 # Set environment variables for Python and reticulate
 ENV PATH="/opt/venv/bin:$PATH" \
     RETICULATE_PYTHON="/opt/venv/bin/python"
+
+# Dynamically set PYTHONPATH
+RUN PYTHON_VERSION=$(python3 -c 'import sys; print(f"{sys.version_info.major}.{sys.version_info.minor}")') && \
+    echo "export PYTHONPATH=\"/opt/venv/lib/python${PYTHON_VERSION}/site-packages\"" >> /etc/environment
 
 # Configure R environment and library permissions
 RUN mkdir -p /usr/local/lib/R/etc /usr/local/lib/R/site-library && \
