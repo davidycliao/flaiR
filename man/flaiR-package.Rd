@@ -8,7 +8,7 @@
 \description{
 \if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
 
-Provides an R interface to the Flair Natural Language Processing (NLP) library in Python. This package allows R users to access Flair's NLP capabilities including named entity recognition, part-of-speech tagging, text embeddings and word embeddings. The package handles the Python dependencies management and provides R-friendly wrappers for Flair's functionality. Users need Python (>= 3.9.0) with PyTorch (>= 2.2.0), Transformers (>= 4.37.2), and Flair (>= 0.11.3) installed in their system. The package automatically checks and validates the Python environment during loading, ensuring all required dependencies are properly configured. For Mac users, both CPU and GPU (MPS) modes are supported. For Linux and Windows users, both CPU and CUDA modes are available with compatible hardware.
+Provides an R interface to the Flair Natural Language Processing library in Python. This package allows R users to access Flair's NLP important features including named entity recognition, part-of-speech tagging, text embeddings and word embeddings. The package handles the Python dependencies management and provides R-friendly wrappers for Flair's functionality. Users need Python (>= 3.9.0) with PyTorch (>= 2.2.0), Transformers (>= 4.37.2), and Flair (>= 0.11.3) installed in their system. The package automatically checks and validates the Python environment during loading, ensuring all required dependencies are properly configured.
 }
 \seealso{
 Useful links:

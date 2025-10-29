@@ -1,4 +1,3 @@
-
 ## <u>`flairR`</u>: An R Wrapper for Accessing Flair NLP Library <img src="man/figures/logo.png" align="right" width="180"/>
 
 [![R-MacOS](https://github.com/davidycliao/flaiR/actions/workflows/r_macos.yml/badge.svg)](https://github.com/davidycliao/flaiR/actions/workflows/r_macos.yml)
@@ -11,18 +10,11 @@ Image](https://img.shields.io/badge/Docker-ghcr.io-blue?logo=docker)](https://gi
 [![CodeFactor](https://www.codefactor.io/repository/github/davidycliao/flair/badge)](https://www.codefactor.io/repository/github/davidycliao/flair)
 
 <!-- [![R](https://img.shields.io/badge/R-package-blue)](https://github.com/davidycliao/flaiR) -->
-
 <!-- [![flaiR-Docker](https://github.com/davidycliao/flaiR/actions/workflows/docker-publish.yml/badge.svg)](https://github.com/davidycliao/flaiR/actions/workflows/docker-publish.yml) -->
-
 <!-- <!-- ![ARM64](https://img.shields.io/badge/ARM64-M1|M2-success?logo=arm) -->
-
 <!-- [![R](https://img.shields.io/badge/R-package-blue)](https://github.com/davidycliao/flaiR) -->
-
 <!-- [![Docker Image](https://img.shields.io/badge/Docker-ghcr.io-blue?logo=docker)](https://github.com/davidycliao/flaiR/pkgs/container/flair) -->
-
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-
-<div style="text-align: justify">
 
 **flaiR** is an R package that provides convenient access to
 [flairNLP/flair](https://github.com/flairNLP/flair), a powerful
@@ -33,23 +25,20 @@ flaiR R package provides R-friendly wrapper functions integrated with R
 community packages for quantitative text analysis.
 
 <!-- Through **flaiR**, R users can easily utilize and combine various word embeddings, train deep learning models, and fine-tune the latest transformer models from Hugging Face, bridging advanced NLP techniques with popular quantitative text analysis toolkits like quanteda in the R environment. -->
-
 <!-- Our team trains and fine-tunes the models with Flair in [our projects](). -->
-
-</div>
 
 <br>
 
 ## Some Useful Cases
 
-- [Working Various Embedding Framework in
-  R](https://davidycliao.github.io/flaiR/articles/tutorial.html#embedding)
+-   [Working Various Embedding Framework in
+    R](https://davidycliao.github.io/flaiR/articles/tutorial.html#embedding)
 
-- [Beyond the ‘à la carte’ Embeddings
-  Regression](https://davidycliao.github.io/flaiR/articles/tutorial.html#extending-contexts-embedding-regression)
+-   [Beyond the ‘à la carte’ Embeddings
+    Regression](https://davidycliao.github.io/flaiR/articles/tutorial.html#extending-contexts-embedding-regression)
 
-- [Finetune Transformers in
-  R](https://davidycliao.github.io/flaiR/articles/tutorial.html#finetune-transformers)
+-   [Finetune Transformers in
+    R](https://davidycliao.github.io/flaiR/articles/tutorial.html#finetune-transformers)
 
 For more detailed tutorial instructions, please visit [Flair NLP and
 flaiR for Social
@@ -59,19 +48,57 @@ Science](https://davidycliao.github.io/flaiR/articles/tutorial.html#introduction
 
 ## Required Softwares
 
-<div style="text-align: justify">
-
-- Python \>= 3.9 (Python 3.10 is recommended)
-- R \>= 4.1.3
-- Rstudio
+-   Python &gt;= 3.9 (Python 3.10 is recommended)
+-   R &gt;= 4.1.3
+-   Rstudio
 
 **Operation Systems**
 
-| OS | R Versions | Python Version | CI Status |
-|----|----|----|----|
-| Mac | 4.1.3, 4.2.3, 4.3.2 and recent | 3.10.x, 3.9 | [![R-MacOS](https://github.com/davidycliao/flaiR/actions/workflows/r_macos.yml/badge.svg)](https://github.com/davidycliao/flaiR/actions/workflows/r_macos.yml) |
-| Windows | 4.1.3, 4.2.3, 4.3.2 and recent | 3.10.x, 3.9 | [![R-Windows](https://github.com/davidycliao/flaiR/actions/workflows/r_window.yml/badge.svg)](https://github.com/davidycliao/flaiR/actions/workflows/r_window.yml) |
-| Ubuntu | 4.1.3, 4.2.3, 4.3.2 and recent | 3.10.x, 3.9 | [![R-ubuntu](https://github.com/davidycliao/flaiR/actions/workflows/r_ubuntu.yaml/badge.svg)](https://github.com/davidycliao/flaiR/actions/workflows/r_ubuntu.yaml) |
+<table>
+<colgroup>
+<col style="width: 13%" />
+<col style="width: 40%" />
+<col style="width: 23%" />
+<col style="width: 23%" />
+</colgroup>
+<thead>
+<tr>
+<th>OS</th>
+<th>R Versions</th>
+<th>Python Version</th>
+<th>CI Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Mac</td>
+<td>4.1.3, 4.2.3, 4.3.2 and recent</td>
+<td>3.10.x, 3.9</td>
+<td><a
+href="https://github.com/davidycliao/flaiR/actions/workflows/r_macos.yml"><img
+src="https://github.com/davidycliao/flaiR/actions/workflows/r_macos.yml/badge.svg"
+alt="R-MacOS" /></a></td>
+</tr>
+<tr>
+<td>Windows</td>
+<td>4.1.3, 4.2.3, 4.3.2 and recent</td>
+<td>3.10.x, 3.9</td>
+<td><a
+href="https://github.com/davidycliao/flaiR/actions/workflows/r_window.yml"><img
+src="https://github.com/davidycliao/flaiR/actions/workflows/r_window.yml/badge.svg"
+alt="R-Windows" /></a></td>
+</tr>
+<tr>
+<td>Ubuntu</td>
+<td>4.1.3, 4.2.3, 4.3.2 and recent</td>
+<td>3.10.x, 3.9</td>
+<td><a
+href="https://github.com/davidycliao/flaiR/actions/workflows/r_ubuntu.yaml"><img
+src="https://github.com/davidycliao/flaiR/actions/workflows/r_ubuntu.yaml/badge.svg"
+alt="R-ubuntu" /></a></td>
+</tr>
+</tbody>
+</table>
 
 \*: *On R 4.2.1 and 4.0.5, particularly when using the Matrix package on
 ARM 64 architecture Macs (M1/M2/M3), compatibility issues with gfortran
@@ -83,18 +110,16 @@ may occur. It’s recommended to avoid these versions.*
 
 ### Prerequisites
 
-Before installing flaiR, ensure you have Python (\>= 3.9.0) and the
-following Python dependencies: - PyTorch (\>= 2.2.0) - Transformers (\>=
-4.37.2) - Flair (\>= 0.11.3)
+Before installing flaiR, ensure you have Python (&gt;= 3.9.0) and the
+following Python dependencies: - PyTorch (&gt;= 2.2.0) - Transformers
+(&gt;= 4.37.2) - Flair (&gt;= 0.11.3)
 
 <u>Step 1</u>: Install and Load `reticulate` Package
 
-``` r
-# Install reticulate package
-install.packages("reticulate")
-# Load reticulate library
-library(reticulate)
-```
+    # Install reticulate package
+    install.packages("reticulate")
+    # Load reticulate library
+    library(reticulate)
 
 <u>Step 2</u>: Check Existing Python Configuration
 
@@ -103,84 +128,74 @@ Installation](https://davidycliao.github.io/flaiR/articles/quickstart.html#optio
 This quick install guide provides step-by-step instructions for
 installing recommended Python with reticulate.
 
-``` r
-py_config()
-```
+    py_config()
 
 To install flaiR package
 
-``` r
-install.packages("remotes")
-remotes::install_github("davidycliao/flaiR", force = TRUE)
-```
+    install.packages("remotes")
+    remotes::install_github("davidycliao/flaiR", force = TRUE)
 
-``` r
-library(flaiR)
-```
+    library(flaiR)
 
-``` bash
-#> Environment Information:
-#> OS: Darwin (15.2)
-#> Using existing Python: /usr/local/bin/python3.10
-#> Python               ✓  3.10
-#> GPU                  ✓  Mac MPS
+    #> Environment Information:
+    #> OS: Darwin (15.2)
+    #> Using existing Python: /usr/local/bin/python3.10
+    #> Python               ✓  3.10
+    #> GPU                  ✓  Mac MPS
 
-#> PyTorch              ✓  2.2.2
-#> Transformers         ✓  4.40.1
-#> Flair NLP            ✓  0.13.1
-#> Word Embeddings      ✓  4.3.2
-#> flaiR: An R Wrapper for Accessing Flair NLP 0.13.1
-```
+    #> PyTorch              ✓  2.2.2
+    #> Transformers         ✓  4.40.1
+    #> Flair NLP            ✓  0.13.1
+    #> Word Embeddings      ✓  4.3.2
+    #> flaiR: An R Wrapper for Accessing Flair NLP 0.13.1
 
 If you have never used gensim before and gensim dependencies are not
 detected, you will see a message like:
 
-``` bash
-#> Environment Information:
-#> OS: Darwin (15.2)
-#> Using existing Python: /usr/local/bin/python3.10
-#> Python               ✓  3.10
-#> GPU                  ✓  Mac MPS
+    #> Environment Information:
+    #> OS: Darwin (15.2)
+    #> Using existing Python: /usr/local/bin/python3.10
+    #> Python               ✓  3.10
+    #> GPU                  ✓  Mac MPS
 
-#> PyTorch              ✓  2.2.2
-#> Transformers         ✓  4.40.1
-#> Flair NLP            ✓  0.13.1
-#> Word Embeddings      ✗  Not Available
-#> Word embeddings feature is not detected.
+    #> PyTorch              ✓  2.2.2
+    #> Transformers         ✓  4.40.1
+    #> Flair NLP            ✓  0.13.1
+    #> Word Embeddings      ✗  Not Available
+    #> Word embeddings feature is not detected.
 
-#> Install with:
-#> In R:
-#>  reticulate::py_install('flair[word-embeddings]', pip = TRUE)
-#>  system(paste(Sys.which('python3'), '-m pip install flair[word-embeddings]'))
+    #> Install with:
+    #> In R:
+    #>  reticulate::py_install('flair[word-embeddings]', pip = TRUE)
+    #>  system(paste(Sys.which('python3'), '-m pip install flair[word-embeddings]'))
 
-#> In terminal:
-#>  pip install flair[word-embeddings]
-#> flaiR: An R Wrapper for Accessing Flair NLP 0.13.1
-```
+    #> In terminal:
+    #>  pip install flair[word-embeddings]
+    #> flaiR: An R Wrapper for Accessing Flair NLP 0.13.1
 
 <br>
 
 ## Installation with Docker
 
-- **Intel/AMD Processors:**
+-   **Intel/AMD Processors:**
 
-``` r
-# Pull image
-docker pull ghcr.io/davidycliao/flair-rstudio:latest
+<!-- -->
 
-# Run container
-docker run -d -p 8787:8787 --user root --name flair-rstudio ghcr.io/davidycliao/flair-rstudio:latest
-```
+    # Pull image
+    docker pull ghcr.io/davidycliao/flair-rstudio:latest
 
-- **Apple Silicon (M1/M2 Mac):**
+    # Run container
+    docker run -d -p 8787:8787 --user root --name flair-rstudio ghcr.io/davidycliao/flair-rstudio:latest
 
-``` r
-# Pull image
-docker pull --platform linux/amd64 ghcr.io/davidycliao/flair-rstudio:latest
+-   **Apple Silicon (M1/M2 Mac):**
 
-# Run container
-docker run -d -p 8787:8787 --platform linux/amd64 --user root --name flair-rstudio ghcr.io/davidycliao/flair-rstudio:latest
-```
+<!-- -->
+
+    # Pull image
+    docker pull --platform linux/amd64 ghcr.io/davidycliao/flair-rstudio:latest
+
+    # Run container
+    docker run -d -p 8787:8787 --platform linux/amd64 --user root --name flair-rstudio ghcr.io/davidycliao/flair-rstudio:latest
 
 After running these commands in terminal (or powershell), open your
 browser and navigate to [`http://localhost:8787`](http://localhost:8787)
@@ -188,13 +203,9 @@ to access RStudio Server. For detailed installation instructions, please
 visit [Quick Start
 Guide](https://davidycliao.github.io/flaiR/articles/quickstart.html#flair-installation).
 
-</div>
-
 <br>
 
 ## Contribution and Open Source
-
-<div style="text-align: justify">
 
 R developers who want to contribute to `flaiR` are welcome – flaiR is an
 open source project. We warmly invite R users who share similar
@@ -215,7 +226,5 @@ report any issues related to the R interface in the
 issue pertains to the actual implementation of Flair in Python, please
 submit a pull request to the offical [flair
 NLP](https://github.com/flairnlp/flair).
-
-</div>
 
 <br>
