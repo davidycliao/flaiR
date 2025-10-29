@@ -27,7 +27,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libjpeg-dev \
  && rm -rf /var/lib/apt/lists/*
 
-# ========= 使用者設定 =========
 ARG USER=rstudio
 ARG PASSWORD=rstudio123
 RUN echo "$USER:$PASSWORD" | chpasswd && \
