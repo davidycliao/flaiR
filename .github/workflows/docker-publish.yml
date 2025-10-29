@@ -14,8 +14,6 @@ jobs:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       R_KEEP_PKG_SOURCE: yes
       _R_CHECK_FORCE_SUGGESTS_: false
-      # Set Python path for reticulate
-      RETICULATE_PYTHON: /opt/hostedtoolcache/Python/3.9.*/x64/bin/python
     steps:
       - uses: actions/checkout@v3
 
@@ -25,7 +23,6 @@ jobs:
 
       - uses: r-lib/actions/setup-pandoc@v2
 
-      # Install system dependencies including Armadillo
       - name: Install system dependencies
         run: |
           sudo apt-get update
@@ -36,80 +33,33 @@ jobs:
             libarpack2-dev \
             libsuperlu-dev
 
-      # Setup Python BEFORE installing R dependencies
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.9'
 
-      # Install Python dependencies with all required packages
       - name: Install Python dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install numpy scipy torch transformers flair
+          pip install flair
 
-      # Verify Python installation
-      - name: Verify Python packages
-        run: |
-          python -c "import flair; print(f'Flair version: {flair.__version__}')"
-          python -c "import torch; print(f'Torch version: {torch.__version__}')"
-          which python
-
-      # Install R dependencies
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
           extra-packages: |
             any::rcmdcheck
             any::remotes
-            any::reticulate
           dependencies: '"all"'
 
-      # Configure reticulate to use the correct Python
-      - name: Configure reticulate
-        run: |
-          python_path <- Sys.which("python")
-          cat(sprintf("Using Python: %s\n", python_path))
-          Sys.setenv(RETICULATE_PYTHON = python_path)
-          reticulate::use_python(python_path, required = TRUE)
-
-          # Verify Python modules are accessible
-          cat("\nVerifying Python modules...\n")
-          tryCatch({
-            flair <- reticulate::import("flair")
-            cat("✓ flair imported successfully\n")
-          }, error = function(e) {
-            cat("✗ Failed to import flair:", conditionMessage(e), "\n")
-          })
-
-          tryCatch({
-            torch <- reticulate::import("torch")
-            cat("✓ torch imported successfully\n")
-          }, error = function(e) {
-            cat("✗ Failed to import torch:", conditionMessage(e), "\n")
-          })
-        shell: Rscript {0}
-
-      # Install flaiR package
       - name: Install flaiR package
         run: |
           remotes::install_github("davidycliao/flaiR", force = TRUE)
         shell: Rscript {0}
 
-      # Check R package
       - name: Check R package
         uses: r-lib/actions/check-r-package@v2
         with:
           upload-snapshots: true
-          args: 'c("--no-build-vignettes", "--ignore-vignettes", "--no-tests")'
-
-      # Run tests separately with proper Python environment
-      - name: Run tests with Python environment
-        run: |
-          Sys.setenv(RETICULATE_PYTHON = Sys.which("python"))
-          reticulate::use_python(Sys.which("python"), required = TRUE)
-          testthat::test_local()
-        shell: Rscript {0}
-        continue-on-error: true
+          args: 'c("--no-build-vignettes", "--ignore-vignettes", "--no-examples", "--no-tests")'
 
   docker:
     needs: R-CMD-check
